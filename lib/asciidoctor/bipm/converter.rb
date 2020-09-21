@@ -13,6 +13,24 @@ module Asciidoctor
         Metanorma::BIPM.configuration
       end
 
+      def metadata_committee(node, xml)
+        return unless node.attr("committee")
+        xml.editorialgroup do |a|
+          a.committee node.attr("committee")
+          i = 2
+          while node.attr("committee_#{i}") do
+            a.committee node.attr("committee_#{i}")
+            i += 1
+          end
+          a.workgroup node.attr("workgroup")
+          i = 2
+          while node.attr("workgroup_#{i}") do
+            a.workgroup node.attr("workgroup_#{i}")
+            i += 1
+          end
+        end
+      end
+
       def html_converter(node)
         IsoDoc::BIPM::HtmlConvert.new(html_extract_attributes(node))
       end

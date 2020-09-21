@@ -109,7 +109,8 @@ RSpec.describe Asciidoctor::BIPM do
 <ext>
   <doctype>brochure</doctype>
   <editorialgroup>
-    <committee type='A'>TC</committee>
+    <committee>TC</committee>
+    <workgroup>WG</workgroup>
   </editorialgroup>
 </ext>
 </bibdata>
