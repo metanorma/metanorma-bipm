@@ -4,7 +4,9 @@ organization_name_long: Bureau International de Poids et Mesures
 document_namespace: https://www.metanorma.org/ns/bipm
 xml_root_tag: 'bipm-standard'
 logo_path: lib/isodoc/bipm/html/logo.png
-#i18nyaml: lib/isodoc/iho/i18n-en.yaml
+i18nyaml: 
+  en: lib/isodoc/bipm/i18n-en.yaml
+  fr: lib/isodoc/bipm/i18n-fr.yaml
 validate_rng_file: lib/asciidoctor/bipm/bipm.rng
 htmlcoverpage: lib/isodoc/bipm/html/html_bipm_titlepage.html
 htmlintropage: lib/isodoc/bipm/html/html_bipm_intro.html
