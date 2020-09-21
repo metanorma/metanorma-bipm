@@ -1,0 +1,67 @@
+<div class="document-stage-band" id="{{ stage | downcase | replace: ' ', '-' }}-band">
+    <p class="document-stage">{{ stage }}</p>
+</div>
+
+<div class="document-type-band" id="{{ doctype | downcase | replace: ' ', '-' }}-band">
+    <p class="document-type">BIPM {{ doctype }}</p>
+</div>
+
+
+
+  <div id='toggle'> <span>&#x2022;</span> </div>
+
+  <header>
+
+<!--<div class="WordSection1">-->
+  <div class="coverpage">
+    <div class="wrapper-top">
+
+  <div class="coverpage-doc-identity">
+    <div class="doc-number">
+      <span class="docnumber">{{ docnumber }}</span>
+      <span class="docnumber-separator">:</span>
+      <span class="docyear">{{ docyear }} {{ draftinfo }}</span>
+    </div>
+
+    <div class="coverpage-title">
+      <span class="title-first">{{ doctitle }}</span>
+      <!--<span class="title-second">{{ docsubtitle }}</span>-->
+    </div>
+  </div>
+
+  <div class="coverpage-logo">
+    <span>Bureau International de Poids et Mesures {{ docyear }}</span>
+  </div>
+
+  <div class="coverpage-tc-name">
+    <span>{{ tc }}</span>
+  </div>
+  </div>
+
+    <div class="wrapper-top-bottom"></div>
+
+  <div class="WordSection11">
+  <div class="coverpage-stage-block" >
+    <span class="coverpage-stage" id="{{ doctype | replace: ' ', '-' | downcase }}">BIPM {{ doctype }}</span>
+  </div>
+
+  <div class="coverpage-stage-block" >
+    <p><span class="coverpage-maturity" id="{{ stage | replace: ' ', '-' | downcase }}">{{ stage }}</span></p>
+</div>
+
+<div class="info-section">
+<div class="copyright">
+  <p class="year">
+    &copy; {{ docyear }} Bureau International de Poids et Mesures
+  </p>
+
+<div class="contact-info">
+</div>
+</div>
+
+<div class="rule"></div>
+</div>
+  </div>
+
+
+</header>
