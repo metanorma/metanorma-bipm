@@ -15,7 +15,7 @@ RSpec.describe Metanorma::BIPM do
       let(:default_organization_name_short) { 'BIPM' }
       let(:default_organization_name_long) { 'Bureau International de Poids et Mesures' }
       let(:default_document_namespace) do
-        'https://www.metanorma.org/ns/vsd'
+        'https://www.metanorma.org/ns/bipm'
       end
 
       it 'sets default atrributes' do

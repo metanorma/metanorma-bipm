@@ -62,7 +62,7 @@ HDR
 
 BLANK_HDR = <<~"HDR"
        <?xml version="1.0" encoding="UTF-8"?>
-       <bipm-standard xmlns="https://www.metanorma.org/ns/vsd">
+       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm">
        <bibdata type="standard">
         <title language="en" format="text/plain">Document title</title>
 <docidentifier type="BIPM">BIPM </docidentifier>
@@ -83,7 +83,7 @@ BLANK_HDR = <<~"HDR"
         <language>en</language>
          <script>Latn</script>
 <status>
-  <stage>published</stage>
+  <stage>in-force</stage>
 </status>
 
          <copyright>
@@ -96,7 +96,7 @@ BLANK_HDR = <<~"HDR"
            </owner>
          </copyright>
          <ext>
-        <doctype>standard</doctype>
+        <doctype>brochure</doctype>
         </ext>
        </bibdata>
 HDR

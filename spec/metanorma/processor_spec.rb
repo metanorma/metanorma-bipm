@@ -15,7 +15,7 @@ RSpec.describe Metanorma::BIPM::Processor do
 
   it "registers output formats against metanorma" do
     expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~"OUTPUT"
-    [[:doc, "doc"], [:html, "html"], [:presentation, "presentation.xml"], [:rxl, "rxl"], [:xml, "xml"]]
+    [[:html, "html"], [:pdf, "pdf"], [:presentation, "presentation.xml"], [:rxl, "rxl"], [:xml, "xml"]]
     OUTPUT
   end
 
@@ -31,7 +31,7 @@ RSpec.describe Metanorma::BIPM::Processor do
     output = xmlpp(<<~"OUTPUT")
     #{BLANK_HDR}
 <sections/>
-</vsd-standard>
+</bipm-standard>
     OUTPUT
 
     expect(xmlpp(processor.input_to_isodoc(input, nil))).to be_equivalent_to output
@@ -40,7 +40,7 @@ RSpec.describe Metanorma::BIPM::Processor do
   it "generates HTML from IsoDoc XML" do
     system "rm -f test.xml"
     input = <<~"INPUT"
-    <vsd-standard xmlns="https://metanorma.org/ns/vsd">
+    <bipm-standard xmlns="https://metanorma.org/ns/bipm">
       <sections>
         <terms id="H" obligation="normative"><title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
           <term id="J">
@@ -49,7 +49,7 @@ RSpec.describe Metanorma::BIPM::Processor do
           </term>
         </terms>
       </sections>
-    </vsd-standard>
+    </bipm-standard>
     INPUT
 
     output = xmlpp(<<~"OUTPUT")

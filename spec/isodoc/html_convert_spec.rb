@@ -7,7 +7,7 @@ RSpec.describe IsoDoc::BIPM do
   it "processes default metadata" do
     csdc = IsoDoc::BIPM::HtmlConvert.new({})
     input = <<~"INPUT"
-<vsd-standard xmlns="https://open.ribose.com/standards/vsd">
+<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
 <bibdata type="standard">
   <title language="en" format="plain">Main Title</title>
   <docidentifier>1000</docidentifier>
@@ -44,12 +44,12 @@ RSpec.describe IsoDoc::BIPM do
   <draft>3.4</draft>
 </version>
 <sections/>
-</vsd-standard>
+</bipm-standard>
     INPUT
 
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
-:agency=>"Vita Green",
+:agency=>"Bureau International de Poids et Mesures",
 :authors=>[],
 :authors_affiliations=>{},
 :circulateddate=>"XXX",
@@ -69,12 +69,12 @@ RSpec.describe IsoDoc::BIPM do
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
-:publisher=>"Vita Green",
+:publisher=>"Bureau International de Poids et Mesures",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
 :stage=>"Working Draft",
-:stageabbr=>"WD",
+:stageabbr=>nil,
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -89,7 +89,7 @@ RSpec.describe IsoDoc::BIPM do
 
   it "abbreviates committee-draft" do
     input = <<~"INPUT"
-<vsd-standard xmlns="https://open.ribose.com/standards/vsd">
+<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
 <bibdata type="standard">
   <status><stage>committee-draft</stage></status>
 </bibdata><version>
@@ -98,7 +98,7 @@ RSpec.describe IsoDoc::BIPM do
   <draft>3.4</draft>
 </version>
 <sections/>
-</vsd-standard>
+</bipm-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -128,7 +128,7 @@ RSpec.describe IsoDoc::BIPM do
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
 :stage=>"Committee Draft",
-:stageabbr=>"CD",
+:stageabbr=>nil,
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -144,7 +144,7 @@ RSpec.describe IsoDoc::BIPM do
 
   it "abbreviates draft-standard" do
     input = <<~"INPUT"
-<vsd-standard xmlns="https://open.ribose.com/standards/vsd">
+<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
 <bibdata type="standard">
   <status><stage>draft-standard</stage></status>
 </bibdata><version>
@@ -153,7 +153,7 @@ RSpec.describe IsoDoc::BIPM do
   <draft>3.4</draft>
 </version>
 <sections/>
-</vsd-standard>
+</bipm-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -183,7 +183,7 @@ RSpec.describe IsoDoc::BIPM do
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
 :stage=>"Draft Standard",
-:stageabbr=>"DS",
+:stageabbr=>nil,
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -199,7 +199,7 @@ RSpec.describe IsoDoc::BIPM do
 
   it "ignores unrecognised status" do
     input = <<~"INPUT"
-<vsd-standard xmlns="https://open.ribose.com/standards/vsd">
+<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
 <bibdata type="standard">
   <status><stage>standard</stage></status>
 </bibdata><version>
@@ -208,7 +208,7 @@ RSpec.describe IsoDoc::BIPM do
   <draft>3.4</draft>
 </version>
 <sections/>
-</vsd-standard>
+</bipm-standard>
     INPUT
 
     output = <<~"OUTPUT"
@@ -238,7 +238,7 @@ RSpec.describe IsoDoc::BIPM do
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
 :stage=>"Standard",
-:stageabbr=>"S",
+:stageabbr=>nil,
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -254,11 +254,11 @@ RSpec.describe IsoDoc::BIPM do
 
   it "processes pre" do
     input = <<~"INPUT"
-<vsd-standard xmlns="https://open.ribose.com/standards/vsd">
+<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
 <preface><foreword>
 <pre>ABC</pre>
 </foreword></preface>
-</vsd-standard>
+</bipm-standard>
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -283,11 +283,11 @@ RSpec.describe IsoDoc::BIPM do
 
   it "processes keyword" do
     input = <<~"INPUT"
-<vsd-standard xmlns="https://open.ribose.com/standards/vsd">
+<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
 <preface><foreword>
 <keyword>ABC</keyword>
 </foreword></preface>
-</vsd-standard>
+</bipm-standard>
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -310,7 +310,7 @@ RSpec.describe IsoDoc::BIPM do
 
   it "processes simple terms & definitions" do
     input = <<~"INPUT"
-     <vsd-standard xmlns="http://riboseinc.com/isoxml">
+     <bipm-standard xmlns="http://riboseinc.com/isoxml">
        <sections>
        <terms id="H" obligation="normative"><title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
          <term id="J">
@@ -319,7 +319,7 @@ RSpec.describe IsoDoc::BIPM do
        </term>
         </terms>
         </sections>
-        </vsd-standard>
+        </bipm-standard>
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -341,7 +341,7 @@ RSpec.describe IsoDoc::BIPM do
 
   it "processes section names" do
     input = <<~"INPUT"
-    <vsd-standard xmlns="http://riboseinc.com/isoxml">
+    <bipm-standard xmlns="http://riboseinc.com/isoxml">
       <preface>
       <foreword obligation="informative">
          <title>Foreword</title>
@@ -399,11 +399,11 @@ RSpec.describe IsoDoc::BIPM do
        </references>
        </clause>
        </bibliography>
-       </vsd-standard>
+       </bipm-standard>
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    <vsd-standard xmlns='http://riboseinc.com/isoxml'>
+    <bipm-standard xmlns='http://riboseinc.com/isoxml'>
          <preface>
            <foreword obligation='informative'>
              <title>Foreword</title>
@@ -517,7 +517,7 @@ RSpec.describe IsoDoc::BIPM do
              </references>
            </clause>
          </bibliography>
-       </vsd-standard>
+       </bipm-standard>
     OUTPUT
     stripped_html = xmlpp(IsoDoc::BIPM::PresentationXMLConvert
                           .new({})
@@ -532,12 +532,13 @@ RSpec.describe IsoDoc::BIPM do
       Author
       :docfile: test.adoc
       :novalid:
+      :no-pdf:
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
     #{BLANK_HDR}
 <sections/>
-</vsd-standard>
+</bipm-standard>
     OUTPUT
 
     expect(xmlpp(Asciidoctor.convert(input, backend: :bipm, header_footer: true))).to be_equivalent_to output

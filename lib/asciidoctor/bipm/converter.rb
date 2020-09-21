@@ -22,6 +22,7 @@ module Asciidoctor
       end
 
       def pdf_converter(node)
+        return nil if node.attr("no-pdf")
         IsoDoc::BIPM::PdfConvert.new(doc_extract_attributes(node))
       end
     end

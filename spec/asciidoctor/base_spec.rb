@@ -9,7 +9,7 @@ RSpec.describe Asciidoctor::BIPM do
     output = xmlpp(<<~"OUTPUT")
     #{BLANK_HDR}
 <sections/>
-</vsd-standard>
+</bipm-standard>
     OUTPUT
 
     expect(xmlpp(Asciidoctor.convert(input, backend: :bipm, header_footer: true))).to be_equivalent_to output
@@ -21,12 +21,13 @@ RSpec.describe Asciidoctor::BIPM do
       Author
       :docfile: test.adoc
       :novalid:
+      :no-pdf:
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
     #{BLANK_HDR}
 <sections/>
-</vsd-standard>
+</bipm-standard>
     OUTPUT
 
     system "rm -f test.html"
@@ -66,10 +67,10 @@ RSpec.describe Asciidoctor::BIPM do
 
     output = xmlpp(<<~"OUTPUT")
     <?xml version="1.0" encoding="UTF-8"?>
-<vsd-standard xmlns="https://www.metanorma.org/ns/vsd">
+<bipm-standard xmlns="https://www.metanorma.org/ns/bipm">
 <bibdata type="standard">
   <title language="en" format="text/plain">Main Title</title>
-  <docidentifier type="Vita Green">#{Metanorma::BIPM.configuration.organization_name_long} 1000</docidentifier>
+  <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
   <docnumber>1000</docnumber>
   <contributor>
     <role type="author"/>
@@ -106,14 +107,14 @@ RSpec.describe Asciidoctor::BIPM do
     </owner>
   </copyright>
 <ext>
-  <doctype>standard</doctype>
+  <doctype>brochure</doctype>
   <editorialgroup>
     <committee type='A'>TC</committee>
   </editorialgroup>
 </ext>
 </bibdata>
 <sections/>
-</vsd-standard>
+</bipm-standard>
     OUTPUT
 
     expect(xmlpp(Asciidoctor.convert(input, backend: :bipm, header_footer: true))).to be_equivalent_to output
@@ -142,7 +143,7 @@ RSpec.describe Asciidoctor::BIPM do
        Amen</pre>
        </figure>
        </sections>
-       </vsd-standard>
+       </bipm-standard>
     OUTPUT
 
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
@@ -165,7 +166,7 @@ RSpec.describe Asciidoctor::BIPM do
        <clause id='_' obligation='normative'>
          <title>Section 1</title>
        </clause></sections>
-       </vsd-standard>
+       </bipm-standard>
     OUTPUT
 
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
@@ -177,6 +178,7 @@ RSpec.describe Asciidoctor::BIPM do
       Author
       :docfile: test.adoc
       :novalid:
+      :no-pdf:
     INPUT
 
     system "rm -f test.html"
@@ -195,6 +197,7 @@ RSpec.describe Asciidoctor::BIPM do
       :docfile: test.adoc
       :novalid:
       :script: Hans
+      :no-pdf:
     INPUT
 
     system "rm -f test.html"
@@ -216,6 +219,7 @@ RSpec.describe Asciidoctor::BIPM do
       :body-font: Zapf Chancery
       :header-font: Comic Sans
       :monospace-font: Andale Mono
+      :no-pdf:
     INPUT
 
     system "rm -f test.html"
