@@ -107,6 +107,9 @@ introduced with `=`, is ignored)
 
 `:language:` :: The language of the document (`en` or `fr`)  (mandatory)
 
+`:comment-period-from:`:: Start of the period during which comments are allowed on the document draft
+`:comment-period-to:`:: End of the period during which comments are allowed on the document draft (optional)
+
 The attribute `:draft:`, if present, includes review notes in the XML output;
 these are otherwise suppressed.
 

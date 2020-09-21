@@ -51,3 +51,6 @@ committees:
   - JCRB
   - JCTLM
   - INetQI
+metadata_extensions:
+  - comment-period-from
+  - comment-period-to

@@ -63,6 +63,8 @@ RSpec.describe Asciidoctor::BIPM do
       :language: en
       :title: Main Title
       :security: Client Confidential
+      :comment-period-from: X
+      :comment-period-to: Y
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -112,6 +114,8 @@ RSpec.describe Asciidoctor::BIPM do
     <committee>TC</committee>
     <workgroup>WG</workgroup>
   </editorialgroup>
+  <comment-period-from>X</comment-period-from>
+<comment-period-to>Y</comment-period-to>
 </ext>
 </bibdata>
 <sections/>
