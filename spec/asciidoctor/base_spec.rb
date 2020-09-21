@@ -67,6 +67,8 @@ RSpec.describe Asciidoctor::BIPM do
       :comment-period-to: Y
       :supersedes: A
       :superseded-by: B
+      :obsoleted-date: C
+      :implemented-date: D
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -76,6 +78,12 @@ RSpec.describe Asciidoctor::BIPM do
   <title language="en" format="text/plain">Main Title</title>
   <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
   <docnumber>1000</docnumber>
+  <date type='implemented'>
+  <on>D</on>
+</date>
+<date type='obsoleted'>
+  <on>C</on>
+</date>
   <contributor>
     <role type="author"/>
     <organization>
