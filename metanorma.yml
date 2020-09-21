@@ -32,3 +32,22 @@ doctypes:
   - cipm-mra
   - resolution
 default_doctype: brochure
+committees:
+  - CGPM
+  - CIPM
+  - BIPM
+  - CCAUV
+  - CCEM
+  - CCL
+  - CCM
+  - CCPR
+  - CCQM
+  - CCRI
+  - CCT
+  - CCTF
+  - CCU
+  - CCL-CCT
+  - JCGM
+  - JCRB
+  - JCTLM
+  - INetQI
