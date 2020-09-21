@@ -1,0 +1,34 @@
+metanorma_name: bipm
+organization_name_short: BIPM
+organization_name_long: Bureau International de Poids et Mesures
+document_namespace: https://www.metanorma.org/ns/bipm
+xml_root_tag: 'bipm-standard'
+#logo_path: lib/isodoc/vg/html/logo.png
+#i18nyaml: lib/isodoc/iho/i18n-en.yaml
+validate_rng_file: lib/asciidoctor/bipm/bipm.rng
+htmlcoverpage: lib/isodoc/bipm/html/html_bipm_titlepage.html
+htmlintropage: lib/isodoc/bipm/html/html_bipm_intro.html
+htmlstylesheet: lib/isodoc/bipm/html/htmlstyle.scss
+scripts: lib/isodoc/bipm/html/scripts.html
+published_stages:
+  - in-force
+  - retired
+default_stage: in-force
+stage_abbreviations:
+  draft-proposal:
+  draft-development:
+  in-force:
+  retired:
+doctypes:
+  - brochure
+  - mise-en-pratique
+  - rapport
+  - monographie
+  - guide
+  - meeting-report
+  - technical-report
+  - working-part-note
+  - strategy
+  - cipm-mra
+  - resolution
+default_doctype: brochure

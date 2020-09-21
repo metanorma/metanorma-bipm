@@ -1,0 +1,119 @@
+= Metanorma for BIPM: Metanorma processor for Bureau International de Poids et Mesures
+
+image:https://img.shields.io/gem/v/metanorma-bimp.sbimp["Gem Version", link="https://rubygems.org/gems/metanorma-bimp"]
+image:https://github.com/metanorma/metanorma-bimp/workflows/macos/badge.sbimp["Build Status (macOS)", link="https://github.com/metanorma/metanorma-bimp/actions?workflow=macos"]
+image:https://github.com/metanorma/metanorma-bimp/workflows/ubuntu/badge.sbimp["Build Status (ubuntu)", link="https://github.com/metanorma/metanorma-bimp/actions?workflow=ubuntu"]
+image:https://github.com/metanorma/metanorma-bimp/workflows/windows/badge.sbimp["Build Status (Windows)", link="https://github.com/metanorma/metanorma-bimp/actions?workflow=windows"]
+image:https://codeclimate.com/github/metanorma/metanorma-bimp/badges/gpa.sbimp["Code Climate", link="https://codeclimate.com/github/metanorma/metanorma-bimp"]
+image:https://img.shields.io/github/issues-pr-raw/metanorma/metanorma-bimp.sbimp["Pull Requests", link="https://github.com/metanorma/metanorma-bimp/pulls"]
+image:https://img.shields.io/github/commits-since/metanorma/metanorma-bimp/latest.sbimp["Commits since latest",link="https://github.com/metanorma/metanorma-bimp/releases"]
+
+== Functionality
+
+This gem processes http://asciidoctor.org/[Asciidoctor] documents following
+a template for generating BIPM standards.
+
+== Usage
+
+The preferred way to invoke this gem is via the `metanorma` script:
+
+[source,console]
+----
+$ metanorma --type bipm a.adoc                   # output HTML and PDF
+$ metanorma --type bipm --extensions html a.adoc # output just HTML
+$ metanorma --type bipm --extensions pdf a.pdf   # output just PDF
+$ metanorma --type bipm --extensions xml a.adoc  # output Metanorma XML
+----
+
+The gem translates the document into Metanorma XML format, and then
+validates its output against the BIPM Metanorma XML document model; errors are
+reported to console against the XML, and are intended for users to
+check that they have provided all necessary components of the
+document.
+
+The gem then converts the XML into output formats such as HTML and PDF.
+
+=== Installation
+
+If you are using a Mac, the https://github.com/riboseinc/metanorma-macos-setup
+repository has instructions on setting up your machine to run Metanorma
+scripts such as this one. You need only run the following in a Terminal console:
+
+[source,console]
+----
+$ bash <(curl -s https://raw.githubusercontent.com/riboseinc/metanorma-macos-setup/master/metanorma-setup)
+$ gem install metanorma-vg
+----
+
+
+== Document Attributes
+
+The gem relies on Asciidoctor document attributes to provide necessary
+metadata about the document. These include:
+
+`:edition:`:: The document edition
+
+`:revdate:`:: The date the document was last updated
+
+`:copyright-year:`:: The year which will be claimed as when the copyright for
+the document was issued
+
+`:title:`:: The main component of the English title of the document
+(mandatory). (The first line of the AsciiDoc document, which contains the title
+introduced with `=`, is ignored)
+
+`:doctype:`:: The document type (mandatory). The permitted types are:
++
+--
+* brochure (default)
+* mise-en-pratique
+* rapport
+* monographie
+* guide
+* meeting-report
+* technical-report
+* working-part-note
+* strategy
+* cipm-mra
+* resolution
+--
+
+`:status:``:: The document status. The permitted types are: `draft-proposal`,
+`draft-development`, `in-force`, `retired`.
+
+`:committee:`:: The name of the relevant committee (mandatory):
++
+--
+* CGPM: General Conference on Weights and Measures
+* CIPM: International Committee for Weights and Measures
+* BIPM: International Bureau of Weights and Measures
+* CCAUV: Consultative Committee for Acoustics, Ultrasound and Vibration
+* CCEM: Consultative Committee for Electricity and Magnetism
+* CCL: Consultative Committee for Length
+* CCM: Consultative Committee for Mass and Related Quantities
+* CCPR: Consultative Committee for Photometry and Radiometry
+* CCQM: Consultative Committee for Amount of Substance:: Metrology in Chemistry and Biology
+* CCRI: Consultative Committee for Ionizing Radiation
+* CCT: Consultative Committee for Thermometry
+* CCTF: Consultative Committee for Time and Frequency
+* CCU: Consultative Committee for Units
+* CCL-CCTF: Frequency Standards Working Group
+* JCGM: Joint Committee for Guides in Metrology
+* JCRB: Joint Committee of the Regional Metrology Organizations and the BIPM
+* JCTLM: Joint Committee for Traceability in Laboratory Medicine
+* INetQI: International Network on Quality Infrastructure
+--
+`:workgroup:`:: The name of the relevant workgroup (mandatory)
+
+`:language:` :: The language of the document (`en` or `fr`)  (mandatory)
+
+The attribute `:draft:`, if present, includes review notes in the XML output;
+these are otherwise suppressed.
+
+== Data Models
+
+The document model for BIPM is given in https://github.com/metanorma/metanorma-model-bipm[metanorma-model-bipm].
+
+== Examples
+
+Sample documents are given in https://github.com/metanorma/mn-samples-bipm[mn-samples-bipm]
