@@ -62,6 +62,12 @@ the document was issued
 (mandatory). (The first line of the AsciiDoc document, which contains the title
 introduced with `=`, is ignored)
 
+`:supersedes:`:: One or more BIPM document that this BIPM document standard supersedes; the superseded
+document may still remain in effect. Comma delimited.
+
+`:superseded-by:`:: One or more BIPM document that this BIPM document standard is superseded by; this
+document may still remain in effect. Comma delimited.
+
 `:doctype:`:: The document type (mandatory). The permitted types are:
 +
 --

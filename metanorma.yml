@@ -54,3 +54,6 @@ committees:
 metadata_extensions:
   - comment-period-from
   - comment-period-to
+relations:
+  - supersedes
+  - superseded-by

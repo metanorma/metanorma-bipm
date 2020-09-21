@@ -65,6 +65,8 @@ RSpec.describe Asciidoctor::BIPM do
       :security: Client Confidential
       :comment-period-from: X
       :comment-period-to: Y
+      :supersedes: A
+      :superseded-by: B
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -108,6 +110,18 @@ RSpec.describe Asciidoctor::BIPM do
       </organization>
     </owner>
   </copyright>
+  <relation type='supersedes'>
+  <bibitem>
+    <title>--</title>
+    <docidentifier>A</docidentifier>
+  </bibitem>
+</relation>
+<relation type='supersededBy'>
+  <bibitem>
+    <title>--</title>
+    <docidentifier>B</docidentifier>
+  </bibitem>
+</relation>
 <ext>
   <doctype>brochure</doctype>
   <editorialgroup>
