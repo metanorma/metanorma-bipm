@@ -14,7 +14,7 @@ htmlstylesheet: lib/isodoc/bipm/html/htmlstyle.scss
 scripts: lib/isodoc/bipm/html/scripts.html
 boilerplate:
   en: lib/asciidoctor/bipm/boilerplate-en.xml
-  fr: lib/asciidoctor/bipm/boilerplate-fe.xml
+  fr: lib/asciidoctor/bipm/boilerplate-fr.xml
 published_stages:
   - in-force
   - retired
