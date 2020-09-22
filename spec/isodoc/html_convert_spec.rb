@@ -4,12 +4,13 @@ logoloc = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib", 
 
 RSpec.describe IsoDoc::BIPM do
 
-  it "processes default metadata" do
+  it "processes default metadata in English" do
     csdc = IsoDoc::BIPM::HtmlConvert.new({})
     input = <<~"INPUT"
 <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
 <bibdata type="standard">
   <title language="en" format="plain">Main Title</title>
+  <title language="fr" format="plain">Chef Title</title>
   <docidentifier>1000</docidentifier>
   <contributor>
     <role type="author"/>
@@ -58,6 +59,7 @@ RSpec.describe IsoDoc::BIPM do
 :createddate=>"XXX",
 :docnumber=>"1000",
 :docnumeric=>nil,
+:docsubtitle=>"Chef Title",
 :doctitle=>"Main Title",
 :docyear=>"2001",
 :draft=>"3.4",
@@ -81,6 +83,91 @@ RSpec.describe IsoDoc::BIPM do
 :updateddate=>"XXX",
 :vote_endeddate=>"XXX",
 :vote_starteddate=>"XXX"}
+    OUTPUT
+
+    docxml, filename, dir = csdc.convert_init(input, "test", true)
+    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s.gsub(/, :/, ",\n:"))).to be_equivalent_to output
+  end
+
+  it "processes default metadata in French" do
+    csdc = IsoDoc::BIPM::HtmlConvert.new({})
+    input = <<~"INPUT"
+<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+<bibdata type="standard">
+  <title language="en" format="plain">Main Title</title>
+  <title language="fr" format="plain">Chef Title</title>
+  <docidentifier>1000</docidentifier>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+    </organization>
+  </contributor>
+  <language>fr</language>
+  <script>Latn</script>
+  <status><stage>working-draft</stage></status>
+  <copyright>
+    <from>2001</from>
+    <owner>
+      <organization>
+        <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      </organization>
+    </owner>
+  </copyright>
+  <editorialgroup>
+    <committee type="A">TC</committee>
+  </editorialgroup>
+  <security>Client Confidential</security>
+</bibdata><version>
+  <edition>2</edition>
+  <revision-date>2000-01-01</revision-date>
+  <draft>3.4</draft>
+</version>
+<sections/>
+</bipm-standard>
+    INPUT
+
+    output = <<~"OUTPUT"
+{:accesseddate=>"XXX",
+       :agency=>"Bureau International de Poids et Mesures",
+       :authors=>[],
+       :authors_affiliations=>{},
+       :circulateddate=>"XXX",
+       :confirmeddate=>"XXX",
+       :copieddate=>"XXX",
+       :createddate=>"XXX",
+       :docnumber=>"1000",
+       :docnumeric=>nil,
+       :docsubtitle=>"Main Title",
+       :doctitle=>"Chef Title",
+       :docyear=>"2001",
+       :draft=>"3.4",
+       :draftinfo=>" (brouillon 3.4, 2000-01-01)",
+       :edition=>nil,
+       :implementeddate=>"XXX",
+       :issueddate=>"XXX",
+       :keywords=>[],
+:logo=>"#{File.join(logoloc, "logo.png")}",
+       :obsoleteddate=>"XXX",
+       :publisheddate=>"XXX",
+       :publisher=>"Bureau International de Poids et Mesures",
+       :receiveddate=>"XXX",
+       :revdate=>"2000-01-01",
+       :revdate_monthyear=>"Janvier 2000",
+       :stage=>"Working Draft",
+       :stageabbr=>nil,
+       :transmitteddate=>"XXX",
+       :unchangeddate=>"XXX",
+       :unpublished=>true,
+       :updateddate=>"XXX",
+       :vote_endeddate=>"XXX",
+       :vote_starteddate=>"XXX"}
     OUTPUT
 
     docxml, filename, dir = csdc.convert_init(input, "test", true)
@@ -112,7 +199,8 @@ RSpec.describe IsoDoc::BIPM do
 :createddate=>"XXX",
 :docnumber=>nil,
 :docnumeric=>nil,
-:doctitle=>nil,
+:docsubtitle=>"",
+:doctitle=>"",
 :docyear=>nil,
 :draft=>"3.4",
 :draftinfo=>" (draft 3.4, 2000-01-01)",
@@ -167,7 +255,8 @@ RSpec.describe IsoDoc::BIPM do
 :createddate=>"XXX",
 :docnumber=>nil,
 :docnumeric=>nil,
-:doctitle=>nil,
+:docsubtitle=>"",
+:doctitle=>"",
 :docyear=>nil,
 :draft=>"3.4",
 :draftinfo=>" (draft 3.4, 2000-01-01)",
@@ -222,7 +311,8 @@ RSpec.describe IsoDoc::BIPM do
 :createddate=>"XXX",
 :docnumber=>nil,
 :docnumeric=>nil,
-:doctitle=>nil,
+:docsubtitle=>"",
+:doctitle=>"",
 :docyear=>nil,
 :draft=>"3.4",
 :draftinfo=>" (draft 3.4, 2000-01-01)",
@@ -273,12 +363,12 @@ RSpec.describe IsoDoc::BIPM do
          </body>
     OUTPUT
 
-    expect(xmlpp(
+    expect(strip_guid(xmlpp(
       IsoDoc::BIPM::HtmlConvert.new({}).
       convert("test", input, true).
       gsub(%r{^.*<body}m, "<body").
       gsub(%r{</body>.*}m, "</body>")
-    )).to be_equivalent_to output
+    ))).to be_equivalent_to output
   end
 
   it "processes keyword" do
@@ -301,10 +391,10 @@ RSpec.describe IsoDoc::BIPM do
            </div>
          </body>
     OUTPUT
-    stripped_html = xmlpp(IsoDoc::BIPM::HtmlConvert.new({})
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
                           .convert('test', input, true)
                           .gsub(%r{^.*<body}m, '<body')
-                          .gsub(%r{</body>.*}m, '</body>'))
+                          .gsub(%r{</body>.*}m, '</body>')))
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
@@ -332,10 +422,10 @@ RSpec.describe IsoDoc::BIPM do
            </div>
          </body>
     OUTPUT
-    stripped_html = xmlpp(IsoDoc::BIPM::HtmlConvert.new({})
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
                           .convert('test', input, true)
                           .gsub(%r{^.*<body}m, '<body')
-                          .gsub(%r{</body>.*}m, '</body>'))
+                          .gsub(%r{</body>.*}m, '</body>')))
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
@@ -519,9 +609,9 @@ RSpec.describe IsoDoc::BIPM do
          </bibliography>
        </bipm-standard>
     OUTPUT
-    stripped_html = xmlpp(IsoDoc::BIPM::PresentationXMLConvert
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
                           .new({})
-                          .convert('test', input, true))
+                          .convert('test', input, true)))
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
@@ -541,7 +631,7 @@ RSpec.describe IsoDoc::BIPM do
 </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :bipm, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r{jquery\.min\.js})
     expect(html).to match(%r{Overpass})

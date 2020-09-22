@@ -12,7 +12,7 @@ RSpec.describe Asciidoctor::BIPM do
 </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :bipm, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
   end
 
   it "converts a blank document" do
@@ -31,7 +31,7 @@ RSpec.describe Asciidoctor::BIPM do
     OUTPUT
 
     system "rm -f test.html"
-    expect(xmlpp(Asciidoctor.convert(input, backend: :bipm, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
   end
 
@@ -142,11 +142,12 @@ RSpec.describe Asciidoctor::BIPM do
 <comment-period-to>Y</comment-period-to>
 </ext>
 </bibdata>
+    #{BOILERPLATE.gsub(/2020/, "2001")}
 <sections/>
 </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(Asciidoctor.convert(input, backend: :bipm, header_footer: true))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
   end
 
   it "processes figures" do

@@ -60,6 +60,15 @@ VALIDATING_BLANK_HDR = <<~"HDR"
 
 HDR
 
+BOILERPLATE =
+  HTMLEntities.new.decode(
+  File.read(File.join(File.dirname(__FILE__), "..", "lib", "asciidoctor", "bipm", "boilerplate.xml"), encoding: "utf-8").
+  gsub(/\{\{ agency \}\}/, "BIPM").gsub(/\{\{ docyear \}\}/, Date.today.year.to_s).
+  gsub(/\{% if unpublished %\}.*\{% endif %\}/m, "").
+  gsub(/(?<=\p{Alnum})'(?=\p{Alpha})/, "’").
+  gsub(/<p /, "<p id='_' ").gsub(/<p>/, "<p id='_'>")
+)
+
 BLANK_HDR = <<~"HDR"
        <?xml version="1.0" encoding="UTF-8"?>
        <bipm-standard xmlns="https://www.metanorma.org/ns/bipm">
@@ -98,6 +107,7 @@ BLANK_HDR = <<~"HDR"
         <doctype>brochure</doctype>
         </ext>
        </bibdata>
+       #{BOILERPLATE}
 HDR
 
 HTML_HDR = <<~"HDR"

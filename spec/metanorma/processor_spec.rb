@@ -34,7 +34,7 @@ RSpec.describe Metanorma::BIPM::Processor do
 </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(processor.input_to_isodoc(input, nil))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(processor.input_to_isodoc(input, nil)))).to be_equivalent_to output
   end
 
   it "generates HTML from IsoDoc XML" do

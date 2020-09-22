@@ -41,6 +41,15 @@ module Asciidoctor
         end
       end
 
+      def sectiontype_streamline(ret)
+        case ret
+        when "introduction" then "clause"
+        else
+          super
+        end
+      end
+
+
       def html_converter(node)
         IsoDoc::BIPM::HtmlConvert.new(html_extract_attributes(node))
       end
