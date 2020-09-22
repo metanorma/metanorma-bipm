@@ -1,20 +1,18 @@
 annex: Annexe
-doctype: {
-  brochure: brochure
-  mise-en-pratique: mise-en-pratique
-  rapport: rapport
-  monographie: monographie
-  guide: guide
-  meeting-report: procès-verbal
-  technical-report: rapport-technique
-  working-party-note: note-du-groupe-de-travail
-  strategy: stratégie
-  cipm-mra: cipm-mra
+doctype: 
+  brochure: brochure,
+  mise-en-pratique: mise-en-pratique,
+  rapport: rapport,
+  monographie: monographie,
+  guide: guide,
+  meeting-report: procès-verbal,
+  technical-report: rapport-technique,
+  working-party-note: note-du-groupe-de-travail,
+  strategy: stratégie,
+  cipm-mra: cipm-mra,
   resolution: résolution
-  }
-  docstage: {
-    draft-proposal: projet-de-proposition
-    draft-development: projet-de-développement
-    in-force: en-vigeur
+docstage: 
+    draft-proposal: projet-de-proposition,
+    draft-development: projet-de-développement,
+    in-force: en-vigeur,
     retired: retiré
-    }

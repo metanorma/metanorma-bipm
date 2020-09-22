@@ -1,9 +1,9 @@
 <div class="document-stage-band" id="{{ stage | downcase | replace: ' ', '-' }}-band">
-    <p class="document-stage">{{ stage }}</p>
+    <p class="document-stage">{{ stage_display }}</p>
 </div>
 
 <div class="document-type-band" id="{{ doctype | downcase | replace: ' ', '-' }}-band">
-    <p class="document-type">BIPM {{ doctype }}</p>
+    <p class="document-type">BIPM {{ doctype_display }}</p>
 </div>
 
 
@@ -42,11 +42,11 @@
 
   <div class="WordSection11">
   <div class="coverpage-stage-block" >
-    <span class="coverpage-stage" id="{{ doctype | replace: ' ', '-' | downcase }}">BIPM {{ doctype }}</span>
+    <span class="coverpage-stage" id="{{ doctype | replace: ' ', '-' | downcase }}">BIPM {{ doctype_display }}</span>
   </div>
 
   <div class="coverpage-stage-block" >
-    <p><span class="coverpage-maturity" id="{{ stage | replace: ' ', '-' | downcase }}">{{ stage }}</span></p>
+    <p><span class="coverpage-maturity" id="{{ stage | replace: ' ', '-' | downcase }}">{{ stage_display }}</span></p>
 </div>
 
 <div class="info-section">
