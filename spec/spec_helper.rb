@@ -64,7 +64,6 @@ BLANK_HDR = <<~"HDR"
        <?xml version="1.0" encoding="UTF-8"?>
        <bipm-standard xmlns="https://www.metanorma.org/ns/bipm">
        <bibdata type="standard">
-        <title language="en" format="text/plain">Document title</title>
 <docidentifier type="BIPM">BIPM </docidentifier>
          <contributor>
            <role type="author"/>

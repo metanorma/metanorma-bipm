@@ -31,6 +31,16 @@ module Asciidoctor
         end
       end
 
+      def title(node, xml)
+        ["en", "fr"].each do |lang|
+          at = { language: lang, format: "text/plain" }
+          xml.title **attr_code(at.merge(type: "main")) do |t1|
+            t1 << Asciidoctor::Standoc::Utils::asciidoc_sub(
+              node.attr("title-#{lang}"))
+          end
+        end
+      end
+
       def html_converter(node)
         IsoDoc::BIPM::HtmlConvert.new(html_extract_attributes(node))
       end

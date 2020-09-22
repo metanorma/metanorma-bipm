@@ -1,0 +1,15 @@
+<boilerplate>
+  <copyright-statement>
+    <clause>
+      <p align="center"> © Bureau International de Poids et Mesures {{ docyear }}</p>
+    </clause>
+  </copyright-statement>
+  <feedback-statement>
+    <p>BIPM<br/>
+      Pavillon de Breteuil<br/>
+      F-92312 Sèvres<br/>
+      Cedex<br/>
+      FRANCE</p>
+  </feedback-statement>
+</boilerplate>
+

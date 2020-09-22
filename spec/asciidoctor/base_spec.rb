@@ -61,7 +61,8 @@ RSpec.describe Asciidoctor::BIPM do
       :status: working-draft
       :iteration: 3
       :language: en
-      :title: Main Title
+      :title-en: Main Title
+      :title-fr: Chef Title
       :security: Client Confidential
       :comment-period-from: X
       :comment-period-to: Y
@@ -75,7 +76,8 @@ RSpec.describe Asciidoctor::BIPM do
     <?xml version="1.0" encoding="UTF-8"?>
 <bipm-standard xmlns="https://www.metanorma.org/ns/bipm">
 <bibdata type="standard">
-  <title language="en" format="text/plain">Main Title</title>
+<title language='en' format='text/plain' type='main'>Main Title</title>
+<title language='fr' format='text/plain' type='main'>Chef Title</title>
   <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
   <docnumber>1000</docnumber>
   <date type='implemented'>
