@@ -1,7 +1,7 @@
 <boilerplate>
   <copyright-statement>
     <clause>
-      <p align="center"> © Bureau International de Poids et Mesures {{ docyear }}</p>
+      <p align="center"> © Bureau International de Poids et Mesures {{ docyear }} all rights reserved</p>
     </clause>
   </copyright-statement>
   <feedback-statement>
