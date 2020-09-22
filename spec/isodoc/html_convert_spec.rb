@@ -24,9 +24,14 @@ RSpec.describe IsoDoc::BIPM do
       <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
     </organization>
   </contributor>
+  <version>
+  <edition>2</edition>
+  <revision-date>2000-01-01</revision-date>
+  <draft>3.4</draft>
+</version>
   <language>en</language>
   <script>Latn</script>
-  <status><stage>working-draft</stage></status>
+  <status><stage>mise-en-pratique</stage></status>
   <copyright>
     <from>2001</from>
     <owner>
@@ -39,11 +44,44 @@ RSpec.describe IsoDoc::BIPM do
     <committee type="A">TC</committee>
   </editorialgroup>
   <security>Client Confidential</security>
-</bibdata><version>
+</bibdata>
+<local_bibdata type="standard">
+  <title language="en" format="plain">Main Title</title>
+  <title language="fr" format="plain">Chef Title</title>
+  <docidentifier>1000</docidentifier>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+    </organization>
+  </contributor>
+  <version>
   <edition>2</edition>
   <revision-date>2000-01-01</revision-date>
   <draft>3.4</draft>
 </version>
+  <language>en</language>
+  <script>Latn</script>
+  <status><stage>en-vigeur</stage></status>
+  <copyright>
+    <from>2001</from>
+    <owner>
+      <organization>
+        <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      </organization>
+    </owner>
+  </copyright>
+  <editorialgroup>
+    <committee type="A">TC</committee>
+  </editorialgroup>
+  <security>Client Confidential</security>
+</local_bibdata>
 <sections/>
 </bipm-standard>
     INPUT
@@ -75,7 +113,8 @@ RSpec.describe IsoDoc::BIPM do
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
-:stage=>"Working Draft",
+:stage=>"Mise en Pratique",
+:stage_display=>"En Vigeur",
 :stageabbr=>nil,
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
@@ -109,6 +148,11 @@ RSpec.describe IsoDoc::BIPM do
       <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
     </organization>
   </contributor>
+  <version>
+  <edition>2</edition>
+  <revision-date>2000-01-01</revision-date>
+  <draft>3.4</draft>
+</version>
   <language>fr</language>
   <script>Latn</script>
   <status><stage>working-draft</stage></status>
@@ -124,11 +168,46 @@ RSpec.describe IsoDoc::BIPM do
     <committee type="A">TC</committee>
   </editorialgroup>
   <security>Client Confidential</security>
-</bibdata><version>
+  <ext><doctype>cipm-mra</doctype></ext>
+</bibdata>
+<local_bibdata type="standard">
+  <title language="en" format="plain">Main Title</title>
+  <title language="fr" format="plain">Chef Title</title>
+  <docidentifier>1000</docidentifier>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+    </organization>
+  </contributor>
+  <version>
   <edition>2</edition>
   <revision-date>2000-01-01</revision-date>
   <draft>3.4</draft>
 </version>
+  <language>fr</language>
+  <script>Latn</script>
+  <status><stage>working-draft</stage></status>
+  <copyright>
+    <from>2001</from>
+    <owner>
+      <organization>
+        <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      </organization>
+    </owner>
+  </copyright>
+  <editorialgroup>
+    <committee type="A">TC</committee>
+  </editorialgroup>
+  <security>Client Confidential</security>
+  <ext><doctype>procès-verbal</doctype></ext>
+</local_bibdata>
 <sections/>
 </bipm-standard>
     INPUT
@@ -146,6 +225,8 @@ RSpec.describe IsoDoc::BIPM do
        :docnumeric=>nil,
        :docsubtitle=>"Main Title",
        :doctitle=>"Chef Title",
+       :doctype=>"CIPM-MRA",
+:doctype_display=>"Proc&#xe8;s-Verbal",
        :docyear=>"2001",
        :draft=>"3.4",
        :draftinfo=>" (brouillon 3.4, 2000-01-01)",
@@ -161,6 +242,7 @@ RSpec.describe IsoDoc::BIPM do
        :revdate=>"2000-01-01",
        :revdate_monthyear=>"Janvier 2000",
        :stage=>"Working Draft",
+       :stage_display=>"Working Draft",
        :stageabbr=>nil,
        :transmitteddate=>"XXX",
        :unchangeddate=>"XXX",

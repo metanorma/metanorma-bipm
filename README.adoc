@@ -78,7 +78,7 @@ document may still remain in effect. Comma delimited.
 * guide
 * meeting-report
 * technical-report
-* working-part-note
+* working-party-note
 * strategy
 * cipm-mra
 * resolution
