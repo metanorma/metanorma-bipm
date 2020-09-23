@@ -55,12 +55,13 @@ metadata about the document. These include:
 
 `:revdate:`:: The date the document was last updated
 
+`:title-en:`:: The title of the document in English (mandatory)
+`:title-fr:`:: The title of the document in French (mandatory)
+`:title-cover-en:`:: The title of the front cover of the document in English (where different from the title proper)
+`:title-cover-fr:`:: The title of the front cover of the document in French (where different from the title proper)
+
 `:copyright-year:`:: The year which will be claimed as when the copyright for
 the document was issued
-
-`:title:`:: The main component of the English title of the document
-(mandatory). (The first line of the AsciiDoc document, which contains the title
-introduced with `=`, is ignored)
 
 `:supersedes:`:: One or more BIPM document that this BIPM document standard supersedes; the superseded
 document may still remain in effect. Comma delimited.

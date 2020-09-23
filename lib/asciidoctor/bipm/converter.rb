@@ -38,6 +38,15 @@ module Asciidoctor
             t1 << Asciidoctor::Standoc::Utils::asciidoc_sub(
               node.attr("title-#{lang}"))
           end
+          typed_title(node, xml, lang, "cover")
+        end
+      end
+
+      def typed_title(node, xml, lang, type)
+        at = { language: lang, format: "text/plain" }
+        return unless title = node.attr("title-#{type}-#{lang}")
+        xml.title **attr_code(at.merge(type: type)) do |t1|
+          t1 << Asciidoctor::Standoc::Utils::asciidoc_sub(title)
         end
       end
 

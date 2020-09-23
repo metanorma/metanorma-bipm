@@ -1,9 +1,15 @@
 <boilerplate>
   <copyright-statement>
     <clause>
-      <p align="center"> © Bureau International de Poids et Mesures {{ docyear }} all rights reserved</p>
+      <p align="center"> © Bureau International des poids et mesures {{ docyear }} all rights reserved</p>
     </clause>
   </copyright-statement>
+  <license-statement>
+    <clause>
+      <title>Copyright statement</title>
+      <p>This document is distributed under the terms of the Creative Commons Attribution 4.0 International License (<link target="http://creativecommons.org/licenses/by/4.0/"/>), which permits unrestricted use, distribution, and reproduction in any medium, provided you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license, and indicate if changes were made.</p>
+    </clause>
+  </license-statement>
   <feedback-statement>
     <p>BIPM<br/>
       Pavillon de Breteuil<br/>

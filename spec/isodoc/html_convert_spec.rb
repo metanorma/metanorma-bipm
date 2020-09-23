@@ -88,7 +88,7 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
-:agency=>"Bureau International de Poids et Mesures",
+:agency=>"#{Metanorma::BIPM.configuration.organization_name_long}",
 :authors=>[],
 :authors_affiliations=>{},
 :circulateddate=>"XXX",
@@ -109,7 +109,7 @@ RSpec.describe IsoDoc::BIPM do
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
-:publisher=>"Bureau International de Poids et Mesures",
+:publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
@@ -214,7 +214,7 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
-       :agency=>"Bureau International de Poids et Mesures",
+       :agency=>"#{Metanorma::BIPM.configuration.organization_name_long}",
        :authors=>[],
        :authors_affiliations=>{},
        :circulateddate=>"XXX",
@@ -237,7 +237,7 @@ RSpec.describe IsoDoc::BIPM do
 :logo=>"#{File.join(logoloc, "logo.png")}",
        :obsoleteddate=>"XXX",
        :publisheddate=>"XXX",
-       :publisher=>"Bureau International de Poids et Mesures",
+       :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
        :receiveddate=>"XXX",
        :revdate=>"2000-01-01",
        :revdate_monthyear=>"Janvier 2000",
@@ -453,30 +453,47 @@ RSpec.describe IsoDoc::BIPM do
     ))).to be_equivalent_to output
   end
 
-  it "processes keyword" do
+  it "processes table" do
     input = <<~"INPUT"
 <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
-<preface><foreword>
-<keyword>ABC</keyword>
-</foreword></preface>
+<sections>
+<clause id="A">
+<table id="B"><name>First Table</name></table>
+</clause>
+</sections>
+</bipm-standard>
+    INPUT
+
+    presxml = <<~"INPUT"
+<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+<sections>
+<clause id="A">
+<title>1.</title>
+<table id="B"><name>Table 1.<tab/>First Table</name></table>
+</clause>
+</sections>
 </bipm-standard>
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
         #{HTML_HDR}
-             <br/>
-             <div>
-               <h1 class="ForewordTitle">Foreword</h1>
-               <span class="keyword">ABC</span>
-             </div>
              <p class="zzSTDTitle1"/>
+             <div id='A'>
+  <h1>1.</h1>
+  <p class='TableTitle' style='text-align:center;'>Table 1.&#160; First Table</p>
+  <table id='B' class='MsoISOTable' style='border-width:1px;border-spacing:0;'/>
+</div>
            </div>
          </body>
     OUTPUT
+    stripped_presxml = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+                          .new({})
+                          .convert('test', input, true)))
     stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
-                          .convert('test', input, true)
+                          .convert('test', presxml, true)
                           .gsub(%r{^.*<body}m, '<body')
                           .gsub(%r{</body>.*}m, '</body>')))
+    expect(stripped_presxml).to(be_equivalent_to(xmlpp(presxml)))
     expect(stripped_html).to(be_equivalent_to(output))
   end
 

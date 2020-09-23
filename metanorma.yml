@@ -1,6 +1,6 @@
 metanorma_name: bipm
 organization_name_short: BIPM
-organization_name_long: Bureau International de Poids et Mesures
+organization_name_long: Bureau International des poids et mesures
 document_namespace: https://www.metanorma.org/ns/bipm
 xml_root_tag: 'bipm-standard'
 logo_path: lib/isodoc/bipm/html/logo.png
