@@ -64,7 +64,7 @@ RSpec.describe Metanorma::BIPM::Processor do
            </main>
     OUTPUT
 
-    processor.output(input, "test.html", :html)
+    processor.output(input, "test.xml", "test.html", :html)
 
     expect(
       xmlpp(File.read("test.html", encoding: "utf-8").
