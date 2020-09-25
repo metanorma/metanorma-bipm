@@ -39,6 +39,7 @@ module Asciidoctor
               node.attr("title-#{lang}"))
           end
           typed_title(node, xml, lang, "cover")
+          typed_title(node, xml, lang, "appendix")
         end
       end
 
@@ -50,6 +51,20 @@ module Asciidoctor
         end
       end
 
+      def metadata_ext(node, xml)
+        super
+        structured_id(node, xml)
+      end
+
+      def structured_id(node, xml)
+        return unless node.attr("docnumber")
+        xml.structuredidentifier do |i|
+          i.docnumber node.attr("docnumber")
+          a = node.attr("partnumber") and i.part a
+          a = node.attr("appendix-id") and i.appendix a
+        end
+      end
+
       def sectiontype_streamline(ret)
         case ret
         when "introduction" then "clause"
@@ -57,7 +72,6 @@ module Asciidoctor
           super
         end
       end
-
 
       def html_converter(node)
         IsoDoc::BIPM::HtmlConvert.new(html_extract_attributes(node))

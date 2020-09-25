@@ -65,6 +65,9 @@ RSpec.describe Asciidoctor::BIPM do
       :title-fr: Chef Title
       :title-cover-en: Main Title (SI)
       :title-cover-fr: Chef Title (SI)
+      :title-appendix-en: Main Title (SI)
+      :title-appendix-fr: Chef Title (SI)
+      :appendix-id: ABC
       :security: Client Confidential
       :comment-period-from: X
       :comment-period-to: Y
@@ -80,8 +83,10 @@ RSpec.describe Asciidoctor::BIPM do
 <bibdata type="standard">
 <title language='en' format='text/plain' type='main'>Main Title</title>
 <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
+<title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
 <title language='fr' format='text/plain' type='main'>Chef Title</title>
 <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
+<title language='fr' format='text/plain' type='appendix'>Chef Title (SI)</title>
   <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
   <docnumber>1000</docnumber>
   <date type='implemented'>
@@ -144,6 +149,10 @@ RSpec.describe Asciidoctor::BIPM do
   </editorialgroup>
   <comment-period-from>X</comment-period-from>
 <comment-period-to>Y</comment-period-to>
+<structuredidentifier>
+  <docnumber>1000</docnumber>
+  <appendix>ABC</appendix>
+</structuredidentifier>
 </ext>
 </bibdata>
     #{boilerplate("en").gsub(/2020/, "2001")}
@@ -185,6 +194,7 @@ RSpec.describe Asciidoctor::BIPM do
       :title-cover-en: Main Title (SI)
       :title-cover-fr: Chef Title (SI)
       :security: Client Confidential
+      :appendix-id: ABC
       :comment-period-from: X
       :comment-period-to: Y
       :supersedes: A
@@ -263,6 +273,10 @@ RSpec.describe Asciidoctor::BIPM do
   </editorialgroup>
   <comment-period-from>X</comment-period-from>
 <comment-period-to>Y</comment-period-to>
+<structuredidentifier>
+  <docnumber>1000</docnumber>
+  <appendix>ABC</appendix>
+</structuredidentifier>
 </ext>
 </bibdata>
     #{boilerplate("fr").gsub(/2020/, "2001")}

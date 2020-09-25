@@ -59,6 +59,10 @@ metadata about the document. These include:
 `:title-fr:`:: The title of the document in French (mandatory)
 `:title-cover-en:`:: The title of the front cover of the document in English (where different from the title proper)
 `:title-cover-fr:`:: The title of the front cover of the document in French (where different from the title proper)
+`:title-appendix-en:`:: The title of the appendix in English, if this document is an appendix published separately; `title-en` becomes the title of the main document, as presented within the standalone appendix.
+`:title-appendix-fr:`:: The title of the appendix in English, if this document is an appendix published separately; `title-en` becomes the title of the main document, as presented within the standalone appendix.
+
+`:appendix-id:`:: The number of the appendix, if this document is an appendix published separately
 
 `:copyright-year:`:: The year which will be claimed as when the copyright for
 the document was issued

@@ -9,8 +9,12 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~"INPUT"
 <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
 <bibdata type="standard">
-  <title language="en" format="plain">Main Title</title>
-  <title language="fr" format="plain">Chef Title</title>
+  <title type="main" language="en" format="plain">Main Title</title>
+  <title type="main" language="fr" format="plain">Chef Title</title>
+  <title type="cover" language="en" format="plain">Main Title Cover</title>
+  <title type="cover" language="fr" format="plain">Chef Title Cover</title>
+  <title type="appendix" language="en" format="plain">Main Title Appendix</title>
+  <title type="appendix" language="fr" format="plain">Chef Title Appendix</title>
   <docidentifier>1000</docidentifier>
   <contributor>
     <role type="author"/>
@@ -40,10 +44,16 @@ RSpec.describe IsoDoc::BIPM do
       </organization>
     </owner>
   </copyright>
+  <ext>
   <editorialgroup>
     <committee type="A">TC</committee>
   </editorialgroup>
   <security>Client Confidential</security>
+  <structuredidentifier>
+  <docnumber>1000</docnumber>
+  <appendix>ABC</appendix>
+</structuredidentifier>
+</ext>
 </bibdata>
 <local_bibdata type="standard">
   <title language="en" format="plain">Main Title</title>
@@ -77,10 +87,16 @@ RSpec.describe IsoDoc::BIPM do
       </organization>
     </owner>
   </copyright>
+  <ext>
   <editorialgroup>
     <committee type="A">TC</committee>
   </editorialgroup>
   <security>Client Confidential</security>
+  <structuredidentifier>
+  <docnumber>1000</docnumber>
+  <appendix>ABC</appendix>
+</structuredidentifier>
+</ext>
 </local_bibdata>
 <sections/>
 </bipm-standard>
@@ -89,6 +105,9 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
 :agency=>"#{Metanorma::BIPM.configuration.organization_name_long}",
+       :appendixid=>"Appendix ABC",
+:appendixsubtitle=>"Chef Title Appendix",
+:appendixtitle=>"Main Title Appendix",
 :authors=>[],
 :authors_affiliations=>{},
 :circulateddate=>"XXX",
@@ -116,6 +135,7 @@ RSpec.describe IsoDoc::BIPM do
 :stage=>"Mise en Pratique",
 :stage_display=>"En Vigeur",
 :stageabbr=>nil,
+:tc=>"TC",
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -133,8 +153,12 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~"INPUT"
 <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
 <bibdata type="standard">
-  <title language="en" format="plain">Main Title</title>
-  <title language="fr" format="plain">Chef Title</title>
+  <title type="main" language="en" format="plain">Main Title</title>
+  <title type="main" language="fr" format="plain">Chef Title</title>
+  <title type="cover" language="en" format="plain">Main Title Cover</title>
+  <title type="cover" language="fr" format="plain">Chef Title Cover</title>
+  <title type="appendix" language="en" format="plain">Main Title Appendix</title>
+  <title type="appendix" language="fr" format="plain">Chef Title Appendix</title>
   <docidentifier>1000</docidentifier>
   <contributor>
     <role type="author"/>
@@ -168,7 +192,12 @@ RSpec.describe IsoDoc::BIPM do
     <committee type="A">TC</committee>
   </editorialgroup>
   <security>Client Confidential</security>
-  <ext><doctype>cipm-mra</doctype></ext>
+  <ext><doctype>cipm-mra</doctype>
+  <structuredidentifier>
+  <docnumber>1000</docnumber>
+  <appendix>ABC</appendix>
+</structuredidentifier>
+</ext>
 </bibdata>
 <local_bibdata type="standard">
   <title language="en" format="plain">Main Title</title>
@@ -206,7 +235,12 @@ RSpec.describe IsoDoc::BIPM do
     <committee type="A">TC</committee>
   </editorialgroup>
   <security>Client Confidential</security>
-  <ext><doctype>procès-verbal</doctype></ext>
+  <ext><doctype>procès-verbal</doctype>
+  <structuredidentifier>
+  <docnumber>1000</docnumber>
+  <appendix>ABC</appendix>
+</structuredidentifier>
+</ext>
 </local_bibdata>
 <sections/>
 </bipm-standard>
@@ -215,6 +249,9 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
        :agency=>"#{Metanorma::BIPM.configuration.organization_name_long}",
+       :appendixid=>"Annexe ABC",
+:appendixsubtitle=>"Main Title Appendix",
+:appendixtitle=>"Chef Title Appendix",
        :authors=>[],
        :authors_affiliations=>{},
        :circulateddate=>"XXX",
@@ -273,6 +310,8 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
 :agency=>"",
+:appendixsubtitle=>"",
+:appendixtitle=>"",
 :authors=>[],
 :authors_affiliations=>{},
 :circulateddate=>"XXX",
@@ -329,6 +368,8 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
 :agency=>"",
+:appendixsubtitle=>"",
+:appendixtitle=>"",
 :authors=>[],
 :authors_affiliations=>{},
 :circulateddate=>"XXX",
@@ -385,6 +426,8 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
 :agency=>"",
+:appendixsubtitle=>"",
+:appendixtitle=>"",
 :authors=>[],
 :authors_affiliations=>{},
 :circulateddate=>"XXX",
