@@ -30,8 +30,11 @@ module IsoDoc
 
       def docid(isoxml, _out)
         super
+        label1 = @lang == "fr" ? "Annexe" : "Appendix"
+        label2 = @lang == "fr" ? "Appendix" : "Annexe"
         dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
-        dn and set(:appendixid, @i18n.l10n("#{@labels["annex"]} #{dn&.text}"))
+        dn and set(:appendixid, @i18n.l10n("#{label1} #{dn&.text}"))
+        dn and set(:appendixid_alt, @i18n.l10n("#{label2} #{dn&.text}"))
       end
     end
   end

@@ -73,6 +73,15 @@ module Asciidoctor
         end
       end
 
+      def outputs(node, ret)
+        File.open(@filename + ".xml", "w:UTF-8") { |f| f.write(ret) }
+        presentation_xml_converter(node).convert(@filename + ".xml")
+        html_converter(node).convert(@filename + ".presentation.xml",
+                                     nil, false, "#{@filename}.html")
+        pdf_converter(node)&.convert(@filename + ".presentation.xml",
+                                     nil, false, "#{@filename}.pdf")
+      end
+
       def html_converter(node)
         IsoDoc::BIPM::HtmlConvert.new(html_extract_attributes(node))
       end

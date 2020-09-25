@@ -25,10 +25,10 @@
 
     <div class="coverpage-title">
       {% if appendixtitle %}
-      <span class="title-third">{{ doctitle }}</span><br/>
-      <span class="title-third">{{ docsubtitle }}</span>
-      <span class="title-first">{{ appendixtitle }}</span><br/>
-      <span class="title-second">{{ appendixsubtitle }}</span>
+      <span class="title-third">{{ doctitle }}</span>
+      <span class="title-third">{{ docsubtitle }}</span><br/>
+      <span class="title-first">{{ appendixid}}: {{ appendixtitle }}</span><br/>
+      <span class="title-second">{{ appendixid_alt}}: {{ appendixsubtitle }}</span>
       {% else %}
       <span class="title-first">{{ doctitle }}</span><br/>
       <span class="title-second">{{ docsubtitle }}</span>
