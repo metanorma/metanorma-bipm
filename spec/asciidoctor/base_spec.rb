@@ -79,7 +79,7 @@ RSpec.describe Asciidoctor::BIPM do
 
     output = xmlpp(<<~"OUTPUT")
     <?xml version="1.0" encoding="UTF-8"?>
-<bipm-standard xmlns="https://www.metanorma.org/ns/bipm">
+<bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
 <bibdata type="standard">
 <title language='en' format='text/plain' type='main'>Main Title</title>
 <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
@@ -147,8 +147,10 @@ RSpec.describe Asciidoctor::BIPM do
     <committee>TC</committee>
     <workgroup>WG</workgroup>
   </editorialgroup>
-  <comment-period-from>X</comment-period-from>
-<comment-period-to>Y</comment-period-to>
+  <comment-period>
+  <from>X</from>
+  <to>Y</to>
+</comment-period>
 <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
@@ -205,7 +207,7 @@ RSpec.describe Asciidoctor::BIPM do
 
     output = xmlpp(<<~"OUTPUT")
     <?xml version="1.0" encoding="UTF-8"?>
-<bipm-standard xmlns="https://www.metanorma.org/ns/bipm">
+<bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
 <bibdata type="standard">
 <title language='en' format='text/plain' type='main'>Main Title</title>
 <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
@@ -271,8 +273,10 @@ RSpec.describe Asciidoctor::BIPM do
     <committee>TC</committee>
     <workgroup>WG</workgroup>
   </editorialgroup>
-  <comment-period-from>X</comment-period-from>
-<comment-period-to>Y</comment-period-to>
+  <comment-period>
+  <from>X</from>
+  <to>Y</to>
+</comment-period>
 <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>

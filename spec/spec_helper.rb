@@ -72,7 +72,7 @@ end
 
 BLANK_HDR = <<~"HDR"
        <?xml version="1.0" encoding="UTF-8"?>
-       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm">
+       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::BIPM::VERSION}" type="semantic">
        <bibdata type="standard">
 <docidentifier type="BIPM">BIPM </docidentifier>
          <contributor>

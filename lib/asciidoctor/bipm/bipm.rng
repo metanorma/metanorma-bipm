@@ -57,22 +57,19 @@
       </optional>
       <ref name="editorialgroup"/>
       <optional>
-        <ref name="comment-period-from"/>
-      </optional>
-      <optional>
-        <ref name="comment-period-to"/>
+        <ref name="comment-period"/>
       </optional>
       <ref name="structuredidentifier"/>
     </define>
   </include>
-  <define name="comment-period-from">
-    <element name="comment-period-from">
-      <ref name="ISO8601Date"/>
-    </element>
-  </define>
-  <define name="comment-period-to">
-    <element name="comment-period-to">
-      <ref name="ISO8601Date"/>
+  <define name="comment-period">
+    <element name="comment-period">
+      <element name="from">
+        <ref name="ISO8601Date"/>
+      </element>
+      <element name="to">
+        <ref name="ISO8601Date"/>
+      </element>
     </element>
   </define>
   <define name="committee">

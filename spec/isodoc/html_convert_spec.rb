@@ -48,7 +48,7 @@ RSpec.describe IsoDoc::BIPM do
   <editorialgroup>
     <committee type="A">TC</committee>
   </editorialgroup>
-  <security>Client Confidential</security>
+  <comment-period><from>N1</from><to>N2</to></comment-period>
   <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
@@ -91,7 +91,7 @@ RSpec.describe IsoDoc::BIPM do
   <editorialgroup>
     <committee type="A">TC</committee>
   </editorialgroup>
-  <security>Client Confidential</security>
+  <comment-period><from>N1</from><to>N2</to></comment-period>
   <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
@@ -105,7 +105,8 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
 :agency=>"#{Metanorma::BIPM.configuration.organization_name_long}",
-       :appendixid=>"Appendix ABC",
+:appendixid=>"Appendix ABC",
+:appendixid_alt=>"Annexe ABC",
 :appendixsubtitle=>"Chef Title Appendix",
 :appendixtitle=>"Main Title Appendix",
 :authors=>[],
@@ -126,6 +127,7 @@ RSpec.describe IsoDoc::BIPM do
 :issueddate=>"XXX",
 :keywords=>[],
 :logo=>"#{File.join(logoloc, "logo.png")}",
+:metadata_extensions=>{"editorialgroup"=>{"committee_type"=>"A", "committee"=>"TC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
@@ -193,6 +195,7 @@ RSpec.describe IsoDoc::BIPM do
   </editorialgroup>
   <security>Client Confidential</security>
   <ext><doctype>cipm-mra</doctype>
+  <comment-period><from>N1</from><to>N2</to></comment-period>
   <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
@@ -236,6 +239,7 @@ RSpec.describe IsoDoc::BIPM do
   </editorialgroup>
   <security>Client Confidential</security>
   <ext><doctype>procès-verbal</doctype>
+  <comment-period><from>N1</from><to>N2</to></comment-period>
   <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
@@ -248,45 +252,47 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
-       :agency=>"#{Metanorma::BIPM.configuration.organization_name_long}",
-       :appendixid=>"Annexe ABC",
+:agency=>"#{Metanorma::BIPM.configuration.organization_name_long}",
+:appendixid=>"Annexe ABC",
+:appendixid_alt=>"Appendix ABC",
 :appendixsubtitle=>"Main Title Appendix",
 :appendixtitle=>"Chef Title Appendix",
-       :authors=>[],
-       :authors_affiliations=>{},
-       :circulateddate=>"XXX",
-       :confirmeddate=>"XXX",
-       :copieddate=>"XXX",
-       :createddate=>"XXX",
-       :docnumber=>"1000",
-       :docnumeric=>nil,
-       :docsubtitle=>"Main Title",
-       :doctitle=>"Chef Title",
-       :doctype=>"CIPM-MRA",
+:authors=>[],
+:authors_affiliations=>{},
+:circulateddate=>"XXX",
+:confirmeddate=>"XXX",
+:copieddate=>"XXX",
+:createddate=>"XXX",
+:docnumber=>"1000",
+:docnumeric=>nil,
+:docsubtitle=>"Main Title",
+:doctitle=>"Chef Title",
+:doctype=>"CIPM-MRA",
 :doctype_display=>"Proc&#xe8;s-Verbal",
-       :docyear=>"2001",
-       :draft=>"3.4",
-       :draftinfo=>" (brouillon 3.4, 2000-01-01)",
-       :edition=>nil,
-       :implementeddate=>"XXX",
-       :issueddate=>"XXX",
-       :keywords=>[],
+:docyear=>"2001",
+:draft=>"3.4",
+:draftinfo=>" (brouillon 3.4, 2000-01-01)",
+:edition=>nil,
+:implementeddate=>"XXX",
+:issueddate=>"XXX",
+:keywords=>[],
 :logo=>"#{File.join(logoloc, "logo.png")}",
-       :obsoleteddate=>"XXX",
-       :publisheddate=>"XXX",
-       :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
-       :receiveddate=>"XXX",
-       :revdate=>"2000-01-01",
-       :revdate_monthyear=>"Janvier 2000",
-       :stage=>"Working Draft",
-       :stage_display=>"Working Draft",
-       :stageabbr=>nil,
-       :transmitteddate=>"XXX",
-       :unchangeddate=>"XXX",
-       :unpublished=>true,
-       :updateddate=>"XXX",
-       :vote_endeddate=>"XXX",
-       :vote_starteddate=>"XXX"}
+:metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:obsoleteddate=>"XXX",
+:publisheddate=>"XXX",
+:publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
+:receiveddate=>"XXX",
+:revdate=>"2000-01-01",
+:revdate_monthyear=>"Janvier 2000",
+:stage=>"Working Draft",
+:stage_display=>"Working Draft",
+:stageabbr=>nil,
+:transmitteddate=>"XXX",
+:unchangeddate=>"XXX",
+:unpublished=>true,
+:updateddate=>"XXX",
+:vote_endeddate=>"XXX",
+:vote_starteddate=>"XXX"}
     OUTPUT
 
     docxml, filename, dir = csdc.convert_init(input, "test", true)
@@ -508,7 +514,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = <<~"INPUT"
-<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+<bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
 <sections>
 <clause id="A">
 <title>1.</title>
@@ -635,7 +641,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    <bipm-standard xmlns='http://riboseinc.com/isoxml'>
+    <bipm-standard xmlns='http://riboseinc.com/isoxml' type="presentation">
          <preface>
            <foreword obligation='informative'>
              <title>Foreword</title>

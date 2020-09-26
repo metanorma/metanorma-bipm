@@ -57,8 +57,17 @@ committees:
   - JCTLM
   - INetQI
 metadata_extensions:
-  - comment-period-from
-  - comment-period-to
+  comment-period:
+    comment-period-from:
+      _output: from
+    comment-period-to:
+      _output: to
+  structuredidentifier:
+    docnumber:
+    partnumber:
+     _output: part
+    appendix-id:
+      _output: appendix
 relations:
   - supersedes
   - superseded-by
