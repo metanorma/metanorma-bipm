@@ -11,7 +11,7 @@ module IsoDoc
       end
 
       def pdf_stylesheet(docxml)
-        "bipm.standard.xsl"
+        "bipm.brochure.xsl"
       end
     end
   end
