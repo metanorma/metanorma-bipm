@@ -49,6 +49,7 @@ RSpec.describe IsoDoc::BIPM do
     <committee type="A">TC</committee>
   </editorialgroup>
   <comment-period><from>N1</from><to>N2</to></comment-period>
+  <si-aspect>A_e_deltanu</si-aspect>
   <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
@@ -92,6 +93,7 @@ RSpec.describe IsoDoc::BIPM do
     <committee type="A">TC</committee>
   </editorialgroup>
   <comment-period><from>N1</from><to>N2</to></comment-period>
+  <si-aspect>A_e_deltanu</si-aspect>
   <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
@@ -127,7 +129,7 @@ RSpec.describe IsoDoc::BIPM do
 :issueddate=>"XXX",
 :keywords=>[],
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"editorialgroup"=>{"committee_type"=>"A", "committee"=>"TC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:metadata_extensions=>{"editorialgroup"=>{"committee_type"=>"A", "committee"=>"TC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",

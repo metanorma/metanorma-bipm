@@ -64,6 +64,24 @@ metadata about the document. These include:
 
 `:appendix-id:`:: The number of the appendix, if this document is an appendix published separately
 
+`:si-aspect:`:: The domain of SI covered by the document; used to select logo in PDF cover page. The logo nominates one primary SI base units, and defining consonants for that unit and possibly others as well. The permitted values are:
++
+--
+* A_e_deltanu (ampere; time)
+* A_e (ampere)
+* cd_Kcd_h_deltanu (candela; mass, time)
+* cd_Kcd (candela)
+* full (all units)
+* K_k_deltanu (kelvin; mass, time)
+* K_k (kelvin)
+* kg_h_c_deltanu (kilogram; length, time)
+* kg_h (kilogram)
+* m_c_deltanu (metre; time)
+* m_c (metre)
+* mol_NA (mole)
+* s_deltanu (second)
+--
+
 `:copyright-year:`:: The year which will be claimed as when the copyright for
 the document was issued
 

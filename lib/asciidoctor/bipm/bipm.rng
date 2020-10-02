@@ -59,6 +59,9 @@
       <optional>
         <ref name="comment-period"/>
       </optional>
+      <optional>
+        <ref name="si-aspect"/>
+      </optional>
       <ref name="structuredidentifier"/>
     </define>
   </include>
@@ -70,6 +73,25 @@
       <element name="to">
         <ref name="ISO8601Date"/>
       </element>
+    </element>
+  </define>
+  <define name="si-aspect">
+    <element name="si-aspect">
+      <choice>
+        <value>A_e_deltanu</value>
+        <value>A_e</value>
+        <value>cd_Kcd_h_deltanu</value>
+        <value>cd_Kcd</value>
+        <value>full</value>
+        <value>K_k_deltanu</value>
+        <value>K_k</value>
+        <value>kg_h_c_deltanu</value>
+        <value>kg_h</value>
+        <value>m_c_deltanu</value>
+        <value>m_c</value>
+        <value>mol_NA</value>
+        <value>s_deltanu</value>
+      </choice>
     </element>
   </define>
   <define name="committee">

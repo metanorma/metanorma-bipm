@@ -62,6 +62,7 @@ metadata_extensions:
       _output: from
     comment-period-to:
       _output: to
+  si-aspect:
   structuredidentifier:
     docnumber:
     partnumber:

@@ -75,6 +75,7 @@ RSpec.describe Asciidoctor::BIPM do
       :superseded-by: B
       :obsoleted-date: C
       :implemented-date: D
+      :si-aspect: A_e_deltanu
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -151,6 +152,7 @@ RSpec.describe Asciidoctor::BIPM do
   <from>X</from>
   <to>Y</to>
 </comment-period>
+<si-aspect>A_e_deltanu</si-aspect>
 <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
