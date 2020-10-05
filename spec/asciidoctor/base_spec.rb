@@ -346,6 +346,33 @@ RSpec.describe Asciidoctor::BIPM do
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
   end
 
+  it "uses pagenumber xrefs" do
+        input = <<~"INPUT"
+      #{ASCIIDOC_BLANK_HDR}
+
+      [[a]]
+      == Section 1
+      <<a>>
+      <<a,pagenumber%>>
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+    #{BLANK_HDR}
+         <sections>
+           <clause id='a' obligation='normative'>
+             <title>Section 1</title>
+             <p id='_'>
+               <xref target='a'/>
+               <xref target='a' pagenumber='true'/>
+             </p>
+           </clause>
+         </sections>
+       </bipm-standard>
+    OUTPUT
+
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+  end
+
   it "uses default fonts" do
     input = <<~"INPUT"
       = Document title

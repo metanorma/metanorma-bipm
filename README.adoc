@@ -145,6 +145,11 @@ document may still remain in effect. Comma delimited.
 The attribute `:draft:`, if present, includes review notes in the XML output;
 these are otherwise suppressed.
 
+== Markup
+
+Cross-references formatted as `<<{{anchor}},pagenumber%>>` are rendered in PDF as just the page number;
+they are used for tables of content. In HTML output, they are treated as normal cross-references.
+
 == Data Models
 
 The document model for BIPM is given in https://github.com/metanorma/metanorma-model-bipm[metanorma-model-bipm].
