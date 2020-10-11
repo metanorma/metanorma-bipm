@@ -111,23 +111,18 @@ RSpec.describe IsoDoc::BIPM do
 :appendixid_alt=>"Annexe ABC",
 :appendixsubtitle=>"Chef Title Appendix",
 :appendixtitle=>"Main Title Appendix",
-:authors=>[],
-:authors_affiliations=>{},
 :circulateddate=>"XXX",
 :confirmeddate=>"XXX",
 :copieddate=>"XXX",
 :createddate=>"XXX",
 :docnumber=>"1000",
-:docnumeric=>nil,
 :docsubtitle=>"Chef Title",
 :doctitle=>"Main Title",
 :docyear=>"2001",
 :draft=>"3.4",
 :draftinfo=>" (draft 3.4, 2000-01-01)",
-:edition=>nil,
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
-:keywords=>[],
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :metadata_extensions=>{"editorialgroup"=>{"committee_type"=>"A", "committee"=>"TC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
@@ -138,7 +133,6 @@ RSpec.describe IsoDoc::BIPM do
 :revdate_monthyear=>"January 2000",
 :stage=>"Mise en Pratique",
 :stage_display=>"En Vigeur",
-:stageabbr=>nil,
 :tc=>"TC",
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
@@ -149,7 +143,7 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s.gsub(/, :/, ",\n:"))).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
 
   it "processes default metadata in French" do
@@ -259,14 +253,11 @@ RSpec.describe IsoDoc::BIPM do
 :appendixid_alt=>"Appendix ABC",
 :appendixsubtitle=>"Main Title Appendix",
 :appendixtitle=>"Chef Title Appendix",
-:authors=>[],
-:authors_affiliations=>{},
 :circulateddate=>"XXX",
 :confirmeddate=>"XXX",
 :copieddate=>"XXX",
 :createddate=>"XXX",
 :docnumber=>"1000",
-:docnumeric=>nil,
 :docsubtitle=>"Main Title",
 :doctitle=>"Chef Title",
 :doctype=>"CIPM-MRA",
@@ -274,10 +265,8 @@ RSpec.describe IsoDoc::BIPM do
 :docyear=>"2001",
 :draft=>"3.4",
 :draftinfo=>" (brouillon 3.4, 2000-01-01)",
-:edition=>nil,
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
-:keywords=>[],
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
@@ -288,7 +277,6 @@ RSpec.describe IsoDoc::BIPM do
 :revdate_monthyear=>"Janvier 2000",
 :stage=>"Working Draft",
 :stage_display=>"Working Draft",
-:stageabbr=>nil,
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -298,7 +286,7 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s.gsub(/, :/, ",\n:"))).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
 
   it "abbreviates committee-draft" do
@@ -317,35 +305,21 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
-:agency=>"",
-:appendixsubtitle=>"",
-:appendixtitle=>"",
-:authors=>[],
-:authors_affiliations=>{},
 :circulateddate=>"XXX",
 :confirmeddate=>"XXX",
 :copieddate=>"XXX",
 :createddate=>"XXX",
-:docnumber=>nil,
-:docnumeric=>nil,
-:docsubtitle=>"",
-:doctitle=>"",
-:docyear=>nil,
 :draft=>"3.4",
 :draftinfo=>" (draft 3.4, 2000-01-01)",
-:edition=>nil,
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
-:keywords=>[],
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
-:publisher=>"",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
 :stage=>"Committee Draft",
-:stageabbr=>nil,
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -356,7 +330,7 @@ RSpec.describe IsoDoc::BIPM do
 
     csdc = IsoDoc::BIPM::HtmlConvert.new({})
     docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s.gsub(/, :/, ",\n:"))).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
 
   it "abbreviates draft-standard" do
@@ -375,35 +349,21 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
-:agency=>"",
-:appendixsubtitle=>"",
-:appendixtitle=>"",
-:authors=>[],
-:authors_affiliations=>{},
 :circulateddate=>"XXX",
 :confirmeddate=>"XXX",
 :copieddate=>"XXX",
 :createddate=>"XXX",
-:docnumber=>nil,
-:docnumeric=>nil,
-:docsubtitle=>"",
-:doctitle=>"",
-:docyear=>nil,
 :draft=>"3.4",
 :draftinfo=>" (draft 3.4, 2000-01-01)",
-:edition=>nil,
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
-:keywords=>[],
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
-:publisher=>"",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
 :stage=>"Draft Standard",
-:stageabbr=>nil,
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -414,7 +374,7 @@ RSpec.describe IsoDoc::BIPM do
 
     csdc = IsoDoc::BIPM::HtmlConvert.new({})
     docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s.gsub(/, :/, ",\n:"))).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
 
   it "ignores unrecognised status" do
@@ -433,35 +393,21 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
-:agency=>"",
-:appendixsubtitle=>"",
-:appendixtitle=>"",
-:authors=>[],
-:authors_affiliations=>{},
 :circulateddate=>"XXX",
 :confirmeddate=>"XXX",
 :copieddate=>"XXX",
 :createddate=>"XXX",
-:docnumber=>nil,
-:docnumeric=>nil,
-:docsubtitle=>"",
-:doctitle=>"",
-:docyear=>nil,
 :draft=>"3.4",
 :draftinfo=>" (draft 3.4, 2000-01-01)",
-:edition=>nil,
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
-:keywords=>[],
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
-:publisher=>"",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
 :stage=>"Standard",
-:stageabbr=>nil,
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -472,7 +418,7 @@ RSpec.describe IsoDoc::BIPM do
 
     csdc = IsoDoc::BIPM::HtmlConvert.new({})
     docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(Hash[csdc.info(docxml, nil).sort].to_s.gsub(/, :/, ",\n:"))).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
 
   it "processes pre" do

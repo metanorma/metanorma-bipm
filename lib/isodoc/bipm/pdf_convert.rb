@@ -13,6 +13,14 @@ module IsoDoc
       def pdf_stylesheet(docxml)
         "bipm.brochure.xsl"
       end
+
+      def pdf_options(docxml)
+        if docxml.root.name == "metanorma-collection"
+          "--split-by-language"
+        else
+          super
+        end
+      end
     end
   end
 end

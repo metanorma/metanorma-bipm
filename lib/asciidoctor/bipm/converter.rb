@@ -59,6 +59,14 @@ module Asciidoctor
         end
       end
 
+      def inline_anchor_xref_attrs(node)
+        if /pagenumber%/.match(node.text)
+          node.text = node.text.sub(/pagenumber%/, "")
+          page = true
+        end
+        page ? super.merge(pagenumber: true) : super
+      end
+
       def outputs(node, ret)
         File.open(@filename + ".xml", "w:UTF-8") { |f| f.write(ret) }
         presentation_xml_converter(node).convert(@filename + ".xml")
