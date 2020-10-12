@@ -2,6 +2,9 @@ require "spec_helper"
 
 logoloc = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib", "isodoc", "bipm", "html"))
 
+si_aspect = ["A_e_deltanu", "A_e", "cd_Kcd_h_deltanu", "cd_Kcd", "full", "K_k_deltanu", "K_k", "kg_h_c_deltanu", "kg_h", "m_c_deltanu", "m_c", "mol_NA", "s_deltanu"]
+si_aspect_paths = si_aspect.map { |x| File.join(logoloc, "si-aspect", "#{x}.png") }
+
 RSpec.describe IsoDoc::BIPM do
 
   it "processes default metadata in English" do
@@ -131,6 +134,8 @@ RSpec.describe IsoDoc::BIPM do
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
+:si_aspect_index=>#{si_aspect},
+:si_aspect_paths=>#{si_aspect_paths},
 :stage=>"Mise en Pratique",
 :stage_display=>"En Vigeur",
 :tc=>"TC",
@@ -275,6 +280,8 @@ RSpec.describe IsoDoc::BIPM do
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"Janvier 2000",
+:si_aspect_index=>#{si_aspect},
+:si_aspect_paths=>#{si_aspect_paths},
 :stage=>"Working Draft",
 :stage_display=>"Working Draft",
 :transmitteddate=>"XXX",
@@ -285,94 +292,6 @@ RSpec.describe IsoDoc::BIPM do
 :vote_starteddate=>"XXX"}
     OUTPUT
 
-    docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
-  end
-
-  it "abbreviates committee-draft" do
-    input = <<~"INPUT"
-<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
-<bibdata type="standard">
-  <status><stage>committee-draft</stage></status>
-</bibdata><version>
-  <edition>2</edition>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-<sections/>
-</bipm-standard>
-    INPUT
-
-    output = <<~"OUTPUT"
-{:accesseddate=>"XXX",
-:circulateddate=>"XXX",
-:confirmeddate=>"XXX",
-:copieddate=>"XXX",
-:createddate=>"XXX",
-:draft=>"3.4",
-:draftinfo=>" (draft 3.4, 2000-01-01)",
-:implementeddate=>"XXX",
-:issueddate=>"XXX",
-:logo=>"#{File.join(logoloc, "logo.png")}",
-:obsoleteddate=>"XXX",
-:publisheddate=>"XXX",
-:receiveddate=>"XXX",
-:revdate=>"2000-01-01",
-:revdate_monthyear=>"January 2000",
-:stage=>"Committee Draft",
-:transmitteddate=>"XXX",
-:unchangeddate=>"XXX",
-:unpublished=>true,
-:updateddate=>"XXX",
-:vote_endeddate=>"XXX",
-:vote_starteddate=>"XXX"}
-    OUTPUT
-
-    csdc = IsoDoc::BIPM::HtmlConvert.new({})
-    docxml, filename, dir = csdc.convert_init(input, "test", true)
-    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
-  end
-
-  it "abbreviates draft-standard" do
-    input = <<~"INPUT"
-<bipm-standard xmlns="https://open.ribose.com/standards/bipm">
-<bibdata type="standard">
-  <status><stage>draft-standard</stage></status>
-</bibdata><version>
-  <edition>2</edition>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-<sections/>
-</bipm-standard>
-    INPUT
-
-    output = <<~"OUTPUT"
-{:accesseddate=>"XXX",
-:circulateddate=>"XXX",
-:confirmeddate=>"XXX",
-:copieddate=>"XXX",
-:createddate=>"XXX",
-:draft=>"3.4",
-:draftinfo=>" (draft 3.4, 2000-01-01)",
-:implementeddate=>"XXX",
-:issueddate=>"XXX",
-:logo=>"#{File.join(logoloc, "logo.png")}",
-:obsoleteddate=>"XXX",
-:publisheddate=>"XXX",
-:receiveddate=>"XXX",
-:revdate=>"2000-01-01",
-:revdate_monthyear=>"January 2000",
-:stage=>"Draft Standard",
-:transmitteddate=>"XXX",
-:unchangeddate=>"XXX",
-:unpublished=>true,
-:updateddate=>"XXX",
-:vote_endeddate=>"XXX",
-:vote_starteddate=>"XXX"}
-    OUTPUT
-
-    csdc = IsoDoc::BIPM::HtmlConvert.new({})
     docxml, filename, dir = csdc.convert_init(input, "test", true)
     expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
@@ -407,6 +326,8 @@ RSpec.describe IsoDoc::BIPM do
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
+:si_aspect_index=>#{si_aspect},
+:si_aspect_paths=>#{si_aspect_paths},
 :stage=>"Standard",
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
