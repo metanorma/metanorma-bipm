@@ -110,7 +110,8 @@ document may still remain in effect. Comma delimited.
 `:status:``:: The document status. The permitted types are: `draft-proposal`,
 `draft-development`, `in-force`, `retired`.
 
-`:committee:`:: The name of the relevant committee (mandatory):
+`:committee:`:: The name of the relevant committee (mandatory)
+`:committee-acronym:`:: The acronym of the relevant committee (mandatory)
 +
 --
 * CGPM: General Conference on Weights and Measures
@@ -133,6 +134,7 @@ document may still remain in effect. Comma delimited.
 * INetQI: International Network on Quality Infrastructure
 --
 `:workgroup:`:: The name of the relevant workgroup (mandatory)
+`:workgroup-acronym:`:: The acronym of the relevant workgroup (mandatory)
 
 `:language:` :: The language of the document (`en` or `fr`)  (mandatory)
 

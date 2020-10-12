@@ -49,7 +49,8 @@ RSpec.describe IsoDoc::BIPM do
   </copyright>
   <ext>
   <editorialgroup>
-    <committee type="A">TC</committee>
+    <committee acronym="A">TC</committee>
+    <workgroup acronym="B">WC</committee>
   </editorialgroup>
   <comment-period><from>N1</from><to>N2</to></comment-period>
   <si-aspect>A_e_deltanu</si-aspect>
@@ -127,7 +128,7 @@ RSpec.describe IsoDoc::BIPM do
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"editorialgroup"=>{"committee_type"=>"A", "committee"=>"TC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"A", "committee"=>"TC", "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",

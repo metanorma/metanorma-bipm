@@ -48,12 +48,14 @@ RSpec.describe Asciidoctor::BIPM do
       :revdate: 2000-01-01
       :draft: 3.4
       :committee: TC
+      :committee-acronym: TCA
       :committee-number: 1
       :committee-type: A
       :subcommittee: SC
       :subcommittee-number: 2
       :subcommittee-type: B
       :workgroup: WG
+      :workgroup-acronym: WGA
       :workgroup-number: 3
       :workgroup-type: C
       :secretariat: SECRETARIAT
@@ -145,8 +147,8 @@ RSpec.describe Asciidoctor::BIPM do
 <ext>
   <doctype>brochure</doctype>
   <editorialgroup>
-    <committee>TC</committee>
-    <workgroup>WG</workgroup>
+    <committee acronym="TCA">TC</committee>
+    <workgroup acronym="WGA">WG</workgroup>
   </editorialgroup>
   <comment-period>
   <from>X</from>
@@ -272,8 +274,8 @@ RSpec.describe Asciidoctor::BIPM do
 <ext>
   <doctype>brochure</doctype>
   <editorialgroup>
-    <committee>TC</committee>
-    <workgroup>WG</workgroup>
+    <committee acronym="">TC</committee>
+    <workgroup acronym="">WG</workgroup>
   </editorialgroup>
   <comment-period>
   <from>X</from>

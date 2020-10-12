@@ -3,9 +3,6 @@ require 'asciidoctor/generic/converter'
 
 module Asciidoctor
   module BIPM
-    # A {Converter} implementation that generates RSD output, and a document
-    # schema encapsulation of the document for validation
-    #
     class Converter < Asciidoctor::Generic::Converter
       register_for "bipm"
 
@@ -16,16 +13,20 @@ module Asciidoctor
       def metadata_committee(node, xml)
         return unless node.attr("committee")
         xml.editorialgroup do |a|
-          a.committee node.attr("committee")
+          a.committee node.attr("committee"),
+            acronym: node.attr("committee-acronym")
           i = 2
           while node.attr("committee_#{i}") do
-            a.committee node.attr("committee_#{i}")
+            a.committee node.attr("committee_#{i}"),
+              acronym: node.attr("committee-acronym_#{i}")
             i += 1
           end
-          a.workgroup node.attr("workgroup")
+          a.workgroup node.attr("workgroup"),
+            acronym: node.attr("workgroup-acronym")
           i = 2
           while node.attr("workgroup_#{i}") do
-            a.workgroup node.attr("workgroup_#{i}")
+            a.workgroup node.attr("workgroup_#{i}"),
+              acronym: node.attr("workgroup-acronym_#{i}")
             i += 1
           end
         end
