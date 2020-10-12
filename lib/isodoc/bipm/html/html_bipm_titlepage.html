@@ -38,6 +38,14 @@
 
   <div class="coverpage-logo">
     <span>Bureau International de Poids et Mesures {{ docyear }}</span>
+    {% if metadata_extensions["si-aspect"] %}
+    <br/>
+{% for item in si_aspect_index %}
+  {% if item == metadata_extensions["si-aspect"]  %}
+  <img src="{{ si_aspect_paths[forloop.index0] }}" width="310px" height="310px"/>
+  {% endif %}
+{% endfor %}
+    {% endif %}
   </div>
 
   <div class="coverpage-tc-name">
