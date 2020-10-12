@@ -49,7 +49,7 @@
   </div>
 
   <div class="coverpage-tc-name">
-    <span>{{ tc }}</span>
+    <span>{{ metadata_extensions["editorialgroup"]["committee_acronym"] }}{% if metadata_extensions["editorialgroup"]["committee_acronym"] and metadata_extensions["editorialgroup"]["committee"] %}: {% endif %}{{ metadata_extensions["editorialgroup"]["committee"] }}</span>
   </div>
   </div>
 
