@@ -39,23 +39,57 @@ doctypes:
 default_doctype: brochure
 committees:
   - CGPM
+  - General Conference on Weights and Measures
+  - Conférence générale des poids et mesures
   - CIPM
+  - International Committee for Weights and Measures
+  - Comité international des poids et mesures 
   - BIPM
+  - International Bureau of Weights and Measures
+  - Bureau Inernational des Poids et Mesures
   - CCAUV
+  - Consultative Committee for Acoustics, Ultrasound and Vibration
+  - Comité consultatif de l'acoustique, des ultrasons et des vibrations 
   - CCEM
+  - Consultative Committee for Electricity and Magnetism
+  - Comité consultatif d'électricité et magnétisme 
   - CCL
+  - Consultative Committee for Length
+  - Comité consultatif des longueurs 
   - CCM
+  - Consultative Committee for Mass and Related Quantities
+  - Comité consultatif pour la masse et les grandeurs apparentées 
   - CCPR
+  - Consultative Committee for Photometry and Radiometry
+  - Comité consultatif de photométrie et radiométrie 
   - CCQM
+  - "Consultative Committee for Amount of Substance: Metrology in Chemistry and Biology"
+  - "Comité consultatif pour la quantité de matière : métrologie en chimie et biologie"
   - CCRI
+  - Consultative Committee for Ionizing Radiation
+  - Comité consultatif des rayonnements ionisants 
   - CCT
+  - Consultative Committee for Thermometry
+  - Comité consultatif de thermométrie 
   - CCTF
+  - Consultative Committee for Time and Frequency
+  - Comité consultatif du temps et des fréquences 
   - CCU
+  - Consultative Committee for Units
+  - Comité consultatif des unités 
   - CCL-CCT
+  - Frequency Standards Working Group
   - JCGM
+  - Joint Committee for Guides in Metrology
+  - Comité commun pour les guides en métrologie
   - JCRB
+  - Joint Committee of the Regional Metrology Organizations and the BIPM
+  - Comité mixte des organisations régionales de métrologie et du BIPM
   - JCTLM
+  - Joint Committee for Traceability in Laboratory Medicine
+  - Comité commun pour la traçabilité en médecine de laboratoire
   - INetQI
+  - International Network on Quality Infrastructure
 metadata_extensions:
   comment-period:
     comment-period-from:

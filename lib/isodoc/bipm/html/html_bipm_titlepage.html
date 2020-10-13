@@ -23,12 +23,16 @@
       <span class="docyear">{{ docyear }} {{ draftinfo }}</span>
     </div>
 
+    <div class="coverpage-logo">
+      {{ logo }}
+    </div>
+
     <div class="coverpage-title">
       {% if appendixtitle %}
       <span class="title-third">{{ doctitle }}</span>
       <span class="title-third">{{ docsubtitle }}</span><br/>
-      <span class="title-first">{{ appendixid}}: {{ appendixtitle }}</span><br/>
-      <span class="title-second">{{ appendixid_alt}}: {{ appendixsubtitle }}</span>
+      <span class="title-first">{% if appendixid %}{{ appendixid}}: {% endif %}{{ appendixtitle }}</span><br/>
+      <span class="title-second">{% if appendixid_alt %}{{ appendixid_alt}}: {% endif %}{{ appendixsubtitle }}</span>
       {% else %}
       <span class="title-first">{{ doctitle }}</span><br/>
       <span class="title-second">{{ docsubtitle }}</span>
