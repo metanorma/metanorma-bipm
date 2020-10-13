@@ -68,6 +68,16 @@ module Asciidoctor
         page ? super.merge(pagenumber: true) : super
       end
 
+      def clause_parse(attrs, xml, node)
+        node.option?("unnumbered") and attrs[:unnumbered] = true
+        super
+      end
+
+      def annex_parse(attrs, xml, node)
+        node.option?("unnumbered") and attrs[:unnumbered] = true
+        super
+      end
+
       def outputs(node, ret)
         File.open(@filename + ".xml", "w:UTF-8") { |f| f.write(ret) }
         presentation_xml_converter(node).convert(@filename + ".xml")

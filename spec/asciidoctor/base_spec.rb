@@ -433,5 +433,28 @@ RSpec.describe Asciidoctor::BIPM do
     expect(html).to match(%r[ div[^{]+\{[^}]+font-family: Zapf Chancery;]m)
     expect(html).to match(%r[h1, h2, h3, h4, h5, h6 \{[^}]+font-family: Comic Sans;]m)
   end
+
+  it "has unnumbered clauses" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :bipm, header_footer: true)))).to be_equivalent_to <<~"OUTPUT"
+    #{ASCIIDOC_BLANK_HDR}
+
+    [%unnumbered]
+    == Clause
+
+    [appendix%unnumbered]
+    == Appendix
+    INPUT
+    #{BLANK_HDR}
+     <sections>
+   <clause id='_' unnumbered='true' obligation='normative'>
+     <title>Clause</title>
+   </clause>
+ </sections>
+ <annex id='_' obligation='normative' unnumbered="true">
+   <title>Appendix</title>
+ </annex>
+</bipm-standard>
+    OUTPUT
+  end
 end
 
