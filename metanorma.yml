@@ -3,6 +3,8 @@ organization_name_short: BIPM
 organization_name_long: Bureau International des poids et mesures
 document_namespace: https://www.metanorma.org/ns/bipm
 xml_root_tag: 'bipm-standard'
+html_bodyfont: Times New Roman
+html_headerfont: Times New Roman
 logo_path: lib/isodoc/bipm/html/logo.png
 i18nyaml: 
   en: lib/isodoc/bipm/i18n-en.yaml
