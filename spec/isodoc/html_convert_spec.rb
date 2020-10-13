@@ -511,7 +511,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    <bipm-standard xmlns='http://riboseinc.com/isoxml' type="presentation">
+       <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
          <preface>
            <foreword obligation='informative'>
              <title>Foreword</title>
@@ -527,7 +527,7 @@ RSpec.describe IsoDoc::BIPM do
          <sections>
            <clause id='D' obligation='normative'>
              <title depth='1'>
-               4.
+               1.
                <tab/>
                Scope
              </title>
@@ -567,20 +567,20 @@ RSpec.describe IsoDoc::BIPM do
            </definitions>
            <clause id='M' inline-header='false' obligation='normative'>
              <title depth='1'>
-               5.
+               4.
                <tab/>
                Clause 4
              </title>
              <clause id='N' inline-header='false' obligation='normative'>
                <title depth='2'>
-                 5.1.
+                 4.1.
                  <tab/>
                  Introduction
                </title>
              </clause>
              <clause id='O' inline-header='false' obligation='normative'>
                <title depth='2'>
-                 5.2.
+                 4.2.
                  <tab/>
                  Clause 4.2
                </title>
@@ -589,7 +589,10 @@ RSpec.describe IsoDoc::BIPM do
          </sections>
          <annex id='P' inline-header='false' obligation='normative'>
            <title>
-             <strong>Appendix 1</strong>.<tab/><strong>Annex</strong>
+             <strong>Appendix 1</strong>
+             .
+             <tab/>
+             <strong>Annex</strong>
            </title>
            <clause id='Q' inline-header='false' obligation='normative'>
              <title depth='2'>
@@ -650,6 +653,132 @@ RSpec.describe IsoDoc::BIPM do
     expect(html).to match(%r{jquery\.min\.js})
     expect(html).to match(%r{Overpass})
   end
+
+    it "processes unnumbered sections" do
+      expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert('test', <<~"INPUT", true)))).to be_equivalent_to <<~"OUTPUT"
+      <bipm-standard xmlns="http://riboseinc.com/isoxml">
+      <preface>
+      <foreword obligation="informative">
+         <title>Foreword</title>
+         <p id="A">This is a preamble:
+         <xref target="B"/>
+         <xref target="C"/>
+         <xref target="D"/>
+         <xref target="E"/>
+         <xref target="F"/>
+         <xref target="A1"/>
+         <xref target="B1"/>
+         <xref target="A2"/>
+         <xref target="B2"/>
+         <xref target="C2"/>
+         </p>
+       </foreword>
+   <sections>
+      <clause id='B' unnumbered='true' obligation='normative'>
+     <title>Beta</title>
+     <clause id="C">
+     <title>Charlie</title>
+     </clause>
+   </clause>
+    <clause id='D' obligation='normative'>
+     <title>Delta</title>
+     <clause id="E" unnumbered='true'>
+     <title>Echo</title>
+     </clause>
+     <clause id="F">
+     <title>Fox</title>
+     </clause>
+   </clause>
+ </sections>
+ <annex id='A1' obligation='normative' unnumbered="true">
+   <title>Alpha</title>
+     <clause id="B1">
+     <title>Beta</title>
+     </clause>
+ </annex>
+ <annex id='A2' obligation='normative'>
+   <title>Gamma</title>
+     <clause id="B2" unnumbered="true">
+     <title>Delta</title>
+     </clause>
+     <clause id="C2">
+     <title>Epsilon</title>
+     </clause>
+ </annex>
+</bipm-standard>
+INPUT
+<bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+  <preface>
+    <foreword obligation='informative'>
+      <title>Foreword</title>
+      <p id='A'>
+        This is a preamble:
+        <xref target='B'>"Beta"</xref>
+        <xref target='C'>"Charlie"</xref>
+        <xref target='D'>Clause 1</xref>
+        <xref target='E'>"Echo"</xref>
+        <xref target='F'>Clause 1.1</xref>
+        <xref target='A1'>"Alpha"</xref>
+        <xref target='B1'>"Beta"</xref>
+        <xref target='A2'>Appendix 1</xref>
+        <xref target='B2'>"Delta"</xref>
+        <xref target='C2'>Appendix 1.1</xref>
+      </p>
+    </foreword>
+    <sections>
+      <clause id='B' unnumbered='true' obligation='normative'>
+        <title>Beta</title>
+        <clause id='C'>
+          <title>Charlie</title>
+        </clause>
+      </clause>
+      <clause id='D' obligation='normative'>
+        <title depth='1'>
+          1.
+          <tab/>
+          Delta
+        </title>
+        <clause id='E' unnumbered='true'>
+          <title>Echo</title>
+        </clause>
+        <clause id='F'>
+          <title depth='2'>
+            1.1.
+            <tab/>
+            Fox
+          </title>
+        </clause>
+      </clause>
+    </sections>
+    <annex id='A1' obligation='normative' unnumbered='true'>
+      <title>Alpha</title>
+      <clause id='B1'>
+        <title>Beta</title>
+      </clause>
+    </annex>
+    <annex id='A2' obligation='normative'>
+      <title>
+        <strong>Appendix 1</strong>
+        .
+        <tab/>
+        <strong>Gamma</strong>
+      </title>
+      <clause id='B2' unnumbered='true'>
+        <title>Delta</title>
+      </clause>
+      <clause id='C2'>
+        <title depth='2'>
+          1.1.
+          <tab/>
+          Epsilon
+        </title>
+      </clause>
+    </annex>
+  </preface>
+</bipm-standard>
+      OUTPUT
+    end
+
 
 end
 

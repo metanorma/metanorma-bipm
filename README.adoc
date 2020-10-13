@@ -152,6 +152,8 @@ these are otherwise suppressed.
 Cross-references formatted as `<<{{anchor}},pagenumber%>>` are rendered in PDF as just the page number;
 they are used for tables of content. In HTML output, they are treated as normal cross-references.
 
+Clauses and annexes may be marked as `[%unnumbered]`, in which case they do not receive section numbering, and are cross-referenced by their title.
+
 == Data Models
 
 The document model for BIPM is given in https://github.com/metanorma/metanorma-model-bipm[metanorma-model-bipm].
