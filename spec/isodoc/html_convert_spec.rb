@@ -651,7 +651,7 @@ RSpec.describe IsoDoc::BIPM do
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r{jquery\.min\.js})
-    expect(html).to match(%r{Overpass})
+    expect(html).to match(%r{Times New Roman})
   end
 
     it "processes unnumbered sections" do
