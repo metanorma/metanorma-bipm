@@ -89,7 +89,8 @@
 		
 	</xsl:variable>
 
-	<xsl:variable name="independentAppendix" select="normalize-space(/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:appendix)"/>
+	<!-- <xsl:variable name="independentAppendix" select="normalize-space(/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:appendix)"/> -->
+	<xsl:variable name="independentAppendix" select="normalize-space(/bipm:bipm-standard/bipm:bibdata/bipm:title[@type = 'appendix'])"/>
 	
 
 	<xsl:template name="generateContents">
@@ -111,6 +112,15 @@
 					<fo:region-after extent="43mm"/>
 					<fo:region-start extent="49mm"/>
 					<fo:region-end extent="48mm"/>
+				</fo:simple-page-master>
+				
+				<!-- Cover page -->
+				<fo:simple-page-master master-name="cover-page-appendix" page-width="{$pageWidth}" page-height="{$pageHeight}">
+					<fo:region-body margin-top="90mm" margin-bottom="40mm" margin-left="12.5mm" margin-right="53mm"/>
+					<fo:region-before extent="60mm"/>
+					<fo:region-after extent="40mm"/>
+					<fo:region-start extent="12.5mm"/>
+					<fo:region-end extent="53mm"/>
 				</fo:simple-page-master>
 				
 				<!-- Title page  -->
@@ -167,13 +177,13 @@
 				</fo:page-sequence-master>
 				
 				<!-- Independent Appendix pages -->
-				<fo:simple-page-master master-name="appendix" page-width="{$pageWidth}" page-height="{$pageHeight}">
+				<!-- <fo:simple-page-master master-name="appendix" page-width="{$pageWidth}" page-height="{$pageHeight}">
 					<fo:region-body margin-top="25mm" margin-bottom="25mm" margin-left="25mm" margin-right="25mm"/>
 					<fo:region-before region-name="header-appendix" extent="25mm"/> 
 					<fo:region-after region-name="footer-appendix" extent="25mm"/>
 					<fo:region-start region-name="left-region" extent="25mm"/>
 					<fo:region-end region-name="right-region" extent="25mm"/>
-				</fo:simple-page-master>
+				</fo:simple-page-master> -->
 				
 				
 			</fo:layout-master-set>
@@ -189,12 +199,14 @@
 				<xsl:copy-of select="$contents"/>
 			</contents> -->
 			
-			
+			<xsl:if test="$independentAppendix = ''">
 				<xsl:call-template name="insertCoverPage"/>
-				
-				<xsl:if test="$independentAppendix = ''">
-					<xsl:call-template name="insertInnerCoverPage"/>
-				</xsl:if>
+				<xsl:call-template name="insertInnerCoverPage"/>
+			</xsl:if>
+			
+			<xsl:if test="$independentAppendix != ''">
+				<xsl:call-template name="insertCoverPageAppendix"/>				
+			</xsl:if>
 				
 			
 			<xsl:choose>
@@ -271,31 +283,88 @@
 	<!-- flat xml for fit notes at page sides -->
 	<xsl:template match="@*|node()" mode="flatxml">
 		<xsl:copy>
-				<xsl:apply-templates select="@*|node()" mode="flatxml"/>
+			<xsl:if test="ancestor::bipm:quote">
+				<xsl:attribute name="parent-type">quote</xsl:attribute>				
+			</xsl:if>
+			<xsl:apply-templates select="@*|node()" mode="flatxml"/>
 		</xsl:copy>
-	</xsl:template>	
+	</xsl:template>
+
 	<!-- flat clauses from 2nd level -->
-	<xsl:template match="bipm:clause[not(parent::bipm:sections) and not(parent::bipm:annex) and not(parent::bipm:abstract) and not(ancestor::bipm:boilerplate)]" mode="flatxml">
+	<!-- <xsl:template match="bipm:clause[not(parent::bipm:sections) and not(parent::bipm:annex) and not(parent::bipm:abstract) and not(ancestor::bipm:boilerplate)]" mode="flatxml"> -->
+	<xsl:template match="bipm:clause[not(parent::bipm:sections) and not(parent::bipm:annex) and not(parent::bipm:preface) and not(ancestor::bipm:boilerplate)]" mode="flatxml">
 		<xsl:copy>
 			<xsl:apply-templates select="@*" mode="flatxml"/>
 		</xsl:copy>
 		<xsl:apply-templates mode="flatxml"/>
 	</xsl:template>
-	<xsl:template match="bipm:clause/*[count(following-sibling::*) = 1 and following-sibling::*[local-name() = 'note']]" mode="flatxml"> <!--   -->
+	
+	<!-- move clause/note inside title, p, ul or ol -->
+	<xsl:template match="bipm:clause/*[local-name() != 'quote' and local-name() != 'note' and local-name() != 'clause'][last()]" mode="flatxml">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()" mode="flatxml"/>
+			<!-- <xsl:copy-of select="following-sibling::*[local-name() = 'note']"/> -->
+			<xsl:for-each select="following-sibling::*[local-name() = 'note']">
+				<xsl:call-template name="change_note_kind"/>
+			</xsl:for-each>
+		</xsl:copy>	
+	</xsl:template>
+	
+	<!-- <xsl:template match="bipm:clause2/*[count(following-sibling::*) = 1 and following-sibling::*[local-name() = 'note']]" mode="flatxml">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="flatxml"/>
 			<xsl:copy-of select="following-sibling::*[local-name() = 'note']"/>
 		</xsl:copy>		
+	</xsl:template> -->
+	
+	<!-- <xsl:template match="bipm:clause/bipm:note[count(following-sibling::*) = 0]" mode="flatxml"/> -->
+	<xsl:template match="bipm:clause/bipm:note[count(following-sibling::*[local-name() != 'clause' and local-name() != 'note']) = 0]" mode="flatxml" priority="2"/>
+	
+	
+	<xsl:template match="bipm:note" name="change_note_kind" mode="flatxml">
+		<xsl:variable name="element">
+			<xsl:choose>
+				<xsl:when test="ancestor::bipm:quote">note</xsl:when>
+				<xsl:when test="ancestor::bipm:preface and ancestor::bipm:table">note</xsl:when>
+				<xsl:otherwise>note_side</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<!-- <xsl:copy> -->
+		<xsl:element name="{$element}" namespace="https://www.metanorma.org/ns/bipm">
+			<xsl:if test="ancestor::bipm:quote">
+				<xsl:attribute name="parent-type">quote</xsl:attribute>				
+			</xsl:if>
+			<xsl:apply-templates select="@*|node()" mode="flatxml"/>
+		</xsl:element>
+		<!-- </xsl:copy> -->
 	</xsl:template>
-	<xsl:template match="bipm:clause/bipm:note[count(following-sibling::*) = 0]" mode="flatxml"/>
+	
+	
+	<xsl:template match="bipm:fn[ancestor::bipm:quote]" mode="flatxml">
+		<xsl:element name="note_side" namespace="https://www.metanorma.org/ns/bipm">
+			<xsl:apply-templates mode="flatxml"/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template match="bipm:fn[ancestor::bipm:quote]" mode="flatxml_list">
+		<xsl:element name="note_side" namespace="https://www.metanorma.org/ns/bipm">
+			<xsl:apply-templates mode="flatxml_list"/>
+		</xsl:element>
+	</xsl:template>
+	
 		<!-- envelope standalone note in p -->
 		<!-- <p>
 			<xsl:copy-of select="."/>
 		</p>
 	</xsl:template> -->
-	<xsl:template match="bipm:preface/bipm:clause" mode="flatxml">
+	<xsl:template match="bipm:preface/bipm:clause[position() &gt; 1]" mode="flatxml">
 		<xsl:copy-of select="."/>
 	</xsl:template>
+	
+	<xsl:template match="bipm:quote" mode="flatxml" priority="2">
+		<xsl:apply-templates mode="flatxml"/>
+	</xsl:template>
+	
 	
 	<!-- flat lists -->
 	<xsl:template match="bipm:ul | bipm:ol" mode="flatxml" priority="2">
@@ -338,12 +407,28 @@
 			<xsl:attribute name="label">
 				<xsl:call-template name="setListItemLabel"/>
 			</xsl:attribute>
+			<xsl:if test="ancestor::bipm:quote">
+				<xsl:attribute name="parent-type">quote</xsl:attribute>				
+			</xsl:if>
 			<xsl:apply-templates mode="flatxml_list"/>
 			
 			<!-- move note for list (list level note) into first 'li' -->
 			<!-- if current li is first -->
 			<xsl:if test="not(preceding-sibling::*[local-name() = 'li'])">
-				<xsl:copy-of select="following-sibling::bipm:li[last()]/following-sibling::*"/>
+				<!-- <xsl:copy-of select="following-sibling::bipm:li[last()]/following-sibling::*"/> -->
+				
+				
+				<xsl:for-each select="following-sibling::bipm:li[last()]/following-sibling::*">
+					<xsl:choose>
+						<xsl:when test="local-name() = 'note'">
+							<xsl:call-template name="change_note_kind"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:copy-of select="."/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+				
 			</xsl:if>
 			
 			<!-- move note for list (list level note) into latest 'li' -->
@@ -472,7 +557,9 @@
 						
 						<fo:block-container absolute-position="fixed" top="200mm" height="69mm" font-family="Times New Roman" text-align="center" display-align="after">
 							<xsl:apply-templates select="bipm:boilerplate/bipm:feedback-statement"/>
-							<!-- <fo:block margin-top="15mm">ISBN 978-92-822-2272-0</fo:block> -->
+							<fo:block margin-top="15mm">
+								<xsl:text>ISBN </xsl:text><xsl:value-of select="bipm:bibdata/bipm:docidentifier[@type='ISBN']"/>
+							</fo:block>
 						</fo:block-container>
 						
 					</fo:flow>
@@ -483,7 +570,8 @@
 					<xsl:call-template name="insertHeaderFooter"/>
 					<fo:flow flow-name="xsl-region-body">
 						<fo:block line-height="135%">
-							<xsl:apply-templates select="bipm:preface/bipm:abstract"/>
+							<!-- <xsl:apply-templates select="bipm:preface/bipm:abstract" /> -->
+							<xsl:apply-templates select="bipm:preface/*[1]"/>
 						</fo:block>
 					</fo:flow>
 				</fo:page-sequence>
@@ -537,7 +625,8 @@
 				</fo:page-sequence>
 				
 				
-				<xsl:apply-templates select="bipm:preface/*[not(local-name() = 'abstract')]" mode="sections"/> <!-- bipm:clause -->
+				<!-- <xsl:apply-templates select="bipm:preface/*[not(local-name() = 'abstract')]" mode="sections" /> --> <!-- bipm:clause -->
+				<xsl:apply-templates select="bipm:preface/*[position() &gt; 1]" mode="sections"/> <!-- bipm:clause -->
 				
 				
 				
@@ -605,7 +694,9 @@
 		
 			</xsl:when>
 			<xsl:otherwise> <!-- independentAppendix != '' -->
-				<fo:page-sequence master-reference="appendix" initial-page-number="1" force-page-count="no-force">
+			
+			
+			<!-- 	<fo:page-sequence master-reference="appendix" initial-page-number="1" force-page-count="no-force">
 					<xsl:call-template name="insertFootnoteSeparator"/>
 					<xsl:call-template name="insertHeaderFooterAppendix"/>
 					<fo:flow flow-name="xsl-region-body" font-family="Times New Roman">
@@ -629,7 +720,98 @@
 
 						<fo:block id="theLastPage"/>
 					</fo:flow>
+				</fo:page-sequence> -->
+				
+				<fo:page-sequence master-reference="document" force-page-count="no-force">
+					
+					<fo:flow flow-name="xsl-region-body" font-family="Arial">
+						
+						<fo:block-container font-size="12pt" font-weight="bold" border-top="1pt solid black" width="82mm" margin-top="2mm" padding-top="2mm">						
+							<fo:block-container width="45mm">
+								<fo:block>
+									<xsl:value-of select="bipm:bibdata/bipm:contributor[bipm:role/@type='publisher']/bipm:organization/bipm:name"/>
+								</fo:block>						
+							</fo:block-container>
+						</fo:block-container>
+						
+						<fo:block-container font-size="12pt" line-height="130%">
+							<fo:block margin-bottom="10pt"> </fo:block>
+							<fo:block margin-bottom="10pt"> </fo:block>
+							<fo:block margin-bottom="10pt"> </fo:block>
+							<fo:block margin-bottom="10pt"> </fo:block>
+							<fo:block margin-bottom="10pt"> </fo:block>
+							<fo:block margin-bottom="10pt"> </fo:block>
+							<fo:block margin-bottom="10pt"> </fo:block>
+							<fo:block margin-bottom="10pt"> </fo:block>
+							<fo:block margin-bottom="10pt"> </fo:block>
+						</fo:block-container>
+						
+						<fo:block-container font-size="18pt" font-weight="bold" text-align="center">
+							<fo:block>						
+								<xsl:value-of select="//bipm:bipm-standard/bipm:bibdata/bipm:title[@language = $curr_lang and @type='appendix']"/>
+							</fo:block>
+							<fo:block> </fo:block>
+							<fo:block font-size="9pt">
+								<xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:editorialgroup/bipm:committee"/>
+							</fo:block>
+						</fo:block-container>
+						
+						<fo:block-container absolute-position="fixed" left="69.5mm" top="241mm" width="99mm">						
+							<fo:block-container font-size="9pt" border-bottom="1pt solid black" width="68mm" text-align="center" margin-bottom="14pt">
+								<fo:block font-weight="bold" margin-bottom="2.5mm">
+									<fo:inline padding-right="10mm">
+										<xsl:apply-templates select="bipm:bibdata/bipm:edition">
+											<xsl:with-param name="font-size" select="'70%'"/>
+											<xsl:with-param name="baseline-shift" select="'45%'"/>
+											<xsl:with-param name="curr_lang" select="$curr_lang"/>
+										</xsl:apply-templates>
+									</fo:inline>
+									<xsl:value-of select="$copyrightYear"/>
+								</fo:block>
+							</fo:block-container>
+							<fo:block font-size="9pt" margin-left="-35mm">
+								<fo:block> </fo:block>
+								<fo:block> </fo:block>
+								<fo:block> </fo:block>
+								<fo:block text-align-last="justify">
+									<xsl:choose>
+										<xsl:when test="$lang = 'fr'">Annexe </xsl:when>
+										<xsl:otherwise>Appendix </xsl:otherwise>
+									</xsl:choose>
+									<xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:appendix"/>
+									<fo:inline keep-together.within-line="always">
+										<fo:leader leader-pattern="space"/>
+										<xsl:call-template name="printRevisionDate">
+											<xsl:with-param name="date" select="/bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:revision-date"/>
+											<xsl:with-param name="lang" select="$lang"/>
+											<xsl:with-param name="variant" select="'true'"/>
+										</xsl:call-template>
+									</fo:inline>
+								</fo:block>
+								
+							</fo:block>
+						</fo:block-container>
+						
+						
+					</fo:flow>
 				</fo:page-sequence>
+				
+				
+				<xsl:apply-templates select="bipm:preface/*" mode="sections"/> <!-- bipm:clause -->
+				
+				<!-- Document Pages -->
+				
+				<xsl:apply-templates select="bipm:sections/*" mode="sections"/>
+				
+				<!-- Normative references  -->
+				<xsl:apply-templates select="bipm:bibliography/bipm:references[@normative='true']" mode="sections"/>
+
+				<xsl:apply-templates select="bipm:annex" mode="sections"/>
+				
+				
+				<xsl:apply-templates select="bipm:bibliography/bipm:references[not(@normative='true')]" mode="sections"/> 
+				
+				
 			</xsl:otherwise>
 		</xsl:choose>
 		
@@ -644,145 +826,192 @@
 			
 			<fo:flow flow-name="xsl-region-body">
 			
-				<!-- background color -->
-				<fo:block-container absolute-position="fixed" left="0" top="-1mm">
-					<fo:block>
-						<fo:instream-foreign-object content-height="{$pageHeight}" fox:alt-text="Background color">
-							<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="{$pageWidth}" height="{$pageHeight}">
-								<rect width="{$pageWidth}" height="{$pageHeight}" style="fill:rgb(214,226,239);stroke-width:0"/>
-							</svg>
-						</fo:instream-foreign-object>
-					</fo:block>
-				</fo:block-container>
-			
-				<!-- BIPM logo -->
-				<fo:block-container absolute-position="fixed" left="12.8mm" top="12.2mm">
-					<fo:block>
-						<fo:external-graphic src="{concat('data:image/png;base64,', normalize-space($Image-Logo-BIPM))}" width="35mm" content-height="scale-to-fit" scaling="uniform" fox:alt-text="Image Logo"/>
-					</fo:block>
-				</fo:block-container>
+				<xsl:call-template name="insertCoverPageCommon"/>
 				
-				<!-- SI logo -->
-				<fo:block-container absolute-position="fixed" left="166.5mm" top="253mm">
-					<fo:block>
-						<fo:instream-foreign-object content-height="32mm" content-width="32mm" fox:alt-text="Image Logo">
-							<xsl:copy-of select="$Image-Logo-SI"/>
-						</fo:instream-foreign-object>	
+				<fo:block-container height="100%" display-align="center" border="0pt solid black"><!--  -->
+					<fo:block font-family="WorkSans" font-size="50pt" line-height="115%">
+					
+						<xsl:variable name="languages">
+							<xsl:call-template name="getLanguages"/>
+						</xsl:variable>						
+						<xsl:variable name="editionFO">
+							<xsl:apply-templates select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:edition">
+								<xsl:with-param name="curr_lang" select="xalan:nodeset($languages)/lang[1]"/>
+							</xsl:apply-templates>
+						</xsl:variable>
 						
-					</fo:block>
-				</fo:block-container>
-				
-				<xsl:if test="$independentAppendix = ''">
-				
-					<fo:block-container height="100%" display-align="center" border="0pt solid black"><!--  -->
-						<fo:block font-family="WorkSans" font-size="50pt" line-height="115%">
-						
-							<xsl:variable name="languages">
-								<xsl:call-template name="getLanguages"/>
-							</xsl:variable>						
-							<xsl:variable name="editionFO">
-								<xsl:apply-templates select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:edition">
-									<xsl:with-param name="curr_lang" select="xalan:nodeset($languages)/lang[1]"/>
-								</xsl:apply-templates>
-							</xsl:variable>
-							
-							<xsl:variable name="titles">
-								<xsl:for-each select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title">
-									<xsl:copy-of select="."/>
-								</xsl:for-each>
-							</xsl:variable>
-							
-							<xsl:for-each select="xalan:nodeset($languages)/lang">
-								<xsl:variable name="title_num" select="position()"/>							
-								<xsl:variable name="curr_lang" select="."/>
-								<xsl:variable name="title-cover" select="xalan:nodeset($titles)//bipm:title[@language = $curr_lang and @type='main']"/>							
-								<xsl:variable name="title-cover_" select="java:replaceAll(java:java.lang.String.new($title-cover),'( (of )| (and )| (or ))','#$2')"/>
-								<xsl:variable name="titleParts">
-									<xsl:call-template name="splitTitle">
-										<xsl:with-param name="pText" select="$title-cover_"/>
-										<xsl:with-param name="sep" select="' '"/>
-									</xsl:call-template>
-								</xsl:variable>
-								<xsl:variable name="titleSplitted">							
-									<xsl:call-template name="splitByParts">
-										<xsl:with-param name="items" select="$titleParts"/>
-										<xsl:with-param name="mergeEach" select="round(count(xalan:nodeset($titleParts)/item) div 4 + 0.49)"/>
-									</xsl:call-template>
-								</xsl:variable>
-								<xsl:variable name="font-weight-initial">
-									<xsl:choose>
-										<xsl:when test="position() = 1">0</xsl:when>
-										<xsl:otherwise>400</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
-								<fo:block>
-									<xsl:if test="$title_num != 1">
-										<xsl:attribute name="text-align">right</xsl:attribute>
-									</xsl:if>
-									<xsl:for-each select="xalan:nodeset($titleSplitted)/part">
-										<fo:block font-weight="{$font-weight-initial + 100 * position()}">										
-											<xsl:value-of select="translate(., '#', ' ')"/>
-											<xsl:if test="$title_num = 1 and position() = last()">
-												<fo:inline font-size="11.7pt" font-weight="normal" padding-left="5mm" baseline-shift="15%" line-height="125%">
-													<xsl:copy-of select="$editionFO"/>
-													<xsl:text> </xsl:text>
-													<xsl:value-of select="$copyrightYear"/>
-												</fo:inline>
-											</xsl:if>
-										</fo:block>
-									</xsl:for-each>
-								</fo:block>
+						<xsl:variable name="titles">
+							<xsl:for-each select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title">
+								<xsl:copy-of select="."/>
 							</xsl:for-each>
-							
-							
-						</fo:block>
-					</fo:block-container>
-				</xsl:if>
-				
-				<xsl:if test="$independentAppendix != ''">
-					<fo:block-container>
-						<fo:block font-family="WorkSans" font-size="16pt" line-height="120%" font-weight="400" margin-top="20mm">
-							<fo:block>
-								<xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:title[@language = $lang]"/>
-								<xsl:text> (</xsl:text>
-								<xsl:variable name="editionFO">
-									<xsl:apply-templates select="/bipm:bipm-standard/bipm:bibdata/bipm:edition">
-										<xsl:with-param name="curr_lang" select="$lang"/>
-									</xsl:apply-templates>
-								</xsl:variable>
-								<xsl:value-of select="normalize-space($editionFO)"/>
-								<xsl:text>)</xsl:text>
-							</fo:block>
-							<fo:block>
+						</xsl:variable>
+						
+						<xsl:for-each select="xalan:nodeset($languages)/lang">
+							<xsl:variable name="title_num" select="position()"/>							
+							<xsl:variable name="curr_lang" select="."/>
+							<xsl:variable name="title-cover" select="xalan:nodeset($titles)//bipm:title[@language = $curr_lang and @type='main']"/>							
+							<xsl:variable name="title-cover_" select="java:replaceAll(java:java.lang.String.new($title-cover),'( (of )| (and )| (or ))','#$2')"/>
+							<xsl:variable name="titleParts">
+								<xsl:call-template name="splitTitle">
+									<xsl:with-param name="pText" select="$title-cover_"/>
+									<xsl:with-param name="sep" select="' '"/>
+								</xsl:call-template>
+							</xsl:variable>
+							<xsl:variable name="titleSplitted">							
+								<xsl:call-template name="splitByParts">
+									<xsl:with-param name="items" select="$titleParts"/>
+									<xsl:with-param name="mergeEach" select="round(count(xalan:nodeset($titleParts)/item) div 4 + 0.49)"/>
+								</xsl:call-template>
+							</xsl:variable>
+							<xsl:variable name="font-weight-initial">
 								<xsl:choose>
-									<xsl:when test="$lang = 'fr'">Annexe </xsl:when>
-									<xsl:otherwise>Appendix </xsl:otherwise>
+									<xsl:when test="position() = 1">0</xsl:when>
+									<xsl:otherwise>400</xsl:otherwise>
 								</xsl:choose>
-								<xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:appendix"/>
-							</fo:block>
-						</fo:block>
-						<fo:block font-family="WorkSans" font-size="36pt" font-weight="600" margin-top="15mm">
-							<xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:title[@type = 'appendix' and @language = $lang]"/>
-						</fo:block>
-					</fo:block-container>
-					
-					<fo:block-container absolute-position="fixed" left="20mm" top="232mm" height="42mm" width="70mm">
-						<fo:block font-size="12pt" font-family="WorkSans">
-							<fo:block>Consultative Committee for Time and Frequence</fo:block>
-							<fo:block> </fo:block>
-							<fo:block>BIPM SI MEP S1</fo:block>
+							</xsl:variable>
 							<fo:block>
-								<xsl:call-template name="printRevisionDate">
-									<xsl:with-param name="date" select="/bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:revision-date"/>
-								</xsl:call-template></fo:block>
+								<xsl:if test="$title_num != 1">
+									<xsl:attribute name="text-align">right</xsl:attribute>
+								</xsl:if>
+								<xsl:for-each select="xalan:nodeset($titleSplitted)/part">
+									<fo:block font-weight="{$font-weight-initial + 100 * position()}">										
+										<xsl:value-of select="translate(., '#', ' ')"/>
+										<xsl:if test="$title_num = 1 and position() = last()">
+											<fo:inline font-size="11.7pt" font-weight="normal" padding-left="5mm" baseline-shift="15%" line-height="125%">
+												<xsl:copy-of select="$editionFO"/>
+												<xsl:text> </xsl:text>
+												<xsl:value-of select="$copyrightYear"/>
+											</fo:inline>
+										</xsl:if>
+									</fo:block>
+								</xsl:for-each>
 							</fo:block>
-					</fo:block-container>
-					
-					
-				</xsl:if>
+						</xsl:for-each>
+						
+						
+					</fo:block>
+				</fo:block-container>
 				
 			</fo:flow>
 		</fo:page-sequence>	
+	</xsl:template>
+	
+	<xsl:template name="insertCoverPageAppendix">	
+	
+		<fo:page-sequence master-reference="cover-page-appendix" force-page-count="even" initial-page-number="1">
+			
+			<fo:flow flow-name="xsl-region-body" font-family="WorkSans">
+			
+				<xsl:call-template name="insertCoverPageCommon"/>
+				
+				<xsl:variable name="weight-normal">300</xsl:variable>
+				<xsl:variable name="weight-bold">500</xsl:variable>
+				
+				<fo:block-container absolute-position="fixed" left="12.5mm" top="60mm">
+					<fo:block font-size="22.2pt" font-weight="{$weight-normal}">Le Système international d’unités</fo:block>
+					<fo:block font-size="22.2pt" font-weight="{$weight-bold}" margin-top="1mm">The International System of Units</fo:block>					
+					<xsl:variable name="edition_str">édition</xsl:variable>
+						<!-- <xsl:choose>
+							<xsl:when test="$lang = 'fr'">édition</xsl:when>
+							<xsl:otherwise>edition</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable> -->
+					<fo:block font-size="14pt" font-weight="{$weight-bold}" margin-top="4mm"><xsl:value-of select="concat(/bipm:bipm-standard/bipm:bibdata/bipm:edition, ' ', $edition_str, ' ', $copyrightYear)"/></fo:block>				
+				</fo:block-container>
+				
+				<fo:block-container height="98%" display-align="center">
+					<xsl:variable name="appendix_num" select="normalize-space(/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:appendix)"/>
+					<xsl:if test="$appendix_num != ''">
+						<fo:block font-size="17pt" font-weight="{$weight-normal}">Annexe <xsl:value-of select="$appendix_num"/></fo:block>
+						<fo:block font-size="17pt" font-weight="{$weight-bold}">Appendix  <xsl:value-of select="$appendix_num"/></fo:block>
+					</xsl:if>
+					<fo:block font-size="30.4pt">
+						<fo:block> </fo:block>
+						<fo:block font-weight="{$weight-normal}"><xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:title[@language = 'fr' and @type = 'appendix']"/></fo:block>
+						<fo:block> </fo:block>
+						<fo:block font-weight="{$weight-bold}"><xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:title[@language = 'en' and @type = 'appendix']"/></fo:block>
+					</fo:block>
+				</fo:block-container>
+				
+				<!-- <fo:block-container>
+					<fo:block font-family="WorkSans" font-size="16pt" line-height="120%" font-weight="400" margin-top="20mm">
+						<fo:block>
+							<xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:title[@language = $lang]"/>
+							<xsl:text> (</xsl:text>
+							<xsl:variable name="editionFO">
+								<xsl:apply-templates select="/bipm:bipm-standard/bipm:bibdata/bipm:edition">
+									<xsl:with-param name="curr_lang" select="$lang"/>
+								</xsl:apply-templates>
+							</xsl:variable>
+							<xsl:value-of select="normalize-space($editionFO)"/>
+							<xsl:text>)</xsl:text>
+						</fo:block>
+						<fo:block>
+							<xsl:choose>
+								<xsl:when test="$lang = 'fr'">Annexe </xsl:when>
+								<xsl:otherwise>Appendix </xsl:otherwise>
+							</xsl:choose>
+							<xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:appendix"/>
+						</fo:block>
+					</fo:block>
+					<fo:block font-family="WorkSans" font-size="36pt" font-weight="600" margin-top="15mm">
+						<xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:title[@type = 'appendix' and @language = $lang]"/>
+					</fo:block>
+				</fo:block-container> -->
+				
+				<fo:block-container absolute-position="fixed" left="12mm" top="242mm" height="42mm" display-align="after">
+					<fo:block font-size="12pt">
+						<fo:block>Comité consultatif du temps et des fréquences</fo:block>
+						<fo:block><xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:editorialgroup/bipm:committee"/></fo:block>
+						<fo:block> </fo:block>
+						<!-- <fo:block>BIPM SI MEP S1</fo:block> -->
+						<fo:block>
+							<xsl:call-template name="printRevisionDate">
+								<xsl:with-param name="date" select="/bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:revision-date"/>
+								<xsl:with-param name="lang" select="'en'"/>
+							</xsl:call-template>
+						</fo:block>
+						<fo:block>
+							<xsl:call-template name="printRevisionDate">
+								<xsl:with-param name="date" select="/bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:revision-date"/>
+								<xsl:with-param name="lang" select="'fr'"/>
+							</xsl:call-template>
+						</fo:block>
+					</fo:block>
+				</fo:block-container>
+	
+			</fo:flow>
+		</fo:page-sequence>	
+	</xsl:template>
+	
+	<xsl:template name="insertCoverPageCommon">
+		<!-- background color -->
+		<fo:block-container absolute-position="fixed" left="0" top="-1mm">
+			<fo:block>
+				<fo:instream-foreign-object content-height="{$pageHeight}" fox:alt-text="Background color">
+					<svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="{$pageWidth}" height="{$pageHeight}">
+						<rect width="{$pageWidth}" height="{$pageHeight}" style="fill:rgb(214,226,239);stroke-width:0"/>
+					</svg>
+				</fo:instream-foreign-object>
+			</fo:block>
+		</fo:block-container>
+	
+		<!-- BIPM logo -->
+		<fo:block-container absolute-position="fixed" left="12.8mm" top="12.2mm">
+			<fo:block>
+				<fo:external-graphic src="{concat('data:image/png;base64,', normalize-space($Image-Logo-BIPM))}" width="35mm" content-height="scale-to-fit" scaling="uniform" fox:alt-text="Image Logo"/>
+			</fo:block>
+		</fo:block-container>
+		
+		<!-- SI logo -->
+		<fo:block-container absolute-position="fixed" left="166.5mm" top="253mm">
+			<fo:block>
+				<fo:instream-foreign-object content-height="32mm" content-width="32mm" fox:alt-text="Image Logo">
+					<xsl:copy-of select="$Image-Logo-SI"/>
+				</fo:instream-foreign-object>	
+				
+			</fo:block>
+		</fo:block-container>
 	</xsl:template>
 	
 	<xsl:template name="insertInnerCoverPage">
@@ -1160,8 +1389,8 @@
 		
 		<xsl:variable name="font-size">
 			<xsl:choose>
-				<xsl:when test="$level = 1 and $independentAppendix != ''">11.5pt</xsl:when>
-				<xsl:when test="$level &gt;= 2 and $independentAppendix != ''">10.5pt</xsl:when>
+				<!-- <xsl:when test="$level = 1 and $independentAppendix != ''">11.5pt</xsl:when>
+				<xsl:when test="$level &gt;= 2 and $independentAppendix != ''">10.5pt</xsl:when> -->
 				<xsl:when test="$level = 1">16pt</xsl:when>
 				<xsl:when test="$level = 2 and ancestor::bipm:annex">10.5pt</xsl:when>
 				<xsl:when test="$level = 2">14pt</xsl:when>
@@ -1185,17 +1414,17 @@
 					<xsl:when test="$level = 1 and (parent::bipm:annex or parent::bipm:abstract or ancestor::bipm:preface)">84pt</xsl:when>
 					<xsl:when test="$level = 1">6pt</xsl:when>
 					<xsl:when test="$level = 2 and ancestor::bipm:annex">6pt</xsl:when>
-					<xsl:when test="$level = 2 and $independentAppendix != ''">6pt</xsl:when>
+					<!-- <xsl:when test="$level = 2 and $independentAppendix != ''">6pt</xsl:when> -->
 					<xsl:when test="$level = 2">10pt</xsl:when>
 					<xsl:otherwise>6pt</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>			
-			<xsl:if test="$level = 1 and $independentAppendix != ''">
+			<!-- <xsl:if test="$level = 1 and $independentAppendix != ''">
 				<xsl:attribute name="margin-top">24pt</xsl:attribute>
 			</xsl:if>
 			<xsl:if test="$level = 2 and $independentAppendix != ''">
 				<xsl:attribute name="margin-top">36pt</xsl:attribute>
-			</xsl:if>
+			</xsl:if> -->
 			<xsl:if test="$level = 2">
 				<xsl:attribute name="margin-top">24pt</xsl:attribute>
 			</xsl:if>
@@ -1219,7 +1448,7 @@
 				</xsl:if>
 				
 				<xsl:choose>
-					<xsl:when test="*[local-name() = 'tab'] and not(ancestor::bipm:annex) and $independentAppendix = ''"><!-- split number and title -->					
+					<xsl:when test="*[local-name() = 'tab'] and not(ancestor::bipm:annex) "><!-- split number and title -->					<!-- and $independentAppendix = '' -->
 						<fo:table table-layout="fixed" width="100%">
 							<fo:table-column column-width="14mm"/>
 							<fo:table-column column-width="136mm"/>
@@ -1241,9 +1470,9 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<fo:block>
-							<xsl:if test="$independentAppendix != ''">
+							<!-- <xsl:if test="$independentAppendix != ''">
 								<xsl:attribute name="margin-left">14mm</xsl:attribute>
-							</xsl:if>
+							</xsl:if> -->
 							<xsl:choose>
 								<xsl:when test="ancestor::bipm:annex and $level &gt;= 2">
 									<xsl:if test="$level = 3">
@@ -1259,10 +1488,10 @@
 									<xsl:call-template name="extractTitle"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:choose>
-										<xsl:when test="$independentAppendix = ''">
+									<!-- <xsl:choose>
+										<xsl:when test="$independentAppendix = ''"> -->
 											<xsl:apply-templates/>
-										</xsl:when>
+										<!-- </xsl:when>
 										<xsl:otherwise>
 											<xsl:variable name="section" select="*[local-name() = 'tab'][1]/preceding-sibling::node()"/>
 											<xsl:if test="$section != '' and $level = 1">
@@ -1270,9 +1499,12 @@
 											</xsl:if>
 											<xsl:call-template name="extractTitle"/>
 										</xsl:otherwise>
-									</xsl:choose>									
+									</xsl:choose>									 -->
 								</xsl:otherwise>
 							</xsl:choose>
+							<xsl:if test=".//bipm:note_side">
+								<fo:inline>*</fo:inline>
+							</xsl:if>
 						</fo:block>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -1297,7 +1529,8 @@
 	<!-- ====== -->
 
 
-	<xsl:template match="bipm:preface/bipm:abstract" priority="3">
+	<!-- <xsl:template match="bipm:preface/bipm:abstract" priority="3"> -->
+	<xsl:template match="bipm:preface/*[1]" priority="3">
 		<fo:table table-layout="fixed" width="173.5mm">
 			<xsl:call-template name="setId"/>
 			<fo:table-column column-width="137mm"/>
@@ -1340,7 +1573,8 @@
 				
 				<xsl:variable name="rows_with_notes">					
 					<xsl:for-each select="*">						
-						<xsl:if test=".//bipm:note[not(ancestor::bipm:table)]">
+						<!-- <xsl:if test=".//bipm:note[not(ancestor::bipm:table)]"> -->
+						<xsl:if test=".//bipm:note_side"> <!-- virtual element note_side -->
 							<row_num><xsl:value-of select="position()"/></row_num>
 						</xsl:if>
 					</xsl:for-each>
@@ -1392,7 +1626,8 @@
 	
 
 
-	<xsl:template match="bipm:preface/bipm:abstract/*" mode="clause_table">
+	<!-- <xsl:template match="bipm:preface/bipm:abstract/*" mode="clause_table"> -->
+	<xsl:template match="bipm:preface/*[1]/*" mode="clause_table">
 		<xsl:param name="rows"/>
 		
 		<xsl:variable name="current_row"><xsl:number count="*"/></xsl:variable>
@@ -1423,7 +1658,9 @@
 					<xsl:variable name="start_row" select="$current_row"/>
 					<xsl:variable name="end_row" select="$current_row + $number-rows-spanned"/>
 					<fo:block>
-						<xsl:for-each select="ancestor::bipm:abstract/*[position() &gt;= $start_row and position() &lt; $end_row]//bipm:note[not(ancestor::bipm:table)]">
+						<!-- <xsl:for-each select="ancestor::bipm:abstract/*[position() &gt;= $start_row and position() &lt; $end_row]//bipm:note[not(ancestor::bipm:table)]"> -->
+						<!-- <xsl:for-each select="ancestor::bipm:abstract/*[position() &gt;= $start_row and position() &lt; $end_row]//bipm:note_side"> -->
+						<xsl:for-each select="ancestor::bipm:preface/*[1]/*[position() &gt;= $start_row and position() &lt; $end_row]//bipm:note_side">
 							<xsl:apply-templates select="." mode="note_side"/>
 						</xsl:for-each>
 					</fo:block>
@@ -1450,8 +1687,8 @@
 	
 	
 	<xsl:template match="bipm:sections/bipm:clause | bipm:annex/bipm:clause" priority="3">
-		<xsl:choose>
-			<xsl:when test="$independentAppendix = ''">
+		<!-- <xsl:choose>
+			<xsl:when test="$independentAppendix = ''"> -->
 				<fo:table table-layout="fixed" width="174mm" line-height="135%">
 					<xsl:call-template name="setId"/>
 					<fo:table-column column-width="137mm"/>
@@ -1519,7 +1756,8 @@
 						
 						<xsl:variable name="rows_with_notes">					
 							<xsl:for-each select="*">						
-								<xsl:if test=".//bipm:note[not(ancestor::bipm:table)]">
+								<!-- <xsl:if test=".//bipm:note[not(ancestor::bipm:table)]"> -->
+								<xsl:if test=".//bipm:note_side"> <!-- virtual element note_side --> <!-- [not(ancestor::bipm:table)] -->
 									<row_num><xsl:value-of select="position()"/></row_num>
 								</xsl:if>
 							</xsl:for-each>
@@ -1569,14 +1807,14 @@
 					</fo:table-body>
 				</fo:table>
 				
-				</xsl:when>
+				<!-- </xsl:when>
 			<xsl:otherwise>
 				<fo:block>
 					<xsl:call-template name="setId"/>
 						<xsl:apply-templates/>
 				</fo:block>
 			</xsl:otherwise>
-		</xsl:choose>
+		</xsl:choose> -->
 		
 	</xsl:template>
 	
@@ -1638,7 +1876,8 @@
 					
 					<fo:block>
 						<!-- <fo:block>display-align=<xsl:value-of select="xalan:nodeset($rows)/num[@span_start = $current_row]/@display-align"/></fo:block> -->
-						<xsl:for-each select="ancestor::*[1]/*[position() &gt;= $start_row and position() &lt; $end_row]//bipm:note">
+						<!-- <xsl:for-each select="ancestor::*[1]/*[position() &gt;= $start_row and position() &lt; $end_row]//bipm:note"> -->
+						<xsl:for-each select="ancestor::*[1]/*[position() &gt;= $start_row and position() &lt; $end_row]//bipm:note_side">
 							
 							<xsl:apply-templates select="." mode="note_side"/>
 						</xsl:for-each>
@@ -1668,24 +1907,50 @@
 	</xsl:template>
 
 	<!-- skip, because it process in note_side template -->
-	<xsl:template match="bipm:preface/bipm:abstract//bipm:note[not(ancestor::bipm:table)]" priority="3"/>
-	<xsl:template match="bipm:sections//bipm:note | bipm:annex//bipm:note" priority="3">
-		<xsl:if test="$independentAppendix != ''">
+	<!-- <xsl:template match="bipm:preface/bipm:abstract//bipm:note[not(ancestor::bipm:table)]" priority="3"/> -->
+	<!-- <xsl:template match="bipm:preface/bipm:abstract//bipm:note_side" priority="3"/> -->
+	<xsl:template match="bipm:preface/*[1]//bipm:note_side" priority="3"/>
+	
+	
+	<!-- <xsl:template match="bipm:sections//bipm:note | bipm:annex//bipm:note" priority="3"> -->
+	<xsl:template match="bipm:sections//bipm:note_side | bipm:annex//bipm:note_side" priority="3">
+		<!-- <xsl:if test="$independentAppendix != ''">
 			<fo:block>
-				<xsl:apply-templates/>
+				<xsl:apply-templates />
 			</fo:block>
-		</xsl:if>
+		</xsl:if> -->
 	</xsl:template> <!-- [not(ancestor::bipm:table)] -->
 	
 	
-	<xsl:template match="bipm:note" mode="note_side">
-		<fo:block>
+	<!-- <xsl:template match="bipm:note" mode="note_side"> -->
+	<xsl:template match="bipm:note_side" mode="note_side">
+		<fo:block line-height-shift-adjustment="disregard-shifts">
+			<xsl:if test="ancestor::bipm:title"><fo:inline>* </fo:inline></xsl:if>
 			<xsl:apply-templates mode="note_side"/>
 		</fo:block>
 	</xsl:template>
-	<xsl:template match="bipm:note/bipm:name" mode="note_side" priority="2"/>	
-	<xsl:template match="bipm:note/*" mode="note_side">
+	<!-- <xsl:template match="bipm:note/bipm:name" mode="note_side" priority="2"/>	 -->
+	<xsl:template match="bipm:note_side/bipm:name" mode="note_side" priority="2"/>	
+	<!-- <xsl:template match="bipm:note/*" mode="note_side"> -->
+	<xsl:template match="bipm:note_side/*" mode="note_side">
 		<xsl:apply-templates select="."/>
+	</xsl:template>
+
+
+	<xsl:template match="*[local-name() = 'note_side']/*[local-name() = 'p']">
+		<xsl:variable name="num"><xsl:number/></xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$num = 1">
+				<fo:inline xsl:use-attribute-sets="note-p-style">
+					<xsl:apply-templates/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:block xsl:use-attribute-sets="note-p-style">						
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!--
@@ -1695,16 +1960,19 @@
 	-->
 	<xsl:template match="bipm:title//bipm:fn |                  bipm:name//bipm:fn |                  bipm:p/bipm:fn[not(ancestor::bipm:table)] |                  bipm:p/*/bipm:fn[not(ancestor::bipm:table)] |                 bipm:sourcecode/bipm:fn[not(ancestor::bipm:table)]" priority="2" name="fn">
 		<fo:footnote keep-with-previous.within-line="always">
-			<xsl:variable name="number" select="@reference"/>
+			<xsl:variable name="number"> <!-- select="@reference"/> -->
+				<xsl:number count="bipm:fn[not(ancestor::bipm:table)]" level="any"/>
+			</xsl:variable>
+			<xsl:variable name="gen_id" select="generate-id()"/>
 			<xsl:variable name="lang" select="ancestor::bipm:bipm-standard/*[local-name()='bibdata']//*[local-name()='language']"/>
 			<fo:inline font-size="65%" keep-with-previous.within-line="always" vertical-align="super">
-				<fo:basic-link internal-destination="{$lang}_footnote_{@reference}" fox:alt-text="footnote {@reference}">
+				<fo:basic-link internal-destination="{$lang}_footnote_{@reference}_{$number}_{$gen_id}" fox:alt-text="footnote {@reference}">
 					<xsl:value-of select="$number"/><!--  + count(//bipm:bibitem/bipm:note) -->
 				</fo:basic-link>
 			</fo:inline>
 			<fo:footnote-body>
 				<fo:block font-size="9pt" margin-bottom="12pt" font-weight="normal" text-indent="0" start-indent="0" line-height="124%" text-align="justify">
-					<fo:inline id="{$lang}_footnote_{@reference}" keep-with-next.within-line="always" font-size="60%" vertical-align="super" padding-right="1mm"> <!-- baseline-shift="30%" padding-right="3mm" font-size="60%"  alignment-baseline="hanging" -->
+					<fo:inline id="{$lang}_footnote_{@reference}_{$number}_{$gen_id}" keep-with-next.within-line="always" font-size="60%" vertical-align="super" padding-right="1mm"> <!-- baseline-shift="30%" padding-right="3mm" font-size="60%"  alignment-baseline="hanging" -->
 						<xsl:value-of select="$number "/><!-- + count(//bipm:bibitem/bipm:note) -->
 					</fo:inline>
 					<xsl:for-each select="bipm:p">
@@ -1761,6 +2029,11 @@
 			<xsl:if test="@align = 'center'">
 				<xsl:attribute name="keep-with-next">always</xsl:attribute>
 			</xsl:if>
+			<xsl:if test="@parent-type = 'quote'">
+				<xsl:attribute name="font-family">Arial</xsl:attribute>
+				<xsl:attribute name="font-size">9pt</xsl:attribute>
+				<xsl:attribute name="line-height">130%</xsl:attribute>
+			</xsl:if>
 			<xsl:attribute name="line-height-shift-adjustment">disregard-shifts</xsl:attribute>
 			<xsl:apply-templates/>
 		</xsl:element>
@@ -1778,7 +2051,14 @@
 	</xsl:template>
 
 	<xsl:template match="*[local-name()='table']/*[local-name()='note']/*[local-name()='p']" mode="process" priority="2">
-		<xsl:call-template name="p"/>
+		<xsl:choose>
+			<xsl:when test="ancestor::bipm:preface">
+				<xsl:call-template name="p"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+			</xsl:otherwise>
+		</xsl:choose>		
 	</xsl:template>
 
 
@@ -1793,6 +2073,11 @@
 			<xsl:if test="ancestor::bipm:li">
 				<xsl:attribute name="margin-left">7mm</xsl:attribute>
 			</xsl:if>
+			<xsl:if test="@parent-type = 'quote'">
+				<xsl:attribute name="font-family">Arial</xsl:attribute>
+				<xsl:attribute name="font-size">9pt</xsl:attribute>
+				<xsl:attribute name="line-height">130%</xsl:attribute>
+			</xsl:if>
 			<fo:block-container margin-left="0mm">
 				<fo:list-block provisional-distance-between-starts="8mm">
 					<xsl:if test="not(following-sibling::*[1][local-name() = 'li'])"> <!-- last item -->
@@ -1804,7 +2089,8 @@
 							<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
 						</xsl:if>
 					</xsl:if>
-					<xsl:if test="../ancestor::bipm:note">
+					<!-- <xsl:if test="../ancestor::bipm:note"> -->
+					<xsl:if test="ancestor::bipm:note_side">
 						<xsl:attribute name="provisional-distance-between-starts">0mm</xsl:attribute>
 					</xsl:if>
 	
@@ -1847,7 +2133,8 @@
 								<xsl:if test="@list_type = 'ol'">
 									<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
 								</xsl:if>
-								<xsl:if test="ancestor::bipm:note">
+								<!-- <xsl:if test="ancestor::bipm:note"> -->
+								<xsl:if test="ancestor::bipm:note_side">
 									<xsl:attribute name="text-indent">3mm</xsl:attribute>
 								</xsl:if>
 								
@@ -2008,8 +2295,8 @@
 
 	<xsl:template match="bipm:pagebreak">
 		<fo:block break-after="page"/>
-		<fo:block> </fo:block>
-		<fo:block break-after="page"/>
+		<!-- <fo:block>&#xA0;</fo:block>
+		<fo:block break-after="page"/> -->
 	</xsl:template>
 
 	<xsl:template match="bipm:admonition">
@@ -2023,6 +2310,60 @@
 				</fo:block>
 			</fo:block-container>
 		</fo:block-container>
+	</xsl:template>
+
+
+	<xsl:template match="bipm:xref" priority="2">		
+		<fo:basic-link internal-destination="{@target}" fox:alt-text="{@target}">
+			<xsl:choose>
+				<xsl:when test="@pagenumber='true'"><!-- ToC in Appendix -->
+					<fo:inline font-weight="bold"><fo:page-number-citation ref-id="{@target}"/></fo:inline>
+				</xsl:when>
+				<xsl:when test="starts-with(normalize-space(following-sibling::node()[1]), ')')">										
+					<!-- add , see p. N -->				
+					<!-- add , voir p. N -->
+					<xsl:apply-templates/>
+					<xsl:variable name="curr_lang" select="ancestor::bipm:bipm-standard/bipm:bibdata/bipm:language"/>
+					<xsl:text>, </xsl:text>
+					<xsl:choose>
+						<xsl:when test="$curr_lang = 'fr'">voir</xsl:when>
+						<xsl:otherwise>see</xsl:otherwise>
+					</xsl:choose>
+					<xsl:text> p. </xsl:text>
+					<fo:page-number-citation ref-id="{@target}"/>					
+				</xsl:when>
+				<xsl:otherwise>
+					<fo:inline><xsl:apply-templates/></fo:inline>
+				</xsl:otherwise>
+			</xsl:choose>
+		</fo:basic-link>
+	</xsl:template>
+	
+	<xsl:template match="bipm:note[not(ancestor::bipm:preface)]/bipm:name" priority="2" mode="presentation">
+		<xsl:choose>
+			<xsl:when test="not(../preceding-sibling::bipm:note) and not((../following-sibling::bipm:note))">
+				<xsl:variable name="curr_lang" select="ancestor::bipm:bipm-standard/bipm:bibdata/bipm:language"/>
+				<xsl:choose>
+					<xsl:when test="$curr_lang = 'fr'">Remarque: </xsl:when>
+					<xsl:otherwise>Note: </xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<!-- <xsl:when test="../preceding-sibling::*[1][local-name = 'note'] or following-sibling::*[1][local-name = 'note']">
+				<xsl:number/><xsl:text>. </xsl:text>
+			</xsl:when> -->
+			<xsl:when test="ancestor::bipm:table and count(ancestor::bipm:table//bipm:note) &gt; 0">
+				<xsl:variable name="table_id" select="ancestor::bipm:table/@id"/>
+				<xsl:number count="//bipm:table[@id = $table_id]//bipm:note"/><xsl:text>. </xsl:text>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'note']/*[local-name() = 'p']" priority="3">
+		<fo:inline xsl:use-attribute-sets="note-p-style">
+			<xsl:apply-templates/>
+		</fo:inline>
+		<fo:inline><xsl:value-of select="$linebreak"/></fo:inline>
+		
 	</xsl:template>
 
 	<xsl:template name="insertHeaderFooter">
@@ -2098,6 +2439,8 @@
 
 	<xsl:template name="printRevisionDate">
 		<xsl:param name="date"/>
+		<xsl:param name="lang"/>
+		<xsl:param name="variant"/>
 		<!-- <revision-date>2019-05-20</revision-date> -->
 		<xsl:variable name="year" select="substring($date, 1, 4)"/>
 		<xsl:variable name="month" select="substring($date, 6, 2)"/>
@@ -2138,7 +2481,15 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<xsl:value-of select="concat($day, ' ', $monthStr, ' ', $year)"/>
+		<xsl:choose>
+			<xsl:when test="$lang = 'fr' or $variant = 'true'">
+				<xsl:value-of select="concat($day, ' ', $monthStr, ' ', $year)"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat($monthStr, ' ', $day, ', ', $year)"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		
 	</xsl:template>
 
 
@@ -2840,6 +3191,9 @@
 		
 		
 		
+		
+			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+		
 	</xsl:attribute-set><xsl:variable name="note-body-indent">10mm</xsl:variable><xsl:variable name="note-body-indent-table">5mm</xsl:variable><xsl:attribute-set name="note-name-style">
 		
 		
@@ -2866,6 +3220,8 @@
 		
 		
 		
+		
+			<xsl:attribute name="text-align">justify</xsl:attribute>
 		
 	</xsl:attribute-set><xsl:attribute-set name="termnote-style">
 		
@@ -3088,10 +3444,14 @@
 				<xsl:attribute name="space-after">12pt</xsl:attribute>
 				<xsl:attribute name="margin-left">0mm</xsl:attribute>
 				<xsl:attribute name="margin-right">0mm</xsl:attribute>
-				<xsl:if test="not(ancestor::*[local-name()='note'])">
+				<xsl:if test="not(ancestor::*[local-name()='note_side'])">
 					<xsl:attribute name="font-size">10pt</xsl:attribute>
 				</xsl:if>
 				<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+				<xsl:if test="@parent-type = 'quote'">
+					<xsl:attribute name="font-family">Arial</xsl:attribute>
+					<xsl:attribute name="font-size">9pt</xsl:attribute>
+				</xsl:if>
 			
 			
 			
@@ -3110,7 +3470,7 @@
 				
 								
 									
-					<xsl:if test="not(ancestor::*[local-name()='preface']) and not(ancestor::*[local-name()='note'])">
+					<xsl:if test="not(ancestor::*[local-name()='preface']) and not(ancestor::*[local-name()='note_side']) and not(ancestor::*[local-name() = 'annex'] and .//*[local-name() = 'xref'][@pagenumber])">
 						<attribute name="border-top">0.5pt solid black</attribute>
 						<attribute name="border-bottom">0.5pt solid black</attribute>
 					</xsl:if>
@@ -3375,21 +3735,26 @@
 							
 								<xsl:attribute name="border">solid black 0pt</xsl:attribute>
 							
-							<!-- except gb and bipm -->
 							
 							
 							
+							<!-- except gb -->
+							
+								<xsl:apply-templates select="../*[local-name()='note']" mode="process"/>
+							
+							
+							<!-- show Note under table in preface (ex. abstract) sections -->
+							<!-- empty, because notes show at page side in main sections -->
+							<!-- <xsl:if test="$namespace = 'bipm'">
 								<xsl:choose>
-									<xsl:when test="ancestor::*[local-name()='preface']">
-										<!-- show Note under table in preface (ex. abstract) sections -->
+									<xsl:when test="ancestor::*[local-name()='preface']">										
 										<xsl:apply-templates select="../*[local-name()='note']" mode="process"/>
 									</xsl:when>
-									<xsl:otherwise>
-										<!-- empty, because notes show at page side in main sections -->
+									<xsl:otherwise>										
 									<fo:block/>
 									</xsl:otherwise>
 								</xsl:choose>
-							
+							</xsl:if> -->
 							
 							
 							<!-- horizontal row separator -->
@@ -3454,7 +3819,21 @@
 							
 								<xsl:attribute name="border">solid black 0pt</xsl:attribute>
 							
-							<!-- except gb and bipm -->
+							
+							
+							
+								<xsl:if test="count(ancestor::bipm:table//*[local-name()='note']) &gt; 1">
+									<fo:block font-weight="bold">
+										<xsl:variable name="curr_lang" select="ancestor::bipm:bipm-standard/bipm:bibdata/bipm:language"/>
+										<xsl:choose>
+											<xsl:when test="$curr_lang = 'fr'">Remarques</xsl:when>
+											<xsl:otherwise>Notes</xsl:otherwise>
+										</xsl:choose>
+									</fo:block>
+								</xsl:if>
+							
+							
+							<!-- except gb  -->
 							
 								<xsl:apply-templates select="../*[local-name()='note']" mode="process"/>
 							
@@ -3539,6 +3918,9 @@
 				
 				
 				
+				<!-- <xsl:if test="$namespace = 'bipm'">
+					<xsl:attribute name="height">8mm</xsl:attribute>
+				</xsl:if> -->
 				
 			<xsl:apply-templates/>
 		</fo:table-row>
@@ -3569,6 +3951,10 @@
 				<xsl:attribute name="border-bottom">solid black 0.5pt</xsl:attribute>
 				<xsl:attribute name="height">8mm</xsl:attribute>
 				<xsl:attribute name="padding-top">2mm</xsl:attribute>
+				<xsl:if test="ancestor::*[local-name() = 'annex'] and ancestor::*[local-name() = 'table']//*[local-name() = 'xref'][@pagenumber]"><!-- for Annex ToC -->
+					<xsl:attribute name="border-top">solid black 0pt</xsl:attribute>
+					<xsl:attribute name="border-bottom">solid black 0pt</xsl:attribute>
+				</xsl:if>
 			
 			<xsl:if test="@colspan">
 				<xsl:attribute name="number-columns-spanned">
@@ -3651,7 +4037,12 @@
 				
 									
 					<xsl:attribute name="text-align">justify</xsl:attribute>
-					<xsl:attribute name="margin-top">18pt</xsl:attribute>
+					<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
+					<xsl:if test="ancestor::bipm:preface">
+						<xsl:attribute name="margin-top">18pt</xsl:attribute>
+						<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+					</xsl:if>
+					
 				
 				
 				<fo:inline padding-right="2mm">
@@ -3659,14 +4050,18 @@
 					
 					
 					
-						<xsl:attribute name="font-size">10pt</xsl:attribute>						
-						<xsl:attribute name="text-decoration">underline</xsl:attribute>
+						<xsl:attribute name="font-size">10pt</xsl:attribute>
+						<xsl:if test="ancestor::bipm:preface">
+							<xsl:attribute name="text-decoration">underline</xsl:attribute>
+						</xsl:if>
 					
 					<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
 						
 				</fo:inline>
 				
-					<fo:block> </fo:block>
+					<xsl:if test="ancestor::bipm:preface">
+						<fo:block> </fo:block>
+					</xsl:if>
 				
 				<xsl:apply-templates mode="process"/>
 			</fo:block>
@@ -4685,6 +5080,15 @@
 				
 					<fo:block>
 						
+						
+						
+						
+							<xsl:if test="@parent-type = 'quote'">
+								<xsl:attribute name="font-family">Arial</xsl:attribute>
+								<xsl:attribute name="font-size">9pt</xsl:attribute>
+								<xsl:attribute name="line-height">130%</xsl:attribute>
+								<xsl:attribute name="text-align">justify</xsl:attribute>
+							</xsl:if>
 						
 						
 						
