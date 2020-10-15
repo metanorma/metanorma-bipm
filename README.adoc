@@ -155,6 +155,8 @@ they are used for tables of content. In HTML output, they are treated as normal 
 
 Clauses and annexes may be marked as `[%unnumbered]`, in which case they do not receive section numbering, and are cross-referenced by their title.
 
+Unlike the Metanorma default, ordered lists do not have a fixed sequence of numbering styles: the type set for each ordered list (including nested lists) is respected. The default numbering style for ordered lists is always arabic.
+
 == Data Models
 
 The document model for BIPM is given in https://github.com/metanorma/metanorma-model-bipm[metanorma-model-bipm].
