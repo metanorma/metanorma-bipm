@@ -49,7 +49,10 @@ RSpec.describe IsoDoc::BIPM do
   </copyright>
   <ext>
   <editorialgroup>
-    <committee acronym="A">TC</committee>
+  <committee acronym='TCA'>
+  <variant language='en' script='Latn'>TC</variant>
+  <variant language='fr' script='Latn'>CT</variant>
+</committee>
     <workgroup acronym="B">WC</committee>
   </editorialgroup>
   <comment-period><from>N1</from><to>N2</to></comment-period>
@@ -94,7 +97,10 @@ RSpec.describe IsoDoc::BIPM do
   </copyright>
   <ext>
   <editorialgroup>
-    <committee type="A">TC</committee>
+  <committee acronym='TCA'>
+  <variant language='en' script='Latn'>TC</variant>
+  <variant language='fr' script='Latn'>CT</variant>
+</committee>
   </editorialgroup>
   <comment-period><from>N1</from><to>N2</to></comment-period>
   <si-aspect>A_e_deltanu</si-aspect>
@@ -127,19 +133,21 @@ RSpec.describe IsoDoc::BIPM do
 :draftinfo=>" (draft 3.4, 2000-01-01)",
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
+:lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"A", "committee"=>"TC", "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"TCA", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
+:script=>"Latn",
 :si_aspect_index=>#{si_aspect},
 :si_aspect_paths=>#{si_aspect_paths},
 :stage=>"Mise en Pratique",
 :stage_display=>"En Vigeur",
-:tc=>"TC",
+:tc=>"\\n  TC\\n  CT\\n",
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -193,7 +201,10 @@ RSpec.describe IsoDoc::BIPM do
     </owner>
   </copyright>
   <editorialgroup>
-    <committee type="A">TC</committee>
+  <committee acronym='TCA'>
+  <variant language='en' script='Latn'>TC</variant>
+  <variant language='fr' script='Latn'>CT</variant>
+</committee>
   </editorialgroup>
   <security>Client Confidential</security>
   <ext><doctype>cipm-mra</doctype>
@@ -237,7 +248,10 @@ RSpec.describe IsoDoc::BIPM do
     </owner>
   </copyright>
   <editorialgroup>
-    <committee type="A">TC</committee>
+  <committee acronym='TCA'>
+  <variant language='en' script='Latn'>TC</variant>
+  <variant language='fr' script='Latn'>CT</variant>
+</committee>
   </editorialgroup>
   <security>Client Confidential</security>
   <ext><doctype>procès-verbal</doctype>
@@ -273,6 +287,7 @@ RSpec.describe IsoDoc::BIPM do
 :draftinfo=>" (brouillon 3.4, 2000-01-01)",
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
+:lang=>"fr",
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
@@ -281,6 +296,7 @@ RSpec.describe IsoDoc::BIPM do
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"Janvier 2000",
+:script=>"Latn",
 :si_aspect_index=>#{si_aspect},
 :si_aspect_paths=>#{si_aspect_paths},
 :stage=>"Working Draft",
@@ -321,12 +337,14 @@ RSpec.describe IsoDoc::BIPM do
 :draftinfo=>" (draft 3.4, 2000-01-01)",
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
+:lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
+:script=>"Latn",
 :si_aspect_index=>#{si_aspect},
 :si_aspect_paths=>#{si_aspect_paths},
 :stage=>"Standard",

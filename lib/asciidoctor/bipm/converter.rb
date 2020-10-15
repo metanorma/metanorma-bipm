@@ -11,24 +11,44 @@ module Asciidoctor
       end
 
       def metadata_committee(node, xml)
-        return unless node.attr("committee")
+        return unless node.attr("committee-en") || node.attr("committee-fr")
         xml.editorialgroup do |a|
-          a.committee node.attr("committee"),
-            acronym: node.attr("committee-acronym")
-          i = 2
-          while node.attr("committee_#{i}") do
-            a.committee node.attr("committee_#{i}"),
-              acronym: node.attr("committee-acronym_#{i}")
-            i += 1
+          metadata_committee1(node, a)
+          metadata_committee2(node, a)
+          metadata_workgroup(node, a)
+        end
+      end
+
+      def metadata_committee1(node, a)
+        a.committee **attr_code(acronym: node.attr("committee-acronym")) do |c|
+          e = node.attr("committee-en") and
+            c.variant e, language: "en", script: "Latn"
+          e = node.attr("committee-fr") and
+            c.variant e, language: "fr", script: "Latn"
+        end
+      end
+
+      def metadata_committee2(node, a)
+        i = 2
+        while node.attr("committee-en_#{i}") || node.attr("committee-fr_#{i}")  do
+          a.committee **attr_code(acronym: node.attr("committee-acronym_#{i}")) do |c|
+            e = node.attr("committee-en_#{i}") and
+              c.variant e, language: "en", script: "Latn"
+            e = node.attr("committee-fr_#{i}") and
+              c.variant e, language: "fr", script: "Latn"
           end
-          a.workgroup node.attr("workgroup"),
-            acronym: node.attr("workgroup-acronym")
-          i = 2
-          while node.attr("workgroup_#{i}") do
-            a.workgroup node.attr("workgroup_#{i}"),
-              acronym: node.attr("workgroup-acronym_#{i}")
-            i += 1
-          end
+          i += 1
+        end
+      end
+
+      def metadata_workgroup(node, a)
+        a.workgroup node.attr("workgroup"),
+          **attr_code(acronym: node.attr("workgroup-acronym"))
+        i = 2
+        while node.attr("workgroup_#{i}") do
+          a.workgroup node.attr("workgroup_#{i}"),
+            **attr_code(acronym: node.attr("workgroup-acronym_#{i}"))
+          i += 1
         end
       end
 
