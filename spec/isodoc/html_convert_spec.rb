@@ -779,6 +779,46 @@ INPUT
       OUTPUT
     end
 
+  it "processes ordered lists" do
+    input = <<~"INPUT"
+     <bipm-standard xmlns="http://riboseinc.com/isoxml">
+       <sections>
+       <clause id="A">
+       <title>Clause</title>
+       <ol type="arabic">
+       <li>
+       <ol type="roman_upper">
+       <li>A</li>
+       </ol>
+       </li>
+       </ol>
+       </clause>
+        </sections>
+        </bipm-standard>
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+        #{HTML_HDR}
+             <p class="zzSTDTitle1"/>
+             <div id='A'>
+  <h1>Clause</h1>
+  <ol type='1'>
+    <li>
+      <ol type='I'>
+        <li>A</li>
+      </ol>
+    </li>
+  </ol>
+  </div>
+  </div>
+         </body>
+    OUTPUT
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+                          .convert('test', input, true)
+                          .gsub(%r{^.*<body}m, '<body')
+                          .gsub(%r{</body>.*}m, '</body>')))
+    expect(stripped_html).to(be_equivalent_to(output))
+  end
 
 end
 
