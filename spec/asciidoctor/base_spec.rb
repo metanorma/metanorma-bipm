@@ -456,5 +456,30 @@ RSpec.describe Asciidoctor::BIPM do
 </bipm-standard>
     OUTPUT
   end
+
+  it "processes the start attribute on ordered lists" do
+        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :bipm, header_footer: true)))).to be_equivalent_to <<~"OUTPUT"
+    #{ASCIIDOC_BLANK_HDR}
+
+    [keep-with-next=true,keep-lines-together=true,start=4]
+    [loweralpha]
+    . First
+    . Second
+    INPUT
+    #{BLANK_HDR}
+ <sections>
+  <ol keep-with-next='true' keep-lines-together='true' id='_' type='alphabet' start='4'>
+    <li>
+      <p id='_'>First</p>
+    </li>
+    <li>
+      <p id='_'>Second</p>
+    </li>
+  </ol>
+</sections>
+</bipm-standard>
+    OUTPUT
+
+  end
 end
 
