@@ -8,7 +8,8 @@ module IsoDoc
       end
 
       def ol_attrs(node)
-        super.merge(type: ol_style((node["type"] || "arabic").to_sym))
+        super.merge(attr_code(type: ol_style((node["type"] || "arabic").to_sym),
+                   start: node["start"]))
       end
     end
   end

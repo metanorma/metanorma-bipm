@@ -78,6 +78,10 @@ module Asciidoctor
         super
       end
 
+      def ol_attrs(node)
+        super.merge(start: node.attr("start"))
+      end
+
       def outputs(node, ret)
         File.open(@filename + ".xml", "w:UTF-8") { |f| f.write(ret) }
         presentation_xml_converter(node).convert(@filename + ".xml")
