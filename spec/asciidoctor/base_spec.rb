@@ -80,6 +80,30 @@ RSpec.describe Asciidoctor::BIPM do
       :obsoleted-date: C
       :implemented-date: D
       :si-aspect: A_e_deltanu
+      :meeting-note: Note
+      :fullname: Andrew Yacoot
+      :affiliation: NPL
+      :fullname_2: Ulrich Kuetgens
+      :affiliation_2: PTB
+      :fullname_3: Enrico Massa
+      :affiliation_3: INRIM
+      :fullname_4: Ronald Dixson
+      :affiliation_4: NIST
+      :role_4: WG-N co-chair
+      :fullname_5: Harald Bosse
+      :affiliation_5: PTB
+      :role_5: WG-N co-chair
+      :fullname_6: Andrew Yacoot
+      :affiliation_6: NPL
+      :role_6: WG-N chair
+      :supersedes-date: 2018-06-11
+      :supersedes-draft: 1.0
+      :supersedes-edition: 1.0
+      :supersedes-date_2: 2019-06-11
+      :supersedes-draft_2: 2.0
+      :supersedes-edition_2: 2.0
+      :supersedes-date_3: 2019-06-11
+      :supersedes-draft_3: 3.0
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -106,6 +130,84 @@ RSpec.describe Asciidoctor::BIPM do
       <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
       <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
     </organization>
+  </contributor>
+    <contributor>
+    <role type='author'/>
+    <person>
+      <name>
+        <completename>Andrew Yacoot</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>NPL</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type='author'/>
+    <person>
+      <name>
+        <completename>Ulrich Kuetgens</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>PTB</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type='author'/>
+    <person>
+      <name>
+        <completename>Enrico Massa</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>INRIM</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+     <role type='editor'>WG-N co-chair</role>
+    <person>
+      <name>
+        <completename>Ronald Dixson</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>NIST</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+   <role type='editor'>WG-N co-chair</role>
+    <person>
+      <name>
+        <completename>Harald Bosse</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>PTB</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+   <role type='editor'>WG-N chair</role>
+    <person>
+      <name>
+        <completename>Andrew Yacoot</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>NPL</name>
+        </organization>
+      </affiliation>
+    </person>
   </contributor>
   <contributor>
     <role type="publisher"/>
@@ -146,6 +248,32 @@ RSpec.describe Asciidoctor::BIPM do
     <docidentifier>B</docidentifier>
   </bibitem>
 </relation>
+<relation type='supersedes'>
+  <bibitem>
+    <date type='published'>2018-06-11</date>
+    <edition>1.0</edition>
+    <version>
+      <draft>1.0</draft>
+    </version>
+  </bibitem>
+</relation>
+<relation type='supersedes'>
+  <bibitem>
+    <date type='published'>2019-06-11</date>
+    <edition>2.0</edition>
+    <version>
+      <draft>2.0</draft>
+    </version>
+  </bibitem>
+</relation>
+<relation type='supersedes'>
+  <bibitem>
+    <date type='circulated'>2019-06-11</date>
+    <version>
+      <draft>3.0</draft>
+    </version>
+  </bibitem>
+</relation>
 <ext>
   <doctype>brochure</doctype>
   <editorialgroup>
@@ -160,6 +288,7 @@ RSpec.describe Asciidoctor::BIPM do
   <to>Y</to>
 </comment-period>
 <si-aspect>A_e_deltanu</si-aspect>
+<meeting-note>Note</meeting-note>
 <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
