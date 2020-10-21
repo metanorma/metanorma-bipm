@@ -32,6 +32,44 @@ module Asciidoctor
         end
       end
 
+      def metadata_relations(node, xml)
+        super
+        relation_supersedes_self(node, xml, "")
+        i = 2
+        while relation_supersedes_self(node, xml, "_#{i}")
+          i += 1
+        end
+      end
+
+      def relation_supersedes_self(node, xml, suffix)
+        d = node.attr("supersedes-date#{suffix}")
+        draft = node.attr("supersedes-draft#{suffix}")
+        edition = node.attr("supersedes-edition#{suffix}")
+        return false unless d || draft || edition
+        relation_supersedes_self1(xml, d, edition, draft)
+      end
+
+      def relation_supersedes_self1(xml, d, edition, draft)
+        xml.relation **{ type: "supersedes" } do |r|
+          r.bibitem do |b|
+            d and b.date d, **{ type: edition ? "published" : "circulated" }
+            edition and b.edition edition
+            draft and b.version do |v|
+              v.draft draft
+            end
+          end
+        end
+      end
+
+      def personal_role(node, c, suffix)
+        role = node.attr("role#{suffix}") || "author"
+        unless %w(author editor).include?(role.downcase)
+          desc = role
+          role = "editor"
+        end
+        c.role desc, **{ type: role.downcase }
+      end
+
       def title(node, xml)
         ["en", "fr"].each do |lang|
           at = { language: lang, format: "text/plain" }

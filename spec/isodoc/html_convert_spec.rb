@@ -54,6 +54,7 @@ RSpec.describe IsoDoc::BIPM do
   </editorialgroup>
   <comment-period><from>N1</from><to>N2</to></comment-period>
   <si-aspect>A_e_deltanu</si-aspect>
+  <meeting-note>ABC</meeting-note>
   <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
@@ -98,6 +99,7 @@ RSpec.describe IsoDoc::BIPM do
   </editorialgroup>
   <comment-period><from>N1</from><to>N2</to></comment-period>
   <si-aspect>A_e_deltanu</si-aspect>
+  <meeting-note>ABC</meeting-note>
   <structuredidentifier>
   <docnumber>1000</docnumber>
   <appendix>ABC</appendix>
@@ -128,7 +130,7 @@ RSpec.describe IsoDoc::BIPM do
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"A", "committee"=>"TC", "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"A", "committee"=>"TC", "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
@@ -820,5 +822,344 @@ INPUT
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
+  it "generates document control text" do 
+    input = <<~"INPUT"
+<bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+<bibdata type="standard">
+<title language='en' format='text/plain' type='main'>Main Title</title>
+<title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
+<title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+    </organization>
+  </contributor>
+    <contributor>
+    <role type='author'/>
+    <person>
+      <name>
+        <completename>Andrew Yacoot</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>NPL</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type='author'/>
+    <person>
+      <name>
+        <completename>Ulrich Kuetgens</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>PTB</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type='author'/>
+    <person>
+      <name>
+        <completename>Enrico Massa</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>INRIM</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+     <role type='editor'>WG-N co-chair</role>
+    <person>
+      <name>
+        <completename>Ronald Dixson</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>NIST</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+   <role type='editor'>WG-N co-chair</role>
+    <person>
+      <name>
+        <completename>Harald Bosse</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>PTB</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+   <role type='editor'>WG-N chair</role>
+    <person>
+      <name>
+        <completename>Andrew Yacoot</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>NPL</name>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+    </organization>
+  </contributor>
+  <edition>2</edition>
+<version>
+  <revision-date>2000-01-01</revision-date>
+  <draft>3.4</draft>
+</version>
+  <language>en</language>
+  <script>Latn</script>
+  <status>
+    <stage>working-draft</stage>
+    <iteration>3</iteration>
+  </status>
+<relation type='supersedes'>
+  <bibitem>
+    <date type='published'>2018-06-11</date>
+    <edition>1.0</edition>
+    <version>
+      <draft>1.0</draft>
+    </version>
+  </bibitem>
+</relation>
+<relation type='supersedes'>
+  <bibitem>
+    <date type='published'>2019-06-11</date>
+    <edition>2.0</edition>
+    <version>
+      <draft>2.0</draft>
+    </version>
+  </bibitem>
+</relation>
+<relation type='supersedes'>
+  <bibitem>
+    <date type='circulated'>2019-06-11</date>
+    <version>
+      <draft>3.0</draft>
+    </version>
+  </bibitem>
+</relation>
+</bibdata>
+<sections/>
+</bipm-standard>
+INPUT
+presxml = xmlpp(<<~"OUTPUT")
+         <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::BIPM::VERSION}"  type="presentation">
+       <bibdata type="standard">
+       <title language="en" format="text/plain" type="main">Main Title</title>
+       <title language="en" format="text/plain" type="cover">Main Title (SI)</title>
+       <title language="en" format="text/plain" type="appendix">Main Title (SI)</title>
+         <contributor>
+           <role type="author"/>
+           <organization>
+             <name>Bureau International des poids et mesures</name>
+             <abbreviation>BIPM</abbreviation>
+           </organization>
+         </contributor>
+           <contributor>
+           <role type="author"/>
+           <person>
+             <name>
+               <completename>Andrew Yacoot</completename>
+             </name>
+             <affiliation>
+               <organization>
+                 <name>NPL</name>
+               </organization>
+             </affiliation>
+           </person>
+         </contributor>
+         <contributor>
+           <role type="author"/>
+           <person>
+             <name>
+               <completename>Ulrich Kuetgens</completename>
+             </name>
+             <affiliation>
+               <organization>
+                 <name>PTB</name>
+               </organization>
+             </affiliation>
+           </person>
+         </contributor>
+         <contributor>
+           <role type="author"/>
+           <person>
+             <name>
+               <completename>Enrico Massa</completename>
+             </name>
+             <affiliation>
+               <organization>
+                 <name>INRIM</name>
+               </organization>
+             </affiliation>
+           </person>
+         </contributor>
+         <contributor>
+            <role type="editor">WG-N co-chair</role>
+           <person>
+             <name>
+               <completename>Ronald Dixson</completename>
+             </name>
+             <affiliation>
+               <organization>
+                 <name>NIST</name>
+               </organization>
+             </affiliation>
+           </person>
+         </contributor>
+         <contributor>
+          <role type="editor">WG-N co-chair</role>
+           <person>
+             <name>
+               <completename>Harald Bosse</completename>
+             </name>
+             <affiliation>
+               <organization>
+                 <name>PTB</name>
+               </organization>
+             </affiliation>
+           </person>
+         </contributor>
+         <contributor>
+          <role type="editor">WG-N chair</role>
+           <person>
+             <name>
+               <completename>Andrew Yacoot</completename>
+             </name>
+             <affiliation>
+               <organization>
+                 <name>NPL</name>
+               </organization>
+             </affiliation>
+           </person>
+         </contributor>
+         <contributor>
+           <role type="publisher"/>
+           <organization>
+             <name>Bureau International des poids et mesures</name>
+             <abbreviation>BIPM</abbreviation>
+           </organization>
+         </contributor>
+         <edition>2</edition>
+       <version>
+         <revision-date>2000-01-01</revision-date>
+         <draft>3.4</draft>
+       </version>
+         <language>en</language>
+         <script>Latn</script>
+         <status>
+           <stage>working-draft</stage>
+           <iteration>3</iteration>
+         </status>
+       <relation type="supersedes">
+         <bibitem>
+           <date type="published">2018-06-11</date>
+           <edition>1.0</edition>
+           <version>
+             <draft>1.0</draft>
+           </version>
+         </bibitem>
+       </relation>
+       <relation type="supersedes">
+         <bibitem>
+           <date type="published">2019-06-11</date>
+           <edition>2.0</edition>
+           <version>
+             <draft>2.0</draft>
+           </version>
+         </bibitem>
+       </relation>
+       <relation type="supersedes">
+         <bibitem>
+           <date type="circulated">2019-06-11</date>
+           <version>
+             <draft>3.0</draft>
+           </version>
+         </bibitem>
+       </relation>
+       </bibdata>
+       <sections/>
+       <doccontrol>
+       <title>Document Control</title>
+       <table unnumbered="true"><tbody>
+       <tr><td>Authors:</td><td/><td>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td></tr>
+       <tr><td>2018-06-11</td><td>Draft 1.0 Edition 1.0</td>
+       <td>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td></tr>
+       <tr><td>2019-06-11</td><td>Draft 2.0 Edition 2.0</td>
+       <td>WG-N chair: Andrew Yacoot (NPL)</td></tr>
+       <tr><td>2019-06-11</td><td>Draft 3.0 </td><td/></tr>
+       </tbody></table>
+       </doccontrol>
+       </bipm-standard>
+    OUTPUT
+
+    output = xmlpp(<<~"OUTPUT")
+        #{HTML_HDR}
+        <p class='zzSTDTitle1'>Main Title</p>
+ <div class='doccontrol'>
+   <h1>Document Control</h1>
+   <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
+     <tbody>
+       <tr>
+         <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Authors:</td>
+         <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
+         <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
+       </tr>
+       <tr>
+         <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2018-06-11</td>
+         <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 1.0 Edition 1.0</td>
+         <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
+       </tr>
+       <tr>
+         <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2019-06-11</td>
+         <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 2.0 Edition 2.0</td>
+         <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N chair: Andrew Yacoot (NPL)</td>
+       </tr>
+       <tr>
+         <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2019-06-11</td>
+         <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 3.0 </td>
+         <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
+       </tr>
+     </tbody>
+   </table>
+</div>
+          </div>
+        </body>
+    OUTPUT
+
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+                          .convert('test', input, true)
+                          .gsub(%r{<i18nyaml>.*</i18nyaml>}m, "")
+                          .gsub(%r{<local_bibdata.*</local_bibdata>}m, "")
+                                    ))
+    expect(stripped_html).to(be_equivalent_to(presxml))
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+                          .convert('test', presxml, true)
+                          .gsub(%r{^.*<body}m, '<body')
+                          .gsub(%r{</body>.*}m, '</body>')))
+    expect(stripped_html).to(be_equivalent_to(output))
+
+
 end
 
+end

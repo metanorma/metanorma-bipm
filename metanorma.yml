@@ -99,6 +99,7 @@ metadata_extensions:
     comment-period-to:
       _output: to
   si-aspect:
+  meeting-note:
   structuredidentifier:
     docnumber:
     partnumber:
