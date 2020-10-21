@@ -803,7 +803,7 @@ INPUT
        <sections>
        <clause id="A">
        <title>Clause</title>
-       <ol type="arabic">
+       <ol type="arabic" start="4">
        <li>
        <ol type="roman_upper">
        <li>A</li>
@@ -820,7 +820,7 @@ INPUT
              <p class="zzSTDTitle1"/>
              <div id='A'>
   <h1>Clause</h1>
-  <ol type='1'>
+  <ol type='1' start='4'>
     <li>
       <ol type='I'>
         <li>A</li>
