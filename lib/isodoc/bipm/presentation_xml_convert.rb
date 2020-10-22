@@ -39,9 +39,9 @@ module IsoDoc
         <title>Document Control</title>
         <table unnumbered="true"><tbody>
         <tr><td>Authors:</td><td/><td>#{list_authors(docxml)}</td></tr>
-        <tr>#{list_draft(docxml, 1).map { |x| "<td>#{x}</td>" }.join }
+        <tr>#{list_draft(docxml, 1)&.map { |x| "<td>#{x}</td>" }&.join }
         <td>#{list_cochairs(docxml)}</td></tr>
-        <tr>#{list_draft(docxml, 2).map { |x| "<td>#{x}</td>" }.join }
+        <tr>#{list_draft(docxml, 2)&.map { |x| "<td>#{x}</td>" }&.join }
         <td>#{list_chairs(docxml)}</td></tr>
         #{list_drafts(docxml)}
         </tbody></table></doccontrol>
