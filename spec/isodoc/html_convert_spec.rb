@@ -38,7 +38,10 @@ RSpec.describe IsoDoc::BIPM do
 </version>
   <language>en</language>
   <script>Latn</script>
-  <status><stage>mise-en-pratique</stage></status>
+  <status>
+<stage language="">mise-en-pratique</stage>
+<stage language="en">en-vigeur</stage>
+</status>
   <copyright>
     <from>2001</from>
     <owner>
@@ -49,7 +52,10 @@ RSpec.describe IsoDoc::BIPM do
   </copyright>
   <ext>
   <editorialgroup>
-    <committee acronym="A">TC</committee>
+  <committee acronym='TCA'>
+  <variant language='en' script='Latn'>TC</variant>
+  <variant language='fr' script='Latn'>CT</variant>
+</committee>
     <workgroup acronym="B">WC</committee>
   </editorialgroup>
   <comment-period><from>N1</from><to>N2</to></comment-period>
@@ -61,51 +67,6 @@ RSpec.describe IsoDoc::BIPM do
 </structuredidentifier>
 </ext>
 </bibdata>
-<local_bibdata type="standard">
-  <title language="en" format="plain">Main Title</title>
-  <title language="fr" format="plain">Chef Title</title>
-  <docidentifier>1000</docidentifier>
-  <contributor>
-    <role type="author"/>
-    <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
-    </organization>
-  </contributor>
-  <contributor>
-    <role type="publisher"/>
-    <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
-    </organization>
-  </contributor>
-  <version>
-  <edition>2</edition>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-  <language>en</language>
-  <script>Latn</script>
-  <status><stage>en-vigeur</stage></status>
-  <copyright>
-    <from>2001</from>
-    <owner>
-      <organization>
-        <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
-      </organization>
-    </owner>
-  </copyright>
-  <ext>
-  <editorialgroup>
-    <committee type="A">TC</committee>
-  </editorialgroup>
-  <comment-period><from>N1</from><to>N2</to></comment-period>
-  <si-aspect>A_e_deltanu</si-aspect>
-  <meeting-note>ABC</meeting-note>
-  <structuredidentifier>
-  <docnumber>1000</docnumber>
-  <appendix>ABC</appendix>
-</structuredidentifier>
-</ext>
-</local_bibdata>
 <sections/>
 </bipm-standard>
     INPUT
@@ -129,19 +90,21 @@ RSpec.describe IsoDoc::BIPM do
 :draftinfo=>" (draft 3.4, 2000-01-01)",
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
+:lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"A", "committee"=>"TC", "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"TCA", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
+:script=>"Latn",
 :si_aspect_index=>#{si_aspect},
 :si_aspect_paths=>#{si_aspect_paths},
 :stage=>"Mise en Pratique",
 :stage_display=>"En Vigeur",
-:tc=>"TC",
+:tc=>"\\n  TC\\n  CT\\n",
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -195,7 +158,10 @@ RSpec.describe IsoDoc::BIPM do
     </owner>
   </copyright>
   <editorialgroup>
-    <committee type="A">TC</committee>
+  <committee acronym='TCA'>
+  <variant language='en' script='Latn'>TC</variant>
+  <variant language='fr' script='Latn'>CT</variant>
+</committee>
   </editorialgroup>
   <security>Client Confidential</security>
   <ext><doctype>cipm-mra</doctype>
@@ -206,50 +172,6 @@ RSpec.describe IsoDoc::BIPM do
 </structuredidentifier>
 </ext>
 </bibdata>
-<local_bibdata type="standard">
-  <title language="en" format="plain">Main Title</title>
-  <title language="fr" format="plain">Chef Title</title>
-  <docidentifier>1000</docidentifier>
-  <contributor>
-    <role type="author"/>
-    <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
-    </organization>
-  </contributor>
-  <contributor>
-    <role type="publisher"/>
-    <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
-    </organization>
-  </contributor>
-  <version>
-  <edition>2</edition>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-  <language>fr</language>
-  <script>Latn</script>
-  <status><stage>working-draft</stage></status>
-  <copyright>
-    <from>2001</from>
-    <owner>
-      <organization>
-        <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
-      </organization>
-    </owner>
-  </copyright>
-  <editorialgroup>
-    <committee type="A">TC</committee>
-  </editorialgroup>
-  <security>Client Confidential</security>
-  <ext><doctype>procès-verbal</doctype>
-  <comment-period><from>N1</from><to>N2</to></comment-period>
-  <structuredidentifier>
-  <docnumber>1000</docnumber>
-  <appendix>ABC</appendix>
-</structuredidentifier>
-</ext>
-</local_bibdata>
 <sections/>
 </bipm-standard>
     INPUT
@@ -269,12 +191,13 @@ RSpec.describe IsoDoc::BIPM do
 :docsubtitle=>"Main Title",
 :doctitle=>"Chef Title",
 :doctype=>"CIPM-MRA",
-:doctype_display=>"Proc&#xe8;s-Verbal",
+:doctype_display=>"CIPM-MRA",
 :docyear=>"2001",
 :draft=>"3.4",
 :draftinfo=>" (brouillon 3.4, 2000-01-01)",
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
+:lang=>"fr",
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
@@ -283,6 +206,7 @@ RSpec.describe IsoDoc::BIPM do
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"Janvier 2000",
+:script=>"Latn",
 :si_aspect_index=>#{si_aspect},
 :si_aspect_paths=>#{si_aspect_paths},
 :stage=>"Working Draft",
@@ -323,15 +247,18 @@ RSpec.describe IsoDoc::BIPM do
 :draftinfo=>" (draft 3.4, 2000-01-01)",
 :implementeddate=>"XXX",
 :issueddate=>"XXX",
+:lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :obsoleteddate=>"XXX",
 :publisheddate=>"XXX",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
+:script=>"Latn",
 :si_aspect_index=>#{si_aspect},
 :si_aspect_paths=>#{si_aspect_paths},
 :stage=>"Standard",
+:stage_display=>"Standard",
 :transmitteddate=>"XXX",
 :unchangeddate=>"XXX",
 :unpublished=>true,
@@ -1065,10 +992,10 @@ presxml = xmlpp(<<~"OUTPUT")
          <revision-date>2000-01-01</revision-date>
          <draft>3.4</draft>
        </version>
-         <language>en</language>
-         <script>Latn</script>
+         <language current="true">en</language>
+         <script current="true">Latn</script>
          <status>
-           <stage>working-draft</stage>
+           <stage language="">working-draft</stage>
            <iteration>3</iteration>
          </status>
        <relation type="supersedes">
@@ -1149,8 +1076,7 @@ presxml = xmlpp(<<~"OUTPUT")
 
     stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
                           .convert('test', input, true)
-                          .gsub(%r{<i18nyaml>.*</i18nyaml>}m, "")
-                          .gsub(%r{<local_bibdata.*</local_bibdata>}m, "")
+                          .gsub(%r{<localized-strings>.*</localized-strings>}m, "")
                                     ))
     expect(stripped_html).to(be_equivalent_to(presxml))
     stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})

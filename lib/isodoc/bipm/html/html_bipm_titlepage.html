@@ -52,8 +52,14 @@
     {% endif %}
   </div>
 
+  {% for item in metadata_extensions["editorialgroup"]["committee"]["variant_language"] %}
+  {% if item == lang %}
+  {% assign committee = metadata_extensions["editorialgroup"]["committee"]["variant"][forloop.index0] %}
+  {% endif %}
+  {% endfor %}
+
   <div class="coverpage-tc-name">
-    <span>{{ metadata_extensions["editorialgroup"]["committee_acronym"] }}{% if metadata_extensions["editorialgroup"]["committee_acronym"] and metadata_extensions["editorialgroup"]["committee"] %}: {% endif %}{{ metadata_extensions["editorialgroup"]["committee"] }}</span>
+    <span>{{ metadata_extensions["editorialgroup"]["committee_acronym"] }}{% if metadata_extensions["editorialgroup"]["committee_acronym"] and committee %}: {% endif %}{{ committee }}</span>
   </div>
   </div>
 

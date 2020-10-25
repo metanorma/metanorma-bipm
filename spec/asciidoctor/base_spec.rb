@@ -21,7 +21,6 @@ RSpec.describe Asciidoctor::BIPM do
       Author
       :docfile: test.adoc
       :novalid:
-      :no-pdf:
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -31,8 +30,10 @@ RSpec.describe Asciidoctor::BIPM do
     OUTPUT
 
     system "rm -f test.html"
+    system "rm -f test.pdf"
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
+    expect(File.exist?("test.pdf")).to be true
   end
 
   it "processes default metadata" do
@@ -47,7 +48,8 @@ RSpec.describe Asciidoctor::BIPM do
       :edition: 2
       :revdate: 2000-01-01
       :draft: 3.4
-      :committee: TC
+      :committee-en: TC
+      :committee-fr: CT
       :committee-acronym: TCA
       :committee-number: 1
       :committee-type: A
@@ -275,7 +277,10 @@ RSpec.describe Asciidoctor::BIPM do
 <ext>
   <doctype>brochure</doctype>
   <editorialgroup>
-    <committee acronym="TCA">TC</committee>
+  <committee acronym="TCA">
+  <variant language='en' script='Latn'>TC</variant>
+  <variant language='fr' script='Latn'>CT</variant>
+</committee>
     <workgroup acronym="WGA">WG</workgroup>
   </editorialgroup>
   <comment-period>
@@ -310,7 +315,8 @@ RSpec.describe Asciidoctor::BIPM do
       :edition: 2
       :revdate: 2000-01-01
       :draft: 3.4
-      :committee: TC
+      :committee-en: TC
+      :committee-fr: CT
       :committee-number: 1
       :committee-type: A
       :subcommittee: SC
@@ -403,8 +409,11 @@ RSpec.describe Asciidoctor::BIPM do
 <ext>
   <doctype>brochure</doctype>
   <editorialgroup>
-    <committee acronym="">TC</committee>
-    <workgroup acronym="">WG</workgroup>
+  <committee>
+  <variant language='en' script='Latn'>TC</variant>
+  <variant language='fr' script='Latn'>CT</variant>
+</committee>
+    <workgroup>WG</workgroup>
   </editorialgroup>
   <comment-period>
   <from>X</from>
