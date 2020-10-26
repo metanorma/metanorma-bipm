@@ -52,6 +52,10 @@ module IsoDoc
         dn and set(:appendixid, @i18n.l10n("#{label1} #{dn&.text}"))
         dn and set(:appendixid_alt, @i18n.l10n("#{label2} #{dn&.text}"))
       end
+
+      def extract_person_names_affiliations(authors)
+        extract_person_affiliations(authors)
+      end
     end
   end
 end

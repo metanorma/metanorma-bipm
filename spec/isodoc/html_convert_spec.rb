@@ -20,6 +20,45 @@ RSpec.describe IsoDoc::BIPM do
   <title type="appendix" language="fr" format="plain">Chef Title Appendix</title>
   <docidentifier>1000</docidentifier>
   <contributor>
+<role type="author"/>
+<person>
+<name>
+<completename>Gustavo Martos</completename>
+</name>
+<affiliation>
+<organization>
+<name>BIPM</name>
+</organization>
+</affiliation>
+</person>
+</contributor>
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<completename>Xiuqin Li</completename>
+</name>
+<affiliation>
+<organization>
+<name>NIM</name>
+</organization>
+</affiliation>
+</person>
+</contributor>
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<completename>Ralf Josephs</completename>
+</name>
+<affiliation>
+<organization>
+<name>BIPM</name>
+</organization>
+</affiliation>
+</person>
+</contributor>
+  <contributor>
     <role type="author"/>
     <organization>
       <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
@@ -78,6 +117,8 @@ RSpec.describe IsoDoc::BIPM do
 :appendixid_alt=>"Annexe ABC",
 :appendixsubtitle=>"Chef Title Appendix",
 :appendixtitle=>"Main Title Appendix",
+:authors=>["Gustavo Martos", "Xiuqin Li", "Ralf Josephs"],
+:authors_affiliations=>["BIPM", "NIM", "BIPM"],
 :circulateddate=>"XXX",
 :confirmeddate=>"XXX",
 :copieddate=>"XXX",
