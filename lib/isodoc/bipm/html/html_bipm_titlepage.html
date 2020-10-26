@@ -61,6 +61,15 @@
   <div class="coverpage-tc-name">
     <span>{{ metadata_extensions["editorialgroup"]["committee_acronym"] }}{% if metadata_extensions["editorialgroup"]["committee_acronym"] and committee %}: {% endif %}{{ committee }}</span>
   </div>
+ 
+  {% if authors %}
+  <div class="coverpage-tc-name">
+    {% for item in authors %}
+    <span>{{item}} {% if authors_affiliations[forloop.index0] %}({{ authors_affiliations[forloop.index0] }}){% endif %}{% if forloop.last == false %}, {% endif %}{% endfor %}.
+  </div>
+  {% endif %}
+
+
   </div>
 
     <div class="wrapper-top-bottom"></div>

@@ -174,6 +174,8 @@ Clauses and annexes may be marked as `[%unnumbered]`, in which case they do not 
 
 Unlike the Metanorma default, ordered lists do not have a fixed sequence of numbering styles: the type set for each ordered list (including nested lists) is respected. The default numbering style for ordered lists is always arabic.
 
+Numerals are automatically formatted as required by BIPM (French localisation).
+
 == Data Models
 
 The document model for BIPM is given in https://github.com/metanorma/metanorma-model-bipm[metanorma-model-bipm].
