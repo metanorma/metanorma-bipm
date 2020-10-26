@@ -388,17 +388,16 @@ RSpec.describe IsoDoc::BIPM do
          <title>Introduction Subsection</title>
        </clause>
        </introduction></preface><sections>
-       <clause id="D" obligation="normative">
-         <title>Scope</title>
-         <p id="E">Text</p>
-       </clause>
-
        <clause id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
          <title>Normal Terms</title>
          <term id="J">
          <preferred>Term2</preferred>
        </term>
        </terms>
+       <clause id="D" obligation="normative">
+         <title>Scope</title>
+         <p id="E">Text</p>
+       </clause>
        <definitions id="K">
          <dl>
          <dt>Symbol</dt>
@@ -440,7 +439,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-       <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+    <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
          <preface>
            <foreword obligation='informative'>
              <title>Foreword</title>
@@ -454,33 +453,33 @@ RSpec.describe IsoDoc::BIPM do
            </introduction>
          </preface>
          <sections>
-           <clause id='D' obligation='normative'>
-             <title depth='1'>
-               1.
-               <tab/>
-               Scope
-             </title>
-             <p id='E'>Text</p>
-           </clause>
            <clause id='H' obligation='normative'>
              <title depth='1'>
-               2.
+               1.
                <tab/>
                Terms, Definitions, Symbols and Abbreviated Terms
              </title>
              <terms id='I' obligation='normative'>
                <title depth='2'>
-                 2.1.
+                 1.1.
                  <tab/>
                  Normal Terms
                </title>
                <term id='J'>
-                 <name>2.1.1.</name>
+                 <name>1.1.1.</name>
                  <preferred>Term2</preferred>
                </term>
              </terms>
+             <clause id='D' obligation='normative'>
+               <title depth='2'>
+                 1.2.
+                 <tab/>
+                 Scope
+               </title>
+               <p id='E'>Text</p>
+             </clause>
              <definitions id='K'>
-               <title>2.2.</title>
+               <title>1.3.</title>
                <dl>
                  <dt>Symbol</dt>
                  <dd>Definition</dd>
@@ -488,7 +487,7 @@ RSpec.describe IsoDoc::BIPM do
              </definitions>
            </clause>
            <definitions id='L'>
-             <title>3.</title>
+             <title>2.</title>
              <dl>
                <dt>Symbol</dt>
                <dd>Definition</dd>
@@ -496,20 +495,20 @@ RSpec.describe IsoDoc::BIPM do
            </definitions>
            <clause id='M' inline-header='false' obligation='normative'>
              <title depth='1'>
-               4.
+               3.
                <tab/>
                Clause 4
              </title>
              <clause id='N' inline-header='false' obligation='normative'>
                <title depth='2'>
-                 4.1.
+                 3.1.
                  <tab/>
                  Introduction
                </title>
              </clause>
              <clause id='O' inline-header='false' obligation='normative'>
                <title depth='2'>
-                 4.2.
+                 3.2.
                  <tab/>
                  Clause 4.2
                </title>
