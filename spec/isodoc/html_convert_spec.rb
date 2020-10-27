@@ -684,9 +684,9 @@ INPUT
         This is a preamble:
         <xref target='B'>"Beta"</xref>
         <xref target='C'>"Charlie"</xref>
-        <xref target='D'>Clause 1</xref>
+        <xref target='D'>section 1</xref>
         <xref target='E'>"Echo"</xref>
-        <xref target='F'>Clause 1.1</xref>
+        <xref target='F'>section 1.1</xref>
         <xref target='A1'>"Alpha"</xref>
         <xref target='B1'>"Beta"</xref>
         <xref target='A2'>Appendix 1</xref>
