@@ -1,5 +1,9 @@
 annex: Annexe
 see: voir
+clause: Section
+formula: équation
+inequality: inégalité
+bibliography: Références
 doctype_dict: 
   brochure: brochure
   mise-en-pratique: mise-en-pratique

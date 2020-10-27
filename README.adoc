@@ -175,6 +175,10 @@ Unlike the Metanorma default, ordered lists do not have a fixed sequence of numb
 
 Numerals are automatically formatted as required by BIPM (French localisation).
 
+Cross-references to clauses are rendered in lowercase: “see section 4.1”. Metanorma will attempt to impose correct capitalisation for instances at the start of blocks and sentences, but it may get it wrong.
+
+To override such capitalisation, you can use the the flags `capital%` or `lowercase%` as the content of the cross-reference, to force that casing on the cross-reference.
+
 == Data Models
 
 The document model for BIPM is given in https://github.com/metanorma/metanorma-model-bipm[metanorma-model-bipm].

@@ -801,7 +801,7 @@ RSpec.describe Asciidoctor::BIPM do
       <p id='_'>There are no normative references in this document.</p>
     </references>
     <clause id='_' obligation='informative'>
-      <title>Bibliography</title>
+      <title>References</title>
       <references id='_' normative='false' obligation='informative'>
         <title>Bibliography Subsection</title>
       </references>
