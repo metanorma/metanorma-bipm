@@ -7,11 +7,6 @@ module IsoDoc
         Metanorma::BIPM.configuration
       end
 
-      def ol_attrs(node)
-        super.merge(attr_code(type: ol_style((node["type"] || "arabic").to_sym),
-                              start: node["start"]))
-      end
-
       def middle(isoxml, out)
         middle_title(out)
         middle_admonitions(isoxml, out)
