@@ -139,7 +139,7 @@ module Asciidoctor
       end
 
       def ol_attrs(node)
-        super.merge(start: node.attr("start"))
+        super.merge(attr_code(start: node.attr("start")))
       end
 
       def section_names_terms_cleanup(x)
