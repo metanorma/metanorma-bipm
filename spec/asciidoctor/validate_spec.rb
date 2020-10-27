@@ -21,4 +21,27 @@ RSpec.describe Asciidoctor::BIPM do
               .from(false).to(true))
     end
   end
+
+  it "validates committees" do
+    FileUtils.rm_f "test.err"
+    Asciidoctor.convert(<<~INPUT, backend: :bipm, header_footer: true)
+    = A
+    X
+    :docfile: test.adoc
+    :committee-acronym: TC
+    :committee-en: tech committee
+    :committee-fr: committee technologique
+    :committee-acronym_2: CCU
+    :committee-en_2: Consultative Committee for Units
+    :committee-fr_2: Comité consultatif des unités
+
+    INPUT
+    expect(File.exist?("test.err")).to be true
+    expect(File.read("test.err")).to include "TC is not a recognised committee"
+    expect(File.read("test.err")).to include "tech committee is not a recognised committee"
+    expect(File.read("test.err")).to include "committee technologique is not a recognised committee"
+    expect(File.read("test.err")).not_to include "CCU is not a recognised committee"
+    expect(File.read("test.err")).not_to include "Consultative Committee for Units is not a recognised committee"
+    expect(File.read("test.err")).not_to include "Comité consultatif des unités is not a recognised committee"
+  end
 end
