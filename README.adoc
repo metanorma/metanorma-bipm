@@ -10,8 +10,7 @@ image:https://img.shields.io/github/commits-since/metanorma/metanorma-bimp/lates
 
 == Functionality
 
-This gem processes http://asciidoctor.org/[Asciidoctor] documents following
-a template for generating BIPM standards.
+This gem processes https://www.metanorma.com[Metanorma documents] following a template for generating BIPM standards.
 
 == Usage
 
