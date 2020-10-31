@@ -56,7 +56,7 @@ module IsoDoc
 
       def section_names1(clause, num, level)
         @anchors[clause["id"]] =
-          { label: num, level: level, xref: l10n("#{@labels["clause"]} #{num}"),
+          { label: num, level: level, xref: l10n("#{@labels["subclause"]} #{num}"),
             type: "clause" }
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each_with_index do |c, i|
           section_names1(c, "#{num}.#{i + 1}", level + 1)

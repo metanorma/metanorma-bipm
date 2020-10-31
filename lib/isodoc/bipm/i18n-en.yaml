@@ -1,6 +1,7 @@
 annex: Appendix
 see: see
-clause: section
+clause: chapter
+subclause: section
 formula: equation
 inequality: inequality
 bibliography: References
