@@ -71,6 +71,11 @@ RSpec.describe Asciidoctor::BIPM do
       :title-cover-fr: Chef Title (SI)
       :title-appendix-en: Main Title (SI)
       :title-appendix-fr: Chef Title (SI)
+      :title-part-en: Part
+      :title-part-fr: Partie
+      :title-subpart-en: Subpart
+      :title-subpart-fr: Subpartie
+      :partnumber: 2
       :appendix-id: ABC
       :security: Client Confidential
       :comment-period-from: X
@@ -113,9 +118,13 @@ RSpec.describe Asciidoctor::BIPM do
 <title language='en' format='text/plain' type='main'>Main Title</title>
 <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
 <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+<title language='en' format='text/plain' type='part'>Part</title>
+<title language='en' format='text/plain' type='subpart'>Subpart</title>
 <title language='fr' format='text/plain' type='main'>Chef Title</title>
 <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
 <title language='fr' format='text/plain' type='appendix'>Chef Title (SI)</title>
+<title language='fr' format='text/plain' type='part'>Partie</title>
+<title language='fr' format='text/plain' type='subpart'>Subpartie</title>
   <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
   <docnumber>1000</docnumber>
   <date type='implemented'>
@@ -291,6 +300,7 @@ RSpec.describe Asciidoctor::BIPM do
 <meeting-note>Note</meeting-note>
 <structuredidentifier>
   <docnumber>1000</docnumber>
+  <part>2</part>
   <appendix>ABC</appendix>
 </structuredidentifier>
 </ext>
@@ -334,6 +344,7 @@ RSpec.describe Asciidoctor::BIPM do
       :title-fr: Chef Title
       :title-cover-en: Main Title (SI)
       :title-cover-fr: Chef Title (SI)
+      :partnumber: 2.1
       :security: Client Confidential
       :appendix-id: ABC
       :comment-period-from: X
@@ -421,6 +432,7 @@ RSpec.describe Asciidoctor::BIPM do
 </comment-period>
 <structuredidentifier>
   <docnumber>1000</docnumber>
+  <part>2.1</part>
   <appendix>ABC</appendix>
 </structuredidentifier>
 </ext>
