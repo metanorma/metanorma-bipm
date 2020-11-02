@@ -101,6 +101,8 @@ module Asciidoctor
           end
           typed_title(node, xml, lang, "cover")
           typed_title(node, xml, lang, "appendix")
+          typed_title(node, xml, lang, "part")
+          typed_title(node, xml, lang, "subpart")
         end
       end
 

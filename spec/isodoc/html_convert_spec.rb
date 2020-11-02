@@ -18,6 +18,10 @@ RSpec.describe IsoDoc::BIPM do
   <title type="cover" language="fr" format="plain">Chef Title Cover</title>
   <title type="appendix" language="en" format="plain">Main Title Appendix</title>
   <title type="appendix" language="fr" format="plain">Chef Title Appendix</title>
+  <title type="part" language="en" format="plain">Main Title Part</title>
+  <title type="part" language="fr" format="plain">Chef Title Part</title>
+  <title type="subpart" language="en" format="plain">Main Title Subpart</title>
+  <title type="subpart" language="fr" format="plain">Chef Title Subpart</title>
   <docidentifier>1000</docidentifier>
   <contributor>
 <role type="author"/>
@@ -102,6 +106,7 @@ RSpec.describe IsoDoc::BIPM do
   <meeting-note>ABC</meeting-note>
   <structuredidentifier>
   <docnumber>1000</docnumber>
+  <part>2.1</part>
   <appendix>ABC</appendix>
 </structuredidentifier>
 </ext>
@@ -133,8 +138,12 @@ RSpec.describe IsoDoc::BIPM do
 :issueddate=>"XXX",
 :lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"TCA", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"TCA", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
+:partid=>"Part 2.1",
+:partid_alt=>"Partie 2.1",
+:partsubtitle=>"Chef Title Part",
+:parttitle=>"Main Title Part",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
 :receiveddate=>"XXX",
@@ -209,6 +218,7 @@ RSpec.describe IsoDoc::BIPM do
   <comment-period><from>N1</from><to>N2</to></comment-period>
   <structuredidentifier>
   <docnumber>1000</docnumber>
+  <part>2.1</part>
   <appendix>ABC</appendix>
 </structuredidentifier>
 </ext>
@@ -240,8 +250,10 @@ RSpec.describe IsoDoc::BIPM do
 :issueddate=>"XXX",
 :lang=>"fr",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
+:partid=>"Partie 2.1",
+:partid_alt=>"Part 2.1",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
 :receiveddate=>"XXX",
