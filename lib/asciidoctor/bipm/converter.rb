@@ -162,6 +162,11 @@ module Asciidoctor
         end
       end
 
+      def mathml_mi_italics
+        { uppergreek: false, upperroman: false,
+          lowergreek: false, lowerroman: true }
+      end
+
       def outputs(node, ret)
         File.open(@filename + ".xml", "w:UTF-8") { |f| f.write(ret) }
         presentation_xml_converter(node).convert(@filename + ".xml")
