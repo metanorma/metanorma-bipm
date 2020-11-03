@@ -39,20 +39,6 @@ module IsoDoc
                               start: node["start"]), style: style, class: klass)
       end
 
-      def mathjax(open, close)
-        BIPM_MATHJAX.gsub("OPEN", open).gsub("CLOSE", close)
-      end
-
-      BIPM_MATHJAX = <<~"MATHJAX".freeze
-      <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-          "HTML-CSS": { preferredFont: "STIX" },
-          asciimath2jax: { delimiters: [['OPEN', 'CLOSE']] }
-       });
-      </script>
-      <script src="#{MATHJAX_ADDR}?config=MML_HTMLorMML-full" async="async"></script>
-      MATHJAX
-
       include BaseConvert
       include Init
     end
