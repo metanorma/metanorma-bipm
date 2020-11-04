@@ -86,7 +86,7 @@ module IsoDoc
       def annex_names(clause, num)
         @anchors[clause["id"]] =
           { label: annex_name_lbl(clause, num), type: "clause", value: num.to_s,
-            xref: l10n("#{@labels["annex"])} #{num}", level: 1 }
+            xref: l10n("#{@labels["annex"]} #{num}"), level: 1 }
         if a = single_annex_special_section(clause)
           annex_names1(a, "#{num}", 1)
         else
