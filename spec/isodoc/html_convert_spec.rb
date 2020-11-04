@@ -18,6 +18,10 @@ RSpec.describe IsoDoc::BIPM do
   <title type="cover" language="fr" format="plain">Chef Title Cover</title>
   <title type="appendix" language="en" format="plain">Main Title Appendix</title>
   <title type="appendix" language="fr" format="plain">Chef Title Appendix</title>
+  <title type="part" language="en" format="plain">Main Title Part</title>
+  <title type="part" language="fr" format="plain">Chef Title Part</title>
+  <title type="subpart" language="en" format="plain">Main Title Subpart</title>
+  <title type="subpart" language="fr" format="plain">Chef Title Subpart</title>
   <docidentifier>1000</docidentifier>
   <contributor>
 <role type="author"/>
@@ -102,6 +106,7 @@ RSpec.describe IsoDoc::BIPM do
   <meeting-note>ABC</meeting-note>
   <structuredidentifier>
   <docnumber>1000</docnumber>
+  <part>2.1</part>
   <appendix>ABC</appendix>
 </structuredidentifier>
 </ext>
@@ -133,8 +138,12 @@ RSpec.describe IsoDoc::BIPM do
 :issueddate=>"XXX",
 :lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"TCA", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"TCA", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
+:partid=>"Part 2.1",
+:partid_alt=>"Partie 2.1",
+:partsubtitle=>"Chef Title Part",
+:parttitle=>"Main Title Part",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
 :receiveddate=>"XXX",
@@ -209,6 +218,7 @@ RSpec.describe IsoDoc::BIPM do
   <comment-period><from>N1</from><to>N2</to></comment-period>
   <structuredidentifier>
   <docnumber>1000</docnumber>
+  <part>2.1</part>
   <appendix>ABC</appendix>
 </structuredidentifier>
 </ext>
@@ -240,8 +250,10 @@ RSpec.describe IsoDoc::BIPM do
 :issueddate=>"XXX",
 :lang=>"fr",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "appendix"=>"ABC"}},
+:metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC"}},
 :obsoleteddate=>"XXX",
+:partid=>"Partie 2.1",
+:partid_alt=>"Part 2.1",
 :publisheddate=>"XXX",
 :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
 :receiveddate=>"XXX",
@@ -684,7 +696,7 @@ INPUT
         This is a preamble:
         <xref target='B'>"Beta"</xref>
         <xref target='C'>"Charlie"</xref>
-        <xref target='D'>section 1</xref>
+        <xref target='D'>chapter 1</xref>
         <xref target='E'>"Echo"</xref>
         <xref target='F'>section 1.1</xref>
         <xref target='A1'>"Alpha"</xref>
@@ -1127,5 +1139,132 @@ presxml = xmlpp(<<~"OUTPUT")
 
 
 end
+
+  it "processes nested roman and alphabetic lists" do 
+          expect(xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({}).convert('test', <<~"INPUT", true).gsub(%r{^.*<body}m, '<body').gsub(%r{</body>.*}m, '</body>')))).to be_equivalent_to <<~"OUTPUT"
+    <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+    <preface>
+    <ol id="_a165a98f-d641-4ccc-9c7e-d3268d93130c" type="alphabet_upper">
+<li>
+<p id="_484e82a7-48a3-4d88-a575-34143c9f7813">a</p>
+<ol id="_512ecf9b-3920-4726-892c-6c5563d97cea" type="alphabet">
+<li>
+<p id="_ce9cb812-6652-4cf4-bf61-7237df4f3958">a1</p>
+</li>
+</ol>
+</li>
+<li>
+<p id="_8a13966e-2d6c-4b76-94e3-240d5a00a66b">a2</p>
+<ol id="_b9fb9f0c-29a0-498c-ae78-42b5fab5c418" type="alphabet" start="5">
+<li>
+<p id="_36f055e4-5cfa-430c-80b9-8a53617af152">b</p>
+<ol id="_fccf5477-00b4-42dc-8a32-d7838b3a6880" type="alphabet" start="10">
+<li>
+<p id="_388d07a4-882d-4f1b-8832-aca813714043">c</p>
+</li>
+</ol>
+</li>
+<li>
+<ol id="_e883e785-1a4f-4af1-be63-28187c9b8c6a" type="roman" start="2">
+<li><p>c1</p></li>
+</ol>
+<p id="_16e6dafe-d3f2-44c5-bb79-303bc9385d92">d</p>
+<ol id="_e883e785-1a4f-4af1-be63-28187c9b8c69" type="roman">
+<li>
+<p id="_c11e737b-0f02-4d80-9733-84561d743cbf">e</p>
+<ol id="_46c2218e-d5e4-4aca-940e-37e8c6099a27" type="roman" start="12">
+<li>
+<p id="_5c9d3bb2-1a86-4724-8f87-56a2df85f6d9">f</p>
+</li>
+<li>
+<p id="_23f4cf36-19c6-48ac-be10-0740cc143a29">g</p>
+</li>
+</ol>
+</li>
+<li>
+<p id="_20c2f77a-932c-41ac-8077-8bab94e56232">h</p>
+</li>
+</ol>
+</li>
+<li>
+<p id="_58854800-eef7-4c13-843a-1ad6eb028cc8">i</p>
+</li>
+</ol>
+</li>
+<li>
+<p id="_0227008e-aaac-4b64-8914-3c1c8a27b587">j</p>
+</li>
+</ol>
+</preface>
+</bipm-standard>
+INPUT
+<body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+         <div class='title-section'>
+           <p>&#160;</p>
+         </div>
+         <br/>
+         <div class='prefatory-section'>
+           <p>&#160;</p>
+         </div>
+         <br/>
+         <div class='main-section'>
+           <ol type='A' id='_'>
+             <li>
+               <p id='_'>a</p>
+               <ol type='a' id='_' class='alphabet'>
+                 <li>
+                   <p id='_'>a1</p>
+                 </li>
+               </ol>
+             </li>
+             <li>
+               <p id='_'>a2</p>
+               <ol type='a' id='_' style='counter-reset: alphabet 4;' start='5' class='alphabet'>
+                 <li>
+                   <p id='_'>b</p>
+                   <ol type='a' id='_' start='10'>
+                     <li>
+                       <p id='_'>c</p>
+                     </li>
+                   </ol>
+                 </li>
+                 <li>
+                   <ol type='i' id='_' style='counter-reset: roman 1;' start='2' class='roman'>
+                     <li>
+                       <p>c1</p>
+                     </li>
+                   </ol>
+                   <p id='_'>d</p>
+                   <ol type='i' id='_' class='roman'>
+                     <li>
+                       <p id='_'>e</p>
+                       <ol type='i' id='_' start='12'>
+                         <li>
+                           <p id='_'>f</p>
+                         </li>
+                         <li>
+                           <p id='_'>g</p>
+                         </li>
+                       </ol>
+                     </li>
+                     <li>
+                       <p id='_'>h</p>
+                     </li>
+                   </ol>
+                 </li>
+                 <li>
+                   <p id='_'>i</p>
+                 </li>
+               </ol>
+             </li>
+             <li>
+               <p id='_'>j</p>
+             </li>
+           </ol>
+           <p class='zzSTDTitle1'/>
+         </div>
+       </body>
+OUTPUT
+    end
 
 end

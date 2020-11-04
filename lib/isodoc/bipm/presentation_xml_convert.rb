@@ -9,7 +9,7 @@ module IsoDoc
         return if labelled_ancestor(f)
         return if f["unnumbered"] && !f.at(ns("./name"))
         n = @xrefs.anchor(f['id'], :label, false)
-        prefix_name(f, ".<tab/>", l10n("#{@i18n.table} #{n}"), "name")
+        prefix_name(f, ".<tab/>", l10n("#{@i18n.table.capitalize} #{n}"), "name")
       end
 
       def annex1(f)

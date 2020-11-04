@@ -101,6 +101,8 @@ module Asciidoctor
           end
           typed_title(node, xml, lang, "cover")
           typed_title(node, xml, lang, "appendix")
+          typed_title(node, xml, lang, "part")
+          typed_title(node, xml, lang, "subpart")
         end
       end
 
@@ -139,7 +141,7 @@ module Asciidoctor
       end
 
       def ol_attrs(node)
-        super.merge(start: node.attr("start"))
+        super.merge(attr_code(start: node.attr("start")))
       end
 
       def section_names_terms_cleanup(x)
