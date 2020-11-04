@@ -30,8 +30,10 @@ module Asciidoctor
 
       def metadata_committee2(node, a)
         i = 2
-        while node.attr("committee-en_#{i}") || node.attr("committee-fr_#{i}")  do
-          a.committee **attr_code(acronym: node.attr("committee-acronym_#{i}")) do |c|
+        while node.attr("committee-en_#{i}") ||
+            node.attr("committee-fr_#{i}")  do
+          a.committee **attr_code(acronym:
+                                  node.attr("committee-acronym_#{i}")) do |c|
             e = node.attr("committee-en_#{i}") and
               c.variant e, language: "en", script: "Latn"
             e = node.attr("committee-fr_#{i}") and
@@ -99,6 +101,8 @@ module Asciidoctor
           end
           typed_title(node, xml, lang, "cover")
           typed_title(node, xml, lang, "appendix")
+          typed_title(node, xml, lang, "part")
+          typed_title(node, xml, lang, "subpart")
         end
       end
 
@@ -137,7 +141,25 @@ module Asciidoctor
       end
 
       def ol_attrs(node)
-        super.merge(start: node.attr("start"))
+        super.merge(attr_code(start: node.attr("start")))
+      end
+
+      def section_names_terms_cleanup(x)
+      end
+
+      def committee_validate(xml)
+        committees = Array(configuration&.committees) || return
+        committees.empty? and return
+        xml.xpath("//bibdata/ext/editorialgroup/committee/variant").each do |c|
+          committees.include? c.text or
+            @log.add("Document Attributes", nil,
+                     "#{c.text} is not a recognised committee")
+        end
+        xml.xpath("//bibdata/ext/editorialgroup/committee/@acronym").each do |c|
+          committees.include? c.text or
+            @log.add("Document Attributes", nil,
+                     "#{c.text} is not a recognised committee")
+        end
       end
 
       def outputs(node, ret)

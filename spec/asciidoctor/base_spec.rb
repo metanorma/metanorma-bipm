@@ -71,6 +71,11 @@ RSpec.describe Asciidoctor::BIPM do
       :title-cover-fr: Chef Title (SI)
       :title-appendix-en: Main Title (SI)
       :title-appendix-fr: Chef Title (SI)
+      :title-part-en: Part
+      :title-part-fr: Partie
+      :title-subpart-en: Subpart
+      :title-subpart-fr: Subpartie
+      :partnumber: 2
       :appendix-id: ABC
       :security: Client Confidential
       :comment-period-from: X
@@ -113,9 +118,13 @@ RSpec.describe Asciidoctor::BIPM do
 <title language='en' format='text/plain' type='main'>Main Title</title>
 <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
 <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+<title language='en' format='text/plain' type='part'>Part</title>
+<title language='en' format='text/plain' type='subpart'>Subpart</title>
 <title language='fr' format='text/plain' type='main'>Chef Title</title>
 <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
 <title language='fr' format='text/plain' type='appendix'>Chef Title (SI)</title>
+<title language='fr' format='text/plain' type='part'>Partie</title>
+<title language='fr' format='text/plain' type='subpart'>Subpartie</title>
   <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
   <docnumber>1000</docnumber>
   <date type='implemented'>
@@ -291,6 +300,7 @@ RSpec.describe Asciidoctor::BIPM do
 <meeting-note>Note</meeting-note>
 <structuredidentifier>
   <docnumber>1000</docnumber>
+  <part>2</part>
   <appendix>ABC</appendix>
 </structuredidentifier>
 </ext>
@@ -334,6 +344,7 @@ RSpec.describe Asciidoctor::BIPM do
       :title-fr: Chef Title
       :title-cover-en: Main Title (SI)
       :title-cover-fr: Chef Title (SI)
+      :partnumber: 2.1
       :security: Client Confidential
       :appendix-id: ABC
       :comment-period-from: X
@@ -421,6 +432,7 @@ RSpec.describe Asciidoctor::BIPM do
 </comment-period>
 <structuredidentifier>
   <docnumber>1000</docnumber>
+  <part>2.1</part>
   <appendix>ABC</appendix>
 </structuredidentifier>
 </ext>
@@ -617,7 +629,199 @@ RSpec.describe Asciidoctor::BIPM do
 </sections>
 </bipm-standard>
     OUTPUT
-
   end
+
+  it "processes sections" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :bipm, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      #{ASCIIDOC_BLANK_HDR}
+      .Foreword
+
+      Text
+
+      [abstract]
+      == Abstract
+
+      Text
+
+      == Introduction
+
+      === Introduction Subsection
+
+      == Acknowledgements
+
+      [.preface]
+      == Dedication
+
+      == Scope
+
+      Text
+
+      == Normative References
+
+      [heading=Terms and definitions]
+      == Photometric units
+
+      === Term1
+
+      == Terms, Definitions, Symbols and Abbreviated Terms
+
+      [.nonterm]
+      === Introduction
+
+      ==== Intro 1
+
+      === Intro 2
+
+      [.nonterm]
+      ==== Intro 3
+
+      === Intro 4
+
+      ==== Intro 5
+
+      ===== Term1
+
+      === Normal Terms
+
+      ==== Term2
+
+      === Symbols and Abbreviated Terms
+
+      [.nonterm]
+      ==== General
+
+      ==== Symbols
+
+      == Abbreviated Terms
+
+      == Clause 4
+      === Introduction
+
+      === Clause 4.2
+
+      == Terms and Definitions
+
+      [appendix]
+      == Annex
+
+      === Annex A.1
+
+      == Bibliography
+
+      === Bibliography Subsection
+    INPUT
+    #{BLANK_HDR.sub(%r{</script>}, "</script><abstract><p>Text</p></abstract>")}
+  <preface>
+    <abstract id='_'>
+      <title>Abstract</title>
+      <p id='_'>Text</p>
+    </abstract>
+    <foreword id='_' obligation='informative'>
+      <title>Foreword</title>
+      <p id='_'>Text</p>
+    </foreword>
+    <clause id='_' obligation='informative'>
+      <title>Dedication</title>
+    </clause>
+    <acknowledgements id='_' obligation='informative'>
+      <title>Acknowledgements</title>
+    </acknowledgements>
+  </preface>
+  <sections>
+    <clause id='_' obligation='normative'>
+      <title>Introduction</title>
+      <clause id='_' obligation='normative'>
+        <title>Introduction Subsection</title>
+      </clause>
+    </clause>
+    <clause id='_' type='scope' obligation='normative'>
+      <title>Scope</title>
+      <p id='_'>Text</p>
+    </clause>
+    <terms id='_' obligation='normative'>
+      <title>Photometric units</title>
+      <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
+      <term id='_'>
+        <preferred>Term1</preferred>
+      </term>
+    </terms>
+    <clause id='_' obligation='normative'>
+      <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
+      <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
+      <clause id='_' obligation='normative'>
+        <title>Introduction</title>
+        <clause id='_' obligation='normative'>
+          <title>Intro 1</title>
+        </clause>
+      </clause>
+      <terms id='_' obligation='normative'>
+        <title>Intro 2</title>
+        <clause id='_' obligation='normative'>
+          <title>Intro 3</title>
+        </clause>
+      </terms>
+      <clause id='_' obligation='normative'>
+        <title>Intro 4</title>
+        <terms id='_' obligation='normative'>
+          <title>Intro 5</title>
+          <term id='_'>
+            <preferred>Term1</preferred>
+          </term>
+        </terms>
+      </clause>
+      <terms id='_' obligation='normative'>
+        <title>Normal Terms</title>
+        <term id='_'>
+          <preferred>Term2</preferred>
+        </term>
+      </terms>
+      <definitions id='_' obligation='normative'>
+        <title>Symbols and Abbreviated Terms</title>
+        <clause id='_' obligation='normative'>
+          <title>General</title>
+        </clause>
+        <definitions id='_' type='symbols' obligation='normative'>
+          <title>Symbols</title>
+        </definitions>
+      </definitions>
+    </clause>
+    <definitions id='_' type='abbreviated_terms' obligation='normative'>
+      <title>Abbreviated Terms</title>
+    </definitions>
+    <clause id='_' obligation='normative'>
+      <title>Clause 4</title>
+      <clause id='_' obligation='normative'>
+        <title>Introduction</title>
+      </clause>
+      <clause id='_' obligation='normative'>
+        <title>Clause 4.2</title>
+      </clause>
+    </clause>
+    <clause id='_' obligation='normative'>
+      <title>Terms and Definitions</title>
+    </clause>
+  </sections>
+  <annex id='_' obligation='normative'>
+    <title>Annex</title>
+    <clause id='_' obligation='normative'>
+      <title>Annex A.1</title>
+    </clause>
+  </annex>
+  <bibliography>
+    <references id='_' normative='true' obligation='informative'>
+      <title>Normative references</title>
+      <p id='_'>There are no normative references in this document.</p>
+    </references>
+    <clause id='_' obligation='informative'>
+      <title>References</title>
+      <references id='_' normative='false' obligation='informative'>
+        <title>Bibliography Subsection</title>
+      </references>
+    </clause>
+  </bibliography>
+</bipm-standard>
+OUTPUT
+  end
+
 end
 

@@ -28,11 +28,15 @@
     </div>
 
     <div class="coverpage-title">
-      {% if appendixtitle %}
+      {% if appendixtitle or parttitle or subparttitle %}
       <span class="title-third">{{ doctitle }}</span>
       <span class="title-third">{{ docsubtitle }}</span><br/>
-      <span class="title-first">{% if appendixid %}{{ appendixid}}: {% endif %}{{ appendixtitle }}</span><br/>
-      <span class="title-second">{% if appendixid_alt %}{{ appendixid_alt}}: {% endif %}{{ appendixsubtitle }}</span>
+      {% if partid %}<span class="title-first">{{ partid}}: {{ parttitle }}</span><br/>{% endif %}
+      {% if partid_alt %}<span class="title-second">{{ partid_alt}}: {{ partsubtitle }}</span>{% endif %}       
+      {% if subparttitle %}<span class="title-first">{{ subparttitle }}</span><br/>{% endif %}
+      {% if subpartsubtitle %}<span class="title-second">{{ subpartsubtitle }}</span><br/>{% endif %}
+      {% if appendixid %}<span class="title-first">{{ appendixid}}: {{ appendixtitle }}</span><br/>{% endif %} 
+      {% if appendixid_alt %}<span class="title-second">{{ appendixid_alt}}: {{ appendixsubtitle }}</span>{% endif %}
       {% else %}
       <span class="title-first">{{ doctitle }}</span><br/>
       <span class="title-second">{{ docsubtitle }}</span>
@@ -61,6 +65,15 @@
   <div class="coverpage-tc-name">
     <span>{{ metadata_extensions["editorialgroup"]["committee_acronym"] }}{% if metadata_extensions["editorialgroup"]["committee_acronym"] and committee %}: {% endif %}{{ committee }}</span>
   </div>
+ 
+  {% if authors %}
+  <div class="coverpage-tc-name">
+    {% for item in authors %}
+    <span>{{item}} {% if authors_affiliations[forloop.index0] %}({{ authors_affiliations[forloop.index0] }}){% endif %}{% if forloop.last == false %}, {% endif %}{% endfor %}.
+  </div>
+  {% endif %}
+
+
   </div>
 
     <div class="wrapper-top-bottom"></div>

@@ -1,5 +1,19 @@
 annex: Annexe
 see: voir
+clause: chapître
+clause: section
+formula: équation
+inequality: inégalité
+bibliography: Références
+note_xref: note
+termnote: note % à l’article
+list: liste
+figure: figure
+table: tableau
+requirement: exigence
+recommendation: recommandation
+permission: autorisation
+example_xref: exemple
 doctype_dict: 
   brochure: brochure
   mise-en-pratique: mise-en-pratique

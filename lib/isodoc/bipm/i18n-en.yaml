@@ -1,2 +1,16 @@
 annex: Appendix
 see: see
+clause: chapter
+subclause: section
+formula: equation
+inequality: inequality
+bibliography: References
+note_xref: note
+termnote: note % to entry
+list: list
+figure: figure
+table: table
+requirement: requirement
+recommendation: recommendation
+permission: permission
+example_xref: example

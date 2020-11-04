@@ -24,16 +24,17 @@ module IsoDoc
       TITLE = "//bibdata/title".freeze
 
       def title(isoxml, _out)
-        lang1 = @lang == "fr" ? "fr" : "en"
-        lang2 = @lang == "fr" ? "en" : "fr"
+        lang1, lang2  = @lang == "fr" ? %w(fr en) : %w(en fr)
         set(:doctitle, @c.encode(isoxml&.at(
           ns("#{TITLE}[@type='main'][@language='#{lang1}']"))&.text || ""))
         set(:docsubtitle, @c.encode(isoxml&.at(
           ns("#{TITLE}[@type='main'][@language='#{lang2}']"))&.text || ""))
-        set(:appendixtitle, @c.encode(isoxml&.at(
-          ns("#{TITLE}[@type='appendix'][@language='#{lang1}']"))&.text || ""))
-        set(:appendixsubtitle, @c.encode(isoxml&.at(
-          ns("#{TITLE}[@type='appendix'][@language='#{lang2}']"))&.text || ""))
+        %w(appendix part subtitle).each do |e|
+          set("#{e}title".to_sym, @c.encode(isoxml&.at(
+            ns("#{TITLE}[@type='#{e}'][@language='#{lang1}']"))&.text || ""))
+          set("#{e}subtitle".to_sym, @c.encode(isoxml&.at(
+            ns("#{TITLE}[@type='#{e}'][@language='#{lang2}']"))&.text || ""))
+        end
       end
 
       def status_print(status)
@@ -46,11 +47,18 @@ module IsoDoc
 
       def docid(isoxml, _out)
         super
-        label1 = @lang == "fr" ? "Annexe" : "Appendix"
-        label2 = @lang == "fr" ? "Appendix" : "Annexe"
+        label1, label2 = @lang == "fr" ? %w(Annexe Appendix) : %w(Appendix Annexe)
         dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
         dn and set(:appendixid, @i18n.l10n("#{label1} #{dn&.text}"))
         dn and set(:appendixid_alt, @i18n.l10n("#{label2} #{dn&.text}"))
+        label1, label2  = @lang == "fr" ? %w(Partie Part) : %w(Part Partie)
+        dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/part"))
+        dn and set(:partid, @i18n.l10n("#{label1} #{dn&.text}"))
+        dn and set(:partid_alt, @i18n.l10n("#{label2} #{dn&.text}"))
+      end
+
+      def extract_person_names_affiliations(authors)
+        extract_person_affiliations(authors)
       end
     end
   end
