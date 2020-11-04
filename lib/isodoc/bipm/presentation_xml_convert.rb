@@ -110,8 +110,7 @@ module IsoDoc
 
       def twitter_cldr_localiser()
         locale = :fr
-        num = TwitterCldr::DataReaders::NumberDataReader.new(locale)
-        num.symbols.merge!(twitter_cldr_localiser_symbols)
+        twitter_cldr_reader(locale)
         locale
       end
 
