@@ -823,5 +823,50 @@ RSpec.describe Asciidoctor::BIPM do
 OUTPUT
   end
 
+  it "customises italicisation of MathML" do
+input = <<~INPUT
+= Document title
+Author
+:stem:
+
+[stem]
+++++
+<math xmlns='http://www.w3.org/1998/Math/MathML'>
+  <mi>A</mi>
+  <mo>+</mo>
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>Α</mi>
+  <mo>+</mo>
+  <mi>α</mi>
+  <mo>+</mo>
+  <mi>AB</mi>
+</math>
+++++
+INPUT
+
+expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+#{BLANK_HDR}
+<sections>
+           <formula id='_'>
+             <stem type='MathML'>
+               <math xmlns='http://www.w3.org/1998/Math/MathML'>
+                 <mi mathvariant='normal'>A</mi>
+                 <mo>+</mo>
+                 <mi>a</mi>
+                 <mo>+</mo>
+                 <mi mathvariant='normal'>Α</mi>
+                 <mo>+</mo>
+                 <mi mathvariant='normal'>α</mi>
+                 <mo>+</mo>
+                 <mi>AB</mi>
+               </math>
+             </stem>
+           </formula>
+         </sections>
+</bipm-standard>
+OUTPUT
+  end
+
 end
 
