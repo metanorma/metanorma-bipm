@@ -1,6 +1,10 @@
 module IsoDoc
   module BIPM
     class Xref < IsoDoc::Xref
+      def initialize(lang, script, klass, i18n, options = {})
+        super
+      end
+
       def clause_names(docxml, sect_num)
         sect_num = 0
         docxml.xpath(ns("//sections/clause[not(@unnumbered = 'true')] | "\

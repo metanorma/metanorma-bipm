@@ -11,7 +11,10 @@ module IsoDoc
       end
 
       def pdf_stylesheet(docxml)
-        "bipm.brochure.xsl"
+        doctype = docxml&.at(ns("//bibdata/ext/doctype"))&.text
+        doctype = "brochure" unless %w(guide mise-en-pratique rapport).
+          include? doctype
+        "bipm.#{doctype}.xsl"
       end
 
       def pdf_options(docxml)
