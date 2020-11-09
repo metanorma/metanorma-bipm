@@ -1140,6 +1140,117 @@ presxml = xmlpp(<<~"OUTPUT")
 
 end
 
+
+  it "localises numbers in MathML" do
+   expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert("test", <<~INPUT, true)).sub(%r{<localized-strings>.*</localized-strings>}m, "")).to be_equivalent_to xmlpp(<<~OUTPUT)
+   <iso-standard xmlns="http://riboseinc.com/isoxml">
+   <bibdata>
+        <title language="en">test</title>
+        <language>en</language>
+        </bibdata>
+        <preface>
+        <p><stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30000</mn></math></stem>
+        <stem type="MathML"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>P</mi><mfenced open="(" close=")"><mrow><mi>X</mi><mo>≥</mo><msub><mrow><mi>X</mi></mrow><mrow><mo>max</mo></mrow></msub></mrow></mfenced><mo>=</mo><munderover><mrow><mo>∑</mo></mrow><mrow><mrow><mi>j</mi><mo>=</mo><msub><mrow><mi>X</mi></mrow><mrow><mo>max</mo></mrow></msub></mrow></mrow><mrow><mn>1000</mn></mrow></munderover><mfenced open="(" close=")"><mtable><mtr><mtd><mn>1000</mn></mtd></mtr><mtr><mtd><mi>j</mi></mtd></mtr></mtable></mfenced><msup><mrow><mi>p</mi></mrow><mrow><mi>j</mi></mrow></msup><msup><mrow><mfenced open="(" close=")"><mrow><mn>1</mn><mo>−</mo><mi>p</mi></mrow></mfenced></mrow><mrow><mrow><mn>1.003</mn><mo>−</mo><mi>j</mi></mrow></mrow></msup></math></stem></p>
+        </preface>
+   </iso-standard>
+  INPUT
+  <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+         <bibdata>
+           <title language='en'>test</title>
+           <language current='true'>en</language>
+         </bibdata>
+
+         <preface>
+           <p>
+             <stem type='MathML'>30&#x202F;000</stem>
+             <stem type='MathML'>
+               <math xmlns='http://www.w3.org/1998/Math/MathML'>
+                 <mi>P</mi>
+                 <mfenced open='(' close=')'>
+                   <mrow>
+                     <mi>X</mi>
+                     <mo>&#x2265;</mo>
+                     <msub>
+                       <mrow>
+                         <mi>X</mi>
+                       </mrow>
+                       <mrow>
+                         <mo>max</mo>
+                       </mrow>
+                     </msub>
+                   </mrow>
+                 </mfenced>
+                 <mo>=</mo>
+                 <munderover>
+                   <mrow>
+                     <mo>&#x2211;</mo>
+                   </mrow>
+                   <mrow>
+                     <mrow>
+                       <mi>j</mi>
+                       <mo>=</mo>
+                       <msub>
+                         <mrow>
+                           <mi>X</mi>
+                         </mrow>
+                         <mrow>
+                           <mo>max</mo>
+                         </mrow>
+                       </msub>
+                     </mrow>
+                   </mrow>
+                   <mrow>
+                     <mn>1&#x202F;000</mn>
+                   </mrow>
+                 </munderover>
+                 <mfenced open='(' close=')'>
+                   <mtable>
+                     <mtr>
+                       <mtd>
+                         <mn>1&#x202F;000</mn>
+                       </mtd>
+                     </mtr>
+                     <mtr>
+                       <mtd>
+                         <mi>j</mi>
+                       </mtd>
+                     </mtr>
+                   </mtable>
+                 </mfenced>
+                 <msup>
+                   <mrow>
+                     <mi>p</mi>
+                   </mrow>
+                   <mrow>
+                     <mi>j</mi>
+                   </mrow>
+                 </msup>
+                 <msup>
+                   <mrow>
+                     <mfenced open='(' close=')'>
+                       <mrow>
+                         <mn>1</mn>
+                         <mo>&#x2212;</mo>
+                         <mi>p</mi>
+                       </mrow>
+                     </mfenced>
+                   </mrow>
+                   <mrow>
+                     <mrow>
+                       <mn>1,003</mn>
+                       <mo>&#x2212;</mo>
+                       <mi>j</mi>
+                     </mrow>
+                   </mrow>
+                 </msup>
+               </math>
+             </stem>
+           </p>
+         </preface>
+       </iso-standard>
+OUTPUT
+  end
+
   it "processes nested roman and alphabetic lists" do 
           expect(xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({}).convert('test', <<~"INPUT", true).gsub(%r{^.*<body}m, '<body').gsub(%r{</body>.*}m, '</body>')))).to be_equivalent_to <<~"OUTPUT"
     <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
@@ -1266,5 +1377,6 @@ INPUT
        </body>
 OUTPUT
     end
+
 
 end

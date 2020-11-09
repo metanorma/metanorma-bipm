@@ -46,21 +46,18 @@ jobs:
 
       - run: bundle install --jobs 4 --retry 3
 
-      - name: install plantuml ubuntu
-        if: matrix.os == 'ubuntu-latest'
-        uses: nick-invision/retry@v1
-        with:
-          polling_interval_seconds: 5
-          timeout_minutes: 5
-          max_attempts: 3
-          command: >
-            sudo apt-get update -y && sudo bash -c 
-            "curl -L https://github.com/metanorma/plantuml-install/raw/master/ubuntu.sh | bash"
-
-      - if: matrix.os == 'macos-latest'
-        run: brew install plantuml
-
-      - if: matrix.os == 'windows-latest'
-        run: cinst -y plantuml
-
       - run: bundle exec rake
+
+  notify:
+    name: Trigger notify workflow
+    needs: rake
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger notify workflow
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          context: 'tests-passed-successfully'
+          description: 'Tests passed successfully'
+          state: 'success'
+          sha: ${{ github.event.pull_request.head.sha || github.sha }}
