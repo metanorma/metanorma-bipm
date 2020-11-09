@@ -72,20 +72,25 @@ module IsoDoc
       end
 
       def list_authors(xml)
-        ret = list_people(xml, "//bibdata/contributor[xmlns:role/@type = 'author']/person")
+        ret = list_people(
+          xml, "//bibdata/contributor[xmlns:role/@type = 'author']/person")
         @i18n.multiple_and(ret, @i18n.get["and"])
       end
 
+      COCHAIR = "xmlns:role[contains(text(),'co-chair')]".freeze
+      CHAIR = "[xmlns:role[contains(text(),'chair')]"\
+        "[not(contains(text(),'co-chair'))]]".freeze
+
       def list_cochairs(xml)
-        ret = list_people(xml, "//bibdata/contributor[xmlns:role[contains(text(),'co-chair')]]/person")
-        role = xml&.at(ns("//bibdata/contributor[xmlns:role[contains(text(),'co-chair')]]/role"))&.text
+        ret = list_people(xml, "//bibdata/contributor[#{COCHAIR}]/person")
+        role = xml&.at(ns("//bibdata/contributor[#{COCHAIR}]/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
         "#{label}: #{@i18n.multiple_and(ret, @i18n.get["and"])}"
       end
 
       def list_chairs(xml)
-        ret = list_people(xml, "//bibdata/contributor[xmlns:role[contains(text(),'chair')][not(contains(text(),'co-chair'))]]/person")
-        role = xml&.at(ns("//bibdata/contributor[xmlns:role[contains(text(),'chair')][not(contains(text(),'co-chair'))]]/role"))&.text
+        ret = list_people(xml, "//bibdata/contributor#{CHAIR}/person")
+        role = xml&.at(ns("//bibdata/contributor#{CHAIR}/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
         "#{label}: #{@i18n.multiple_and(ret, @i18n.get["and"])}"
       end
@@ -101,6 +106,12 @@ module IsoDoc
           ret << c
         end
         ret
+      end
+
+      def twitter_cldr_localiser()
+        locale = :fr
+        twitter_cldr_reader(locale)
+        locale
       end
 
       include Init
