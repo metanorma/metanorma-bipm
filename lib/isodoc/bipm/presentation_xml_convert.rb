@@ -108,10 +108,8 @@ module IsoDoc
         ret
       end
 
-      def twitter_cldr_localiser()
-        locale = :fr
-        twitter_cldr_reader(locale)
-        locale
+      def twitter_cldr_localiser_symbols
+        { group: "&#x202F;", fraction_group: "&#x202F;", fraction_group_digits: 3 }
       end
 
       include Init
