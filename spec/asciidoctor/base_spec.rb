@@ -498,7 +498,7 @@ RSpec.describe Asciidoctor::BIPM do
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
   end
 
-  it "uses pagenumber xrefs" do
+  it "uses pagenumber and nosee xrefs" do
         input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
 
@@ -506,6 +506,7 @@ RSpec.describe Asciidoctor::BIPM do
       == Section 1
       <<a>>
       <<a,pagenumber%>>
+      <<a,nosee%>>
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
@@ -516,6 +517,7 @@ RSpec.describe Asciidoctor::BIPM do
              <p id='_'>
                <xref target='a'/>
                <xref target='a' pagenumber='true'/>
+               <xref target='a' nosee='true'/>
              </p>
            </clause>
          </sections>

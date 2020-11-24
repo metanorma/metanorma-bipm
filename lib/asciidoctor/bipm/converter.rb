@@ -123,11 +123,15 @@ module Asciidoctor
       end
 
       def inline_anchor_xref_attrs(node)
-        if /pagenumber%/.match(node.text)
-          node.text = node.text.sub(/pagenumber%/, "")
-          page = true
+        flags = %w(pagenumber nosee).each_with_object({}) do |w, m|
+          if /#{w}%/.match(node.text)
+            node.text = node.text.sub(/#{w}%/, "")
+            m[w] = true
+          end
         end
-        page ? super.merge(pagenumber: true) : super
+        ret = super
+        flags.keys.each { |k| ret[k.to_sym] = true }
+        ret
       end
 
       def clause_parse(attrs, xml, node)
@@ -188,6 +192,6 @@ module Asciidoctor
         return nil if node.attr("no-pdf")
         IsoDoc::BIPM::PdfConvert.new(doc_extract_attributes(node))
       end
+      end
     end
   end
-end
