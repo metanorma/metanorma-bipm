@@ -81,6 +81,8 @@ module IsoDoc
 
       def back_anchor_names(docxml)
         super
+        @annexlbl = docxml.at(ns("//bibdata/ext/structuredidentifier/appendix")) ?
+          @labels["appendix"] : @labels["annex"]
         docxml.xpath(ns("//annex[not(@unnumbered = 'true')]")).
           each_with_index { |c, i| annex_names(c, (i+1).to_s) }
         docxml.xpath(ns("//annex[@unnumbered = 'true']")).
@@ -90,7 +92,7 @@ module IsoDoc
       def annex_names(clause, num)
         @anchors[clause["id"]] =
           { label: annex_name_lbl(clause, num), type: "clause", value: num.to_s,
-            xref: l10n("#{@labels["annex"]} #{num}"), level: 1 }
+            xref: l10n("#{@annexlbl} #{num}"), level: 1 }
         if a = single_annex_special_section(clause)
           annex_names1(a, "#{num}", 1)
         else
@@ -121,7 +123,7 @@ module IsoDoc
 
       def annex_names1(clause, num, level)
         @anchors[clause["id"]] =
-          { label: num, xref: l10n("#{@labels["annex"]} #{num}"),
+          { label: num, xref: l10n("#{@annexlbl} #{num}"),
             level: level, type: "clause" }
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each_with_index do |c, i|
           annex_names1(c, "#{num}.#{i + 1}", level + 1)
@@ -142,7 +144,7 @@ module IsoDoc
       end
 
       def annex_name_lbl(clause, num)
-        l10n("<strong>#{@labels["annex"]} #{num}</strong>")
+        l10n("<strong>#{@annexlbl} #{num}</strong>")
       end
     end
   end

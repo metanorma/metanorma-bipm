@@ -613,6 +613,110 @@ RSpec.describe IsoDoc::BIPM do
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
+
+  it "processes appendix names in appendix document" do
+    input = <<~"INPUT"
+    <bipm-standard xmlns="http://riboseinc.com/isoxml">
+    <bibdata>
+    <ext>
+    <structuredidentifier><appendix>1</appendix></structuredidentifier>
+    </ext>
+    </bibdata>
+    <sections>
+           <clause obligation='informative' id="A0">
+             <title>Foreword</title>
+             <p id='A'><xref target="P"/></p>
+           </clause>
+     </sections>
+    <annex id='P' inline-header='false' obligation='normative'>
+           <title>
+             <strong>Appendix 1</strong>
+             .
+             <tab/>
+             <strong>Annex</strong>
+           </title>
+           <clause id='Q' inline-header='false' obligation='normative'>
+             <title depth='2'>
+               1.1.
+               <tab/>
+               Annex A.1
+             </title>
+             <clause id='Q1' inline-header='false' obligation='normative'>
+               <title depth='3'>
+                 1.1.1.
+                 <tab/>
+                 Annex A.1a
+               </title>
+             </clause>
+           </clause>
+         </annex>
+       </bipm-standard>
+    INPUT
+
+    output = <<~"OUTPUT"
+    <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+  <bibdata>
+    <ext>
+      <structuredidentifier>
+        <appendix>1</appendix>
+      </structuredidentifier>
+    </ext>
+  </bibdata>
+  <sections>
+    <clause obligation='informative' id='A0'>
+      <title depth='1'>
+        1.
+        <tab/>
+        Foreword
+      </title>
+      <p id='A'>
+        <xref target='P'>Annex 1</xref>
+      </p>
+    </clause>
+  </sections>
+  <annex id='P' inline-header='false' obligation='normative'>
+    <title>
+      <strong>Annex 1</strong>
+      .
+      <tab/>
+      <strong>
+        <strong>Appendix 1</strong>
+         .
+        <tab/>
+        <strong>Annex</strong>
+      </strong>
+    </title>
+    <clause id='Q' inline-header='false' obligation='normative'>
+      <title depth='2'>
+        1.1.
+        <tab/>
+         1.1.
+        <tab/>
+         Annex A.1
+      </title>
+      <clause id='Q1' inline-header='false' obligation='normative'>
+        <title depth='3'>
+          1.1.1.
+          <tab/>
+           1.1.1.
+          <tab/>
+           Annex A.1a
+        </title>
+      </clause>
+    </clause>
+  </annex>
+</bipm-standard>
+    OUTPUT
+
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+                          .new({})
+                          .convert('test', input, true)
+                          .gsub(%r{<localized-strings>.*</localized-strings>}m, "")
+                                    ))
+    expect(stripped_html).to(be_equivalent_to(output))
+  end
+
+
   it "injects JS into blank html" do
     system "rm -f test.html"
     input = <<~"INPUT"
