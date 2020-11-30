@@ -36,7 +36,7 @@ $docstage-colors-list: (
 */
 
 body {
-  @include bodyStyle1(15px, 1.4em, #1d1d1d, #ffffff, 300);
+  @include bodyStyle1($normalfontsize, 1.4em, #1d1d1d, #ffffff, 300);
   font-weight: 400;
 
   pre * {
@@ -401,7 +401,7 @@ a.footnote-number {
 }
 
 .footnote {
-    font-size: 0.9em;
+    font-size: $footnotefontsize;
 }
 
 
