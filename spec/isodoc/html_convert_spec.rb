@@ -1,9 +1,10 @@
 require "spec_helper"
 
-logoloc = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib", "isodoc", "bipm", "html"))
+logoloc = File.join(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib", "metanorma")), "..", "..", "lib", "isodoc", "bipm", "html")
+logoloc1 = File.join(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib", "isodoc", "bipm", "html")))
 
 si_aspect = ["A_e_deltanu", "A_e", "cd_Kcd_h_deltanu", "cd_Kcd", "full", "K_k_deltanu", "K_k", "kg_h_c_deltanu", "kg_h", "m_c_deltanu", "m_c", "mol_NA", "s_deltanu"]
-si_aspect_paths = si_aspect.map { |x| File.join(logoloc, "si-aspect", "#{x}.png") }
+si_aspect_paths = si_aspect.map { |x| File.join(logoloc1, "si-aspect", "#{x}.png") }
 
 RSpec.describe IsoDoc::BIPM do
 
