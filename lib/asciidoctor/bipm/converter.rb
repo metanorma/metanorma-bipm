@@ -10,6 +10,18 @@ module Asciidoctor
         Metanorma::BIPM.configuration
       end
 
+      def org_name_long
+        configuration.organization_name_long[@lang]
+      end
+
+      def default_publisher
+        org_name_long
+      end
+
+      def org_abbrev
+          { org_name_long => configuration.organization_name_short }
+      end
+
       def metadata_committee(node, xml)
         return unless node.attr("committee-en") || node.attr("committee-fr")
         xml.editorialgroup do |a|

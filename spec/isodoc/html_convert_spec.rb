@@ -66,13 +66,13 @@ RSpec.describe IsoDoc::BIPM do
   <contributor>
     <role type="author"/>
     <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
     </organization>
   </contributor>
   <contributor>
     <role type="publisher"/>
     <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
     </organization>
   </contributor>
   <version>
@@ -90,7 +90,7 @@ RSpec.describe IsoDoc::BIPM do
     <from>2001</from>
     <owner>
       <organization>
-        <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+        <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
       </organization>
     </owner>
   </copyright>
@@ -118,7 +118,7 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
-:agency=>"#{Metanorma::BIPM.configuration.organization_name_long}",
+:agency=>"#{Metanorma::BIPM.configuration.organization_name_long["en"]}",
 :appendixid=>"Appendix ABC",
 :appendixid_alt=>"Annexe ABC",
 :appendixsubtitle=>"Chef Title Appendix",
@@ -146,7 +146,7 @@ RSpec.describe IsoDoc::BIPM do
 :partsubtitle=>"Chef Title Part",
 :parttitle=>"Main Title Part",
 :publisheddate=>"XXX",
-:publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
+:publisher=>"#{Metanorma::BIPM.configuration.organization_name_long["en"]}",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"January 2000",
@@ -183,13 +183,13 @@ RSpec.describe IsoDoc::BIPM do
   <contributor>
     <role type="author"/>
     <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long["fr"]}</name>
     </organization>
   </contributor>
   <contributor>
     <role type="publisher"/>
     <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long["fr"]}</name>
     </organization>
   </contributor>
   <version>
@@ -204,7 +204,7 @@ RSpec.describe IsoDoc::BIPM do
     <from>2001</from>
     <owner>
       <organization>
-        <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+        <name>#{Metanorma::BIPM.configuration.organization_name_long["fr"]}</name>
       </organization>
     </owner>
   </copyright>
@@ -230,7 +230,7 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
 {:accesseddate=>"XXX",
-:agency=>"#{Metanorma::BIPM.configuration.organization_name_long}",
+:agency=>"#{Metanorma::BIPM.configuration.organization_name_long["fr"]}",
 :appendixid=>"Annexe ABC",
 :appendixid_alt=>"Appendix ABC",
 :appendixsubtitle=>"Main Title Appendix",
@@ -256,7 +256,7 @@ RSpec.describe IsoDoc::BIPM do
 :partid=>"Partie 2.1",
 :partid_alt=>"Part 2.1",
 :publisheddate=>"XXX",
-:publisher=>"#{Metanorma::BIPM.configuration.organization_name_long}",
+:publisher=>"#{Metanorma::BIPM.configuration.organization_name_long["fr"]}",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
 :revdate_monthyear=>"Janvier 2000",
@@ -916,7 +916,7 @@ INPUT
   <contributor>
     <role type="author"/>
     <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
       <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
     </organization>
   </contributor>
@@ -1001,7 +1001,7 @@ INPUT
   <contributor>
     <role type="publisher"/>
     <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+      <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
       <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
     </organization>
   </contributor>
@@ -1055,7 +1055,7 @@ presxml = xmlpp(<<~"OUTPUT")
          <contributor>
            <role type="author"/>
            <organization>
-             <name>Bureau International des poids et mesures</name>
+             <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
              <abbreviation>BIPM</abbreviation>
            </organization>
          </contributor>
@@ -1140,7 +1140,7 @@ presxml = xmlpp(<<~"OUTPUT")
          <contributor>
            <role type="publisher"/>
            <organization>
-             <name>Bureau International des poids et mesures</name>
+             <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
              <abbreviation>BIPM</abbreviation>
            </organization>
          </contributor>

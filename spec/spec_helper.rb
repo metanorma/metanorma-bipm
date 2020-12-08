@@ -82,14 +82,14 @@ BLANK_HDR = <<~"HDR"
          <contributor>
            <role type="author"/>
            <organization>
-             <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+             <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
            </organization>
          </contributor>
          <contributor>
            <role type="publisher"/>
            <organization>
-             <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+             <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
            </organization>
          </contributor>
@@ -103,7 +103,7 @@ BLANK_HDR = <<~"HDR"
            <from>#{Time.new.year}</from>
            <owner>
              <organization>
-               <name>#{Metanorma::BIPM.configuration.organization_name_long}</name>
+               <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
              </organization>
            </owner>
