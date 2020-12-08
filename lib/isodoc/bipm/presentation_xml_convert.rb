@@ -112,6 +112,10 @@ module IsoDoc
         { group: "&#x202F;", fraction_group: "&#x202F;", fraction_group_digits: 3 }
       end
 
+      def mathml1(f, locale)
+      localize_maths(f, locale)
+      end
+
       include Init
     end
   end
