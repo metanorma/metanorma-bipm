@@ -1267,7 +1267,10 @@ end
 
          <preface>
            <p>
-             <stem type='MathML'>30&#x202F;000</stem>
+             <stem type='MathML'><math xmlns='http://www.w3.org/1998/Math/MathML'>
+    <mn>30&#x202F;000</mn>
+  </math>
+</stem>
              <stem type='MathML'>
                <math xmlns='http://www.w3.org/1998/Math/MathML'>
                  <mi>P</mi>
@@ -1377,7 +1380,10 @@ OUTPUT
 
          <preface>
            <p>
-             <stem type='MathML'>30&#x202F;000</stem>
+             <stem type='MathML'><math xmlns='http://www.w3.org/1998/Math/MathML'>
+    <mn>30&#x202F;000</mn>
+  </math>
+</stem>
              <stem type='MathML'>
                <math xmlns='http://www.w3.org/1998/Math/MathML'>
                  <mi>P</mi>
