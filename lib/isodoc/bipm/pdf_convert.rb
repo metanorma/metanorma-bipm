@@ -10,6 +10,10 @@ module IsoDoc
         super
       end
 
+      def configuration
+        Metanorma::BIPM.configuration
+      end
+
       def pdf_stylesheet(docxml)
         doctype = docxml&.at(ns("//bibdata/ext/doctype"))&.text
         doctype = "brochure" unless %w(guide mise-en-pratique rapport).
@@ -18,7 +22,11 @@ module IsoDoc
       end
 
       def pdf_options(docxml)
-        if docxml.root.name == "metanorma-collection"
+        if docxml.root.name == "metanorma-collection" &&
+            docxml.at("//m:bipm-standard/m:bibdata/m:language[@current = 'true'][. = 'fr']",
+                      "m" => configuration.document_namespace) &&
+            docxml.at("//m:bipm-standard/m:bibdata/m:language[@current = 'true'][. = 'en']",
+                      "m" => configuration.document_namespace)
           "--split-by-language"
         else
           super
