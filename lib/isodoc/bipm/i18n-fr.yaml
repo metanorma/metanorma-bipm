@@ -15,6 +15,7 @@ requirement: exigence
 recommendation: recommandation
 permission: autorisation
 example_xref: exemple
+index: Index
 doctype_dict: 
   brochure: brochure
   mise-en-pratique: mise-en-pratique

@@ -1,10 +1,96 @@
 require "isodoc"
 require "metanorma-generic"
+require "twitter_cldr"
+require "sterile"
 require_relative "init"
 
 module IsoDoc
   module BIPM
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
+      def section(docxml)
+        super
+        index(docxml)
+      end
+
+       def add_id
+        %(id="_#{UUIDTools::UUID.random_create}")
+      end
+
+      def index(docxml)
+        return unless docxml.at(ns("//index"))
+        i = docxml.root.add_child "<clause type='index' #{add_id}><title>#{@i18n.index}</title></clause>"
+        index = sort_indexterms(docxml.xpath(ns("//index")))
+        index.keys.sort.each do |k|
+          c = i.first.add_child "<clause #{add_id}><title>#{k}</title><ul></ul></clause>"
+          words = index[k].keys.each_with_object({}) { |w, v| v[w.downcase] = w }
+          words.keys.localize(@lang.to_sym).sort.to_a.each do |w|
+            c.first.at(ns("./ul")).add_child index_entries(words, index[k], w)
+          end
+        end
+        @xrefs.bookmark_anchor_names(docxml.xpath(ns(@xrefs.sections_xpath)))
+      end
+
+      def index_entries(words, index, primary)
+        ret = index_entries_head(words[primary], index.dig(words[primary], nil, nil))
+        words2 = index[words[primary]]&.keys&.reject { |k| k.nil?}&.each_with_object({}) { |w, v| v[w.downcase] = w }
+        unless words2.empty?
+          ret += "<ul>"
+          words2.keys.localize(@lang.to_sym).sort.to_a.each do |w|
+            ret += index_entries2(words2, index[words[primary]], w)
+          end
+          ret += "</ul>"
+        end
+        ret + "</li>"
+      end
+
+      def index_entries2(words, index, secondary)
+        ret = index_entries_head(words[secondary], index.dig(words[secondary], nil))
+        words3 = index[words[secondary]]&.keys&.reject { |k| k.nil?}&.each_with_object({}) { |w, v| v[w.downcase] = w }
+        unless words3.empty?
+          ret += "<ul>"
+          words3.keys.localize(@lang.to_sym).sort.to_a.each do |w|
+            ret += (index_entries_head(words3[w], index[words[secondary]][words3[w]]) + "</li>")
+          end
+          ret += "</ul>"
+        end
+        ret + "</li>"
+      end
+
+      def index_entries_head(head, entries)
+        ret = "<li>#{head}"
+        e1 = entries&.join(", ")
+        (e1.nil? || e1.empty?) ? ret : ret + ", #{e1}"
+      end
+
+      def sort_indexterms(terms)
+        index = extract_indexterms(terms)
+        index.keys.sort.each_with_object({}) do |k, v|
+          v[k[0].upcase.transliterate] ||= {}
+          v[k[0].upcase.transliterate][k] = index[k]
+        end
+      end
+
+      def extract_indexterms(terms)
+        terms.each_with_object({}) do |t, v|
+          term = t["primary"]
+          term2 = t["secondary"]
+          term3 = t["tertiary"]
+          index2bookmark(t)
+          v[term] ||= {}
+          v[term][term2] ||= {}
+          v[term][term2][term3] ||= []
+          v[term][term2][term3] << "<xref target='#{t['id']}' pagenumber='true'/>"
+        end
+      end
+
+      def index2bookmark(t)
+        t.name = "bookmark"
+        t.delete("primary")
+        t.delete("secondary")
+        t.delete("tertiary")
+        t["id"] = "_#{UUIDTools::UUID.random_create}"
+      end
+
       def table1(f)
         return if labelled_ancestor(f)
         return if f["unnumbered"] && !f.at(ns("./name"))
@@ -113,7 +199,7 @@ module IsoDoc
       end
 
       def mathml1(f, locale)
-      localize_maths(f, locale)
+        localize_maths(f, locale)
       end
 
       include Init
