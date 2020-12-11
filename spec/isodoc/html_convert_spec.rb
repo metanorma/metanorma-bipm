@@ -1599,8 +1599,133 @@ INPUT
 OUTPUT
     end
 
-    it "generates an index" do
-      expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert('test', <<~INPUT, true).gsub(%r{<localized-strings>.*</localized-strings>}m, "")))).to be_equivalent_to <<~"OUTPUT"
+    it "generates an index in English" do
+      expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert('test', <<~INPUT, true).gsub(%r{<localized-strings>.*</localized-strings>}m, "")))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+      <bibdata>
+      <language>en</language>
+      <script>Latn</script>
+      </bibdata>
+      <sections>
+      <clause id="A">
+      <index primary="&#xE9;long&#xE9;"/>
+      <index primary="&#xEA;tre" secondary="Husserl" tertiary="en allemand"/>
+      <index primary="Emancipation"/>
+      <index primary="Emancipation" secondary="dans la France"/>
+      <index primary="Emancipation" secondary="dans la France" tertiary="en Bretagne"/>
+      <clause id="B">
+      <index primary="Emancipation"/>
+      <index primary="zebra"/>
+      <index primary="Emancipation" secondary="dans les &#xC9;tats-Unis"/>
+      <index primary="Emancipation" secondary="dans la France" tertiary="&#xE0; Paris"/>
+      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
+      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>Emancipation</target></index-xref>
+      <index-xref also="false"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
+      <index-xref also="false"><primary><em>Dasein</em></primary><target>&#xEA;tre</target></index-xref>
+      <index-xref also="false"><primary><em>Dasein</em></primary><target>Emancipation</target></index-xref>
+      </clause>
+      </clause>
+      </sections>
+      </bipm-standard>
+      INPUT
+       <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
+         <bibdata>
+           <language current='true'>en</language>
+           <script current='true'>Latn</script>
+         </bibdata>
+         <sections>
+           <clause id='A'>
+             <title>1.</title>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <clause id='B'>
+               <title>1.1.</title>
+               <bookmark id='_'/>
+               <bookmark id='_'/>
+               <bookmark id='_'/>
+               <bookmark id='_'/>
+             </clause>
+           </clause>
+         </sections>
+         <clause type='index' id='_'>
+           <title>Index</title>
+           <clause id='_'>
+             <title>D</title>
+             <ul>
+               <li>
+                 <em>Dasein</em>
+                 , see Emancipation, &#xEA;tre
+               </li>
+             </ul>
+           </clause>
+           <clause id='_'>
+             <title>E</title>
+             <ul>
+               <li>
+                 &#xE9;long&#xE9;,
+                 <xref target='_' pagenumber='true'>Chapter 1</xref>
+               </li>
+               <li>
+                 Emancipation,
+                 <xref target='_' pagenumber='true'>Chapter 1</xref>
+                 ,
+                 <xref target='_' pagenumber='true'>Section 1.1</xref>
+                 <ul>
+                   <li>
+                     dans la France,
+                     <xref target='_' pagenumber='true'>Chapter 1</xref>
+                     <ul>
+                       <li>
+                         &#xE0; Paris,
+                         <xref target='_' pagenumber='true'>Section 1.1</xref>
+                       </li>
+                       <li>
+                         en Bretagne,
+                         <xref target='_' pagenumber='true'>Chapter 1</xref>
+                       </li>
+                     </ul>
+                   </li>
+                   <li>
+                     dans les &#xC9;tats-Unis,
+                     <xref target='_' pagenumber='true'>Section 1.1</xref>
+                   </li>
+                 </ul>
+               </li>
+               <li>
+                 &#xEA;tre
+                 <ul>
+                   <li>
+                     Husserl, see zebra, see also Emancipation, zebra
+                     <ul>
+                       <li>
+                         en allemand,
+                         <xref target='_' pagenumber='true'>Chapter 1</xref>
+                       </li>
+                     </ul>
+                   </li>
+                 </ul>
+               </li>
+             </ul>
+           </clause>
+           <clause id='_'>
+             <title>Z</title>
+             <ul>
+               <li>
+                 zebra,
+                 <xref target='_' pagenumber='true'>Section 1.1</xref>
+               </li>
+             </ul>
+           </clause>
+         </clause>
+       </bipm-standard>
+      OUTPUT
+    end
+
+    it "generates an index in French" do
+      expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert('test', <<~INPUT, true).gsub(%r{<localized-strings>.*</localized-strings>}m, "")))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
       <bibdata>
       <language>fr</language>
@@ -1608,16 +1733,21 @@ OUTPUT
       </bibdata>
       <sections>
       <clause id="A">
-      <index primary="élongé"/>
-      <index primary="être" secondary="Husserl" tertiary="en allemand"/>
+      <index primary="&#xE9;long&#xE9;"/>
+      <index primary="&#xEA;tre" secondary="Husserl" tertiary="en allemand"/>
       <index primary="Emancipation"/>
       <index primary="Emancipation" secondary="dans la France"/>
       <index primary="Emancipation" secondary="dans la France" tertiary="en Bretagne"/>
       <clause id="B">
       <index primary="Emancipation"/>
       <index primary="zebra"/>
-      <index primary="Emancipation" secondary="dans les États-Unis"/>
-      <index primary="Emancipation" secondary="dans la France" tertiary="à Paris"/>
+      <index primary="Emancipation" secondary="dans les &#xC9;tats-Unis"/>
+      <index primary="Emancipation" secondary="dans la France" tertiary="&#xE0; Paris"/>
+      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
+      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>Emancipation</target></index-xref>
+      <index-xref also="false"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
+      <index-xref also="false"><primary><em>Dasein</em></primary><target>&#xEA;tre</target></index-xref>
+      <index-xref also="false"><primary><em>Dasein</em></primary><target>Emancipation</target></index-xref>
       </clause>
       </clause>
       </sections>
@@ -1647,6 +1777,17 @@ OUTPUT
          </sections>
          <clause type='index' id='_'>
            <title>Index</title>
+           <clause id='_'>
+             <title>D</title>
+             <ul>
+               <li>
+                 <em>Dasein</em>
+                 ,
+                 <em>voir</em>
+                  Emancipation, &#xEA;tre
+               </li>
+             </ul>
+           </clause>
            <clause id='_'>
              <title>E</title>
              <ul>
@@ -1684,7 +1825,11 @@ OUTPUT
                  &#xEA;tre
                  <ul>
                    <li>
-                     Husserl
+                     Husserl,
+                     <em>voir</em>
+                      zebra,
+                     <em>voir aussi</em>
+                      Emancipation, zebra
                      <ul>
                        <li>
                          en allemand,
