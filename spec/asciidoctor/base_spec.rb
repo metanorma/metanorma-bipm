@@ -724,7 +724,7 @@ RSpec.describe Asciidoctor::BIPM do
     <terms id='_' obligation='normative'>
       <title>Photometric units</title>
       <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
-      <term id='_'>
+      <term id='term-term1'>
         <preferred>Term1</preferred>
       </term>
     </terms>
@@ -747,14 +747,14 @@ RSpec.describe Asciidoctor::BIPM do
         <title>Intro 4</title>
         <terms id='_' obligation='normative'>
           <title>Intro 5</title>
-          <term id='_'>
+          <term id='term-term1-1'>
             <preferred>Term1</preferred>
           </term>
         </terms>
       </clause>
       <terms id='_' obligation='normative'>
         <title>Normal Terms</title>
-        <term id='_'>
+        <term id='term-term2'>
           <preferred>Term2</preferred>
         </term>
       </terms>
