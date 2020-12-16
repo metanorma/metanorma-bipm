@@ -1,6 +1,7 @@
 require "isodoc"
 require "metanorma-generic"
 require_relative "init"
+require_relative "index"
 
 module IsoDoc
   module BIPM
@@ -113,7 +114,7 @@ module IsoDoc
       end
 
       def mathml1(f, locale)
-      localize_maths(f, locale)
+        localize_maths(f, locale)
       end
 
       include Init
