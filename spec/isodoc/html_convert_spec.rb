@@ -1608,21 +1608,21 @@ OUTPUT
       </bibdata>
       <sections>
       <clause id="A">
-      <index primary="&#xE9;long&#xE9;"/>
-      <index primary="&#xEA;tre" secondary="Husserl" tertiary="en allemand"/>
-      <index primary="Emancipation"/>
-      <index primary="Emancipation" secondary="dans la France"/>
-      <index primary="Emancipation" secondary="dans la France" tertiary="en Bretagne"/>
+      <index><primary>&#xE9;long&#xE9;</primary></index>
+      <index><primary>&#xEA;tre</primary><secondary>Husserl</secondary><tertiary>en allemand</tertiary></index>
+      <index><primary><em>Eman</em>cipation</primary></index>
+      <index><primary><em>Eman</em>cipation</primary><secondary>dans la France</secondary></index>
+      <index><primary><em>Eman</em>cipation</primary><secondary>dans la France</secondary><tertiary>en Bretagne</tertiary></index>
       <clause id="B">
-      <index primary="Emancipation"/>
-      <index primary="zebra"/>
-      <index primary="Emancipation" secondary="dans les &#xC9;tats-Unis"/>
-      <index primary="Emancipation" secondary="dans la France" tertiary="&#xE0; Paris"/>
+      <index><primary><em>Eman</em>cipation</primary></index>
+      <index><primary>zebra</primary></index>
+      <index><primary><em>Eman</em>cipation</primary><secondary>dans les &#xC9;tats-Unis</secondary></index>
+      <index><primary><em>Eman</em>cipation</primary><secondary>dans la France</secondary><tertiary>&#xE0; Paris</tertiary></index>
       <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
-      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>Emancipation</target></index-xref>
+      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target><em>Eman</em>cipation</target></index-xref>
       <index-xref also="false"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
       <index-xref also="false"><primary><em>Dasein</em></primary><target>&#xEA;tre</target></index-xref>
-      <index-xref also="false"><primary><em>Dasein</em></primary><target>Emancipation</target></index-xref>
+      <index-xref also="false"><primary><em>Dasein</em></primary><target><em>Eman</em>cipation</target></index-xref>
       </clause>
       </clause>
       </sections>
@@ -1657,7 +1657,7 @@ OUTPUT
              <ul>
                <li>
                  <em>Dasein</em>
-                 , see Emancipation, &#xEA;tre
+                 , see <em>Eman</em>cipation, &#xEA;tre
                </li>
              </ul>
            </clause>
@@ -1669,7 +1669,7 @@ OUTPUT
                  <xref target='_' pagenumber='true'>Chapter 1</xref>
                </li>
                <li>
-                 Emancipation,
+                 <em>Eman</em>cipation,
                  <xref target='_' pagenumber='true'>Chapter 1</xref>
                  ,
                  <xref target='_' pagenumber='true'>Section 1.1</xref>
@@ -1698,7 +1698,7 @@ OUTPUT
                  &#xEA;tre
                  <ul>
                    <li>
-                     Husserl, see zebra, see also Emancipation, zebra
+                     Husserl, see zebra, see also <em>Eman</em>cipation, zebra
                      <ul>
                        <li>
                          en allemand,
@@ -1733,16 +1733,16 @@ OUTPUT
       </bibdata>
       <sections>
       <clause id="A">
-      <index primary="&#xE9;long&#xE9;"/>
-      <index primary="&#xEA;tre" secondary="Husserl" tertiary="en allemand"/>
-      <index primary="Emancipation"/>
-      <index primary="Emancipation" secondary="dans la France"/>
-      <index primary="Emancipation" secondary="dans la France" tertiary="en Bretagne"/>
+      <index><primary>&#xE9;long&#xE9;</primary></index>
+      <index><primary>&#xEA;tre</primary><secondary>Husserl</secondary><tertiary>en allemand</tertiary></index>
+      <index><primary>Emancipation</primary></index>
+      <index><primary>Emancipation</primary><secondary>dans la France</secondary></index>
+      <index><primary>Emancipation</primary><secondary>dans la France</secondary><tertiary>en Bretagne</tertiary></index>
       <clause id="B">
-      <index primary="Emancipation"/>
-      <index primary="zebra"/>
-      <index primary="Emancipation" secondary="dans les &#xC9;tats-Unis"/>
-      <index primary="Emancipation" secondary="dans la France" tertiary="&#xE0; Paris"/>
+      <index><primary>Emancipation</primary></index>
+      <index><primary>zebra</primary></index>
+      <index><primary>Emancipation</primary><secondary>dans les &#xC9;tats-Unis</secondary></index>
+      <index><primary>Emancipation</primary><secondary>dans la France</secondary><tertiary>&#xE0; Paris</tertiary></index>
       <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
       <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>Emancipation</target></index-xref>
       <index-xref also="false"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>

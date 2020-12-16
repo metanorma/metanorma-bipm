@@ -113,9 +113,9 @@ module IsoDoc
       # attributes are decoded into UTF-8, elements in extract_indexsee are still in entities
       def extract_indexterms(terms)
         terms.each_with_object({}) do |t, v|
-          term = xml_encode_attr(t["primary"])
-          term2 = t["secondary"] ? xml_encode_attr(t["secondary"]) : nil
-          term3 = t["tertiary"] ? xml_encode_attr(t["tertiary"]) : nil
+          term = t&.at(ns("./primary"))&.children&.to_xml
+          term2 = t&.at(ns("./secondary"))&.children&.to_xml
+          term3 = t&.at(ns("./tertiary"))&.children&.to_xml
           index2bookmark(t)
           v[term] ||= {}
           v[term][term2] ||= {}
@@ -127,9 +127,7 @@ module IsoDoc
 
       def index2bookmark(t)
         t.name = "bookmark"
-        t.delete("primary")
-        t.delete("secondary")
-        t.delete("tertiary")
+        t.children.each { |x| x.remove }
         t["id"] = "_#{UUIDTools::UUID.random_create}"
       end
     end
