@@ -1599,113 +1599,261 @@ INPUT
 OUTPUT
     end
 
-  it "splits bilingual collection PDF" do
-    FileUtils.rm_f("test.pdf")
-    FileUtils.rm_f("test_fr.pdf")
-    FileUtils.rm_f("test_en.pdf")
-    IsoDoc::BIPM::PdfConvert.new({}).convert('test', <<~"INPUT", false)
-    <metanorma-collection xmlns="http://metanorma.org">
-  <bibdata type="collection">
-  <title format="text/plain" language="en">The International Temperature Scale of 1990 (ITS-90)</title>
-  </bibdata>
-   <manifest>
-    <level>brochure</level>
-    <title>Brochure/Brochure</title>
-    <docref fileref="brochure-its90-fr.xml" id="doc000000000">
-      <identifier>brochure-its90-fr</identifier>
-    </docref>
-    <docref fileref="brochure-its90-en.xml" id="doc000000001">
-      <identifier>brochure-its90-en</identifier>
-    </docref>
-  </manifest>
-  <doc-container id="doc000000000">
-    <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" type="presentation" version="0.0.5">
-<bibdata type="standard">
-<title language="en" format="text/plain" type="main">The International Temperature Scale of 1990 (ITS-90)</title>
-<title language="en" format="text/plain" type="cover">The International System of Units (SI)</title>
-<title language="fr" format="text/plain" type="main">&#xC9;chelle Internationale de Temp&#xE9;rature De 1990 (EIT-90)</title>
-<title language="fr" format="text/plain" type="cover">Le Syst&#xE8;me international d&#x2019;unit&#xE9;s (SI)</title>
-<docidentifier type="BIPM">BIPM PLTS-2000</docidentifier>
-<language current="true">fr</language>
-<script current="true">Latn</script>
-</bibdata>
-<preface><clause id="_abstract" obligation="informative"><title depth="1">Abstract</title></clause></preface>
-</bipm-standard>
-</doc-container>
-  <doc-container id="doc000000001">
- <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" type="presentation" version="0.0.5">
-<bibdata type="standard">
-<title language="en" format="text/plain" type="main">The International Temperature Scale of 1990 (ITS-90)</title>
-<title language="en" format="text/plain" type="cover">The International System of Units (SI)</title>
-<title language="fr" format="text/plain" type="main">&#xC9;chelle Internationale de Temp&#xE9;rature De 1990 (EIT-90)</title>
-<title language="fr" format="text/plain" type="cover">Le Syst&#xE8;me international d&#x2019;unit&#xE9;s (SI)</title>
-<docidentifier type="BIPM">BIPM PLTS-2000</docidentifier>
-<language current="true">en</language>
-<script current="true">Latn</script>
-</bibdata>
-<preface><clause id="_abstract1" obligation="informative"><title depth="1">Abstract</title></clause></preface>
-</bipm-standard>
-</doc-container>
-</metanorma-collection>
-    INPUT
-    expect(File.exist?("test.pdf")).to be true
-    expect(File.exist?("test_en.pdf")).to be true
-    expect(File.exist?("test_fr.pdf")).to be true
-  end
+    it "generates an index in English" do
+      expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert('test', <<~INPUT, true).gsub(%r{<localized-strings>.*</localized-strings>}m, "")))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+      <bibdata>
+      <language>en</language>
+      <script>Latn</script>
+      </bibdata>
+      <sections>
+      <clause id="A">
+      <index><primary>&#xE9;long&#xE9;</primary></index>
+      <index><primary>&#xEA;tre</primary><secondary>Husserl</secondary><tertiary>en allemand</tertiary></index>
+      <index><primary><em>Eman</em>cipation</primary></index>
+      <index><primary><em>Eman</em>cipation</primary><secondary>dans la France</secondary></index>
+      <index><primary><em>Eman</em>cipation</primary><secondary>dans la France</secondary><tertiary>en Bretagne</tertiary></index>
+      <clause id="B">
+      <index><primary><em>Eman</em>cipation</primary></index>
+      <index><primary>zebra</primary></index>
+      <index><primary><em>Eman</em>cipation</primary><secondary>dans les &#xC9;tats-Unis</secondary></index>
+      <index><primary><em>Eman</em>cipation</primary><secondary>dans la France</secondary><tertiary>&#xE0; Paris</tertiary></index>
+      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
+      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target><em>Eman</em>cipation</target></index-xref>
+      <index-xref also="false"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
+      <index-xref also="false"><primary><em>Dasein</em></primary><target>&#xEA;tre</target></index-xref>
+      <index-xref also="false"><primary><em>Dasein</em></primary><target><em>Eman</em>cipation</target></index-xref>
+      </clause>
+      </clause>
+      </sections>
+      </bipm-standard>
+      INPUT
+       <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
+         <bibdata>
+           <language current='true'>en</language>
+           <script current='true'>Latn</script>
+         </bibdata>
+         <sections>
+           <clause id='A'>
+             <title>1.</title>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <clause id='B'>
+               <title>1.1.</title>
+               <bookmark id='_'/>
+               <bookmark id='_'/>
+               <bookmark id='_'/>
+               <bookmark id='_'/>
+             </clause>
+           </clause>
+         </sections>
+         <clause type='index' id='_'>
+           <title>Index</title>
+           <clause id='_'>
+             <title>D</title>
+             <ul>
+               <li>
+                 <em>Dasein</em>
+                 , see <em>Eman</em>cipation, &#xEA;tre
+               </li>
+             </ul>
+           </clause>
+           <clause id='_'>
+             <title>E</title>
+             <ul>
+               <li>
+                 &#xE9;long&#xE9;,
+                 <xref target='_' pagenumber='true'>Chapter 1</xref>
+               </li>
+               <li>
+                 <em>Eman</em>cipation,
+                 <xref target='_' pagenumber='true'>Chapter 1</xref>
+                 ,
+                 <xref target='_' pagenumber='true'>Section 1.1</xref>
+                 <ul>
+                   <li>
+                     dans la France,
+                     <xref target='_' pagenumber='true'>Chapter 1</xref>
+                     <ul>
+                       <li>
+                         &#xE0; Paris,
+                         <xref target='_' pagenumber='true'>Section 1.1</xref>
+                       </li>
+                       <li>
+                         en Bretagne,
+                         <xref target='_' pagenumber='true'>Chapter 1</xref>
+                       </li>
+                     </ul>
+                   </li>
+                   <li>
+                     dans les &#xC9;tats-Unis,
+                     <xref target='_' pagenumber='true'>Section 1.1</xref>
+                   </li>
+                 </ul>
+               </li>
+               <li>
+                 &#xEA;tre
+                 <ul>
+                   <li>
+                     Husserl, see zebra, see also <em>Eman</em>cipation, zebra
+                     <ul>
+                       <li>
+                         en allemand,
+                         <xref target='_' pagenumber='true'>Chapter 1</xref>
+                       </li>
+                     </ul>
+                   </li>
+                 </ul>
+               </li>
+             </ul>
+           </clause>
+           <clause id='_'>
+             <title>Z</title>
+             <ul>
+               <li>
+                 zebra,
+                 <xref target='_' pagenumber='true'>Section 1.1</xref>
+               </li>
+             </ul>
+           </clause>
+         </clause>
+       </bipm-standard>
+      OUTPUT
+    end
 
-  it "does not split monolingual collection PDF" do
-    FileUtils.rm_f("test.pdf")
-    FileUtils.rm_f("test_fr.pdf")
-    FileUtils.rm_f("test_en.pdf")
-    IsoDoc::BIPM::PdfConvert.new({}).convert('test', <<~"INPUT", false)
-    <metanorma-collection xmlns="http://metanorma.org">
-  <bibdata type="collection">
-  <title format="text/plain" language="en">The International Temperature Scale of 1990 (ITS-90)</title>
-  </bibdata>
-   <manifest>
-    <level>brochure</level>
-    <title>Brochure/Brochure</title>
-    <docref fileref="brochure-its90-fr.xml" id="doc000000000">
-      <identifier>brochure-its90-fr</identifier>
-    </docref>
-    <docref fileref="brochure-its90-en.xml" id="doc000000001">
-      <identifier>brochure-its90-en</identifier>
-    </docref>
-  </manifest>
-  <doc-container id="doc000000000">
-    <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" type="presentation" version="0.0.5">
-<bibdata type="standard">
-<title language="en" format="text/plain" type="main">The International Temperature Scale of 1990 (ITS-90)</title>
-<title language="en" format="text/plain" type="cover">The International System of Units (SI)</title>
-<title language="fr" format="text/plain" type="main">&#xC9;chelle Internationale de Temp&#xE9;rature De 1990 (EIT-90)</title>
-<title language="fr" format="text/plain" type="cover">Le Syst&#xE8;me international d&#x2019;unit&#xE9;s (SI)</title>
-<docidentifier type="BIPM">BIPM PLTS-2000</docidentifier>
-<language current="true">fr</language>
-<script current="true">Latn</script>
-</bibdata>
-<preface><clause id="_abstract" obligation="informative"><title depth="1">Abstract</title></clause></preface>
-</bipm-standard>
-</doc-container>
-  <doc-container id="doc000000001">
- <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" type="presentation" version="0.0.5">
-<bibdata type="standard">
-<title language="en" format="text/plain" type="main">The International Temperature Scale of 1990 (ITS-90)</title>
-<title language="en" format="text/plain" type="cover">The International System of Units (SI)</title>
-<title language="fr" format="text/plain" type="main">&#xC9;chelle Internationale de Temp&#xE9;rature De 1990 (EIT-90)</title>
-<title language="fr" format="text/plain" type="cover">Le Syst&#xE8;me international d&#x2019;unit&#xE9;s (SI)</title>
-<docidentifier type="BIPM">BIPM PLTS-2000</docidentifier>
-<language current="true">fr</language>
-<script current="true">Latn</script>
-</bibdata>
-<preface><clause id="_abstract1" obligation="informative"><title depth="1">Abstract</title></clause></preface>
-</bipm-standard>
-</doc-container>
-</metanorma-collection>
-    INPUT
-    expect(File.exist?("test.pdf")).to be true
-    expect(File.exist?("test_en.pdf")).to be false
-    expect(File.exist?("test_fr.pdf")).to be false
-  end
+    it "generates an index in French" do
+      expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert('test', <<~INPUT, true).gsub(%r{<localized-strings>.*</localized-strings>}m, "")))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+      <bibdata>
+      <language>fr</language>
+      <script>Latn</script>
+      </bibdata>
+      <sections>
+      <clause id="A">
+      <index><primary>&#xE9;long&#xE9;</primary></index>
+      <index><primary>&#xEA;tre</primary><secondary>Husserl</secondary><tertiary>en allemand</tertiary></index>
+      <index><primary>Emancipation</primary></index>
+      <index><primary>Emancipation</primary><secondary>dans la France</secondary></index>
+      <index><primary>Emancipation</primary><secondary>dans la France</secondary><tertiary>en Bretagne</tertiary></index>
+      <clause id="B">
+      <index><primary>Emancipation</primary></index>
+      <index><primary>zebra</primary></index>
+      <index><primary>Emancipation</primary><secondary>dans les &#xC9;tats-Unis</secondary></index>
+      <index><primary>Emancipation</primary><secondary>dans la France</secondary><tertiary>&#xE0; Paris</tertiary></index>
+      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
+      <index-xref also="true"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>Emancipation</target></index-xref>
+      <index-xref also="false"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
+      <index-xref also="false"><primary><em>Dasein</em></primary><target>&#xEA;tre</target></index-xref>
+      <index-xref also="false"><primary><em>Dasein</em></primary><target>Emancipation</target></index-xref>
+      </clause>
+      </clause>
+      </sections>
+      </bipm-standard>
+      INPUT
+      <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
+         <bibdata>
+           <language current='true'>fr</language>
+           <script current='true'>Latn</script>
+         </bibdata>
+         <sections>
+           <clause id='A'>
+             <title>1.</title>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <bookmark id='_'/>
+             <clause id='B'>
+               <title>1.1.</title>
+               <bookmark id='_'/>
+               <bookmark id='_'/>
+               <bookmark id='_'/>
+               <bookmark id='_'/>
+             </clause>
+           </clause>
+         </sections>
+         <clause type='index' id='_'>
+           <title>Index</title>
+           <clause id='_'>
+             <title>D</title>
+             <ul>
+               <li>
+                 <em>Dasein</em>
+                 ,
+                 <em>voir</em>
+                  Emancipation, &#xEA;tre
+               </li>
+             </ul>
+           </clause>
+           <clause id='_'>
+             <title>E</title>
+             <ul>
+               <li>
+                 &#xE9;long&#xE9;,
+                 <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+               </li>
+               <li>
+                 Emancipation,
+                 <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+                 ,
+                 <xref target='_' pagenumber='true'>section 1.1</xref>
+                 <ul>
+                   <li>
+                     dans la France,
+                     <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+                     <ul>
+                       <li>
+                         &#xE0; Paris,
+                         <xref target='_' pagenumber='true'>section 1.1</xref>
+                       </li>
+                       <li>
+                         en Bretagne,
+                         <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+                       </li>
+                     </ul>
+                   </li>
+                   <li>
+                     dans les &#xC9;tats-Unis,
+                     <xref target='_' pagenumber='true'>section 1.1</xref>
+                   </li>
+                 </ul>
+               </li>
+               <li>
+                 &#xEA;tre
+                 <ul>
+                   <li>
+                     Husserl,
+                     <em>voir</em>
+                      zebra,
+                     <em>voir aussi</em>
+                      Emancipation, zebra
+                     <ul>
+                       <li>
+                         en allemand,
+                         <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+                       </li>
+                     </ul>
+                   </li>
+                 </ul>
+               </li>
+             </ul>
+           </clause>
+           <clause id='_'>
+             <title>Z</title>
+             <ul>
+               <li>
+                 zebra,
+                 <xref target='_' pagenumber='true'>section 1.1</xref>
+               </li>
+             </ul>
+           </clause>
+         </clause>
+       </bipm-standard>
+      OUTPUT
 
+    end
 
 end

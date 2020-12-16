@@ -1,6 +1,7 @@
 annex: Annexe
 appendix: Appendice
 see: voir
+see_also: voir aussi
 clause: chapître
 subclause: section
 formula: équation
@@ -15,6 +16,7 @@ requirement: exigence
 recommendation: recommandation
 permission: autorisation
 example_xref: exemple
+index: Index
 doctype_dict: 
   brochure: brochure
   mise-en-pratique: mise-en-pratique
@@ -28,7 +30,7 @@ doctype_dict:
   cipm-mra: cipm-mra
   resolution: résolution
 stage_dict: 
-    draft-proposal: projet-de-proposition
-    draft-development: projet-de-développement
-    in-force: en-vigeur
-    retired: retiré
+  draft-proposal: projet-de-proposition
+  draft-development: projet-de-développement
+  in-force: en-vigeur
+  retired: retiré
