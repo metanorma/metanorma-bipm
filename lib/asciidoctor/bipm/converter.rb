@@ -42,14 +42,10 @@ module Asciidoctor
 
       def metadata_committee2(node, a)
         i = 2
-        while node.attr("committee-en_#{i}") ||
-            node.attr("committee-fr_#{i}")  do
-          a.committee **attr_code(acronym:
-                                  node.attr("committee-acronym_#{i}")) do |c|
-            e = node.attr("committee-en_#{i}") and
-              c.variant e, language: "en", script: "Latn"
-            e = node.attr("committee-fr_#{i}") and
-              c.variant e, language: "fr", script: "Latn"
+        while node.attr("committee-en_#{i}") || node.attr("committee-fr_#{i}")  do
+          a.committee **attr_code(acronym: node.attr("committee-acronym_#{i}")) do |c|
+            e = node.attr("committee-en_#{i}") and c.variant e, language: "en", script: "Latn"
+            e = node.attr("committee-fr_#{i}") and c.variant e, language: "fr", script: "Latn"
           end
           i += 1
         end
@@ -204,6 +200,6 @@ module Asciidoctor
         return nil if node.attr("no-pdf")
         IsoDoc::BIPM::PdfConvert.new(doc_extract_attributes(node))
       end
-      end
     end
   end
+end

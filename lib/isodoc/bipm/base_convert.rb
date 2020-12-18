@@ -7,16 +7,29 @@ module IsoDoc
         Metanorma::BIPM.configuration
       end
 
-      def middle(isoxml, out)
-        middle_title(out)
-        middle_admonitions(isoxml, out)
-        clause isoxml, out
-        annex isoxml, out
-        bibliography isoxml, out
+      def convert1(docxml, filename, dir)
+        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/@acronym"))&.value == "JCGM"
+        super
       end
 
-      def middle_clause
-        "//sections/*"
+      def middle(isoxml, out)
+        if @jcgm
+          super
+        else
+          middle_title(out)
+          middle_admonitions(isoxml, out)
+          clause isoxml, out
+          annex isoxml, out
+          bibliography isoxml, out
+        end
+      end
+
+      def middle_clause(docxml)
+        if @jcgm
+          super
+        else
+          "//sections/*"
+        end
       end
 
       def render_identifier(id)
