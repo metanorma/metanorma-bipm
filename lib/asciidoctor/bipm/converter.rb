@@ -135,7 +135,7 @@ module Asciidoctor
       end
 
       def inline_anchor_xref_attrs(node)
-        flags = %w(pagenumber nosee).each_with_object({}) do |w, m|
+        flags = %w(pagenumber nosee nopage).each_with_object({}) do |w, m|
           if /#{w}%/.match(node.text)
             node.text = node.text.sub(/#{w}%/, "")
             m[w] = true
