@@ -40,17 +40,19 @@
 						<xsl:for-each select="//bipm:bipm-standard">
 							<xsl:variable name="lang" select="*[local-name()='bibdata']/*[local-name()='language'][@current = 'true']"/>
 							<xsl:variable name="num"><xsl:number level="any" count="bipm:bipm-standard"/></xsl:variable>
+							<xsl:variable name="title-part"><xsl:value-of select="bipm:bibdata/bipm:title[@type = 'part']"/></xsl:variable>
 							<xsl:variable name="current_document">
-								<xsl:apply-templates select="." mode="change_id">
+								<!-- <xsl:apply-templates select="." mode="change_id">
 									<xsl:with-param name="lang" select="$lang"/>
 									<xsl:with-param name="ignoreReferenceFrom" select="'true'"/>
-								</xsl:apply-templates>
+								</xsl:apply-templates> -->
+								<xsl:copy-of select="."/>
 							</xsl:variable>				
 							<xsl:for-each select="xalan:nodeset($current_document)">
 								<xsl:variable name="docid">
 									<xsl:call-template name="getDocumentId"/>
 								</xsl:variable>
-								<doc id="{$docid}" lang="{$lang}">
+								<doc id="{$docid}" lang="{$lang}" doctype="{$doctype}" title-part="{$title-part}">
 									<xsl:call-template name="generateContents"/>
 								</doc>
 							</xsl:for-each>				
@@ -61,9 +63,10 @@
 							<xsl:variable name="lang" select="*[local-name()='bibdata']/*[local-name()='language'][@current = 'true']"/>
 							<xsl:variable name="num"><xsl:number level="any" count="bipm:bipm-standard"/></xsl:variable>
 							<xsl:variable name="current_document">
-								<xsl:apply-templates select="." mode="change_id">
+								<!-- <xsl:apply-templates select="." mode="change_id">
 									<xsl:with-param name="lang" select="$lang"/>
-								</xsl:apply-templates>
+								</xsl:apply-templates> -->
+								<xsl:copy-of select="."/>
 							</xsl:variable>				
 							<xsl:for-each select="xalan:nodeset($current_document)">
 								<xsl:variable name="docid">
@@ -245,7 +248,7 @@
 								<xsl:variable name="lang" select="*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>						
 								<xsl:variable name="num"><xsl:number level="any" count="bipm:bipm-standard"/></xsl:variable>
 								<!-- change id to prevent identical id in different documents in one container -->						
-								<xsl:variable name="current_document">							
+								<!-- <xsl:variable name="current_document">							
 									<xsl:apply-templates select="." mode="change_id">
 										<xsl:with-param name="lang" select="$lang"/>
 										<xsl:with-param name="ignoreReferenceFrom" select="'true'"/>
@@ -254,6 +257,10 @@
 								
 								<xsl:variable name="flatxml">
 									<xsl:apply-templates select="xalan:nodeset($current_document)" mode="flatxml"/>
+								</xsl:variable> -->
+								
+								<xsl:variable name="flatxml">
+									<xsl:apply-templates select="." mode="flatxml"/>
 								</xsl:variable>
 								
 								<!-- flatxml=<xsl:copy-of select="$flatxml"/> -->
@@ -269,7 +276,7 @@
 								<xsl:variable name="lang" select="*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>						
 								<xsl:variable name="num"><xsl:number level="any" count="bipm:bipm-standard"/></xsl:variable>
 								<!-- change id to prevent identical id in different documents in one container -->						
-								<xsl:variable name="current_document">							
+								<!-- <xsl:variable name="current_document">							
 									<xsl:apply-templates select="." mode="change_id">
 										<xsl:with-param name="lang" select="$lang"/>
 									</xsl:apply-templates>
@@ -277,6 +284,10 @@
 								
 								<xsl:variable name="flatxml">
 									<xsl:apply-templates select="xalan:nodeset($current_document)" mode="flatxml"/>
+								</xsl:variable> -->
+								
+								<xsl:variable name="flatxml">
+									<xsl:apply-templates select="." mode="flatxml"/>
 								</xsl:variable>
 								
 								<xsl:apply-templates select="xalan:nodeset($flatxml)/bipm:bipm-standard" mode="bipm-standard">
@@ -586,7 +597,7 @@
 	
 	<!-- copy 'ol' 'ul' properties to each 'li' -->
 	<!-- OBSOLETE: move note for list (list level note)  into latest 'li' -->
-	<!-- move note for list (list level note)  into first 'li' -->
+	<!-- NOW: move note for list (list level note)  into first 'li' -->
 	<!-- move fn for list-item (list-item level footnote)  into first 'li' -->	
 	<xsl:template match="bipm:li" mode="flatxml_list">	
 		<xsl:copy>
@@ -618,6 +629,15 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:for-each>
+				
+				<!-- move note(s) after ul/ol into first 'li' -->
+				<xsl:if test="not(ancestor::bipm:quote)">
+					<xsl:variable name="list_id" select="generate-id(..)"/>
+					<xsl:for-each select="../following-sibling::bipm:note[generate-id(preceding-sibling::*[not(local-name()='note') and not(local-name()='quote')][1]) = $list_id]">			
+						<xsl:call-template name="change_note_kind"/>
+					</xsl:for-each>
+				</xsl:if>
+				
 			
 				<xsl:if test="ancestor::bipm:quote or not(ancestor::bipm:table)">
 				
@@ -846,31 +866,33 @@
 					</fo:flow>
 				</fo:page-sequence>
 				
-				<fo:page-sequence master-reference="document" force-page-count="no-force">
-					<xsl:call-template name="insertFootnoteSeparator"/>
-					
-					<xsl:variable name="header-title">
-						<xsl:choose>
-							<xsl:when test="bipm:preface/*[1]/bipm:title[1]/*[local-name() = 'tab']">
-								<xsl:apply-templates select="bipm:preface/*[1]/bipm:title[1]/*[local-name() = 'tab'][1]/following-sibling::node()" mode="header"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:apply-templates select="bipm:preface/*[1]/bipm:title[1]" mode="header"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
-					<xsl:call-template name="insertHeaderFooter">
-						<xsl:with-param name="header-title" select="$header-title"/>
-					</xsl:call-template>
-					
-					<fo:flow flow-name="xsl-region-body">
-						<fo:block line-height="135%">
-							<!-- <xsl:apply-templates select="bipm:preface/bipm:abstract" /> -->
-							<xsl:apply-templates select="bipm:preface/*[1]"/>
-						</fo:block>
-					</fo:flow>
-				</fo:page-sequence>
-
+				
+				<xsl:if test="bipm:preface/*">
+					<fo:page-sequence master-reference="document" force-page-count="no-force">
+						<xsl:call-template name="insertFootnoteSeparator"/>
+						
+						<xsl:variable name="header-title">
+							<xsl:choose>
+								<xsl:when test="bipm:preface/*[1]/bipm:title[1]/*[local-name() = 'tab']">
+									<xsl:apply-templates select="bipm:preface/*[1]/bipm:title[1]/*[local-name() = 'tab'][1]/following-sibling::node()" mode="header"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:apply-templates select="bipm:preface/*[1]/bipm:title[1]" mode="header"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:call-template name="insertHeaderFooter">
+							<xsl:with-param name="header-title" select="$header-title"/>
+						</xsl:call-template>
+						
+						<fo:flow flow-name="xsl-region-body">
+							<fo:block line-height="135%">
+								<!-- <xsl:apply-templates select="bipm:preface/bipm:abstract" /> -->
+								<xsl:apply-templates select="bipm:preface/*[1]"/>
+							</fo:block>
+						</fo:flow>
+					</fo:page-sequence>
+				</xsl:if>
 
 				
 				<xsl:variable name="docid">
@@ -1444,71 +1466,74 @@
 	</xsl:template>
 	
 	<xsl:template name="insertInnerCoverPage">
-		<fo:page-sequence master-reference="title-page" format="1" initial-page-number="1" force-page-count="even">
-			
-			<fo:flow flow-name="xsl-region-body" font-family="Arial">
-			
-				<xsl:variable name="languages">
-					<xsl:call-template name="getLanguages"/>
-				</xsl:variable>
-			
-				<xsl:variable name="titles">
-					<xsl:for-each select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title">
-						<xsl:copy-of select="."/>
-					</xsl:for-each>
-				</xsl:variable>
-			
-				<xsl:for-each select="xalan:nodeset($languages)/lang">
-					<xsl:variable name="curr_lang" select="."/>
-					<xsl:variable name="title" select="xalan:nodeset($titles)//bipm:title[@language = $curr_lang and @type='cover']"/>
-					<xsl:choose>
-						<xsl:when test="position() = 1">				
-							<fo:block-container font-size="12pt" font-weight="bold" width="55mm">
-									<fo:block>
-										<xsl:call-template name="add-letter-spacing">
-											<xsl:with-param name="text" select="$title"/>
-											<xsl:with-param name="letter-spacing" select="0.09"/>
-										</xsl:call-template>
-									</fo:block>									
-									<fo:block font-size="10pt">
-										<fo:block margin-bottom="6pt"> </fo:block>
-										<fo:block margin-bottom="6pt"> </fo:block>
-										<fo:block margin-bottom="6pt"> </fo:block>
-										<fo:block margin-bottom="6pt" line-height="2.4"> </fo:block>							
-									</fo:block>
-								</fo:block-container>
-							</xsl:when>
-							<xsl:otherwise>
-								<fo:block font-size="10pt" margin-bottom="3pt">
-									<xsl:variable name="lang_version">
-										<xsl:call-template name="getLangVersion">
-											<xsl:with-param name="lang" select="$curr_lang"/>
-										</xsl:call-template>
-									</xsl:variable>
-									<xsl:call-template name="add-letter-spacing">
-										<xsl:with-param name="text" select="normalize-space($lang_version)"/>
-										<xsl:with-param name="letter-spacing" select="0.09"/>
-									</xsl:call-template>
-								</fo:block>
-								<fo:block-container font-size="12pt" font-weight="bold" border-top="0.5pt solid black" padding-top="2mm" width="45mm">						
-									<fo:block>										
-										<xsl:call-template name="add-letter-spacing">
-											<xsl:with-param name="text" select="$title"/>
-											<xsl:with-param name="letter-spacing" select="0.09"/>
-										</xsl:call-template>
-									</fo:block>
-								</fo:block-container>
-							</xsl:otherwise>
-							
-						</xsl:choose>
-					</xsl:for-each>
-				
-				
-				
-				
-			</fo:flow>
-		</fo:page-sequence>
 		
+		<xsl:if test="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@type='cover']">
+	
+			<fo:page-sequence master-reference="title-page" format="1" initial-page-number="1" force-page-count="even">
+				
+				<fo:flow flow-name="xsl-region-body" font-family="Arial">
+				
+					<xsl:variable name="languages">
+						<xsl:call-template name="getLanguages"/>
+					</xsl:variable>
+				
+					<xsl:variable name="titles">
+						<xsl:for-each select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title">
+							<xsl:copy-of select="."/>
+						</xsl:for-each>
+					</xsl:variable>
+				
+					<xsl:for-each select="xalan:nodeset($languages)/lang">
+						<xsl:variable name="curr_lang" select="."/>
+						<xsl:variable name="title" select="xalan:nodeset($titles)//bipm:title[@language = $curr_lang and @type='cover']"/>
+						<xsl:choose>
+							<xsl:when test="position() = 1">				
+								<fo:block-container font-size="12pt" font-weight="bold" width="55mm">
+										<fo:block>
+											<xsl:call-template name="add-letter-spacing">
+												<xsl:with-param name="text" select="$title"/>
+												<xsl:with-param name="letter-spacing" select="0.09"/>
+											</xsl:call-template>
+										</fo:block>									
+										<fo:block font-size="10pt">
+											<fo:block margin-bottom="6pt"> </fo:block>
+											<fo:block margin-bottom="6pt"> </fo:block>
+											<fo:block margin-bottom="6pt"> </fo:block>
+											<fo:block margin-bottom="6pt" line-height="2.4"> </fo:block>							
+										</fo:block>
+									</fo:block-container>
+								</xsl:when>
+								<xsl:otherwise>
+									<fo:block font-size="10pt" margin-bottom="3pt">
+										<xsl:variable name="lang_version">
+											<xsl:call-template name="getLangVersion">
+												<xsl:with-param name="lang" select="$curr_lang"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:call-template name="add-letter-spacing">
+											<xsl:with-param name="text" select="normalize-space($lang_version)"/>
+											<xsl:with-param name="letter-spacing" select="0.09"/>
+										</xsl:call-template>
+									</fo:block>
+									<fo:block-container font-size="12pt" font-weight="bold" border-top="0.5pt solid black" padding-top="2mm" width="45mm">						
+										<fo:block>										
+											<xsl:call-template name="add-letter-spacing">
+												<xsl:with-param name="text" select="$title"/>
+												<xsl:with-param name="letter-spacing" select="0.09"/>
+											</xsl:call-template>
+										</fo:block>
+									</fo:block-container>
+								</xsl:otherwise>
+								
+							</xsl:choose>
+						</xsl:for-each>
+					
+					
+					
+					
+				</fo:flow>
+			</fo:page-sequence>
+		</xsl:if>
 	</xsl:template>
 	<!-- End Cover Pages -->
 		
@@ -3571,7 +3596,7 @@
 		</xsl:if>		
 	</xsl:template>
 
-	<xsl:template match="node()" mode="change_id">
+	<!-- <xsl:template match="node()" mode="change_id">
 		<xsl:param name="lang"/>
 		<xsl:param name="ignoreReferenceFrom"/>
 		<xsl:copy>
@@ -3606,13 +3631,15 @@
 					<xsl:value-of select="."/>
 				</xsl:attribute>
 			</xsl:when>
-			<xsl:when test="local-name() = 'id' or                local-name() = 'bibitemid' or                 (local-name() = 'target' and local-name(..) = 'xref')">
+			<xsl:when test="local-name() = 'id' or 
+														local-name() = 'bibitemid' or	 
+														(local-name() = 'target' and local-name(..) = 'xref')">
 				<xsl:attribute name="{local-name()}">
 					<xsl:value-of select="."/>_<xsl:value-of select="$lang"/><xsl:if test="$doctype = 'guide'">_<xsl:number count="bipm:bipm-standard" level="any"/></xsl:if>
 				</xsl:attribute>
 			</xsl:when>			
 			<xsl:otherwise>
-				<!-- no change -->
+				no change
 				<xsl:copy>
 					<xsl:apply-templates select="@*" mode="change_id">
 						<xsl:with-param name="lang" select="$lang"/>
@@ -3621,7 +3648,7 @@
 				</xsl:copy>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:template> -->
 	
 
 	
@@ -3991,6 +4018,9 @@
 		
 	</xsl:attribute-set><xsl:attribute-set name="termnote-name-style">		
 				
+		
+			<xsl:attribute name="padding-right">1mm</xsl:attribute>
+		
 	</xsl:attribute-set><xsl:attribute-set name="quote-style">		
 		
 		
@@ -5294,12 +5324,32 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template><xsl:template name="getMaxLength_dt">
-		<xsl:for-each select="*[local-name()='dt']">
-			<xsl:sort select="string-length(normalize-space(.))" data-type="number" order="descending"/>
-			<xsl:if test="position() = 1">
-				<xsl:value-of select="string-length(normalize-space(.))"/>
-			</xsl:if>
-		</xsl:for-each>
+		<xsl:variable name="lengths">
+			<xsl:for-each select="*[local-name()='dt']">
+				<xsl:variable name="maintext_length" select="string-length(normalize-space(.))"/>
+				<xsl:variable name="attributes">
+					<xsl:for-each select=".//@open"><xsl:value-of select="."/></xsl:for-each>
+					<xsl:for-each select=".//@close"><xsl:value-of select="."/></xsl:for-each>
+				</xsl:variable>
+				<length><xsl:value-of select="string-length(normalize-space(.)) + string-length($attributes)"/></length>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="maxLength">
+			<!-- <xsl:for-each select="*[local-name()='dt']">
+				<xsl:sort select="string-length(normalize-space(.))" data-type="number" order="descending"/>
+				<xsl:if test="position() = 1">
+					<xsl:value-of select="string-length(normalize-space(.))"/>
+				</xsl:if>
+			</xsl:for-each> -->
+			<xsl:for-each select="xalan:nodeset($lengths)/length">
+				<xsl:sort select="." data-type="number" order="descending"/>
+				<xsl:if test="position() = 1">
+					<xsl:value-of select="."/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<!-- <xsl:message>DEBUG:<xsl:value-of select="$maxLength"/></xsl:message> -->
+		<xsl:value-of select="$maxLength"/>
 	</xsl:template><xsl:template match="*[local-name()='dl']/*[local-name()='note']" priority="2">
 		<xsl:param name="key_iso"/>
 		
@@ -6013,6 +6063,8 @@
 				</xsl:when>
 				<xsl:otherwise>
 					
+						<xsl:text>:</xsl:text>
+					
 					
 				</xsl:otherwise>
 			</xsl:choose>
@@ -6116,6 +6168,8 @@
 											<xsl:variable name="bookmark-title_">
 												<xsl:call-template name="getLangVersion">
 													<xsl:with-param name="lang" select="@lang"/>
+													<xsl:with-param name="doctype" select="@doctype"/>
+													<xsl:with-param name="title" select="@title-part"/>
 												</xsl:call-template>
 											</xsl:variable>
 											<xsl:choose>
@@ -6133,13 +6187,34 @@
 											</xsl:choose>
 										</fo:bookmark-title>
 										<xsl:apply-templates select="contents/item" mode="bookmark"/>
+										
+										<xsl:call-template name="insertFigureBookmarks">
+											<xsl:with-param name="contents" select="contents"/>
+										</xsl:call-template>
+										
+										<xsl:call-template name="insertTableBookmarks">
+											<xsl:with-param name="contents" select="contents"/>
+											<xsl:with-param name="lang" select="@lang"/>
+										</xsl:call-template>
+										
 									</fo:bookmark>
 									
 								</xsl:for-each>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:for-each select="xalan:nodeset($contents)/doc">
+								
 									<xsl:apply-templates select="contents/item" mode="bookmark"/>
+									
+									<xsl:call-template name="insertFigureBookmarks">
+										<xsl:with-param name="contents" select="contents"/>
+									</xsl:call-template>
+										
+									<xsl:call-template name="insertTableBookmarks">
+										<xsl:with-param name="contents" select="contents"/>
+										<xsl:with-param name="lang" select="@lang"/>
+									</xsl:call-template>
+									
 								</xsl:for-each>
 							</xsl:otherwise>
 						</xsl:choose>
@@ -6158,16 +6233,66 @@
 				
 			</fo:bookmark-tree>
 		</xsl:if>
+	</xsl:template><xsl:template name="insertFigureBookmarks">
+		<xsl:param name="contents"/>
+		<xsl:if test="xalan:nodeset($contents)/figure">
+			<fo:bookmark internal-destination="{xalan:nodeset($contents)/figure[1]/@id}" starting-state="hide">
+				<fo:bookmark-title>Figures</fo:bookmark-title>
+				<xsl:for-each select="xalan:nodeset($contents)/figure">
+					<fo:bookmark internal-destination="{@id}">
+						<fo:bookmark-title>
+							<xsl:value-of select="normalize-space(title)"/>
+						</fo:bookmark-title>
+					</fo:bookmark>
+				</xsl:for-each>
+			</fo:bookmark>	
+		</xsl:if>
+	</xsl:template><xsl:template name="insertTableBookmarks">
+		<xsl:param name="contents"/>
+		<xsl:param name="lang"/>
+		<xsl:if test="xalan:nodeset($contents)/table">
+			<fo:bookmark internal-destination="{xalan:nodeset($contents)/table[1]/@id}" starting-state="hide">
+				<fo:bookmark-title>
+					<xsl:choose>
+						<xsl:when test="$lang = 'fr'">Tableaux</xsl:when>
+						<xsl:otherwise>Tables</xsl:otherwise>
+					</xsl:choose>
+				</fo:bookmark-title>
+				<xsl:for-each select="xalan:nodeset($contents)/table">
+					<fo:bookmark internal-destination="{@id}">
+						<fo:bookmark-title>
+							<xsl:value-of select="normalize-space(title)"/>
+						</fo:bookmark-title>
+					</fo:bookmark>
+				</xsl:for-each>
+			</fo:bookmark>	
+		</xsl:if>
 	</xsl:template><xsl:template name="getLangVersion">
 		<xsl:param name="lang"/>
+		<xsl:param name="doctype" select="''"/>
+		<xsl:param name="title" select="''"/>
 		<xsl:choose>
 			<xsl:when test="$lang = 'en'">
 				
-				English version
+				
+					<xsl:choose>
+						<xsl:when test="$doctype = 'guide'">
+							<xsl:value-of select="$title"/>
+						</xsl:when>
+						<xsl:otherwise>English version</xsl:otherwise>
+					</xsl:choose>
+				
 				</xsl:when>
 			<xsl:when test="$lang = 'fr'">
 				
-				Version française
+				
+					<xsl:choose>
+						<xsl:when test="$doctype = 'guide'">
+							<xsl:value-of select="$title"/>
+						</xsl:when>
+						<xsl:otherwise>Version française</xsl:otherwise>
+					</xsl:choose>
+				
 			</xsl:when>
 			<xsl:when test="$lang = 'de'">Deutsche</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$lang"/> version</xsl:otherwise>
@@ -6655,7 +6780,8 @@
 			<fo:block-container margin-left="0mm">
 		
 				<fo:block xsl:use-attribute-sets="quote-style">
-					<xsl:apply-templates select=".//*[local-name() = 'p']"/>
+					<!-- <xsl:apply-templates select=".//*[local-name() = 'p']"/> -->
+					<xsl:apply-templates select="./*[not(local-name() = 'author') and not(local-name() = 'source')]"/> <!-- process all nested nodes, except author and source -->
 				</fo:block>
 				<xsl:if test="*[local-name() = 'author'] or *[local-name() = 'source']">
 					<fo:block xsl:use-attribute-sets="quote-source-style">
