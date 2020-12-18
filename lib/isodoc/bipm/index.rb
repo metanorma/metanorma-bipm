@@ -121,7 +121,8 @@ module IsoDoc
           v[term][term2] ||= {}
           v[term][term2][term3] ||= {}
           v[term][term2][term3][:xref] ||= []
-          v[term][term2][term3][:xref] << "<xref target='#{t['id']}' pagenumber='true'/>"
+          to = t["to"] ? "to='#{t['to']}' " : ""
+          v[term][term2][term3][:xref] << "<xref target='#{t['id']}' #{to}pagenumber='true'/>"
         end
       end
 

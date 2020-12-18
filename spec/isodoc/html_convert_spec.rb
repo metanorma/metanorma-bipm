@@ -1733,7 +1733,7 @@ OUTPUT
       </bibdata>
       <sections>
       <clause id="A">
-      <index><primary>&#xE9;long&#xE9;</primary></index>
+      <index to="End"><primary>&#xE9;long&#xE9;</primary></index>
       <index><primary>&#xEA;tre</primary><secondary>Husserl</secondary><tertiary>en allemand</tertiary></index>
       <index><primary>Emancipation</primary></index>
       <index><primary>Emancipation</primary><secondary>dans la France</secondary></index>
@@ -1748,6 +1748,7 @@ OUTPUT
       <index-xref also="false"><primary>&#xEA;tre</primary><secondary>Husserl</secondary><target>zebra</target></index-xref>
       <index-xref also="false"><primary><em>Dasein</em></primary><target>&#xEA;tre</target></index-xref>
       <index-xref also="false"><primary><em>Dasein</em></primary><target>Emancipation</target></index-xref>
+      <bookmark id="End"/>
       </clause>
       </clause>
       </sections>
@@ -1759,9 +1760,9 @@ OUTPUT
            <script current='true'>Latn</script>
          </bibdata>
          <sections>
-           <clause id='A'>
+                    <clause id='A'>
              <title>1.</title>
-             <bookmark id='_'/>
+             <bookmark to='End' id='_'/>
              <bookmark id='_'/>
              <bookmark id='_'/>
              <bookmark id='_'/>
@@ -1772,6 +1773,7 @@ OUTPUT
                <bookmark id='_'/>
                <bookmark id='_'/>
                <bookmark id='_'/>
+               <bookmark id='End'/>
              </clause>
            </clause>
          </sections>
@@ -1793,7 +1795,7 @@ OUTPUT
              <ul>
                <li>
                  &#xE9;long&#xE9;,
-                 <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+                 <xref target='_' to='End' pagenumber='true'>chap&#xEE;tre 1</xref>
                </li>
                <li>
                  Emancipation,
