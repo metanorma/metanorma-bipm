@@ -492,7 +492,7 @@ RSpec.describe IsoDoc::BIPM do
        </bipm-standard>
     INPUT
 
-    output = xmlpp(<<~"OUTPUT")
+    presxml = xmlpp(<<~"OUTPUT")
     <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
          <preface>
            <foreword obligation='informative'>
@@ -608,10 +608,371 @@ RSpec.describe IsoDoc::BIPM do
          </bibliography>
        </bipm-standard>
     OUTPUT
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
-                          .new({})
-                          .convert('test', input, true)))
-    expect(stripped_html).to(be_equivalent_to(output))
+
+    html = <<~OUTPUT
+    <html lang='en'>
+  <head/>
+  <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+    <div class='title-section'>
+      <p>&#160;</p>
+    </div>
+    <br/>
+    <div class='prefatory-section'>
+      <p>&#160;</p>
+    </div>
+    <br/>
+    <div class='main-section'>
+      <br/>
+      <div>
+        <h1 class='ForewordTitle'>Foreword</h1>
+        <p id='A'>This is a preamble</p>
+      </div>
+      <br/>
+      <div class='Section3' id='B'>
+        <h1 class='IntroTitle'>Introduction</h1>
+        <div id='C'>
+          <h2>Introduction Subsection</h2>
+        </div>
+      </div>
+      <p class='zzSTDTitle1'/>
+      <div id='H'>
+        <h1> 1. &#160; Terms, Definitions, Symbols and Abbreviated Terms </h1>
+        <div id='I'>
+          <h2> 1.1. &#160; Normal Terms </h2>
+          <p class='TermNum' id='J'>1.1.1.</p>
+          <p class='Terms' style='text-align:left;'>Term2</p>
+        </div>
+        <div id='D'>
+          <h2> 1.2. &#160; Scope </h2>
+          <p id='E'>Text</p>
+        </div>
+        <div id='K'>
+          <h2>1.3.</h2>
+          <dl>
+            <dt>
+              <p>Symbol</p>
+            </dt>
+            <dd>Definition</dd>
+          </dl>
+        </div>
+      </div>
+      <div id='L'>
+        <h1>2.</h1>
+        <dl>
+          <dt>
+            <p>Symbol</p>
+          </dt>
+          <dd>Definition</dd>
+        </dl>
+      </div>
+      <div id='M'>
+        <h1> 3. &#160; Clause 4 </h1>
+        <div id='N'>
+          <h2> 3.1. &#160; Introduction </h2>
+        </div>
+        <div id='O'>
+          <h2> 3.2. &#160; Clause 4.2 </h2>
+        </div>
+      </div>
+      <br/>
+      <div id='P' class='Section3'>
+        <h1 class='Annex'>
+          <b>Appendix 1</b>
+           . &#160;
+          <b>Annex</b>
+        </h1>
+        <div id='Q'>
+          <h2> 1.1. &#160; Annex A.1 </h2>
+          <div id='Q1'>
+            <h3> 1.1.1. &#160; Annex A.1a </h3>
+          </div>
+        </div>
+      </div>
+      <br/>
+      <div>
+        <h1 class='Section3'>Bibliography</h1>
+        <div>
+          <h2 class='Section3'>Bibliography Subsection</h2>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+    OUTPUT
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert('test', input, true)).gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
+    expect(stripped_html).to(be_equivalent_to(presxml))
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({}).convert('test', presxml, true)))
+    expect(stripped_html).to(be_equivalent_to(html))
+  end
+
+  it "processes section names, JCGM" do
+    input = <<~"INPUT"
+    <bipm-standard xmlns="http://riboseinc.com/isoxml">
+    <bibdata>
+    <ext>
+    <editorialgroup><committee acronym="JCGM">
+Joint Committee for Guides in Metrology
+Comité commun pour les guides en métrologie
+</committee>
+</editorialgroup>
+    </ext>
+    </bibdata>
+      <preface>
+      <foreword obligation="informative">
+         <title>Foreword</title>
+         <p id="A">This is a preamble</p>
+       </foreword>
+        <introduction id="B" obligation="informative"><title>Introduction</title><clause id="C" inline-header="false" obligation="informative">
+         <title>Introduction Subsection</title>
+       </clause>
+       </introduction></preface><sections>
+       <clause id="G" type="scope"><title>Scope</title></clause>
+       <clause id="H" obligation="normative"><title>Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
+         <title>Normal Terms</title>
+         <term id="J">
+         <preferred>Term2</preferred>
+       </term>
+       </terms>
+       <clause id="D" obligation="normative">
+         <title>Scope</title>
+         <p id="E">Text</p>
+       </clause>
+       <definitions id="K">
+         <dl>
+         <dt>Symbol</dt>
+         <dd>Definition</dd>
+         </dl>
+       </definitions>
+       </clause>
+       <definitions id="L">
+         <dl>
+         <dt>Symbol</dt>
+         <dd>Definition</dd>
+         </dl>
+       </definitions>
+       <clause id="M" inline-header="false" obligation="normative"><title>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
+         <title>Introduction</title>
+       </clause>
+       <clause id="O" inline-header="false" obligation="normative">
+         <title>Clause 4.2</title>
+       </clause></clause>
+
+       </sections><annex id="P" inline-header="false" obligation="normative">
+         <title>Annex</title>
+         <clause id="Q" inline-header="false" obligation="normative">
+         <title>Annex A.1</title>
+         <clause id="Q1" inline-header="false" obligation="normative">
+         <title>Annex A.1a</title>
+         </clause>
+       </clause>
+       </annex><bibliography><references id="R" obligation="informative" normative="true">
+         <title>Normative References</title>
+       </references><clause id="S" obligation="informative">
+         <title>Bibliography</title>
+         <references id="T" obligation="informative" normative="false">
+         <title>Bibliography Subsection</title>
+       </references>
+       </clause>
+       </bibliography>
+       </bipm-standard>
+    INPUT
+
+    presxml = xmlpp(<<~"OUTPUT")
+    <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+    <bibdata>
+    <ext>
+    <editorialgroup><committee acronym="JCGM">
+Joint Committee for Guides in Metrology
+Comité commun pour les guides en métrologie
+</committee>
+</editorialgroup>
+    </ext>
+    </bibdata>
+         <preface>
+           <foreword obligation='informative'>
+             <title>Foreword</title>
+             <p id='A'>This is a preamble</p>
+           </foreword>
+           <introduction id='B' obligation='informative'>
+             <title>Introduction</title>
+             <clause id='C' inline-header='false' obligation='informative'>
+               <title depth='2'>Introduction Subsection</title>
+             </clause>
+           </introduction>
+         </preface>
+         <sections>
+              <clause id="G" type="scope"><title depth="1">1.<tab/>Scope</title></clause>
+              <clause id="H" obligation="normative"><title depth="1">2.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
+                <title depth="2">2.1.<tab/>Normal Terms</title>
+                <term id="J"><name>2.1.1.</name>
+                <preferred>Term2</preferred>
+              </term>
+              </terms>
+              <clause id="D" obligation="normative">
+                <title depth="2">2.2.<tab/>Scope</title>
+                <p id="E">Text</p>
+              </clause>
+              <definitions id="K"><title>2.3.</title>
+                <dl>
+                <dt>Symbol</dt>
+                <dd>Definition</dd>
+                </dl>
+              </definitions>
+              </clause>
+              <definitions id="L"><title>3.</title>
+                <dl>
+                <dt>Symbol</dt>
+                <dd>Definition</dd>
+                </dl>
+              </definitions>
+              <clause id="M" inline-header="false" obligation="normative"><title depth="1">4.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
+                <title depth="2">4.1.<tab/>Introduction</title>
+              </clause>
+              <clause id="O" inline-header="false" obligation="normative">
+                <title depth="2">4.2.<tab/>Clause 4.2</title>
+              </clause></clause>
+
+         </sections>
+         <annex id='P' inline-header='false' obligation='normative'>
+           <title>
+             <strong>Appendix 1</strong>
+             .
+             <tab/>
+             <strong>Annex</strong>
+           </title>
+           <clause id='Q' inline-header='false' obligation='normative'>
+             <title depth='2'>
+               1.1.
+               <tab/>
+               Annex A.1
+             </title>
+             <clause id='Q1' inline-header='false' obligation='normative'>
+               <title depth='3'>
+                 1.1.1.
+                 <tab/>
+                 Annex A.1a
+               </title>
+             </clause>
+           </clause>
+         </annex>
+         <bibliography>
+           <references id='R' obligation='informative' normative='true'>
+             <title depth='1'>
+               2.
+               <tab/>
+               Normative References
+             </title>
+           </references>
+           <clause id='S' obligation='informative'>
+             <title depth='1'>Bibliography</title>
+             <references id='T' obligation='informative' normative='false'>
+               <title depth='2'>Bibliography Subsection</title>
+             </references>
+           </clause>
+         </bibliography>
+       </bipm-standard>
+    OUTPUT
+
+    html = <<~OUTPUT
+    <html lang='en'>
+         <head/>
+         <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+           <div class='title-section'>
+             <p>&#160;</p>
+           </div>
+           <br/>
+           <div class='prefatory-section'>
+             <p>&#160;</p>
+           </div>
+           <br/>
+           <div class='main-section'>
+             <br/>
+             <div>
+               <h1 class='ForewordTitle'>Foreword</h1>
+               <p id='A'>This is a preamble</p>
+             </div>
+             <br/>
+             <div class='Section3' id='B'>
+               <h1 class='IntroTitle'>Introduction</h1>
+               <div id='C'>
+                 <h2>Introduction Subsection</h2>
+               </div>
+             </div>
+             <p class='zzSTDTitle1'/>
+             <div id='G'>
+               <h1> 1. &#160; Scope </h1>
+             </div>
+             <div>
+               <h1> 2. &#160; Normative References </h1>
+             </div>
+             <div id='H'>
+               <h1> 2. &#160; Terms, Definitions, Symbols and Abbreviated Terms </h1>
+               <div id='I'>
+                 <h2> 2.1. &#160; Normal Terms </h2>
+                 <p class='TermNum' id='J'>2.1.1.</p>
+                 <p class='Terms' style='text-align:left;'>Term2</p>
+               </div>
+               <div id='D'>
+                 <h2> 2.2. &#160; Scope </h2>
+                 <p id='E'>Text</p>
+               </div>
+               <div id='K'>
+                 <h2>2.3.</h2>
+                 <dl>
+                   <dt>
+                     <p>Symbol</p>
+                   </dt>
+                   <dd>Definition</dd>
+                 </dl>
+               </div>
+             </div>
+             <div id='L' class='Symbols'>
+               <h1>3.</h1>
+               <dl>
+                 <dt>
+                   <p>Symbol</p>
+                 </dt>
+                 <dd>Definition</dd>
+               </dl>
+             </div>
+             <div id='M'>
+               <h1> 4. &#160; Clause 4 </h1>
+               <div id='N'>
+                 <h2> 4.1. &#160; Introduction </h2>
+               </div>
+               <div id='O'>
+                 <h2> 4.2. &#160; Clause 4.2 </h2>
+               </div>
+             </div>
+             <br/>
+             <div id='P' class='Section3'>
+               <h1 class='Annex'>
+                 <b>Appendix 1</b>
+                  . &#160;
+                 <b>Annex</b>
+               </h1>
+               <div id='Q'>
+                 <h2> 1.1. &#160; Annex A.1 </h2>
+                 <div id='Q1'>
+                   <h3> 1.1.1. &#160; Annex A.1a </h3>
+                 </div>
+               </div>
+             </div>
+             <br/>
+             <div>
+               <h1 class='Section3'>Bibliography</h1>
+               <div>
+                 <h2 class='Section3'>Bibliography Subsection</h2>
+               </div>
+             </div>
+           </div>
+         </body>
+       </html>
+    OUTPUT
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert('test', input, true)).gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
+    expect(stripped_html).to(be_equivalent_to(presxml))
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({}).convert('test', presxml, true)))
+    expect(stripped_html).to(be_equivalent_to(html))
   end
 
 
