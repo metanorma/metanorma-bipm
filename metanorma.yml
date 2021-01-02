@@ -110,6 +110,8 @@ metadata_extensions:
      _output: part
     appendix-id:
       _output: appendix
+    annex-id:
+      _output: annexid
 relations:
   - supersedes
   - superseded-by

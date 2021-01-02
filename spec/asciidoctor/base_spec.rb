@@ -71,12 +71,15 @@ RSpec.describe Asciidoctor::BIPM do
       :title-cover-fr: Chef Title (SI)
       :title-appendix-en: Main Title (SI)
       :title-appendix-fr: Chef Title (SI)
+      :title-annex-en: Main Title (SI) Annex
+      :title-annex-fr: Chef Title (SI) Annexe
       :title-part-en: Part
       :title-part-fr: Partie
       :title-subpart-en: Subpart
       :title-subpart-fr: Subpartie
       :partnumber: 2
       :appendix-id: ABC
+      :annex-id: DEF
       :security: Client Confidential
       :comment-period-from: X
       :comment-period-to: Y
@@ -118,11 +121,13 @@ RSpec.describe Asciidoctor::BIPM do
 <title language='en' format='text/plain' type='main'>Main Title</title>
 <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
 <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+<title language='en' format='text/plain' type='annex'>Main Title (SI) Annex</title>
 <title language='en' format='text/plain' type='part'>Part</title>
 <title language='en' format='text/plain' type='subpart'>Subpart</title>
 <title language='fr' format='text/plain' type='main'>Chef Title</title>
 <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
 <title language='fr' format='text/plain' type='appendix'>Chef Title (SI)</title>
+<title language='fr' format='text/plain' type='annex'>Chef Title (SI) Annexe</title>
 <title language='fr' format='text/plain' type='part'>Partie</title>
 <title language='fr' format='text/plain' type='subpart'>Subpartie</title>
   <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
@@ -302,10 +307,11 @@ RSpec.describe Asciidoctor::BIPM do
   <docnumber>1000</docnumber>
   <part>2</part>
   <appendix>ABC</appendix>
+  <annexid>DEF</annexid>
 </structuredidentifier>
 </ext>
 </bibdata>
-    #{boilerplate("en").gsub(/2020/, "2001")}
+    #{boilerplate("en").gsub(/#{Time.now.year}/, "2001")}
 <sections/>
 </bipm-standard>
     OUTPUT
@@ -437,7 +443,7 @@ RSpec.describe Asciidoctor::BIPM do
 </structuredidentifier>
 </ext>
 </bibdata>
-    #{boilerplate("fr").gsub(/2020/, "2001")}
+    #{boilerplate("fr").gsub(/#{Time.now.year}/, "2001")}
 <sections/>
 </bipm-standard>
     OUTPUT

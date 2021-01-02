@@ -37,6 +37,8 @@
       {% if subpartsubtitle %}<span class="title-second">{{ subpartsubtitle }}</span><br/>{% endif %}
       {% if appendixid %}<span class="title-first">{{ appendixid}}: {{ appendixtitle }}</span><br/>{% endif %} 
       {% if appendixid_alt %}<span class="title-second">{{ appendixid_alt}}: {{ appendixsubtitle }}</span>{% endif %}
+      {% if annexid %}<span class="title-first">{{ annexid}}: {{ annextitle }}</span><br/>{% endif %} 
+      {% if annexid_alt %}<span class="title-second">{{ annexid_alt}}: {{ annexsubtitle }}</span>{% endif %}
       {% else %}
       <span class="title-first">{{ doctitle }}</span><br/>
       <span class="title-second">{{ docsubtitle }}</span>
