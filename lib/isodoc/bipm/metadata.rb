@@ -29,7 +29,7 @@ module IsoDoc
           ns("#{TITLE}[@type='main'][@language='#{lang1}']"))&.text || ""))
         set(:docsubtitle, @c.encode(isoxml&.at(
           ns("#{TITLE}[@type='main'][@language='#{lang2}']"))&.text || ""))
-        %w(appendix part subtitle).each do |e|
+        %w(appendix annex part subtitle).each do |e|
           set("#{e}title".to_sym, @c.encode(isoxml&.at(
             ns("#{TITLE}[@type='#{e}'][@language='#{lang1}']"))&.text || ""))
           set("#{e}subtitle".to_sym, @c.encode(isoxml&.at(
@@ -51,6 +51,10 @@ module IsoDoc
         dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
         dn and set(:appendixid, @i18n.l10n("#{label1} #{dn&.text}"))
         dn and set(:appendixid_alt, @i18n.l10n("#{label2} #{dn&.text}"))
+        label1, label2 = @lang == "fr" ? %w(Appendice Annex) : %w(Annex Appendice)
+        dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/annexid"))
+        dn and set(:annexid, @i18n.l10n("#{label1} #{dn&.text}"))
+        dn and set(:annexid_alt, @i18n.l10n("#{label2} #{dn&.text}"))
         label1, label2  = @lang == "fr" ? %w(Partie Part) : %w(Part Partie)
         dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/part"))
         dn and set(:partid, @i18n.l10n("#{label1} #{dn&.text}"))

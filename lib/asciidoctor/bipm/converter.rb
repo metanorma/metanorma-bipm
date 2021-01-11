@@ -107,10 +107,9 @@ module Asciidoctor
             t1 << Asciidoctor::Standoc::Utils::asciidoc_sub(
               node.attr("title-#{lang}"))
           end
-          typed_title(node, xml, lang, "cover")
-          typed_title(node, xml, lang, "appendix")
-          typed_title(node, xml, lang, "part")
-          typed_title(node, xml, lang, "subpart")
+          %w(cover appendix annex part subpart).each do |w|
+            typed_title(node, xml, lang, w)
+          end
         end
       end
 
