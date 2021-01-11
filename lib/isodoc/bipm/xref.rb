@@ -1,17 +1,20 @@
 module IsoDoc
   module BIPM
+    class Counter < IsoDoc::XrefGen::Counter
+    end
+
     class Xref < IsoDoc::Xref
       def initialize(lang, script, klass, i18n, options = {})
         super
       end
 
       def clause_names(docxml, sect_num)
-        sect_num = 0
+        n = Counter.new
         docxml.xpath(ns("//sections/clause[not(@unnumbered = 'true')] | "\
                         "//sections/terms[not(@unnumbered = 'true')] | "\
                         "//sections/definitions[not(@unnumbered = 'true')]")).
-        each_with_index do |c, i|
-          section_names(c, (i + sect_num), 1)
+        each do |c|
+          section_names(c, n, 1)
         end
         docxml.xpath(ns("//sections/clause[@unnumbered = 'true'] | "\
                         "//sections/terms[@unnumbered = 'true'] | "\
@@ -35,12 +38,14 @@ module IsoDoc
 
       def section_names(clause, num, lvl)
         return num if clause.nil?
-        num = num + 1
+        num.increment(clause)
         @anchors[clause["id"]] =
-          { label: num.to_s, xref: l10n("#{@labels["clause"]} #{num}"),
+          { label: num.print, xref: l10n("#{@labels["clause"]} #{num.print}"),
             level: lvl, type: "clause" }
-        clause.xpath(ns(NUMBERED_SUBCLAUSES)).each_with_index do |c, i|
-          section_names1(c, "#{num}.#{i + 1}", lvl + 1)
+        i = Counter.new
+        clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
+          i.increment(c)
+          section_names1(c, "#{num.print}.#{i.print}", lvl + 1)
         end
         clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each_with_index do |c, i|
           unnumbered_section_names1(c, lvl + 1)
@@ -62,8 +67,10 @@ module IsoDoc
         @anchors[clause["id"]] =
           { label: num, level: level, xref: l10n("#{@labels["subclause"]} #{num}"),
             type: "clause" }
-        clause.xpath(ns(NUMBERED_SUBCLAUSES)).each_with_index do |c, i|
-          section_names1(c, "#{num}.#{i + 1}", level + 1)
+        i = Counter.new
+        clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
+          i.increment(c)
+          section_names1(c, "#{num}.#{i.print}", level + 1)
         end
         clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each_with_index do |c, i|
           unnumbered_section_names1(c, lvl + 1)
@@ -96,8 +103,10 @@ module IsoDoc
         if a = single_annex_special_section(clause)
           annex_names1(a, "#{num}", 1)
         else
-          clause.xpath(ns(NUMBERED_SUBCLAUSES)).each_with_index do |c, i|
-            annex_names1(c, "#{num}.#{i + 1}", 2)
+          i = Counter.new
+          clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
+            i.increment(c)
+            annex_names1(c, "#{num}.#{i.print}", 2)
           end
           clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each do |c|
             unnumbered_annex_names1(c, 2)
@@ -125,8 +134,10 @@ module IsoDoc
         @anchors[clause["id"]] =
           { label: num, xref: l10n("#{@annexlbl} #{num}"),
             level: level, type: "clause" }
-        clause.xpath(ns(NUMBERED_SUBCLAUSES)).each_with_index do |c, i|
-          annex_names1(c, "#{num}.#{i + 1}", level + 1)
+        i = Counter.new
+        clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
+          i.increment(c)
+          annex_names1(c, "#{num}.#{i.print}", level + 1)
         end
         clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each do |c|
           unnumbered_annex_names1(c, level + 1)
