@@ -16,7 +16,7 @@ module IsoDoc
         if @jcgm
           super
         else
-          middle_title(out)
+          middle_title(isoxml, out)
           middle_admonitions(isoxml, out)
           clause isoxml, out
           annex isoxml, out

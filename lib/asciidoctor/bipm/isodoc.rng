@@ -254,6 +254,9 @@
           </attribute>
         </optional>
         <optional>
+          <attribute name="width"/>
+        </optional>
+        <optional>
           <ref name="colgroup"/>
         </optional>
         <optional>
@@ -837,6 +840,9 @@
         </attribute>
       </optional>
       <optional>
+        <attribute name="number"/>
+      </optional>
+      <optional>
         <attribute name="obligation">
           <choice>
             <value>normative</value>
@@ -1066,6 +1072,9 @@
       </attribute>
     </optional>
     <optional>
+      <attribute name="number"/>
+    </optional>
+    <optional>
       <attribute name="type"/>
     </optional>
     <optional>
@@ -1117,6 +1126,9 @@
     </optional>
     <optional>
       <attribute name="type"/>
+    </optional>
+    <optional>
+      <attribute name="number"/>
     </optional>
     <optional>
       <ref name="section-title"/>
@@ -1219,6 +1231,9 @@
       </optional>
       <optional>
         <attribute name="type"/>
+      </optional>
+      <optional>
+        <attribute name="number"/>
       </optional>
       <optional>
         <attribute name="obligation">
