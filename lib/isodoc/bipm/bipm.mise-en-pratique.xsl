@@ -165,6 +165,12 @@
 		</xsl:choose>
 	</xsl:variable>
 	
+	<xsl:variable name="bookmark_in_fn">
+		<xsl:for-each select="//bipm:bookmark[ancestor::bipm:fn]">
+			<bookmark><xsl:value-of select="@id"/></bookmark>
+		</xsl:for-each>
+	</xsl:variable>
+	
 	<xsl:variable name="dash" select="'–'"/>
 
 	<xsl:variable name="ids">
@@ -3283,6 +3289,30 @@
 		</mathml:mstyle>
 	</xsl:template>
 
+	<!-- Decrease space between ()
+	from: 
+	<mfenced open="(" close=")">
+		<mrow>
+			<mtext>Cu</mtext>
+		</mrow>
+	</mfenced>
+		to: 
+		<mrow>
+			<mtext>(Cu)</mtext>
+		</mrow> -->
+	<xsl:template match="mathml:mfenced[count(*) = 1 and *[count(*) = 1] and */*[count(*) = 0]] |                  mathml:mfenced[count(*) = 1 and *[count(*) = 1] and */*[count(*) = 1] and */*/*[count(*) = 0]]" mode="mathml" priority="2">
+		<xsl:apply-templates mode="mathml"/>
+	</xsl:template>
+		
+	<xsl:template match="mathml:mfenced[count(*) = 1]/*[count(*) = 1]/*[count(*) = 0] |                  mathml:mfenced[count(*) = 1]/*[count(*) = 1]/*[count(*) = 1]/*[count(*) = 0]" mode="mathml" priority="2"> <!-- [not(following-sibling::*) and not(preceding-sibling::*)] -->
+		<xsl:copy>
+			<xsl:apply-templates select="@*" mode="mathml"/>
+			<xsl:value-of select="ancestor::mathml:mfenced/@open"/>
+			<xsl:value-of select="."/>
+			<xsl:value-of select="ancestor::mathml:mfenced/@close"/>
+		</xsl:copy>
+	</xsl:template>
+
 	<xsl:template name="insertHeaderFooter">
 		<xsl:param name="header-title"/>		
 		<fo:static-content flow-name="header-odd">			
@@ -3409,7 +3439,12 @@
 				<xsl:value-of select="concat($day, ' ', $monthStr, ' ', $year)"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="concat($monthStr, ' ', $day, ', ', $year)"/>
+				<!-- <xsl:value-of select="concat($monthStr, ' ', $day, ', ', $year)"/> -->
+				<xsl:value-of select="$monthStr"/>
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="$day"/>
+				<xsl:if test="$day != '' and $year != ''"><xsl:text>, </xsl:text></xsl:if>
+				<xsl:value-of select="$year"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		
@@ -3502,12 +3537,15 @@
 	<xsl:template match="bipm:clause[@type = 'index']//bipm:li/node()" mode="process_li_element" priority="2">
 		<xsl:param name="element"/>
 		<xsl:param name="remove" select="'false'"/>
+		<xsl:param name="target"/>
 		<!-- <node></node> -->
 		<xsl:choose>
 			<xsl:when test="self::text()  and (normalize-space(.) = ',' or normalize-space(.) = $dash) and $remove = 'true'">
 				<!-- skip text (i.e. remove it) and process next element -->
 				<!-- [removed_<xsl:value-of select="."/>] -->
-				<xsl:apply-templates select="following-sibling::node()[1]" mode="process_li_element"/>
+				<xsl:apply-templates select="following-sibling::node()[1]" mode="process_li_element">
+					<xsl:with-param name="target"><xsl:value-of select="$target"/></xsl:with-param>
+				</xsl:apply-templates>
 			</xsl:when>
 			<xsl:when test="self::text()">
 				<xsl:value-of select="."/>
@@ -3531,6 +3569,12 @@
 						
 						<xsl:apply-templates select="following-sibling::node()[1]" mode="process_li_element">
 							<xsl:with-param name="remove">true</xsl:with-param>
+							<xsl:with-param name="target">
+								<xsl:choose>
+									<xsl:when test="$target != ''"><xsl:value-of select="$target"/></xsl:when>
+									<xsl:otherwise><xsl:value-of select="@target"/></xsl:otherwise>
+								</xsl:choose>
+							</xsl:with-param>
 						</xsl:apply-templates>
 					</xsl:when>
 					
@@ -3542,7 +3586,9 @@
 					</xsl:when>
 
 					<xsl:otherwise>
-						<xsl:copy-of select="."/>
+						<xsl:apply-templates select="." mode="xref_copy">
+							<xsl:with-param name="target" select="$target"/>
+						</xsl:apply-templates>
 						<xsl:apply-templates select="following-sibling::node()[1]" mode="process_li_element"/>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -3552,12 +3598,25 @@
 				<xsl:apply-templates select="." mode="index_update"/>
 			</xsl:when>
 			<xsl:otherwise>
-			 <xsl:copy-of select="."/>
+			 <xsl:apply-templates select="." mode="xref_copy">
+					<xsl:with-param name="target" select="$target"/>
+				</xsl:apply-templates>
 				<xsl:apply-templates select="following-sibling::node()[1]" mode="process_li_element"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template match="@*|node()" mode="xref_copy">
+		<xsl:param name="target"/>
+		<xsl:copy>
+			<xsl:apply-templates select="@*" mode="xref_copy"/>
+			<xsl:if test="$target != '' and not(xalan:nodeset($bookmark_in_fn)//bookmark[. = $target])">
+				<xsl:attribute name="target"><xsl:value-of select="$target"/></xsl:attribute>
+			</xsl:if>
+			<xsl:apply-templates select="node()" mode="xref_copy"/>
+		</xsl:copy>
+	</xsl:template>
+	
 	
 	<xsl:template name="generateIndexXrefId">
 		<xsl:variable name="level" select="count(ancestor::bipm:ul)"/>
@@ -3592,8 +3651,11 @@
 			</xsl:call-template>
 			
 			<fo:flow flow-name="xsl-region-body">
-				<fo:block id="{@id}">
-					<xsl:apply-templates/>
+				<fo:block id="{@id}" span="all">
+					<xsl:apply-templates select="bipm:title"/>
+				</fo:block>
+				<fo:block>
+					<xsl:apply-templates select="*[not(local-name() = 'title')]"/>
 					
 					<!-- TEST <xsl:variable name="alphabet" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 					<xsl:for-each select="(document('')//node())[position() &lt; 26]">
@@ -3617,7 +3679,7 @@
 	</xsl:template>
 	
 	<xsl:template match="bipm:clause[@type = 'index']/bipm:title" priority="4">
-		<fo:block font-size="16pt" font-weight="bold" margin-bottom="84pt" margin-left="-18mm" span="all">
+		<fo:block font-size="16pt" font-weight="bold" margin-bottom="84pt" margin-left="-18mm">
 			<!-- Index -->
 			<xsl:apply-templates/>
 		</fo:block>
@@ -4422,6 +4484,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="quote-source-style">		
 		
 				
@@ -4548,7 +4611,7 @@
 	</xsl:template><xsl:template match="*[local-name()='td']//text() | *[local-name()='th']//text() | *[local-name()='dt']//text() | *[local-name()='dd']//text()" priority="1">
 		<!-- <xsl:call-template name="add-zero-spaces"/> -->
 		<xsl:call-template name="add-zero-spaces-java"/>
-	</xsl:template><xsl:template match="*[local-name()='table']">
+	</xsl:template><xsl:template match="*[local-name()='table']" name="table">
 	
 		<xsl:variable name="simple-table">	
 			<xsl:call-template name="getSimpleTable"/>			
@@ -5890,6 +5953,7 @@
 				
 				
 				
+				
 						
 			</xsl:variable>
 			<xsl:variable name="font-size" select="normalize-space($_font-size)"/>		
@@ -6498,7 +6562,7 @@
 				</xsl:if> -->
 			</fo:inline>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'figure']">
+	</xsl:template><xsl:template match="*[local-name() = 'figure']" name="figure">
 		<fo:block-container id="{@id}">			
 			
 				<xsl:if test="*[local-name() = 'name']">
@@ -6723,6 +6787,12 @@
 		<!-- <xsl:text> </xsl:text> -->
 	</xsl:template><xsl:template name="getSection">
 		<xsl:value-of select="*[local-name() = 'title']/*[local-name() = 'tab'][1]/preceding-sibling::node()"/>
+		<!-- 
+		<xsl:for-each select="*[local-name() = 'title']/*[local-name() = 'tab'][1]/preceding-sibling::node()">
+			<xsl:value-of select="."/>
+		</xsl:for-each>
+		-->
+		
 	</xsl:template><xsl:template name="getName">
 		<xsl:choose>
 			<xsl:when test="*[local-name() = 'title']/*[local-name() = 'tab']">
@@ -6775,6 +6845,10 @@
 		<xsl:copy>
 			<xsl:apply-templates mode="contents_item"/>
 		</xsl:copy>		
+	</xsl:template><xsl:template match="*[local-name() = 'em']" mode="contents_item">
+		<xsl:copy>
+			<xsl:apply-templates mode="contents_item"/>
+		</xsl:copy>		
 	</xsl:template><xsl:template match="*[local-name() = 'br']" mode="contents_item">
 		<xsl:text> </xsl:text>
 	</xsl:template><xsl:template match="*[local-name()='sourcecode']" name="sourcecode">
@@ -6795,6 +6869,7 @@
 					<xsl:variable name="_font-size">
 						
 												
+						
 						
 						
 						
@@ -7338,6 +7413,7 @@
 			
 			
 			
+			
 						
 			
 						
@@ -7349,7 +7425,7 @@
 		
 		
 		
-	</xsl:template><xsl:template match="/*/*[local-name() = 'preface']/*" priority="2">
+	</xsl:template><xsl:template match="//*[contains(local-name(), '-standard')]/*[local-name() = 'preface']/*" priority="2"> <!-- /*/*[local-name() = 'preface']/* -->
 		<fo:block break-after="page"/>
 		<fo:block>
 			<xsl:call-template name="setId"/>
@@ -7357,9 +7433,10 @@
 		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'clause']">
 		<fo:block>
-			<xsl:call-template name="setId"/>			
+			<xsl:call-template name="setId"/>
 			
 				<xsl:attribute name="keep-with-next">always</xsl:attribute>
+			
 			
 			<xsl:apply-templates/>
 		</fo:block>
@@ -7561,6 +7638,57 @@
 		</xsl:variable>
 		<xsl:variable name="result">
 			<xsl:choose>
+				<xsl:when test="$format = 'ddMMyyyy'">
+					<xsl:if test="$day != ''"><xsl:value-of select="number($day)"/></xsl:if>
+					<xsl:text> </xsl:text>
+					<xsl:value-of select="normalize-space(concat($monthStr, ' ' , $year))"/>
+				</xsl:when>
+				<xsl:when test="$format = 'ddMM'">
+					<xsl:if test="$day != ''"><xsl:value-of select="number($day)"/></xsl:if>
+					<xsl:text> </xsl:text><xsl:value-of select="$monthStr"/>
+				</xsl:when>
+				<xsl:when test="$format = 'short' or $day = ''">
+					<xsl:value-of select="normalize-space(concat($monthStr, ' ', $year))"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="normalize-space(concat($monthStr, ' ', $day, ', ' , $year))"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:value-of select="$result"/>
+	</xsl:template><xsl:template name="convertDateLocalized">
+		<xsl:param name="date"/>
+		<xsl:param name="format" select="'short'"/>
+		<xsl:variable name="year" select="substring($date, 1, 4)"/>
+		<xsl:variable name="month" select="substring($date, 6, 2)"/>
+		<xsl:variable name="day" select="substring($date, 9, 2)"/>
+		<xsl:variable name="monthStr">
+			<xsl:choose>
+				<xsl:when test="$month = '01'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_january</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '02'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_february</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '03'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_march</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '04'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_april</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '05'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_may</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '06'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_june</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '07'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_july</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '08'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_august</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '09'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_september</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '10'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_october</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '11'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_november</xsl:with-param></xsl:call-template></xsl:when>
+				<xsl:when test="$month = '12'"><xsl:call-template name="getLocalizedString"><xsl:with-param name="key">month_december</xsl:with-param></xsl:call-template></xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="result">
+			<xsl:choose>
+				<xsl:when test="$format = 'ddMMyyyy'">
+					<xsl:if test="$day != ''"><xsl:value-of select="number($day)"/></xsl:if>
+					<xsl:text> </xsl:text>
+					<xsl:value-of select="normalize-space(concat($monthStr, ' ' , $year))"/>
+				</xsl:when>
+				<xsl:when test="$format = 'ddMM'">
+					<xsl:if test="$day != ''"><xsl:value-of select="number($day)"/></xsl:if>
+					<xsl:text> </xsl:text><xsl:value-of select="$monthStr"/>
+				</xsl:when>
 				<xsl:when test="$format = 'short' or $day = ''">
 					<xsl:value-of select="normalize-space(concat($monthStr, ' ', $year))"/>
 				</xsl:when>
@@ -7756,6 +7884,7 @@
 			
 			
 				<xsl:value-of select="document('')//*/namespace::bipm"/>
+			
 			
 		</xsl:variable>
 		<xsl:if test="$documentNS != $XSLNS">

@@ -15,6 +15,7 @@ module IsoDoc
       end
 
       def pdf_stylesheet(docxml)
+        return "jcgm.standard.xsl" if docxml&.at(ns("//bibdata/ext/editorialgroup/committee/@acronym"))&.value == "JCGM"
         doctype = docxml&.at(ns("//bibdata/ext/doctype"))&.text
         doctype = "brochure" unless %w(guide mise-en-pratique rapport).
           include? doctype
