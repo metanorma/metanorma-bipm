@@ -65,8 +65,14 @@ VALIDATING_BLANK_HDR = <<~"HDR"
 HDR
 
 def boilerplate(lang)
+  file = case lang
+         when "jcgm"
+           "boilerplate-jcgm-en.xml"
+         when "en", "fr"
+           "boilerplate-#{lang}.xml"
+         end
   HTMLEntities.new.decode(
-  File.read(File.join(File.dirname(__FILE__), "..", "lib", "asciidoctor", "bipm", "boilerplate-#{lang}.xml"), encoding: "utf-8").
+  File.read(File.join(File.dirname(__FILE__), "..", "lib", "asciidoctor", "bipm", file), encoding: "utf-8").
   gsub(/\{\{ agency \}\}/, "BIPM").gsub(/\{\{ docyear \}\}/, Date.today.year.to_s).
   gsub(/\{% if unpublished %\}.*\{% endif %\}/m, "").
   gsub(/(?<=\p{Alnum})'(?=\p{Alpha})/, "’").

@@ -36,6 +36,22 @@ RSpec.describe Asciidoctor::BIPM do
     expect(File.exist?("test.pdf")).to be true
   end
 
+  it "converts a blank JCGM document" do
+    input = <<~"INPUT"
+      = Document title
+      Author
+      :docfile: test.adoc
+      :novalid:
+      :committee-acronym: JCGM
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+    #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate("jcgm"))}
+<sections/>
+</bipm-standard>
+    OUTPUT
+  end
+
   it "processes default metadata" do
     input = <<~"INPUT"
       = Document title
