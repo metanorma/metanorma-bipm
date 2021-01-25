@@ -3715,6 +3715,10 @@
 	<xsl:template match="bipm:bookmark">
 		<fo:inline id="{@id}"/>
 	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'stem']/text()">
+		<xsl:value-of select="normalize-space()"/>
+	</xsl:template>
 	
 	<!-- =================== -->
 	<!-- End of Index processing -->
