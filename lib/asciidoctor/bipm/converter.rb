@@ -104,8 +104,7 @@ module Asciidoctor
         ["en", "fr"].each do |lang|
           at = { language: lang, format: "text/plain" }
           xml.title **attr_code(at.merge(type: "main")) do |t1|
-            t1 << Asciidoctor::Standoc::Utils::asciidoc_sub(
-              node.attr("title-#{lang}"))
+            t1 << Metanorma::Utils::asciidoc_sub(node.attr("title-#{lang}"))
           end
           %w(cover appendix annex part subpart).each do |w|
             typed_title(node, xml, lang, w)
@@ -117,7 +116,7 @@ module Asciidoctor
         at = { language: lang, format: "text/plain" }
         return unless title = node.attr("title-#{type}-#{lang}")
         xml.title **attr_code(at.merge(type: type)) do |t1|
-          t1 << Asciidoctor::Standoc::Utils::asciidoc_sub(title)
+          t1 << Metanorma::Utils::asciidoc_sub(title)
         end
       end
 
