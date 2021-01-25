@@ -13,6 +13,7 @@ RSpec.describe Asciidoctor::BIPM do
     end
 
     it "generates error file" do
+      mock_pdf
       expect do
         Metanorma::Compile
           .new
@@ -23,6 +24,7 @@ RSpec.describe Asciidoctor::BIPM do
   end
 
   it "validates committees" do
+      mock_pdf
     FileUtils.rm_f "test.err"
     Asciidoctor.convert(<<~INPUT, backend: :bipm, header_footer: true)
     = A
