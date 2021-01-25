@@ -172,6 +172,11 @@ module Asciidoctor
         end
       end
 
+      def boilerplate_file(xmldoc)
+        return super unless xmldoc&.at("//bibdata/ext/editorialgroup/committee/@acronym")&.value == "JCGM"
+        baselocation("lib/asciidoctor/bipm/boilerplate-jcgm-en.xml")
+      end
+
       def mathml_mi_italics
         { uppergreek: false, upperroman: false,
           lowergreek: false, lowerroman: true }
