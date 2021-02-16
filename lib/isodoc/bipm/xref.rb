@@ -13,15 +13,11 @@ module IsoDoc
         docxml.xpath(ns("//sections/clause[not(@unnumbered = 'true')] | "\
                         "//sections/terms[not(@unnumbered = 'true')] | "\
                         "//sections/definitions[not(@unnumbered = 'true')]")).
-        each do |c|
-          section_names(c, n, 1)
-        end
+        each { |c| section_names(c, n, 1) }
         docxml.xpath(ns("//sections/clause[@unnumbered = 'true'] | "\
                         "//sections/terms[@unnumbered = 'true'] | "\
                         "//sections/definitions[@unnumbered = 'true']")).
-        each do |c|
-          unnumbered_section_names(c, 1)
-        end
+        each { |c| unnumbered_section_names(c, 1) }
       end
 
       NUMBERED_SUBCLAUSES = "./clause[not(@unnumbered = 'true')] | "\
@@ -39,8 +35,7 @@ module IsoDoc
       def section_names(clause, num, lvl)
         return num if clause.nil?
         num.increment(clause)
-        @anchors[clause["id"]] =
-          { label: num.print, xref: l10n("#{@labels["clause"]} #{num.print}"),
+        @anchors[clause["id"]] = { label: num.print, xref: l10n("#{@labels["clause"]} #{num.print}"),
             level: lvl, type: "clause" }
         i = Counter.new
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
@@ -56,8 +51,7 @@ module IsoDoc
       def unnumbered_section_names(clause, lvl)
         return if clause.nil?
         lbl = clause&.at(ns("./title"))&.text || "[#{clause["id"]}]"
-        @anchors[clause["id"]] =
-          { label: lbl, xref: l10n(%{"#{lbl}"}), level: lvl, type: "clause" }
+        @anchors[clause["id"]] = { label: lbl, xref: l10n(%{"#{lbl}"}), level: lvl, type: "clause" }
         clause.xpath(ns(SUBCLAUSES)).each_with_index do |c, i|
           unnumbered_section_names1(c, lvl + 1)
         end
@@ -90,16 +84,14 @@ module IsoDoc
         super
         @annexlbl = docxml.at(ns("//bibdata/ext/structuredidentifier/appendix")) ?
           @labels["appendix"] : @labels["annex"]
-        docxml.xpath(ns("//annex[not(@unnumbered = 'true')]")).
-          each_with_index { |c, i| annex_names(c, (i+1).to_s) }
-        docxml.xpath(ns("//annex[@unnumbered = 'true']")).
-          each { |c| unnumbered_annex_names(c) }
+        docxml.xpath(ns("//annex[not(@unnumbered = 'true')]")).each_with_index { |c, i| annex_names(c, (i+1).to_s) }
+        docxml.xpath(ns("//annex[@unnumbered = 'true']")).each { |c| unnumbered_annex_names(c) }
+        docxml.xpath(ns("//indexsect")).each { |b| preface_names(b) }
       end
 
       def annex_names(clause, num)
-        @anchors[clause["id"]] =
-          { label: annex_name_lbl(clause, num), type: "clause", value: num.to_s,
-            xref: l10n("#{@annexlbl} #{num}"), level: 1 }
+        @anchors[clause["id"]] = { label: annex_name_lbl(clause, num), type: "clause", value: num.to_s,
+                                   xref: l10n("#{@annexlbl} #{num}"), level: 1 }
         if a = single_annex_special_section(clause)
           annex_names1(a, "#{num}", 1)
         else
@@ -108,50 +100,38 @@ module IsoDoc
             i.increment(c)
             annex_names1(c, "#{num}.#{i.print}", 2)
           end
-          clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each do |c|
-            unnumbered_annex_names1(c, 2)
-          end
+          clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each { |c| unnumbered_annex_names1(c, 2) }
         end
         hierarchical_asset_names(clause, num)
       end
 
       def unnumbered_annex_names(clause)
         lbl = clause&.at(ns("./title"))&.text || "[#{clause["id"]}]"
-        @anchors[clause["id"]] =
-          { label: lbl, type: "clause", value: "",
-            xref: l10n(%{"#{lbl}"}), level: 1 }
+        @anchors[clause["id"]] = { label: lbl, type: "clause", value: "", xref: l10n(%{"#{lbl}"}), level: 1 }
         if a = single_annex_special_section(clause)
           annex_names1(a, "#{num}", 1)
         else
-          clause.xpath(ns(SUBCLAUSES)).each do |c|
-            unnumbered_annex_names1(c, 2)
-          end
+          clause.xpath(ns(SUBCLAUSES)).each { |c| unnumbered_annex_names1(c, 2) }
         end
         hierarchical_asset_names(clause, lbl)
       end
 
       def annex_names1(clause, num, level)
-        @anchors[clause["id"]] =
-          { label: num, xref: l10n("#{@annexlbl} #{num}"),
-            level: level, type: "clause" }
+        @anchors[clause["id"]] = { label: num, xref: l10n("#{@annexlbl} #{num}"),
+                                   level: level, type: "clause" }
         i = Counter.new
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
           i.increment(c)
           annex_names1(c, "#{num}.#{i.print}", level + 1)
         end
-        clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each do |c|
-          unnumbered_annex_names1(c, level + 1)
-        end
+        clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each { |c| unnumbered_annex_names1(c, level + 1) }
       end
 
       def unnumbered_annex_names1(clause, level)
         lbl = clause&.at(ns("./title"))&.text || "[#{clause["id"]}]"
-        @anchors[clause["id"]] =
-          { label: lbl, xref: l10n(%{"#{lbl}"}),
-            level: level, type: "clause" }
-        clause.xpath(ns(SUBCLAUSES)).each do |c|
-          unnumbered_annex_names1(c, level + 1)
-        end
+        @anchors[clause["id"]] = { label: lbl, xref: l10n(%{"#{lbl}"}),
+                                   level: level, type: "clause" }
+        clause.xpath(ns(SUBCLAUSES)).each { |c| unnumbered_annex_names1(c, level + 1) }
       end
 
       def annex_name_lbl(clause, num)

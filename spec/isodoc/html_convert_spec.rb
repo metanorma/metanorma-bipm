@@ -2025,7 +2025,7 @@ OUTPUT
              </clause>
            </clause>
          </sections>
-         <clause type='index' id='_'>
+         <indexsect id='_'>
            <title>Index</title>
            <clause id='_'>
              <title>D</title>
@@ -2094,7 +2094,7 @@ OUTPUT
                </li>
              </ul>
            </clause>
-         </clause>
+         </indexsect>
        </bipm-standard>
       OUTPUT
     end
@@ -2108,6 +2108,7 @@ OUTPUT
       </bibdata>
       <sections>
       <clause id="A">
+      <xref target="I"/>
       <index to="End"><primary>&#xE9;long&#xE9;</primary></index>
       <index><primary>&#xEA;tre</primary><secondary>Husserl</secondary><tertiary>en allemand</tertiary></index>
       <index><primary>Emancipation</primary></index>
@@ -2127,6 +2128,10 @@ OUTPUT
       </clause>
       </clause>
       </sections>
+      <indexsect id="I">
+      <title>Index</title>
+      <p>Voici un index</p>
+      </indexsect>
       </bipm-standard>
       INPUT
       <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
@@ -2137,6 +2142,7 @@ OUTPUT
          <sections>
                     <clause id='A'>
              <title>1.</title>
+             <xref target='I'>Index</xref>
              <bookmark to='End' id='_'/>
              <bookmark id='_'/>
              <bookmark id='_'/>
@@ -2152,8 +2158,9 @@ OUTPUT
              </clause>
            </clause>
          </sections>
-         <clause type='index' id='_'>
+         <indexsect id='I'>
            <title>Index</title>
+           <p>Voici un index</p>
            <clause id='_'>
              <title>D</title>
              <ul>
@@ -2227,7 +2234,7 @@ OUTPUT
                </li>
              </ul>
            </clause>
-         </clause>
+         </indexsect>
        </bipm-standard>
       OUTPUT
 

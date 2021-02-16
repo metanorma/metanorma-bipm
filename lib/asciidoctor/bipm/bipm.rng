@@ -341,6 +341,9 @@
         <ref name="termdocsource"/>
       </zeroOrMore>
       <optional>
+        <ref name="misccontainer"/>
+      </optional>
+      <optional>
         <ref name="boilerplate"/>
       </optional>
       <optional>
@@ -355,6 +358,9 @@
       <optional>
         <ref name="bibliography"/>
       </optional>
+      <zeroOrMore>
+        <ref name="indexsect"/>
+      </zeroOrMore>
     </element>
   </define>
 </grammar>
