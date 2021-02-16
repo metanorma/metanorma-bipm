@@ -3,7 +3,7 @@
 </div>
 
 <div class="document-type-band" id="{{ doctype | downcase | replace: ' ', '-' }}-band">
-    <p class="document-type">BIPM {{ doctype_display }}</p>
+  <p class="document-type">{{org_abbrev}} {{ doctype_display }}</p>
 </div>
 
 
@@ -82,7 +82,7 @@
 
   <div class="WordSection11">
   <div class="coverpage-stage-block" >
-    <span class="coverpage-stage" id="{{ doctype | replace: ' ', '-' | downcase }}">BIPM {{ doctype_display }}</span>
+    <span class="coverpage-stage" id="{{ doctype | replace: ' ', '-' | downcase }}">{{org_abbrev}} {{ doctype_display }}</span>
   </div>
 
   <div class="coverpage-stage-block" >
