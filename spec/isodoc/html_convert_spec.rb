@@ -98,7 +98,7 @@ RSpec.describe IsoDoc::BIPM do
   </copyright>
   <ext>
   <editorialgroup>
-  <committee acronym='TCA'>
+  <committee acronym='JCGM'>
   <variant language='en' script='Latn'>TC</variant>
   <variant language='fr' script='Latn'>CT</variant>
 </committee>
@@ -146,8 +146,9 @@ RSpec.describe IsoDoc::BIPM do
 :issueddate=>"XXX",
 :lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"TCA", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
+:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"JCGM", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
 :obsoleteddate=>"XXX",
+:org_abbrev=>"JCGM",
 :partid=>"Part 2.1",
 :partid_alt=>"Partie 2.1",
 :partsubtitle=>"Chef Title Part",
@@ -267,6 +268,7 @@ RSpec.describe IsoDoc::BIPM do
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
 :obsoleteddate=>"XXX",
+:org_abbrev=>"BIPM",
 :partid=>"Partie 2.1",
 :partid_alt=>"Part 2.1",
 :publisheddate=>"XXX",
@@ -318,6 +320,7 @@ RSpec.describe IsoDoc::BIPM do
 :lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :obsoleteddate=>"XXX",
+:org_abbrev=>"BIPM",
 :publisheddate=>"XXX",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",

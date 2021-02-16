@@ -59,6 +59,8 @@ module IsoDoc
         dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/part"))
         dn and set(:partid, @i18n.l10n("#{label1} #{dn&.text}"))
         dn and set(:partid_alt, @i18n.l10n("#{label2} #{dn&.text}"))
+        set(:org_abbrev, 
+            isoxml.at(ns("//bibdata/ext/editorialgroup/committee[@acronym = 'JCGM']")) ? "JCGM" : "BIPM")
       end
 
       def extract_person_names_affiliations(authors)
