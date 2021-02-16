@@ -796,15 +796,16 @@ Comité commun pour les guides en métrologie
 
     presxml = xmlpp(<<~"OUTPUT")
     <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
-    <bibdata>
-    <ext>
-    <editorialgroup><committee acronym="JCGM">
-Joint Committee for Guides in Metrology
-Comité commun pour les guides en métrologie
-</committee>
-</editorialgroup>
-    </ext>
-    </bibdata>
+         <bibdata>
+           <ext>
+             <editorialgroup>
+               <committee acronym='JCGM'>
+                  Joint Committee for Guides in Metrology Comit&#xE9; commun pour les
+                 guides en m&#xE9;trologie
+               </committee>
+             </editorialgroup>
+           </ext>
+         </bibdata>
          <preface>
            <foreword obligation='informative'>
              <title>Foreword</title>
@@ -818,37 +819,74 @@ Comité commun pour les guides en métrologie
            </introduction>
          </preface>
          <sections>
-              <clause id="G" type="scope"><title depth="1">1.<tab/>Scope</title></clause>
-              <clause id="H" obligation="normative"><title depth="1">2.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
-                <title depth="2">2.1.<tab/>Normal Terms</title>
-                <term id="J"><name>2.1.1.</name>
-                <preferred>Term2</preferred>
-              </term>
-              </terms>
-              <clause id="D" obligation="normative">
-                <title depth="2">2.2.<tab/>Scope</title>
-                <p id="E">Text</p>
-              </clause>
-              <definitions id="K"><title>2.3.</title>
-                <dl>
-                <dt>Symbol</dt>
-                <dd>Definition</dd>
-                </dl>
-              </definitions>
-              </clause>
-              <definitions id="L"><title>3.</title>
-                <dl>
-                <dt>Symbol</dt>
-                <dd>Definition</dd>
-                </dl>
-              </definitions>
-              <clause id="M" inline-header="false" obligation="normative"><title depth="1">4.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
-                <title depth="2">4.1.<tab/>Introduction</title>
-              </clause>
-              <clause id="O" inline-header="false" obligation="normative">
-                <title depth="2">4.2.<tab/>Clause 4.2</title>
-              </clause></clause>
-
+           <clause id='G' type='scope'>
+             <title depth='1'>
+               1.
+               <tab/>
+               Scope
+             </title>
+           </clause>
+           <clause id='H' obligation='normative'>
+             <title depth='1'>
+               3.
+               <tab/>
+               Terms, Definitions, Symbols and Abbreviated Terms
+             </title>
+             <terms id='I' obligation='normative'>
+               <title depth='2'>
+                 3.1.
+                 <tab/>
+                 Normal Terms
+               </title>
+               <term id='J'>
+                 <name>3.1.1.</name>
+                 <preferred>Term2</preferred>
+               </term>
+             </terms>
+             <clause id='D' obligation='normative'>
+               <title depth='2'>
+                 3.2.
+                 <tab/>
+                 Scope
+               </title>
+               <p id='E'>Text</p>
+             </clause>
+             <definitions id='K'>
+               <title>3.3.</title>
+               <dl>
+                 <dt>Symbol</dt>
+                 <dd>Definition</dd>
+               </dl>
+             </definitions>
+           </clause>
+           <definitions id='L'>
+             <title>4.</title>
+             <dl>
+               <dt>Symbol</dt>
+               <dd>Definition</dd>
+             </dl>
+           </definitions>
+           <clause id='M' inline-header='false' obligation='normative'>
+             <title depth='1'>
+               5.
+               <tab/>
+               Clause 4
+             </title>
+             <clause id='N' inline-header='false' obligation='normative'>
+               <title depth='2'>
+                 5.1.
+                 <tab/>
+                 Introduction
+               </title>
+             </clause>
+             <clause id='O' inline-header='false' obligation='normative'>
+               <title depth='2'>
+                 5.2.
+                 <tab/>
+                 Clause 4.2
+               </title>
+             </clause>
+           </clause>
          </sections>
          <annex id='P' inline-header='false' obligation='normative'>
            <title>
@@ -923,18 +961,18 @@ Comité commun pour les guides en métrologie
                <h1> 2. &#160; Normative References </h1>
              </div>
              <div id='H'>
-               <h1> 2. &#160; Terms, Definitions, Symbols and Abbreviated Terms </h1>
+               <h1> 3. &#160; Terms, Definitions, Symbols and Abbreviated Terms </h1>
                <div id='I'>
-                 <h2> 2.1. &#160; Normal Terms </h2>
-                 <p class='TermNum' id='J'>2.1.1.</p>
+                 <h2> 3.1. &#160; Normal Terms </h2>
+                 <p class='TermNum' id='J'>3.1.1.</p>
                  <p class='Terms' style='text-align:left;'>Term2</p>
                </div>
                <div id='D'>
-                 <h2> 2.2. &#160; Scope </h2>
+                 <h2> 3.2. &#160; Scope </h2>
                  <p id='E'>Text</p>
                </div>
                <div id='K'>
-                 <h2>2.3.</h2>
+                 <h2>3.3.</h2>
                  <dl>
                    <dt>
                      <p>Symbol</p>
@@ -944,7 +982,7 @@ Comité commun pour les guides en métrologie
                </div>
              </div>
              <div id='L' class='Symbols'>
-               <h1>3.</h1>
+               <h1>4.</h1>
                <dl>
                  <dt>
                    <p>Symbol</p>
@@ -953,12 +991,12 @@ Comité commun pour les guides en métrologie
                </dl>
              </div>
              <div id='M'>
-               <h1> 4. &#160; Clause 4 </h1>
+               <h1> 5. &#160; Clause 4 </h1>
                <div id='N'>
-                 <h2> 4.1. &#160; Introduction </h2>
+                 <h2> 5.1. &#160; Introduction </h2>
                </div>
                <div id='O'>
-                 <h2> 4.2. &#160; Clause 4.2 </h2>
+                 <h2> 5.2. &#160; Clause 4.2 </h2>
                </div>
              </div>
              <br/>

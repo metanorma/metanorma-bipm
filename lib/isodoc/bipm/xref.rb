@@ -9,6 +9,21 @@ module IsoDoc
       end
 
       def clause_names(docxml, sect_num)
+        if docxml&.at(ns("//bibdata/ext/editorialgroup/committee/@acronym"))&.value == "JCGM"
+          clause_names_jcgm(docxml, sect_num)
+        else
+          clause_names_bipm(docxml, sect_num)
+        end
+      end
+
+      def clause_names_jcgm(docxml, sect_num)
+        docxml.xpath(ns("//clause[parent::sections][not(@type = 'scope')][not(descendant::terms)]")).
+          each_with_index do |c, i|
+          section_names(c, sect_num, 1)
+        end
+      end
+
+      def clause_names_bipm(docxml, sect_num)
         n = Counter.new
         docxml.xpath(ns("//sections/clause[not(@unnumbered = 'true')] | "\
                         "//sections/terms[not(@unnumbered = 'true')] | "\
@@ -36,7 +51,7 @@ module IsoDoc
         return num if clause.nil?
         num.increment(clause)
         @anchors[clause["id"]] = { label: num.print, xref: l10n("#{@labels["clause"]} #{num.print}"),
-            level: lvl, type: "clause" }
+                                   level: lvl, type: "clause" }
         i = Counter.new
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
           i.increment(c)
