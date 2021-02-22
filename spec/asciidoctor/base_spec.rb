@@ -1,18 +1,20 @@
 require "spec_helper"
 
+OPTIONS = [backend: :bipm, header_footer: true].freeze
+
 RSpec.describe Asciidoctor::BIPM do
   it "processes a blank document" do
     input = <<~"INPUT"
-    #{ASCIIDOC_BLANK_HDR}
+      #{ASCIIDOC_BLANK_HDR}
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR}
-<sections/>
-</bipm-standard>
+      #{BLANK_HDR}
+        <sections/>
+      </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
   end
 
   it "converts a blank document" do
@@ -24,19 +26,17 @@ RSpec.describe Asciidoctor::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR}
-<sections/>
-</bipm-standard>
+      #{BLANK_HDR}
+        <sections/>
+      </bipm-standard>
     OUTPUT
 
-    system "rm -f test.html"
-    system "rm -f test.pdf"
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
     expect(File.exist?("test.pdf")).to be true
   end
 
-  it "converts a blank JCGM document" do
+  xit "converts a blank JCGM document" do
     input = <<~"INPUT"
       = Document title
       Author
@@ -46,10 +46,12 @@ RSpec.describe Asciidoctor::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate("jcgm"))}
-<sections/>
-</bipm-standard>
+      #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate('jcgm'))}
+        <sections/>
+      </bipm-standard>
     OUTPUT
+
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
   end
 
   it "processes default metadata" do
@@ -131,208 +133,209 @@ RSpec.describe Asciidoctor::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    <?xml version="1.0" encoding="UTF-8"?>
-<bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
-<bibdata type="standard">
-<title language='en' format='text/plain' type='main'>Main Title</title>
-<title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
-<title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
-<title language='en' format='text/plain' type='annex'>Main Title (SI) Annex</title>
-<title language='en' format='text/plain' type='part'>Part</title>
-<title language='en' format='text/plain' type='subpart'>Subpart</title>
-<title language='fr' format='text/plain' type='main'>Chef Title</title>
-<title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
-<title language='fr' format='text/plain' type='appendix'>Chef Title (SI)</title>
-<title language='fr' format='text/plain' type='annex'>Chef Title (SI) Annexe</title>
-<title language='fr' format='text/plain' type='part'>Partie</title>
-<title language='fr' format='text/plain' type='subpart'>Subpartie</title>
-  <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
-  <docnumber>1000</docnumber>
-  <date type='implemented'>
-  <on>D</on>
-</date>
-<date type='obsoleted'>
-  <on>C</on>
-</date>
-  <contributor>
-    <role type="author"/>
-    <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
-      <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
-    </organization>
-  </contributor>
-    <contributor>
-    <role type='author'/>
-    <person>
-      <name>
-        <completename>Andrew Yacoot</completename>
-      </name>
-      <affiliation>
-        <organization>
-          <name>NPL</name>
-        </organization>
-      </affiliation>
-    </person>
-  </contributor>
-  <contributor>
-    <role type='author'/>
-    <person>
-      <name>
-        <completename>Ulrich Kuetgens</completename>
-      </name>
-      <affiliation>
-        <organization>
-          <name>PTB</name>
-        </organization>
-      </affiliation>
-    </person>
-  </contributor>
-  <contributor>
-    <role type='author'/>
-    <person>
-      <name>
-        <completename>Enrico Massa</completename>
-      </name>
-      <affiliation>
-        <organization>
-          <name>INRIM</name>
-        </organization>
-      </affiliation>
-    </person>
-  </contributor>
-  <contributor>
-     <role type='editor'>WG-N co-chair</role>
-    <person>
-      <name>
-        <completename>Ronald Dixson</completename>
-      </name>
-      <affiliation>
-        <organization>
-          <name>NIST</name>
-        </organization>
-      </affiliation>
-    </person>
-  </contributor>
-  <contributor>
-   <role type='editor'>WG-N co-chair</role>
-    <person>
-      <name>
-        <completename>Harald Bosse</completename>
-      </name>
-      <affiliation>
-        <organization>
-          <name>PTB</name>
-        </organization>
-      </affiliation>
-    </person>
-  </contributor>
-  <contributor>
-   <role type='editor'>WG-N chair</role>
-    <person>
-      <name>
-        <completename>Andrew Yacoot</completename>
-      </name>
-      <affiliation>
-        <organization>
-          <name>NPL</name>
-        </organization>
-      </affiliation>
-    </person>
-  </contributor>
-  <contributor>
-    <role type="publisher"/>
-    <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
-      <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
-    </organization>
-  </contributor>
-  <edition>2</edition>
-<version>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-  <language>en</language>
-  <script>Latn</script>
-  <status>
-    <stage>working-draft</stage>
-    <iteration>3</iteration>
-  </status>
-  <copyright>
-    <from>2001</from>
-    <owner>
-      <organization>
-        <name>#{Metanorma::BIPM.configuration.organization_name_long["en"]}</name>
-        <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
-      </organization>
-    </owner>
-  </copyright>
-  <relation type='supersedes'>
-  <bibitem>
-    <title>--</title>
-    <docidentifier>A</docidentifier>
-  </bibitem>
-</relation>
-<relation type='supersededBy'>
-  <bibitem>
-    <title>--</title>
-    <docidentifier>B</docidentifier>
-  </bibitem>
-</relation>
-<relation type='supersedes'>
-  <bibitem>
-    <date type='published'>2018-06-11</date>
-    <edition>1.0</edition>
-    <version>
-      <draft>1.0</draft>
-    </version>
-  </bibitem>
-</relation>
-<relation type='supersedes'>
-  <bibitem>
-    <date type='published'>2019-06-11</date>
-    <edition>2.0</edition>
-    <version>
-      <draft>2.0</draft>
-    </version>
-  </bibitem>
-</relation>
-<relation type='supersedes'>
-  <bibitem>
-    <date type='circulated'>2019-06-11</date>
-    <version>
-      <draft>3.0</draft>
-    </version>
-  </bibitem>
-</relation>
-<ext>
-  <doctype>brochure</doctype>
-  <editorialgroup>
-  <committee acronym="TCA">
-  <variant language='en' script='Latn'>TC</variant>
-  <variant language='fr' script='Latn'>CT</variant>
-</committee>
-    <workgroup acronym="WGA">WG</workgroup>
-  </editorialgroup>
-  <comment-period>
-  <from>X</from>
-  <to>Y</to>
-</comment-period>
-<si-aspect>A_e_deltanu</si-aspect>
-<meeting-note>Note</meeting-note>
-<structuredidentifier>
-  <docnumber>1000</docnumber>
-  <part>2</part>
-  <appendix>ABC</appendix>
-  <annexid>DEF</annexid>
-</structuredidentifier>
-</ext>
-</bibdata>
-    #{boilerplate("en").gsub(/#{Time.now.year}/, "2001")}
-<sections/>
-</bipm-standard>
+      <?xml version="1.0" encoding="UTF-8"?>
+      <bipm-standard type="semantic" version="#{Metanorma::BIPM::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
+        <bibdata type="standard">
+          <title format="text/plain" language="en" type="main">Main Title</title>
+          <title format="text/plain" language="en" type="cover">Main Title (SI)</title>
+          <title format="text/plain" language="en" type="appendix">Main Title (SI)</title>
+          <title format="text/plain" language="en" type="annex">Main Title (SI) Annex</title>
+          <title format="text/plain" language="en" type="part">Part</title>
+          <title format="text/plain" language="en" type="subpart">Subpart</title>
+          <title format="text/plain" language="fr" type="main">Chef Title</title>
+          <title format="text/plain" language="fr" type="cover">Chef Title (SI)</title>
+          <title format="text/plain" language="fr" type="appendix">Chef Title (SI)</title>
+          <title format="text/plain" language="fr" type="annex">Chef Title (SI) Annexe</title>
+          <title format="text/plain" language="fr" type="part">Partie</title>
+          <title format="text/plain" language="fr" type="subpart">Subpartie</title>
+          <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
+          <docnumber>1000</docnumber>
+          <date type="implemented">
+            <on>D</on>
+          </date>
+          <date type="obsoleted">
+            <on>C</on>
+          </date>
+          <contributor>
+            <role type="author"/>
+            <organization>
+              <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+            </organization>
+          </contributor>
+          <contributor>
+            <role type="author"/>
+            <person>
+              <name>
+                <completename>Andrew Yacoot</completename>
+              </name>
+              <affiliation>
+                <organization>
+                  <name>NPL</name>
+                </organization>
+              </affiliation>
+            </person>
+          </contributor>
+          <contributor>
+            <role type="author"/>
+            <person>
+              <name>
+                <completename>Ulrich Kuetgens</completename>
+              </name>
+              <affiliation>
+                <organization>
+                  <name>PTB</name>
+                </organization>
+              </affiliation>
+            </person>
+          </contributor>
+          <contributor>
+            <role type="author"/>
+            <person>
+              <name>
+                <completename>Enrico Massa</completename>
+              </name>
+              <affiliation>
+                <organization>
+                  <name>INRIM</name>
+                </organization>
+              </affiliation>
+            </person>
+          </contributor>
+          <contributor>
+            <role type="editor">WG-N co-chair</role>
+            <person>
+              <name>
+                <completename>Ronald Dixson</completename>
+              </name>
+              <affiliation>
+                <organization>
+                  <name>NIST</name>
+                </organization>
+              </affiliation>
+            </person>
+          </contributor>
+          <contributor>
+            <role type="editor">WG-N co-chair</role>
+            <person>
+              <name>
+                <completename>Harald Bosse</completename>
+              </name>
+              <affiliation>
+                <organization>
+                  <name>PTB</name>
+                </organization>
+              </affiliation>
+            </person>
+          </contributor>
+          <contributor>
+            <role type="editor">WG-N chair</role>
+            <person>
+              <name>
+                <completename>Andrew Yacoot</completename>
+              </name>
+              <affiliation>
+                <organization>
+                  <name>NPL</name>
+                </organization>
+              </affiliation>
+            </person>
+          </contributor>
+          <contributor>
+            <role type="publisher"/>
+            <organization>
+              <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+            </organization>
+          </contributor>
+          <edition>2</edition>
+          <version>
+            <revision-date>2000-01-01</revision-date>
+            <draft>3.4</draft>
+          </version>
+          <language>en</language>
+          <script>Latn</script>
+          <status>
+            <stage>working-draft</stage>
+            <iteration>3</iteration>
+          </status>
+          <copyright>
+            <from>2001</from>
+            <owner>
+              <organization>
+                <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+              </organization>
+            </owner>
+          </copyright>
+          <relation type="supersedes">
+            <bibitem>
+              <title>--</title>
+              <docidentifier>A</docidentifier>
+            </bibitem>
+          </relation>
+          <relation type="supersededBy">
+            <bibitem>
+              <title>--</title>
+              <docidentifier>B</docidentifier>
+            </bibitem>
+          </relation>
+          <relation type="supersedes">
+            <bibitem>
+              <date type="published">2018-06-11</date>
+              <edition>1.0</edition>
+              <version>
+                <draft>1.0</draft>
+              </version>
+            </bibitem>
+          </relation>
+          <relation type="supersedes">
+            <bibitem>
+              <date type="published">2019-06-11</date>
+              <edition>2.0</edition>
+              <version>
+                <draft>2.0</draft>
+              </version>
+            </bibitem>
+          </relation>
+          <relation type="supersedes">
+            <bibitem>
+              <date type="circulated">2019-06-11</date>
+              <version>
+                <draft>3.0</draft>
+              </version>
+            </bibitem>
+          </relation>
+          <ext>
+            <doctype>brochure</doctype>
+            <editorialgroup>
+              <committee acronym="TCA">
+                <variant language="en" script="Latn">TC</variant>
+                <variant language="fr" script="Latn">CT</variant>
+              </committee>
+              <workgroup acronym="WGA">WG</workgroup>
+            </editorialgroup>
+            <comment-period>
+              <from>X</from>
+              <to>Y</to>
+            </comment-period>
+            <si-aspect>A_e_deltanu</si-aspect>
+            <meeting-note>Note</meeting-note>
+            <structuredidentifier>
+              <docnumber>1000</docnumber>
+              <part>2</part>
+              <appendix>ABC</appendix>
+              <annexid>DEF</annexid>
+            </structuredidentifier>
+          </ext>
+        </bibdata>
+        #{boilerplate('en').gsub(/#{Time.now.year}/, '2001')}
+
+        <sections/>
+      </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
   end
 
   it "processes default metadata in French" do
@@ -379,96 +382,96 @@ RSpec.describe Asciidoctor::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    <?xml version="1.0" encoding="UTF-8"?>
-<bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
-<bibdata type="standard">
-<title language='en' format='text/plain' type='main'>Main Title</title>
-<title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
-<title language='fr' format='text/plain' type='main'>Chef Title</title>
-<title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
-  <docidentifier type="BIPM">BIPM 1000</docidentifier>
-  <docnumber>1000</docnumber>
-  <date type='implemented'>
-  <on>D</on>
-</date>
-<date type='obsoleted'>
-  <on>C</on>
-</date>
-  <contributor>
-    <role type="author"/>
-    <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long["fr"]}</name>
-      <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
-    </organization>
-  </contributor>
-  <contributor>
-    <role type="publisher"/>
-    <organization>
-      <name>#{Metanorma::BIPM.configuration.organization_name_long["fr"]}</name>
-      <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
-    </organization>
-  </contributor>
-  <edition>2</edition>
-<version>
-  <revision-date>2000-01-01</revision-date>
-  <draft>3.4</draft>
-</version>
-  <language>fr</language>
-  <script>Latn</script>
-  <status>
-    <stage>working-draft</stage>
-    <iteration>3</iteration>
-  </status>
-  <copyright>
-    <from>2001</from>
-    <owner>
-      <organization>
-        <name>#{Metanorma::BIPM.configuration.organization_name_long["fr"]}</name>
-        <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
-      </organization>
-    </owner>
-  </copyright>
-  <relation type='supersedes'>
-  <bibitem>
-    <title>--</title>
-    <docidentifier>A</docidentifier>
-  </bibitem>
-</relation>
-<relation type='supersededBy'>
-  <bibitem>
-    <title>--</title>
-    <docidentifier>B</docidentifier>
-  </bibitem>
-</relation>
-<ext>
-  <doctype>brochure</doctype>
-  <editorialgroup>
-  <committee acronym="TCA">
-  <variant language='en' script='Latn'>TC</variant>
-  <variant language='fr' script='Latn'>CT</variant>
-</committee>
-    <workgroup>WG</workgroup>
-  </editorialgroup>
-  <comment-period>
-  <from>X</from>
-  <to>Y</to>
-</comment-period>
-<structuredidentifier>
-  <docnumber>1000</docnumber>
-  <part>2.1</part>
-  <appendix>ABC</appendix>
-</structuredidentifier>
-</ext>
-</bibdata>
-    #{boilerplate("fr").gsub(/#{Time.now.year}/, "2001")}
-<sections/>
-</bipm-standard>
+      <?xml version="1.0" encoding="UTF-8"?>
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+      <bibdata type="standard">
+        <title language='en' format='text/plain' type='main'>Main Title</title>
+        <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
+        <title language='fr' format='text/plain' type='main'>Chef Title</title>
+        <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
+          <docidentifier type="BIPM">BIPM 1000</docidentifier>
+          <docnumber>1000</docnumber>
+          <date type='implemented'>
+          <on>D</on>
+        </date>
+        <date type='obsoleted'>
+          <on>C</on>
+        </date>
+          <contributor>
+            <role type="author"/>
+            <organization>
+              <name>#{Metanorma::BIPM.configuration.organization_name_long['fr']}</name>
+              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+            </organization>
+          </contributor>
+          <contributor>
+            <role type="publisher"/>
+            <organization>
+              <name>#{Metanorma::BIPM.configuration.organization_name_long['fr']}</name>
+              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+            </organization>
+          </contributor>
+          <edition>2</edition>
+          <version>
+            <revision-date>2000-01-01</revision-date>
+            <draft>3.4</draft>
+          </version>
+          <language>fr</language>
+          <script>Latn</script>
+          <status>
+            <stage>working-draft</stage>
+            <iteration>3</iteration>
+          </status>
+          <copyright>
+            <from>2001</from>
+            <owner>
+              <organization>
+                <name>#{Metanorma::BIPM.configuration.organization_name_long['fr']}</name>
+                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+              </organization>
+            </owner>
+          </copyright>
+          <relation type='supersedes'>
+            <bibitem>
+              <title>--</title>
+              <docidentifier>A</docidentifier>
+            </bibitem>
+          </relation>
+          <relation type='supersededBy'>
+            <bibitem>
+              <title>--</title>
+              <docidentifier>B</docidentifier>
+            </bibitem>
+          </relation>
+          <ext>
+            <doctype>brochure</doctype>
+            <editorialgroup>
+              <committee acronym="TCA">
+                <variant language='en' script='Latn'>TC</variant>
+                <variant language='fr' script='Latn'>CT</variant>
+              </committee>
+              <workgroup>WG</workgroup>
+            </editorialgroup>
+            <comment-period>
+              <from>X</from>
+              <to>Y</to>
+            </comment-period>
+            <structuredidentifier>
+              <docnumber>1000</docnumber>
+              <part>2.1</part>
+              <appendix>ABC</appendix>
+            </structuredidentifier>
+          </ext>
+        </bibdata>
+        #{boilerplate('fr').gsub(/#{Time.now.year}/, '2001')}
+        <sections/>
+      </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
   end
 
-   it "processes default metadata for JCGM" do
+  it "processes default metadata for JCGM" do
     input = <<~"INPUT"
       = Document title
       Author
@@ -512,96 +515,94 @@ RSpec.describe Asciidoctor::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    <?xml version="1.0" encoding="UTF-8"?>
-<bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
- <bibdata type='standard'>
-   <title language='en' format='text/plain' type='main'>Main Title</title>
-   <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
-   <title language='fr' format='text/plain' type='main'>Chef Title</title>
-   <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
-   <docidentifier type='BIPM'>JCGM 1000</docidentifier>
-   <docnumber>1000</docnumber>
-   <date type='implemented'>
-     <on>D</on>
-   </date>
-   <date type='obsoleted'>
-     <on>C</on>
-   </date>
-   <contributor>
-     <role type='author'/>
-     <organization>
-       <name>Bureau international des poids et mesures</name>
-       <abbreviation>BIPM</abbreviation>
-     </organization>
-   </contributor>
-   <contributor>
-     <role type='publisher'/>
-     <organization>
-       <name>Bureau international des poids et mesures</name>
-       <abbreviation>BIPM</abbreviation>
-     </organization>
-   </contributor>
-   <edition>2</edition>
-   <version>
-     <revision-date>2000-01-01</revision-date>
-     <draft>3.4</draft>
-   </version>
-   <language>fr</language>
-   <script>Latn</script>
-   <status>
-     <stage>working-draft</stage>
-     <iteration>3</iteration>
-   </status>
-   <copyright>
-     <from>2001</from>
-     <owner>
-       <organization>
-         <name>Bureau international des poids et mesures</name>
-         <abbreviation>BIPM</abbreviation>
-       </organization>
-     </owner>
-   </copyright>
-   <relation type='supersedes'>
-     <bibitem>
-       <title>--</title>
-       <docidentifier>A</docidentifier>
-     </bibitem>
-   </relation>
-   <relation type='supersededBy'>
-     <bibitem>
-       <title>--</title>
-       <docidentifier>B</docidentifier>
-     </bibitem>
-   </relation>
-   <ext>
-     <doctype>brochure</doctype>
-     <editorialgroup>
-       <committee acronym='JCGM'>
-         <variant language='en' script='Latn'>TC</variant>
-         <variant language='fr' script='Latn'>CT</variant>
-       </committee>
-       <workgroup>WG</workgroup>
-     </editorialgroup>
-     <comment-period>
-       <from>X</from>
-       <to>Y</to>
-     </comment-period>
-     <structuredidentifier>
-       <docnumber>1000</docnumber>
-       <part>2.1</part>
-       <appendix>ABC</appendix>
-     </structuredidentifier>
-   </ext>
- </bibdata>
-#{boilerplate("jcgm").gsub(/#{Time.now.year}/, "2001")}
-<sections/>
-</bipm-standard>
+      <?xml version="1.0" encoding="UTF-8"?>
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+        <bibdata type='standard'>
+          <title language='en' format='text/plain' type='main'>Main Title</title>
+          <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
+          <title language='fr' format='text/plain' type='main'>Chef Title</title>
+          <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
+          <docidentifier type='BIPM'>JCGM 1000</docidentifier>
+          <docnumber>1000</docnumber>
+          <date type='implemented'>
+            <on>D</on>
+          </date>
+          <date type='obsoleted'>
+            <on>C</on>
+          </date>
+          <contributor>
+            <role type='author'/>
+            <organization>
+              <name>Bureau international des poids et mesures</name>
+              <abbreviation>BIPM</abbreviation>
+            </organization>
+          </contributor>
+          <contributor>
+            <role type='publisher'/>
+            <organization>
+              <name>Bureau international des poids et mesures</name>
+              <abbreviation>BIPM</abbreviation>
+            </organization>
+          </contributor>
+          <edition>2</edition>
+          <version>
+            <revision-date>2000-01-01</revision-date>
+            <draft>3.4</draft>
+          </version>
+          <language>fr</language>
+          <script>Latn</script>
+          <status>
+            <stage>working-draft</stage>
+            <iteration>3</iteration>
+          </status>
+          <copyright>
+            <from>2001</from>
+            <owner>
+              <organization>
+                <name>Bureau international des poids et mesures</name>
+                <abbreviation>BIPM</abbreviation>
+              </organization>
+            </owner>
+          </copyright>
+          <relation type='supersedes'>
+            <bibitem>
+              <title>--</title>
+              <docidentifier>A</docidentifier>
+            </bibitem>
+          </relation>
+          <relation type='supersededBy'>
+            <bibitem>
+              <title>--</title>
+              <docidentifier>B</docidentifier>
+            </bibitem>
+          </relation>
+          <ext>
+            <doctype>brochure</doctype>
+            <editorialgroup>
+              <committee acronym='JCGM'>
+                <variant language='en' script='Latn'>TC</variant>
+                <variant language='fr' script='Latn'>CT</variant>
+              </committee>
+              <workgroup>WG</workgroup>
+            </editorialgroup>
+            <comment-period>
+              <from>X</from>
+              <to>Y</to>
+            </comment-period>
+            <structuredidentifier>
+              <docnumber>1000</docnumber>
+              <part>2.1</part>
+              <appendix>ABC</appendix>
+            </structuredidentifier>
+          </ext>
+        </bibdata>
+        #{boilerplate('jcgm').gsub(/#{Time.now.year}/, '2001')}
+        <sections/>
+      </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
   end
-
-
 
   it "processes figures" do
     input = <<~"INPUT"
@@ -617,19 +618,19 @@ RSpec.describe Asciidoctor::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR}
-       <sections>
-                <figure id="id">
-         <name>Figure 1</name>
-         <pre id="_">This is a literal
+      #{BLANK_HDR}
+        <sections>
+          <figure id="id">
+            <name>Figure 1</name>
+            <pre id="_">This is a literal
 
-       Amen</pre>
-       </figure>
-       </sections>
-       </bipm-standard>
+              Amen</pre>
+          </figure>
+        </sections>
+      </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
   end
 
   it "strips inline header" do
@@ -641,22 +642,26 @@ RSpec.describe Asciidoctor::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR}
-             <preface><foreword id="_" obligation="informative">
-         <title>Foreword</title>
-         <p id="_">This is a preamble</p>
-       </foreword></preface><sections>
-       <clause id='_' obligation='normative'>
-         <title>Section 1</title>
-       </clause></sections>
-       </bipm-standard>
+      #{BLANK_HDR}
+        <preface>
+          <foreword id="_" obligation="informative">
+            <title>Foreword</title>
+            <p id="_">This is a preamble</p>
+          </foreword>
+        </preface>
+        <sections>
+          <clause id="_" obligation="normative">
+            <title>Section 1</title>
+          </clause>
+        </sections>
+      </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
   end
 
   it "uses xref flags" do
-        input = <<~"INPUT"
+    input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
 
       [[a]]
@@ -668,22 +673,22 @@ RSpec.describe Asciidoctor::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{BLANK_HDR}
-         <sections>
-           <clause id='a' obligation='normative'>
-             <title>Section 1</title>
-             <p id='_'>
-               <xref target='a'/>
-               <xref target='a' pagenumber='true'/>
-               <xref target='a' nosee='true'/>
-               <xref target='a' nopage='true'/>
-             </p>
-           </clause>
-         </sections>
-       </bipm-standard>
+      #{BLANK_HDR}
+        <sections>
+          <clause id='a' obligation='normative'>
+            <title>Section 1</title>
+            <p id='_'>
+              <xref target='a'/>
+              <xref target='a' pagenumber='true'/>
+              <xref target='a' nosee='true'/>
+              <xref target='a' nopage='true'/>
+            </p>
+          </clause>
+        </sections>
+      </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
   end
 
   it "uses default fonts" do
@@ -695,8 +700,7 @@ RSpec.describe Asciidoctor::BIPM do
       :no-pdf:
     INPUT
 
-    system "rm -f test.html"
-    Asciidoctor.convert(input, backend: :bipm, header_footer: true)
+    Asciidoctor.convert(input, *OPTIONS)
 
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\bpre[^{]+\{[^}]+font-family: "Space Mono", monospace;]m)
@@ -717,8 +721,7 @@ RSpec.describe Asciidoctor::BIPM do
       :no-pdf:
     INPUT
 
-    system "rm -f test.html"
-    Asciidoctor.convert(input, backend: :bipm, header_footer: true)
+    Asciidoctor.convert(input, *OPTIONS)
 
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r[\bpre[^{]+\{[^{]+font-family: Andale Mono;]m)
@@ -727,54 +730,54 @@ RSpec.describe Asciidoctor::BIPM do
   end
 
   it "has unnumbered clauses" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :bipm, header_footer: true)))).to be_equivalent_to <<~"OUTPUT"
-    #{ASCIIDOC_BLANK_HDR}
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to <<~"OUTPUT"
+      #{ASCIIDOC_BLANK_HDR}
 
-    [%unnumbered]
-    == Clause
+      [%unnumbered]
+      == Clause
 
-    [appendix%unnumbered]
-    == Appendix
+      [appendix%unnumbered]
+      == Appendix
     INPUT
-    #{BLANK_HDR}
-     <sections>
-   <clause id='_' unnumbered='true' obligation='normative'>
-     <title>Clause</title>
-   </clause>
- </sections>
- <annex id='_' obligation='normative' unnumbered="true">
-   <title>Appendix</title>
- </annex>
-</bipm-standard>
+      #{BLANK_HDR}
+        <sections>
+          <clause id='_' unnumbered='true' obligation='normative'>
+            <title>Clause</title>
+          </clause>
+        </sections>
+        <annex id='_' obligation='normative' unnumbered="true">
+          <title>Appendix</title>
+        </annex>
+      </bipm-standard>
     OUTPUT
   end
 
   it "processes the start attribute on ordered lists" do
-        expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :bipm, header_footer: true)))).to be_equivalent_to <<~"OUTPUT"
-    #{ASCIIDOC_BLANK_HDR}
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to <<~"OUTPUT"
+      #{ASCIIDOC_BLANK_HDR}
 
-    [keep-with-next=true,keep-lines-together=true,start=4]
-    [loweralpha]
-    . First
-    . Second
+      [keep-with-next=true,keep-lines-together=true,start=4]
+      [loweralpha]
+      . First
+      . Second
     INPUT
-    #{BLANK_HDR}
- <sections>
-  <ol keep-with-next='true' keep-lines-together='true' id='_' type='alphabet' start='4'>
-    <li>
-      <p id='_'>First</p>
-    </li>
-    <li>
-      <p id='_'>Second</p>
-    </li>
-  </ol>
-</sections>
-</bipm-standard>
+      #{BLANK_HDR}
+        <sections>
+          <ol keep-with-next='true' keep-lines-together='true' id='_' type='alphabet' start='4'>
+            <li>
+              <p id='_'>First</p>
+            </li>
+            <li>
+              <p id='_'>Second</p>
+            </li>
+          </ol>
+        </sections>
+      </bipm-standard>
     OUTPUT
   end
 
   it "processes sections" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", backend: :bipm, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
       #{ASCIIDOC_BLANK_HDR}
       .Foreword
 
@@ -852,163 +855,161 @@ RSpec.describe Asciidoctor::BIPM do
 
       === Bibliography Subsection
     INPUT
-    #{BLANK_HDR.sub(%r{</script>}, "</script><abstract><p>Text</p></abstract>")}
-  <preface>
-    <abstract id='_'>
-      <title>Abstract</title>
-      <p id='_'>Text</p>
-    </abstract>
-    <foreword id='_' obligation='informative'>
-      <title>Foreword</title>
-      <p id='_'>Text</p>
-    </foreword>
-    <clause id='_' obligation='informative'>
-      <title>Dedication</title>
-    </clause>
-    <acknowledgements id='_' obligation='informative'>
-      <title>Acknowledgements</title>
-    </acknowledgements>
-  </preface>
-  <sections>
-    <clause id='_' obligation='normative'>
-      <title>Introduction</title>
-      <clause id='_' obligation='normative'>
-        <title>Introduction Subsection</title>
-      </clause>
-    </clause>
-    <clause id='_' type='scope' obligation='normative'>
-      <title>Scope</title>
-      <p id='_'>Text</p>
-    </clause>
-    <terms id='_' obligation='normative'>
-      <title>Photometric units</title>
-      <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
-      <term id='term-term1'>
-        <preferred>Term1</preferred>
-      </term>
-    </terms>
-    <clause id='_' obligation='normative'>
-      <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
-      <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
-      <clause id='_' obligation='normative'>
-        <title>Introduction</title>
-        <clause id='_' obligation='normative'>
-          <title>Intro 1</title>
-        </clause>
-      </clause>
-      <terms id='_' obligation='normative'>
-        <title>Intro 2</title>
-        <clause id='_' obligation='normative'>
-          <title>Intro 3</title>
-        </clause>
-      </terms>
-      <clause id='_' obligation='normative'>
-        <title>Intro 4</title>
-        <terms id='_' obligation='normative'>
-          <title>Intro 5</title>
-          <term id='term-term1-1'>
-            <preferred>Term1</preferred>
-          </term>
-        </terms>
-      </clause>
-      <terms id='_' obligation='normative'>
-        <title>Normal Terms</title>
-        <term id='term-term2'>
-          <preferred>Term2</preferred>
-        </term>
-      </terms>
-      <definitions id='_' obligation='normative'>
-        <title>Symbols and Abbreviated Terms</title>
-        <clause id='_' obligation='normative'>
-          <title>General</title>
-        </clause>
-        <definitions id='_' type='symbols' obligation='normative'>
-          <title>Symbols</title>
-        </definitions>
-      </definitions>
-    </clause>
-    <definitions id='_' type='abbreviated_terms' obligation='normative'>
-      <title>Abbreviated Terms</title>
-    </definitions>
-    <clause id='_' obligation='normative'>
-      <title>Clause 4</title>
-      <clause id='_' obligation='normative'>
-        <title>Introduction</title>
-      </clause>
-      <clause id='_' obligation='normative'>
-        <title>Clause 4.2</title>
-      </clause>
-    </clause>
-    <clause id='_' obligation='normative'>
-      <title>Terms and Definitions</title>
-    </clause>
-  </sections>
-  <annex id='_' obligation='normative'>
-    <title>Annex</title>
-    <clause id='_' obligation='normative'>
-      <title>Annex A.1</title>
-    </clause>
-  </annex>
-  <bibliography>
-    <references id='_' normative='true' obligation='informative'>
-      <title>Normative references</title>
-      <p id='_'>There are no normative references in this document.</p>
-    </references>
-    <clause id='_' obligation='informative'>
-      <title>References</title>
-      <references id='_' normative='false' obligation='informative'>
-        <title>Bibliography Subsection</title>
-      </references>
-    </clause>
-  </bibliography>
-</bipm-standard>
-OUTPUT
+      #{BLANK_HDR.sub(%r{</script>}, '</script><abstract><p>Text</p></abstract>')}
+        <preface>
+          <abstract id='_'>
+            <title>Abstract</title>
+            <p id='_'>Text</p>
+          </abstract>
+          <foreword id='_' obligation='informative'>
+            <title>Foreword</title>
+            <p id='_'>Text</p>
+          </foreword>
+          <clause id='_' obligation='informative'>
+            <title>Dedication</title>
+          </clause>
+          <acknowledgements id='_' obligation='informative'>
+            <title>Acknowledgements</title>
+          </acknowledgements>
+        </preface>
+        <sections>
+          <clause id='_' obligation='normative'>
+            <title>Introduction</title>
+            <clause id='_' obligation='normative'>
+              <title>Introduction Subsection</title>
+            </clause>
+          </clause>
+          <clause id='_' type='scope' obligation='normative'>
+            <title>Scope</title>
+            <p id='_'>Text</p>
+          </clause>
+          <terms id='_' obligation='normative'>
+            <title>Photometric units</title>
+            <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
+            <term id='term-term1'>
+              <preferred>Term1</preferred>
+            </term>
+          </terms>
+          <clause id='_' obligation='normative'>
+            <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
+            <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
+            <clause id='_' obligation='normative'>
+              <title>Introduction</title>
+              <clause id='_' obligation='normative'>
+                <title>Intro 1</title>
+              </clause>
+            </clause>
+            <terms id='_' obligation='normative'>
+              <title>Intro 2</title>
+              <clause id='_' obligation='normative'>
+                <title>Intro 3</title>
+              </clause>
+            </terms>
+            <clause id='_' obligation='normative'>
+              <title>Intro 4</title>
+              <terms id='_' obligation='normative'>
+                <title>Intro 5</title>
+                <term id='term-term1-1'>
+                  <preferred>Term1</preferred>
+                </term>
+              </terms>
+            </clause>
+            <terms id='_' obligation='normative'>
+              <title>Normal Terms</title>
+              <term id='term-term2'>
+                <preferred>Term2</preferred>
+              </term>
+            </terms>
+            <definitions id='_' obligation='normative'>
+              <title>Symbols and Abbreviated Terms</title>
+              <clause id='_' obligation='normative'>
+                <title>General</title>
+              </clause>
+              <definitions id='_' type='symbols' obligation='normative'>
+                <title>Symbols</title>
+              </definitions>
+            </definitions>
+          </clause>
+          <definitions id='_' type='abbreviated_terms' obligation='normative'>
+            <title>Abbreviated Terms</title>
+          </definitions>
+          <clause id='_' obligation='normative'>
+            <title>Clause 4</title>
+            <clause id='_' obligation='normative'>
+              <title>Introduction</title>
+            </clause>
+            <clause id='_' obligation='normative'>
+              <title>Clause 4.2</title>
+            </clause>
+          </clause>
+          <clause id='_' obligation='normative'>
+            <title>Terms and Definitions</title>
+          </clause>
+        </sections>
+        <annex id='_' obligation='normative'>
+          <title>Annex</title>
+          <clause id='_' obligation='normative'>
+            <title>Annex A.1</title>
+          </clause>
+        </annex>
+        <bibliography>
+          <references id='_' normative='true' obligation='informative'>
+            <title>Normative references</title>
+            <p id='_'>There are no normative references in this document.</p>
+          </references>
+          <clause id='_' obligation='informative'>
+            <title>References</title>
+            <references id='_' normative='false' obligation='informative'>
+              <title>Bibliography Subsection</title>
+            </references>
+          </clause>
+        </bibliography>
+      </bipm-standard>
+    OUTPUT
   end
 
   it "customises italicisation of MathML" do
-input = <<~INPUT
-= Document title
-Author
-:stem:
+    input = <<~INPUT
+      = Document title
+      Author
+      :stem:
 
-[stem]
-++++
-<math xmlns='http://www.w3.org/1998/Math/MathML'>
-  <mi>A</mi>
-  <mo>+</mo>
-  <mi>a</mi>
-  <mo>+</mo>
-  <mi>Α</mi>
-  <mo>+</mo>
-  <mi>α</mi>
-  <mo>+</mo>
-  <mi>AB</mi>
-</math>
-++++
-INPUT
+      [stem]
+      ++++
+      <math xmlns='http://www.w3.org/1998/Math/MathML'>
+        <mi>A</mi>
+        <mo>+</mo>
+        <mi>a</mi>
+        <mo>+</mo>
+        <mi>Α</mi>
+        <mo>+</mo>
+        <mi>α</mi>
+        <mo>+</mo>
+        <mi>AB</mi>
+      </math>
+      ++++
+    INPUT
 
-expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-#{BLANK_HDR}
-<sections>
-           <formula id='_'>
-             <stem type='MathML'>
-               <math xmlns='http://www.w3.org/1998/Math/MathML'>
-                 <mi mathvariant='normal'>A</mi>
-                 <mo>+</mo>
-                 <mi>a</mi>
-                 <mo>+</mo>
-                 <mi mathvariant='normal'>Α</mi>
-                 <mo>+</mo>
-                 <mi mathvariant='normal'>α</mi>
-                 <mo>+</mo>
-                 <mi>AB</mi>
-               </math>
-             </stem>
-           </formula>
-         </sections>
-</bipm-standard>
-OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      #{BLANK_HDR}
+        <sections>
+          <formula id='_'>
+            <stem type='MathML'>
+              <math xmlns='http://www.w3.org/1998/Math/MathML'>
+                <mi mathvariant='normal'>A</mi>
+                <mo>+</mo>
+                <mi>a</mi>
+                <mo>+</mo>
+                <mi mathvariant='normal'>Α</mi>
+                <mo>+</mo>
+                <mi mathvariant='normal'>α</mi>
+                <mo>+</mo>
+                <mi>AB</mi>
+              </math>
+            </stem>
+          </formula>
+        </sections>
+      </bipm-standard>
+    OUTPUT
   end
-
 end
-
