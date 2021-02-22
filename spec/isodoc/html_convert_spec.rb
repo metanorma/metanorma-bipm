@@ -98,7 +98,7 @@ RSpec.describe IsoDoc::BIPM do
   </copyright>
   <ext>
   <editorialgroup>
-  <committee acronym='TCA'>
+  <committee acronym='JCGM'>
   <variant language='en' script='Latn'>TC</variant>
   <variant language='fr' script='Latn'>CT</variant>
 </committee>
@@ -146,8 +146,9 @@ RSpec.describe IsoDoc::BIPM do
 :issueddate=>"XXX",
 :lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
-:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"TCA", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
+:metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"JCGM", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
 :obsoleteddate=>"XXX",
+:org_abbrev=>"JCGM",
 :partid=>"Part 2.1",
 :partid_alt=>"Partie 2.1",
 :partsubtitle=>"Chef Title Part",
@@ -267,6 +268,7 @@ RSpec.describe IsoDoc::BIPM do
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
 :obsoleteddate=>"XXX",
+:org_abbrev=>"BIPM",
 :partid=>"Partie 2.1",
 :partid_alt=>"Part 2.1",
 :publisheddate=>"XXX",
@@ -318,6 +320,7 @@ RSpec.describe IsoDoc::BIPM do
 :lang=>"en",
 :logo=>"#{File.join(logoloc, "logo.png")}",
 :obsoleteddate=>"XXX",
+:org_abbrev=>"BIPM",
 :publisheddate=>"XXX",
 :receiveddate=>"XXX",
 :revdate=>"2000-01-01",
@@ -793,15 +796,16 @@ Comité commun pour les guides en métrologie
 
     presxml = xmlpp(<<~"OUTPUT")
     <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
-    <bibdata>
-    <ext>
-    <editorialgroup><committee acronym="JCGM">
-Joint Committee for Guides in Metrology
-Comité commun pour les guides en métrologie
-</committee>
-</editorialgroup>
-    </ext>
-    </bibdata>
+         <bibdata>
+           <ext>
+             <editorialgroup>
+               <committee acronym='JCGM'>
+                  Joint Committee for Guides in Metrology Comit&#xE9; commun pour les
+                 guides en m&#xE9;trologie
+               </committee>
+             </editorialgroup>
+           </ext>
+         </bibdata>
          <preface>
            <foreword obligation='informative'>
              <title>Foreword</title>
@@ -815,37 +819,74 @@ Comité commun pour les guides en métrologie
            </introduction>
          </preface>
          <sections>
-              <clause id="G" type="scope"><title depth="1">1.<tab/>Scope</title></clause>
-              <clause id="H" obligation="normative"><title depth="1">2.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title><terms id="I" obligation="normative">
-                <title depth="2">2.1.<tab/>Normal Terms</title>
-                <term id="J"><name>2.1.1.</name>
-                <preferred>Term2</preferred>
-              </term>
-              </terms>
-              <clause id="D" obligation="normative">
-                <title depth="2">2.2.<tab/>Scope</title>
-                <p id="E">Text</p>
-              </clause>
-              <definitions id="K"><title>2.3.</title>
-                <dl>
-                <dt>Symbol</dt>
-                <dd>Definition</dd>
-                </dl>
-              </definitions>
-              </clause>
-              <definitions id="L"><title>3.</title>
-                <dl>
-                <dt>Symbol</dt>
-                <dd>Definition</dd>
-                </dl>
-              </definitions>
-              <clause id="M" inline-header="false" obligation="normative"><title depth="1">4.<tab/>Clause 4</title><clause id="N" inline-header="false" obligation="normative">
-                <title depth="2">4.1.<tab/>Introduction</title>
-              </clause>
-              <clause id="O" inline-header="false" obligation="normative">
-                <title depth="2">4.2.<tab/>Clause 4.2</title>
-              </clause></clause>
-
+           <clause id='G' type='scope'>
+             <title depth='1'>
+               1.
+               <tab/>
+               Scope
+             </title>
+           </clause>
+           <clause id='H' obligation='normative'>
+             <title depth='1'>
+               3.
+               <tab/>
+               Terms, Definitions, Symbols and Abbreviated Terms
+             </title>
+             <terms id='I' obligation='normative'>
+               <title depth='2'>
+                 3.1.
+                 <tab/>
+                 Normal Terms
+               </title>
+               <term id='J'>
+                 <name>3.1.1.</name>
+                 <preferred>Term2</preferred>
+               </term>
+             </terms>
+             <clause id='D' obligation='normative'>
+               <title depth='2'>
+                 3.2.
+                 <tab/>
+                 Scope
+               </title>
+               <p id='E'>Text</p>
+             </clause>
+             <definitions id='K'>
+               <title>3.3.</title>
+               <dl>
+                 <dt>Symbol</dt>
+                 <dd>Definition</dd>
+               </dl>
+             </definitions>
+           </clause>
+           <definitions id='L'>
+             <title>4.</title>
+             <dl>
+               <dt>Symbol</dt>
+               <dd>Definition</dd>
+             </dl>
+           </definitions>
+           <clause id='M' inline-header='false' obligation='normative'>
+             <title depth='1'>
+               5.
+               <tab/>
+               Clause 4
+             </title>
+             <clause id='N' inline-header='false' obligation='normative'>
+               <title depth='2'>
+                 5.1.
+                 <tab/>
+                 Introduction
+               </title>
+             </clause>
+             <clause id='O' inline-header='false' obligation='normative'>
+               <title depth='2'>
+                 5.2.
+                 <tab/>
+                 Clause 4.2
+               </title>
+             </clause>
+           </clause>
          </sections>
          <annex id='P' inline-header='false' obligation='normative'>
            <title>
@@ -920,18 +961,18 @@ Comité commun pour les guides en métrologie
                <h1> 2. &#160; Normative References </h1>
              </div>
              <div id='H'>
-               <h1> 2. &#160; Terms, Definitions, Symbols and Abbreviated Terms </h1>
+               <h1> 3. &#160; Terms, Definitions, Symbols and Abbreviated Terms </h1>
                <div id='I'>
-                 <h2> 2.1. &#160; Normal Terms </h2>
-                 <p class='TermNum' id='J'>2.1.1.</p>
+                 <h2> 3.1. &#160; Normal Terms </h2>
+                 <p class='TermNum' id='J'>3.1.1.</p>
                  <p class='Terms' style='text-align:left;'>Term2</p>
                </div>
                <div id='D'>
-                 <h2> 2.2. &#160; Scope </h2>
+                 <h2> 3.2. &#160; Scope </h2>
                  <p id='E'>Text</p>
                </div>
                <div id='K'>
-                 <h2>2.3.</h2>
+                 <h2>3.3.</h2>
                  <dl>
                    <dt>
                      <p>Symbol</p>
@@ -941,7 +982,7 @@ Comité commun pour les guides en métrologie
                </div>
              </div>
              <div id='L' class='Symbols'>
-               <h1>3.</h1>
+               <h1>4.</h1>
                <dl>
                  <dt>
                    <p>Symbol</p>
@@ -950,12 +991,12 @@ Comité commun pour les guides en métrologie
                </dl>
              </div>
              <div id='M'>
-               <h1> 4. &#160; Clause 4 </h1>
+               <h1> 5. &#160; Clause 4 </h1>
                <div id='N'>
-                 <h2> 4.1. &#160; Introduction </h2>
+                 <h2> 5.1. &#160; Introduction </h2>
                </div>
                <div id='O'>
-                 <h2> 4.2. &#160; Clause 4.2 </h2>
+                 <h2> 5.2. &#160; Clause 4.2 </h2>
                </div>
              </div>
              <br/>
@@ -2025,7 +2066,7 @@ OUTPUT
              </clause>
            </clause>
          </sections>
-         <clause type='index' id='_'>
+         <indexsect id='_'>
            <title>Index</title>
            <clause id='_'>
              <title>D</title>
@@ -2094,7 +2135,7 @@ OUTPUT
                </li>
              </ul>
            </clause>
-         </clause>
+         </indexsect>
        </bipm-standard>
       OUTPUT
     end
@@ -2108,6 +2149,7 @@ OUTPUT
       </bibdata>
       <sections>
       <clause id="A">
+      <xref target="I"/>
       <index to="End"><primary>&#xE9;long&#xE9;</primary></index>
       <index><primary>&#xEA;tre</primary><secondary>Husserl</secondary><tertiary>en allemand</tertiary></index>
       <index><primary>Emancipation</primary></index>
@@ -2127,6 +2169,10 @@ OUTPUT
       </clause>
       </clause>
       </sections>
+      <indexsect id="I">
+      <title>Index</title>
+      <p>Voici un index</p>
+      </indexsect>
       </bipm-standard>
       INPUT
       <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
@@ -2137,6 +2183,7 @@ OUTPUT
          <sections>
                     <clause id='A'>
              <title>1.</title>
+             <xref target='I'>Index</xref>
              <bookmark to='End' id='_'/>
              <bookmark id='_'/>
              <bookmark id='_'/>
@@ -2152,8 +2199,9 @@ OUTPUT
              </clause>
            </clause>
          </sections>
-         <clause type='index' id='_'>
+         <indexsect id='I'>
            <title>Index</title>
+           <p>Voici un index</p>
            <clause id='_'>
              <title>D</title>
              <ul>
@@ -2227,7 +2275,7 @@ OUTPUT
                </li>
              </ul>
            </clause>
-         </clause>
+         </indexsect>
        </bipm-standard>
       OUTPUT
 

@@ -9,8 +9,12 @@ module IsoDoc
       end
 
       def index(docxml)
-        return unless docxml.at(ns("//index"))
-        i = docxml.root.add_child "<clause type='index' #{add_id}><title>#{@i18n.index}</title></clause>"
+        unless docxml.at(ns("//index"))
+          docxml.xpath(ns("//indexsect")).each { |i| i.remove }
+          return
+        end
+        i = docxml.at(ns("//indexsect")) ||
+          docxml.root.add_child("<indexsect #{add_id}><title>#{@i18n.index}</title></indexsect>").first
         index = sort_indexterms(docxml.xpath(ns("//index")), docxml.xpath(ns("//index-xref[@also = 'false']")),
                                 docxml.xpath(ns("//index-xref[@also = 'true']")))
         index1(docxml, i, index)
@@ -18,7 +22,7 @@ module IsoDoc
 
       def index1(docxml, i, index)
         index.keys.sort.each do |k|
-          c = i.first.add_child "<clause #{add_id}><title>#{k}</title><ul></ul></clause>"
+          c = i.add_child "<clause #{add_id}><title>#{k}</title><ul></ul></clause>"
           words = index[k].keys.each_with_object({}) { |w, v| v[sortable(w).downcase] = w }
           words.keys.localize(@lang.to_sym).sort.to_a.each do |w|
             c.first.at(ns("./ul")).add_child index_entries(words, index[k], w)

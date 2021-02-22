@@ -5,6 +5,7 @@ organization_name_long:
   en: Bureau International des Poids et Mesures
 document_namespace: https://www.metanorma.org/ns/bipm
 xml_root_tag: 'bipm-standard'
+docid_template: "{{ org_abbrev }} {{ docnumeric }}"
 html_bodyfont: Times New Roman
 html_headerfont: Times New Roman
 html_normalfontsize: "15px"

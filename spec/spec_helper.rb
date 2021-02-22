@@ -76,7 +76,8 @@ def boilerplate(lang)
   gsub(/\{\{ agency \}\}/, "BIPM").gsub(/\{\{ docyear \}\}/, Date.today.year.to_s).
   gsub(/\{% if unpublished %\}.*\{% endif %\}/m, "").
   gsub(/(?<=\p{Alnum})'(?=\p{Alpha})/, "’").
-  gsub(/<p /, "<p id='_' ").gsub(/<p>/, "<p id='_'>")
+  gsub(/<p /, "<p id='_' ").gsub(/<p>/, "<p id='_'>").
+  gsub(/<quote /, "<quote id='_' ").gsub(/<quote>/, "<quote id='_'>")
 )
 end
 

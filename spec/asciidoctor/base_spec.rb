@@ -351,6 +351,7 @@ RSpec.describe Asciidoctor::BIPM do
       :committee-fr: CT
       :committee-number: 1
       :committee-type: A
+      :committee-acronym: TCA
       :subcommittee: SC
       :subcommittee-number: 2
       :subcommittee-type: B
@@ -385,7 +386,7 @@ RSpec.describe Asciidoctor::BIPM do
 <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
 <title language='fr' format='text/plain' type='main'>Chef Title</title>
 <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
-  <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
+  <docidentifier type="BIPM">BIPM 1000</docidentifier>
   <docnumber>1000</docnumber>
   <date type='implemented'>
   <on>D</on>
@@ -442,7 +443,7 @@ RSpec.describe Asciidoctor::BIPM do
 <ext>
   <doctype>brochure</doctype>
   <editorialgroup>
-  <committee>
+  <committee acronym="TCA">
   <variant language='en' script='Latn'>TC</variant>
   <variant language='fr' script='Latn'>CT</variant>
 </committee>
@@ -466,6 +467,140 @@ RSpec.describe Asciidoctor::BIPM do
 
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
   end
+
+   it "processes default metadata for JCGM" do
+    input = <<~"INPUT"
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+      :docnumber: 1000
+      :doctype: standard
+      :edition: 2
+      :revdate: 2000-01-01
+      :draft: 3.4
+      :committee-en: TC
+      :committee-fr: CT
+      :committee-number: 1
+      :committee-type: A
+      :committee-acronym: JCGM
+      :subcommittee: SC
+      :subcommittee-number: 2
+      :subcommittee-type: B
+      :workgroup: WG
+      :workgroup-number: 3
+      :workgroup-type: C
+      :secretariat: SECRETARIAT
+      :copyright-year: 2001
+      :status: working-draft
+      :iteration: 3
+      :language: fr
+      :title-en: Main Title
+      :title-fr: Chef Title
+      :title-cover-en: Main Title (SI)
+      :title-cover-fr: Chef Title (SI)
+      :partnumber: 2.1
+      :security: Client Confidential
+      :appendix-id: ABC
+      :comment-period-from: X
+      :comment-period-to: Y
+      :supersedes: A
+      :superseded-by: B
+      :obsoleted-date: C
+      :implemented-date: D
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+    <?xml version="1.0" encoding="UTF-8"?>
+<bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+ <bibdata type='standard'>
+   <title language='en' format='text/plain' type='main'>Main Title</title>
+   <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
+   <title language='fr' format='text/plain' type='main'>Chef Title</title>
+   <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
+   <docidentifier type='BIPM'>JCGM 1000</docidentifier>
+   <docnumber>1000</docnumber>
+   <date type='implemented'>
+     <on>D</on>
+   </date>
+   <date type='obsoleted'>
+     <on>C</on>
+   </date>
+   <contributor>
+     <role type='author'/>
+     <organization>
+       <name>Bureau international des poids et mesures</name>
+       <abbreviation>BIPM</abbreviation>
+     </organization>
+   </contributor>
+   <contributor>
+     <role type='publisher'/>
+     <organization>
+       <name>Bureau international des poids et mesures</name>
+       <abbreviation>BIPM</abbreviation>
+     </organization>
+   </contributor>
+   <edition>2</edition>
+   <version>
+     <revision-date>2000-01-01</revision-date>
+     <draft>3.4</draft>
+   </version>
+   <language>fr</language>
+   <script>Latn</script>
+   <status>
+     <stage>working-draft</stage>
+     <iteration>3</iteration>
+   </status>
+   <copyright>
+     <from>2001</from>
+     <owner>
+       <organization>
+         <name>Bureau international des poids et mesures</name>
+         <abbreviation>BIPM</abbreviation>
+       </organization>
+     </owner>
+   </copyright>
+   <relation type='supersedes'>
+     <bibitem>
+       <title>--</title>
+       <docidentifier>A</docidentifier>
+     </bibitem>
+   </relation>
+   <relation type='supersededBy'>
+     <bibitem>
+       <title>--</title>
+       <docidentifier>B</docidentifier>
+     </bibitem>
+   </relation>
+   <ext>
+     <doctype>brochure</doctype>
+     <editorialgroup>
+       <committee acronym='JCGM'>
+         <variant language='en' script='Latn'>TC</variant>
+         <variant language='fr' script='Latn'>CT</variant>
+       </committee>
+       <workgroup>WG</workgroup>
+     </editorialgroup>
+     <comment-period>
+       <from>X</from>
+       <to>Y</to>
+     </comment-period>
+     <structuredidentifier>
+       <docnumber>1000</docnumber>
+       <part>2.1</part>
+       <appendix>ABC</appendix>
+     </structuredidentifier>
+   </ext>
+ </bibdata>
+#{boilerplate("jcgm").gsub(/#{Time.now.year}/, "2001")}
+<sections/>
+</bipm-standard>
+    OUTPUT
+
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, backend: :bipm, header_footer: true)))).to be_equivalent_to output
+  end
+
 
 
   it "processes figures" do
