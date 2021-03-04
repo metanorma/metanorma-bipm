@@ -36,7 +36,7 @@ RSpec.describe Asciidoctor::BIPM do
     expect(File.exist?("test.pdf")).to be true
   end
 
-  xit "converts a blank JCGM document" do
+  it "converts a blank JCGM document" do
     input = <<~"INPUT"
       = Document title
       Author
