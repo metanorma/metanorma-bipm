@@ -174,7 +174,7 @@ module Asciidoctor
 
       def boilerplate_file(xmldoc)
         return super unless xmldoc&.at("//bibdata/ext/editorialgroup/committee/@acronym")&.value == "JCGM"
-        baselocation("lib/asciidoctor/bipm/boilerplate-jcgm-en.xml")
+        File.join(File.dirname(__FILE__), "boilerplate-jcgm-en.xml")
       end
 
       def mathml_mi_italics
