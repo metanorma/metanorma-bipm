@@ -2289,6 +2289,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="termexample-name-style">
 		
 		
@@ -5153,9 +5154,10 @@
 		</xsl:choose>
 
 	</xsl:template><xsl:template match="*[local-name() = 'example']/*[local-name() = 'p']">
-	
+		<xsl:variable name="num"><xsl:number/></xsl:variable>
 		<xsl:variable name="element">
 			block
+			
 			
 		</xsl:variable>		
 		<xsl:choose>			
