@@ -1394,17 +1394,20 @@
 						
 						<xsl:variable name="titles_length" select="string-length($title_appendix_fr) +                               string-length($title_appendix_en) +                              string-length($title_annex_fr) +                              string-length($title_annex_en) +                              string-length($title_part_fr) +                              string-length($title_part_en) +                              string-length($title_subpart_fr) +                              string-length($title_subpart_fr)"/>
 																													
-						<xsl:variable name="font-size-number-factor">
+						<!-- <xsl:variable name="font-size-number-factor">
 							<xsl:choose>
 								<xsl:when test="$titles_length &gt; 350">0.7</xsl:when>
 								<xsl:when test="$titles_length &gt; 250">0.85</xsl:when>
+								<xsl:when test="$titles_length &gt; 130">0.9</xsl:when>
 								<xsl:otherwise>1</xsl:otherwise>
 							</xsl:choose>
-						</xsl:variable>
+						</xsl:variable> -->
 						
 						<xsl:variable name="space-factor">
 							<xsl:choose>
 								<xsl:when test="$titles_length &gt; 250">0.3</xsl:when>
+								<xsl:when test="$titles_length &gt; 200">0.5</xsl:when>
+								<xsl:when test="$titles_length &gt; 150">0.7</xsl:when>
 								<xsl:otherwise>1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
@@ -1412,11 +1415,21 @@
 						<xsl:variable name="font-size-factor">
 							<xsl:choose>
 								<xsl:when test="$titles_length &gt; 350">0.5</xsl:when>
-								<xsl:when test="$titles_length &gt; 250">0.65</xsl:when>
+								<xsl:when test="$titles_length &gt; 250">0.55</xsl:when>
+								<xsl:when test="$titles_length &gt; 180">0.65</xsl:when>
+								<xsl:when test="$titles_length &gt; 130">0.8</xsl:when>
 								<xsl:otherwise>1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-					
+						
+						<xsl:variable name="font-size-number-factor">
+							<xsl:choose>
+								<xsl:when test="$font-size-factor &lt; 1"><xsl:value-of select="$font-size-factor *1.3"/></xsl:when>
+								<xsl:otherwise>1</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						
+						<!-- <fo:block font-size="6pt">DEBUG font-size-factor=<xsl:value-of select="$font-size-factor"/>, titles_length=<xsl:value-of select="$titles_length"/></fo:block> -->
 						<!-- Appendix titles processing -->
 						<xsl:variable name="appendix_num" select="normalize-space((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:appendix)"/>
 						<xsl:if test="$appendix_num != ''">
@@ -3314,9 +3327,9 @@
 	<xsl:template match="mathml:mfenced[count(*) = 1]/*[count(*) = 1]/*[count(*) = 0] |                  mathml:mfenced[count(*) = 1]/*[count(*) = 1]/*[count(*) = 1]/*[count(*) = 0]" mode="mathml" priority="2"> <!-- [not(following-sibling::*) and not(preceding-sibling::*)] -->
 		<xsl:copy>
 			<xsl:apply-templates select="@*" mode="mathml"/>
-			<xsl:value-of select="ancestor::mathml:mfenced/@open"/>
+			<xsl:value-of select="ancestor::mathml:mfenced[1]/@open"/>
 			<xsl:value-of select="."/>
-			<xsl:value-of select="ancestor::mathml:mfenced/@close"/>
+			<xsl:value-of select="ancestor::mathml:mfenced[1]/@close"/>
 		</xsl:copy>
 	</xsl:template>
 
@@ -4849,7 +4862,15 @@
 	</xsl:template><xsl:template match="*[local-name()='link']" mode="td_text">
 		<xsl:value-of select="@target"/>
 	</xsl:template><xsl:template match="*[local-name()='math']" mode="td_text">
-		<xsl:variable name="math_text" select="normalize-space(.)"/>
+		<xsl:variable name="mathml">
+			<xsl:for-each select="*">
+				<xsl:if test="local-name() != 'unit' and local-name() != 'prefix' and local-name() != 'dimension' and local-name() != 'quantity'">
+					<xsl:copy-of select="."/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		
+		<xsl:variable name="math_text" select="normalize-space(xalan:nodeset($mathml))"/>
 		<xsl:value-of select="translate($math_text, ' ', '#')"/><!-- mathml images as one 'word' without spaces -->
 	</xsl:template><xsl:template match="*[local-name()='table2']"/><xsl:template match="*[local-name()='thead']"/><xsl:template match="*[local-name()='thead']" mode="process">
 		<xsl:param name="cols-count"/>
@@ -6249,7 +6270,7 @@
 			<xsl:apply-templates select="@*|node()" mode="mathml"/>
 		</xsl:copy>
 		<mathml:mspace width="0.5ex"/>
-	</xsl:template><xsl:template match="*[local-name()='localityStack']"/><xsl:template match="*[local-name()='link']" name="link">
+	</xsl:template><xsl:template match="mathml:math/*[local-name()='unit']" mode="mathml"/><xsl:template match="mathml:math/*[local-name()='prefix']" mode="mathml"/><xsl:template match="mathml:math/*[local-name()='dimension']" mode="mathml"/><xsl:template match="mathml:math/*[local-name()='quantity']" mode="mathml"/><xsl:template match="*[local-name()='localityStack']"/><xsl:template match="*[local-name()='link']" name="link">
 		<xsl:variable name="target">
 			<xsl:choose>
 				<xsl:when test="starts-with(normalize-space(@target), 'mailto:')">
