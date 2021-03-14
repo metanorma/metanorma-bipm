@@ -24,11 +24,16 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+=begin
   config.around do |example|
     Dir.mktmpdir("rspec-") do |dir|
+      if File.exists?(".byebug_history")
+        FileUtils.cp ".byebug_history", dir
+      end
       Dir.chdir(dir) { example.run }
     end
   end
+=end
 end
 
 def metadata(hash)
@@ -80,15 +85,15 @@ HDR
 def boilerplate(lang)
   HTMLEntities.new.decode(
     File.read(boilerplate_filepath(lang), encoding: "utf-8")
-      .gsub(/\{\{ agency \}\}/, "BIPM")
-      .gsub(/\{\{ docyear \}\}/, Date.today.year.to_s)
-      .gsub(/\{% if unpublished %\}.*\{% endif %\}/m, "")
-      .gsub(/(?<=\p{Alnum})'(?=\p{Alpha})/, "’")
-      .gsub(/<p /, "<p id='_' ")
-      .gsub(/<p>/, "<p id='_'>")
-      .gsub(/<quote /, "<quote id='_' ")
-      .gsub(/<quote>/, "<quote id='_'>")
-  )
+    .gsub(/\{\{ agency \}\}/, "BIPM")
+    .gsub(/\{\{ docyear \}\}/, Date.today.year.to_s)
+    .gsub(/\{% if unpublished %\}.*\{% endif %\}/m, "")
+    .gsub(/(?<=\p{Alnum})'(?=\p{Alpha})/, "’")
+    .gsub(/<p /, "<p id='_' ")
+    .gsub(/<p>/, "<p id='_'>")
+    .gsub(/<quote /, "<quote id='_' ")
+    .gsub(/<quote>/, "<quote id='_'>")
+  ).gsub(/’/, "\&#8217;").gsub(/©/, "&#169;")
 end
 
 def boilerplate_filepath(lang)
@@ -139,7 +144,7 @@ BLANK_HDR = <<~"HDR".freeze
       <doctype>brochure</doctype>
     </ext>
   </bibdata>
-  #{boilerplate('en')}
+#{boilerplate('en')}
 HDR
 
 HTML_HDR = <<~"HDR".freeze

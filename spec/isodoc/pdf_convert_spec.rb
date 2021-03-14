@@ -2,6 +2,9 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::BIPM do
   it "splits bilingual collection PDF" do
+    FileUtils.rm_rf("test.pdf")
+    FileUtils.rm_rf("test_en.pdf")
+    FileUtils.rm_rf("test_fr.pdf")
     IsoDoc::BIPM::PdfConvert.new({}).convert("test", <<~"INPUT", false)
       <metanorma-collection xmlns="http://metanorma.org">
         <bibdata type="collection">
@@ -61,6 +64,9 @@ RSpec.describe IsoDoc::BIPM do
   end
 
   it "does not split monolingual collection PDF" do
+    FileUtils.rm_rf("test.pdf")
+    FileUtils.rm_rf("test_en.pdf")
+    FileUtils.rm_rf("test_fr.pdf")
     IsoDoc::BIPM::PdfConvert.new({}).convert("test", <<~"INPUT", false)
       <metanorma-collection xmlns="http://metanorma.org">
         <bibdata type="collection">
