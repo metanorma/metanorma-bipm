@@ -403,6 +403,9 @@ RSpec.describe IsoDoc::BIPM do
             <table id="B">
               <name>First Table</name>
             </table>
+            <table id="C" unnumbered="true">
+              <name>Second Table</name>
+            </table>
           </clause>
         </sections>
       </bipm-standard>
@@ -416,6 +419,9 @@ RSpec.describe IsoDoc::BIPM do
             <table id="B">
               <name>Table 1.<tab/>First Table</name>
             </table>
+             <table id='C' unnumbered='true'>
+               <name>Second Table</name>
+             </table>
           </clause>
         </sections>
       </bipm-standard>
@@ -428,6 +434,8 @@ RSpec.describe IsoDoc::BIPM do
             <h1>1.</h1>
             <p class='TableTitle' style='text-align:center;'>Table 1.&#160; First Table</p>
             <table id='B' class='MsoISOTable' style='border-width:1px;border-spacing:0;'/>
+            <p class='TableTitle' style='text-align:center;'>Second Table</p>
+            <table id='C' class='MsoISOTable' style='border-width:1px;border-spacing:0;'/>
           </div>
         </div>
       </body>

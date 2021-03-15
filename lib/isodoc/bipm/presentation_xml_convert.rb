@@ -8,7 +8,7 @@ module IsoDoc
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def table1(f)
         return if labelled_ancestor(f)
-        return if f["unnumbered"] && !f.at(ns("./name"))
+        return if f["unnumbered"]
         n = @xrefs.anchor(f['id'], :label, false)
         prefix_name(f, ".<tab/>", l10n("#{@i18n.table.capitalize} #{n}"), "name")
       end
