@@ -1662,32 +1662,32 @@ RSpec.describe IsoDoc::BIPM do
         </bibdata>
         <sections/>
         <doccontrol>
-          <title>Document Control</title>
-          <table unnumbered="true">
-            <tbody>
-              <tr>
-                <td>Authors:</td>
-                <td/>
-                <td>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
-              </tr>
-              <tr>
-                <td>2018-06-11</td>
-                <td>Draft 1.0 Edition 1.0</td>
-                <td>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
-              </tr>
-              <tr>
-                <td>2019-06-11</td>
-                <td>Draft 2.0 Edition 2.0</td>
-                <td>WG-N chair: Andrew Yacoot (NPL)</td>
-              </tr>
-              <tr>
-                <td>2019-06-11</td>
-                <td>Draft 3.0 </td>
-                <td/>
-              </tr>
-            </tbody>
-          </table>
-        </doccontrol>
+           <title>Document Control</title>
+           <table unnumbered='true'>
+             <tbody>
+               <tr>
+                 <th>Authors:</th>
+                 <td/>
+                 <td>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
+               </tr>
+               <tr>
+                 <td>Draft 1.0 Edition 1.0</td>
+                 <td>2018-06-11</td>
+                 <td>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
+               </tr>
+               <tr>
+                 <td>Draft 2.0 Edition 2.0</td>
+                 <td>2019-06-11</td>
+                 <td>WG-N chair: Andrew Yacoot (NPL)</td>
+               </tr>
+               <tr>
+                 <td>Draft 3.0 </td>
+                 <td>2019-06-11</td>
+                 <td/>
+               </tr>
+             </tbody>
+           </table>
+         </doccontrol>
       </bipm-standard>
     OUTPUT
 
@@ -1697,29 +1697,29 @@ RSpec.describe IsoDoc::BIPM do
           <div class='doccontrol'>
             <h1>Document Control</h1>
             <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
-              <tbody>
-                <tr>
-                  <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Authors:</td>
-                  <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
-                  <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
-                </tr>
-                <tr>
-                  <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2018-06-11</td>
-                  <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 1.0 Edition 1.0</td>
-                  <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
-                </tr>
-                <tr>
-                  <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2019-06-11</td>
-                  <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 2.0 Edition 2.0</td>
-                  <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N chair: Andrew Yacoot (NPL)</td>
-                </tr>
-                <tr>
-                  <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2019-06-11</td>
-                  <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 3.0 </td>
-                  <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
-                </tr>
-              </tbody>
-            </table>
+               <tbody>
+                 <tr>
+                   <th style='font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;' scope='row'>Authors:</th>
+                   <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
+                   <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
+                 </tr>
+                 <tr>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 1.0 Edition 1.0</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2018-06-11</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
+                 </tr>
+                 <tr>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 2.0 Edition 2.0</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2019-06-11</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N chair: Andrew Yacoot (NPL)</td>
+                 </tr>
+                 <tr>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 3.0 </td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2019-06-11</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
+                 </tr>
+               </tbody>
+             </table>
           </div>
         </div>
       </body>
@@ -1735,6 +1735,211 @@ RSpec.describe IsoDoc::BIPM do
       .gsub(%r{</body>.*}m, "</body>")))
     expect(stripped_html).to(be_equivalent_to(output))
   end
+
+    it "generates shorter document control text" do
+    input = <<~"INPUT"
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+        <bibdata type="standard">
+          <title language='en' format='text/plain' type='main'>Main Title</title>
+          <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
+          <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+            <contributor>
+              <role type="author"/>
+              <organization>
+                <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+              </organization>
+            </contributor>
+              <contributor>
+              <role type='author'/>
+              <person>
+                <name>
+                  <completename>Andrew Yacoot</completename>
+                </name>
+                <affiliation>
+                  <organization>
+                    <name>NPL</name>
+                  </organization>
+                </affiliation>
+              </person>
+            </contributor>
+            <contributor>
+              <role type='author'/>
+              <person>
+                <name>
+                  <completename>Ulrich Kuetgens</completename>
+                </name>
+                <affiliation>
+                  <organization>
+                    <name>PTB</name>
+                  </organization>
+                </affiliation>
+              </person>
+            </contributor>
+            <contributor>
+              <role type="publisher"/>
+              <organization>
+                <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+              </organization>
+            </contributor>
+            <edition>2</edition>
+          <version>
+            <revision-date>2000-01-01</revision-date>
+            <draft>3.4</draft>
+          </version>
+            <language>en</language>
+            <script>Latn</script>
+            <status>
+              <stage>working-draft</stage>
+              <iteration>3</iteration>
+            </status>
+          <relation type='supersedes'>
+            <bibitem>
+              <date type='published'>2018-06-11</date>
+              <edition>1.0</edition>
+              <version>
+                <draft>1.0</draft>
+              </version>
+            </bibitem>
+          </relation>
+        </bibdata>
+        <sections/>
+      </bipm-standard>
+    INPUT
+
+    presxml = <<~PRESXML
+    <bipm-standard xmlns='https://www.metanorma.org/ns/bipm' version="#{Metanorma::BIPM::VERSION}" type='presentation'>
+    <bibdata type='standard'>
+           <title language='en' format='text/plain' type='main'>Main Title</title>
+           <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
+           <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+           <contributor>
+             <role type='author'/>
+             <organization>
+               <name>Bureau International des Poids et Mesures</name>
+               <abbreviation>BIPM</abbreviation>
+             </organization>
+           </contributor>
+           <contributor>
+             <role type='author'/>
+             <person>
+               <name>
+                 <completename>Andrew Yacoot</completename>
+               </name>
+               <affiliation>
+                 <organization>
+                   <name>NPL</name>
+                 </organization>
+               </affiliation>
+             </person>
+           </contributor>
+           <contributor>
+             <role type='author'/>
+             <person>
+               <name>
+                 <completename>Ulrich Kuetgens</completename>
+               </name>
+               <affiliation>
+                 <organization>
+                   <name>PTB</name>
+                 </organization>
+               </affiliation>
+             </person>
+           </contributor>
+           <contributor>
+             <role type='publisher'/>
+             <organization>
+               <name>Bureau International des Poids et Mesures</name>
+               <abbreviation>BIPM</abbreviation>
+             </organization>
+           </contributor>
+           <edition>2</edition>
+           <version>
+             <revision-date>2000-01-01</revision-date>
+             <draft>3.4</draft>
+           </version>
+           <language current='true'>en</language>
+           <script current='true'>Latn</script>
+           <status>
+             <stage language=''>working-draft</stage>
+             <iteration>3</iteration>
+           </status>
+           <relation type='supersedes'>
+             <bibitem>
+               <date type='published'>2018-06-11</date>
+               <edition>1.0</edition>
+               <version>
+                 <draft>1.0</draft>
+               </version>
+             </bibitem>
+           </relation>
+         </bibdata>
+         <sections/>
+         <doccontrol>
+           <title>Document Control</title>
+           <table unnumbered='true'>
+             <tbody>
+               <tr>
+                 <th>Authors:</th>
+                 <td/>
+                 <td>Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
+               </tr>
+               <tr>
+                 <td>Draft 1.0 Edition 1.0</td>
+                 <td>2018-06-11</td>
+                 <td/>
+               </tr>
+             </tbody>
+           </table>
+         </doccontrol>
+       </bipm-standard>
+    PRESXML
+
+    output = <<~HTML
+    <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+         <div class='title-section'>
+           <p>&#160;</p>
+         </div>
+         <br/>
+         <div class='prefatory-section'>
+           <p>&#160;</p>
+         </div>
+         <br/>
+         <div class='main-section'>
+           <p class='zzSTDTitle1'>Main Title</p>
+           <div class='doccontrol'>
+             <h1>Document Control</h1>
+             <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
+               <tbody>
+                 <tr>
+                   <th style='font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;' scope='row'>Authors:</th>
+                   <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
+                   <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
+                 </tr>
+                 <tr>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 1.0 Edition 1.0</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2018-06-11</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
+                 </tr>
+               </tbody>
+             </table>
+           </div>
+         </div>
+       </body>
+    HTML
+
+   stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
+    expect(stripped_html).to(be_equivalent_to(presxml))
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+      .convert("test", presxml, true)
+      .gsub(%r{^.*<body}m, "<body")
+      .gsub(%r{</body>.*}m, "</body>")))
+    expect(stripped_html).to(be_equivalent_to(output))
+  end
+
 
   it "localises numbers in MathML, English" do
     input = <<~INPUT

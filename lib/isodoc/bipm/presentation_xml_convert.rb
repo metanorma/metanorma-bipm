@@ -33,27 +33,41 @@ module IsoDoc
         doccontrol docxml
       end
 
-      def doccontrol docxml
+      def doccontrol(docxml)
         return unless docxml.at(ns("//bibdata/relation[@type = 'supersedes']"))
         clause = <<~END
         <doccontrol>
         <title>Document Control</title>
         <table unnumbered="true"><tbody>
-        <tr><td>Authors:</td><td/><td>#{list_authors(docxml)}</td></tr>
-        <tr>#{list_draft(docxml, 1)&.map { |x| "<td>#{x}</td>" }&.join }
-        <td>#{list_cochairs(docxml)}</td></tr>
-        <tr>#{list_draft(docxml, 2)&.map { |x| "<td>#{x}</td>" }&.join }
-        <td>#{list_chairs(docxml)}</td></tr>
+        <tr><th>Authors:</th><td/><td>#{list_authors(docxml)}</td></tr>
+        #{doccontrol_row1(docxml)}
+        #{doccontrol_row2(docxml)}
         #{list_drafts(docxml)}
         </tbody></table></doccontrol>
         END
         docxml.root << clause
       end
 
+      def doccontrol_row1(docxml)
+        return "" if list_draft(docxml, 1) == ["", ""] && list_cochairs(docxml).empty?
+        <<~ROW
+        <tr>#{list_draft(docxml, 1)&.map { |x| "<td>#{x}</td>" }&.join }
+        <td>#{list_cochairs(docxml)}</td></tr>
+        ROW
+      end
+
+      def doccontrol_row2(docxml)
+        return "" if list_draft(docxml, 2) == ["", ""] && list_chairs(docxml).empty?
+        <<~ROW
+        <tr>#{list_draft(docxml, 2)&.map { |x| "<td>#{x}</td>" }&.join }
+        <td>#{list_chairs(docxml)}</td></tr>
+        ROW
+      end
+
       def list_drafts(xml)
         ret = ""
         i = 3
-        while a = list_draft(xml, i)
+        while a = list_draft(xml, i) != ["", ""]
           ret += "<tr>#{list_draft(xml, i).map { |x| "<td>#{x}</td>" }.join }"\
             "<td/></tr>"
           i += 1
@@ -62,14 +76,14 @@ module IsoDoc
       end
 
       def list_draft(xml, i)
-        return unless d =
+        return ["", ""] unless d =
           xml.at(ns("//bibdata/relation[@type = 'supersedes'][#{i}]/bibitem"))
         date = d&.at(ns("./date"))&.text
         draft = d&.at(ns("./version/draft"))&.text and
           draft = "Draft #{draft}"
         edn = d&.at(ns("./edition"))&.text and
           edn = "Edition #{edn}"
-        [date, [draft, edn].join(" ")]
+        [[draft, edn].join(" "), date]
       end
 
       def list_authors(xml)
@@ -84,6 +98,7 @@ module IsoDoc
 
       def list_cochairs(xml)
         ret = list_people(xml, "//bibdata/contributor[#{COCHAIR}]/person")
+        ret.empty? and return ""
         role = xml&.at(ns("//bibdata/contributor[#{COCHAIR}]/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
         "#{label}: #{@i18n.multiple_and(ret, @i18n.get["and"])}"
@@ -91,6 +106,7 @@ module IsoDoc
 
       def list_chairs(xml)
         ret = list_people(xml, "//bibdata/contributor#{CHAIR}/person")
+        ret.empty? and return ""
         role = xml&.at(ns("//bibdata/contributor#{CHAIR}/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
         "#{label}: #{@i18n.multiple_and(ret, @i18n.get["and"])}"
