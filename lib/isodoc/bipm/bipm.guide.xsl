@@ -1085,6 +1085,9 @@
 				<!-- Bibliography -->
 				<xsl:apply-templates select="bipm:bibliography/bipm:references[not(@normative='true')]" mode="sections"/> 
 				
+				<!-- Document Control -->
+				<xsl:apply-templates select="bipm:doccontrol" mode="sections"/> 
+				
 				<!-- Index -->
 				<!-- <xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//bipm:clause[@type = 'index']" mode="index" /> -->
 				<xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//bipm:indexsect" mode="index"/>
@@ -1249,6 +1252,9 @@
 				
 				
 				<xsl:apply-templates select="bipm:bibliography/bipm:references[not(@normative='true')]" mode="sections"/> 
+				
+				<!-- Document Control -->
+				<xsl:apply-templates select="bipm:doccontrol" mode="sections"/> 
 				
 				<!-- Index -->
 				<!-- <xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//bipm:clause[@type = 'index']" mode="index" /> -->
@@ -4635,7 +4641,7 @@
 					
 									
 										
-						<xsl:if test="not(ancestor::*[local-name()='preface']) and not(ancestor::*[local-name()='note_side']) and not(ancestor::*[local-name() = 'annex'] and .//*[local-name() = 'xref'][@pagenumber])">
+						<xsl:if test="not(ancestor::*[local-name()='preface']) and not(ancestor::*[local-name()='note_side']) and not(ancestor::*[local-name() = 'annex'] and .//*[local-name() = 'xref'][@pagenumber]) and not(ancestor::*[local-name() = 'doccontrol'])">
 							<attribute name="border-top">0.5pt solid black</attribute>
 							<attribute name="border-bottom">0.5pt solid black</attribute>
 						</xsl:if>
