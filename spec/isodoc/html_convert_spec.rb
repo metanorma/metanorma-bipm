@@ -1671,12 +1671,12 @@ RSpec.describe IsoDoc::BIPM do
                  <td>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
                </tr>
                <tr>
-                 <td>Draft 1.0 Edition 1.0</td>
+                 <td>Draft 1.0 Version 1.0</td>
                  <td>2018-06-11</td>
                  <td>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
                </tr>
                <tr>
-                 <td>Draft 2.0 Edition 2.0</td>
+                 <td>Draft 2.0 Version 2.0</td>
                  <td>2019-06-11</td>
                  <td>WG-N chair: Andrew Yacoot (NPL)</td>
                </tr>
@@ -1704,12 +1704,12 @@ RSpec.describe IsoDoc::BIPM do
                    <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
                  </tr>
                  <tr>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 1.0 Edition 1.0</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 1.0 Version 1.0</td>
                    <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2018-06-11</td>
                    <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
                  </tr>
                  <tr>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 2.0 Edition 2.0</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 2.0 Version 2.0</td>
                    <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2019-06-11</td>
                    <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N chair: Andrew Yacoot (NPL)</td>
                  </tr>
@@ -1886,7 +1886,7 @@ RSpec.describe IsoDoc::BIPM do
                  <td>Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
                </tr>
                <tr>
-                 <td>Draft 1.0 Edition 1.0</td>
+                 <td>Draft 1.0 Version 1.0</td>
                  <td>2018-06-11</td>
                  <td/>
                </tr>
@@ -1918,7 +1918,7 @@ RSpec.describe IsoDoc::BIPM do
                    <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
                  </tr>
                  <tr>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 1.0 Edition 1.0</td>
+                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 1.0 Version 1.0</td>
                    <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2018-06-11</td>
                    <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
                  </tr>

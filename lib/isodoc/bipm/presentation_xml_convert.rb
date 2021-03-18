@@ -82,7 +82,7 @@ module IsoDoc
         draft = d&.at(ns("./version/draft"))&.text and
           draft = "Draft #{draft}"
         edn = d&.at(ns("./edition"))&.text and
-          edn = "Edition #{edn}"
+          edn = "Version #{edn}"
         [[draft, edn].join(" "), date]
       end
 
