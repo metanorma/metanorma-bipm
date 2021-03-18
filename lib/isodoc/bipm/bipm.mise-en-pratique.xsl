@@ -5220,7 +5220,6 @@
 							<xsl:otherwise>left</xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
-					<xsl:attribute name="display-align">before</xsl:attribute>
 				</xsl:if>
 			
 			<xsl:if test="@colspan">
@@ -5277,9 +5276,6 @@
 				</xsl:if>
 				<xsl:if test="not(ancestor::*[local-name()='tr']/following-sibling::*[local-name()='tr'])"> <!-- last row -->
 					<xsl:attribute name="padding-bottom">2mm</xsl:attribute>
-				</xsl:if>
-				<xsl:if test="ancestor::*[local-name() = 'doccontrol']">
-					<xsl:attribute name="display-align">before</xsl:attribute>
 				</xsl:if>
 			
 			<xsl:if test="@colspan">
