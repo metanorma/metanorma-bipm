@@ -2756,4 +2756,160 @@ RSpec.describe IsoDoc::BIPM do
         </bipm-standard>
       OUTPUT
   end
+
+  it "cross-references formulae" do
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+            <iso-standard xmlns="http://riboseinc.com/isoxml">
+            <preface>
+    <foreword>
+    <p>
+    <xref target="N1"/>
+    <xref target="N2"/>
+    <xref target="N"/>
+    <xref target="note1"/>
+    <xref target="note2"/>
+    <xref target="AN"/>
+    <xref target="Anote1"/>
+    <xref target="Anote2"/>
+    </p>
+    </foreword>
+    <introduction id="intro">
+    <formula id="N1">
+  <stem type="AsciiMath">r = 1 %</stem>
+  </formula>
+  <clause id="xyz"><title>Preparatory</title>
+    <formula id="N2" unnumbered="true">
+  <stem type="AsciiMath">r = 1 %</stem>
+  </formula>
+</clause>
+    </introduction>
+    </preface>
+    <sections>
+    <clause id="scope" type="scope"><title>Scope</title>
+    <formula id="N">
+  <stem type="AsciiMath">r = 1 %</stem>
+  </formula>
+  <p><xref target="N"/></p>
+    </clause>
+    <terms id="terms"/>
+    <clause id="widgets"><title>Widgets</title>
+    <clause id="widgets1">
+    <formula id="note1">
+  <stem type="AsciiMath">r = 1 %</stem>
+  </formula>
+    <formula id="note2">
+  <stem type="AsciiMath">r = 1 %</stem>
+  </formula>
+  <p>    <xref target="note1"/> <xref target="note2"/> </p>
+    </clause>
+    </clause>
+    </sections>
+    <annex id="annex1">
+    <clause id="annex1a">
+    <formula id="AN">
+  <stem type="AsciiMath">r = 1 %</stem>
+  </formula>
+    </clause>
+    <clause id="annex1b">
+    <formula id="Anote1" unnumbered="true">
+  <stem type="AsciiMath">r = 1 %</stem>
+  </formula>
+    <formula id="Anote2">
+  <stem type="AsciiMath">r = 1 %</stem>
+  </formula>
+    </clause>
+    </annex>
+    </iso-standard>
+    INPUT
+               <?xml version='1.0'?>
+<iso-standard xmlns='http://riboseinc.com/isoxml' type="presentation">
+  <preface>
+    <foreword>
+      <p>
+        <xref target='N1'>Equation (1)</xref>
+<xref target='N2'>Equation ((??))</xref>
+<xref target='N'>Equation (2)</xref>
+<xref target='note1'>Equation (3)</xref>
+<xref target='note2'>Equation (4)</xref>
+<xref target='AN'>Equation (1.1)</xref>
+<xref target='Anote1'>Equation ((??))</xref>
+<xref target='Anote2'>Equation (1.2)</xref>
+      </p>
+    </foreword>
+    <introduction id='intro'>
+      <formula id='N1'>
+        <name>1</name>
+        <stem type='AsciiMath'>r = 1 %</stem>
+      </formula>
+      <clause id='xyz'>
+        <title depth='2'>Preparatory</title>
+        <formula id='N2' unnumbered='true'>
+          <stem type='AsciiMath'>r = 1 %</stem>
+        </formula>
+      </clause>
+    </introduction>
+  </preface>
+  <sections>
+    <clause id='scope' type="scope">
+    <title depth='1'>
+  1.
+  <tab/>
+  Scope
+</title>
+      <formula id='N'>
+        <name>2</name>
+        <stem type='AsciiMath'>r = 1 %</stem>
+      </formula>
+      <p>
+      <xref target='N'>Equation (2)</xref>
+      </p>
+    </clause>
+    <terms id='terms'>
+  <title>2.</title>
+</terms>
+    <clause id='widgets'>
+      <title depth='1'>
+  3.
+  <tab/>
+  Widgets
+</title>
+      <clause id='widgets1'><title>3.1.</title>
+        <formula id='note1'>
+          <name>3</name>
+          <stem type='AsciiMath'>r = 1 %</stem>
+        </formula>
+        <formula id='note2'>
+          <name>4</name>
+          <stem type='AsciiMath'>r = 1 %</stem>
+        </formula>
+        <p>
+          <xref target='note1'>Equation (3)</xref>
+<xref target='note2'>Equation (4)</xref>
+        </p>
+      </clause>
+    </clause>
+  </sections>
+  <annex id='annex1'>
+  <title>
+  <strong>Appendix 1</strong>
+</title>
+    <clause id='annex1a'><title>1.1.</title>
+      <formula id='AN'>
+        <name>1.1</name>
+        <stem type='AsciiMath'>r = 1 %</stem>
+      </formula>
+    </clause>
+    <clause id='annex1b'><title>1.2.</title>
+      <formula id='Anote1' unnumbered='true'>
+        <stem type='AsciiMath'>r = 1 %</stem>
+      </formula>
+      <formula id='Anote2'>
+        <name>1.2</name>
+        <stem type='AsciiMath'>r = 1 %</stem>
+      </formula>
+    </clause>
+  </annex>
+</iso-standard>
+OUTPUT
+  end
 end
