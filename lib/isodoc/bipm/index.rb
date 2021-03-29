@@ -28,7 +28,8 @@ module IsoDoc
             c.first.at(ns("./ul")).add_child index_entries(words, index[k], w)
           end
         end
-        @xrefs.bookmark_anchor_names(docxml.xpath(ns(@xrefs.sections_xpath)))
+        docxml.xpath(ns("//indexsect//xref")).each { |x| x.children.remove }
+        @xrefs.bookmark_anchor_names(docxml)
       end
 
       def sortable(s)
