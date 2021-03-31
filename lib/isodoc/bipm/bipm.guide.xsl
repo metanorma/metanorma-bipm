@@ -4,6 +4,7 @@
 	
 	<xsl:param name="svg_images"/>
 	<xsl:variable name="images" select="document($svg_images)"/>
+	<xsl:param name="basepath"/>
 	
 	<xsl:param name="initial_page_number"/>
 	<xsl:param name="doc_split_by_language"/>
@@ -6747,6 +6748,9 @@
 				<xsl:choose>
 					<xsl:when test="@mimetype = 'image/svg+xml' and $images/images/image[@id = current()/@id]">
 						<xsl:value-of select="$images/images/image[@id = current()/@id]/@src"/>
+					</xsl:when>
+					<xsl:when test="not(starts-with(@src, 'data:'))">
+						<xsl:value-of select="concat('url(file:',$basepath, @src, ')')"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="@src"/>
