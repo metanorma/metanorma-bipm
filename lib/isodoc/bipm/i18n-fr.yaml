@@ -34,3 +34,6 @@ stage_dict:
   draft-development: projet-de-développement
   in-force: en-vigeur
   retired: retiré
+norm_with_refs_pref:
+     Les documents suivants cités dans le texte sont indispensables pour l'application de ce document. Pour les références datées, seule l’édition citée s’applique. Pour les références non datées, la dernière édition du document de référence s’applique (y compris les éventuels amendements).
+

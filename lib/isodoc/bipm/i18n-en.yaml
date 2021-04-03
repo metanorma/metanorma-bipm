@@ -8,3 +8,9 @@ formula: Equation
 inequality: Inequality
 bibliography: References
 index: Index
+norm_with_refs_pref:
+      The following referenced documents are indispensable for the application of this document. 
+      For dated references, only the edition cited applies.
+      For undated references, the latest edition of the referenced
+      document (including any amendments) applies.
+
