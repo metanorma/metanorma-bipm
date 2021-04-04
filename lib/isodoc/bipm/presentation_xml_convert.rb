@@ -6,6 +6,12 @@ require_relative "index"
 module IsoDoc
   module BIPM
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
+      def convert1(docxml, filename, dir)
+        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
+                              "@acronym"))&.value == "JCGM"
+        super
+      end
+
       def table1(f)
         return if labelled_ancestor(f)
         return if f["unnumbered"]
@@ -15,9 +21,10 @@ module IsoDoc
       end
 
       def annex1(f)
+        return super if @jcgm
         return if f["unnumbered"] == "true"
 
-        lbl = @xrefs.anchor(f['id'], :label)
+        lbl = @xrefs.anchor(f["id"], :label)
         if t = f.at(ns("./title"))
           t.children = "<strong>#{t.children.to_xml}</strong>"
         end

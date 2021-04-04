@@ -993,8 +993,7 @@ RSpec.describe IsoDoc::BIPM do
         <annex id='P' inline-header='false' obligation='normative'>
           <title>
             <strong>Appendix A</strong>
-            .
-            <tab/>
+            <br/>
             <strong>Annex</strong>
           </title>
           <clause id='Q' inline-header='false' obligation='normative'>
@@ -1105,7 +1104,7 @@ RSpec.describe IsoDoc::BIPM do
             <div id='P' class='Section3'>
               <h1 class='Annex'>
                 <b>Appendix A</b>
-                 . &#160;
+                 <br/>
                 <b>Annex</b>
               </h1>
               <div id='Q'>
