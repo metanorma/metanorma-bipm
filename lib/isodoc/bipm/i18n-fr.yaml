@@ -37,4 +37,4 @@ stage_dict:
 norm_with_refs_pref:
      Les documents suivants cités dans le texte sont indispensables pour l'application de ce document. Pour les références datées, seule l’édition citée s’applique. Pour les références non datées, la dernière édition du document de référence s’applique (y compris les éventuels amendements).
 all_rights_reserved: Tous droits réservés
-
+table_of_contents: Table des matières
