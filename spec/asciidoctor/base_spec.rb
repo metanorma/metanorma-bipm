@@ -985,6 +985,199 @@ RSpec.describe Asciidoctor::BIPM do
     OUTPUT
   end
 
+  it "processes sections in JCGM" do
+    expect(xmlpp(strip_guid(Asciidoctor.convert(
+      <<~"INPUT", *OPTIONS))).sub(%r{<boilerplate>.*</boilerplate>}m, "")).to be_equivalent_to xmlpp(<<~"OUTPUT")
+      #{ASCIIDOC_BLANK_HDR.sub(/:novalid:/, ":novalid:\n:committee-acronym: JCGM")}
+      .Foreword
+
+      Text
+
+      [abstract]
+      == Abstract
+
+      Text
+
+      == Introduction
+
+      === Introduction Subsection
+
+      == Acknowledgements
+
+      [.preface]
+      == Dedication
+
+      == Scope
+
+      Text
+
+      == Normative References
+
+      [heading=Terms and definitions]
+      == Photometric units
+
+      === Term1
+
+      == Terms, Definitions, Symbols and Abbreviated Terms
+
+      [.nonterm]
+      === Introduction
+
+      ==== Intro 1
+
+      === Intro 2
+
+      [.nonterm]
+      ==== Intro 3
+
+      === Intro 4
+
+      ==== Intro 5
+
+      ===== Term1
+
+      === Normal Terms
+
+      ==== Term2
+
+      === Symbols and Abbreviated Terms
+
+      [.nonterm]
+      ==== General
+
+      ==== Symbols
+
+      == Abbreviated Terms
+
+      == Clause 4
+      === Introduction
+
+      === Clause 4.2
+
+      == Terms and Definitions
+
+      [appendix]
+      == Annex
+
+      === Annex A.1
+
+      == Bibliography
+
+      === Bibliography Subsection
+    INPUT
+      #{BLANK_HDR.sub(%r{</script>}, '</script><abstract><p>Text</p></abstract>').sub(%r{<boilerplate>.*</boilerplate>}m, "")}
+       <preface>
+   <abstract id='_'>
+     <title>Abstract</title>
+     <p id='_'>Text</p>
+   </abstract>
+   <foreword id='_' obligation='informative'>
+     <title>Foreword</title>
+     <p id='_'>Text</p>
+   </foreword>
+   <introduction id='_' obligation='informative'>
+     <title>Introduction</title>
+     <clause id='_' obligation='informative'>
+       <title>Introduction Subsection</title>
+     </clause>
+   </introduction>
+   <clause id='_' obligation='informative'>
+     <title>Dedication</title>
+   </clause>
+   <acknowledgements id='_' obligation='informative'>
+     <title>Acknowledgements</title>
+   </acknowledgements>
+ </preface>
+ <sections>
+   <clause id='_' type='scope' obligation='normative'>
+     <title>Scope</title>
+     <p id='_'>Text</p>
+   </clause>
+   <terms id='_' obligation='normative'>
+     <title>Photometric units</title>
+     <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
+     <term id='term-term1'>
+       <preferred>Term1</preferred>
+     </term>
+   </terms>
+   <clause id='_' obligation='normative'>
+     <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
+     <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
+     <clause id='_' obligation='normative'>
+       <title>Introduction</title>
+       <clause id='_' obligation='normative'>
+         <title>Intro 1</title>
+       </clause>
+     </clause>
+     <terms id='_' obligation='normative'>
+       <title>Intro 2</title>
+       <clause id='_' obligation='normative'>
+         <title>Intro 3</title>
+       </clause>
+     </terms>
+     <clause id='_' obligation='normative'>
+       <title>Intro 4</title>
+       <terms id='_' obligation='normative'>
+         <title>Intro 5</title>
+         <term id='term-term1-1'>
+           <preferred>Term1</preferred>
+         </term>
+       </terms>
+     </clause>
+     <terms id='_' obligation='normative'>
+       <title>Normal Terms</title>
+       <term id='term-term2'>
+         <preferred>Term2</preferred>
+       </term>
+     </terms>
+     <definitions id='_' obligation='normative'>
+       <title>Symbols and Abbreviated Terms</title>
+       <clause id='_' obligation='normative'>
+         <title>General</title>
+       </clause>
+       <definitions id='_' type='symbols' obligation='normative'>
+         <title>Symbols</title>
+       </definitions>
+     </definitions>
+   </clause>
+   <definitions id='_' type='abbreviated_terms' obligation='normative'>
+     <title>Abbreviated Terms</title>
+   </definitions>
+   <clause id='_' obligation='normative'>
+     <title>Clause 4</title>
+     <clause id='_' obligation='normative'>
+       <title>Introduction</title>
+     </clause>
+     <clause id='_' obligation='normative'>
+       <title>Clause 4.2</title>
+     </clause>
+   </clause>
+   <clause id='_' obligation='normative'>
+     <title>Terms and Definitions</title>
+   </clause>
+ </sections>
+ <annex id='_' obligation='normative'>
+   <title>Annex</title>
+   <clause id='_' obligation='normative'>
+     <title>Annex A.1</title>
+   </clause>
+ </annex>
+ <bibliography>
+   <references id='_' normative='true' obligation='informative'>
+     <title>Normative references</title>
+     <p id='_'>There are no normative references in this document.</p>
+   </references>
+   <clause id='_' obligation='informative'>
+     <title>References</title>
+     <references id='_' normative='false' obligation='informative'>
+       <title>Bibliography Subsection</title>
+     </references>
+   </clause>
+ </bibliography>
+      </bipm-standard>
+    OUTPUT
+  end
+
   it "customises italicisation of MathML" do
     input = <<~INPUT
       = Document title

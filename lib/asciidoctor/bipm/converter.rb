@@ -131,7 +131,7 @@ module Asciidoctor
 
       def sectiontype_streamline(ret)
         case ret
-        when "introduction" then "clause"
+        when "introduction" then @jcgm ? "introduction" : "clause"
         else
           super
         end
@@ -181,8 +181,7 @@ module Asciidoctor
       end
 
       def boilerplate_file(xmldoc)
-        return super unless xmldoc&.at("//bibdata/ext/editorialgroup/"\
-                                       "committee/@acronym")&.value == "JCGM"
+        return super unless @jcgm
 
         File.join(File.dirname(__FILE__), "boilerplate-jcgm-en.xml")
       end
@@ -190,6 +189,11 @@ module Asciidoctor
       def mathml_mi_italics
         { uppergreek: false, upperroman: false,
           lowergreek: false, lowerroman: true }
+      end
+
+      def document(node)
+        @jcgm = node.attr("committee-acronym") == "JCGM"
+        super
       end
 
       def outputs(node, ret)
