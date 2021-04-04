@@ -4,6 +4,8 @@ see: see
 see_also: see also
 clause: Chapter
 subclause: Section
+clause_jcgm: Clause
+subclause_jcgm: Clause
 formula: Equation
 inequality: Inequality
 bibliography: References
