@@ -992,20 +992,20 @@ RSpec.describe IsoDoc::BIPM do
         </sections>
         <annex id='P' inline-header='false' obligation='normative'>
           <title>
-            <strong>Appendix 1</strong>
+            <strong>Appendix A</strong>
             .
             <tab/>
             <strong>Annex</strong>
           </title>
           <clause id='Q' inline-header='false' obligation='normative'>
             <title depth='2'>
-              1.1.
+              A.1.
               <tab/>
               Annex A.1
             </title>
             <clause id='Q1' inline-header='false' obligation='normative'>
               <title depth='3'>
-                1.1.1.
+                A.1.1.
                 <tab/>
                 Annex A.1a
               </title>
@@ -1104,14 +1104,14 @@ RSpec.describe IsoDoc::BIPM do
             <br/>
             <div id='P' class='Section3'>
               <h1 class='Annex'>
-                <b>Appendix 1</b>
+                <b>Appendix A</b>
                  . &#160;
                 <b>Annex</b>
               </h1>
               <div id='Q'>
-                <h2> 1.1. &#160; Annex A.1 </h2>
+                <h2> A.1. &#160; Annex A.1 </h2>
                 <div id='Q1'>
-                  <h3> 1.1.1. &#160; Annex A.1a </h3>
+                  <h3> A.1.1. &#160; Annex A.1a </h3>
                 </div>
               </div>
             </div>
@@ -3211,9 +3211,9 @@ RSpec.describe IsoDoc::BIPM do
     <xref target='M'>Clause 5</xref>
     <xref target='N'>5.1</xref>
     <xref target='O'>5.2</xref>
-    <xref target='P'>Appendix 1</xref>
-    <xref target='Q'>Appendix 1.1</xref>
-    <xref target='Q1'>Appendix 1.1.1</xref>
+    <xref target='P'>Appendix A</xref>
+    <xref target='Q'>A.1</xref>
+    <xref target='Q1'>A.1.1</xref>
     <xref target='Q2'>[Q2]</xref>
     <xref target='Q3'>[Q3]</xref>
     <xref target='R'>Clause 2</xref>

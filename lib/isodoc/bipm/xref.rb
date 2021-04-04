@@ -11,6 +11,12 @@ module IsoDoc
       def parse(docxml)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
                               "@acronym"))&.value == "JCGM"
+        @annexlbl =
+          if docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
+            @labels["appendix"]
+          else
+            @labels["annex"]
+          end
         super
       end
 
@@ -118,10 +124,11 @@ module IsoDoc
 
       def back_anchor_names(docxml)
         super
-        @annexlbl = docxml.at(ns("//bibdata/ext/structuredidentifier/appendix")) ?
-          @labels["appendix"] : @labels["annex"]
-        docxml.xpath(ns("//annex[not(@unnumbered = 'true')]"))
-          .each_with_index { |c, i| annex_names(c, (i + 1).to_s) }
+        i = @jcgm ? Counter.new("@") : Counter.new(0)
+        docxml.xpath(ns("//annex[not(@unnumbered = 'true')]")).each do |c|
+          i.increment(c)
+          annex_names(c, i.print)
+        end
         docxml.xpath(ns("//annex[@unnumbered = 'true']"))
           .each { |c| unnumbered_annex_names(c) }
         docxml.xpath(ns("//indexsect")).each { |b| preface_names(b) }
@@ -165,10 +172,14 @@ module IsoDoc
         hierarchical_asset_names(clause, lbl)
       end
 
+      def annex_names1_anchors(num, level)
+        lbl = @jcgm ? "" : "#{@annexlbl} "
+        { label: num, xref: l10n("#{lbl}#{num}"),
+          level: level, type: "clause" }
+      end
+
       def annex_names1(clause, num, level)
-        @anchors[clause["id"]] =
-          { label: num, xref: l10n("#{@annexlbl} #{num}"),
-            level: level, type: "clause" }
+        @anchors[clause["id"]] = annex_names1_anchors(num, level)
         i = Counter.new
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
           i.increment(c)
