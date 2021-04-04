@@ -9,12 +9,14 @@ module IsoDoc
       def table1(f)
         return if labelled_ancestor(f)
         return if f["unnumbered"]
+
         n = @xrefs.anchor(f['id'], :label, false)
         prefix_name(f, ".<tab/>", l10n("#{@i18n.table.capitalize} #{n}"), "name")
       end
 
       def annex1(f)
         return if f["unnumbered"] == "true"
+
         lbl = @xrefs.anchor(f['id'], :label)
         if t = f.at(ns("./title"))
           t.children = "<strong>#{t.children.to_xml}</strong>"
@@ -25,6 +27,7 @@ module IsoDoc
       def clause1(f)
         return if f["unnumbered"] == "true"
         return if f.at(("./ancestor::*[@unnumbered = 'true']"))
+
         super
       end
 
@@ -35,21 +38,21 @@ module IsoDoc
 
       def doccontrol(docxml)
         return unless docxml.at(ns("//bibdata/relation[@type = 'supersedes']"))
+
         clause = <<~END
-        <doccontrol>
-        <title>Document Control</title>
-        <table unnumbered="true"><tbody>
-        <tr><th>Authors:</th><td/><td>#{list_authors(docxml)}</td></tr>
-        #{doccontrol_row1(docxml)}
-        #{doccontrol_row2(docxml)}
-        #{list_drafts(docxml)}
-        </tbody></table></doccontrol>
+          <doccontrol>
+          <title>Document Control</title>
+          <table unnumbered="true"><tbody>
+          <tr><th>Authors:</th><td/><td>#{list_authors(docxml)}</td></tr>
+          #{doccontrol_row1(docxml)} #{doccontrol_row2(docxml)} #{list_drafts(docxml)}
+          </tbody></table></doccontrol>
         END
         docxml.root << clause
       end
 
       def doccontrol_row1(docxml)
         return "" if list_draft(docxml, 1) == ["", ""] && list_cochairs(docxml).empty?
+
         <<~ROW
         <tr>#{list_draft(docxml, 1)&.map { |x| "<td>#{x}</td>" }&.join }
         <td>#{list_cochairs(docxml)}</td></tr>
@@ -58,6 +61,7 @@ module IsoDoc
 
       def doccontrol_row2(docxml)
         return "" if list_draft(docxml, 2) == ["", ""] && list_chairs(docxml).empty?
+
         <<~ROW
         <tr>#{list_draft(docxml, 2)&.map { |x| "<td>#{x}</td>" }&.join }
         <td>#{list_chairs(docxml)}</td></tr>
@@ -67,8 +71,8 @@ module IsoDoc
       def list_drafts(xml)
         ret = ""
         i = 3
-        while a = list_draft(xml, i) != ["", ""]
-          ret += "<tr>#{list_draft(xml, i).map { |x| "<td>#{x}</td>" }.join }"\
+        while list_draft(xml, i) != ["", ""]
+          ret += "<tr>#{list_draft(xml, i).map { |x| "<td>#{x}</td>" }.join} "\
             "<td/></tr>"
           i += 1
         end
@@ -78,6 +82,7 @@ module IsoDoc
       def list_draft(xml, i)
         return ["", ""] unless d =
           xml.at(ns("//bibdata/relation[@type = 'supersedes'][#{i}]/bibitem"))
+
         date = d&.at(ns("./date"))&.text
         draft = d&.at(ns("./version/draft"))&.text and
           draft = "Draft #{draft}"
@@ -101,7 +106,7 @@ module IsoDoc
         ret.empty? and return ""
         role = xml&.at(ns("//bibdata/contributor[#{COCHAIR}]/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
-        "#{label}: #{@i18n.multiple_and(ret, @i18n.get["and"])}"
+        "#{label}: #{@i18n.multiple_and(ret, @i18n.get['and'])}"
       end
 
       def list_chairs(xml)
@@ -109,7 +114,7 @@ module IsoDoc
         ret.empty? and return ""
         role = xml&.at(ns("//bibdata/contributor#{CHAIR}/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
-        "#{label}: #{@i18n.multiple_and(ret, @i18n.get["and"])}"
+        "#{label}: #{@i18n.multiple_and(ret, @i18n.get['and'])}"
       end
 
       def list_people(xml, xpath)
@@ -126,11 +131,27 @@ module IsoDoc
       end
 
       def twitter_cldr_localiser_symbols
-        { group: "&#x202F;", fraction_group: "&#x202F;", fraction_group_digits: 3 }
+        { group: "&#x202F;", fraction_group: "&#x202F;",
+          fraction_group_digits: 3 }
       end
 
       def mathml1(f, locale)
         localize_maths(f, locale)
+      end
+
+      def bibdata_i18n(bibdata)
+        super
+        bibdata_dates(bibdata)
+      end
+
+      def bibdata_dates(bibdata)
+        pubdate = bibdata.at(ns("./date[not(@format)][@type = 'published']"))
+        return unless pubdate
+
+        meta = metadata_init(@lang, @script, @i18n)
+        pubdate.next = pubdate.dup
+        pubdate.next["format"] = "ddMMMyyyy"
+        pubdate.next.children = meta.monthyr(pubdate.text)
       end
 
       include Init

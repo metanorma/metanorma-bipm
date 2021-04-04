@@ -8,7 +8,8 @@ module IsoDoc
       end
 
       SI_ASPECT = %w(A_e_deltanu A_e cd_Kcd_h_deltanu cd_Kcd full K_k_deltanu
-      K_k kg_h_c_deltanu kg_h m_c_deltanu m_c mol_NA s_deltanu).freeze
+                     K_k kg_h_c_deltanu kg_h m_c_deltanu m_c mol_NA
+                     s_deltanu).freeze
 
       def initialize(lang, script, labels)
         super
@@ -24,12 +25,12 @@ module IsoDoc
       TITLE = "//bibdata/title".freeze
 
       def title(isoxml, _out)
-        lang1, lang2  = @lang == "fr" ? %w(fr en) : %w(en fr)
+        lang1, lang2 = @lang == "fr" ? %w(fr en) : %w(en fr)
         set(:doctitle, @c.encode(isoxml&.at(
           ns("#{TITLE}[@type='main'][@language='#{lang1}']"))&.text || ""))
         set(:docsubtitle, @c.encode(isoxml&.at(
           ns("#{TITLE}[@type='main'][@language='#{lang2}']"))&.text || ""))
-        %w(appendix annex part subtitle).each do |e|
+        %w(appendix annex part subtitle provenance).each do |e|
           set("#{e}title".to_sym, @c.encode(isoxml&.at(
             ns("#{TITLE}[@type='#{e}'][@language='#{lang1}']"))&.text || ""))
           set("#{e}subtitle".to_sym, @c.encode(isoxml&.at(
@@ -40,9 +41,10 @@ module IsoDoc
       def status_print(status)
         return "Procès-Verbal" if status == "procès-verbal"
         return "CIPM-MRA" if status == "cipm-mra"
+
         status.split(/[- ]/).map.with_index do |s, i|
-          (%w(en de).include?(s) && i > 0) ? s : s.capitalize
-        end.join(' ')
+          %w(en de).include?(s) && i.positive? ? s : s.capitalize
+        end.join(" ")
       end
 
       def docid(isoxml, _out)
@@ -59,12 +61,18 @@ module IsoDoc
         dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/part"))
         dn and set(:partid, @i18n.l10n("#{label1} #{dn&.text}"))
         dn and set(:partid_alt, @i18n.l10n("#{label2} #{dn&.text}"))
-        set(:org_abbrev, 
-            isoxml.at(ns("//bibdata/ext/editorialgroup/committee[@acronym = 'JCGM']")) ? "JCGM" : "BIPM")
+        set(:org_abbrev,
+            isoxml.at(ns("//bibdata/ext/editorialgroup/committee"\
+                         "[@acronym = 'JCGM']")) ? "JCGM" : "BIPM")
       end
 
       def extract_person_names_affiliations(authors)
         extract_person_affiliations(authors)
+      end
+
+      def bibdate(isoxml, _out)
+        pubdate = isoxml.at(ns("//bibdata/date[not(@format)][@type = 'published']"))
+        pubdate and set(:pubdate_monthyear, monthyr(pubdate.text))
       end
     end
   end

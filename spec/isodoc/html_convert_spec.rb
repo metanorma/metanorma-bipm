@@ -1,7 +1,8 @@
 require "spec_helper"
 
 gem_lib = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib"))
-logoloc = File.join(gem_lib, "metanorma", "..", "..", "lib", "isodoc", "bipm", "html")
+logoloc = File.join(gem_lib, "metanorma", "..", "..", "lib", "isodoc", "bipm",
+                    "html")
 logoloc1 = File.join(gem_lib, "isodoc", "bipm", "html")
 
 si_aspect = [
@@ -19,7 +20,9 @@ si_aspect = [
   "mol_NA",
   "s_deltanu",
 ].freeze
-si_aspect_paths = si_aspect.map { |x| File.join(logoloc1, "si-aspect", "#{x}.png") }
+si_aspect_paths = si_aspect.map do |x|
+  File.join(logoloc1, "si-aspect", "#{x}.png")
+end
 
 RSpec.describe IsoDoc::BIPM do
   it "processes default metadata in English" do
@@ -39,7 +42,10 @@ RSpec.describe IsoDoc::BIPM do
           <title type="part" language="fr" format="plain">Chef Title Part</title>
           <title type="subpart" language="en" format="plain">Main Title Subpart</title>
           <title type="subpart" language="fr" format="plain">Chef Title Subpart</title>
+          <title type="provenance" language="en" format="plain">Main Title Provenance</title>
+          <title type="provenance" language="fr" format="plain">Chef Title Provenance</title>
           <docidentifier>1000</docidentifier>
+          <date type="published">2021-04</date>
           <contributor>
             <role type="author"/>
             <person>
@@ -167,6 +173,9 @@ RSpec.describe IsoDoc::BIPM do
       :partid_alt=>"Partie 2.1",
       :partsubtitle=>"Chef Title Part",
       :parttitle=>"Main Title Part",
+      :provenancesubtitle=>"Chef Title Provenance",
+      :provenancetitle=>"Main Title Provenance",
+      :pubdate_monthyear=>"April 2021",
       :publisheddate=>"XXX",
       :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long['en']}",
       :receiveddate=>"XXX",
@@ -187,7 +196,8 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     docxml, = csdc.convert_init(input, "test", true)
-    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:"))
+      .to be_equivalent_to output
   end
 
   it "processes default metadata in French" do
@@ -310,7 +320,8 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     docxml, = csdc.convert_init(input, "test", true)
-    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s
+      .gsub(/, :/, ",\n:")).to be_equivalent_to output
   end
 
   it "ignores unrecognised status" do
@@ -363,7 +374,31 @@ RSpec.describe IsoDoc::BIPM do
 
     csdc = IsoDoc::BIPM::HtmlConvert.new({})
     docxml, = csdc.convert_init(input, "test", true)
-    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s.gsub(/, :/, ",\n:")).to be_equivalent_to output
+    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s
+      .gsub(/, :/, ",\n:")).to be_equivalent_to output
+  end
+
+  it "processes dates in Presentation XML" do
+    input = <<~"INPUT"
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+      <bibdata type="standard">
+      <date type="published">2021-04</date>
+      </bibdata>
+      </bipm-standard>
+    INPUT
+    output = <<~"OUTPUT"
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
+      <bibdata type="standard">
+      <date type="published">2021-04</date>
+      <date type='published' format='ddMMMyyyy'>April 2021</date>
+      </bibdata>
+      </bipm-standard>
+    OUTPUT
+    stripped_presxml =
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true))
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
+    expect(stripped_presxml).to(be_equivalent_to(xmlpp(output)))
   end
 
   it "processes pre" do
@@ -379,7 +414,7 @@ RSpec.describe IsoDoc::BIPM do
 
     output = xmlpp(<<~"OUTPUT")
       #{HTML_HDR}
-          <br/>
+      <br/>
           <div>
             <h1 class="ForewordTitle">Foreword</h1>
             <pre>ABC</pre>
@@ -428,7 +463,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-      #{HTML_HDR}
+    #{HTML_HDR}
           <p class="zzSTDTitle1"/>
           <div id='A'>
             <h1>1.</h1>
@@ -440,7 +475,8 @@ RSpec.describe IsoDoc::BIPM do
         </div>
       </body>
     OUTPUT
-    stripped_presxml = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    stripped_presxml =
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true)))
     stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)
@@ -466,7 +502,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-      #{HTML_HDR}
+    #{HTML_HDR}
           <p class="zzSTDTitle1"/>
           <div id="H"><h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
             <p class="TermNum" id="J">1.1.</p>
@@ -763,10 +799,13 @@ RSpec.describe IsoDoc::BIPM do
         </body>
       </html>
     OUTPUT
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
-      .convert("test", input, true)).gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
+    stripped_html =
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true))
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
     expect(stripped_html).to(be_equivalent_to(presxml))
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({}).convert("test", presxml, true)))
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+      .convert("test", presxml, true)))
     expect(stripped_html).to(be_equivalent_to(html))
   end
 
@@ -1087,10 +1126,14 @@ RSpec.describe IsoDoc::BIPM do
         </body>
       </html>
     OUTPUT
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
-      .convert("test", input, true)).gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
+    stripped_html =
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true))
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
     expect(stripped_html).to(be_equivalent_to(presxml))
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({}).convert("test", presxml, true)))
+    stripped_html =
+      xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+      .convert("test", presxml, true)))
     expect(stripped_html).to(be_equivalent_to(html))
   end
 
@@ -1188,7 +1231,8 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     OUTPUT
 
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    stripped_html =
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(output))
@@ -1204,7 +1248,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-      #{BLANK_HDR}
+    #{BLANK_HDR}
         <sections/>
       </bipm-standard>
     OUTPUT
@@ -1339,7 +1383,7 @@ RSpec.describe IsoDoc::BIPM do
             </annex>
           </preface>
         </bipm-standard>
-      OUTPUT
+    OUTPUT
   end
 
   it "processes ordered lists" do
@@ -1361,7 +1405,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-      #{HTML_HDR}
+    #{HTML_HDR}
           <p class="zzSTDTitle1"/>
           <div id='A'>
             <h1>Clause</h1>
@@ -1692,7 +1736,7 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     output = xmlpp(<<~"OUTPUT")
-      #{HTML_HDR}
+    #{HTML_HDR}
           <p class='zzSTDTitle1'>Main Title</p>
           <div class='doccontrol'>
             <h1>Document Control</h1>
@@ -1725,7 +1769,8 @@ RSpec.describe IsoDoc::BIPM do
       </body>
     OUTPUT
 
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    stripped_html =
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(presxml))
@@ -1736,7 +1781,7 @@ RSpec.describe IsoDoc::BIPM do
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
-    it "generates shorter document control text" do
+  it "generates shorter document control text" do
     input = <<~"INPUT"
       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
         <bibdata type="standard">
@@ -1809,127 +1854,128 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = <<~PRESXML
-    <bipm-standard xmlns='https://www.metanorma.org/ns/bipm' version="#{Metanorma::BIPM::VERSION}" type='presentation'>
-    <bibdata type='standard'>
-           <title language='en' format='text/plain' type='main'>Main Title</title>
-           <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
-           <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
-           <contributor>
-             <role type='author'/>
-             <organization>
-               <name>Bureau International des Poids et Mesures</name>
-               <abbreviation>BIPM</abbreviation>
-             </organization>
-           </contributor>
-           <contributor>
-             <role type='author'/>
-             <person>
-               <name>
-                 <completename>Andrew Yacoot</completename>
-               </name>
-               <affiliation>
-                 <organization>
-                   <name>NPL</name>
-                 </organization>
-               </affiliation>
-             </person>
-           </contributor>
-           <contributor>
-             <role type='author'/>
-             <person>
-               <name>
-                 <completename>Ulrich Kuetgens</completename>
-               </name>
-               <affiliation>
-                 <organization>
-                   <name>PTB</name>
-                 </organization>
-               </affiliation>
-             </person>
-           </contributor>
-           <contributor>
-             <role type='publisher'/>
-             <organization>
-               <name>Bureau International des Poids et Mesures</name>
-               <abbreviation>BIPM</abbreviation>
-             </organization>
-           </contributor>
-           <edition>2</edition>
-           <version>
-             <revision-date>2000-01-01</revision-date>
-             <draft>3.4</draft>
-           </version>
-           <language current='true'>en</language>
-           <script current='true'>Latn</script>
-           <status>
-             <stage language=''>working-draft</stage>
-             <iteration>3</iteration>
-           </status>
-           <relation type='supersedes'>
-             <bibitem>
-               <date type='published'>2018-06-11</date>
-               <edition>1.0</edition>
-               <version>
-                 <draft>1.0</draft>
-               </version>
-             </bibitem>
-           </relation>
-         </bibdata>
-         <sections/>
-         <doccontrol>
-           <title>Document Control</title>
-           <table unnumbered='true'>
-             <tbody>
-               <tr>
-                 <th>Authors:</th>
-                 <td/>
-                 <td>Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
-               </tr>
-               <tr>
-                 <td>Draft 1.0 Version 1.0</td>
-                 <td>2018-06-11</td>
-                 <td/>
-               </tr>
-             </tbody>
-           </table>
-         </doccontrol>
-       </bipm-standard>
-    PRESXML
-
-    output = <<~HTML
-    <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
-         <div class='title-section'>
-           <p>&#160;</p>
-         </div>
-         <br/>
-         <div class='prefatory-section'>
-           <p>&#160;</p>
-         </div>
-         <br/>
-         <div class='main-section'>
-           <p class='zzSTDTitle1'>Main Title</p>
-           <div class='doccontrol'>
-             <h1>Document Control</h1>
-             <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
+      <bipm-standard xmlns='https://www.metanorma.org/ns/bipm' version="#{Metanorma::BIPM::VERSION}" type='presentation'>
+      <bibdata type='standard'>
+             <title language='en' format='text/plain' type='main'>Main Title</title>
+             <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
+             <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+             <contributor>
+               <role type='author'/>
+               <organization>
+                 <name>Bureau International des Poids et Mesures</name>
+                 <abbreviation>BIPM</abbreviation>
+               </organization>
+             </contributor>
+             <contributor>
+               <role type='author'/>
+               <person>
+                 <name>
+                   <completename>Andrew Yacoot</completename>
+                 </name>
+                 <affiliation>
+                   <organization>
+                     <name>NPL</name>
+                   </organization>
+                 </affiliation>
+               </person>
+             </contributor>
+             <contributor>
+               <role type='author'/>
+               <person>
+                 <name>
+                   <completename>Ulrich Kuetgens</completename>
+                 </name>
+                 <affiliation>
+                   <organization>
+                     <name>PTB</name>
+                   </organization>
+                 </affiliation>
+               </person>
+             </contributor>
+             <contributor>
+               <role type='publisher'/>
+               <organization>
+                 <name>Bureau International des Poids et Mesures</name>
+                 <abbreviation>BIPM</abbreviation>
+               </organization>
+             </contributor>
+             <edition>2</edition>
+             <version>
+               <revision-date>2000-01-01</revision-date>
+               <draft>3.4</draft>
+             </version>
+             <language current='true'>en</language>
+             <script current='true'>Latn</script>
+             <status>
+               <stage language=''>working-draft</stage>
+               <iteration>3</iteration>
+             </status>
+             <relation type='supersedes'>
+               <bibitem>
+                 <date type='published'>2018-06-11</date>
+                 <edition>1.0</edition>
+                 <version>
+                   <draft>1.0</draft>
+                 </version>
+               </bibitem>
+             </relation>
+           </bibdata>
+           <sections/>
+           <doccontrol>
+             <title>Document Control</title>
+             <table unnumbered='true'>
                <tbody>
                  <tr>
-                   <th style='font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;' scope='row'>Authors:</th>
-                   <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
-                   <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
+                   <th>Authors:</th>
+                   <td/>
+                   <td>Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
                  </tr>
                  <tr>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 1.0 Version 1.0</td>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2018-06-11</td>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
+                   <td>Draft 1.0 Version 1.0</td>
+                   <td>2018-06-11</td>
+                   <td/>
                  </tr>
                </tbody>
              </table>
+           </doccontrol>
+         </bipm-standard>
+    PRESXML
+
+    output = <<~HTML
+      <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+           <div class='title-section'>
+             <p>&#160;</p>
            </div>
-         </div>
-       </body>
+           <br/>
+           <div class='prefatory-section'>
+             <p>&#160;</p>
+           </div>
+           <br/>
+           <div class='main-section'>
+             <p class='zzSTDTitle1'>Main Title</p>
+             <div class='doccontrol'>
+               <h1>Document Control</h1>
+               <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
+                 <tbody>
+                   <tr>
+                     <th style='font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;' scope='row'>Authors:</th>
+                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
+                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
+                   </tr>
+                   <tr>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 1.0 Version 1.0</td>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2018-06-11</td>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
+                   </tr>
+                 </tbody>
+               </table>
+             </div>
+           </div>
+         </body>
     HTML
 
-   stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    stripped_html =
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(presxml))
@@ -1939,7 +1985,6 @@ RSpec.describe IsoDoc::BIPM do
       .gsub(%r{</body>.*}m, "</body>")))
     expect(stripped_html).to(be_equivalent_to(output))
   end
-
 
   it "localises numbers in MathML, English" do
     input = <<~INPUT
@@ -2042,8 +2087,10 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
 
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert("test", input, true))
-      .sub(%r{<localized-strings>.*</localized-strings>}m, "")).to be_equivalent_to xmlpp(<<~OUTPUT)
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true))
+      .sub(%r{<localized-strings>.*</localized-strings>}m, ""))
+      .to be_equivalent_to xmlpp(<<~OUTPUT)
         <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
           <bibdata>
             <title language="en">test</title>
@@ -2142,7 +2189,7 @@ RSpec.describe IsoDoc::BIPM do
             </p>
           </preface>
         </iso-standard>
-      OUTPUT
+    OUTPUT
   end
 
   it "localises numbers in MathML, French" do
@@ -2246,8 +2293,10 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
 
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert("test", input, true))
-      .sub(%r{<localized-strings>.*</localized-strings>}m, "")).to be_equivalent_to xmlpp(<<~OUTPUT)
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true))
+      .sub(%r{<localized-strings>.*</localized-strings>}m, ""))
+      .to be_equivalent_to xmlpp(<<~OUTPUT)
 
         <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
           <bibdata>
@@ -2347,7 +2396,7 @@ RSpec.describe IsoDoc::BIPM do
             </p>
           </preface>
         </iso-standard>
-      OUTPUT
+    OUTPUT
   end
 
   it "processes nested roman and alphabetic lists" do
@@ -2411,7 +2460,8 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({}).convert("test", input, true)
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+      .convert("test", input, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))).to be_equivalent_to <<~"OUTPUT"
 
@@ -2481,7 +2531,7 @@ RSpec.describe IsoDoc::BIPM do
             <p class='zzSTDTitle1'/>
           </div>
         </body>
-      OUTPUT
+    OUTPUT
   end
 
   it "generates an index in English" do
@@ -2513,8 +2563,10 @@ RSpec.describe IsoDoc::BIPM do
         </sections>
       </bipm-standard>
     INPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert("test", input, true)
-      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to be_equivalent_to xmlpp(<<~"OUTPUT")
 
         <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
           <bibdata>
@@ -2609,7 +2661,7 @@ RSpec.describe IsoDoc::BIPM do
             </clause>
           </indexsect>
         </bipm-standard>
-      OUTPUT
+    OUTPUT
   end
 
   it "generates an index in French" do
@@ -2649,9 +2701,8 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
     expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true)
-      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-
-
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to be_equivalent_to xmlpp(<<~"OUTPUT")
         <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
           <bibdata>
             <language current='true'>fr</language>
@@ -2754,162 +2805,163 @@ RSpec.describe IsoDoc::BIPM do
             </clause>
           </indexsect>
         </bipm-standard>
-      OUTPUT
+    OUTPUT
   end
 
   it "cross-references formulae" do
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({}).convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-            <iso-standard xmlns="http://riboseinc.com/isoxml">
-            <preface>
-    <foreword>
-    <p>
-    <xref target="N1"/>
-    <xref target="N2"/>
-    <xref target="N"/>
-    <xref target="note1"/>
-    <xref target="note2"/>
-    <xref target="AN"/>
-    <xref target="Anote1"/>
-    <xref target="Anote2"/>
-    </p>
-    </foreword>
-    <introduction id="intro">
-    <formula id="N1">
-  <stem type="AsciiMath">r = 1 %</stem>
-  </formula>
-  <clause id="xyz"><title>Preparatory</title>
-    <formula id="N2" unnumbered="true">
-  <stem type="AsciiMath">r = 1 %</stem>
-  </formula>
-</clause>
-    </introduction>
-    </preface>
-    <sections>
-    <clause id="scope" type="scope"><title>Scope</title>
-    <formula id="N">
-  <stem type="AsciiMath">r = 1 %</stem>
-  </formula>
-  <p><xref target="N"/></p>
-    </clause>
-    <terms id="terms"/>
-    <clause id="widgets"><title>Widgets</title>
-    <clause id="widgets1">
-    <formula id="note1">
-  <stem type="AsciiMath">r = 1 %</stem>
-  </formula>
-    <formula id="note2">
-  <stem type="AsciiMath">r = 1 %</stem>
-  </formula>
-  <p>    <xref target="note1"/> <xref target="note2"/> </p>
-    </clause>
-    </clause>
-    </sections>
-    <annex id="annex1">
-    <clause id="annex1a">
-    <formula id="AN">
-  <stem type="AsciiMath">r = 1 %</stem>
-  </formula>
-    </clause>
-    <clause id="annex1b">
-    <formula id="Anote1" unnumbered="true">
-  <stem type="AsciiMath">r = 1 %</stem>
-  </formula>
-    <formula id="Anote2">
-  <stem type="AsciiMath">r = 1 %</stem>
-  </formula>
-    </clause>
-    </annex>
-    </iso-standard>
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+         <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <preface>
+          <foreword>
+          <p>
+          <xref target="N1"/>
+          <xref target="N2"/>
+          <xref target="N"/>
+          <xref target="note1"/>
+          <xref target="note2"/>
+          <xref target="AN"/>
+          <xref target="Anote1"/>
+          <xref target="Anote2"/>
+          </p>
+          </foreword>
+          <introduction id="intro">
+          <formula id="N1">
+        <stem type="AsciiMath">r = 1 %</stem>
+        </formula>
+        <clause id="xyz"><title>Preparatory</title>
+          <formula id="N2" unnumbered="true">
+        <stem type="AsciiMath">r = 1 %</stem>
+        </formula>
+      </clause>
+          </introduction>
+          </preface>
+          <sections>
+          <clause id="scope" type="scope"><title>Scope</title>
+          <formula id="N">
+        <stem type="AsciiMath">r = 1 %</stem>
+        </formula>
+        <p><xref target="N"/></p>
+          </clause>
+          <terms id="terms"/>
+          <clause id="widgets"><title>Widgets</title>
+          <clause id="widgets1">
+          <formula id="note1">
+        <stem type="AsciiMath">r = 1 %</stem>
+        </formula>
+          <formula id="note2">
+        <stem type="AsciiMath">r = 1 %</stem>
+        </formula>
+        <p>    <xref target="note1"/> <xref target="note2"/> </p>
+          </clause>
+          </clause>
+          </sections>
+          <annex id="annex1">
+          <clause id="annex1a">
+          <formula id="AN">
+        <stem type="AsciiMath">r = 1 %</stem>
+        </formula>
+          </clause>
+          <clause id="annex1b">
+          <formula id="Anote1" unnumbered="true">
+        <stem type="AsciiMath">r = 1 %</stem>
+        </formula>
+          <formula id="Anote2">
+        <stem type="AsciiMath">r = 1 %</stem>
+        </formula>
+          </clause>
+          </annex>
+          </iso-standard>
     INPUT
-               <?xml version='1.0'?>
-<iso-standard xmlns='http://riboseinc.com/isoxml' type="presentation">
-  <preface>
-    <foreword>
-      <p>
-        <xref target='N1'>Equation (1)</xref>
-<xref target='N2'>Equation ((??))</xref>
-<xref target='N'>Equation (2)</xref>
-<xref target='note1'>Equation (3)</xref>
-<xref target='note2'>Equation (4)</xref>
-<xref target='AN'>Equation (1.1)</xref>
-<xref target='Anote1'>Equation ((??))</xref>
-<xref target='Anote2'>Equation (1.2)</xref>
-      </p>
-    </foreword>
-    <introduction id='intro'>
-      <formula id='N1'>
-        <name>1</name>
-        <stem type='AsciiMath'>r = 1 %</stem>
-      </formula>
-      <clause id='xyz'>
-        <title depth='2'>Preparatory</title>
-        <formula id='N2' unnumbered='true'>
-          <stem type='AsciiMath'>r = 1 %</stem>
-        </formula>
-      </clause>
-    </introduction>
-  </preface>
-  <sections>
-    <clause id='scope' type="scope">
-    <title depth='1'>
-  1.
-  <tab/>
-  Scope
-</title>
-      <formula id='N'>
-        <name>2</name>
-        <stem type='AsciiMath'>r = 1 %</stem>
-      </formula>
-      <p>
+      <?xml version='1.0'?>
+      <iso-standard xmlns='http://riboseinc.com/isoxml' type="presentation">
+        <preface>
+          <foreword>
+            <p>
+              <xref target='N1'>Equation (1)</xref>
+      <xref target='N2'>Equation ((??))</xref>
       <xref target='N'>Equation (2)</xref>
-      </p>
-    </clause>
-    <terms id='terms'>
-  <title>2.</title>
-</terms>
-    <clause id='widgets'>
-      <title depth='1'>
-  3.
-  <tab/>
-  Widgets
-</title>
-      <clause id='widgets1'><title>3.1.</title>
-        <formula id='note1'>
-          <name>3</name>
-          <stem type='AsciiMath'>r = 1 %</stem>
-        </formula>
-        <formula id='note2'>
-          <name>4</name>
-          <stem type='AsciiMath'>r = 1 %</stem>
-        </formula>
-        <p>
-          <xref target='note1'>Equation (3)</xref>
-<xref target='note2'>Equation (4)</xref>
-        </p>
-      </clause>
-    </clause>
-  </sections>
-  <annex id='annex1'>
-  <title>
-  <strong>Appendix 1</strong>
-</title>
-    <clause id='annex1a'><title>1.1.</title>
-      <formula id='AN'>
-        <name>1.1</name>
-        <stem type='AsciiMath'>r = 1 %</stem>
-      </formula>
-    </clause>
-    <clause id='annex1b'><title>1.2.</title>
-      <formula id='Anote1' unnumbered='true'>
-        <stem type='AsciiMath'>r = 1 %</stem>
-      </formula>
-      <formula id='Anote2'>
-        <name>1.2</name>
-        <stem type='AsciiMath'>r = 1 %</stem>
-      </formula>
-    </clause>
-  </annex>
-</iso-standard>
-OUTPUT
+      <xref target='note1'>Equation (3)</xref>
+      <xref target='note2'>Equation (4)</xref>
+      <xref target='AN'>Equation (1.1)</xref>
+      <xref target='Anote1'>Equation ((??))</xref>
+      <xref target='Anote2'>Equation (1.2)</xref>
+            </p>
+          </foreword>
+          <introduction id='intro'>
+            <formula id='N1'>
+              <name>1</name>
+              <stem type='AsciiMath'>r = 1 %</stem>
+            </formula>
+            <clause id='xyz'>
+              <title depth='2'>Preparatory</title>
+              <formula id='N2' unnumbered='true'>
+                <stem type='AsciiMath'>r = 1 %</stem>
+              </formula>
+            </clause>
+          </introduction>
+        </preface>
+        <sections>
+          <clause id='scope' type="scope">
+          <title depth='1'>
+        1.
+        <tab/>
+        Scope
+      </title>
+            <formula id='N'>
+              <name>2</name>
+              <stem type='AsciiMath'>r = 1 %</stem>
+            </formula>
+            <p>
+            <xref target='N'>Equation (2)</xref>
+            </p>
+          </clause>
+          <terms id='terms'>
+        <title>2.</title>
+      </terms>
+          <clause id='widgets'>
+            <title depth='1'>
+        3.
+        <tab/>
+        Widgets
+      </title>
+            <clause id='widgets1'><title>3.1.</title>
+              <formula id='note1'>
+                <name>3</name>
+                <stem type='AsciiMath'>r = 1 %</stem>
+              </formula>
+              <formula id='note2'>
+                <name>4</name>
+                <stem type='AsciiMath'>r = 1 %</stem>
+              </formula>
+              <p>
+                <xref target='note1'>Equation (3)</xref>
+      <xref target='note2'>Equation (4)</xref>
+              </p>
+            </clause>
+          </clause>
+        </sections>
+        <annex id='annex1'>
+        <title>
+        <strong>Appendix 1</strong>
+      </title>
+          <clause id='annex1a'><title>1.1.</title>
+            <formula id='AN'>
+              <name>1.1</name>
+              <stem type='AsciiMath'>r = 1 %</stem>
+            </formula>
+          </clause>
+          <clause id='annex1b'><title>1.2.</title>
+            <formula id='Anote1' unnumbered='true'>
+              <stem type='AsciiMath'>r = 1 %</stem>
+            </formula>
+            <formula id='Anote2'>
+              <name>1.2</name>
+              <stem type='AsciiMath'>r = 1 %</stem>
+            </formula>
+          </clause>
+        </annex>
+      </iso-standard>
+    OUTPUT
   end
 end

@@ -1,5 +1,5 @@
 require "asciidoctor/standoc/converter"
-require 'asciidoctor/generic/converter'
+require "asciidoctor/generic/converter"
 
 module Asciidoctor
   module BIPM
@@ -19,20 +19,26 @@ module Asciidoctor
       end
 
       def org_abbrev
-          { org_name_long => configuration.organization_name_short }
+        { org_name_long => configuration.organization_name_short }
       end
 
       def metadata_committee(node, xml)
         return unless node.attr("committee-en") || node.attr("committee-fr")
+
         xml.editorialgroup do |a|
           metadata_committee1(node, a)
-          metadata_committee2(node, a)
+          i = 2
+          while node.attr("committee-en_#{i}") || node.attr("committee-fr_#{i}")
+            metadata_committee2(node, a, i)
+            i += 1
+          end
           metadata_workgroup(node, a)
         end
       end
 
-      def metadata_committee1(node, a)
-        a.committee **attr_code(acronym: node.attr("committee-acronym")) do |c|
+      def metadata_committee1(node, xml)
+        xml.committee **attr_code(acronym:
+                                  node.attr("committee-acronym")) do |c|
           e = node.attr("committee-en") and
             c.variant e, language: "en", script: "Latn"
           e = node.attr("committee-fr") and
@@ -40,24 +46,25 @@ module Asciidoctor
         end
       end
 
-      def metadata_committee2(node, a)
-        i = 2
-        while node.attr("committee-en_#{i}") || node.attr("committee-fr_#{i}")  do
-          a.committee **attr_code(acronym: node.attr("committee-acronym_#{i}")) do |c|
-            e = node.attr("committee-en_#{i}") and c.variant e, language: "en", script: "Latn"
-            e = node.attr("committee-fr_#{i}") and c.variant e, language: "fr", script: "Latn"
+      def metadata_committee2(node, xml, num)
+        xml.committee **attr_code(acronym:
+                                  node.attr("committee-acronym_#{num}")) do |c|
+          %w(en fr).each do |lg|
+            e = node.attr("committee-#{lg}_#{num}") and
+              c.variant e, language: lg, script: "Latn"
           end
-          i += 1
         end
       end
 
-      def metadata_workgroup(node, a)
-        a.workgroup node.attr("workgroup"),
-          **attr_code(acronym: node.attr("workgroup-acronym"))
+      def metadata_workgroup(node, xml)
+        xml.workgroup(node.attr("workgroup"),
+                      **attr_code(acronym: node.attr("workgroup-acronym")))
         i = 2
-        while node.attr("workgroup_#{i}") do
-          a.workgroup node.attr("workgroup_#{i}"),
+        while node.attr("workgroup_#{i}")
+          xml.workgroup(
+            node.attr("workgroup_#{i}"),
             **attr_code(acronym: node.attr("workgroup-acronym_#{i}"))
+          )
           i += 1
         end
       end
@@ -76,13 +83,14 @@ module Asciidoctor
         draft = node.attr("supersedes-draft#{suffix}")
         edition = node.attr("supersedes-edition#{suffix}")
         return false unless d || draft || edition
+
         relation_supersedes_self1(xml, d, edition, draft)
       end
 
-      def relation_supersedes_self1(xml, d, edition, draft)
+      def relation_supersedes_self1(xml, date, edition, draft)
         xml.relation **{ type: "supersedes" } do |r|
           r.bibitem do |b|
-            d and b.date d, **{ type: edition ? "published" : "circulated" }
+            date and b.date date, **{ type: edition ? "published" : "circulated" }
             edition and b.edition edition
             draft and b.version do |v|
               v.draft draft
@@ -91,13 +99,13 @@ module Asciidoctor
         end
       end
 
-      def personal_role(node, c, suffix)
+      def personal_role(node, xml, suffix)
         role = node.attr("role#{suffix}") || "author"
         unless %w(author editor).include?(role.downcase)
           desc = role
           role = "editor"
         end
-        c.role desc, **{ type: role.downcase }
+        xml.role desc, **{ type: role.downcase }
       end
 
       def title(node, xml)
@@ -106,7 +114,7 @@ module Asciidoctor
           xml.title **attr_code(at.merge(type: "main")) do |t1|
             t1 << Metanorma::Utils::asciidoc_sub(node.attr("title-#{lang}"))
           end
-          %w(cover appendix annex part subpart).each do |w|
+          %w(cover appendix annex part subpart provenance).each do |w|
             typed_title(node, xml, lang, w)
           end
         end
@@ -115,6 +123,7 @@ module Asciidoctor
       def typed_title(node, xml, lang, type)
         at = { language: lang, format: "text/plain" }
         return unless title = node.attr("title-#{type}-#{lang}")
+
         xml.title **attr_code(at.merge(type: type)) do |t1|
           t1 << Metanorma::Utils::asciidoc_sub(title)
         end
@@ -130,13 +139,13 @@ module Asciidoctor
 
       def inline_anchor_xref_attrs(node)
         flags = %w(pagenumber nosee nopage).each_with_object({}) do |w, m|
-          if /#{w}%/.match(node.text)
+          if /#{w}%/.match?(node.text)
             node.text = node.text.sub(/#{w}%/, "")
             m[w] = true
           end
         end
         ret = super
-        flags.keys.each { |k| ret[k.to_sym] = true }
+        flags.each_key { |k| ret[k.to_sym] = true }
         ret
       end
 
@@ -154,8 +163,7 @@ module Asciidoctor
         super.merge(attr_code(start: node.attr("start")))
       end
 
-      def section_names_terms_cleanup(x)
-      end
+      def section_names_terms_cleanup(xml); end
 
       def committee_validate(xml)
         committees = Array(configuration&.committees) || return
@@ -173,7 +181,9 @@ module Asciidoctor
       end
 
       def boilerplate_file(xmldoc)
-        return super unless xmldoc&.at("//bibdata/ext/editorialgroup/committee/@acronym")&.value == "JCGM"
+        return super unless xmldoc&.at("//bibdata/ext/editorialgroup/"\
+                                       "committee/@acronym")&.value == "JCGM"
+
         File.join(File.dirname(__FILE__), "boilerplate-jcgm-en.xml")
       end
 
@@ -183,11 +193,11 @@ module Asciidoctor
       end
 
       def outputs(node, ret)
-        File.open(@filename + ".xml", "w:UTF-8") { |f| f.write(ret) }
-        presentation_xml_converter(node).convert(@filename + ".xml")
-        html_converter(node).convert(@filename + ".presentation.xml",
+        File.open("#{@filename}.xml", "w:UTF-8") { |f| f.write(ret) }
+        presentation_xml_converter(node).convert("#{@filename}.xml")
+        html_converter(node).convert("#{@filename}.presentation.xml",
                                      nil, false, "#{@filename}.html")
-        pdf_converter(node)&.convert(@filename + ".presentation.xml",
+        pdf_converter(node)&.convert("#{@filename}.presentation.xml",
                                      nil, false, "#{@filename}.pdf")
       end
 
@@ -201,6 +211,7 @@ module Asciidoctor
 
       def pdf_converter(node)
         return nil if node.attr("no-pdf")
+
         IsoDoc::BIPM::PdfConvert.new(doc_extract_attributes(node))
       end
     end

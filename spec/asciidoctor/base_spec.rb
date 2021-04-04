@@ -108,6 +108,8 @@ RSpec.describe Asciidoctor::BIPM do
       :title-part-fr: Partie
       :title-subpart-en: Subpart
       :title-subpart-fr: Subpartie
+      :title-provenance-en: Provenance-en
+      :title-provenance-fr: Provenance-fr
       :partnumber: 2
       :appendix-id: ABC
       :annex-id: DEF
@@ -155,12 +157,14 @@ RSpec.describe Asciidoctor::BIPM do
           <title format="text/plain" language="en" type="annex">Main Title (SI) Annex</title>
           <title format="text/plain" language="en" type="part">Part</title>
           <title format="text/plain" language="en" type="subpart">Subpart</title>
+          <title format="text/plain" language="en" type="provenance">Provenance-en</title>
           <title format="text/plain" language="fr" type="main">Chef Title</title>
           <title format="text/plain" language="fr" type="cover">Chef Title (SI)</title>
           <title format="text/plain" language="fr" type="appendix">Chef Title (SI)</title>
           <title format="text/plain" language="fr" type="annex">Chef Title (SI) Annexe</title>
           <title format="text/plain" language="fr" type="part">Partie</title>
           <title format="text/plain" language="fr" type="subpart">Subpartie</title>
+          <title format="text/plain" language="fr" type="provenance">Provenance-fr</title>
           <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
           <docnumber>1000</docnumber>
           <date type="implemented">
