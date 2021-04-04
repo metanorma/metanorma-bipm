@@ -4,6 +4,8 @@ see: see
 see_also: see also
 clause: Chapter
 subclause: Section
+clause_jcgm: Clause
+subclause_jcgm: Clause
 formula: Equation
 inequality: Inequality
 bibliography: References
@@ -13,4 +15,5 @@ norm_with_refs_pref:
       For dated references, only the edition cited applies.
       For undated references, the latest edition of the referenced
       document (including any amendments) applies.
-
+all_rights_reserved: All rights reserved
+table_of_contents: Contents
