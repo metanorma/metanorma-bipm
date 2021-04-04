@@ -186,6 +186,8 @@ module Asciidoctor
         File.join(File.dirname(__FILE__), "boilerplate-jcgm-en.xml")
       end
 
+      def section_names_refs_cleanup(xml); end
+
       def mathml_mi_italics
         { uppergreek: false, upperroman: false,
           lowergreek: false, lowerroman: true }

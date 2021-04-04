@@ -971,11 +971,11 @@ RSpec.describe Asciidoctor::BIPM do
         </annex>
         <bibliography>
           <references id='_' normative='true' obligation='informative'>
-            <title>Normative references</title>
+            <title>Normative References</title>
             <p id='_'>There are no normative references in this document.</p>
           </references>
           <clause id='_' obligation='informative'>
-            <title>References</title>
+            <title>Bibliography</title>
             <references id='_' normative='false' obligation='informative'>
               <title>Bibliography Subsection</title>
             </references>
@@ -1164,11 +1164,11 @@ RSpec.describe Asciidoctor::BIPM do
  </annex>
  <bibliography>
    <references id='_' normative='true' obligation='informative'>
-     <title>Normative references</title>
+     <title>Normative References</title>
      <p id='_'>There are no normative references in this document.</p>
    </references>
    <clause id='_' obligation='informative'>
-     <title>References</title>
+     <title>Bibliography</title>
      <references id='_' normative='false' obligation='informative'>
        <title>Bibliography Subsection</title>
      </references>
