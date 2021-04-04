@@ -90,7 +90,8 @@ module Asciidoctor
       def relation_supersedes_self1(xml, date, edition, draft)
         xml.relation **{ type: "supersedes" } do |r|
           r.bibitem do |b|
-            date and b.date date, **{ type: edition ? "published" : "circulated" }
+            date and b.date(date,
+                            **{ type: edition ? "published" : "circulated" })
             edition and b.edition edition
             draft and b.version do |v|
               v.draft draft
@@ -163,8 +164,6 @@ module Asciidoctor
         super.merge(attr_code(start: node.attr("start")))
       end
 
-      def section_names_terms_cleanup(xml); end
-
       def committee_validate(xml)
         committees = Array(configuration&.committees) || return
         committees.empty? and return
@@ -185,6 +184,21 @@ module Asciidoctor
 
         File.join(File.dirname(__FILE__), "boilerplate-jcgm-en.xml")
       end
+
+      def sections_cleanup(xml)
+        super
+        jcgm_untitled_sections_cleanup(xml) if @jcgm
+      end
+
+      def jcgm_untitled_sections_cleanup(xml)
+        xml.xpath("//clause//clause | //annex//clause").each do |c|
+          next if !c&.at("./title")&.text&.empty?
+
+          c["inline-header"] = true
+        end
+      end
+
+      def section_names_terms_cleanup(xml); end
 
       def section_names_refs_cleanup(xml); end
 

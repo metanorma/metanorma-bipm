@@ -860,6 +860,8 @@ RSpec.describe Asciidoctor::BIPM do
       === Introduction
 
       === Clause 4.2
+      
+      === {blank}
 
       == Terms and Definitions
 
@@ -958,6 +960,7 @@ RSpec.describe Asciidoctor::BIPM do
             <clause id='_' obligation='normative'>
               <title>Clause 4.2</title>
             </clause>
+            <clause id='_' obligation='normative'> </clause>
           </clause>
           <clause id='_' obligation='normative'>
             <title>Terms and Definitions</title>
@@ -1053,6 +1056,8 @@ RSpec.describe Asciidoctor::BIPM do
       === Introduction
 
       === Clause 4.2
+
+      === {blank}
 
       == Terms and Definitions
 
@@ -1151,6 +1156,7 @@ RSpec.describe Asciidoctor::BIPM do
      <clause id='_' obligation='normative'>
        <title>Clause 4.2</title>
      </clause>
+     <clause id='_' obligation='normative' inline-header='true'> </clause>
    </clause>
    <clause id='_' obligation='normative'>
      <title>Terms and Definitions</title>
