@@ -28,7 +28,7 @@ module IsoDoc
                       "m" => configuration.document_namespace) &&
             docxml.at("//m:bipm-standard/m:bibdata/m:language[@current = 'true'][. = 'en']",
                       "m" => configuration.document_namespace)
-          "--split-by-language"
+          super + " --split-by-language"
         else
           super
         end
