@@ -4631,12 +4631,18 @@
 				
 	</xsl:attribute-set><xsl:attribute-set name="admitted-style">
 		
-	
+		
 	</xsl:attribute-set><xsl:attribute-set name="deprecates-style">
 		
 	</xsl:attribute-set><xsl:attribute-set name="definition-style">
 		
 		
+	</xsl:attribute-set><xsl:attribute-set name="add-style">
+		<xsl:attribute name="color">red</xsl:attribute>
+		<xsl:attribute name="text-decoration">underline</xsl:attribute>
+	</xsl:attribute-set><xsl:attribute-set name="del-style">
+		<xsl:attribute name="color">red</xsl:attribute>
+		<xsl:attribute name="text-decoration">line-through</xsl:attribute>
 	</xsl:attribute-set><xsl:template name="processPrefaceSectionsDefault_Contents">
 		<xsl:apply-templates select="/*/*[local-name()='preface']/*[local-name()='abstract']" mode="contents"/>
 		<xsl:apply-templates select="/*/*[local-name()='preface']/*[local-name()='foreword']" mode="contents"/>
@@ -6102,8 +6108,12 @@
 		<fo:inline text-decoration="underline">
 			<xsl:apply-templates/>
 		</fo:inline>
+	</xsl:template><xsl:template match="*[local-name()='add']">
+		<fo:inline xsl:use-attribute-sets="add-style">
+			<xsl:apply-templates/>
+		</fo:inline>
 	</xsl:template><xsl:template match="*[local-name()='del']">
-		<fo:inline font-size="10pt" color="red" text-decoration="line-through">
+		<fo:inline xsl:use-attribute-sets="del-style">
 			<xsl:apply-templates/>
 		</fo:inline>
 	</xsl:template><xsl:template match="*[local-name()='hi']">
@@ -6741,25 +6751,37 @@
 			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'image']">
-		<fo:block xsl:use-attribute-sets="image-style">
-			
-			
-			<xsl:variable name="src">
-				<xsl:choose>
-					<xsl:when test="@mimetype = 'image/svg+xml' and $images/images/image[@id = current()/@id]">
-						<xsl:value-of select="$images/images/image[@id = current()/@id]/@src"/>
-					</xsl:when>
-					<xsl:when test="not(starts-with(@src, 'data:'))">
-						<xsl:value-of select="concat('url(file:',$basepath, @src, ')')"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="@src"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			
-			<fo:external-graphic src="{$src}" fox:alt-text="Image {@alt}" xsl:use-attribute-sets="image-graphic-style"/>
-		</fo:block>
+		<xsl:choose>
+			<xsl:when test="ancestor::*[local-name() = 'title']">
+				<fo:inline padding-left="1mm" padding-right="1mm">
+					<xsl:variable name="src">
+						<xsl:call-template name="image_src"/>
+					</xsl:variable>
+					<fo:external-graphic src="{$src}" fox:alt-text="Image {@alt}" vertical-align="middle"/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:block xsl:use-attribute-sets="image-style">
+					
+					<xsl:variable name="src">
+						<xsl:call-template name="image_src"/>
+					</xsl:variable>
+					<fo:external-graphic src="{$src}" fox:alt-text="Image {@alt}" xsl:use-attribute-sets="image-graphic-style"/>
+				</fo:block>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template><xsl:template name="image_src">
+		<xsl:choose>
+			<xsl:when test="@mimetype = 'image/svg+xml' and $images/images/image[@id = current()/@id]">
+				<xsl:value-of select="$images/images/image[@id = current()/@id]/@src"/>
+			</xsl:when>
+			<xsl:when test="not(starts-with(@src, 'data:'))">
+				<xsl:value-of select="concat('url(file:',$basepath, @src, ')')"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="@src"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |                *[local-name() = 'table']/*[local-name() = 'name'] |               *[local-name() = 'permission']/*[local-name() = 'name'] |               *[local-name() = 'recommendation']/*[local-name() = 'name'] |               *[local-name() = 'requirement']/*[local-name() = 'name']" mode="contents">		
 		<xsl:apply-templates mode="contents"/>
 		<xsl:text> </xsl:text>
