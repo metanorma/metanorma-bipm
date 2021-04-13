@@ -1735,37 +1735,37 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     output = xmlpp(<<~"OUTPUT")
-    #{HTML_HDR}
-          <p class='zzSTDTitle1'>Main Title</p>
-          <div class='doccontrol'>
-            <h1>Document Control</h1>
-            <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
-               <tbody>
-                 <tr>
-                   <th style='font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;' scope='row'>Authors:</th>
-                   <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
-                   <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
-                 </tr>
-                 <tr>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 1.0 Version 1.0</td>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2018-06-11</td>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
-                 </tr>
-                 <tr>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 2.0 Version 2.0</td>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2019-06-11</td>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N chair: Andrew Yacoot (NPL)</td>
-                 </tr>
-                 <tr>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 3.0 </td>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2019-06-11</td>
-                   <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
-                 </tr>
-               </tbody>
-             </table>
+      #{HTML_HDR}
+            <p class='zzSTDTitle1'>Main Title</p>
+            <div class='doccontrol'>
+              <h1>Document Control</h1>
+              <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
+                 <tbody>
+                   <tr>
+                     <th style='font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;' scope='row'>Authors:</th>
+                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
+                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
+                   </tr>
+                   <tr>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 1.0 Version 1.0</td>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2018-06-11</td>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
+                   </tr>
+                   <tr>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 2.0 Version 2.0</td>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2019-06-11</td>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N chair: Andrew Yacoot (NPL)</td>
+                   </tr>
+                   <tr>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 3.0 </td>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2019-06-11</td>
+                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
+                   </tr>
+                 </tbody>
+               </table>
+            </div>
           </div>
-        </div>
-      </body>
+        </body>
     OUTPUT
 
     stripped_html =
@@ -2810,414 +2810,547 @@ RSpec.describe IsoDoc::BIPM do
   it "cross-references formulae" do
     expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", <<~"INPUT", true))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-         <iso-standard xmlns="http://riboseinc.com/isoxml">
+           <iso-standard xmlns="http://riboseinc.com/isoxml">
+            <preface>
+            <foreword>
+            <p>
+            <xref target="N1"/>
+            <xref target="N2"/>
+            <xref target="N"/>
+            <xref target="note1"/>
+            <xref target="note2"/>
+            <xref target="AN"/>
+            <xref target="Anote1"/>
+            <xref target="Anote2"/>
+            </p>
+            </foreword>
+            <introduction id="intro">
+            <formula id="N1">
+          <stem type="AsciiMath">r = 1 %</stem>
+          </formula>
+          <clause id="xyz"><title>Preparatory</title>
+            <formula id="N2" unnumbered="true">
+          <stem type="AsciiMath">r = 1 %</stem>
+          </formula>
+        </clause>
+            </introduction>
+            </preface>
+            <sections>
+            <clause id="scope" type="scope"><title>Scope</title>
+            <formula id="N">
+          <stem type="AsciiMath">r = 1 %</stem>
+          </formula>
+          <p><xref target="N"/></p>
+            </clause>
+            <terms id="terms"/>
+            <clause id="widgets"><title>Widgets</title>
+            <clause id="widgets1">
+            <formula id="note1">
+          <stem type="AsciiMath">r = 1 %</stem>
+          </formula>
+            <formula id="note2">
+          <stem type="AsciiMath">r = 1 %</stem>
+          </formula>
+          <p>    <xref target="note1"/> <xref target="note2"/> </p>
+            </clause>
+            </clause>
+            </sections>
+            <annex id="annex1">
+            <clause id="annex1a">
+            <formula id="AN">
+          <stem type="AsciiMath">r = 1 %</stem>
+          </formula>
+            </clause>
+            <clause id="annex1b">
+            <formula id="Anote1" unnumbered="true">
+          <stem type="AsciiMath">r = 1 %</stem>
+          </formula>
+            <formula id="Anote2">
+          <stem type="AsciiMath">r = 1 %</stem>
+          </formula>
+            </clause>
+            </annex>
+            </iso-standard>
+      INPUT
+        <?xml version='1.0'?>
+        <iso-standard xmlns='http://riboseinc.com/isoxml' type="presentation">
           <preface>
-          <foreword>
-          <p>
-          <xref target="N1"/>
-          <xref target="N2"/>
-          <xref target="N"/>
-          <xref target="note1"/>
-          <xref target="note2"/>
-          <xref target="AN"/>
-          <xref target="Anote1"/>
-          <xref target="Anote2"/>
-          </p>
-          </foreword>
-          <introduction id="intro">
-          <formula id="N1">
-        <stem type="AsciiMath">r = 1 %</stem>
-        </formula>
-        <clause id="xyz"><title>Preparatory</title>
-          <formula id="N2" unnumbered="true">
-        <stem type="AsciiMath">r = 1 %</stem>
-        </formula>
-      </clause>
-          </introduction>
+            <foreword>
+              <p>
+                <xref target='N1'>Equation (1)</xref>
+        <xref target='N2'>Equation ((??))</xref>
+        <xref target='N'>Equation (2)</xref>
+        <xref target='note1'>Equation (3)</xref>
+        <xref target='note2'>Equation (4)</xref>
+        <xref target='AN'>Equation (1.1)</xref>
+        <xref target='Anote1'>Equation ((??))</xref>
+        <xref target='Anote2'>Equation (1.2)</xref>
+              </p>
+            </foreword>
+            <introduction id='intro'>
+              <formula id='N1'>
+                <name>1</name>
+                <stem type='AsciiMath'>r = 1 %</stem>
+              </formula>
+              <clause id='xyz'>
+                <title depth='2'>Preparatory</title>
+                <formula id='N2' unnumbered='true'>
+                  <stem type='AsciiMath'>r = 1 %</stem>
+                </formula>
+              </clause>
+            </introduction>
           </preface>
           <sections>
-          <clause id="scope" type="scope"><title>Scope</title>
-          <formula id="N">
-        <stem type="AsciiMath">r = 1 %</stem>
-        </formula>
-        <p><xref target="N"/></p>
-          </clause>
-          <terms id="terms"/>
-          <clause id="widgets"><title>Widgets</title>
-          <clause id="widgets1">
-          <formula id="note1">
-        <stem type="AsciiMath">r = 1 %</stem>
-        </formula>
-          <formula id="note2">
-        <stem type="AsciiMath">r = 1 %</stem>
-        </formula>
-        <p>    <xref target="note1"/> <xref target="note2"/> </p>
-          </clause>
-          </clause>
-          </sections>
-          <annex id="annex1">
-          <clause id="annex1a">
-          <formula id="AN">
-        <stem type="AsciiMath">r = 1 %</stem>
-        </formula>
-          </clause>
-          <clause id="annex1b">
-          <formula id="Anote1" unnumbered="true">
-        <stem type="AsciiMath">r = 1 %</stem>
-        </formula>
-          <formula id="Anote2">
-        <stem type="AsciiMath">r = 1 %</stem>
-        </formula>
-          </clause>
-          </annex>
-          </iso-standard>
-    INPUT
-      <?xml version='1.0'?>
-      <iso-standard xmlns='http://riboseinc.com/isoxml' type="presentation">
-        <preface>
-          <foreword>
-            <p>
-              <xref target='N1'>Equation (1)</xref>
-      <xref target='N2'>Equation ((??))</xref>
-      <xref target='N'>Equation (2)</xref>
-      <xref target='note1'>Equation (3)</xref>
-      <xref target='note2'>Equation (4)</xref>
-      <xref target='AN'>Equation (1.1)</xref>
-      <xref target='Anote1'>Equation ((??))</xref>
-      <xref target='Anote2'>Equation (1.2)</xref>
-            </p>
-          </foreword>
-          <introduction id='intro'>
-            <formula id='N1'>
-              <name>1</name>
-              <stem type='AsciiMath'>r = 1 %</stem>
-            </formula>
-            <clause id='xyz'>
-              <title depth='2'>Preparatory</title>
-              <formula id='N2' unnumbered='true'>
-                <stem type='AsciiMath'>r = 1 %</stem>
-              </formula>
-            </clause>
-          </introduction>
-        </preface>
-        <sections>
-          <clause id='scope' type="scope">
-          <title depth='1'>
-        1.
-        <tab/>
-        Scope
-      </title>
-            <formula id='N'>
-              <name>2</name>
-              <stem type='AsciiMath'>r = 1 %</stem>
-            </formula>
-            <p>
-            <xref target='N'>Equation (2)</xref>
-            </p>
-          </clause>
-          <terms id='terms'>
-        <title>2.</title>
-      </terms>
-          <clause id='widgets'>
+            <clause id='scope' type="scope">
             <title depth='1'>
-        3.
-        <tab/>
-        Widgets
-      </title>
-            <clause id='widgets1'><title>3.1.</title>
-              <formula id='note1'>
-                <name>3</name>
-                <stem type='AsciiMath'>r = 1 %</stem>
-              </formula>
-              <formula id='note2'>
-                <name>4</name>
+          1.
+          <tab/>
+          Scope
+        </title>
+              <formula id='N'>
+                <name>2</name>
                 <stem type='AsciiMath'>r = 1 %</stem>
               </formula>
               <p>
-                <xref target='note1'>Equation (3)</xref>
-      <xref target='note2'>Equation (4)</xref>
+              <xref target='N'>Equation (2)</xref>
               </p>
             </clause>
-          </clause>
-        </sections>
-        <annex id='annex1'>
-        <title>
-        <strong>Appendix 1</strong>
-      </title>
-          <clause id='annex1a'><title>1.1.</title>
-            <formula id='AN'>
-              <name>1.1</name>
-              <stem type='AsciiMath'>r = 1 %</stem>
-            </formula>
-          </clause>
-          <clause id='annex1b'><title>1.2.</title>
-            <formula id='Anote1' unnumbered='true'>
-              <stem type='AsciiMath'>r = 1 %</stem>
-            </formula>
-            <formula id='Anote2'>
-              <name>1.2</name>
-              <stem type='AsciiMath'>r = 1 %</stem>
-            </formula>
-          </clause>
-        </annex>
-      </iso-standard>
-    OUTPUT
+            <terms id='terms'>
+          <title>2.</title>
+        </terms>
+            <clause id='widgets'>
+              <title depth='1'>
+          3.
+          <tab/>
+          Widgets
+        </title>
+              <clause id='widgets1'><title>3.1.</title>
+                <formula id='note1'>
+                  <name>3</name>
+                  <stem type='AsciiMath'>r = 1 %</stem>
+                </formula>
+                <formula id='note2'>
+                  <name>4</name>
+                  <stem type='AsciiMath'>r = 1 %</stem>
+                </formula>
+                <p>
+                  <xref target='note1'>Equation (3)</xref>
+        <xref target='note2'>Equation (4)</xref>
+                </p>
+              </clause>
+            </clause>
+          </sections>
+          <annex id='annex1'>
+          <title>
+          <strong>Appendix 1</strong>
+        </title>
+            <clause id='annex1a'><title>1.1.</title>
+              <formula id='AN'>
+                <name>1.1</name>
+                <stem type='AsciiMath'>r = 1 %</stem>
+              </formula>
+            </clause>
+            <clause id='annex1b'><title>1.2.</title>
+              <formula id='Anote1' unnumbered='true'>
+                <stem type='AsciiMath'>r = 1 %</stem>
+              </formula>
+              <formula id='Anote2'>
+                <name>1.2</name>
+                <stem type='AsciiMath'>r = 1 %</stem>
+              </formula>
+            </clause>
+          </annex>
+        </iso-standard>
+      OUTPUT
   end
 
   it "cross-references sections" do
-      expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
-        .convert("test", <<~"INPUT", true).sub(%r{^.*<foreword}m, "<foreword").sub(%r{</foreword>.*$}m, "</foreword>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
-            <preface>
-              <foreword obligation="informative">
-                <title>Foreword</title>
-                <p id="A">This is a preamble
-                  <xref target="C"/>
-                  <xref target="C1"/>
-                  <xref target="D"/>
-                  <xref target="H"/>
-                  <xref target="I"/>
-                  <xref target="J"/>
-                  <xref target="K"/>
-                  <xref target="L"/>
-                  <xref target="M"/>
-                  <xref target="N"/>
-                  <xref target="O"/>
-                  <xref target="P"/>
-                  <xref target="Q"/>
-                  <xref target="Q1"/>
-                  <xref target="Q2"/>
-                  <xref target="Q3"/>
-                  <xref target="R"/></p>
-              </foreword>
-              <introduction id="B" obligation="informative">
-                <title>Introduction</title>
-                <clause id="C" inline-header="false" obligation="informative">
-                  <title>Introduction Subsection</title>
-                </clause>
-                <clause id="C1" inline-header="false" obligation="informative">Text</clause>
-              </introduction>
-            </preface>
-            <sections>
-              <clause id="D" obligation="normative" type="scope">
-                <title>Scope</title>
-                <p id="E">Text</p>
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", <<~"INPUT", true).sub(%r{^.*<foreword}m, "<foreword").sub(%r{</foreword>.*$}m, "</foreword>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <preface>
+            <foreword obligation="informative">
+              <title>Foreword</title>
+              <p id="A">This is a preamble
+                <xref target="C"/>
+                <xref target="C1"/>
+                <xref target="D"/>
+                <xref target="H"/>
+                <xref target="I"/>
+                <xref target="J"/>
+                <xref target="K"/>
+                <xref target="L"/>
+                <xref target="M"/>
+                <xref target="N"/>
+                <xref target="O"/>
+                <xref target="P"/>
+                <xref target="Q"/>
+                <xref target="Q1"/>
+                <xref target="Q2"/>
+                <xref target="Q3"/>
+                <xref target="R"/></p>
+            </foreword>
+            <introduction id="B" obligation="informative">
+              <title>Introduction</title>
+              <clause id="C" inline-header="false" obligation="informative">
+                <title>Introduction Subsection</title>
               </clause>
-              <terms id="H" obligation="normative">
-                <title>Terms, definitions, symbols and abbreviated terms</title>
-                <terms id="I" obligation="normative">
-                  <title>Normal Terms</title>
-                  <term id="J">
-                    <preferred>Term2</preferred>
-                  </term>
-                </terms>
-                <definitions id="K">
-                  <dl>
-                    <dt>Symbol</dt>
-                    <dd>Definition</dd>
-                  </dl>
-                </definitions>
+              <clause id="C1" inline-header="false" obligation="informative">Text</clause>
+            </introduction>
+          </preface>
+          <sections>
+            <clause id="D" obligation="normative" type="scope">
+              <title>Scope</title>
+              <p id="E">Text</p>
+            </clause>
+            <terms id="H" obligation="normative">
+              <title>Terms, definitions, symbols and abbreviated terms</title>
+              <terms id="I" obligation="normative">
+                <title>Normal Terms</title>
+                <term id="J">
+                  <preferred>Term2</preferred>
+                </term>
               </terms>
-              <definitions id="L">
+              <definitions id="K">
                 <dl>
                   <dt>Symbol</dt>
                   <dd>Definition</dd>
                 </dl>
               </definitions>
-              <clause id="M" inline-header="false" obligation="normative">
-                <title>Clause 4</title>
-                <clause id="N" inline-header="false" obligation="normative">
-                  <title>Introduction</title>
-                </clause>
-                <clause id="O" inline-header="false" obligation="normative">
-                  <title>Clause 4.2</title>
-                </clause>
+            </terms>
+            <definitions id="L">
+              <dl>
+                <dt>Symbol</dt>
+                <dd>Definition</dd>
+              </dl>
+            </definitions>
+            <clause id="M" inline-header="false" obligation="normative">
+              <title>Clause 4</title>
+              <clause id="N" inline-header="false" obligation="normative">
+                <title>Introduction</title>
               </clause>
-            </sections>
-            <annex id="P" inline-header="false" obligation="normative">
-              <title>Annex</title>
-              <clause id="Q" inline-header="false" obligation="normative">
-                <title>Annex A.1</title>
-                <clause id="Q1" inline-header="false" obligation="normative">
-                  <title>Annex A.1a</title>
-                </clause>
+              <clause id="O" inline-header="false" obligation="normative">
+                <title>Clause 4.2</title>
               </clause>
-              <appendix id="Q2" inline-header="false" obligation="normative">
-                <title>An Appendix</title>
-                <clause id="Q3" inline-header="false" obligation="normative">
-                  <title>Appendix subclause</title>
-                </clause>
-              </appendix>
-            </annex>
-            <bibliography>
-              <references id="R" normative="true" obligation="informative">
-                <title>Normative References</title>
+            </clause>
+          </sections>
+          <annex id="P" inline-header="false" obligation="normative">
+            <title>Annex</title>
+            <clause id="Q" inline-header="false" obligation="normative">
+              <title>Annex A.1</title>
+              <clause id="Q1" inline-header="false" obligation="normative">
+                <title>Annex A.1a</title>
+              </clause>
+            </clause>
+            <appendix id="Q2" inline-header="false" obligation="normative">
+              <title>An Appendix</title>
+              <clause id="Q3" inline-header="false" obligation="normative">
+                <title>Appendix subclause</title>
+              </clause>
+            </appendix>
+          </annex>
+          <bibliography>
+            <references id="R" normative="true" obligation="informative">
+              <title>Normative References</title>
+            </references>
+            <clause id="S" obligation="informative">
+              <title>Bibliography</title>
+              <references id="T" normative="false" obligation="informative">
+                <title>Bibliography Subsection</title>
               </references>
-              <clause id="S" obligation="informative">
-                <title>Bibliography</title>
-                <references id="T" normative="false" obligation="informative">
-                  <title>Bibliography Subsection</title>
-                </references>
-              </clause>
-            </bibliography>
-          </iso-standard>
-        INPUT
-          <foreword obligation="informative">
-      <title>Foreword</title>
-      <p id="A">This is a preamble
-        <xref target="C">Introduction Subsection</xref>
-        <xref target="C1">Introduction, 2</xref>
-        <xref target="D">Chapter 1</xref>
-        <xref target="H">Chapter 2</xref>
-        <xref target="I">Section 2.1</xref>
-        <xref target="J">Section 2.1.1</xref>
-        <xref target="K">Section 2.2</xref>
-        <xref target="L">Chapter 3</xref>
-        <xref target="M">Chapter 4</xref>
-        <xref target="N">Section 4.1</xref>
-        <xref target="O">Section 4.2</xref>
-        <xref target="P">Appendix 1</xref>
-        <xref target="Q">Appendix 1.1</xref>
-        <xref target="Q1">Appendix 1.1.1</xref>
-        <xref target="Q2">[Q2]</xref>
-        <xref target="Q3">[Q3]</xref>
-        <xref target="R">Chapter 2</xref></p>
-    </foreword>
-        OUTPUT
-      end
+            </clause>
+          </bibliography>
+        </iso-standard>
+      INPUT
+              <foreword obligation="informative">
+          <title>Foreword</title>
+          <p id="A">This is a preamble
+            <xref target="C">Introduction Subsection</xref>
+            <xref target="C1">Introduction, 2</xref>
+            <xref target="D">Chapter 1</xref>
+            <xref target="H">Chapter 2</xref>
+            <xref target="I">Section 2.1</xref>
+            <xref target="J">Section 2.1.1</xref>
+            <xref target="K">Section 2.2</xref>
+            <xref target="L">Chapter 3</xref>
+            <xref target="M">Chapter 4</xref>
+            <xref target="N">Section 4.1</xref>
+            <xref target="O">Section 4.2</xref>
+            <xref target="P">Appendix 1</xref>
+            <xref target="Q">Appendix 1.1</xref>
+            <xref target="Q1">Appendix 1.1.1</xref>
+            <xref target="Q2">[Q2]</xref>
+            <xref target="Q3">[Q3]</xref>
+            <xref target="R">Chapter 2</xref></p>
+        </foreword>
+      OUTPUT
+  end
 
-    it "cross-references sections in JCGM" do
-      expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
-        .convert("test", <<~"INPUT", true).sub(%r{^.*<foreword}m, "<foreword").sub(%r{</foreword>.*$}m, "</foreword>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+  it "cross-references sections in JCGM" do
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", <<~"INPUT", true).sub(%r{^.*<foreword}m, "<foreword").sub(%r{</foreword>.*$}m, "</foreword>"))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        <iso-standard xmlns="http://riboseinc.com/isoxml">
+        <bibdata>
+        <ext>
+          <editorialgroup>
+            <committee acronym="JCGM">
+              <variant language="en" script="Latn">TC</variant>
+              <variant language="fr" script="Latn">CT</variant>
+            </committee>
+            <workgroup acronym="B">WC</committee>
+          </editorialgroup>
+         </ext>
+         </bibdata>
+          <preface>
+            <foreword obligation="informative">
+              <title>Foreword</title>
+              <p id="A">This is a preamble
+                <xref target="C"/>
+                <xref target="C1"/>
+                <xref target="D"/>
+                <xref target="H"/>
+                <xref target="I"/>
+                <xref target="J"/>
+                <xref target="K"/>
+                <xref target="L"/>
+                <xref target="M"/>
+                <xref target="N"/>
+                <xref target="O"/>
+                <xref target="P"/>
+                <xref target="Q"/>
+                <xref target="Q1"/>
+                <xref target="Q2"/>
+                <xref target="Q3"/>
+                <xref target="R"/></p>
+            </foreword>
+            <introduction id="B" obligation="informative">
+              <title>Introduction</title>
+              <clause id="C" inline-header="false" obligation="informative">
+                <title>Introduction Subsection</title>
+              </clause>
+              <clause id="C1" inline-header="false" obligation="informative">Text</clause>
+            </introduction>
+          </preface>
+          <sections>
+            <clause id="D" obligation="normative" type="scope">
+              <title>Scope</title>
+              <p id="E">Text</p>
+            </clause>
+            <terms id="H" obligation="normative">
+              <title>Terms, definitions, symbols and abbreviated terms</title>
+              <terms id="I" obligation="normative">
+                <title>Normal Terms</title>
+                <term id="J">
+                  <preferred>Term2</preferred>
+                </term>
+              </terms>
+              <definitions id="K">
+                <dl>
+                  <dt>Symbol</dt>
+                  <dd>Definition</dd>
+                </dl>
+              </definitions>
+            </terms>
+            <definitions id="L">
+              <dl>
+                <dt>Symbol</dt>
+                <dd>Definition</dd>
+              </dl>
+            </definitions>
+            <clause id="M" inline-header="false" obligation="normative">
+              <title>Clause 4</title>
+              <clause id="N" inline-header="false" obligation="normative">
+                <title>Introduction</title>
+              </clause>
+              <clause id="O" inline-header="false" obligation="normative">
+                <title>Clause 4.2</title>
+              </clause>
+            </clause>
+          </sections>
+          <annex id="P" inline-header="false" obligation="normative">
+            <title>Annex</title>
+            <clause id="Q" inline-header="false" obligation="normative">
+              <title>Annex A.1</title>
+              <clause id="Q1" inline-header="false" obligation="normative">
+                <title>Annex A.1a</title>
+              </clause>
+            </clause>
+            <appendix id="Q2" inline-header="false" obligation="normative">
+              <title>An Appendix</title>
+              <clause id="Q3" inline-header="false" obligation="normative">
+                <title>Appendix subclause</title>
+              </clause>
+            </appendix>
+          </annex>
+          <bibliography>
+            <references id="R" normative="true" obligation="informative">
+              <title>Normative References</title>
+            </references>
+            <clause id="S" obligation="informative">
+              <title>Bibliography</title>
+              <references id="T" normative="false" obligation="informative">
+                <title>Bibliography Subsection</title>
+              </references>
+            </clause>
+          </bibliography>
+        </iso-standard>
+      INPUT
+                <foreword obligation='informative'>
+          <title>Foreword</title>
+          <p id='A'>
+            This is a preamble
+            <xref target='C'>Introduction Subsection</xref>
+            <xref target='C1'>Introduction, 2</xref>
+            <xref target='D'>Clause 1</xref>
+            <xref target='H'>Clause 3</xref>
+            <xref target='I'>3.1</xref>
+            <xref target='J'>3.1.1</xref>
+            <xref target='K'>3.2</xref>
+            <xref target='L'>Clause 4</xref>
+            <xref target='M'>Clause 5</xref>
+            <xref target='N'>5.1</xref>
+            <xref target='O'>5.2</xref>
+            <xref target='P'>Appendix A</xref>
+            <xref target='Q'>A.1</xref>
+            <xref target='Q1'>A.1.1</xref>
+            <xref target='Q2'>[Q2]</xref>
+            <xref target='Q3'>[Q3]</xref>
+            <xref target='R'>Clause 2</xref>
+          </p>
+        </foreword>
+      OUTPUT
+  end
+
+  it "processes bibliographic localities" do
+    input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <bibdata>
+          <language>en</language>
+          <script>Latn</script>
+          </bibdata>
+          <preface><foreword>
+        <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3</referenceFrom></locality></eref>
+        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></eref>
+        <eref bibitemid="ISO712"><locality type="table"><referenceFrom>3.1</referenceFrom></locality></eref>
+        </p>
+        </foreword></preface>
+        <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
+        <bibitem id="ISO712" type="standard">
+        <title format="text/plain">Cereals or cereal products</title>
+        <title type="main" format="text/plain">Cereals and cereal products</title>
+        <docidentifier type="ISO">ISO 712</docidentifier>
+        <contributor>
+          <role type="publisher"/>
+          <organization>
+            <name>International Organization for Standardization</name>
+          </organization>
+        </contributor>
+      </bibitem>
+      </references>
+      </bibliography>
+      </iso-standard>
+    INPUT
+
+    presxml = <<~PRESXML
+      <foreword>
+        <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
+          <eref bibitemid='ISO712'>
+            <locality type='clause'>
+              <referenceFrom>3</referenceFrom>
+            </locality>
+            ISO 712, Clause 3
+          </eref>
+          <eref bibitemid='ISO712'>
+            <locality type='clause'>
+              <referenceFrom>3.1</referenceFrom>
+            </locality>
+            ISO 712, Clause 3.1
+          </eref>
+          <eref bibitemid='ISO712'>
+            <locality type='table'>
+              <referenceFrom>3.1</referenceFrom>
+            </locality>
+            ISO 712, Table 3.1
+          </eref>
+        </p>
+      </foreword>
+    PRESXML
+
+    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    .convert("test", input, true))
+    .at(".//xmlns:foreword").to_xml))
+      .to be_equivalent_to xmlpp(presxml)
+  end
+
+  it "processes bibliographic localities in JCGM" do
+    input = <<~INPUT
+          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <bibdata>
+          <language>en</language>
+          <script>Latn</script>
           <ext>
-            <editorialgroup>
-              <committee acronym="JCGM">
-                <variant language="en" script="Latn">TC</variant>
-                <variant language="fr" script="Latn">CT</variant>
-              </committee>
-              <workgroup acronym="B">WC</committee>
-            </editorialgroup>
-           </ext>
-           </bibdata>
-            <preface>
-              <foreword obligation="informative">
-                <title>Foreword</title>
-                <p id="A">This is a preamble
-                  <xref target="C"/>
-                  <xref target="C1"/>
-                  <xref target="D"/>
-                  <xref target="H"/>
-                  <xref target="I"/>
-                  <xref target="J"/>
-                  <xref target="K"/>
-                  <xref target="L"/>
-                  <xref target="M"/>
-                  <xref target="N"/>
-                  <xref target="O"/>
-                  <xref target="P"/>
-                  <xref target="Q"/>
-                  <xref target="Q1"/>
-                  <xref target="Q2"/>
-                  <xref target="Q3"/>
-                  <xref target="R"/></p>
-              </foreword>
-              <introduction id="B" obligation="informative">
-                <title>Introduction</title>
-                <clause id="C" inline-header="false" obligation="informative">
-                  <title>Introduction Subsection</title>
-                </clause>
-                <clause id="C1" inline-header="false" obligation="informative">Text</clause>
-              </introduction>
-            </preface>
-            <sections>
-              <clause id="D" obligation="normative" type="scope">
-                <title>Scope</title>
-                <p id="E">Text</p>
-              </clause>
-              <terms id="H" obligation="normative">
-                <title>Terms, definitions, symbols and abbreviated terms</title>
-                <terms id="I" obligation="normative">
-                  <title>Normal Terms</title>
-                  <term id="J">
-                    <preferred>Term2</preferred>
-                  </term>
-                </terms>
-                <definitions id="K">
-                  <dl>
-                    <dt>Symbol</dt>
-                    <dd>Definition</dd>
-                  </dl>
-                </definitions>
-              </terms>
-              <definitions id="L">
-                <dl>
-                  <dt>Symbol</dt>
-                  <dd>Definition</dd>
-                </dl>
-              </definitions>
-              <clause id="M" inline-header="false" obligation="normative">
-                <title>Clause 4</title>
-                <clause id="N" inline-header="false" obligation="normative">
-                  <title>Introduction</title>
-                </clause>
-                <clause id="O" inline-header="false" obligation="normative">
-                  <title>Clause 4.2</title>
-                </clause>
-              </clause>
-            </sections>
-            <annex id="P" inline-header="false" obligation="normative">
-              <title>Annex</title>
-              <clause id="Q" inline-header="false" obligation="normative">
-                <title>Annex A.1</title>
-                <clause id="Q1" inline-header="false" obligation="normative">
-                  <title>Annex A.1a</title>
-                </clause>
-              </clause>
-              <appendix id="Q2" inline-header="false" obligation="normative">
-                <title>An Appendix</title>
-                <clause id="Q3" inline-header="false" obligation="normative">
-                  <title>Appendix subclause</title>
-                </clause>
-              </appendix>
-            </annex>
-            <bibliography>
-              <references id="R" normative="true" obligation="informative">
-                <title>Normative References</title>
-              </references>
-              <clause id="S" obligation="informative">
-                <title>Bibliography</title>
-                <references id="T" normative="false" obligation="informative">
-                  <title>Bibliography Subsection</title>
-                </references>
-              </clause>
-            </bibliography>
-          </iso-standard>
-        INPUT
-        <foreword obligation='informative'>
-  <title>Foreword</title>
-  <p id='A'>
-    This is a preamble
-    <xref target='C'>Introduction Subsection</xref>
-    <xref target='C1'>Introduction, 2</xref>
-    <xref target='D'>Clause 1</xref>
-    <xref target='H'>Clause 3</xref>
-    <xref target='I'>3.1</xref>
-    <xref target='J'>3.1.1</xref>
-    <xref target='K'>3.2</xref>
-    <xref target='L'>Clause 4</xref>
-    <xref target='M'>Clause 5</xref>
-    <xref target='N'>5.1</xref>
-    <xref target='O'>5.2</xref>
-    <xref target='P'>Appendix A</xref>
-    <xref target='Q'>A.1</xref>
-    <xref target='Q1'>A.1.1</xref>
-    <xref target='Q2'>[Q2]</xref>
-    <xref target='Q3'>[Q3]</xref>
-    <xref target='R'>Clause 2</xref>
-  </p>
-</foreword>
-        OUTPUT
-      end
+                  <editorialgroup>
+                    <committee acronym="JCGM">
+                      <variant language="en" script="Latn">TC</variant>
+                      <variant language="fr" script="Latn">CT</variant>
+                    </committee>
+                    <workgroup acronym="B">WC</committee>
+                  </editorialgroup>
+                 </ext>
+          </bibdata>
+          <preface><foreword>
+        <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3</referenceFrom></locality></eref>
+        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></eref>
+        <eref bibitemid="ISO712"><locality type="table"><referenceFrom>3.1</referenceFrom></locality></eref>
+        </p>
+        </foreword></preface>
+        <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
+        <bibitem id="ISO712" type="standard">
+        <title format="text/plain">Cereals or cereal products</title>
+        <title type="main" format="text/plain">Cereals and cereal products</title>
+        <docidentifier type="ISO">ISO 712</docidentifier>
+        <contributor>
+          <role type="publisher"/>
+          <organization>
+            <name>International Organization for Standardization</name>
+          </organization>
+        </contributor>
+      </bibitem>
+      </references>
+      </bibliography>
+      </iso-standard>
+    INPUT
+
+    presxml = <<~PRESXML
+      <foreword>
+        <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
+          <eref bibitemid='ISO712'>
+            <locality type='clause'>
+              <referenceFrom>3</referenceFrom>
+            </locality>
+            [ISO 712], Clause 3
+          </eref>
+          <eref bibitemid='ISO712'>
+            <locality type='clause'>
+              <referenceFrom>3.1</referenceFrom>
+            </locality>
+            [ISO 712], 3.1
+          </eref>
+          <eref bibitemid='ISO712'>
+            <locality type='table'>
+              <referenceFrom>3.1</referenceFrom>
+            </locality>
+            [ISO 712], Table 3.1
+          </eref>
+        </p>
+      </foreword>
+    PRESXML
+
+    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true))
+      .at(".//xmlns:foreword").to_xml))
+      .to be_equivalent_to xmlpp(presxml)
+  end
 end
