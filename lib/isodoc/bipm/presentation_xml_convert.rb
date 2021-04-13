@@ -1,5 +1,6 @@
 require "isodoc"
 require "metanorma-generic"
+require "metanorma-iso"
 require_relative "init"
 require_relative "index"
 
@@ -9,14 +10,26 @@ module IsoDoc
       def convert1(docxml, filename, dir)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
                               "@acronym"))&.value == "JCGM"
+        @iso = IsoDoc::Iso::PresentationXMLConvert
+          .new({ language: @lang, script: @script })
+        i18n = @iso.i18n_init(@lang, @script, nil)
+        @iso.metadata_init(@lang, @script, i18n)
         super
+      end
+
+      def eref_localities1(target, type, from, to, delim, n, lang = "en")
+        if @jcgm
+          @iso.eref_localities1(target, type, from, to, delim, n, lang)
+        else
+          super
+        end
       end
 
       def table1(f)
         return if labelled_ancestor(f)
         return if f["unnumbered"]
 
-        n = @xrefs.anchor(f['id'], :label, false)
+        n = @xrefs.anchor(f["id"], :label, false)
         prefix_name(f, ".<tab/>", l10n("#{@i18n.table.capitalize} #{n}"), "name")
       end
 
@@ -51,7 +64,7 @@ module IsoDoc
           <title>Document Control</title>
           <table unnumbered="true"><tbody>
           <tr><th>Authors:</th><td/><td>#{list_authors(docxml)}</td></tr>
-          #{doccontrol_row1(docxml)} #{doccontrol_row2(docxml)} #{list_drafts(docxml)}
+        #{doccontrol_row1(docxml)} #{doccontrol_row2(docxml)} #{list_drafts(docxml)}
           </tbody></table></doccontrol>
         END
         docxml.root << clause
@@ -61,8 +74,8 @@ module IsoDoc
         return "" if list_draft(docxml, 1) == ["", ""] && list_cochairs(docxml).empty?
 
         <<~ROW
-        <tr>#{list_draft(docxml, 1)&.map { |x| "<td>#{x}</td>" }&.join }
-        <td>#{list_cochairs(docxml)}</td></tr>
+          <tr>#{list_draft(docxml, 1)&.map { |x| "<td>#{x}</td>" }&.join}
+          <td>#{list_cochairs(docxml)}</td></tr>
         ROW
       end
 
@@ -70,8 +83,8 @@ module IsoDoc
         return "" if list_draft(docxml, 2) == ["", ""] && list_chairs(docxml).empty?
 
         <<~ROW
-        <tr>#{list_draft(docxml, 2)&.map { |x| "<td>#{x}</td>" }&.join }
-        <td>#{list_chairs(docxml)}</td></tr>
+          <tr>#{list_draft(docxml, 2)&.map { |x| "<td>#{x}</td>" }&.join}
+          <td>#{list_chairs(docxml)}</td></tr>
         ROW
       end
 
@@ -100,7 +113,8 @@ module IsoDoc
 
       def list_authors(xml)
         ret = list_people(
-          xml, "//bibdata/contributor[xmlns:role/@type = 'author']/person")
+          xml, "//bibdata/contributor[xmlns:role/@type = 'author']/person"
+        )
         @i18n.multiple_and(ret, @i18n.get["and"])
       end
 
