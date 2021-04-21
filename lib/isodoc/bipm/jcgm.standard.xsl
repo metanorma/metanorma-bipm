@@ -2239,6 +2239,7 @@
 			<xsl:attribute name="font-family">Times New Roman, STIX Two Math, Source Han Sans</xsl:attribute>
 			<xsl:attribute name="font-size">10.5pt</xsl:attribute>
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="link-style">
 		
 			<xsl:attribute name="color">blue</xsl:attribute>
@@ -3364,7 +3365,8 @@
 			<xsl:attribute name="text-align">
 				<xsl:choose>
 					<xsl:when test="@align">
-						<xsl:value-of select="@align"/>
+						<xsl:call-template name="setAlignment"/>
+						<!-- <xsl:value-of select="@align"/> -->
 					</xsl:when>
 					<xsl:otherwise>center</xsl:otherwise>
 				</xsl:choose>
@@ -3382,6 +3384,9 @@
 			
 			
 			
+			<xsl:if test="$lang = 'ar'">
+				<xsl:attribute name="padding-right">1mm</xsl:attribute>
+			</xsl:if>
 			<xsl:if test="@colspan">
 				<xsl:attribute name="number-columns-spanned">
 					<xsl:value-of select="@colspan"/>
@@ -3413,11 +3418,15 @@
 			<xsl:attribute name="text-align">
 				<xsl:choose>
 					<xsl:when test="@align">
-						<xsl:value-of select="@align"/>
+						<xsl:call-template name="setAlignment"/>
+						<!-- <xsl:value-of select="@align"/> -->
 					</xsl:when>
 					<xsl:otherwise>left</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
+			<xsl:if test="$lang = 'ar'">
+				<xsl:attribute name="padding-right">1mm</xsl:attribute>
+			</xsl:if>
 			 <!--  and ancestor::*[local-name() = 'thead'] -->
 				<xsl:attribute name="padding-top">0.5mm</xsl:attribute>
 			
@@ -5675,7 +5684,9 @@
 				</fo:inline>
 			</xsl:when>
 			<xsl:otherwise>
-				<fo:inline padding-right="{$padding-right}mm">​</fo:inline>
+				<xsl:if test="$lang != 'ar'">
+					<fo:inline padding-right="{$padding-right}mm">​</fo:inline>
+				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
 		
@@ -6412,5 +6423,17 @@
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
-		
+	</xsl:template><xsl:variable name="LRM" select="'‎'"/><xsl:template name="setWritingMode">
+		<xsl:if test="$lang = 'ar'">
+			<xsl:attribute name="writing-mode">rl-tb</xsl:attribute>
+		</xsl:if>
+	</xsl:template><xsl:template name="setAlignment">
+		<xsl:param name="align" select="normalize-space(@align)"/>
+		<xsl:choose>
+			<xsl:when test="$lang = 'ar' and $align = 'left'">start</xsl:when>
+			<xsl:when test="$lang = 'ar' and $align = 'right'">end</xsl:when>
+			<xsl:when test="$align != ''">
+				<xsl:value-of select="$align"/>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template></xsl:stylesheet>
