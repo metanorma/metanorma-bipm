@@ -124,7 +124,7 @@ module IsoDoc
 
       def back_anchor_names(docxml)
         super
-        i = @jcgm ? Counter.new("@") : Counter.new(0)
+        i = @jcgm ? Counter.new("@", skip_i: true) : Counter.new(0)
         docxml.xpath(ns("//annex[not(@unnumbered = 'true')]")).each do |c|
           i.increment(c)
           annex_names(c, i.print)
