@@ -4,7 +4,7 @@ require "sterile"
 module IsoDoc
   module BIPM
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
-       def add_id
+      def add_id
         %(id="_#{UUIDTools::UUID.random_create}")
       end
 
@@ -15,7 +15,8 @@ module IsoDoc
         end
         i = docxml.at(ns("//indexsect")) ||
           docxml.root.add_child("<indexsect #{add_id}><title>#{@i18n.index}</title></indexsect>").first
-        index = sort_indexterms(docxml.xpath(ns("//index")), docxml.xpath(ns("//index-xref[@also = 'false']")),
+        index = sort_indexterms(docxml.xpath(ns("//index")),
+                                docxml.xpath(ns("//index-xref[@also = 'false']")),
                                 docxml.xpath(ns("//index-xref[@also = 'true']")))
         index1(docxml, i, index)
       end
@@ -41,8 +42,11 @@ module IsoDoc
       end
 
       def index_entries(words, index, primary)
-        ret = index_entries_head(words[primary], index.dig(words[primary], nil, nil), index_entries_opt)
-        words2 = index[words[primary]]&.keys&.reject { |k| k.nil?}&.each_with_object({}) { |w, v| v[w.downcase] = w }
+        ret = index_entries_head(words[primary],
+                                 index.dig(words[primary], nil, nil),
+                                 index_entries_opt)
+        words2 = index[words[primary]]&.keys&.reject { |k| k.nil? }
+          &.each_with_object({}) { |w, v| v[w.downcase] = w }
         unless words2.empty?
           ret += "<ul>"
           words2.keys.localize(@lang.to_sym).sort.to_a.each do |w|
@@ -54,8 +58,11 @@ module IsoDoc
       end
 
       def index_entries2(words, index, secondary)
-        ret = index_entries_head(words[secondary], index.dig(words[secondary], nil), index_entries_opt)
-        words3 = index[words[secondary]]&.keys&.reject { |k| k.nil?}&.each_with_object({}) { |w, v| v[w.downcase] = w }
+        ret = index_entries_head(words[secondary],
+                                 index.dig(words[secondary], nil),
+                                 index_entries_opt)
+        words3 = index[words[secondary]]&.keys&.reject { |k| k.nil? }
+          &.each_with_object({}) { |w, v| v[w.downcase] = w }
         unless words3.empty?
           ret += "<ul>"
           words3.keys.localize(@lang.to_sym).sort.to_a.each do |w|

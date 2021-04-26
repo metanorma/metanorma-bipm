@@ -20,6 +20,19 @@ module IsoDoc
         super
       end
 
+      def wrap_brackets(txt)
+        return txt if /^\[.*\]$/.match?(txt)
+
+        "[#{txt}]"
+      end
+
+      def reference_names(ref)
+        super
+        if @jcgm
+          @anchors[ref["id"]][:xref] = wrap_brackets(@anchors[ref["id"]][:xref])
+        end
+      end
+
       def clause_names(docxml, sect_num)
         if @jcgm
           clause_names_jcgm(docxml, sect_num)
