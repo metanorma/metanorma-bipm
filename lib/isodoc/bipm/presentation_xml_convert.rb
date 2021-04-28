@@ -44,6 +44,15 @@ module IsoDoc
         prefix_name(f, ".<tab/>", lbl, "title")
       end
 
+      def clause(docxml)
+        super
+        if @jcgm
+          docxml.xpath(ns("//preface/introduction[clause]")).each do |f|
+            clause1(f)
+          end
+        end
+      end
+
       def clause1(f)
         return if f["unnumbered"] == "true"
         return if f.at(("./ancestor::*[@unnumbered = 'true']"))
@@ -56,31 +65,32 @@ module IsoDoc
         doccontrol docxml
       end
 
-      def doccontrol(docxml)
-        return unless docxml.at(ns("//bibdata/relation[@type = 'supersedes']"))
+      def doccontrol(doc)
+        return unless doc.at(ns("//bibdata/relation[@type = 'supersedes']"))
 
         clause = <<~END
           <doccontrol>
           <title>Document Control</title>
           <table unnumbered="true"><tbody>
-          <tr><th>Authors:</th><td/><td>#{list_authors(docxml)}</td></tr>
-        #{doccontrol_row1(docxml)} #{doccontrol_row2(docxml)} #{list_drafts(docxml)}
+          <tr><th>Authors:</th><td/><td>#{list_authors(doc)}</td></tr>
+        #{doccontrol_row1(doc)} #{doccontrol_row2(doc)} #{list_drafts(doc)}
           </tbody></table></doccontrol>
         END
-        docxml.root << clause
+        doc.root << clause
       end
 
-      def doccontrol_row1(docxml)
-        return "" if list_draft(docxml, 1) == ["", ""] && list_cochairs(docxml).empty?
+      def doccontrol_row1(doc)
+        return "" if list_draft(doc, 1) == ["", ""] && list_cochairs(doc).empty?
 
         <<~ROW
-          <tr>#{list_draft(docxml, 1)&.map { |x| "<td>#{x}</td>" }&.join}
-          <td>#{list_cochairs(docxml)}</td></tr>
+          <tr>#{list_draft(doc, 1)&.map { |x| "<td>#{x}</td>" }&.join}
+          <td>#{list_cochairs(doc)}</td></tr>
         ROW
       end
 
       def doccontrol_row2(docxml)
-        return "" if list_draft(docxml, 2) == ["", ""] && list_chairs(docxml).empty?
+        list_draft(docxml, 2) == ["", ""] && list_chairs(docxml).empty? and
+          return ""
 
         <<~ROW
           <tr>#{list_draft(docxml, 2)&.map { |x| "<td>#{x}</td>" }&.join}
@@ -99,15 +109,13 @@ module IsoDoc
         ret
       end
 
-      def list_draft(xml, i)
-        return ["", ""] unless d =
-          xml.at(ns("//bibdata/relation[@type = 'supersedes'][#{i}]/bibitem"))
+      def list_draft(xml, idx)
+        d = xml.at(ns("//bibdata/relation[@type = 'supersedes'][#{idx}]"\
+                      "/bibitem")) or return ["", ""]
 
         date = d&.at(ns("./date"))&.text
-        draft = d&.at(ns("./version/draft"))&.text and
-          draft = "Draft #{draft}"
-        edn = d&.at(ns("./edition"))&.text and
-          edn = "Version #{edn}"
+        draft = d&.at(ns("./version/draft"))&.text and draft = "Draft #{draft}"
+        edn = d&.at(ns("./edition"))&.text and edn = "Version #{edn}"
         [[draft, edn].join(" "), date]
       end
 
@@ -156,8 +164,8 @@ module IsoDoc
           fraction_group_digits: 3 }
       end
 
-      def mathml1(f, locale)
-        localize_maths(f, locale)
+      def mathml1(elem, locale)
+        localize_maths(elem, locale)
       end
 
       def bibdata_i18n(bibdata)
