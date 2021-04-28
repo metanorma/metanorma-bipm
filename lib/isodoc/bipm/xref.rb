@@ -12,10 +12,10 @@ module IsoDoc
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
                               "@acronym"))&.value == "JCGM"
         @annexlbl =
+          if @jcgm then @labels["iso_annex"]
           if docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
             @labels["appendix"]
-          else
-            @labels["annex"]
+          else @labels["annex"]
           end
         super
       end
