@@ -5,6 +5,7 @@ module IsoDoc
 
     class Xref < IsoDoc::Xref
       def initialize(lang, script, klass, i18n, options = {})
+        @iso = IsoDoc::Iso::Xref.new(lang, script, klass, i18n, options)
         super
       end
 
@@ -13,7 +14,7 @@ module IsoDoc
                               "@acronym"))&.value == "JCGM"
         @annexlbl =
           if @jcgm then @labels["iso_annex"]
-          if docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
+          elsif docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
             @labels["appendix"]
           else @labels["annex"]
           end
@@ -28,9 +29,8 @@ module IsoDoc
 
       def reference_names(ref)
         super
-        if @jcgm
+        @jcgm and
           @anchors[ref["id"]][:xref] = wrap_brackets(@anchors[ref["id"]][:xref])
-        end
       end
 
       def clause_names(docxml, sect_num)
@@ -109,8 +109,7 @@ module IsoDoc
       def section_name1_anchors(clause, num, level)
         lbl = @jcgm ? "" : "#{@labels['subclause']} "
         @anchors[clause["id"]] =
-          { label: num, level: level,
-            xref: l10n("#{lbl}#{num}"),
+          { label: num, level: level, xref: l10n("#{lbl}#{num}"),
             type: "clause" }
       end
 
@@ -224,6 +223,14 @@ module IsoDoc
             t["inequality"] ? @labels["inequality"] : @labels["formula"],
             "formula", t["unnumbered"]
           )
+        end
+      end
+
+      def initial_anchor_names(doc)
+        super
+        if @jcgm
+          @iso.introduction_names(doc.at(ns("//introduction")))
+          @anchors.merge!(@iso.get)
         end
       end
     end

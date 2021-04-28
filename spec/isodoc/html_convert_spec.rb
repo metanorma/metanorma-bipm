@@ -914,9 +914,9 @@ RSpec.describe IsoDoc::BIPM do
             <p id='A'>This is a preamble</p>
           </foreword>
           <introduction id='B' obligation='informative'>
-            <title>Introduction</title>
+            <title depth='1'>0.<tab/>Introduction</title>
             <clause id='C' inline-header='false' obligation='informative'>
-              <title depth='2'>Introduction Subsection</title>
+              <title depth='2'>0.1.<tab/>Introduction Subsection</title>
             </clause>
           </introduction>
         </preface>
@@ -1049,10 +1049,10 @@ RSpec.describe IsoDoc::BIPM do
             </div>
             <br/>
             <div class='Section3' id='B'>
-              <h1 class='IntroTitle'>Introduction</h1>
-              <div id='C'>
-                <h2>Introduction Subsection</h2>
-              </div>
+            <h1 class='IntroTitle'> 0. &#160; Introduction </h1>
+                <div id='C'>
+                   <h2> 0.1. &#160; Introduction Subsection </h2>
+                </div>
             </div>
             <p class='zzSTDTitle1'/>
             <div id='G'>
@@ -3195,12 +3195,12 @@ RSpec.describe IsoDoc::BIPM do
           </bibliography>
         </iso-standard>
       INPUT
-                <foreword obligation='informative'>
+        <foreword obligation='informative'>
           <title>Foreword</title>
           <p id='A'>
             This is a preamble
-            <xref target='C'>Introduction Subsection</xref>
-            <xref target='C1'>Introduction, 2</xref>
+            <xref target='C'>0.1</xref>
+            <xref target='C1'>0.2</xref>
             <xref target='D'>Clause 1</xref>
             <xref target='H'>Clause 3</xref>
             <xref target='I'>3.1</xref>
