@@ -5,18 +5,15 @@ module IsoDoc
 
     class Xref < IsoDoc::Xref
       def initialize(lang, script, klass, i18n, options = {})
+        @iso = IsoDoc::Iso::Xref.new(lang, script, klass, i18n, options)
         super
       end
 
       def parse(docxml)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
                               "@acronym"))&.value == "JCGM"
-        @annexlbl =
-          if docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
-            @labels["appendix"]
-          else
-            @labels["annex"]
-          end
+        app = docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
+        @annexlbl = app ? @labels["appendix"] : @labels["annex"]
         super
       end
 
@@ -28,9 +25,8 @@ module IsoDoc
 
       def reference_names(ref)
         super
-        if @jcgm
+        @jcgm and
           @anchors[ref["id"]][:xref] = wrap_brackets(@anchors[ref["id"]][:xref])
-        end
       end
 
       def clause_names(docxml, sect_num)
@@ -109,8 +105,7 @@ module IsoDoc
       def section_name1_anchors(clause, num, level)
         lbl = @jcgm ? "" : "#{@labels['subclause']} "
         @anchors[clause["id"]] =
-          { label: num, level: level,
-            xref: l10n("#{lbl}#{num}"),
+          { label: num, level: level, xref: l10n("#{lbl}#{num}"),
             type: "clause" }
       end
 
@@ -224,6 +219,14 @@ module IsoDoc
             t["inequality"] ? @labels["inequality"] : @labels["formula"],
             "formula", t["unnumbered"]
           )
+        end
+      end
+
+      def initial_anchor_names(doc)
+        super
+        if @jcgm
+          @iso.introduction_names(doc.at(ns("//introduction")))
+          @anchors.merge!(@iso.get)
         end
       end
     end
