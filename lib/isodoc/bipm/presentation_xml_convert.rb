@@ -25,23 +25,32 @@ module IsoDoc
         end
       end
 
-      def table1(f)
-        return if labelled_ancestor(f)
-        return if f["unnumbered"]
+      def table1(elem)
+        return if labelled_ancestor(elem)
+        return if elem["unnumbered"]
 
-        n = @xrefs.anchor(f["id"], :label, false)
-        prefix_name(f, ".<tab/>", l10n("#{@i18n.table.capitalize} #{n}"), "name")
+        n = @xrefs.anchor(elem["id"], :label, false)
+        prefix_name(elem, ".<tab/>",
+                    l10n("#{@i18n.table.capitalize} #{n}"), "name")
       end
 
-      def annex1(f)
-        return super if @jcgm
-        return if f["unnumbered"] == "true"
+      def figure1(elem)
+        if @jcgm
+          @iso.xrefs = @xrefs
+          @iso.figure1(elem)
+        else super
+        end
+      end
 
-        lbl = @xrefs.anchor(f["id"], :label)
-        if t = f.at(ns("./title"))
+      def annex1(elem)
+        return super if @jcgm
+        return if elem["unnumbered"] == "true"
+
+        lbl = @xrefs.anchor(elem["id"], :label)
+        if t = elem.at(ns("./title"))
           t.children = "<strong>#{t.children.to_xml}</strong>"
         end
-        prefix_name(f, ".<tab/>", lbl, "title")
+        prefix_name(elem, ".<tab/>", lbl, "title")
       end
 
       def clause(docxml)
@@ -53,9 +62,9 @@ module IsoDoc
         end
       end
 
-      def clause1(f)
-        return if f["unnumbered"] == "true"
-        return if f.at(("./ancestor::*[@unnumbered = 'true']"))
+      def clause1(elem)
+        return if elem["unnumbered"] == "true"
+        return if elem.at(("./ancestor::*[@unnumbered = 'true']"))
 
         super
       end
