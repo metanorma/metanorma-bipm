@@ -502,19 +502,67 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-      #{HTML_HDR}
-          <p class="zzSTDTitle1"/>
-          <div id="H"><h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-            <p class="TermNum" id="J">1.1.</p>
-            <p class="Terms" style="text-align:left;">Term2</p>
-          </div>
-        </div>
-      </body>
+    <main class='main-section'>
+         <button onclick='topFunction()' id='myBtn' title='Go to top'>Top</button>
+         <p class='zzSTDTitle1'/>
+         <div id='H'>
+           <h1 id='toc0'>1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
+           <h2 class='TermNum' id='J'>
+             1.1.&#xA0;
+             <p class='Terms' style='text-align:left;'>Term2</p>
+           </h2>
+         </div>
+       </main>
     OUTPUT
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
-      .convert("test", input, true)
-      .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))
+
+    IsoDoc::BIPM::HtmlConvert.new({}).convert("test", input, false)
+    stripped_html = xmlpp(File.read("test.html", encoding: "utf-8")
+      .gsub(%r{^.*<main}m, "<main")
+      .gsub(%r{</main>.*}m, "</main>"))
+    expect(stripped_html).to(be_equivalent_to(output))
+  end
+
+  it "processes simple terms & definitions in JCGM" do
+    input = <<~"INPUT"
+      <bipm-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+          <ext>
+            <editorialgroup>
+              <committee acronym="JCGM">
+                Joint Committee for Guides in Metrology
+                Comité commun pour les guides en métrologie
+              </committee>
+            </editorialgroup>
+          </ext>
+        </bibdata>
+        <sections>
+          <terms id="H" obligation="normative">
+            <title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+            <term id="J">
+              <name>1.1.</name>
+              <preferred>Term2</preferred>
+            </term>
+          </terms>
+        </sections>
+      </bipm-standard>
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+    <main class='main-section'>
+         <button onclick='topFunction()' id='myBtn' title='Go to top'>Top</button>
+         <p class='zzSTDTitle1'/>
+         <div id='H'>
+           <h1 id='toc0'>1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
+           <h2 class='TermNum' id='J'>1.1.</h2>
+                <p class='Terms' style='text-align:left;'>Term2</p>
+         </div>
+       </main>
+    OUTPUT
+
+    IsoDoc::BIPM::HtmlConvert.new({}).convert("test", input, false)
+    stripped_html = xmlpp(File.read("test.html", encoding: "utf-8")
+      .gsub(%r{^.*<main}m, "<main")
+      .gsub(%r{</main>.*}m, "</main>"))
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
