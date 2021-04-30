@@ -495,6 +495,12 @@ RSpec.describe IsoDoc::BIPM do
             <term id="J">
               <name>1.1.</name>
               <preferred>Term2</preferred>
+              <termsource status="modified">
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
+          <modification>
+          <p id="_e73a417d-ad39-417d-a4c8-20e4e2529489">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+        </modification>
+      </termsource>
             </term>
           </terms>
         </sections>
@@ -502,7 +508,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-    <main class='main-section'>
+           <main class='main-section'>
          <button onclick='topFunction()' id='myBtn' title='Go to top'>Top</button>
          <p class='zzSTDTitle1'/>
          <div id='H'>
@@ -511,6 +517,12 @@ RSpec.describe IsoDoc::BIPM do
              1.1.&#xA0;
              <p class='Terms' style='text-align:left;'>Term2</p>
            </h2>
+           <p>
+             [Adapted from
+             <a href='#ISO7301'/>
+             , modified &#x2014; The term "cargo rice" is shown as deprecated, and Note
+             1 to entry is not included here]
+           </p>
          </div>
        </main>
     OUTPUT
@@ -541,6 +553,12 @@ RSpec.describe IsoDoc::BIPM do
             <term id="J">
               <name>1.1.</name>
               <preferred>Term2</preferred>
+              <termsource status="modified">
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
+          <modification>
+          <p id="_e73a417d-ad39-417d-a4c8-20e4e2529489">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+        </modification>
+      </termsource>
             </term>
           </terms>
         </sections>
@@ -555,6 +573,12 @@ RSpec.describe IsoDoc::BIPM do
            <h1 id='toc0'>1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
            <h2 class='TermNum' id='J'>1.1.</h2>
                 <p class='Terms' style='text-align:left;'>Term2</p>
+             <p>
+                [Adapted from
+                <a href='#ISO7301'/>
+                , modified &#x2014; The term "cargo rice" is shown as deprecated, and Note
+                1 to entry is not included here]
+                </p>
          </div>
        </main>
     OUTPUT
