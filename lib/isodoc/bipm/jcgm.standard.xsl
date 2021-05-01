@@ -1022,7 +1022,7 @@
 				<xsl:apply-templates select="." mode="mathml"/>
 			</xsl:variable>
 			<fo:instream-foreign-object fox:alt-text="Math">
-				<xsl:if test="local-name(../..) = 'formula'">
+				<xsl:if test="local-name(../..) = 'formula' or (local-name(../..) = 'td' and count(../../*) = 1)">
 					<xsl:attribute name="width">95%</xsl:attribute>
 					<xsl:attribute name="content-height">100%</xsl:attribute>
 					<xsl:attribute name="content-width">scale-down-to-fit</xsl:attribute>
@@ -5760,6 +5760,10 @@
 		<fo:block>
 			<xsl:call-template name="setId"/>
 			
+			
+				<xsl:if test="@inline-header='true'">
+					<xsl:attribute name="text-align">justify</xsl:attribute>
+				</xsl:if>
 			
 			<xsl:apply-templates/>
 		</fo:block>
