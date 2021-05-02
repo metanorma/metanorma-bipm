@@ -3401,4 +3401,79 @@ RSpec.describe IsoDoc::BIPM do
       .at(".//xmlns:foreword").to_xml))
       .to be_equivalent_to xmlpp(presxml)
   end
+
+  it "handles brackets for multiple erefs in JCGM" do
+    input = <<~INPUT
+          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <bibdata>
+          <language>en</language>
+          <script>Latn</script>
+          <ext>
+                  <editorialgroup>
+                    <committee acronym="JCGM">
+                      <variant language="en" script="Latn">TC</variant>
+                      <variant language="fr" script="Latn">CT</variant>
+                    </committee>
+                    <workgroup acronym="B">WC</committee>
+                  </editorialgroup>
+                 </ext>
+          </bibdata>
+          <preface><foreword>
+        <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+        <eref bibitemid="ISO712"/> <eref bibitemid="ISO712"/>
+        and
+        <eref bibitemid="ISO712"/>, <eref bibitemid="ISO712"/>
+        and
+        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></eref>
+        <eref bibitemid="ISO712"><locality type="table"><referenceFrom>3.1</referenceFrom></locality></eref>
+        </p>
+        </foreword></preface>
+        <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
+        <bibitem id="ISO712" type="standard">
+        <title format="text/plain">Cereals or cereal products</title>
+        <title type="main" format="text/plain">Cereals and cereal products</title>
+        <docidentifier type="ISO">ISO 712</docidentifier>
+        <contributor>
+          <role type="publisher"/>
+          <organization>
+            <name>International Organization for Standardization</name>
+          </organization>
+        </contributor>
+      </bibitem>
+      </references>
+      </bibliography>
+      </iso-standard>
+    INPUT
+    presxml = <<~OUTPUT
+      <foreword>
+        <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
+           [
+          <eref bibitemid='ISO712'>ISO 712</eref>
+          ] [
+          <eref bibitemid='ISO712'>ISO 712</eref>
+          ] and [
+          <eref bibitemid='ISO712'>ISO 712</eref>
+          ,
+          <eref bibitemid='ISO712'>ISO 712</eref>
+          ] and
+          <eref bibitemid='ISO712'>
+            <locality type='clause'>
+              <referenceFrom>3.1</referenceFrom>
+            </locality>
+            [ISO 712], 3.1
+          </eref>
+          <eref bibitemid='ISO712'>
+            <locality type='table'>
+              <referenceFrom>3.1</referenceFrom>
+            </locality>
+            [ISO 712], Table 3.1
+          </eref>
+        </p>
+      </foreword>
+    OUTPUT
+    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true))
+      .at(".//xmlns:foreword").to_xml))
+      .to be_equivalent_to xmlpp(presxml)
+  end
 end
