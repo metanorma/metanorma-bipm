@@ -24,16 +24,17 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-=begin
+  require "byebug/settings/histfile"
+  Byebug::HistfileSetting::DEFAULT = File.expand_path(
+    File.join(__FILE__, "..", "..", ".byebug_history")
+  )
+
   config.around do |example|
     Dir.mktmpdir("rspec-") do |dir|
-      if File.exists?(".byebug_history")
-        FileUtils.cp ".byebug_history", dir
-      end
       Dir.chdir(dir) { example.run }
     end
   end
-=end
+
 end
 
 def metadata(hash)
