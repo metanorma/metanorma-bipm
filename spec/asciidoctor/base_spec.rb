@@ -945,7 +945,7 @@ RSpec.describe Asciidoctor::BIPM do
               <clause id='_' obligation='normative'>
                 <title>General</title>
               </clause>
-              <definitions id='_' obligation='normative'>
+              <definitions id='_' obligation='normative' type='symbols'>
                 <title>Symbols</title>
               </definitions>
             </definitions>
@@ -1142,7 +1142,7 @@ RSpec.describe Asciidoctor::BIPM do
        <clause id='_' obligation='normative'>
          <title>General</title>
        </clause>
-       <definitions id='_' obligation='normative'>
+       <definitions id='_' obligation='normative' type='symbols'>
          <title>Symbols</title>
        </definitions>
      </definitions>
