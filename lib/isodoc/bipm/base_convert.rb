@@ -70,6 +70,16 @@ module IsoDoc
       def term_cleanup(docxml)
         @jcgm ? docxml : super
       end
+
+      def termref_cleanup(docxml)
+        docxml
+          .gsub(/\s*\[MODIFICATION\]\s*\[\/TERMREF\]/,
+        l10n(", #{@i18n.modified} [/TERMREF]"))
+          .gsub(%r{\s*\[/TERMREF\]\s*</p>\s*<p>\s*\[TERMREF\]}, "; ")
+          .gsub(/\[TERMREF\]\s*/, l10n("[#{@i18n.source} "))
+          .gsub(%r{\s*\[/TERMREF\]\s*}, l10n("]"))
+          .gsub(/\s*\[MODIFICATION\]/, l10n(", #{@i18n.modified} &mdash; "))
+      end
     end
   end
 end
