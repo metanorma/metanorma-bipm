@@ -138,6 +138,13 @@ module Asciidoctor
         end
       end
 
+      def sectiontype(node, level = true)
+        ret = sectiontype1(node)
+        return ret if ret == "terms and definitions"
+
+        super
+      end
+
       def inline_anchor_xref_attrs(node)
         flags = %w(pagenumber nosee nopage).each_with_object({}) do |w, m|
           if /#{w}%/.match?(node.text)
