@@ -71,9 +71,9 @@ RSpec.describe IsoDoc do
             </bibitem>
             <bibitem id="ref1">
               <formattedref format="application/x-isodoc+xml">
-                <smallcap>Standard No I.C.C 167</smallcap>. 
+                <smallcap>Standard No I.C.C 167</smallcap>.
                 <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em>
-                (see 
+                (see
                 <link target="http://www.icc.or.at"/>
                 )</formattedref>
               <docidentifier type="ICC">ICC/167</docidentifier>
@@ -125,9 +125,9 @@ RSpec.describe IsoDoc do
             </bibitem>
             <bibitem id="ref10">
               <formattedref format="application/x-isodoc+xml">
-                <smallcap>Standard No I.C.C 167</smallcap>. 
+                <smallcap>Standard No I.C.C 167</smallcap>.
                 <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em>
-                (see 
+                (see
                 <link target="http://www.icc.or.at"/>
                 )</formattedref>
               <docidentifier type="metanorma">[10]</docidentifier>
@@ -137,7 +137,7 @@ RSpec.describe IsoDoc do
               <docidentifier type="IETF">RFC 10</docidentifier>
             </bibitem>
             <bibitem id="ref12">
-              <formattedref format="application/x-isodoc+xml">CitationWorks. 2019. 
+              <formattedref format="application/x-isodoc+xml">CitationWorks. 2019.
                 <em>How to cite a reference</em>
                 .</formattedref>
               <docidentifier type="metanorma">[Citn]</docidentifier>
@@ -217,9 +217,9 @@ RSpec.describe IsoDoc do
             </bibitem>
             <bibitem id="ref1">
               <formattedref format="application/x-isodoc+xml">
-                <smallcap>Standard No I.C.C 167</smallcap>. 
+                <smallcap>Standard No I.C.C 167</smallcap>.
                 <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em>
-                (see 
+                (see
                 <link target="http://www.icc.or.at"/>
                 )</formattedref>
               <docidentifier type="ICC">ICC/167</docidentifier>
@@ -274,9 +274,9 @@ RSpec.describe IsoDoc do
             </bibitem>
             <bibitem id="ref10">
               <formattedref format="application/x-isodoc+xml">
-                <smallcap>Standard No I.C.C 167</smallcap>. 
+                <smallcap>Standard No I.C.C 167</smallcap>.
                 <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em>
-                (see 
+                (see
                 <link target="http://www.icc.or.at"/>
                 )</formattedref>
               <docidentifier type="metanorma">[10]</docidentifier>
@@ -286,7 +286,7 @@ RSpec.describe IsoDoc do
               <docidentifier type="IETF">RFC 10</docidentifier>
             </bibitem>
             <bibitem id="ref12">
-              <formattedref format="application/x-isodoc+xml">CitationWorks. 2019. 
+              <formattedref format="application/x-isodoc+xml">CitationWorks. 2019.
                 <em>How to cite a reference</em>
                 .</formattedref>
               <docidentifier type="metanorma">[Citn]</docidentifier>
@@ -325,7 +325,7 @@ RSpec.describe IsoDoc do
               amendments) applies.
             </p>
             <p id='ISO712' class='Biblio'>
-              [110]&#160; ISO 712 
+              [110]&#160; ISO 712
               <i>Cereals and cereal products</i>
             </p>
             <p id='ISO16634' class='Biblio'>
@@ -336,19 +336,19 @@ RSpec.describe IsoDoc do
               <i>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</i>
             </p>
             <p id='ISO20483' class='Biblio'>
-              [3]&#160; ISO 20483:2013-2014 
+              [3]&#160; ISO 20483:2013-2014
               <i>Cereals and pulses</i>
             </p>
             <p id='ref1' class='Biblio'>
-              [4]&#160; ICC/167 
+              [4]&#160; ICC/167
               <span style='font-variant:small-caps;'>Standard No I.C.C 167</span>
-              . 
+              .
               <i>
                 Determination of the protein content in cereal and cereal products for
                 food and animal feeding stuffs according to the Dumas combustion
                 method
               </i>
-               (see 
+               (see
               <a href='http://www.icc.or.at'>http://www.icc.or.at</a>
               )
             </p>
@@ -360,11 +360,11 @@ RSpec.describe IsoDoc do
             </div>
             <p id='zip_ffs' class='Biblio'>[5]&#160; Title 5</p>
             <p id='ISBN' class='Biblio'>
-              [1]&#160; 
+              [1]&#160;
               <i>Chemicals for analytical laboratory use</i>
             </p>
             <p id='ISSN' class='Biblio'>
-              [2]&#160; 
+              [2]&#160;
               <i>Instruments for analytical laboratory use</i>
             </p>
             <div class='Note'>
@@ -380,28 +380,28 @@ RSpec.describe IsoDoc do
               </p>
             </div>
             <p id='ISO3696' class='Biblio'>
-              [8]&#160; 
+              [8]&#160;
               <i>Water for analytical laboratory use</i>
             </p>
             <p id='ref10' class='Biblio'>
-              [10]&#160; 
+              [10]&#160;
               <span style='font-variant:small-caps;'>Standard No I.C.C 167</span>
-              . 
+              .
               <i>
                 Determination of the protein content in cereal and cereal products for
                 food and animal feeding stuffs according to the Dumas combustion
                 method
               </i>
-               (see 
+               (see
               <a href='http://www.icc.or.at'>http://www.icc.or.at</a>
               )
             </p>
             <p id='ref11' class='Biblio'>
-              [10]&#160; IETF RFC 10 
+              [10]&#160; IETF RFC 10
               <i>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</i>
             </p>
             <p id='ref12' class='Biblio'>
-              Citn&#160; IETF RFC 20 CitationWorks. 2019. 
+              Citn&#160; IETF RFC 20 CitationWorks. 2019.
               <i>How to cite a reference</i>
               .
             </p>

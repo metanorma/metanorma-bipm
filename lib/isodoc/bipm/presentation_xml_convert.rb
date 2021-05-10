@@ -65,7 +65,6 @@ module IsoDoc
       def clause1(elem)
         return if elem["unnumbered"] == "true"
         return if elem.at(("./ancestor::*[@unnumbered = 'true']"))
-
         super
       end
 
@@ -77,14 +76,14 @@ module IsoDoc
       def doccontrol(doc)
         return unless doc.at(ns("//bibdata/relation[@type = 'supersedes']"))
 
-        clause = <<~END
+        clause = <<~DOCCONTROL
           <doccontrol>
           <title>Document Control</title>
           <table unnumbered="true"><tbody>
           <tr><th>Authors:</th><td/><td>#{list_authors(doc)}</td></tr>
-        #{doccontrol_row1(doc)} #{doccontrol_row2(doc)} #{list_drafts(doc)}
+          #{doccontrol_row1(doc)} #{doccontrol_row2(doc)} #{list_drafts(doc)}
           </tbody></table></doccontrol>
-        END
+        DOCCONTROL
         doc.root << clause
       end
 
@@ -190,6 +189,49 @@ module IsoDoc
         pubdate.next = pubdate.dup
         pubdate.next["format"] = "ddMMMyyyy"
         pubdate.next.children = meta.monthyr(pubdate.text)
+      end
+
+      def eref(docxml)
+        super
+        jcgm_eref(docxml, "//eref")
+      end
+
+      def origin(docxml)
+        super
+        jcgm_eref(docxml, "//origin[not(termref)]")
+      end
+
+      def quotesource(docxml)
+        super
+        jcgm_eref(docxml, "//quote/source")
+      end
+
+      def jcgm_eref(docxml, xpath)
+        return unless @jcgm
+
+        docxml.xpath(ns(xpath)).each do |x|
+          extract_brackets(x)
+        end
+        # merge adjacent text nodes
+        docxml.root.replace(Nokogiri::XML(docxml.root.to_xml).root)
+        docxml.xpath(ns(xpath)).each do |x| # rubocop: disable Style/CombinableLoops
+          if x&.next&.text? && /^\],\s+\[$/.match?(x&.next&.text) &&
+              %w(eref origin source).include?(x&.next&.next&.name)
+            x.next.replace(", ")
+          end
+        end
+      end
+
+      def extract_brackets(node)
+        start = node.at("./text()[1]")
+        finish = node.at("./text()[last()]")
+        if /^\[/.match?(start.text) && /\]$/.match?(finish.text)
+          start.replace(start.text[1..-1])
+          node.previous = "["
+          finish = node.at("./text()[last()]")
+          finish.replace(finish.text[0..-2])
+          node.next = "]"
+        end
       end
 
       include Init

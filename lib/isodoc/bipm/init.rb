@@ -10,7 +10,7 @@ module IsoDoc
         @meta = Metadata.new(lang, script, labels)
       end
 
-      def xref_init(lang, script, klass, labels, options)
+      def xref_init(lang, script, _klass, labels, options)
         html = HtmlConvert.new(language: lang, script: script)
         @xrefs = Xref.new(lang, script, html, labels, options)
       end
@@ -21,4 +21,3 @@ module IsoDoc
     end
   end
 end
-

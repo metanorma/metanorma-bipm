@@ -12,8 +12,12 @@ module IsoDoc
       def parse(docxml)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
                               "@acronym"))&.value == "JCGM"
-        app = docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
-        @annexlbl = app ? @labels["appendix"] : @labels["annex"]
+        @annexlbl =
+          if @jcgm then @labels["iso_annex"]
+          elsif docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
+            @labels["appendix"]
+          else @labels["annex"]
+          end
         super
       end
 

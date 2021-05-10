@@ -495,6 +495,12 @@ RSpec.describe IsoDoc::BIPM do
             <term id="J">
               <name>1.1.</name>
               <preferred>Term2</preferred>
+              <termsource status="modified">
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
+          <modification>
+          <p id="_e73a417d-ad39-417d-a4c8-20e4e2529489">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+        </modification>
+      </termsource>
             </term>
           </terms>
         </sections>
@@ -502,19 +508,85 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-      #{HTML_HDR}
-          <p class="zzSTDTitle1"/>
-          <div id="H"><h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-            <p class="TermNum" id="J">1.1.</p>
-            <p class="Terms" style="text-align:left;">Term2</p>
-          </div>
-        </div>
-      </body>
+           <main class='main-section'>
+         <button onclick='topFunction()' id='myBtn' title='Go to top'>Top</button>
+         <p class='zzSTDTitle1'/>
+         <div id='H'>
+           <h1 id='toc0'>1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
+           <h2 class='TermNum' id='J'>
+             1.1.&#xA0;
+             <p class='Terms' style='text-align:left;'>Term2</p>
+           </h2>
+           <p>
+             [Adapted from
+             <a href='#ISO7301'/>
+             , modified &#x2014; The term "cargo rice" is shown as deprecated, and Note
+             1 to entry is not included here]
+           </p>
+         </div>
+       </main>
     OUTPUT
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
-      .convert("test", input, true)
-      .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))
+
+    IsoDoc::BIPM::HtmlConvert.new({}).convert("test", input, false)
+    stripped_html = xmlpp(File.read("test.html", encoding: "utf-8")
+      .gsub(%r{^.*<main}m, "<main")
+      .gsub(%r{</main>.*}m, "</main>"))
+    expect(stripped_html).to(be_equivalent_to(output))
+  end
+
+  it "processes simple terms & definitions in JCGM" do
+    input = <<~"INPUT"
+      <bipm-standard xmlns="http://riboseinc.com/isoxml">
+      <bibdata>
+          <ext>
+            <editorialgroup>
+              <committee acronym="JCGM">
+                Joint Committee for Guides in Metrology
+                Comité commun pour les guides en métrologie
+              </committee>
+            </editorialgroup>
+          </ext>
+        </bibdata>
+        <sections>
+          <terms id="H" obligation="normative">
+            <title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+            <term id="J">
+              <name>1.1.</name>
+              <preferred>Term2</preferred>
+              <termsource status="modified">
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
+          <modification>
+          <p id="_e73a417d-ad39-417d-a4c8-20e4e2529489">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+        </modification>
+      </termsource>
+            </term>
+          </terms>
+        </sections>
+      </bipm-standard>
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+    <main class='main-section'>
+         <button onclick='topFunction()' id='myBtn' title='Go to top'>Top</button>
+         <p class='zzSTDTitle1'/>
+         <div id='H'>
+           <h1 id='toc0'>1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
+           <h2 class='TermNum' id='J'>1.1.</h2>
+                <p class='Terms' style='text-align:left;'>Term2</p>
+             <p>
+                [Adapted from
+                <a href='#ISO7301'/>
+                , modified &#x2014; The term "cargo rice" is shown as deprecated, and Note
+                1 to entry is not included here]
+                </p>
+         </div>
+       </main>
+    OUTPUT
+
+    IsoDoc::BIPM::HtmlConvert.new({}).convert("test", input, false)
+    stripped_html = xmlpp(File.read("test.html", encoding: "utf-8")
+      .gsub(%r{^.*<main}m, "<main")
+      .gsub(%r{</main>.*}m, "</main>"))
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
@@ -992,7 +1064,7 @@ RSpec.describe IsoDoc::BIPM do
         </sections>
         <annex id='P' inline-header='false' obligation='normative'>
           <title>
-            <strong>Appendix A</strong>
+            <strong>Annex A</strong>
             <br/>
             <strong>Annex</strong>
           </title>
@@ -1103,7 +1175,7 @@ RSpec.describe IsoDoc::BIPM do
             <br/>
             <div id='P' class='Section3'>
               <h1 class='Annex'>
-                <b>Appendix A</b>
+                <b>Annex A</b>
                  <br/>
                 <b>Annex</b>
               </h1>
@@ -3210,7 +3282,7 @@ RSpec.describe IsoDoc::BIPM do
             <xref target='M'>Clause 5</xref>
             <xref target='N'>5.1</xref>
             <xref target='O'>5.2</xref>
-            <xref target='P'>Appendix A</xref>
+            <xref target='P'>Annex A</xref>
             <xref target='Q'>A.1</xref>
             <xref target='Q1'>A.1.1</xref>
             <xref target='Q2'>[Q2]</xref>
@@ -3640,5 +3712,79 @@ RSpec.describe IsoDoc::BIPM do
          </annex>
        </iso-standard>
       OUTPUT
+
+   it "handles brackets for multiple erefs in JCGM" do
+    input = <<~INPUT
+          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <bibdata>
+          <language>en</language>
+          <script>Latn</script>
+          <ext>
+           <editorialgroup>
+                    <committee acronym="JCGM">
+                      <variant language="en" script="Latn">TC</variant>
+                      <variant language="fr" script="Latn">CT</variant>
+                    </committee>
+                    <workgroup acronym="B">WC</committee>
+                  </editorialgroup>
+                 </ext>
+                    </bibdata>
+          <preface><foreword>
+        <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+        <eref bibitemid="ISO712"/> <eref bibitemid="ISO712"/>
+        and
+        <eref bibitemid="ISO712"/>, <eref bibitemid="ISO712"/>
+        and
+        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></eref>
+        <eref bibitemid="ISO712"><locality type="table"><referenceFrom>3.1</referenceFrom></locality></eref>
+        </p>
+        </foreword></preface>
+        <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
+        <bibitem id="ISO712" type="standard">
+        <title format="text/plain">Cereals or cereal products</title>
+        <title type="main" format="text/plain">Cereals and cereal products</title>
+        <docidentifier type="ISO">ISO 712</docidentifier>
+        <contributor>
+          <role type="publisher"/>
+          <organization>
+            <name>International Organization for Standardization</name>
+          </organization>
+        </contributor>
+      </bibitem>
+      </references>
+      </bibliography>
+      </iso-standard>
+    INPUT
+    presxml = <<~OUTPUT
+      <foreword>
+        <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
+           [
+          <eref bibitemid='ISO712'>ISO 712</eref>
+          ] [
+          <eref bibitemid='ISO712'>ISO 712</eref>
+          ] and [
+          <eref bibitemid='ISO712'>ISO 712</eref>
+          ,
+          <eref bibitemid='ISO712'>ISO 712</eref>
+          ] and
+          <eref bibitemid='ISO712'>
+            <locality type='clause'>
+              <referenceFrom>3.1</referenceFrom>
+            </locality>
+            [ISO 712], 3.1
+          </eref>
+          <eref bibitemid='ISO712'>
+            <locality type='table'>
+              <referenceFrom>3.1</referenceFrom>
+            </locality>
+            [ISO 712], Table 3.1
+          </eref>
+        </p>
+      </foreword>
+    OUTPUT
+    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true))
+      .at(".//xmlns:foreword").to_xml))
+      .to be_equivalent_to xmlpp(presxml)
   end
 end

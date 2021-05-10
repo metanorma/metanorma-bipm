@@ -24,16 +24,11 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-=begin
   config.around do |example|
     Dir.mktmpdir("rspec-") do |dir|
-      if File.exists?(".byebug_history")
-        FileUtils.cp ".byebug_history", dir
-      end
       Dir.chdir(dir) { example.run }
     end
   end
-=end
 end
 
 def metadata(hash)

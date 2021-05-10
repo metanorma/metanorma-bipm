@@ -485,7 +485,8 @@ RSpec.describe Asciidoctor::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
   end
 
   it "processes default metadata for JCGM" do
@@ -944,7 +945,7 @@ RSpec.describe Asciidoctor::BIPM do
               <clause id='_' obligation='normative'>
                 <title>General</title>
               </clause>
-              <definitions id='_' type='symbols' obligation='normative'>
+              <definitions id='_' obligation='normative'>
                 <title>Symbols</title>
               </definitions>
             </definitions>
@@ -962,9 +963,10 @@ RSpec.describe Asciidoctor::BIPM do
             </clause>
             <clause id='_' obligation='normative'> </clause>
           </clause>
-          <clause id='_' obligation='normative'>
-            <title>Terms and Definitions</title>
-          </clause>
+          <terms id='_' obligation='normative'>
+             <title>Terms and Definitions</title>
+             <p id='_'>No terms and definitions are listed in this document.</p>
+           </terms>
         </sections>
         <annex id='_' obligation='normative'>
           <title>Annex</title>
@@ -1140,7 +1142,7 @@ RSpec.describe Asciidoctor::BIPM do
        <clause id='_' obligation='normative'>
          <title>General</title>
        </clause>
-       <definitions id='_' type='symbols' obligation='normative'>
+       <definitions id='_' obligation='normative'>
          <title>Symbols</title>
        </definitions>
      </definitions>
@@ -1158,9 +1160,10 @@ RSpec.describe Asciidoctor::BIPM do
      </clause>
      <clause id='_' obligation='normative' inline-header='true'> </clause>
    </clause>
-   <clause id='_' obligation='normative'>
-     <title>Terms and Definitions</title>
-   </clause>
+   <terms id='_' obligation='normative'>
+             <title>Terms and Definitions</title>
+             <p id='_'>No terms and definitions are listed in this document.</p>
+           </terms>
  </sections>
  <annex id='_' obligation='normative'>
    <title>Annex</title>

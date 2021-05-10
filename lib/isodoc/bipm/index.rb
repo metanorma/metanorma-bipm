@@ -10,14 +10,17 @@ module IsoDoc
 
       def index(docxml)
         unless docxml.at(ns("//index"))
-          docxml.xpath(ns("//indexsect")).each { |i| i.remove }
+          docxml.xpath(ns("//indexsect")).each(&:remove)
           return
         end
         i = docxml.at(ns("//indexsect")) ||
-          docxml.root.add_child("<indexsect #{add_id}><title>#{@i18n.index}</title></indexsect>").first
-        index = sort_indexterms(docxml.xpath(ns("//index")),
-                                docxml.xpath(ns("//index-xref[@also = 'false']")),
-                                docxml.xpath(ns("//index-xref[@also = 'true']")))
+          docxml.root.add_child("<indexsect #{add_id}><title>#{@i18n.index}"\
+                                "</title></indexsect>").first
+        index = sort_indexterms(
+          docxml.xpath(ns("//index")),
+          docxml.xpath(ns("//index-xref[@also = 'false']")),
+          docxml.xpath(ns("//index-xref[@also = 'true']"))
+        )
         index1(docxml, i, index)
       end
 
@@ -33,8 +36,8 @@ module IsoDoc
         @xrefs.bookmark_anchor_names(docxml)
       end
 
-      def sortable(s)
-        HTMLEntities.new.decode(Nokogiri::XML.fragment(s).text)
+      def sortable(str)
+        HTMLEntities.new.decode(Nokogiri::XML.fragment(str).text)
       end
 
       def index_entries_opt
@@ -45,7 +48,7 @@ module IsoDoc
         ret = index_entries_head(words[primary],
                                  index.dig(words[primary], nil, nil),
                                  index_entries_opt)
-        words2 = index[words[primary]]&.keys&.reject { |k| k.nil? }
+        words2 = index[words[primary]]&.keys&.compact
           &.each_with_object({}) { |w, v| v[w.downcase] = w }
         unless words2.empty?
           ret += "<ul>"
@@ -54,7 +57,7 @@ module IsoDoc
           end
           ret += "</ul>"
         end
-        ret + "</li>"
+        "#{ret}</li>"
       end
 
       def index_entries2(words, index, secondary)
@@ -70,7 +73,7 @@ module IsoDoc
           end
           ret += "</ul>"
         end
-        ret + "</li>"
+        "#{ret}</li>"
       end
 
       def index_entries_head(head, entries, opt)
@@ -118,8 +121,9 @@ module IsoDoc
         end
       end
 
-      def xml_encode_attr(s)
-        HTMLEntities.new.encode(s, :basic, :hexadecimal).gsub(/\&#x([^;]+);/) { |x| "&#x#{$1.upcase};" }
+      def xml_encode_attr(str)
+        HTMLEntities.new.encode(str, :basic, :hexadecimal)
+          .gsub(/&#x([^;]+);/) { |_x| "&#x#{$1.upcase};" }
       end
 
       # attributes are decoded into UTF-8, elements in extract_indexsee are still in entities
@@ -138,10 +142,10 @@ module IsoDoc
         end
       end
 
-      def index2bookmark(t)
-        t.name = "bookmark"
-        t.children.each { |x| x.remove }
-        t["id"] = "_#{UUIDTools::UUID.random_create}"
+      def index2bookmark(node)
+        node.name = "bookmark"
+        node.children.each(&:remove)
+        node["id"] = "_#{UUIDTools::UUID.random_create}"
       end
     end
   end

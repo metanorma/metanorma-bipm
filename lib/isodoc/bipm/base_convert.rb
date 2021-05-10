@@ -39,32 +39,46 @@ module IsoDoc
         ret
       end
 
-      def nonstd_bibitem(list, b, ordinal, biblio)
-        list.p **attr_code(iso_bibitem_entry_attrs(b, biblio)) do |ref|
-          ids = bibitem_ref_code(b)
+      def nonstd_bibitem(list, bibitem, ordinal, biblio)
+        list.p **attr_code(iso_bibitem_entry_attrs(bibitem, biblio)) do |ref|
+          ids = bibitem_ref_code(bibitem)
           identifiers = render_identifier(ids)
           if biblio then ref_entry_code(ref, ordinal, identifiers, ids)
           else
-            ref << "#{identifiers[0] || identifiers[1]}"
+            ref << identifiers[0] || identifiers[1]
             ref << " #{identifiers[1]}" if identifiers[0] && identifiers[1]
           end
           ref << " " unless biblio && !identifiers[1]
-          reference_format(b, ref)
+          reference_format(bibitem, ref)
         end
       end
 
-      def std_bibitem_entry(list, b, ordinal, biblio)
-        list.p **attr_code(iso_bibitem_entry_attrs(b, biblio)) do |ref|
-          identifiers = render_identifier(bibitem_ref_code(b))
+      def std_bibitem_entry(list, bibitem, ordinal, biblio)
+        list.p **attr_code(iso_bibitem_entry_attrs(bibitem, biblio)) do |ref|
+          identifiers = render_identifier(bibitem_ref_code(bibitem))
           if biblio then ref_entry_code(ref, ordinal, identifiers, nil)
           else
-            ref << "#{identifiers[0] || identifiers[1]}"
+            ref << identifiers[0] || identifiers[1]
             ref << " #{identifiers[1]}" if identifiers[0] && identifiers[1]
           end
-          date_note_process(b, ref)
+          date_note_process(bibitem, ref)
           ref << " " unless biblio && !identifiers[1]
-          reference_format(b, ref)
+          reference_format(bibitem, ref)
         end
+      end
+
+      def term_cleanup(docxml)
+        @jcgm ? docxml : super
+      end
+
+      def termref_cleanup(docxml)
+        docxml
+          .gsub(/\s*\[MODIFICATION\]\s*\[\/TERMREF\]/,
+        l10n(", #{@i18n.modified} [/TERMREF]"))
+          .gsub(%r{\s*\[/TERMREF\]\s*</p>\s*<p>\s*\[TERMREF\]}, "; ")
+          .gsub(/\[TERMREF\]\s*/, l10n("[#{@i18n.source} "))
+          .gsub(%r{\s*\[/TERMREF\]\s*}, l10n("]"))
+          .gsub(/\s*\[MODIFICATION\]/, l10n(", #{@i18n.modified} &mdash; "))
       end
     end
   end
