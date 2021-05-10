@@ -233,6 +233,22 @@ module IsoDoc
           @anchors.merge!(@iso.get)
         end
       end
+
+      def sequential_figure_names(clause)
+        if @jcgm
+          @iso.sequential_figure_names(clause)
+          @anchors.merge!(@iso.get)
+        else super
+        end
+      end
+
+      def hierarchical_figure_names(clause, num)
+        if @jcgm
+          @iso.hierarchical_figure_names(clause, num)
+          @anchors.merge!(@iso.get)
+        else super
+        end
+      end
     end
   end
 end

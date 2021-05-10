@@ -3426,13 +3426,147 @@ RSpec.describe IsoDoc::BIPM do
       .to be_equivalent_to xmlpp(presxml)
   end
 
-  it "handles brackets for multiple erefs in JCGM" do
-    input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
-          <bibdata>
-          <language>en</language>
-          <script>Latn</script>
-          <ext>
+  it "cross-references subfigures" do
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", <<~"INPUT", true).sub(%r{<localized-strings>.*</localized-strings>}m, ""))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        <iso-standard xmlns="http://riboseinc.com/isoxml">
+        <bibdata>
+         </bibdata>
+          <preface>
+            <foreword id="fwd">
+              <p>
+                <xref target="N"/>
+                <xref target="note1"/>
+                <xref target="note2"/>
+                <xref target="AN"/>
+                <xref target="Anote1"/>
+                <xref target="Anote2"/>
+              </p>
+            </foreword>
+          </preface>
+          <sections>
+            <clause id="scope" type="scope">
+              <title>Scope</title>
+            </clause>
+            <terms id="terms"/>
+            <clause id="widgets">
+              <title>Widgets</title>
+              <clause id="widgets1">
+                <figure id="N">
+                  <figure id="note1">
+                    <name>Split-it-right sample divider</name>
+                    <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
+                  </figure>
+                  <figure id="note2">
+                    <name>Split-it-right sample divider</name>
+                    <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
+                  </figure>
+                </figure>
+                <p>
+                  <xref target="note1"/>
+                  <xref target="note2"/>
+                </p>
+              </clause>
+            </clause>
+          </sections>
+          <annex id="annex1">
+            <clause id="annex1a"/>
+            <clause id="annex1b">
+              <figure id="AN">
+                <figure id="Anote1">
+                  <name>Split-it-right sample divider</name>
+                  <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
+                </figure>
+                <figure id="Anote2">
+                  <name>Split-it-right sample divider</name>
+                  <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
+                </figure>
+              </figure>
+            </clause>
+          </annex>
+        </iso-standard>
+      INPUT
+      <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+         <bibdata> </bibdata>
+         <preface>
+           <foreword id='fwd'>
+             <p>
+               <xref target='N'>Figure 1</xref>
+               <xref target='note1'>Figure 1-1</xref>
+               <xref target='note2'>Figure 1-2</xref>
+               <xref target='AN'>Figure 1.1</xref>
+               <xref target='Anote1'>Figure 1.1-1</xref>
+               <xref target='Anote2'>Figure 1.1-2</xref>
+             </p>
+           </foreword>
+         </preface>
+         <sections>
+           <clause id='scope' type='scope'>
+             <title depth='1'>
+               1.
+               <tab/>
+               Scope
+             </title>
+           </clause>
+           <terms id='terms'>
+             <title>2.</title>
+           </terms>
+           <clause id='widgets'>
+             <title depth='1'>
+               3.
+               <tab/>
+               Widgets
+             </title>
+             <clause id='widgets1'>
+               <title>3.1.</title>
+               <figure id='N'>
+                 <figure id='note1'>
+                   <name>Figure 1-1&#xA0;&#x2014; Split-it-right sample divider</name>
+                   <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                 </figure>
+                 <figure id='note2'>
+                   <name>Figure 1-2&#xA0;&#x2014; Split-it-right sample divider</name>
+                   <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                 </figure>
+               </figure>
+               <p>
+                 <xref target='note1'>Figure 1-1</xref>
+                 <xref target='note2'>Figure 1-2</xref>
+               </p>
+             </clause>
+           </clause>
+         </sections>
+         <annex id='annex1'>
+           <title>
+             <strong>Appendix 1</strong>
+           </title>
+           <clause id='annex1a'>
+             <title>1.1.</title>
+           </clause>
+           <clause id='annex1b'>
+             <title>1.2.</title>
+             <figure id='AN'>
+               <figure id='Anote1'>
+                 <name>Figure 1.1-1&#xA0;&#x2014; Split-it-right sample divider</name>
+                 <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+               </figure>
+               <figure id='Anote2'>
+                 <name>Figure 1.1-2&#xA0;&#x2014; Split-it-right sample divider</name>
+                 <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+               </figure>
+             </figure>
+           </clause>
+         </annex>
+       </iso-standard>
+      OUTPUT
+  end
+
+  it "cross-references subfigures in JCGM" do
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", <<~"INPUT", true).sub(%r{<localized-strings>.*</localized-strings>}m, ""))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+        <iso-standard xmlns="http://riboseinc.com/isoxml">
+        <bibdata>
+        <ext>
                   <editorialgroup>
                     <committee acronym="JCGM">
                       <variant language="en" script="Latn">TC</variant>
@@ -3441,7 +3575,160 @@ RSpec.describe IsoDoc::BIPM do
                     <workgroup acronym="B">WC</committee>
                   </editorialgroup>
                  </ext>
-          </bibdata>
+         </bibdata>
+          <preface>
+            <foreword id="fwd">
+              <p>
+                <xref target="N"/>
+                <xref target="note1"/>
+                <xref target="note2"/>
+                <xref target="AN"/>
+                <xref target="Anote1"/>
+                <xref target="Anote2"/>
+              </p>
+            </foreword>
+          </preface>
+          <sections>
+            <clause id="scope" type="scope">
+              <title>Scope</title>
+            </clause>
+            <terms id="terms"/>
+            <clause id="widgets">
+              <title>Widgets</title>
+              <clause id="widgets1">
+                <figure id="N">
+                  <figure id="note1">
+                    <name>Split-it-right sample divider</name>
+                    <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
+                  </figure>
+                  <figure id="note2">
+                    <name>Split-it-right sample divider</name>
+                    <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
+                  </figure>
+                </figure>
+                <p>
+                  <xref target="note1"/>
+                  <xref target="note2"/>
+                </p>
+              </clause>
+            </clause>
+          </sections>
+          <annex id="annex1">
+            <clause id="annex1a"/>
+            <clause id="annex1b">
+              <figure id="AN">
+                <figure id="Anote1">
+                  <name>Split-it-right sample divider</name>
+                  <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
+                </figure>
+                <figure id="Anote2">
+                  <name>Split-it-right sample divider</name>
+                  <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
+                </figure>
+              </figure>
+            </clause>
+          </annex>
+        </iso-standard>
+      INPUT
+      <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+         <bibdata>
+           <ext>
+             <editorialgroup>
+               <committee acronym='JCGM'> TC CT </committee>
+               <workgroup acronym='B'>WC</workgroup>
+             </editorialgroup>
+           </ext>
+         </bibdata>
+         <preface>
+           <foreword id='fwd'>
+             <p>
+               <xref target='N'>Figure 1</xref>
+               <xref target='note1'>Figure 1 a)</xref>
+               <xref target='note2'>Figure 1 b)</xref>
+               <xref target='AN'>Figure A.1</xref>
+               <xref target='Anote1'>Figure A.1 a)</xref>
+               <xref target='Anote2'>Figure A.1 b)</xref>
+             </p>
+           </foreword>
+         </preface>
+         <sections>
+           <clause id='scope' type='scope'>
+             <title depth='1'>
+               1.
+               <tab/>
+               Scope
+             </title>
+           </clause>
+           <terms id='terms'>
+             <title>2.</title>
+           </terms>
+           <clause id='widgets'>
+             <title depth='1'>
+               3.
+               <tab/>
+               Widgets
+             </title>
+             <clause id='widgets1'>
+               <title>3.1.</title>
+               <figure id='N'>
+                 <name>Figure 1</name>
+                 <figure id='note1'>
+                   <name>a)&#xA0; Split-it-right sample divider</name>
+                   <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                 </figure>
+                 <figure id='note2'>
+                   <name>b)&#xA0; Split-it-right sample divider</name>
+                   <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                 </figure>
+               </figure>
+               <p>
+                 <xref target='note1'>Figure 1 a)</xref>
+                 <xref target='note2'>Figure 1 b)</xref>
+               </p>
+             </clause>
+           </clause>
+         </sections>
+         <annex id='annex1'>
+           <title>
+             <strong>Appendix A</strong>
+           </title>
+           <clause id='annex1a'>
+             <title>A.1.</title>
+           </clause>
+           <clause id='annex1b'>
+             <title>A.2.</title>
+             <figure id='AN'>
+               <name>Figure A.1</name>
+               <figure id='Anote1'>
+                 <name>a)&#xA0; Split-it-right sample divider</name>
+                 <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+               </figure>
+               <figure id='Anote2'>
+                 <name>b)&#xA0; Split-it-right sample divider</name>
+                 <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+               </figure>
+             </figure>
+           </clause>
+         </annex>
+       </iso-standard>
+      OUTPUT
+
+   it "handles brackets for multiple erefs in JCGM" do
+    input = <<~INPUT
+          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <bibdata>
+          <language>en</language>
+          <script>Latn</script>
+          <ext>
+           <editorialgroup>
+                    <committee acronym="JCGM">
+                      <variant language="en" script="Latn">TC</variant>
+                      <variant language="fr" script="Latn">CT</variant>
+                    </committee>
+                    <workgroup acronym="B">WC</committee>
+                  </editorialgroup>
+                 </ext>
+                    </bibdata>
           <preface><foreword>
         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
         <eref bibitemid="ISO712"/> <eref bibitemid="ISO712"/>
