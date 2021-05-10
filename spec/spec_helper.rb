@@ -29,12 +29,6 @@ RSpec.configure do |config|
     File.join(__FILE__, "..", "..", ".byebug_history")
   )
 
-  config.around do |example|
-    Dir.mktmpdir("rspec-") do |dir|
-      Dir.chdir(dir) { example.run }
-    end
-  end
-
 end
 
 def metadata(hash)
