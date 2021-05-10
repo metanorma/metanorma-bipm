@@ -1,1 +1,4 @@
-.rubocop-https--*
+/.rubocop-https--*
+/.byebug_history
+/.rspec_status
+/coverage/
