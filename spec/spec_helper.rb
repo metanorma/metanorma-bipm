@@ -24,11 +24,16 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.around do |example|
+    Dir.mktmpdir("rspec-") do |dir|
+      Dir.chdir(dir) { example.run }
+    end
+  end
+
   require "byebug/settings/histfile"
   Byebug::HistfileSetting::DEFAULT = File.expand_path(
-    File.join(__FILE__, "..", "..", ".byebug_history")
+    File.join(__FILE__, "..", "..", ".byebug_history"),
   )
-
 end
 
 def metadata(hash)
@@ -87,7 +92,7 @@ def boilerplate(lang)
     .gsub(/<p /, "<p id='_' ")
     .gsub(/<p>/, "<p id='_'>")
     .gsub(/<quote /, "<quote id='_' ")
-    .gsub(/<quote>/, "<quote id='_'>")
+    .gsub(/<quote>/, "<quote id='_'>"),
   ).gsub(/’/, "\&#8217;").gsub(/©/, "&#169;")
 end
 
@@ -103,43 +108,43 @@ def boilerplate_filepath(lang)
 end
 
 BLANK_HDR = <<~"HDR".freeze
-  <?xml version="1.0" encoding="UTF-8"?>
-  <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::BIPM::VERSION}" type="semantic">
-  <bibdata type="standard">
-    <docidentifier type="BIPM">BIPM </docidentifier>
-    <contributor>
-      <role type="author"/>
-      <organization>
-        <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-        <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
-      </organization>
-    </contributor>
-    <contributor>
-      <role type="publisher"/>
-      <organization>
-        <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-        <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
-      </organization>
-    </contributor>
-    <language>en</language>
-    <script>Latn</script>
-    <status>
-      <stage>in-force</stage>
-    </status>
-    <copyright>
-      <from>#{Time.new.year}</from>
-      <owner>
+    <?xml version="1.0" encoding="UTF-8"?>
+    <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::BIPM::VERSION}" type="semantic">
+    <bibdata type="standard">
+      <docidentifier type="BIPM">BIPM </docidentifier>
+      <contributor>
+        <role type="author"/>
         <organization>
           <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
           <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
         </organization>
-      </owner>
-    </copyright>
-    <ext>
-      <doctype>brochure</doctype>
-    </ext>
-  </bibdata>
-#{boilerplate('en')}
+      </contributor>
+      <contributor>
+        <role type="publisher"/>
+        <organization>
+          <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+          <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+        </organization>
+      </contributor>
+      <language>en</language>
+      <script>Latn</script>
+      <status>
+        <stage>in-force</stage>
+      </status>
+      <copyright>
+        <from>#{Time.new.year}</from>
+        <owner>
+          <organization>
+            <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+            <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+          </organization>
+        </owner>
+      </copyright>
+      <ext>
+        <doctype>brochure</doctype>
+      </ext>
+    </bibdata>
+  #{boilerplate('en')}
 HDR
 
 HTML_HDR = <<~"HDR".freeze
