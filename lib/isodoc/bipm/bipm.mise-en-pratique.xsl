@@ -4348,6 +4348,7 @@
 		
 	</xsl:attribute-set><xsl:attribute-set name="link-style">
 		
+		
 			<xsl:attribute name="color">blue</xsl:attribute>
 			<xsl:attribute name="text-decoration">underline</xsl:attribute>
 		
@@ -4457,6 +4458,7 @@
 				
 	</xsl:attribute-set><xsl:attribute-set name="table-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
+			
 		
 		
 		
@@ -4582,6 +4584,7 @@
 		
 	</xsl:attribute-set><xsl:attribute-set name="figure-name-style">
 		
+		
 			<xsl:attribute name="keep-with-previous">always</xsl:attribute>
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
 			<xsl:attribute name="text-align">left</xsl:attribute>			
@@ -4614,9 +4617,11 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="figure-pseudocode-p-style">
 		
 	</xsl:attribute-set><xsl:attribute-set name="image-graphic-style">
+		
 		
 			<xsl:attribute name="width">100%</xsl:attribute>
 			<xsl:attribute name="content-height">scale-to-fit</xsl:attribute>
@@ -4786,12 +4791,14 @@
 			<fo:block-container margin-left="-{$margin-left}mm" margin-right="-{$margin-left}mm">			
 				
 				
+				
 							
 							
 							
 				
 				
 										
+				
 				
 				
 				
@@ -4827,6 +4834,7 @@
 					<attribute name="width"><xsl:value-of select="normalize-space($table_width)"/></attribute>
 					<attribute name="margin-left"><xsl:value-of select="$margin-left"/>mm</attribute>
 					<attribute name="margin-right"><xsl:value-of select="$margin-left"/>mm</attribute>
+					
 					
 					
 					
@@ -4978,6 +4986,7 @@
 		</xsl:choose>
 		
 	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name() = 'name']"/><xsl:template match="*[local-name()='table']/*[local-name() = 'name']" mode="presentation">
+		<xsl:param name="continued"/>
 		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="table-name-style">
 				
@@ -4990,6 +4999,7 @@
 					</xsl:if>
 				
 				<xsl:apply-templates/>				
+				
 			</fo:block>
 		</xsl:if>
 	</xsl:template><xsl:template name="calculate-columns-numbers">
@@ -5133,14 +5143,14 @@
 		<!-- row for title -->
 		<fo:table-row>
 			<fo:table-cell number-columns-spanned="{$cols-count}" border-left="1.5pt solid white" border-right="1.5pt solid white" border-top="1.5pt solid white" border-bottom="1.5pt solid black">
-				<xsl:apply-templates select="ancestor::*[local-name()='table']/*[local-name()='name']" mode="presentation"/>
+				
+				<xsl:apply-templates select="ancestor::*[local-name()='table']/*[local-name()='name']" mode="presentation">
+					<xsl:with-param name="continued">true</xsl:with-param>
+				</xsl:apply-templates>
 				<xsl:for-each select="ancestor::*[local-name()='table'][1]">
 					<xsl:call-template name="fn_name_display"/>
-				</xsl:for-each>				
-				<fo:block text-align="right" font-style="italic">
-					<xsl:text> </xsl:text>
-					<fo:retrieve-table-marker retrieve-class-name="table_continued"/>
-				</fo:block>
+				</xsl:for-each>
+				
 			</fo:table-cell>
 		</fo:table-row>
 	</xsl:template><xsl:template match="*[local-name()='thead']" mode="process_tbody">		
@@ -5375,6 +5385,7 @@
 					
 					
 					
+					
 				</xsl:if>
 				<xsl:if test="$parent-name = 'tfoot'">
 					
@@ -5408,6 +5419,7 @@
 					<xsl:otherwise>center</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
+			
 			
 			
 			
@@ -6787,6 +6799,7 @@
 						
 						
 						<fo:inline xsl:use-attribute-sets="note-name-style">
+							
 							<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
 						</fo:inline>
 						<xsl:apply-templates/>
@@ -6813,6 +6826,7 @@
 	</xsl:template><xsl:template match="*[local-name() = 'termnote']">
 		<fo:block id="{@id}" xsl:use-attribute-sets="termnote-style">			
 			<fo:inline xsl:use-attribute-sets="termnote-name-style">
+				
 				<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
 			</fo:inline>
 			<xsl:apply-templates/>
@@ -6898,7 +6912,10 @@
 			<xsl:for-each select="*[local-name() = 'note']">
 				<xsl:call-template name="note"/>
 			</xsl:for-each>
-			<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
+			
+			
+				<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
+			
 		</fo:block-container>
 	</xsl:template><xsl:template match="*[local-name() = 'figure'][@class = 'pseudocode']">
 		<fo:block id="{@id}">
@@ -8140,6 +8157,8 @@
 		
 		
 		 
+		
+		
 		
 		
 	</xsl:template><xsl:template name="processBibitemDocId">
