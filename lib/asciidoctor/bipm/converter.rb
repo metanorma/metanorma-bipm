@@ -198,7 +198,8 @@ module Asciidoctor
       end
 
       def jcgm_untitled_sections_cleanup(xml)
-        xml.xpath("//clause//clause | //annex//clause").each do |c|
+        xml.xpath("//clause//clause | //annex//clause | //introduction/clause")
+          .each do |c|
           next if !c&.at("./title")&.text&.empty?
 
           c["inline-header"] = true

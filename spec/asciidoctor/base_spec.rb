@@ -14,7 +14,8 @@ RSpec.describe Asciidoctor::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
   end
 
   it "converts a blank document" do
@@ -33,7 +34,8 @@ RSpec.describe Asciidoctor::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
     expect(File.exist?("test.pdf")).to be true
   end
@@ -62,7 +64,8 @@ RSpec.describe Asciidoctor::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
     expect(File.exist?("test.pdf")).to be true
   end
@@ -352,7 +355,8 @@ RSpec.describe Asciidoctor::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
   end
 
   it "processes default metadata in French" do
@@ -619,7 +623,8 @@ RSpec.describe Asciidoctor::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
   end
 
   it "processes figures" do
@@ -648,7 +653,8 @@ RSpec.describe Asciidoctor::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
   end
 
   it "strips inline header" do
@@ -675,7 +681,8 @@ RSpec.describe Asciidoctor::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
   end
 
   it "uses xref flags" do
@@ -706,7 +713,8 @@ RSpec.describe Asciidoctor::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
   end
 
   it "uses default fonts" do
@@ -748,7 +756,7 @@ RSpec.describe Asciidoctor::BIPM do
   end
 
   it "has unnumbered clauses" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to <<~"OUTPUT"
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
 
       [%unnumbered]
@@ -757,6 +765,7 @@ RSpec.describe Asciidoctor::BIPM do
       [appendix%unnumbered]
       == Appendix
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
         <sections>
           <clause id='_' unnumbered='true' obligation='normative'>
@@ -768,10 +777,12 @@ RSpec.describe Asciidoctor::BIPM do
         </annex>
       </bipm-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes the start attribute on ordered lists" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to <<~"OUTPUT"
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
 
       [keep-with-next=true,keep-lines-together=true,start=4]
@@ -779,6 +790,7 @@ RSpec.describe Asciidoctor::BIPM do
       . First
       . Second
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR}
         <sections>
           <ol keep-with-next='true' keep-lines-together='true' id='_' type='alphabet' start='4'>
@@ -792,10 +804,12 @@ RSpec.describe Asciidoctor::BIPM do
         </sections>
       </bipm-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes sections" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(<<~"INPUT", *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR}
       .Foreword
 
@@ -861,7 +875,7 @@ RSpec.describe Asciidoctor::BIPM do
       === Introduction
 
       === Clause 4.2
-      
+
       === {blank}
 
       == Terms and Definitions
@@ -875,6 +889,7 @@ RSpec.describe Asciidoctor::BIPM do
 
       === Bibliography Subsection
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR.sub(%r{</script>}, '</script><abstract><p>Text</p></abstract>')}
         <preface>
           <abstract id='_'>
@@ -988,11 +1003,12 @@ RSpec.describe Asciidoctor::BIPM do
         </bibliography>
       </bipm-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "processes sections in JCGM" do
-    expect(xmlpp(strip_guid(Asciidoctor.convert(
-      <<~"INPUT", *OPTIONS))).sub(%r{<boilerplate>.*</boilerplate>}m, "")).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    input = <<~INPUT
       #{ASCIIDOC_BLANK_HDR.sub(/:novalid:/, ":novalid:\n:committee-acronym: JCGM")}
       .Foreword
 
@@ -1006,6 +1022,8 @@ RSpec.describe Asciidoctor::BIPM do
       == Introduction
 
       === Introduction Subsection
+
+      === {blank}
 
       == Acknowledgements
 
@@ -1072,6 +1090,7 @@ RSpec.describe Asciidoctor::BIPM do
 
       === Bibliography Subsection
     INPUT
+    output = <<~OUTPUT
       #{BLANK_HDR.sub(%r{</script>}, '</script><abstract><p>Text</p></abstract>').sub(%r{<boilerplate>.*</boilerplate>}m, "")}
        <preface>
    <abstract id='_'>
@@ -1087,6 +1106,7 @@ RSpec.describe Asciidoctor::BIPM do
      <clause id='_' obligation='informative'>
        <title>Introduction Subsection</title>
      </clause>
+     <clause id='_' obligation='informative' inline-header='true'> </clause>
    </introduction>
    <clause id='_' obligation='informative'>
      <title>Dedication</title>
@@ -1185,6 +1205,9 @@ RSpec.describe Asciidoctor::BIPM do
  </bibliography>
       </bipm-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .sub(%r{<boilerplate>.*</boilerplate>}m, ""))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "customises italicisation of MathML" do
@@ -1209,7 +1232,7 @@ RSpec.describe Asciidoctor::BIPM do
       ++++
     INPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))).to be_equivalent_to xmlpp(<<~"OUTPUT")
+    output = <<~OUTPUT
       #{BLANK_HDR}
         <sections>
           <formula id='_'>
@@ -1230,5 +1253,7 @@ RSpec.describe Asciidoctor::BIPM do
         </sections>
       </bipm-standard>
     OUTPUT
+    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to xmlpp(output)
   end
 end
