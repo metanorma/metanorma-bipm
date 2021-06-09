@@ -2301,7 +2301,7 @@
 		
 		
 		
-		
+
 	</xsl:attribute-set><xsl:attribute-set name="example-style">
 		
 		
@@ -2369,6 +2369,7 @@
 			<xsl:attribute name="padding-right">5mm</xsl:attribute>
 		
 				
+				
 	</xsl:attribute-set><xsl:attribute-set name="table-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
 			
@@ -2390,6 +2391,8 @@
 		
 		
 		
+		
+	</xsl:attribute-set><xsl:attribute-set name="table-footer-cell-style">
 		
 	</xsl:attribute-set><xsl:attribute-set name="appendix-style">
 				
@@ -2444,6 +2447,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:variable name="note-body-indent">10mm</xsl:variable><xsl:variable name="note-body-indent-table">5mm</xsl:variable><xsl:attribute-set name="note-name-style">
 		
 		
@@ -2489,9 +2493,11 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="termnote-name-style">		
 		
 				
+		
 		
 	</xsl:attribute-set><xsl:attribute-set name="quote-style">		
 		
@@ -2554,6 +2560,7 @@
 		
 		
 		
+
 		
 		
 		
@@ -2629,6 +2636,8 @@
 		<xsl:attribute name="font-family">STIX Two Math</xsl:attribute>
 		
 		
+	</xsl:attribute-set><xsl:attribute-set name="list-style">
+		
 	</xsl:attribute-set><xsl:variable name="border-block-added">2.5pt solid rgb(0, 176, 80)</xsl:variable><xsl:variable name="border-block-deleted">2.5pt solid rgb(255, 0, 0)</xsl:variable><xsl:template name="processPrefaceSectionsDefault_Contents">
 		<xsl:apply-templates select="/*/*[local-name()='preface']/*[local-name()='abstract']" mode="contents"/>
 		<xsl:apply-templates select="/*/*[local-name()='preface']/*[local-name()='foreword']" mode="contents"/>
@@ -2682,11 +2691,11 @@
 		<xsl:variable name="table">
 	
 			<xsl:variable name="simple-table">	
-				<xsl:call-template name="getSimpleTable"/>			
+				<xsl:call-template name="getSimpleTable"/>
 			</xsl:variable>
 		
 			<!-- <xsl:if test="$namespace = 'bipm'">
-				<fo:block>&#xA0;</fo:block>				
+				<fo:block>&#xA0;</fo:block>
 			</xsl:if> -->
 			
 			<!-- $namespace = 'iso' or  -->
@@ -2798,6 +2807,7 @@
 									
 					
 									
+					
 					
 				</xsl:variable>
 				
@@ -3405,6 +3415,7 @@
 				
 				
 				
+				
 				<!-- <xsl:if test="$namespace = 'bipm'">
 					<xsl:attribute name="height">8mm</xsl:attribute>
 				</xsl:if> -->
@@ -3493,6 +3504,7 @@
 				<xsl:if test="ancestor::*[local-name() = 'tfoot']">
 					<xsl:attribute name="border">solid black 0</xsl:attribute>
 				</xsl:if>
+			
 			
 			
 			
@@ -3723,6 +3735,7 @@
 					<!-- <xsl:attribute name="alignment-baseline">hanging</xsl:attribute> -->
 					<xsl:attribute name="baseline-shift">15%</xsl:attribute>
 				</xsl:if>
+			
 			
 			
 			
@@ -4045,6 +4058,7 @@
 		
 		<fo:table-row>
 			
+			
 			<fo:table-cell>
 				
 				<fo:block margin-top="6pt">
@@ -4056,6 +4070,7 @@
 						<xsl:attribute name="margin-top">0</xsl:attribute>
 						
 					</xsl:if>
+					
 					
 					
 					
@@ -4633,6 +4648,7 @@
 		</xsl:variable>
 		<fo:inline xsl:use-attribute-sets="link-style">
 			
+			
 			<xsl:choose>
 				<xsl:when test="$target_text = ''">
 					<xsl:apply-templates/>
@@ -4859,6 +4875,7 @@
 			</xsl:call-template>
 			
 			<fo:block>
+				
 				<xsl:apply-templates/>
 			</fo:block>
 			<xsl:call-template name="fn_display_figure"/>
@@ -5223,6 +5240,7 @@
 	
 		<fo:block-container margin-left="0mm">
 			<xsl:copy-of select="@id"/>
+			
 			<xsl:if test="parent::*[local-name() = 'note']">
 				<xsl:attribute name="margin-left">
 					<xsl:choose>
@@ -5233,7 +5251,9 @@
 				
 			</xsl:if>
 			<fo:block-container margin-left="0mm">
-	
+		
+				
+				
 				<fo:block xsl:use-attribute-sets="sourcecode-style">
 					<xsl:variable name="_font-size">
 						
@@ -5262,9 +5282,13 @@
 						</xsl:choose>
 					</xsl:attribute>
 				</xsl:if>
-					<xsl:apply-templates/>			
-				</fo:block>
+				
+				<xsl:apply-templates/>			
+			</fo:block>
+				
+			
 				<xsl:apply-templates select="*[local-name()='name']" mode="presentation"/>
+				
 				
 			</fo:block-container>
 		</fo:block-container>
@@ -5615,6 +5639,8 @@
 					
 					
 					
+					
+					
 						<xsl:value-of select="$localized.source"/>
 						<xsl:text> </xsl:text>
 					
@@ -5852,6 +5878,7 @@
 	</xsl:template><xsl:template match="*[local-name() = 'clause']">
 		<fo:block>
 			<xsl:call-template name="setId"/>
+			
 			
 			
 				<xsl:if test="@inline-header='true'">
@@ -6617,4 +6644,14 @@
 				<xsl:value-of select="$align"/>
 			</xsl:when>
 		</xsl:choose>
+	</xsl:template><xsl:template name="setTextAlignment">
+		<xsl:param name="default">left</xsl:param>
+		<xsl:attribute name="text-align">
+			<xsl:choose>
+				<xsl:when test="@align"><xsl:value-of select="@align"/></xsl:when>
+				<xsl:when test="ancestor::*[local-name() = 'td']/@align"><xsl:value-of select="ancestor::*[local-name() = 'td']/@align"/></xsl:when>
+				<xsl:when test="ancestor::*[local-name() = 'th']/@align"><xsl:value-of select="ancestor::*[local-name() = 'th']/@align"/></xsl:when>
+				<xsl:otherwise><xsl:value-of select="$default"/></xsl:otherwise>
+			</xsl:choose>
+		</xsl:attribute>
 	</xsl:template></xsl:stylesheet>
