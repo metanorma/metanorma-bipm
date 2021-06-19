@@ -5099,6 +5099,9 @@
 						<xsl:attribute name="margin-top">0pt</xsl:attribute>
 					</xsl:if>
 				
+				
+				
+				
 				<xsl:choose>
 					<xsl:when test="$continued = 'true'"> 
 						<!-- <xsl:if test="$namespace = 'bsi'"></xsl:if> -->
@@ -5514,6 +5517,9 @@
 					 </xsl:if>
 				
 				
+				
+				
+				
 				<!-- <xsl:if test="$namespace = 'bipm'">
 					<xsl:attribute name="height">8mm</xsl:attribute>
 				</xsl:if> -->
@@ -5632,6 +5638,8 @@
 				<xsl:if test="ancestor::*[local-name() = 'doccontrol']">
 					<xsl:attribute name="display-align">before</xsl:attribute>
 				</xsl:if>
+			
+			
 			
 			
 			<xsl:if test=".//*[local-name() = 'table']">
@@ -6759,6 +6767,9 @@
 						<xsl:attribute name="content-width">scale-down-to-fit</xsl:attribute>
 						<xsl:attribute name="scaling">uniform</xsl:attribute>
 					</xsl:if>
+					<!-- <xsl:attribute name="fox:alt-text">
+						put AsciiMath/LaTeX math
+					</xsl:attribute> -->
 				
 				
 				<!-- <xsl:copy-of select="."/> -->
