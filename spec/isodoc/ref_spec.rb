@@ -154,7 +154,7 @@ RSpec.describe IsoDoc do
           <language current="true">en</language>
         </bibdata>
         <preface>
-          <foreword>
+          <foreword displayorder="1">
             <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
               <eref bibitemid="ISO712">[110]</eref>
               <eref bibitemid="ISBN">[1]</eref>
@@ -168,7 +168,7 @@ RSpec.describe IsoDoc do
           </foreword>
         </preface>
         <bibliography>
-          <references id="_bibliography" normative="false" obligation="informative">
+          <references id="_bibliography" normative="false" obligation="informative" displayorder="2">
             <title depth="1">Bibliography</title>
             <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
             <bibitem id="ISO712" type="standard">
@@ -283,14 +283,14 @@ RSpec.describe IsoDoc do
             </bibitem>
             <bibitem id="ref11">
               <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
-              <docidentifier type="IETF">RFC 10</docidentifier>
+              <docidentifier type="IETF">IETF RFC 10</docidentifier>
             </bibitem>
             <bibitem id="ref12">
               <formattedref format="application/x-isodoc+xml">CitationWorks. 2019.
                 <em>How to cite a reference</em>
                 .</formattedref>
               <docidentifier type="metanorma">[Citn]</docidentifier>
-              <docidentifier type="IETF">RFC 20</docidentifier>
+              <docidentifier type="IETF">IETF RFC 20</docidentifier>
             </bibitem>
           </references>
         </bibliography>
