@@ -3509,6 +3509,7 @@
 				<xsl:attribute name="padding-top">0.5mm</xsl:attribute>
 			
 			
+			
 				<xsl:if test="count(*) = 1 and (local-name(*[1]) = 'stem' or local-name(*[1]) = 'figure')">
 					<xsl:attribute name="padding-left">0mm</xsl:attribute>
 				</xsl:if>
