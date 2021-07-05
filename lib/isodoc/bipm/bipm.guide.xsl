@@ -6929,6 +6929,12 @@
 			
 			
 			
+			
+				<xsl:if test="parent::*[local-name() = 'li']">
+					<xsl:attribute name="margin-top">8pt</xsl:attribute>
+					<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
+				</xsl:if>
+			
 			<fo:block-container margin-left="0mm">
 				
 				
@@ -6948,6 +6954,9 @@
 								<xsl:attribute name="font-size">9pt</xsl:attribute>
 								<xsl:attribute name="line-height">130%</xsl:attribute>
 								<xsl:attribute name="text-align">justify</xsl:attribute>
+							</xsl:if>
+							<xsl:if test="parent::*[local-name() = 'li']">
+								<xsl:attribute name="margin-left">-6.5mm</xsl:attribute> <!-- see provisional-distance-between-starts for list-item -->
 							</xsl:if>
 						
 						
