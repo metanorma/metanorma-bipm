@@ -5434,6 +5434,7 @@
 							
 							
 							
+							
 							<!-- fn will be processed inside 'note' processing -->
 							
 							
@@ -5452,6 +5453,10 @@
 									</fo:block>
 								</xsl:if>
 							
+							
+							
+							
+							<!-- for BSI (not PAS) display Notes before footnotes -->
 							
 							
 							<!-- except gb  -->
@@ -5478,6 +5483,10 @@
 							
 							<!-- fn processing -->
 							<xsl:call-template name="fn_display"/>
+							
+							
+							<!-- for PAS display Notes after footnotes -->
+							
 							
 						</fo:table-cell>
 					</fo:table-row>
@@ -5534,6 +5543,7 @@
 					
 				</xsl:if>
 				<xsl:if test="$parent-name = 'tfoot'">
+					
 					
 					
 				</xsl:if>
@@ -5711,6 +5721,7 @@
 				
 				
 				
+				
 									
 					<xsl:attribute name="text-align">justify</xsl:attribute>
 					<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
@@ -5721,7 +5732,11 @@
 				
 				
 				
+				<!-- Table's note name (NOTE, for example) -->
+
 				<fo:inline padding-right="2mm">
+					
+				
 					
 					
 					
@@ -5735,9 +5750,11 @@
 						
 				</fo:inline>
 				
+				
 					<xsl:if test="ancestor::bipm:preface">
 						<fo:block> </fo:block>
 					</xsl:if>
+				
 				
 				<xsl:apply-templates mode="process"/>
 			</fo:block>
@@ -5758,6 +5775,8 @@
 			<xsl:variable name="reference" select="@reference"/>
 			<xsl:if test="not(preceding-sibling::*[@reference = $reference])"> <!-- only unique reference puts in note-->
 				<fo:block margin-bottom="12pt">
+				
+					
 					
 					
 					
@@ -5785,6 +5804,7 @@
 						<xsl:value-of select="@reference"/>
 						
 							<fo:inline font-style="normal">)</fo:inline>
+						
 						
 						
 					</fo:inline>
@@ -5943,6 +5963,7 @@
 				<xsl:value-of select="@reference"/>
 				
 					<fo:inline font-style="normal">)</fo:inline>
+				
 				
 			</fo:basic-link>
 		</fo:inline>
