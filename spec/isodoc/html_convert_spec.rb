@@ -2573,7 +2573,7 @@ RSpec.describe IsoDoc::BIPM do
               </clause>
             </clause>
           </sections>
-          <indexsect id='_'>
+          <indexsect id='_' displayorder="2">
             <title>Index</title>
             <clause id='_'>
               <title>D</title>
