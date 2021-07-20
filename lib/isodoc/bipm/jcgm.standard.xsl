@@ -2622,6 +2622,8 @@
 				<fo:block>&#xA0;</fo:block>
 			</xsl:if> -->
 			
+			
+			<!-- Display table's name before table as standalone block -->
 			<!-- $namespace = 'iso' or  -->
 			
 					
@@ -2698,6 +2700,10 @@
 				
 				
 				
+				
+				
+				
+				<!-- display table's name before table for PAS inside block-container (2-columnn layout) -->
 				
 				
 				<xsl:variable name="table_width">
@@ -3278,10 +3284,15 @@
 		
 		<fo:table-body>
 							
-				<xsl:variable name="title_continued">
+				<xsl:variable name="title_continued_">
 					<xsl:call-template name="getTitle">
 						<xsl:with-param name="name" select="'title-continued'"/>
 					</xsl:call-template>
+				</xsl:variable>
+				
+				<xsl:variable name="title_continued">
+					<xsl:value-of select="$title_continued_"/>
+					
 				</xsl:variable>
 				
 				<xsl:variable name="title_start" select="ancestor::*[local-name()='table'][1]/*[local-name()='name']/node()[1][self::text()]"/>
