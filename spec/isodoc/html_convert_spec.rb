@@ -2084,7 +2084,7 @@ RSpec.describe IsoDoc::BIPM do
             <p displayorder="1">
               <stem type='MathML'>
                 <math xmlns='http://www.w3.org/1998/Math/MathML'>
-                  <mn>30&#x202F;000</mn>
+                  <mn>30&#xA0;000</mn>
                 </math>
               </stem>
               <stem type='MathML'>
@@ -2124,14 +2124,14 @@ RSpec.describe IsoDoc::BIPM do
                       </mrow>
                     </mrow>
                     <mrow>
-                      <mn>1&#x202F;000</mn>
+                      <mn>1&#xA0;000</mn>
                     </mrow>
                   </munderover>
                   <mfenced open='(' close=')'>
                     <mtable>
                       <mtr>
                         <mtd>
-                          <mn>0.000&#x202F;1</mn>
+                          <mn>0.000&#xA0;1</mn>
                         </mtd>
                       </mtr>
                       <mtr>
@@ -2153,7 +2153,7 @@ RSpec.describe IsoDoc::BIPM do
                     <mrow>
                       <mfenced open='(' close=')'>
                         <mrow>
-                          <mn>1&#x202F;000.000&#x202F;01</mn>
+                          <mn>1&#xA0;000.000&#xA0;01</mn>
                           <mo>&#x2212;</mo>
                           <mi>p</mi>
                         </mrow>
@@ -2291,7 +2291,7 @@ RSpec.describe IsoDoc::BIPM do
             <p displayorder="1">
               <stem type='MathML'>
                <math xmlns='http://www.w3.org/1998/Math/MathML'>
-                <mn>30&#x202F;000</mn>
+                <mn>30&#xA0;000</mn>
                </math>
               </stem>
               <stem type='MathML'>
@@ -2331,14 +2331,14 @@ RSpec.describe IsoDoc::BIPM do
                       </mrow>
                     </mrow>
                     <mrow>
-                      <mn>1&#x202F;000</mn>
+                      <mn>1&#xA0;000</mn>
                     </mrow>
                   </munderover>
                   <mfenced open='(' close=')'>
                     <mtable>
                       <mtr>
                         <mtd>
-                          <mn>0,000&#x202F;1</mn>
+                          <mn>0,000&#xA0;1</mn>
                         </mtd>
                       </mtr>
                       <mtr>
@@ -2360,7 +2360,7 @@ RSpec.describe IsoDoc::BIPM do
                     <mrow>
                       <mfenced open='(' close=')'>
                         <mrow>
-                          <mn>1&#x202F;000,000&#x202F;01</mn>
+                          <mn>1&#xA0;000,000&#xA0;01</mn>
                           <mo>&#x2212;</mo>
                           <mi>p</mi>
                         </mrow>

@@ -121,10 +121,9 @@ module IsoDoc
         d = xml.at(ns("//bibdata/relation[@type = 'supersedes'][#{idx}]"\
                       "/bibitem")) or return ["", ""]
 
-        date = d&.at(ns("./date"))&.text
         draft = d&.at(ns("./version/draft"))&.text and draft = "Draft #{draft}"
         edn = d&.at(ns("./edition"))&.text and edn = "Version #{edn}"
-        [[draft, edn].join(" "), date]
+        [[draft, edn].join(" "), d&.at(ns("./date"))&.text]
       end
 
       def list_authors(xml)
@@ -168,7 +167,7 @@ module IsoDoc
       end
 
       def twitter_cldr_localiser_symbols
-        { group: "&#x202F;", fraction_group: "&#x202F;",
+        { group: "&#xA0;", fraction_group: "&#xA0;",
           fraction_group_digits: 3 }
       end
 
