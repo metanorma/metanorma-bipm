@@ -2292,7 +2292,9 @@
 		
 				
 				
-	</xsl:attribute-set><xsl:attribute-set name="table-name-style">
+	</xsl:attribute-set><xsl:variable name="table-border_">
+		
+	</xsl:variable><xsl:variable name="table-border" select="normalize-space($table-border_)"/><xsl:attribute-set name="table-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
 			
 		
@@ -2622,6 +2624,8 @@
 				<fo:block>&#xA0;</fo:block>
 			</xsl:if> -->
 			
+			
+			<!-- Display table's name before table as standalone block -->
 			<!-- $namespace = 'iso' or  -->
 			
 					
@@ -2700,6 +2704,12 @@
 				
 				
 				
+				
+				
+				
+				<!-- display table's name before table for PAS inside block-container (2-columnn layout) -->
+				
+				
 				<xsl:variable name="table_width">
 					<!-- for centered table always 100% (@width will be set for middle/second cell of outer table) -->
 					100%
@@ -2718,6 +2728,7 @@
 						<xsl:if test="*[local-name()='thead']">
 							<attribute name="border-top">1pt solid black</attribute>
 						</xsl:if>
+					
 					
 					
 					
@@ -3164,6 +3175,8 @@
 					</xsl:choose>
 				</xsl:for-each>
 				
+				
+				
 				<xsl:choose>
 					<xsl:when test="xalan:nodeset($colgroup)//*[local-name()='col']">
 						<xsl:for-each select="xalan:nodeset($colgroup)//*[local-name()='col']">
@@ -3194,6 +3207,7 @@
 							
 							
 							<!-- fn will be processed inside 'note' processing -->
+							
 							
 							
 							
@@ -3278,10 +3292,15 @@
 		
 		<fo:table-body>
 							
-				<xsl:variable name="title_continued">
+				<xsl:variable name="title_continued_">
 					<xsl:call-template name="getTitle">
 						<xsl:with-param name="name" select="'title-continued'"/>
 					</xsl:call-template>
+				</xsl:variable>
+				
+				<xsl:variable name="title_continued">
+					<xsl:value-of select="$title_continued_"/>
+					
 				</xsl:variable>
 				
 				<xsl:variable name="title_start" select="ancestor::*[local-name()='table'][1]/*[local-name()='name']/node()[1][self::text()]"/>
@@ -3339,6 +3358,8 @@
 					
 					
 					
+					
+					
 				</xsl:if>
 				<xsl:if test="$parent-name = 'tfoot'">
 					
@@ -3349,6 +3370,8 @@
 					
 					
 				</xsl:if>
+				
+				
 				
 				
 				
@@ -4901,7 +4924,24 @@
 							</fo:instream-foreign-object>
 						</xsl:when>
 						<xsl:otherwise>
-							<fo:external-graphic src="{$src}" fox:alt-text="Image {@alt}" xsl:use-attribute-sets="image-graphic-style"/>
+							<fo:external-graphic src="{$src}" fox:alt-text="Image {@alt}" xsl:use-attribute-sets="image-graphic-style">
+								<xsl:if test="not(@mimetype = 'image/svg+xml') and ../*[local-name() = 'name'] and not(ancestor::*[local-name() = 'table'])">
+										
+									<xsl:variable name="img_src">
+										<xsl:choose>
+											<xsl:when test="not(starts-with(@src, 'data:'))"><xsl:value-of select="concat($basepath, @src)"/></xsl:when>
+											<xsl:otherwise><xsl:value-of select="@src"/></xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
+									
+									<xsl:variable name="scale" select="java:org.metanorma.fop.Util.getImageScale($img_src, $width_effective, $height_effective)"/>
+									<xsl:if test="number($scale) &lt; 100">
+										<xsl:attribute name="content-width"><xsl:value-of select="$scale"/>%</xsl:attribute>
+									</xsl:if>
+								
+								</xsl:if>
+							
+							</fo:external-graphic>
 						</xsl:otherwise>
 					</xsl:choose>
 					
@@ -5072,11 +5112,13 @@
 						<xsl:attribute name="width">100%</xsl:attribute>
 						<xsl:attribute name="content-height">100%</xsl:attribute>
 						<xsl:attribute name="content-width">scale-down-to-fit</xsl:attribute>
+						<xsl:variable name="svg_width" select="xalan:nodeset($svg_content)/*/@width"/>
+						<xsl:variable name="svg_height" select="xalan:nodeset($svg_content)/*/@height"/>
 						<!-- effective height 297 - 27.4 - 13 =  256.6 -->
 						<!-- effective width 210 - 12.5 - 25 = 172.5 -->
 						<!-- effective height / width = 1.48, 1.4 - with title -->
-						<xsl:if test="@height &gt; (@width * 1.4)"> <!-- for images with big height -->
-							<xsl:variable name="width" select="((@width * 1.4) div @height) * 100"/>
+						<xsl:if test="$svg_height &gt; ($svg_width * 1.4)"> <!-- for images with big height -->
+							<xsl:variable name="width" select="(($svg_width * 1.4) div $svg_height) * 100"/>
 							<xsl:attribute name="width"><xsl:value-of select="$width"/>%</xsl:attribute>
 						</xsl:if>
 						<xsl:attribute name="scaling">uniform</xsl:attribute>
@@ -5093,6 +5135,23 @@
 		<xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
 			<xsl:value-of select="."/>
 		</xsl:attribute>
+	</xsl:template><xsl:template match="*[local-name() = 'svg'][not(@width and @height)]" mode="svg_update">
+		<xsl:copy>
+			<xsl:apply-templates select="@*" mode="svg_update"/>
+			<xsl:variable name="viewbox">
+				<xsl:call-template name="split">
+					<xsl:with-param name="pText" select="@viewBox"/>
+					<xsl:with-param name="sep" select="' '"/>
+				</xsl:call-template>
+			</xsl:variable>
+			<xsl:attribute name="width">
+				<xsl:value-of select="round(xalan:nodeset($viewbox)//item[3])"/>
+			</xsl:attribute>
+			<xsl:attribute name="height">
+				<xsl:value-of select="round(xalan:nodeset($viewbox)//item[4])"/>
+			</xsl:attribute>
+			<xsl:apply-templates mode="svg_update"/>
+		</xsl:copy>
 	</xsl:template><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'image'][@mimetype = 'image/svg+xml' and @src[not(starts-with(., 'data:image/'))]]" priority="2">
 		<xsl:variable name="svg_content" select="document(@src)"/>
 		<xsl:variable name="name" select="ancestor::*[local-name() = 'figure']/*[local-name() = 'name']"/>
@@ -6800,20 +6859,40 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template><xsl:template name="getLocalizedString">
-		<xsl:param name="key"/>	
+		<xsl:param name="key"/>
+		<xsl:param name="formatted">false</xsl:param>
 		
 		<xsl:variable name="curr_lang">
 			<xsl:call-template name="getLang"/>
 		</xsl:variable>
 		
-		<xsl:variable name="data_value" select="normalize-space(xalan:nodeset($bibdata)//*[local-name() = 'localized-string'][@key = $key and @language = $curr_lang])"/>
+		<xsl:variable name="data_value">
+			<xsl:choose>
+				<xsl:when test="$formatted = 'true'">
+					<xsl:apply-templates select="xalan:nodeset($bibdata)//*[local-name() = 'localized-string'][@key = $key and @language = $curr_lang]"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="normalize-space(xalan:nodeset($bibdata)//*[local-name() = 'localized-string'][@key = $key and @language = $curr_lang])"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 		
 		<xsl:choose>
-			<xsl:when test="$data_value != ''">
-				<xsl:value-of select="$data_value"/>
+			<xsl:when test="normalize-space($data_value) != ''">
+				<xsl:choose>
+					<xsl:when test="$formatted = 'true'"><xsl:copy-of select="$data_value"/></xsl:when>
+					<xsl:otherwise><xsl:value-of select="$data_value"/></xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 			<xsl:when test="/*/*[local-name() = 'localized-strings']/*[local-name() = 'localized-string'][@key = $key and @language = $curr_lang]">
-				<xsl:value-of select="/*/*[local-name() = 'localized-strings']/*[local-name() = 'localized-string'][@key = $key and @language = $curr_lang]"/>
+				<xsl:choose>
+					<xsl:when test="$formatted = 'true'">
+						<xsl:apply-templates select="/*/*[local-name() = 'localized-strings']/*[local-name() = 'localized-string'][@key = $key and @language = $curr_lang]"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="/*/*[local-name() = 'localized-strings']/*[local-name() = 'localized-string'][@key = $key and @language = $curr_lang]"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="key_">
@@ -6824,7 +6903,7 @@
 				<xsl:value-of select="$key_"/>
 			</xsl:otherwise>
 		</xsl:choose>
-		
+			
 	</xsl:template><xsl:template name="setTrackChangesStyles">
 		<xsl:param name="isAdded"/>
 		<xsl:param name="isDeleted"/>
