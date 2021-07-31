@@ -19,9 +19,17 @@ module Metanorma
           "Arial" => nil,
           "Times New Roman" => nil,
           "Work Sans" => nil,
+          "Work Sans Black" => nil,
+          "Work Sans ExtraBold" => nil,
+          "Work Sans ExtraLight" => nil,
+          "Work Sans Light" => nil,
+          "Work Sans Medium" => nil,
+          "Work Sans SemiBold" => nil,
+          "Work Sans Thin" => nil,
           "STIX Two Math" => nil,
           "Source Han Sans" => nil,
-          "TeX Gyre Chorus" => nil,
+          "Source Han Sans Normal" => nil,
+          "TeXGyreChorus" => nil,
         }
       end
 
