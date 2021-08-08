@@ -8726,8 +8726,8 @@
 					
 				</xsl:otherwise>
 			</xsl:choose>
+			<!-- end BIPM bibitem processing-->
 		
-		<!-- end BIPM bibitem processing-->
 		
 		 
 		
