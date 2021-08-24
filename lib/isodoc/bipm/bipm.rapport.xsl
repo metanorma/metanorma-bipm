@@ -13,6 +13,8 @@
 	<!-- param for second pass -->
 	<xsl:param name="external_index"/><!-- path to index xml, generated on 1st pass, based on FOP Intermediate Format -->
 	
+	<xsl:param name="add_math_as_text">false</xsl:param>
+	
 	<xsl:variable name="first_pass" select="count($index//item) = 0"/>
 	
 	<xsl:variable name="pageWidth" select="210"/>
@@ -6863,6 +6865,12 @@
 				<xsl:with-param name="isDeleted" select="$isDeleted"/>
 			</xsl:call-template>
 			
+			 <!-- insert helper tag -->
+				<xsl:if test="$add_math_as_text = 'true'">
+					<fo:inline color="white" font-size="1pt" font-style="normal" font-weight="normal">​</fo:inline> <!-- zero width space -->
+				</xsl:if>
+			
+			
 			<xsl:variable name="mathml">
 				<xsl:apply-templates select="." mode="mathml"/>
 			</xsl:variable>
@@ -6874,9 +6882,20 @@
 						<xsl:attribute name="content-width">scale-down-to-fit</xsl:attribute>
 						<xsl:attribute name="scaling">uniform</xsl:attribute>
 					</xsl:if>
-					<!-- <xsl:attribute name="fox:alt-text">
-						put AsciiMath/LaTeX math
-					</xsl:attribute> -->
+					
+					<xsl:if test="$add_math_as_text = 'true'">
+						<!-- <xsl:variable name="comment_text" select="following-sibling::node()[1][self::comment()]"/> -->
+						<xsl:variable name="comment_text" select="normalize-space(translate(.,' ⁢','  '))"/>
+						<!-- <xsl:variable name="comment_text" select="normalize-space(.)"/> -->
+						<xsl:if test="normalize-space($comment_text) != ''">
+						<!-- put Mathin Alternate Text -->
+							<xsl:attribute name="fox:alt-text">
+								<xsl:value-of select="java:org.metanorma.fop.Util.unescape($comment_text)"/>
+								<!-- <xsl:value-of select="$comment_text"/> -->
+							</xsl:attribute>
+						</xsl:if>
+					</xsl:if>
+					
 				
 				
 				<!-- <xsl:copy-of select="."/> -->
