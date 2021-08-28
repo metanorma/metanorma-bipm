@@ -3811,7 +3811,7 @@
 	<xsl:template name="insertHeaderFooter">
 		<xsl:param name="header-title"/>
 		<xsl:param name="orientation"/>
-		<fo:static-content flow-name="header-odd">			
+		<fo:static-content flow-name="header-odd" role="artifact">
 			<fo:block-container font-family="Arial" font-size="8pt" padding-top="12.5mm">
 				<fo:block text-align="right">
 					<xsl:copy-of select="$header-title"/>
@@ -3831,7 +3831,7 @@
 				<fo:block> </fo:block>
 			</fo:block-container>
 		</fo:static-content>		
-		<fo:static-content flow-name="header-even">
+		<fo:static-content flow-name="header-even" role="artifact">
 			<fo:block-container font-family="Arial" font-size="8pt" padding-top="12.5mm">
 				<fo:block>
 					<fo:inline font-weight="bold"><fo:page-number/></fo:inline>
