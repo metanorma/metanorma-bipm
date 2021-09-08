@@ -239,8 +239,15 @@ ul li p {
   display: inline;
 }
 
-ul li:first-child {
+ul > li:first-child {
   margin-top: 1em;
+}
+
+ul ul > li:first-child {
+      margin-top: 0;
+}
+ol ul > li:first-child {
+      margin-top: 0;
 }
 
 #toc-list ul {
