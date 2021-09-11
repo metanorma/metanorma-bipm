@@ -65,6 +65,7 @@ module IsoDoc
       def clause1(elem)
         return if elem["unnumbered"] == "true"
         return if elem.at(("./ancestor::*[@unnumbered = 'true']"))
+
         super
       end
 
@@ -111,7 +112,7 @@ module IsoDoc
         i = 3
         while list_draft(xml, i) != ["", ""]
           ret += "<tr>#{list_draft(xml, i).map { |x| "<td>#{x}</td>" }.join} "\
-            "<td/></tr>"
+                 "<td/></tr>"
           i += 1
         end
         ret
@@ -135,7 +136,7 @@ module IsoDoc
 
       COCHAIR = "xmlns:role[contains(text(),'co-chair')]".freeze
       CHAIR = "[xmlns:role[contains(text(),'chair')]"\
-        "[not(contains(text(),'co-chair'))]]".freeze
+              "[not(contains(text(),'co-chair'))]]".freeze
 
       def list_cochairs(xml)
         ret = list_people(xml, "//bibdata/contributor[#{COCHAIR}]/person")
@@ -172,6 +173,7 @@ module IsoDoc
       end
 
       def mathml1(elem, locale)
+        asciimath_dup(elem)
         localize_maths(elem, locale)
       end
 
