@@ -2175,6 +2175,54 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
   end
 
+  it "duplicates MathML with AsciiMath" do
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml" xmlns:m='http://www.w3.org/1998/Math/MathML'>
+      <preface><foreword>
+      <p>
+      <stem type="MathML"><m:math>
+        <m:msup> <m:mrow> <m:mo>(</m:mo> <m:mrow> <m:mi>x</m:mi> <m:mo>+</m:mo> <m:mi>y</m:mi> </m:mrow> <m:mo>)</m:mo> </m:mrow> <m:mn>2</m:mn> </m:msup>
+      </m:math></stem>
+      </p>
+      </foreword></preface>
+      <sections>
+      </iso-standard>
+    INPUT
+    output = <<~OUTPUT
+      <iso-standard xmlns='http://riboseinc.com/isoxml' xmlns:m='http://www.w3.org/1998/Math/MathML' type='presentation'>
+        <preface>
+          <foreword displayorder='1'>
+            <p>
+              <stem type='MathML'>
+                 <m:math>
+                   <m:msup>
+                     <m:mrow>
+                       <m:mo>(</m:mo>
+                       <m:mrow>
+                         <m:mi>x</m:mi>
+                         <m:mo>+</m:mo>
+                         <m:mi>y</m:mi>
+                       </m:mrow>
+                       <m:mo>)</m:mo>
+                     </m:mrow>
+                     <m:mn>2</m:mn>
+                   </m:msup>
+                 </m:math>
+                 <comment> ( x + y )^2 </comment>
+              </stem>
+            </p>
+          </foreword>
+        </preface>
+        <sections> </sections>
+      </iso-standard>
+    OUTPUT
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true)
+      .gsub("<!--", "<comment>")
+      .gsub("-->", "</comment>")))
+      .to be_equivalent_to xmlpp(output)
+  end
+
   it "localises numbers in MathML, French" do
     input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
