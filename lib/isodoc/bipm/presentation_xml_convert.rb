@@ -18,16 +18,13 @@ module IsoDoc
       end
 
       def eref_localities1(target, type, from, to, delim, n, lang = "en")
-        if @jcgm
-          @iso.eref_localities1(target, type, from, to, delim, n, lang)
-        else
-          super
-        end
+        @jcgm and
+          return @iso.eref_localities1(target, type, from, to, delim, n, lang)
+        super
       end
 
       def table1(elem)
-        return if labelled_ancestor(elem)
-        return if elem["unnumbered"]
+        return if labelled_ancestor(elem) || elem["unnumbered"]
 
         n = @xrefs.anchor(elem["id"], :label, false)
         prefix_name(elem, ".<tab/>",
@@ -47,19 +44,18 @@ module IsoDoc
         return if elem["unnumbered"] == "true"
 
         lbl = @xrefs.anchor(elem["id"], :label)
-        if t = elem.at(ns("./title"))
+        t = elem.at(ns("./title")) and
           t.children = "<strong>#{t.children.to_xml}</strong>"
-        end
         prefix_name(elem, ".<tab/>", lbl, "title")
       end
 
       def clause(docxml)
+        quotedtitles(docxml)
         super
-        if @jcgm
+        @jcgm and
           docxml.xpath(ns("//preface/introduction[clause]")).each do |f|
             clause1(f)
           end
-        end
       end
 
       def clause1(elem)
@@ -67,6 +63,21 @@ module IsoDoc
         return if elem.at(("./ancestor::*[@unnumbered = 'true']"))
 
         super
+      end
+
+      def prefix_name(node, delim, number, elem)
+        return if number.nil? || number.empty?
+
+        unless name = node.at(ns("./#{elem}[not(@type = 'quoted')]"))
+          return if node.at(ns("./#{elem}[@type = 'quoted']"))
+
+          node.children.empty? and node.add_child("<#{elem}></#{elem}>") or
+            node.children.first.previous = "<#{elem}></#{elem}>"
+          name = node.children.first
+        end
+        if name.children.empty? then name.add_child(number)
+        else (name.children.first.previous = "#{number}#{delim}")
+        end
       end
 
       def conversions(docxml)
@@ -168,8 +179,7 @@ module IsoDoc
       end
 
       def twitter_cldr_localiser_symbols
-        { group: "&#xA0;", fraction_group: "&#xA0;",
-          fraction_group_digits: 3 }
+        { group: "&#xA0;", fraction_group: "&#xA0;", fraction_group_digits: 3 }
       end
 
       def mathml1(elem, locale)
@@ -210,9 +220,7 @@ module IsoDoc
       def jcgm_eref(docxml, xpath)
         return unless @jcgm
 
-        docxml.xpath(ns(xpath)).each do |x|
-          extract_brackets(x)
-        end
+        docxml.xpath(ns(xpath)).each { |x| extract_brackets(x) }
         # merge adjacent text nodes
         docxml.root.replace(Nokogiri::XML(docxml.root.to_xml).root)
         docxml.xpath(ns(xpath)).each do |x| # rubocop: disable Style/CombinableLoops
@@ -232,6 +240,13 @@ module IsoDoc
           finish = node.at("./text()[last()]")
           finish.replace(finish.text[0..-2])
           node.next = "]"
+        end
+      end
+
+      def quotedtitles(docxml)
+        docxml.xpath(ns("//variant-title[@type = 'quoted']")).each do |t|
+          t.name = "title"
+          t.children.first.previous = "<blacksquare/>"
         end
       end
 
