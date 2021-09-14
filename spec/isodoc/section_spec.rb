@@ -128,9 +128,9 @@ RSpec.describe IsoDoc::BIPM do
         <annex id="P" inline-header="false" obligation="normative" displayorder="9">
           <title><strong>Appendix 1</strong>.<tab/><strong>Annex</strong></title>
           <clause id="Q" inline-header="false" obligation="normative">
-            <title depth="2">1.1.<tab/>Annex A.1</title>
+            <title depth="2">A1.1.<tab/>Annex A.1</title>
             <clause id="Q1" inline-header="false" obligation="normative">
-              <title depth="3">1.1.1.<tab/>Annex A.1a</title>
+              <title depth="3">A1.1.1.<tab/>Annex A.1a</title>
             </clause>
           </clause>
         </annex>
@@ -221,9 +221,9 @@ RSpec.describe IsoDoc::BIPM do
                 <b>Annex</b>
               </h1>
               <div id='Q'>
-                <h2> 1.1. &#160; Annex A.1 </h2>
+                <h2> A1.1. &#160; Annex A.1 </h2>
                 <div id='Q1'>
-                  <h3> 1.1.1. &#160; Annex A.1a </h3>
+                  <h3> A1.1.1. &#160; Annex A.1a </h3>
                 </div>
               </div>
             </div>
@@ -602,7 +602,7 @@ RSpec.describe IsoDoc::BIPM do
           </title>
           <clause id='Q' inline-header='false' obligation='normative'>
             <title depth='2'>
-              1.1.
+              A1.1.
               <tab/>
                1.1.
               <tab/>
@@ -610,7 +610,7 @@ RSpec.describe IsoDoc::BIPM do
             </title>
             <clause id='Q1' inline-header='false' obligation='normative'>
               <title depth='3'>
-                1.1.1.
+                A1.1.1.
                 <tab/>
                  1.1.1.
                 <tab/>
@@ -698,7 +698,7 @@ RSpec.describe IsoDoc::BIPM do
               <xref target='B1'>"Beta"</xref>
               <xref target='A2'>Appendix 1</xref>
               <xref target='B2'>"Delta"</xref>
-              <xref target='C2'>Appendix 1.1</xref>
+              <xref target='C2'>Appendix A1.1</xref>
             </p>
           </foreword>
           <sections displayorder='2'>
@@ -744,7 +744,7 @@ RSpec.describe IsoDoc::BIPM do
             </clause>
             <clause id='C2'>
               <title depth='2'>
-                1.1.
+                A1.1.
                 <tab/>
                 Epsilon
               </title>

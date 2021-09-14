@@ -2221,13 +2221,13 @@ RSpec.describe IsoDoc::BIPM do
         <title>
         <strong>Appendix 1</strong>
       </title>
-          <clause id='annex1a'><title>1.1.</title>
+          <clause id='annex1a'><title>A1.1.</title>
             <formula id='AN'>
               <name>1.1</name>
               <stem type='AsciiMath'>r = 1 %</stem>
             </formula>
           </clause>
-          <clause id='annex1b'><title>1.2.</title>
+          <clause id='annex1b'><title>A1.2.</title>
             <formula id='Anote1' unnumbered='true'>
               <stem type='AsciiMath'>r = 1 %</stem>
             </formula>
@@ -2356,8 +2356,8 @@ RSpec.describe IsoDoc::BIPM do
           <xref target="N">Section 4.1</xref>
           <xref target="O">Section 4.2</xref>
           <xref target="P">Appendix 1</xref>
-          <xref target="Q">Appendix 1.1</xref>
-          <xref target="Q1">Appendix 1.1.1</xref>
+          <xref target="Q">Appendix A1.1</xref>
+          <xref target="Q1">Appendix A1.1.1</xref>
           <xref target="Q2">[Q2]</xref>
           <xref target="Q3">[Q3]</xref>
           <xref target="R">Chapter 2</xref></p>
@@ -2757,10 +2757,10 @@ RSpec.describe IsoDoc::BIPM do
              <strong>Appendix 1</strong>
            </title>
            <clause id='annex1a'>
-             <title>1.1.</title>
+             <title>A1.1.</title>
            </clause>
            <clause id='annex1b'>
-             <title>1.2.</title>
+             <title>A1.2.</title>
              <figure id='AN'>
                <figure id='Anote1'>
                  <name>Figure 1.1-1&#xA0;&#x2014; Split-it-right sample divider</name>
