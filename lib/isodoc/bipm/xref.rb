@@ -157,9 +157,10 @@ module IsoDoc
           annex_names1(a, num.to_s, 1)
         else
           i = Counter.new
+          prefix = @jcgm ? "" : "A"
           clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
             i.increment(c)
-            annex_names1(c, "#{num}.#{i.print}", 2)
+            annex_names1(c, "#{prefix}#{num}.#{i.print}", 2)
           end
           clause.xpath(ns(UNNUMBERED_SUBCLAUSES))
             .each { |c| unnumbered_annex_names1(c, 2) }
