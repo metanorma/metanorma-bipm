@@ -6,7 +6,6 @@ require_relative "base_convert"
 module IsoDoc
   module BIPM
     class HtmlConvert < IsoDoc::Generic::HtmlConvert
-
       def middle(isoxml, out)
         super
         doccontrol isoxml, out
@@ -25,15 +24,16 @@ module IsoDoc
       def counter_reset(node)
         s = node["start"]
         return nil unless s && !s.empty? && !s.to_i.zero?
+
         "counter-reset: #{node['type']} #{s.to_i - 1};"
       end
 
       def ol_attrs(node)
         klass, style = if node["type"] == "roman" &&
-            !node.at("./ancestor::xmlns:ol[@type = 'roman']") || 
+            !node.at("./ancestor::xmlns:ol[@type = 'roman']") ||
             node["type"] == "alphabet" &&
-            !node.at("./ancestor::xmlns:ol[@type = 'alphabet']")
-          [node["type"], counter_reset(node)]
+                !node.at("./ancestor::xmlns:ol[@type = 'alphabet']")
+                         [node["type"], counter_reset(node)]
                        end
         super.merge(attr_code(type: ol_style((node["type"] || "arabic").to_sym),
                               start: node["start"]), style: style, class: klass)
@@ -44,4 +44,3 @@ module IsoDoc
     end
   end
 end
-
