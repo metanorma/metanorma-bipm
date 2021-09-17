@@ -3835,7 +3835,7 @@
 	<!-- Table of Contents (ToC) processing -->
 	<!-- =================== -->
 	<xsl:template match="bipm:clause[@type = 'toc']" priority="3">
-		<fo:block>
+		<fo:block role="TOC">
 			<xsl:copy-of select="@id"/>
 			<xsl:apply-templates select="bipm:title[1]"/>
 			
@@ -9239,14 +9239,16 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<fo:table width="100%" table-layout="fixed" space-after="16pt">
-			<xsl:for-each select="xalan:nodeset($colwidths_)/column">
-				<fo:table-column column-width="proportional-column-width({.})"/>
-			</xsl:for-each>
-			<fo:table-body>
-				<xsl:apply-templates/>
-			</fo:table-body>
-		</fo:table>
+		<fo:block role="TOCI" space-after="16pt">
+			<fo:table width="100%" table-layout="fixed">
+				<xsl:for-each select="xalan:nodeset($colwidths_)/column">
+					<fo:table-column column-width="proportional-column-width({.})"/>
+				</xsl:for-each>
+				<fo:table-body>
+					<xsl:apply-templates/>
+				</fo:table-body>
+			</fo:table>
+		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'toc']//*[local-name() = 'li']">
 		<fo:table-row min-height="5mm">
 			<xsl:apply-templates/>
