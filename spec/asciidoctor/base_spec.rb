@@ -1276,7 +1276,7 @@ RSpec.describe Asciidoctor::BIPM do
       <clause id='_' obligation='normative'>
         <title>Clause</title>
         <clause id='_' obligation='normative'>
-          <variant-title variant_title='true' type='quoted'>
+          <variant-title type='quoted'>
             <strong>Definition of the metre</strong>
              (CR, 85)
           </variant-title>

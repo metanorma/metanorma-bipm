@@ -61,16 +61,16 @@ module IsoDoc
       end
 
       NUMBERED_SUBCLAUSES = "./clause[not(@unnumbered = 'true')] | "\
-        "./references[not(@unnumbered = 'true')] | "\
-        "./term[not(@unnumbered = 'true')] | "\
-        "./terms[not(@unnumbered = 'true')] | "\
-        "./definitions[not(@unnumbered = 'true')]".freeze
+                            "./references[not(@unnumbered = 'true')] | "\
+                            "./term[not(@unnumbered = 'true')] | "\
+                            "./terms[not(@unnumbered = 'true')] | "\
+                            "./definitions[not(@unnumbered = 'true')]".freeze
 
       UNNUMBERED_SUBCLAUSES = "./clause[@unnumbered = 'true'] | "\
-        "./references[@unnumbered = 'true'] | "\
-        "./term[@unnumbered = 'true'] | "\
-        "./terms[@unnumbered = 'true'] | "\
-        "./definitions[@unnumbered = 'true']".freeze
+                              "./references[@unnumbered = 'true'] | "\
+                              "./term[@unnumbered = 'true'] | "\
+                              "./terms[@unnumbered = 'true'] | "\
+                              "./definitions[@unnumbered = 'true']".freeze
 
       def section_name_anchors(clause, num, lvl)
         lbl = @jcgm ? "clause_jcgm" : "clause"
