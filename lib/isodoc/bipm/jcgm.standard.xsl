@@ -2406,6 +2406,11 @@
 		
 		
 		
+	</xsl:attribute-set><xsl:attribute-set name="table-note-name-style">
+		
+		
+		
+		
 	</xsl:attribute-set><xsl:attribute-set name="note-p-style">
 		
 		
@@ -3606,9 +3611,8 @@
 				
 				<!-- Table's note name (NOTE, for example) -->
 
-				<fo:inline padding-right="2mm">
+				<fo:inline padding-right="2mm" xsl:use-attribute-sets="table-note-name-style">
 					
-				
 					
 					
 					
@@ -5707,6 +5711,8 @@
 						</xsl:choose>
 					</xsl:attribute>
 				</xsl:if>
+				
+				
 				
 				<xsl:apply-templates/>			
 			</fo:block>
