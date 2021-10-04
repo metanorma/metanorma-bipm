@@ -17,6 +17,13 @@
           </data>
         </attribute>
         <optional>
+          <attribute name="to">
+            <data type="string">
+              <param name="pattern">\i\c*|\c+#\c+</param>
+            </data>
+          </attribute>
+        </optional>
+        <optional>
           <attribute name="type">
             <ref name="ReferenceFormat"/>
           </attribute>
@@ -177,6 +184,14 @@
         <optional>
           <attribute name="keep-lines-together">
             <data type="boolean"/>
+          </attribute>
+        </optional>
+        <optional>
+          <attribute name="tag"/>
+        </optional>
+        <optional>
+          <attribute name="multilingual-rendering">
+            <ref name="MultilingualRenderingType"/>
           </attribute>
         </optional>
         <attribute name="type">

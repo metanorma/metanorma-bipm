@@ -703,9 +703,9 @@ RSpec.describe IsoDoc::BIPM do
           </foreword>
           <sections displayorder='2'>
             <clause id='B' unnumbered='true' obligation='normative' displayorder='5'>
-              <title>Beta</title>
-              <clause id='C'>
-                <title>Charlie</title>
+              <title depth="1">Beta</title>
+              <clause id='C' unnumbered="true">
+                <title depth="2">Charlie</title>
               </clause>
             </clause>
             <clause id='D' obligation='normative' displayorder='6'>
@@ -715,7 +715,7 @@ RSpec.describe IsoDoc::BIPM do
                 Delta
               </title>
               <clause id='E' unnumbered='true'>
-                <title>Echo</title>
+                <title depth="2">Echo</title>
               </clause>
               <clause id='F'>
                 <title depth='2'>
@@ -728,8 +728,8 @@ RSpec.describe IsoDoc::BIPM do
           </sections>
           <annex id='A1' obligation='normative' unnumbered='true' displayorder='7'>
             <title>Alpha</title>
-            <clause id='B1'>
-              <title>Beta</title>
+            <clause id='B1' unnumbered="true">
+              <title depth="2">Beta</title>
             </clause>
           </annex>
           <annex id='A2' obligation='normative' displayorder='8'>
@@ -740,7 +740,7 @@ RSpec.describe IsoDoc::BIPM do
               <strong>Gamma</strong>
             </title>
             <clause id='B2' unnumbered='true'>
-              <title>Delta</title>
+              <title depth="2">Delta</title>
             </clause>
             <clause id='C2'>
               <title depth='2'>
