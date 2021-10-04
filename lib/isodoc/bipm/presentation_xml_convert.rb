@@ -59,8 +59,8 @@ module IsoDoc
       end
 
       def clause1(elem)
-        return if elem["unnumbered"] == "true"
-        return if elem.at(("./ancestor::*[@unnumbered = 'true']"))
+        elem.at(("./ancestor::*[@unnumbered = 'true']")) and
+          elem["unnumbered"] = "true"
 
         super
       end
