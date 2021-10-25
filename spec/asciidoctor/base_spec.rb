@@ -922,7 +922,7 @@ RSpec.describe Asciidoctor::BIPM do
             <title>Photometric units</title>
             <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
             <term id='term-term1'>
-              <preferred>Term1</preferred>
+              <preferred><expression><name>Term1</name></expression></preferred>
             </term>
           </terms>
           <clause id='_' obligation='normative'>
@@ -945,14 +945,14 @@ RSpec.describe Asciidoctor::BIPM do
               <terms id='_' obligation='normative'>
                 <title>Intro 5</title>
                 <term id='term-term1-1'>
-                  <preferred>Term1</preferred>
+                  <preferred><expression><name>Term1</name></expression></preferred>
                 </term>
               </terms>
             </clause>
             <terms id='_' obligation='normative'>
               <title>Normal Terms</title>
               <term id='term-term2'>
-                <preferred>Term2</preferred>
+                <preferred><expression><name>Term2</name></expression></preferred>
               </term>
             </terms>
             <definitions id='_' obligation='normative'>
@@ -1124,7 +1124,7 @@ RSpec.describe Asciidoctor::BIPM do
           <title>Photometric units</title>
           <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
           <term id='term-term1'>
-            <preferred>Term1</preferred>
+            <preferred><expression><name>Term1</name></expression></preferred>
           </term>
         </terms>
         <clause id='_' obligation='normative'>
@@ -1147,14 +1147,14 @@ RSpec.describe Asciidoctor::BIPM do
             <terms id='_' obligation='normative'>
               <title>Intro 5</title>
               <term id='term-term1-1'>
-                <preferred>Term1</preferred>
+                <preferred><expression><name>Term1</name></expression></preferred>
               </term>
             </terms>
           </clause>
           <terms id='_' obligation='normative'>
             <title>Normal Terms</title>
             <term id='term-term2'>
-              <preferred>Term2</preferred>
+              <preferred><expression><name>Term2</name></expression></preferred>
             </term>
           </terms>
           <definitions id='_' obligation='normative'>
