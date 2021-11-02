@@ -4153,6 +4153,7 @@
 			<fo:table-cell>
 				
 				<fo:block margin-top="6pt">
+					<xsl:copy-of select="@id"/>
 					
 						<xsl:attribute name="margin-top">0pt</xsl:attribute>
 					
