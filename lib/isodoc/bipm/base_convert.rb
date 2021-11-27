@@ -8,7 +8,8 @@ module IsoDoc
       end
 
       def convert1(docxml, filename, dir)
-        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/@acronym"))&.value == "JCGM"
+        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
+                              "@acronym"))&.value == "JCGM"
         super
       end
 
@@ -45,7 +46,7 @@ module IsoDoc
           identifiers = render_identifier(ids)
           if biblio then ref_entry_code(ref, ordinal, identifiers, ids)
           else
-            ref << identifiers[0] || identifiers[1]
+            ref << (identifiers[0] || identifiers[1])
             ref << " #{identifiers[1]}" if identifiers[0] && identifiers[1]
           end
           ref << " " unless biblio && !identifiers[1]
@@ -58,7 +59,7 @@ module IsoDoc
           identifiers = render_identifier(bibitem_ref_code(bibitem))
           if biblio then ref_entry_code(ref, ordinal, identifiers, nil)
           else
-            ref << identifiers[0] || identifiers[1]
+            ref << (identifiers[0] || identifiers[1])
             ref << " #{identifiers[1]}" if identifiers[0] && identifiers[1]
           end
           date_note_process(bibitem, ref)
