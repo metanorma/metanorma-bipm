@@ -514,10 +514,7 @@ RSpec.describe IsoDoc::BIPM do
         <p class='zzSTDTitle1'/>
         <div id='H'>
           <h1 id='toc0'>1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-          <h2 class='TermNum' id='J'>
-            1.1.&#xA0;
-            <p class='Terms' style='text-align:left;'>Term2</p>
-          </h2>
+          <p class='Terms' style='text-align:left;' id='J'><strong>1.1.</strong>&#xA0;Term2</p>
           <p>
             [Adapted from
             <a href='#ISO7301'/>

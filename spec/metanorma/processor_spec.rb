@@ -31,7 +31,9 @@ RSpec.describe Metanorma::BIPM::Processor do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(processor.input_to_isodoc(input, nil)))).to be_equivalent_to output
+    expect(xmlpp(strip_guid(processor
+      .input_to_isodoc(input, nil))))
+      .to be_equivalent_to output
   end
 
   it "generates HTML from IsoDoc XML" do
@@ -52,10 +54,8 @@ RSpec.describe Metanorma::BIPM::Processor do
       <main class="main-section"><button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
         <p class="zzSTDTitle1"></p>
         <div id="H"><h1 id="toc0">1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-          <h2 class='TermNum' id='J'>
-            1.1.&#xA0;
-            <p class='Terms' style='text-align:left;'>Term2</p>
-          </h2>
+           <p class='Terms' style='text-align:left;' id='J'>
+            <strong>1.1.</strong>&#xA0;Term2</p>
         </div>
       </main>
     OUTPUT
@@ -65,7 +65,7 @@ RSpec.describe Metanorma::BIPM::Processor do
     expect(
       xmlpp(File.read("test.html", encoding: "utf-8")
         .gsub(%r{^.*<main}m, "<main")
-        .gsub(%r{</main>.*}m, "</main>"))
+        .gsub(%r{</main>.*}m, "</main>")),
     ).to be_equivalent_to output
   end
 end

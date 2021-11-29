@@ -29,11 +29,6 @@ RSpec.configure do |config|
       Dir.chdir(dir) { example.run }
     end
   end
-
-  require "byebug/settings/histfile"
-  Byebug::HistfileSetting::DEFAULT = File.expand_path(
-    File.join(__FILE__, "..", "..", ".byebug_history"),
-  )
 end
 
 def metadata(hash)
