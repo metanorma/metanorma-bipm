@@ -2181,7 +2181,7 @@
 		
 		<xsl:variable name="display">
 			<xsl:choose>				
-				<xsl:when test="$level &gt;= 4">false</xsl:when>
+				<xsl:when test="$level &gt; $toc_level">false</xsl:when>
 				<xsl:otherwise>true</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -9601,7 +9601,31 @@
 		<fo:block-container border="1pt solid black" width="50%">
 			<fo:block> </fo:block>
 		</fo:block-container>
-	</xsl:template><xsl:template match="*[local-name() = 'toc']">
+	</xsl:template><xsl:variable name="toc_level">
+		<xsl:choose>
+			<xsl:when test="1 = 2"/> <!-- to do https://github.com/metanorma/mn-native-pdf/issues/337: if there is value in xml -->
+			<xsl:otherwise><!-- default value -->
+				3
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable><xsl:template match="*[local-name() = 'toc']">
 		<xsl:param name="colwidths"/>
 		<xsl:variable name="colwidths_">
 			<xsl:choose>
