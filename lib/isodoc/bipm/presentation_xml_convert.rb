@@ -71,11 +71,11 @@ module IsoDoc
         unless name = node.at(ns("./#{elem}[not(@type = 'quoted')]"))
           return if node.at(ns("./#{elem}[@type = 'quoted']"))
 
-          node.children.empty? and node.add_child("<#{elem}></#{elem}>") or
+          (node.children.empty? and node.add_child("<#{elem}></#{elem}>")) or
             node.children.first.previous = "<#{elem}></#{elem}>"
           name = node.children.first
         end
-        if name.children.empty? then name.add_child(number)
+        if name.children.empty? then name.add_child(cleanup_entities(number))
         else (name.children.first.previous = "#{number}#{delim}")
         end
       end
@@ -250,6 +250,12 @@ module IsoDoc
         end
       end
 
+      def termsource1(elem)
+        while elem&.next_element&.name == "termsource"
+          elem << "; #{elem.next_element.remove.children.to_xml}"
+        end
+        elem.children = l10n("[#{@i18n.source} #{elem.children.to_xml.strip}]")
+      end
       include Init
     end
   end

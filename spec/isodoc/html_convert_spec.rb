@@ -492,9 +492,8 @@ RSpec.describe IsoDoc::BIPM do
       <bipm-standard xmlns="http://riboseinc.com/isoxml">
         <sections>
           <terms id="H" obligation="normative">
-            <title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+            <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <term id="J">
-              <name>1.1.</name>
               <preferred>Term2</preferred>
               <termsource status="modified">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
@@ -508,27 +507,60 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
+    presxml = <<~"INPUT"
+      <bipm-standard xmlns="http://riboseinc.com/isoxml"  type='presentation'>
+        <sections>
+          <terms id="H" obligation="normative" displayorder="2">
+            <title depth='1'>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+            <term id="J">
+              <name>1.1.</name>
+              <preferred>Term2</preferred>
+              <termsource status="modified">[Adapted from
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, Clause 3.1</origin>, modified &#x2013;
+          The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]
+      </termsource>
+            </term>
+          </terms>
+        </sections>
+      </bipm-standard>
+    INPUT
+
     output = xmlpp(<<~"OUTPUT")
-          <main class='main-section'>
-        <button onclick='topFunction()' id='myBtn' title='Go to top'>Top</button>
-        <p class='zzSTDTitle1'/>
-        <div id='H'>
-          <h1 id='toc0'>1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-          <p class='Terms' style='text-align:left;' id='J'><strong>1.1.</strong>&#xA0;Term2</p>
-          <p>
-            [Adapted from
-            <a href='#ISO7301'/>
-            , modified &#x2014; The term "cargo rice" is shown as deprecated, and Note
-            1 to entry is not included here]
-          </p>
-        </div>
-      </main>
+         <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+           <div class='title-section'>
+             <p>&#160;</p>
+           </div>
+           <br/>
+           <div class='prefatory-section'>
+             <p>&#160;</p>
+           </div>
+           <br/>
+           <div class='main-section'>
+             <p class='zzSTDTitle1'/>
+             <div id='H'>
+               <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
+               <p class='TermNum' id='J'>1.1.</p>
+               <p class='Terms' style='text-align:left;'>Term2</p>
+               <p>
+                 [Adapted from
+                 <a href='#ISO7301'>ISO 7301:2011, Clause 3.1</a>
+                 , modified &#8211; The term "cargo rice" is shown as deprecated, and
+                 Note 1 to entry is not included here]
+               </p>
+             </div>
+           </div>
+         </body>
     OUTPUT
 
-    IsoDoc::BIPM::HtmlConvert.new({}).convert("test", input, false)
-    stripped_html = xmlpp(File.read("test.html", encoding: "utf-8")
-      .gsub(%r{^.*<main}m, "<main")
-      .gsub(%r{</main>.*}m, "</main>"))
+    stripped_presxml =
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+      .convert("test", presxml, true)
+      .gsub(%r{^.*<body}m, "<body")
+      .gsub(%r{</body>.*}m, "</body>")))
+    expect(stripped_presxml).to(be_equivalent_to(xmlpp(presxml)))
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
@@ -547,9 +579,8 @@ RSpec.describe IsoDoc::BIPM do
         </bibdata>
         <sections>
           <terms id="H" obligation="normative">
-            <title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+            <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <term id="J">
-              <name>1.1.</name>
               <preferred>Term2</preferred>
               <termsource status="modified">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
@@ -563,28 +594,70 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
+    presxml = <<~"INPUT"
+      <bipm-standard xmlns="http://riboseinc.com/isoxml"  type='presentation'>
+      <bibdata>
+          <ext>
+            <editorialgroup>
+              <committee acronym="JCGM">
+                Joint Committee for Guides in Metrology
+                Comité commun pour les guides en métrologie
+              </committee>
+            </editorialgroup>
+          </ext>
+        </bibdata>
+        <sections>
+          <terms id="H" obligation="normative" displayorder="2">
+            <title depth="1">1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+            <term id="J">
+              <name>1.1.</name>
+              <preferred>Term2</preferred>
+              <termsource status="modified">[Adapted from
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, 3.1</origin>, modified &#x2013;
+          The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]
+      </termsource>
+            </term>
+          </terms>
+        </sections>
+      </bipm-standard>
+    INPUT
+
     output = xmlpp(<<~"OUTPUT")
-      <main class='main-section'>
-           <button onclick='topFunction()' id='myBtn' title='Go to top'>Top</button>
-           <p class='zzSTDTitle1'/>
-           <div id='H'>
-             <h1 id='toc0'>1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-             <h2 class='TermNum' id='J'>1.1.</h2>
-                  <p class='Terms' style='text-align:left;'>Term2</p>
-               <p>
-                  [Adapted from
-                  <a href='#ISO7301'/>
-                  , modified &#x2014; The term "cargo rice" is shown as deprecated, and Note
-                  1 to entry is not included here]
-                  </p>
+         <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+           <div class='title-section'>
+             <p>&#160;</p>
            </div>
-         </main>
+           <br/>
+           <div class='prefatory-section'>
+             <p>&#160;</p>
+           </div>
+           <br/>
+           <div class='main-section'>
+             <p class='zzSTDTitle1'/>
+             <div id='H'>
+               <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
+               <p class='TermNum' id='J'>1.1.</p>
+               <p class='Terms' style='text-align:left;'>Term2</p>
+               <p>
+                 [Adapted from
+                 <a href='#ISO7301'>ISO 7301:2011, 3.1</a>
+                 , modified &#8211; The term "cargo rice" is shown as deprecated, and
+                 Note 1 to entry is not included here]
+               </p>
+             </div>
+           </div>
+         </body>
     OUTPUT
 
-    IsoDoc::BIPM::HtmlConvert.new({}).convert("test", input, false)
-    stripped_html = xmlpp(File.read("test.html", encoding: "utf-8")
-      .gsub(%r{^.*<main}m, "<main")
-      .gsub(%r{</main>.*}m, "</main>"))
+    stripped_presxml =
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
+    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+      .convert("test", presxml, true)
+      .gsub(%r{^.*<body}m, "<body")
+      .gsub(%r{</body>.*}m, "</body>")))
+    expect(stripped_presxml).to(be_equivalent_to(xmlpp(presxml)))
     expect(stripped_html).to(be_equivalent_to(output))
   end
 
