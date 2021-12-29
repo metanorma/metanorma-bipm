@@ -256,6 +256,11 @@ module IsoDoc
         end
         elem.children = l10n("[#{@i18n.source} #{elem.children.to_xml.strip}]")
       end
+
+      def bibliography_bibitem_number_skip(bibitem)
+        super || @xrefs.klass.standard?(bibitem)
+      end
+
       include Init
     end
   end
