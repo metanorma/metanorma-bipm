@@ -3428,14 +3428,17 @@
 					<fo:block>
 						<fo:inline>
 						 <!-- <xsl:number format="1."/> -->
-							<xsl:choose>
-								<xsl:when test="bipm:docidentifier[@type='metanorma']">
-									<xsl:value-of select="bipm:docidentifier[@type='metanorma']"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:number format="[1]"/>
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="bipm:docidentifier[@type='metanorma-ordinal']"/>
+							<xsl:if test="not(bipm:docidentifier[@type='metanorma-ordinal'])">
+								<xsl:choose>
+									<xsl:when test="bipm:docidentifier[@type='metanorma']">
+										<xsl:value-of select="bipm:docidentifier[@type='metanorma']"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:number format="[1]"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
 						</fo:inline>
 					</fo:block>
 				</fo:list-item-label>
@@ -3449,8 +3452,6 @@
 		</fo:list-block>
 	</xsl:template>
 	
-
-	<xsl:template match="bipm:references[not(@normative='true')]/bipm:bibitem" mode="contents"/>
 	
 	<xsl:template match="bipm:bibitem/bipm:title">
 		<fo:inline font-style="italic">
@@ -3458,7 +3459,7 @@
 		</fo:inline>
 	</xsl:template>
 
-	<xsl:template match="bipm:references/bipm:bibitem/bipm:docidentifier[@type='metanorma' and ../bipm:formattedref]"/>
+	<xsl:template match="bipm:references/bipm:bibitem/bipm:docidentifier[(@type='metanorma' or @type='metanorma-ordinal') and ../bipm:formattedref]"/>
 	
 
 	<xsl:template match="bipm:pagebreak">
@@ -8228,7 +8229,7 @@
 		<xsl:apply-templates mode="bookmarks"/>
 	</xsl:template><xsl:template match="*[local-name() = 'title' or local-name() = 'name']//*[local-name() = 'stem']" mode="contents">
 		<xsl:apply-templates select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" mode="contents" priority="3"/><xsl:template match="*[local-name() = 'stem']" mode="bookmarks">
+	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" mode="contents" priority="3"/><xsl:template match="*[local-name() = 'references']/*[local-name() = 'bibitem']" mode="contents"/><xsl:template match="*[local-name() = 'stem']" mode="bookmarks">
 		<xsl:apply-templates mode="bookmarks"/>
 	</xsl:template><xsl:template name="addBookmarks">
 		<xsl:param name="contents"/>
@@ -9493,7 +9494,7 @@
 					<xsl:apply-templates select="*[local-name() = 'formattedref']"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:variable name="docidentifier" select="*[local-name() = 'docidentifier'][not(@type = 'URN' or @type = 'metanorma' or @type = 'BIPM' or @type = 'ISBN' or @type = 'ISSN')]"/>
+					<xsl:variable name="docidentifier" select="*[local-name() = 'docidentifier'][not(@type = 'URN' or @type = 'metanorma' or @type = 'metanorma-ordinal' or @type = 'BIPM' or @type = 'ISBN' or @type = 'ISSN')]"/>
 					
 					<xsl:value-of select="$docidentifier"/>
 					<xsl:if test="$docidentifier != '' and *[local-name() = 'title']">, </xsl:if>
@@ -9517,16 +9518,30 @@
 			<!-- end BIPM bibitem processing-->
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
 		 
 		
 		
+
+		
+
+		
+		<!-- end MPFD bibitem processing -->
+		
+		<!-- start M3D bibitem processing -->
+		
+		
 		 
-		
-		
-		
 		
 	</xsl:template><xsl:template name="processBibitemDocId">
-		<xsl:variable name="_doc_ident" select="*[local-name() = 'docidentifier'][not(@type = 'DOI' or @type = 'metanorma' or @type = 'ISSN' or @type = 'ISBN' or @type = 'rfc-anchor')]"/>
+		<xsl:variable name="_doc_ident" select="*[local-name() = 'docidentifier'][not(@type = 'DOI' or @type = 'metanorma' or @type = 'metanorma-ordinal' or @type = 'ISSN' or @type = 'ISBN' or @type = 'rfc-anchor')]"/>
 		<xsl:choose>
 			<xsl:when test="normalize-space($_doc_ident) != ''">
 				<!-- <xsl:variable name="type" select="*[local-name() = 'docidentifier'][not(@type = 'DOI' or @type = 'metanorma' or @type = 'ISSN' or @type = 'ISBN' or @type = 'rfc-anchor')]/@type"/>
@@ -9540,7 +9555,7 @@
 				<xsl:if test="$type != ''">
 					<xsl:value-of select="$type"/><xsl:text> </xsl:text>
 				</xsl:if> -->
-				<xsl:value-of select="*[local-name() = 'docidentifier'][not(@type = 'metanorma')]"/>
+				<xsl:value-of select="*[local-name() = 'docidentifier'][not(@type = 'metanorma') and not(@type = 'metanorma-ordinal')]"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template><xsl:template name="processPersonalAuthor">
