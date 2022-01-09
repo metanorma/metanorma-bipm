@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Asciidoctor::BIPM do
+RSpec.describe Metanorma::BIPM do
   context "when xref_error.adoc compilation" do
     it "generates error file" do
       FileUtils.rm_rf("xref_error.err")
