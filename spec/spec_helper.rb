@@ -7,7 +7,6 @@ require "bundler/setup"
 require "metanorma"
 require "metanorma-bipm"
 require "metanorma/bipm"
-require "asciidoctor/bipm"
 require "rspec/matchers"
 require "equivalent-xml"
 require "htmlentities"
@@ -99,7 +98,7 @@ def boilerplate_filepath(lang)
            "boilerplate-#{lang}.xml"
          end
 
-  File.join(File.dirname(__FILE__), "..", "lib", "asciidoctor", "bipm", file)
+  File.join(File.dirname(__FILE__), "..", "lib", "metanorma", "bipm", file)
 end
 
 BLANK_HDR = <<~"HDR".freeze
