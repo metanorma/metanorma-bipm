@@ -1,9 +1,9 @@
-require "asciidoctor/standoc/converter"
-require "asciidoctor/generic/converter"
+require "metanorma/standoc/converter"
+require "metanorma/generic/converter"
 
-module Asciidoctor
+module Metanorma
   module BIPM
-    class Converter < Asciidoctor::Generic::Converter
+    class Converter < Metanorma::Generic::Converter
       register_for "bipm"
 
       def configuration

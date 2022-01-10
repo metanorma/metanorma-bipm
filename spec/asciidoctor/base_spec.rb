@@ -2,7 +2,7 @@ require "spec_helper"
 
 OPTIONS = [backend: :bipm, header_footer: true].freeze
 
-RSpec.describe Asciidoctor::BIPM do
+RSpec.describe Metanorma::BIPM do
   it "processes a blank document" do
     input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}
