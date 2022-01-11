@@ -1,5 +1,6 @@
 require "metanorma"
 require "metanorma/bipm"
+require "metanorma/bipm/version"
 require "isodoc/bipm"
 
 require "asciidoctor" unless defined? Asciidoctor::Converter
