@@ -4750,9 +4750,9 @@
 		</xsl:choose>
 	</xsl:template><xsl:variable name="lower">abcdefghijklmnopqrstuvwxyz</xsl:variable><xsl:variable name="upper">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable><xsl:variable name="en_chars" select="concat($lower,$upper,',.`1234567890-=~!@#$%^*()_+[]{}\|?/')"/><xsl:variable name="linebreak" select="'&#8232;'"/><xsl:attribute-set name="root-style">
 		
-		
 			<xsl:attribute name="font-family">Times New Roman, STIX Two Math, Source Han Sans</xsl:attribute>
 			<xsl:attribute name="font-size">10.5pt</xsl:attribute>
+		
 		
 		
 		
@@ -4969,7 +4969,106 @@
 			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>			
 		
 		
+	</xsl:attribute-set><xsl:attribute-set name="table-row-style">
+		<xsl:attribute name="min-height">4mm</xsl:attribute>
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="table-header-row-style" use-attribute-sets="table-row-style">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+				
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="table-footer-row-style" use-attribute-sets="table-row-style">
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="table-body-row-style" use-attribute-sets="table-row-style">
+
+	</xsl:attribute-set><xsl:attribute-set name="table-header-cell-style">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+		<xsl:attribute name="border">solid black 1pt</xsl:attribute>
+		<xsl:attribute name="padding-left">1mm</xsl:attribute>
+		<xsl:attribute name="display-align">center</xsl:attribute>
+		
+			<xsl:attribute name="font-weight">normal</xsl:attribute>
+			<xsl:attribute name="border">solid black 0pt</xsl:attribute>				
+			<xsl:attribute name="border-bottom">solid black 0.5pt</xsl:attribute>
+			<xsl:attribute name="height">8mm</xsl:attribute>
+			<xsl:attribute name="padding-top">2mm</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="table-cell-style">
+		<xsl:attribute name="display-align">center</xsl:attribute>
+		<xsl:attribute name="border">solid black 1pt</xsl:attribute>
+		<xsl:attribute name="padding-left">1mm</xsl:attribute>
+		
+		
+			<xsl:attribute name="border">solid 0pt white</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	</xsl:attribute-set><xsl:attribute-set name="table-footer-cell-style">
+		<xsl:attribute name="border">solid black 1pt</xsl:attribute>
+		<xsl:attribute name="padding-left">1mm</xsl:attribute>
+		<xsl:attribute name="padding-right">1mm</xsl:attribute>
+		<xsl:attribute name="padding-top">1mm</xsl:attribute>
+		
+		
+			<xsl:attribute name="border">solid black 0pt</xsl:attribute>
+		
+		
+		
+		
+		
+		
+
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="table-note-style">
+		<xsl:attribute name="font-size">10pt</xsl:attribute>
+		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+		
+			<xsl:attribute name="text-align">justify</xsl:attribute>
+			<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
 		
 	</xsl:attribute-set><xsl:attribute-set name="appendix-style">
 		
@@ -5026,6 +5125,7 @@
 		
 		
 	</xsl:attribute-set><xsl:attribute-set name="table-note-name-style">
+		<xsl:attribute name="padding-right">2mm</xsl:attribute>
 		
 			<xsl:attribute name="font-size">10pt</xsl:attribute>
 		
@@ -5093,12 +5193,12 @@
 		
 	</xsl:attribute-set><xsl:attribute-set name="figure-name-style">
 		
-		
 			<xsl:attribute name="keep-with-previous">always</xsl:attribute>
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
 			<xsl:attribute name="text-align">left</xsl:attribute>			
 			<xsl:attribute name="margin-left">19mm</xsl:attribute>
 			<xsl:attribute name="text-indent">-19mm</xsl:attribute>
+		
 		
 				
 		
@@ -5216,11 +5316,11 @@
 		<xsl:attribute name="text-indent">0</xsl:attribute>
 		<xsl:attribute name="start-indent">0</xsl:attribute>
 		
-		
 			<xsl:attribute name="font-size">9pt</xsl:attribute>
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 			<xsl:attribute name="line-height">124%</xsl:attribute>
 			<xsl:attribute name="text-align">justify</xsl:attribute>
+		
 		
 		
 		
@@ -5374,11 +5474,11 @@
 				
 			
 				
+			
 				
 				
 				
-				
-				
+			
 				
 				
 				
@@ -5408,13 +5508,13 @@
 						
 						
 						
-						
-						
 											
 							<xsl:if test="not(ancestor::*[local-name()='preface']) and not(ancestor::*[local-name()='note_side']) and not(ancestor::*[local-name() = 'annex'] and .//*[local-name() = 'xref'][@pagenumber]) and not(ancestor::*[local-name() = 'doccontrol'])">
 								<xsl:attribute name="border-top">0.5pt solid black</xsl:attribute>
 								<xsl:attribute name="border-bottom">0.5pt solid black</xsl:attribute>
 							</xsl:if>
+						
+						
 						
 						
 						
@@ -5543,7 +5643,7 @@
 		<xsl:param name="continued"/>
 		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="table-name-style">
-				
+
 				
 					<xsl:if test="not(*[local-name()='tab'])"> <!-- table without number -->
 						<xsl:attribute name="margin-top">0pt</xsl:attribute>
@@ -5655,7 +5755,6 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-
 			
 			<column>
 				<xsl:for-each select="xalan:nodeset($widths)//width">
@@ -5691,7 +5790,6 @@
 		<xsl:value-of select="translate($math_text, ' ', '#')"/><!-- mathml images as one 'word' without spaces -->
 	</xsl:template><xsl:template match="*[local-name()='table2']"/><xsl:template match="*[local-name()='thead']"/><xsl:template match="*[local-name()='thead']" mode="process">
 		<xsl:param name="cols-count"/>
-		<!-- font-weight="bold" -->
 		<fo:table-header>
 			
 			
@@ -5789,16 +5887,13 @@
 				
 				<fo:table-body>
 					<fo:table-row>
-						<fo:table-cell border="solid black 1pt" padding-left="1mm" padding-right="1mm" padding-top="1mm" number-columns-spanned="{$cols-count}">
+						<fo:table-cell xsl:use-attribute-sets="table-footer-cell-style" number-columns-spanned="{$cols-count}">
 							
 							
+
 							
 							
 							<!-- fn will be processed inside 'note' processing -->
-							
-							
-							
-								<xsl:attribute name="border">solid black 0pt</xsl:attribute>
 							
 							
 							
@@ -5811,7 +5906,6 @@
 										</xsl:choose>
 									</fo:block>
 								</xsl:if>
-							
 							
 							
 							
@@ -5887,47 +5981,52 @@
 		<xsl:apply-templates mode="presentation_name"/>
 	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name()='name']/node()" mode="presentation_name">
 		<xsl:apply-templates select="."/>
-	</xsl:template><xsl:template match="*[local-name()='tr']">
-		<xsl:variable name="parent-name" select="local-name(..)"/>
+	</xsl:template><xsl:template match="*[local-name()='thead']/*[local-name()='tr']" priority="2">
+		<fo:table-row xsl:use-attribute-sets="table-header-row-style">
+		
+			
+			
+			
 
-		<fo:table-row min-height="4mm">
-				<xsl:if test="$parent-name = 'thead'">
-					<xsl:attribute name="font-weight">bold</xsl:attribute>
-					
-					
-					
-					
-					
-					
-					
-					
-				</xsl:if>
-				<xsl:if test="$parent-name = 'tfoot'">
-					
-					
-					
-				</xsl:if>
-				
-				
-				
-				
-					<xsl:if test="count(*) = 1 and local-name(*[1]) = 'th'">
-						<xsl:attribute name="keep-with-next.within-page">always</xsl:attribute>
-					</xsl:if>
-					<xsl:if test="not(ancestor::*[local-name()='note_side'])">
-					 <xsl:attribute name="min-height">5mm</xsl:attribute>
-					 </xsl:if>
-				
-				
-				
-				
-				
-				
-				
+			
+			
+			<xsl:call-template name="setTableRowAttributes"/>
+			
 			<xsl:apply-templates/>
 		</fo:table-row>
+	</xsl:template><xsl:template match="*[local-name()='tfoot']/*[local-name()='tr']" priority="2">
+		<fo:table-row xsl:use-attribute-sets="table-footer-row-style">
+			
+			<xsl:call-template name="setTableRowAttributes"/>
+			<xsl:apply-templates/>
+		</fo:table-row>
+	</xsl:template><xsl:template match="*[local-name()='tr']">
+		<fo:table-row xsl:use-attribute-sets="table-body-row-style">
+		
+			
+		
+			
+		
+			<xsl:call-template name="setTableRowAttributes"/>
+			<xsl:apply-templates/>
+		</fo:table-row>
+	</xsl:template><xsl:template name="setTableRowAttributes">
+		
+	
+		
+			<xsl:if test="count(*) = 1 and local-name(*[1]) = 'th'">
+				<xsl:attribute name="keep-with-next.within-page">always</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="not(ancestor::*[local-name()='note_side'])">
+			 <xsl:attribute name="min-height">5mm</xsl:attribute>
+			 </xsl:if>
+		
+		
+		
+		
+		
 	</xsl:template><xsl:template match="*[local-name()='th']">
-		<fo:table-cell text-align="{@align}" font-weight="bold" border="solid black 1pt" padding-left="1mm" display-align="center">
+		<fo:table-cell xsl:use-attribute-sets="table-header-cell-style"> <!-- text-align="{@align}" -->
 			<xsl:attribute name="text-align">
 				<xsl:choose>
 					<xsl:when test="@align">
@@ -5938,22 +6037,6 @@
 			</xsl:attribute>
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-				<xsl:attribute name="font-weight">normal</xsl:attribute>
-				<xsl:attribute name="border">solid black 0pt</xsl:attribute>				
-				<!-- <xsl:attribute name="border-top">solid black 0.5pt</xsl:attribute> -->
-				<xsl:attribute name="border-bottom">solid black 0.5pt</xsl:attribute>
-				<xsl:attribute name="height">8mm</xsl:attribute>
-				<xsl:attribute name="padding-top">2mm</xsl:attribute>
 				<xsl:if test="(ancestor::*[local-name() = 'annex'] and ancestor::*[local-name() = 'table']//*[local-name() = 'xref'][@pagenumber]) or ancestor::*[local-name() = 'doccontrol']"><!-- for Annex ToC -->
 					<xsl:attribute name="border-top">solid black 0pt</xsl:attribute>
 					<xsl:attribute name="border-bottom">solid black 0pt</xsl:attribute>
@@ -5971,24 +6054,35 @@
 				</xsl:if>
 			
 			
+			
+
+			
+			
+			
+			
+			
 			<xsl:if test="$lang = 'ar'">
 				<xsl:attribute name="padding-right">1mm</xsl:attribute>
 			</xsl:if>
-			<xsl:if test="@colspan">
-				<xsl:attribute name="number-columns-spanned">
-					<xsl:value-of select="@colspan"/>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:if test="@rowspan">
-				<xsl:attribute name="number-rows-spanned">
-					<xsl:value-of select="@rowspan"/>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:call-template name="display-align"/>
+			
+			<xsl:call-template name="setTableCellAttributes"/>
+
 			<fo:block>
 				<xsl:apply-templates/>
 			</fo:block>
 		</fo:table-cell>
+	</xsl:template><xsl:template name="setTableCellAttributes">
+		<xsl:if test="@colspan">
+			<xsl:attribute name="number-columns-spanned">
+				<xsl:value-of select="@colspan"/>
+			</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="@rowspan">
+			<xsl:attribute name="number-rows-spanned">
+				<xsl:value-of select="@rowspan"/>
+			</xsl:attribute>
+		</xsl:if>
+		<xsl:call-template name="display-align"/>
 	</xsl:template><xsl:template name="display-align">
 		<xsl:if test="@valign">
 			<xsl:attribute name="display-align">
@@ -6001,7 +6095,7 @@
 			</xsl:attribute>
 		</xsl:if>
 	</xsl:template><xsl:template match="*[local-name()='td']">
-		<fo:table-cell text-align="{@align}" display-align="center" border="solid black 1pt" padding-left="1mm">
+		<fo:table-cell xsl:use-attribute-sets="table-cell-style"> <!-- text-align="{@align}" -->
 			<xsl:attribute name="text-align">
 				<xsl:choose>
 					<xsl:when test="@align">
@@ -6010,23 +6104,12 @@
 					<xsl:otherwise>left</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
+			
 			<xsl:if test="$lang = 'ar'">
 				<xsl:attribute name="padding-right">1mm</xsl:attribute>
 			</xsl:if>
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-				<xsl:attribute name="border">solid 0pt white</xsl:attribute>
 				<xsl:variable name="rownum"><xsl:number count="*[local-name()='tr']"/></xsl:variable>
 				<xsl:if test="$rownum = 1">
 					<xsl:attribute name="padding-top">3mm</xsl:attribute>
@@ -6039,23 +6122,30 @@
 				</xsl:if>
 			
 			
+			 <!-- bsi -->
 			
 			
-			<xsl:if test=".//*[local-name() = 'table']">
+			
+			
+			
+			
+			
+			
+
+			
+			
+			
+			
+			
+			
+			<xsl:if test=".//*[local-name() = 'table']"> <!-- if there is nested table -->
 				<xsl:attribute name="padding-right">1mm</xsl:attribute>
 			</xsl:if>
-			<xsl:if test="@colspan">
-				<xsl:attribute name="number-columns-spanned">
-					<xsl:value-of select="@colspan"/>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:if test="@rowspan">
-				<xsl:attribute name="number-rows-spanned">
-					<xsl:value-of select="@rowspan"/>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:call-template name="display-align"/>
+			
+			<xsl:call-template name="setTableCellAttributes"/>
+			
 			<fo:block>
+			
 				
 					<xsl:if test="not(.//bipm:image)">
 						<xsl:attribute name="line-stacking-strategy">font-height</xsl:attribute>
@@ -6065,22 +6155,16 @@
 						<xsl:attribute name="text-indent">-3mm</xsl:attribute>
 						<xsl:attribute name="start-indent">3mm</xsl:attribute>
 					</xsl:if>
-								
+				
+				
 				<xsl:apply-templates/>
 			</fo:block>			
 		</fo:table-cell>
 	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name()='note']" priority="2"/><xsl:template match="*[local-name()='table']/*[local-name()='note']" mode="process">
-		
-		
-			<fo:block font-size="10pt" margin-bottom="12pt">
-				
-				
-				
-				
-				
+
+			<fo:block xsl:use-attribute-sets="table-note-style">
+
 									
-					<xsl:attribute name="text-align">justify</xsl:attribute>
-					<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
 					<xsl:if test="ancestor::bipm:preface">
 						<xsl:attribute name="margin-top">18pt</xsl:attribute>
 						<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
@@ -6088,16 +6172,18 @@
 				
 				
 				
+			
 				<!-- Table's note name (NOTE, for example) -->
-
-				<fo:inline padding-right="2mm" xsl:use-attribute-sets="table-note-name-style">
-					
-					
+				<fo:inline xsl:use-attribute-sets="table-note-name-style">
 					
 					
 						<xsl:if test="ancestor::bipm:preface">
 							<xsl:attribute name="text-decoration">underline</xsl:attribute>
 						</xsl:if>
+					
+					
+					
+					
 					
 					
 					<xsl:apply-templates select="*[local-name() = 'name']" mode="presentation"/>
@@ -8280,13 +8366,18 @@
 		<xsl:apply-templates mode="contents_item">
 			<xsl:with-param name="mode" select="$mode"/>
 		</xsl:apply-templates>
-	</xsl:template><xsl:template match="*[local-name() = 'add'][starts-with(text(), $ace_tag)]" mode="contents_item">
+	</xsl:template><xsl:template match="*[local-name() = 'add']" mode="contents_item">
 		<xsl:param name="mode">bookmarks</xsl:param>
-		<xsl:if test="$mode = 'contents'">
-			<xsl:copy>
-				<xsl:apply-templates mode="contents_item"/>
-			</xsl:copy>		
-		</xsl:if>
+		<xsl:choose>
+			<xsl:when test="starts-with(text(), $ace_tag)">
+				<xsl:if test="$mode = 'contents'">
+					<xsl:copy>
+						<xsl:apply-templates mode="contents_item"/>
+					</xsl:copy>		
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise><xsl:apply-templates mode="contents_item"/></xsl:otherwise>
+		</xsl:choose>
 	</xsl:template><xsl:template match="*[local-name()='sourcecode']" name="sourcecode">
 	
 		<fo:block-container margin-left="0mm">
@@ -8515,17 +8606,8 @@
 					<xsl:otherwise>left</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
-			<xsl:if test="@colspan">
-				<xsl:attribute name="number-columns-spanned">
-					<xsl:value-of select="@colspan"/>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:if test="@rowspan">
-				<xsl:attribute name="number-rows-spanned">
-					<xsl:value-of select="@rowspan"/>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:call-template name="display-align"/>
+			
+			<xsl:call-template name="setTableCellAttributes"/>
 			
 			<fo:block>
 				<xsl:apply-templates/>
@@ -8548,17 +8630,8 @@
 			<xsl:if test="following-sibling::*[local-name()='td'] and not(preceding-sibling::*[local-name()='td'])">
 				<xsl:attribute name="font-weight">bold</xsl:attribute>
 			</xsl:if>
-			<xsl:if test="@colspan">
-				<xsl:attribute name="number-columns-spanned">
-					<xsl:value-of select="@colspan"/>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:if test="@rowspan">
-				<xsl:attribute name="number-rows-spanned">
-					<xsl:value-of select="@rowspan"/>
-				</xsl:attribute>
-			</xsl:if>
-			<xsl:call-template name="display-align"/>
+			
+			<xsl:call-template name="setTableCellAttributes"/>
 			
 			<fo:block>			
 				<xsl:apply-templates/>
@@ -8678,6 +8751,8 @@
 		</xsl:choose>	
 	</xsl:template><xsl:template match="*[local-name() = 'termsource']" name="termsource">
 		<fo:block xsl:use-attribute-sets="termsource-style">
+			
+			
 			
 			<!-- Example: [SOURCE: ISO 5127:2017, 3.1.6.02] -->			
 			<xsl:variable name="termsource_text">
