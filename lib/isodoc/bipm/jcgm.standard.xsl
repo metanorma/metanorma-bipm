@@ -558,9 +558,6 @@
 	<!-- ============================= -->
 	<!-- CONTENTS                                       -->
 	<!-- ============================= -->
-	<xsl:template match="node()" mode="contents">		
-		<xsl:apply-templates mode="contents"/>			
-	</xsl:template>
 
 	<!-- element with title -->
 	<xsl:template match="*[*[local-name()='title']]" mode="contents">
@@ -725,34 +722,6 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 	
-		
-	<xsl:template match="*[local-name()='bibitem']">
-		<fo:block id="{@id}" margin-bottom="6pt">
-			<xsl:call-template name="processBibitem"/>
-		</fo:block>
-	</xsl:template>
-	
-	
-	<xsl:template match="*[local-name()='bibitem']/*[local-name()='note']" priority="2">
-		<fo:footnote>
-			<xsl:variable name="number">
-				<xsl:number level="any" count="*[local-name()='bibitem']/*[local-name()='note']"/>
-			</xsl:variable>
-			<fo:inline font-size="8pt" keep-with-previous.within-line="always" baseline-shift="30%"> <!--85% vertical-align="super"-->
-				<fo:basic-link internal-destination="{generate-id()}" fox:alt-text="footnote {$number}">
-					<xsl:value-of select="$number"/><xsl:text>)</xsl:text>
-				</fo:basic-link>
-			</fo:inline>
-			<fo:footnote-body>
-				<fo:block font-size="10pt" margin-bottom="4pt" start-indent="0pt">
-					<fo:inline id="{generate-id()}" keep-with-next.within-line="always" alignment-baseline="hanging" padding-right="3mm"><!-- font-size="60%"  -->
-						<xsl:value-of select="$number"/><xsl:text>)</xsl:text>
-					</fo:inline>
-					<xsl:apply-templates/>
-				</fo:block>
-			</fo:footnote-body>
-		</fo:footnote>
-	</xsl:template>
 	
  
 	<xsl:template match="jcgm:fn/jcgm:p">
@@ -869,51 +838,6 @@
 
 	<xsl:template match="*[local-name() = 'definition']/*[local-name() = 'p']" priority="2">
 		<fo:block widows="1" orphans="1"><xsl:apply-templates/></fo:block>
-	</xsl:template>
-
-
-	<xsl:template match="*[local-name()='references'][@normative='true']">
-		<fo:block id="{@id}">
-			<xsl:apply-templates/>
-		</fo:block>
-	</xsl:template>
-	
-	<xsl:template match="*[local-name()='references'][not(@normative='true')]">
-		<fo:block break-after="page"/>
-		<fo:block id="{@id}">
-			<xsl:apply-templates/>
-		</fo:block>
-	</xsl:template>
-
-
-	<!-- Example: [1] ISO 9:1995, Information and documentation – Transliteration of Cyrillic characters into Latin characters – Slavic and non-Slavic languages -->
-	<xsl:template match="*[local-name()='references'][not(@normative='true')]/*[local-name()='bibitem']">
-		<fo:list-block margin-bottom="6pt" provisional-distance-between-starts="12mm">
-			<fo:list-item>
-				<fo:list-item-label end-indent="label-end()">
-					<fo:block>
-						<fo:inline id="{@id}">
-							<xsl:value-of select="*[local-name()='docidentifier'][@type = 'metanorma-ordinal']"/>
-							<xsl:if test="not(*[local-name()='docidentifier'][@type = 'metanorma-ordinal'])">
-								<xsl:number format="[1]"/>
-							</xsl:if>
-						</fo:inline>
-					</fo:block>
-				</fo:list-item-label>
-				<fo:list-item-body start-indent="body-start()">
-					<fo:block>
-						<xsl:call-template name="processBibitem"/>
-					</fo:block>
-				</fo:list-item-body>
-			</fo:list-item>
-		</fo:list-block>
-	</xsl:template>
-	
-	
-	<xsl:template match="*[local-name()='references']/*[local-name()='bibitem']/*[local-name()='title']">
-		<fo:inline font-style="italic">
-			<xsl:apply-templates/>
-		</fo:inline>
 	</xsl:template>
 
 	
@@ -2834,6 +2758,134 @@
 		
 		
 		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="bibitem-normative-style">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="bibitem-normative-list-style">
+		<xsl:attribute name="provisional-distance-between-starts">12mm</xsl:attribute>
+		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
+		
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="bibitem-non-normative-style">
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="bibitem-non-normative-list-style">
+		<xsl:attribute name="provisional-distance-between-starts">12mm</xsl:attribute>
+		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
+		
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="bibitem-normative-list-body-style">
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="bibitem-non-normative-list-body-style">
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="bibitem-note-fn-style">
+		<xsl:attribute name="keep-with-previous.within-line">always</xsl:attribute>
+		<xsl:attribute name="font-size">65%</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			<xsl:attribute name="font-size">8pt</xsl:attribute>
+			<xsl:attribute name="baseline-shift">30%</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="bibitem-note-fn-number-style">
+		<xsl:attribute name="keep-with-next.within-line">always</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+			<xsl:attribute name="alignment-baseline">hanging</xsl:attribute>
+			<xsl:attribute name="padding-right">3mm</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="bibitem-note-fn-body-style">
+		<xsl:attribute name="font-size">10pt</xsl:attribute>
+		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+		<xsl:attribute name="start-indent">0pt</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+		
+			<xsl:attribute name="margin-bottom">4pt</xsl:attribute>
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="references-non-normative-style">
 		
 		
 		
@@ -6444,11 +6496,6 @@
 		<fo:block id="{@id}">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" priority="3"/><xsl:template match="*[local-name() = 'bibitem'][@hidden='true']" priority="3"/><xsl:template match="/*/*[local-name() = 'bibliography']/*[local-name() = 'references'][@normative='true']">
-		
-		<fo:block id="{@id}">
-			<xsl:apply-templates/>
-		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'annex']">
 		<fo:block break-after="page"/>
 		<fo:block id="{@id}">
@@ -6715,64 +6762,105 @@
 		<fo:table-cell border="1pt solid black" padding-left="1mm" padding-top="0.5mm">
 			<fo:block><xsl:apply-templates/></fo:block>
 		</fo:table-cell>
+	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" priority="3"/><xsl:template match="*[local-name() = 'bibitem'][@hidden='true']" priority="3"/><xsl:template match="*[local-name() = 'bibitem'][starts-with(@id, 'hidden_bibitem_')]" priority="3"/><xsl:template match="*[local-name() = 'references'][@normative='true']" priority="2">
+		
+		
+		
+		<fo:block id="{@id}">
+			<xsl:apply-templates/>
+		</fo:block>
+	</xsl:template><xsl:template match="*[local-name() = 'references']">
+		<xsl:if test="not(ancestor::*[local-name() = 'annex'])">
+			
+					<fo:block break-after="page"/>
+				
+		</xsl:if>
+		
+		<!-- <xsl:if test="ancestor::*[local-name() = 'annex']">
+			<xsl:if test="$namespace = 'csa' or $namespace = 'csd' or $namespace = 'gb' or $namespace = 'iec' or $namespace = 'iso' or $namespace = 'itu'">
+				<fo:block break-after="page"/>
+			</xsl:if>
+		</xsl:if> -->
+		
+		<fo:block id="{@id}" xsl:use-attribute-sets="references-non-normative-style">
+			<xsl:apply-templates/>
+		</fo:block>
+		
+		
+		
+		
+	</xsl:template><xsl:template match="*[local-name() = 'bibitem']">
+		<xsl:call-template name="bibitem"/>
+	</xsl:template><xsl:template match="*[local-name() = 'references'][@normative='true']/*[local-name() = 'bibitem']" name="bibitem" priority="2">
+		
+				<fo:block id="{@id}" xsl:use-attribute-sets="bibitem-normative-style">
+					<xsl:call-template name="processBibitem"/>
+				</fo:block>
+			
+
+	</xsl:template><xsl:template match="*[local-name() = 'references'][not(@normative='true')]/*[local-name() = 'bibitem']" priority="2">
+		
+		 <!-- $namespace = 'csd' or $namespace = 'gb' or $namespace = 'iec' or $namespace = 'iso' or $namespace = 'jcgm' or $namespace = 'm3d' or 
+			$namespace = 'mpfd' or $namespace = 'ogc' or $namespace = 'ogc-white-paper' -->
+				<!-- Example: [1] ISO 9:1995, Information and documentation – Transliteration of Cyrillic characters into Latin characters – Slavic and non-Slavic languages -->	
+				<fo:list-block id="{@id}" xsl:use-attribute-sets="bibitem-non-normative-list-style">
+					<fo:list-item>
+						<fo:list-item-label end-indent="label-end()">
+							<fo:block>
+								<fo:inline>
+									
+											<xsl:value-of select="*[local-name()='docidentifier'][@type = 'metanorma-ordinal']"/>
+											<xsl:if test="not(*[local-name()='docidentifier'][@type = 'metanorma-ordinal'])">
+												<xsl:number format="[1]"/>
+											</xsl:if>
+										
+								</fo:inline>
+							</fo:block>
+						</fo:list-item-label>
+						<fo:list-item-body start-indent="body-start()">
+							<fo:block xsl:use-attribute-sets="bibitem-non-normative-list-body-style">
+								<xsl:call-template name="processBibitem"/>
+							</fo:block>
+						</fo:list-item-body>
+					</fo:list-item>
+				</fo:list-block>
+			
+		
 	</xsl:template><xsl:template name="processBibitem">
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		 
-		
-		
-
-		
-			<!-- start JCGM bibitem processing -->
-			<xsl:variable name="docidentifier">
-				<xsl:if test="*[local-name()='docidentifier']">
+				<!-- start JCGM bibitem processing -->
+				<xsl:variable name="docidentifier">
 					<xsl:choose>
 						<xsl:when test="*[local-name()='docidentifier']/@type = 'metanorma'"/>
 						<xsl:otherwise><xsl:value-of select="*[local-name()='docidentifier'][not(@type = 'metanorma-ordinal')]"/></xsl:otherwise>
 					</xsl:choose>
-				</xsl:if>
-			</xsl:variable>
-			<xsl:value-of select="$docidentifier"/>
+				</xsl:variable>
+				<xsl:value-of select="$docidentifier"/>
+				
+				<xsl:choose>
+					<xsl:when test="*[local-name()='formattedref']">
+						<xsl:if test="normalize-space($docidentifier) != ''">, </xsl:if>
+						<xsl:apply-templates select="*[local-name()='formattedref']"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:apply-templates select="*[local-name()='note']"/>			
+						<xsl:if test="normalize-space($docidentifier) != ''">, </xsl:if>
+						<xsl:choose>
+							<xsl:when test="*[local-name()='title'][@type = 'main' and @language = $lang]">
+								<xsl:apply-templates select="*[local-name()='title'][@type = 'main' and @language = $lang]"/>
+							</xsl:when>
+							<xsl:when test="*[local-name()='title'][@type = 'main' and @language = 'en']">
+								<xsl:apply-templates select="*[local-name()='title'][@type = 'main' and @language = 'en']"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:apply-templates select="*[local-name()='title']"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:otherwise>
+				</xsl:choose>
+				<!-- end JCGM bibitem processing -->
 			
-			<xsl:choose>
-				<xsl:when test="*[local-name()='formattedref']">
-					<xsl:if test="normalize-space($docidentifier) != ''">, </xsl:if>
-					<xsl:apply-templates select="*[local-name()='formattedref']"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:apply-templates select="*[local-name()='note']"/>			
-					<xsl:if test="normalize-space($docidentifier) != ''">, </xsl:if>
-					<xsl:choose>
-						<xsl:when test="*[local-name()='title'][@type = 'main' and @language = $lang]">
-							<xsl:apply-templates select="*[local-name()='title'][@type = 'main' and @language = $lang]"/>
-						</xsl:when>
-						<xsl:when test="*[local-name()='title'][@type = 'main' and @language = 'en']">
-							<xsl:apply-templates select="*[local-name()='title'][@type = 'main' and @language = 'en']"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:apply-templates select="*[local-name()='title']"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:otherwise>
-			</xsl:choose>
-			<!-- end JCGM bibitem processing -->
-		
-
-		
-		
-		
-		
-		 
-		
 	</xsl:template><xsl:template name="processBibitemDocId">
 		<xsl:variable name="_doc_ident" select="*[local-name() = 'docidentifier'][not(@type = 'DOI' or @type = 'metanorma' or @type = 'metanorma-ordinal' or @type = 'ISSN' or @type = 'ISBN' or @type = 'rfc-anchor')]"/>
 		<xsl:choose>
@@ -6829,6 +6917,52 @@
 		<xsl:value-of select="substring(.,1,1)"/>
 	</xsl:template><xsl:template match="*[local-name() = 'title']" mode="title">
 		<fo:inline><xsl:apply-templates/></fo:inline>
+	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'title']" priority="2">
+		<!-- <fo:inline><xsl:apply-templates /></fo:inline> -->
+		<fo:inline font-style="italic"> <!-- BIPM BSI CSD CSA GB IEC IHO ISO ITU JCGM -->
+			<xsl:apply-templates/>
+		</fo:inline>
+	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'note']" priority="2">
+		<fo:footnote>
+			<xsl:variable name="number">
+				
+						<xsl:number level="any" count="*[local-name() = 'bibitem']/*[local-name() = 'note']"/>
+					
+			</xsl:variable>
+			<fo:inline xsl:use-attribute-sets="bibitem-note-fn-style">
+				<fo:basic-link internal-destination="{generate-id()}" fox:alt-text="footnote {$number}">
+					<xsl:value-of select="$number"/>
+					
+						<xsl:text>)</xsl:text>
+					
+				</fo:basic-link>
+			</fo:inline>
+			<fo:footnote-body>
+				<fo:block xsl:use-attribute-sets="bibitem-note-fn-body-style">
+					<fo:inline id="{generate-id()}" xsl:use-attribute-sets="bibitem-note-fn-number-style">
+						<xsl:value-of select="$number"/>
+						
+							<xsl:text>)</xsl:text>
+						
+					</fo:inline>
+					<xsl:apply-templates/>
+				</fo:block>
+			</fo:footnote-body>
+		</fo:footnote>
+	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'edition']"> <!-- for iho -->
+		<xsl:text> edition </xsl:text>
+		<xsl:value-of select="."/>
+	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'uri']"> <!-- for iho -->
+		<xsl:text> (</xsl:text>
+		<fo:inline xsl:use-attribute-sets="link-style">
+			<fo:basic-link external-destination="." fox:alt-text=".">
+				<xsl:value-of select="."/>							
+			</fo:basic-link>
+		</fo:inline>
+		<xsl:text>)</xsl:text>
+	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'docidentifier']"/><xsl:template match="*[local-name() = 'formattedref']">
+		
+		<xsl:apply-templates/>
 	</xsl:template><xsl:template match="*[local-name() = 'form']">
 		<fo:block>
 			<xsl:apply-templates/>
