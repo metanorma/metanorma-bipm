@@ -2,16 +2,8 @@
 
 	<xsl:output version="1.0" method="xml" encoding="UTF-8" indent="no"/>
 	
-	<xsl:param name="svg_images"/>
-	<xsl:variable name="images" select="document($svg_images)"/>
-	<xsl:param name="basepath"/>
-	
 	<xsl:param name="initial_page_number"/>
 	<xsl:param name="doc_split_by_language"/>
-	
-	<!-- <item id="#">N_page</item> -->
-	<!-- param for second pass -->
-	<xsl:param name="external_index"/><!-- path to index xml, generated on 1st pass, based on FOP Intermediate Format -->
 	
 	<xsl:param name="add_math_as_text">true</xsl:param>
   
@@ -2861,38 +2853,7 @@
 		</fo:list-item>
 	</xsl:template>
 
-	<xsl:template match="bipm:formula/bipm:stem">
-		<fo:block margin-top="6pt" margin-bottom="6pt">
-			<xsl:choose>
-				<xsl:when test="../bipm:name">
-					<fo:table table-layout="fixed" width="100%">
-						<fo:table-column column-width="95%"/>
-						<fo:table-column column-width="5%"/>
-						<fo:table-body>
-							<fo:table-row>
-								<fo:table-cell display-align="center">
-									<fo:block text-align="center">
-										<xsl:apply-templates/>
-									</fo:block>
-								</fo:table-cell>
-								<fo:table-cell display-align="center">
-									<fo:block text-align="right">
-										<xsl:apply-templates select="../bipm:name" mode="formula_number"/>
-									</fo:block>
-								</fo:table-cell>
-							</fo:table-row>
-						</fo:table-body>
-					</fo:table>
-				</xsl:when>
-				<xsl:otherwise>
-					<fo:block text-align="center">
-							<xsl:apply-templates/>
-						</fo:block>
-				</xsl:otherwise>
-			</xsl:choose>
-		</fo:block>
-	</xsl:template>
-
+	
 	<xsl:template match="bipm:example" priority="2">
 		<fo:block margin-top="6pt" margin-bottom="6pt" keep-together.within-column="1">
 			<fo:table table-layout="fixed" width="100%">
@@ -3238,7 +3199,7 @@
 			<xsl:if test="$add_math_as_text = 'true'">
 				<!-- set unique font-size (fiction) -->
 				<xsl:variable name="font-size_sfx"><xsl:number level="any"/></xsl:variable>
-				<fo:inline color="white" font-size="1.{$font-size_sfx}pt" font-style="normal" font-weight="normal">​</fo:inline> <!-- zero width space -->
+				<fo:inline color="white" font-size="1.{$font-size_sfx}pt" font-style="normal" font-weight="normal"><xsl:value-of select="$zero_width_space"/></fo:inline> <!-- zero width space -->
 			</xsl:if>
 			
 			<!-- <fo:wrapper role="artifact"> -->
@@ -3949,7 +3910,7 @@
 	</xsl:template>
 
 	
-<xsl:param name="syntax-highlight">false</xsl:param><xsl:variable name="pageWidth_">
+<xsl:param name="svg_images"/><xsl:variable name="images" select="document($svg_images)"/><xsl:param name="basepath"/><xsl:param name="external_index"/><xsl:param name="syntax-highlight">false</xsl:param><xsl:variable name="pageWidth_">
 		210
 	</xsl:variable><xsl:variable name="pageWidth" select="normalize-space($pageWidth_)"/><xsl:variable name="pageHeight_">
 		297
@@ -4017,7 +3978,7 @@
 	</xsl:variable><xsl:variable name="titles" select="xalan:nodeset($titles_)"/><xsl:variable name="bibdata">
 		<xsl:copy-of select="//*[contains(local-name(), '-standard')]/*[local-name() = 'bibdata']"/>
 		<xsl:copy-of select="//*[contains(local-name(), '-standard')]/*[local-name() = 'localized-strings']"/>
-	</xsl:variable><xsl:variable name="tab_zh">　</xsl:variable><xsl:template name="getTitle">
+	</xsl:variable><xsl:variable name="linebreak">&#8232;</xsl:variable><xsl:variable name="tab_zh">　</xsl:variable><xsl:variable name="non_breaking_hyphen">‑</xsl:variable><xsl:variable name="thin_space"> </xsl:variable><xsl:variable name="zero_width_space">​</xsl:variable><xsl:variable name="en_dash">–</xsl:variable><xsl:template name="getTitle">
 		<xsl:param name="name"/>
 		<xsl:param name="lang"/>
 		<xsl:variable name="lang_">
@@ -4040,7 +4001,7 @@
 				<xsl:value-of select="$titles/*[local-name() = $name][@lang = 'en']"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:variable name="lower">abcdefghijklmnopqrstuvwxyz</xsl:variable><xsl:variable name="upper">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable><xsl:variable name="en_chars" select="concat($lower,$upper,',.`1234567890-=~!@#$%^*()_+[]{}\|?/')"/><xsl:variable name="linebreak" select="'&#8232;'"/><xsl:attribute-set name="root-style">
+	</xsl:template><xsl:variable name="lower">abcdefghijklmnopqrstuvwxyz</xsl:variable><xsl:variable name="upper">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable><xsl:variable name="en_chars" select="concat($lower,$upper,',.`1234567890-=~!@#$%^*()_+[]{}\|?/')"/><xsl:attribute-set name="root-style">
 		
 			<xsl:attribute name="font-family">Times New Roman, STIX Two Math, Source Han Sans</xsl:attribute>
 			<xsl:attribute name="font-size">10.5pt</xsl:attribute>
@@ -4647,6 +4608,35 @@
 		
 			
 	</xsl:attribute-set><xsl:attribute-set name="formula-style">
+		<xsl:attribute name="margin-top">6pt</xsl:attribute>
+		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+		
+			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>			
+		
+		
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="formula-stem-block-style">
+		<xsl:attribute name="text-align">center</xsl:attribute>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</xsl:attribute-set><xsl:attribute-set name="formula-stem-number-style">
+		<xsl:attribute name="text-align">right</xsl:attribute>
+		
+		
+		
+		
 		
 	</xsl:attribute-set><xsl:attribute-set name="image-style">
 		<xsl:attribute name="text-align">center</xsl:attribute>
@@ -5193,9 +5183,12 @@
 			
 	
 	</xsl:template><xsl:template match="*[local-name()='legal-statement']//*[local-name()='p']">
+		<xsl:param name="margin"/>
 		
 				<!-- process in the template 'paragraph' -->
-				<xsl:call-template name="paragraph"/>
+				<xsl:call-template name="paragraph">
+					<xsl:with-param name="margin" select="$margin"/>
+				</xsl:call-template>
 			
 	</xsl:template><xsl:template match="*[local-name()='feedback-statement']">
 		<fo:block xsl:use-attribute-sets="feedback-statement-style">
@@ -5207,9 +5200,12 @@
 				<xsl:call-template name="title"/>
 			
 	</xsl:template><xsl:template match="*[local-name()='feedback-statement']//*[local-name()='p']">
+		<xsl:param name="margin"/>
 		
 				<!-- process in the template 'paragraph' -->
-				<xsl:call-template name="paragraph"/>
+				<xsl:call-template name="paragraph">
+					<xsl:with-param name="margin" select="$margin"/>
+				</xsl:call-template>
 			
 	</xsl:template><xsl:template match="*[local-name()='td']//text() | *[local-name()='th']//text() | *[local-name()='dt']//text() | *[local-name()='dd']//text()" priority="1">
 		<!-- <xsl:call-template name="add-zero-spaces"/> -->
@@ -5571,8 +5567,7 @@
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template><xsl:template match="text()" mode="td_text">
-		<xsl:variable name="zero-space">​</xsl:variable>
-		<xsl:value-of select="translate(., $zero-space, ' ')"/><xsl:text> </xsl:text>
+		<xsl:value-of select="translate(., $zero_width_space, ' ')"/><xsl:text> </xsl:text>
 	</xsl:template><xsl:template match="*[local-name()='termsource']" mode="td_text">
 		<xsl:value-of select="*[local-name()='origin']/@citeas"/>
 	</xsl:template><xsl:template match="*[local-name()='link']" mode="td_text">
@@ -7237,8 +7232,8 @@
 				
 			</xsl:if>
 			<fo:block-container margin-left="0mm">	
-				<fo:block id="{@id}" xsl:use-attribute-sets="formula-style">
-					<xsl:apply-templates/>
+				<fo:block id="{@id}">
+					<xsl:apply-templates select="node()[not(local-name() = 'name')]"/> <!-- formula's number will be process in 'stem' template -->
 				</fo:block>
 			</fo:block-container>
 		</fo:block-container>
@@ -7250,10 +7245,43 @@
 		<fo:inline>
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'formula']/*[local-name() = 'name']"/><xsl:template match="*[local-name() = 'formula']/*[local-name() = 'name']" mode="formula_number"> <!-- show by demand -->
+	</xsl:template><xsl:template match="*[local-name() = 'formula']/*[local-name() = 'name']"> <!-- show in 'stem' template -->
 		<xsl:if test="normalize-space() != ''">
 			<xsl:text>(</xsl:text><xsl:apply-templates/><xsl:text>)</xsl:text>
 		</xsl:if>
+	</xsl:template><xsl:template match="*[local-name() = 'formula'][*[local-name() = 'name']]/*[local-name() = 'stem']">
+		<fo:block xsl:use-attribute-sets="formula-style">
+		
+			
+		
+			<fo:table table-layout="fixed" width="100%">
+				<fo:table-column column-width="95%"/>
+				<fo:table-column column-width="5%"/>
+				<fo:table-body>
+					<fo:table-row>
+						<fo:table-cell display-align="center">
+							<fo:block xsl:use-attribute-sets="formula-stem-block-style">
+							
+								
+							
+								<xsl:apply-templates/>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell display-align="center">
+							<fo:block xsl:use-attribute-sets="formula-stem-number-style">
+								<xsl:apply-templates select="../*[local-name() = 'name']"/>
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+			</fo:table>
+		</fo:block>
+	</xsl:template><xsl:template match="*[local-name() = 'formula'][not(*[local-name() = 'name'])]/*[local-name() = 'stem']">
+		<fo:block xsl:use-attribute-sets="formula-style">
+			<fo:block xsl:use-attribute-sets="formula-stem-block-style">
+				<xsl:apply-templates/>
+			</fo:block>
+		</fo:block>
 	</xsl:template><xsl:template match="*[local-name() = 'note']" name="note">
 	
 		<fo:block-container id="{@id}" xsl:use-attribute-sets="note-style">
@@ -9053,7 +9081,7 @@
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:variable name="index" select="document($external_index)"/><xsl:variable name="dash" select="'–'"/><xsl:variable name="bookmark_in_fn">
+	</xsl:template><xsl:variable name="index" select="document($external_index)"/><xsl:variable name="bookmark_in_fn">
 		<xsl:for-each select="//*[local-name() = 'bookmark'][ancestor::*[local-name() = 'fn']]">
 			<bookmark><xsl:value-of select="@id"/></bookmark>
 		</xsl:for-each>
@@ -9075,7 +9103,7 @@
 		<!-- split <xref target="bm1" to="End" pagenumber="true"> to two xref:
 		<xref target="bm1" pagenumber="true"> and <xref target="End" pagenumber="true"> -->
 		<xsl:if test="@to">
-			<xsl:value-of select="$dash"/>
+			<xsl:value-of select="$en_dash"/>
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:attribute name="target"><xsl:value-of select="@to"/></xsl:attribute>
@@ -9100,7 +9128,7 @@
 		<xsl:param name="target"/>
 		<!-- <node></node> -->
 		<xsl:choose>
-			<xsl:when test="self::text()  and (normalize-space(.) = ',' or normalize-space(.) = $dash) and $remove = 'true'">
+			<xsl:when test="self::text()  and (normalize-space(.) = ',' or normalize-space(.) = $en_dash) and $remove = 'true'">
 				<!-- skip text (i.e. remove it) and process next element -->
 				<!-- [removed_<xsl:value-of select="."/>] -->
 				<xsl:apply-templates select="following-sibling::node()[1]" mode="process_li_element">
