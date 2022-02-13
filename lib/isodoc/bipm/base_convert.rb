@@ -33,10 +33,16 @@ module IsoDoc
         end
       end
 
-      def render_identifier(id)
+      def omit_docid_prefix(prefix)
+        return true if %w(BIPM).include? prefix
+
+        super
+      end
+
+      def render_identifier(ident)
         ret = super
-        ret[1] = nil if !id[1].nil? && id[1]["type"] == "BIPM"
-        ret[2] = nil if !id[2].nil? && id[2]["type"] == "BIPM"
+        ret[:sdo] = ret[:sdo]&.sub(/^(BIPM) (PV|CR) (\d.*)$/,
+                                   "\\1 <strong>\\2</strong>, \\3")
         ret
       end
 

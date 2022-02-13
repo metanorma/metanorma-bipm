@@ -1288,4 +1288,84 @@ RSpec.describe Metanorma::BIPM do
     expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to xmlpp(output)
   end
+
+  it "references BIPM citations" do
+    VCR.use_cassette "bipm" do
+      input = <<~INPUT
+        = Document title
+        Author
+
+        == Clause
+
+        <<a1>>
+        <<a2>>
+
+        [bibliography]
+        == Bibliography
+        * [[[a1,BIPM CR 03]]]
+        * [[[a2,BIPM PV 105]]]
+      INPUT
+
+      output = <<~OUTPUT
+        #{BLANK_HDR}
+           <sections>
+             <clause id='_' obligation='normative'>
+               <title>Clause</title>
+               <p id='_'>
+                 <eref type='inline' bibitemid='a1' citeas='BIPM CR 03'/>
+                 <eref type='inline' bibitemid='a2' citeas='BIPM PV 105'/>
+               </p>
+             </clause>
+           </sections>
+           <bibliography>
+             <references id='_' normative='false' obligation='informative'>
+               <title>Bibliography</title>
+               <bibitem id='a1'>
+                 <fetched>2022-02-13</fetched>
+                 <title format='text/plain' language='en' script='Latn'>3rd meeting of the CGPM</title>
+                 <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/3-1901</uri>
+                 <docidentifier type='BIPM' primary='true'>BIPM CR 03</docidentifier>
+                 <date type='published'>
+                   <on>1901-10-22</on>
+                 </date>
+                 <contributor>
+                   <role type='publisher'/>
+                   <organization>
+                     <name>Bureau Intrnational des Poids et Mesures</name>
+                     <abbreviation>BIPM</abbreviation>
+                     <uri>www.bipm.org</uri>
+                   </organization>
+                 </contributor>
+                 <language>en</language>
+                 <language>fr</language>
+                 <script>Latn</script>
+               </bibitem>
+               <bibitem id='a2'>
+                 <fetched>2022-02-13</fetched>
+                 <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
+                 <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+                 <docidentifier type='BIPM' primary='true'>BIPM PV 105</docidentifier>
+                 <date type='published'>
+                   <on>2016-10-28</on>
+                 </date>
+                 <contributor>
+                   <role type='publisher'/>
+                   <organization>
+                     <name>Bureau Intrnational des Poids et Mesures</name>
+                     <abbreviation>BIPM</abbreviation>
+                     <uri>www.bipm.org</uri>
+                   </organization>
+                 </contributor>
+                 <language>en</language>
+                 <language>fr</language>
+                 <script>Latn</script>
+               </bibitem>
+             </references>
+           </bibliography>
+         </bipm-standard>
+      OUTPUT
+      expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+        .to be_equivalent_to xmlpp(output)
+    end
+  end
 end
