@@ -340,15 +340,15 @@ RSpec.describe IsoDoc do
                <i>Cereals and pulses</i>
              </p>
              <p id='ref1' class='Biblio'>
-               [4]&#160; ICC/167 
+               [4]&#160; ICC/167#{' '}
                <span style='font-variant:small-caps;'>Standard No I.C.C 167</span>
-               . 
+               .#{' '}
                <i>
                  Determination of the protein content in cereal and cereal products for
                  food and animal feeding stuffs according to the Dumas combustion
                  method
                </i>
-                (see 
+                (see#{' '}
                <a href='http://www.icc.or.at'>http://www.icc.or.at</a>
                 )
              </p>
@@ -360,11 +360,11 @@ RSpec.describe IsoDoc do
              </div>
              <p id='zip_ffs' class='Biblio'>[5]&#160; Title 5</p>
              <p id='ISBN' class='Biblio'>
-               [1]&#160; 
+               [1]&#160;#{' '}
                <i>Chemicals for analytical laboratory use</i>
              </p>
              <p id='ISSN' class='Biblio'>
-               [2]&#160; 
+               [2]&#160;#{' '}
                <i>Instruments for analytical laboratory use</i>
              </p>
              <div class='Note'>
@@ -384,15 +384,15 @@ RSpec.describe IsoDoc do
                <i>Water for analytical laboratory use</i>
              </p>
              <p id='ref10' class='Biblio'>
-               [10]&#160; 
+               [10]&#160;#{' '}
                <span style='font-variant:small-caps;'>Standard No I.C.C 167</span>
-               . 
+               .#{' '}
                <i>
                  Determination of the protein content in cereal and cereal products for
                  food and animal feeding stuffs according to the Dumas combustion
                  method
                </i>
-                (see 
+                (see#{' '}
                <a href='http://www.icc.or.at'>http://www.icc.or.at</a>
                 )
              </p>
@@ -401,7 +401,7 @@ RSpec.describe IsoDoc do
                <i>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</i>
              </p>
              <p id='ref12' class='Biblio'>
-               Citn&#160; IETF RFC 20CitationWorks. 2019. 
+               Citn&#160; IETF RFC 20CitationWorks. 2019.#{' '}
                <i>How to cite a reference</i>
                 .
              </p>
@@ -414,10 +414,89 @@ RSpec.describe IsoDoc do
     OUTPUT
     expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true)
-      .sub(%r{<localized-strings>.*</localized-strings>}m, ""))).to be_equivalent_to xmlpp(presxml)
+      .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
+      .to be_equivalent_to xmlpp(presxml)
     expect(xmlpp(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(html)
+  end
+
+  it "processes BIPM references" do
+    input = <<~INPUT
+       <bipm-standard xmlns="http://riboseinc.com/isoxml">
+            <sections>
+          <clause id='_' obligation='normative'>
+            <title>Clause</title>
+            <p id='_'>
+              <eref type='inline' bibitemid='a1' citeas='CR 03'/>
+              <eref type='inline' bibitemid='a2' citeas='PV 105'/>
+            </p>
+          </clause>
+        </sections>
+        <bibliography>
+          <references id='_' normative='false' obligation='informative'>
+            <title>Bibliography</title>
+            <bibitem id='a1'>
+              <fetched>2022-02-13</fetched>
+              <title format='text/plain' language='en' script='Latn'>3rd meeting of the CGPM</title>
+              <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/3-1901</uri>
+              <docidentifier type='BIPM' primary='true'>BIPM CR 03</docidentifier>
+              <date type='published'>
+                <on>1901-10-22</on>
+              </date>
+              <contributor>
+                <role type='publisher'/>
+                <organization>
+                  <name>Bureau Intrnational des Poids et Mesures</name>
+                  <abbreviation>BIPM</abbreviation>
+                  <uri>www.bipm.org</uri>
+                </organization>
+              </contributor>
+              <language>en</language>
+              <language>fr</language>
+              <script>Latn</script>
+            </bibitem>
+            <bibitem id='a2'>
+              <fetched>2022-02-13</fetched>
+              <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
+              <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+              <docidentifier type='BIPM' primary='true'>BIPM PV 105</docidentifier>
+              <date type='published'>
+                <on>2016-10-28</on>
+              </date>
+              <contributor>
+                <role type='publisher'/>
+                <organization>
+                  <name>Bureau Intrnational des Poids et Mesures</name>
+                  <abbreviation>BIPM</abbreviation>
+                  <uri>www.bipm.org</uri>
+                </organization>
+              </contributor>
+              <language>en</language>
+              <language>fr</language>
+              <script>Latn</script>
+            </bibitem>
+          </references>
+        </bibliography>
+      </bipm-standard>
+    INPUT
+    output = <<~OUTPUT
+      <sections>
+        <clause id='_' obligation='normative' displayorder='1'>
+          <title depth='1'>Clause</title>
+          <p id='_'>
+            <eref type='inline' bibitemid='a1' citeas='CR 03'>CR 03</eref>
+            <eref type='inline' bibitemid='a2' citeas='PV 105'>PV 105</eref>
+          </p>
+        </clause>
+      </sections>
+    OUTPUT
+    expect(xmlpp(
+             Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new({})
+            .convert("test", input, true))
+            .at("//xmlns:sections").to_xml,
+           ))
+      .to be_equivalent_to xmlpp(output)
   end
 end
