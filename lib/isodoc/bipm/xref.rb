@@ -76,7 +76,7 @@ module IsoDoc
         lbl = @jcgm ? "clause_jcgm" : "clause"
         @anchors[clause["id"]] =
           { label: num.print, xref: l10n("#{@labels[lbl]} #{num.print}"),
-            level: lvl, type: "clause" }
+            level: lvl, type: "clause", elem: @labels[lbl] }
       end
 
       def section_names(clause, num, lvl)
@@ -110,7 +110,7 @@ module IsoDoc
         lbl = @jcgm ? "" : "#{@labels['subclause']} "
         @anchors[clause["id"]] =
           { label: num, level: level, xref: l10n("#{lbl}#{num}"),
-            type: "clause" }
+            type: "clause", elem: lbl }
       end
 
       def section_names1(clause, num, level)
@@ -148,7 +148,7 @@ module IsoDoc
 
       def annex_name_anchors(clause, num)
         { label: annex_name_lbl(clause, num), type: "clause", value: num.to_s,
-          xref: l10n("#{@annexlbl} #{num}"), level: 1 }
+          xref: l10n("#{@annexlbl} #{num}"), level: 1, elem: @annexlbl }
       end
 
       def annex_names(clause, num)
@@ -188,7 +188,7 @@ module IsoDoc
       def annex_names1_anchors(num, level)
         lbl = @jcgm ? "" : "#{@annexlbl} "
         { label: num, xref: l10n("#{lbl}#{num}"),
-          level: level, type: "clause" }
+          level: level, type: "clause", elem: lbl }
       end
 
       def annex_names1(clause, num, level)
