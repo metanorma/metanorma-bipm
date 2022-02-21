@@ -124,4 +124,17 @@ RSpec.describe IsoDoc::BIPM do
     expect(File.exist?("test_en.pdf")).to be false
     expect(File.exist?("test_fr.pdf")).to be false
   end
+
+  it "pdf_options returns Hash" do
+    docxml = double
+    root = double
+    allow(docxml).to receive(:root).and_return(root)
+    allow(docxml).to receive(:at).and_return(true)
+    allow(root).to receive(:name).and_return("metanorma-collection")
+
+    opts = IsoDoc::BIPM::PdfConvert.new({}).pdf_options(docxml)
+
+    expect(opts).to be_a Hash
+    expect(opts).to have_key("--split-by-language")
+  end
 end

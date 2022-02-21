@@ -31,12 +31,12 @@ module IsoDoc
         if docxml.root.name == "metanorma-collection" &&
             docxml.at("#{q}[. = 'fr']", "m" => n) &&
             docxml.at("#{q}[. = 'en']", "m" => n)
-          "#{super} --split-by-language"
-        else
-          super
+          return super.tap do |h|
+            h["--split-by-language"] = nil
+          end
         end
+        super
       end
     end
   end
 end
-
