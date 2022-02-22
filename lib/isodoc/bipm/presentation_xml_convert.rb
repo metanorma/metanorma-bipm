@@ -17,9 +17,9 @@ module IsoDoc
         super
       end
 
-      def eref_localities1(target, type, from, to, delim, n, lang = "en")
-        @jcgm and
-          return @iso.eref_localities1(target, type, from, to, delim, n, lang)
+      def eref_localities1(target, type, from, upto, node, lang = "en")
+        @jcgm and return @iso.eref_localities1(target, type, from, upto,
+                                               node, lang)
         super
       end
 
@@ -142,7 +142,7 @@ module IsoDoc
         ret = list_people(
           xml, "//bibdata/contributor[xmlns:role/@type = 'author']/person"
         )
-        @i18n.multiple_and(ret, @i18n.get["and"])
+        @i18n.boolean_conj(ret, "and")
       end
 
       COCHAIR = "xmlns:role[contains(text(),'co-chair')]".freeze
@@ -154,7 +154,7 @@ module IsoDoc
         ret.empty? and return ""
         role = xml&.at(ns("//bibdata/contributor[#{COCHAIR}]/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
-        "#{label}: #{@i18n.multiple_and(ret, @i18n.get['and'])}"
+        "#{label}: #{@i18n.boolean_conj(ret, 'and')}"
       end
 
       def list_chairs(xml)
@@ -162,7 +162,7 @@ module IsoDoc
         ret.empty? and return ""
         role = xml&.at(ns("//bibdata/contributor#{CHAIR}/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
-        "#{label}: #{@i18n.multiple_and(ret, @i18n.get['and'])}"
+        "#{label}: #{@i18n.boolean_conj(ret, 'and')}"
       end
 
       def list_people(xml, xpath)
