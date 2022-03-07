@@ -526,30 +526,29 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-         <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
-           <div class='title-section'>
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class='prefatory-section'>
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class='main-section'>
-             <p class='zzSTDTitle1'/>
-             <div id='H'>
-               <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-               <p class='TermNum' id='J'>1.1.</p>
-               <p class='Terms' style='text-align:left;'>Term2</p>
-               <p>
-                 [Adapted from
-                 <a href='#ISO7301'>ISO 7301:2011, Clause 3.1</a>
-                 , modified &#8211; The term "cargo rice" is shown as deprecated, and
-                 Note 1 to entry is not included here]
-               </p>
-             </div>
-           </div>
-         </body>
+      <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+        <div class='title-section'>
+          <p>&#160;</p>
+        </div>
+        <br/>
+        <div class='prefatory-section'>
+          <p>&#160;</p>
+        </div>
+        <br/>
+        <div class='main-section'>
+          <p class='zzSTDTitle1'/>
+          <div id='H'>
+            <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
+            <p class='TermNum' id='J'>1.1.</p>
+            <p class='Terms' style='text-align:left;'>Term2</p>
+            <p>
+              [Adapted from
+              ISO 7301:2011, Clause 3.1, modified &#8211; The term "cargo rice" is shown as deprecated, and
+              Note 1 to entry is not included here]
+            </p>
+          </div>
+        </div>
+      </body>
     OUTPUT
 
     stripped_presxml =
@@ -623,30 +622,28 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~"OUTPUT")
-         <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
-           <div class='title-section'>
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class='prefatory-section'>
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class='main-section'>
-             <p class='zzSTDTitle1'/>
-             <div id='H'>
-               <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-               <p class='TermNum' id='J'>1.1.</p>
-               <p class='Terms' style='text-align:left;'>Term2</p>
-               <p>
-                 [Adapted from
-                 <a href='#ISO7301'>ISO 7301:2011, 3.1</a>
-                 , modified &#8211; The term "cargo rice" is shown as deprecated, and
-                 Note 1 to entry is not included here]
-               </p>
-             </div>
-           </div>
-         </body>
+      <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+        <div class='title-section'>
+          <p>&#160;</p>
+        </div>
+        <br/>
+        <div class='prefatory-section'>
+          <p>&#160;</p>
+        </div>
+        <br/>
+        <div class='main-section'>
+          <p class='zzSTDTitle1'/>
+          <div id='H'>
+            <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
+            <p class='TermNum' id='J'>1.1.</p>
+            <p class='Terms' style='text-align:left;'>Term2</p>
+            <p>
+              [Adapted from ISO 7301:2011, 3.1, modified &#8211; The term "cargo rice" is shown as deprecated, and
+              Note 1 to entry is not included here]
+            </p>
+          </div>
+        </div>
+      </body>
     OUTPUT
 
     stripped_presxml =
