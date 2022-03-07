@@ -1010,7 +1010,7 @@ RSpec.describe IsoDoc::BIPM do
                <tr>
                  <th>Authors:</th>
                  <td/>
-                 <td>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
+                 <td>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB), and Enrico Massa (INRIM)</td>
                </tr>
                <tr>
                  <td>Draft 1.0 Version 1.0</td>
@@ -1043,7 +1043,7 @@ RSpec.describe IsoDoc::BIPM do
                    <tr>
                      <th style='font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;' scope='row'>Authors:</th>
                      <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
-                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB) and Enrico Massa (INRIM)</td>
+                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB), and Enrico Massa (INRIM)</td>
                    </tr>
                    <tr>
                      <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 1.0 Version 1.0</td>
