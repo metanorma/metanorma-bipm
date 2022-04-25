@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/PV-105.yaml
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/CR-03.yaml
     body:
       encoding: US-ASCII
       string: ''
@@ -12,7 +12,8 @@ http_interactions:
       Accept:
       - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML,
+        like Gecko) Version/9.0.2 Safari/601.3.9
       Accept-Charset:
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
       Accept-Language:
@@ -49,33 +50,33 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       X-Github-Request-Id:
-      - C072:4508:82751:1061FF:6262C8F6
+      - 7B16:0E3C:3711DB:4AD23E:6266D6DD
       Accept-Ranges:
       - bytes
       Date:
-      - Fri, 22 Apr 2022 15:25:42 GMT
+      - Mon, 25 Apr 2022 17:14:05 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11243-MEL
+      - cache-mel11273-MEL
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1650641142.454322,VS0,VE332
+      - S1650906846.593766,VS0,VE314
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - 8a1fcc4f0ee04ae1ae9f37d93e8d7f10c2eeaa4e
+      - 78751e9360d64eb7572d395f925c641a58d3f81e
       Expires:
-      - Fri, 22 Apr 2022 15:30:42 GMT
+      - Mon, 25 Apr 2022 17:19:05 GMT
       Source-Age:
       - '0'
     body:
       encoding: UTF-8
       string: '404: Not Found'
-  recorded_at: Fri, 22 Apr 2022 15:25:42 GMT
+  recorded_at: Mon, 25 Apr 2022 17:14:05 GMT
 recorded_with: VCR 6.1.0
