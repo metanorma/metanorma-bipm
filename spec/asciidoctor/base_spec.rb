@@ -1303,7 +1303,7 @@ RSpec.describe Metanorma::BIPM do
         [bibliography]
         == Bibliography
         * [[[a1,BIPM CR 03]]]
-        * [[[a2,BIPM PV 105]]]
+        * [[[a2,BIPM CIPM Decision 105]]]
       INPUT
 
       output = <<~OUTPUT
@@ -1313,7 +1313,7 @@ RSpec.describe Metanorma::BIPM do
                <title>Clause</title>
                <p id='_'>
                  <eref type='inline' bibitemid='a1' citeas='BIPM CR 03'/>
-                 <eref type='inline' bibitemid='a2' citeas='BIPM PV 105'/>
+                 <eref type='inline' bibitemid='a2' citeas='BIPM CIPM Decision 105'/>
                </p>
              </clause>
            </sections>
@@ -1329,7 +1329,8 @@ RSpec.describe Metanorma::BIPM do
                  <fetched>#{Date.today}</fetched>
                  <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
                  <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-                 <docidentifier type='BIPM' primary='true'>BIPM PV 105</docidentifier>
+                 <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
+                 <docnumber>CIPM Decision 105</docnumber>
                  <date type='published'>
                    <on>2016-10-28</on>
                  </date>
