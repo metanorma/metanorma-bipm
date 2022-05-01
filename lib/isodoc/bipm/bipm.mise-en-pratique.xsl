@@ -983,7 +983,7 @@
 							<fo:block-container font-size="9pt" border-bottom="1pt solid black" width="68mm" text-align="center" margin-bottom="14pt">
 								<fo:block font-weight="bold" margin-bottom="2.5mm">
 									<fo:inline padding-right="10mm">
-										<xsl:apply-templates select="bipm:bibdata/bipm:edition">
+										<xsl:apply-templates select="bipm:bibdata/bipm:edition[normalize-space(@language) = '']">
 											<xsl:with-param name="font-size" select="'70%'"/>
 											<xsl:with-param name="baseline-shift" select="'45%'"/>
 											<xsl:with-param name="curr_lang" select="$curr_lang"/>
@@ -1263,7 +1263,7 @@
 							<fo:block-container font-size="9pt" border-bottom="1pt solid black" width="68mm" text-align="center" margin-bottom="14pt">
 								<fo:block font-weight="bold" margin-bottom="2.5mm">
 									<fo:inline padding-right="10mm">
-										<xsl:apply-templates select="bipm:bibdata/bipm:edition">
+										<xsl:apply-templates select="bipm:bibdata/bipm:edition[normalize-space(@language) = '']">
 											<xsl:with-param name="font-size" select="'70%'"/>
 											<xsl:with-param name="baseline-shift" select="'45%'"/>
 											<xsl:with-param name="curr_lang" select="$curr_lang"/>
@@ -1351,7 +1351,7 @@
 							<xsl:call-template name="getLanguages"/>
 						</xsl:variable>						
 						<xsl:variable name="editionFO">
-							<xsl:apply-templates select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:edition">
+							<xsl:apply-templates select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:edition[normalize-space(@language) = '']">
 								<xsl:with-param name="curr_lang" select="xalan:nodeset($languages)/lang[1]"/>
 							</xsl:apply-templates>
 						</xsl:variable>
@@ -1430,7 +1430,7 @@
 					
 					<xsl:variable name="edition_str">édition</xsl:variable>
 						
-					<fo:block font-size="14pt" font-weight="{$weight-bold}" margin-top="4mm"><xsl:value-of select="concat((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:edition, ' ', $edition_str, ' ', $copyrightYear)"/></fo:block>				
+					<fo:block font-size="14pt" font-weight="{$weight-bold}" margin-top="4mm"><xsl:value-of select="concat((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:edition[normalize-space(@language) = ''], ' ', $edition_str, ' ', $copyrightYear)"/></fo:block>				
 				</fo:block-container>
 				
 				<fo:block-container absolute-position="fixed" left="12.5mm" top="92mm" height="170mm" width="144mm" display-align="center">
@@ -2107,12 +2107,6 @@
 		<xsl:param name="baseline-shift" select="'30%'"/>
 		<xsl:param name="curr_lang" select="'fr'"/>
 		<fo:inline>
-			<xsl:variable name="title-edition">
-				<xsl:call-template name="getTitle">
-					<xsl:with-param name="name" select="'title-edition'"/>
-					<xsl:with-param name="lang" select="$curr_lang"/>
-				</xsl:call-template>
-			</xsl:variable>
 			<xsl:value-of select="."/>
 			<fo:inline font-size="{$font-size}" baseline-shift="{$baseline-shift}">
 				<xsl:call-template name="number-to-ordinal">
@@ -2121,7 +2115,9 @@
 				</xsl:call-template>
 			</fo:inline>
 			<xsl:text> </xsl:text>			
-			<xsl:value-of select="java:toLowerCase(java:java.lang.String.new($title-edition))"/>
+			<xsl:call-template name="getLocalizedString">
+				<xsl:with-param name="key">edition</xsl:with-param>
+			</xsl:call-template>
 			<xsl:text/>
 		</fo:inline>
 	</xsl:template>
@@ -3829,20 +3825,11 @@
 	</xsl:variable><xsl:variable name="marginTop" select="normalize-space($marginTop_)"/><xsl:variable name="marginBottom_">
 		22
 	</xsl:variable><xsl:variable name="marginBottom" select="normalize-space($marginBottom_)"/><xsl:variable name="titles_">
-				
-		<title-edition lang="en">
-			
-					<xsl:text>Edition </xsl:text>
-				
-		</title-edition>
 		
-		<title-edition lang="fr">
-			<xsl:text>Édition </xsl:text>
-		</title-edition>
+		<title-version lang="en">
+			<xsl:text>Version</xsl:text>
+		</title-version>
 		
-		<title-edition lang="ru">
-			<xsl:text>Издание </xsl:text>
-		</title-edition>
 		
 		<!-- These titles of Table of contents renders different than determined in localized-strings -->
 		<title-toc lang="en">
@@ -10480,6 +10467,31 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$text"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template><xsl:template name="printEdition">
+		<xsl:variable name="edition_i18n" select="normalize-space((//*[contains(local-name(), '-standard')])[1]/*[local-name() = 'bibdata']/*[local-name() = 'edition'][normalize-space(@language) != ''])"/>
+		<xsl:text> </xsl:text>
+		<xsl:choose>
+			<xsl:when test="$edition_i18n != ''">
+				<!-- Example: <edition language="fr">deuxième édition</edition> -->
+				<xsl:call-template name="capitalize">
+					<xsl:with-param name="str" select="$edition_i18n"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="edition" select="normalize-space((//*[contains(local-name(), '-standard')])[1]/*[local-name() = 'bibdata']/*[local-name() = 'edition'])"/>
+				<xsl:if test="$edition != ''"> <!-- Example: 1.3 -->
+					<xsl:call-template name="capitalize">
+						<xsl:with-param name="str">
+							<xsl:call-template name="getLocalizedString">
+								<xsl:with-param name="key">edition</xsl:with-param>
+							</xsl:call-template>
+						</xsl:with-param>
+					</xsl:call-template>
+					<xsl:text> </xsl:text>
+					<xsl:value-of select="$edition"/>
+				</xsl:if>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template><xsl:template name="convertDate">
 		<xsl:param name="date"/>
