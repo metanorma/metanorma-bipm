@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/CR-03.yaml
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cipm/decision/105.yaml
     body:
       encoding: US-ASCII
       string: ''
@@ -12,7 +12,8 @@ http_interactions:
       Accept:
       - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
       User-Agent:
-      - Mozilla/5.0 (compatible; Konqueror/3; Linux)
+      - Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
+        Chrome/43.0.2357.125 Safari/537.36
       Accept-Charset:
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
       Accept-Language:
@@ -29,15 +30,21 @@ http_interactions:
       - '300'
   response:
     status:
-      code: 404
-      message: Not Found
+      code: 200
+      message: OK
     headers:
       Connection:
       - keep-alive
       Content-Length:
-      - '14'
+      - '387'
+      Cache-Control:
+      - max-age=300
       Content-Security-Policy:
       - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Etag:
+      - W/"3837986a00e0550414fc58136ef18a09424d3134bca4529d202d4a47420dc323"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -46,36 +53,37 @@ http_interactions:
       - deny
       X-Xss-Protection:
       - 1; mode=block
-      Content-Type:
-      - text/plain; charset=utf-8
       X-Github-Request-Id:
-      - 91A2:5B02:370D5D:4A8BBF:625D6174
+      - C458:55BA:123B28:192681:626D354D
+      Content-Encoding:
+      - gzip
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 18 Apr 2022 13:02:44 GMT
+      - Sat, 30 Apr 2022 13:10:37 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11260-MEL
+      - cache-mel11282-MEL
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1650286964.203098,VS0,VE308
+      - S1651324237.295318,VS0,VE291
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - ec8c262bd4bb1a72012c338aa69f83b48c1beb92
+      - d5990b72f29bfb36ff156230c94096e4f5c81b95
       Expires:
-      - Mon, 18 Apr 2022 13:07:44 GMT
+      - Sat, 30 Apr 2022 13:15:37 GMT
       Source-Age:
       - '0'
     body:
-      encoding: UTF-8
-      string: '404: Not Found'
-  recorded_at: Mon, 18 Apr 2022 13:02:44 GMT
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA42STU7DQAyF93MK77oaQpFAKMvCBolKXGGScVuL+Yk8nha4EefgYjgJ4U8skCqlsuyX974Xa60h38LN3cPW3mJPhXKy6/NLIyQBW2Ohz0kwSQs6lQNERKG0h7wDOeB0aACCS/vq9noAYAGTPkrPNMg8uHcyjnaZo1MlwSdphuAo/dJH4LfXmtQD+Pq39o7/rR0oPf5IcBAZSts0p9PprKMhnmXeN5iaPsdIIoil6Ul/Q2zUjL04X1+psjwP2ELh3vjcKyxVHJFt1N1kERZuY4LP/c1sfmCKjp/VF1ccBVKNHXL7x6V3MgGf74faBSoH9CpydKHqaDUa0nLsxfXKjKGYuiqZxyNN4hK9OFG1kQtAchHnfxY2ldFVuFMOnKYdF8BjgYdMvgAKbLHoTpn2XdcxHmnWWoIAVA4tfEenU87ho5fFLxu9naL89PvV4vR9TEUuNX6UqHTm7AsWU5RaL2rMk9cGaUeKTl/3jeNK0a3MO6335qrIAgAA
+  recorded_at: Sat, 30 Apr 2022 13:10:37 GMT
 recorded_with: VCR 6.1.0
