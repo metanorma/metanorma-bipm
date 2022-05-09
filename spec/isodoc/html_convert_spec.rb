@@ -961,7 +961,7 @@ RSpec.describe IsoDoc::BIPM do
               <abbreviation>BIPM</abbreviation>
             </organization>
           </contributor>
-          <edition>2</edition>
+          <edition language=''>2</edition><edition language='en'>second edition</edition>
         <version>
           <revision-date>2000-01-01</revision-date>
           <draft>3.4</draft>
@@ -969,7 +969,7 @@ RSpec.describe IsoDoc::BIPM do
           <language current="true">en</language>
           <script current="true">Latn</script>
           <status>
-            <stage language="">working-draft</stage>
+            <stage>working-draft</stage>
             <iteration>3</iteration>
           </status>
         <relation type="supersedes">
@@ -1194,7 +1194,7 @@ RSpec.describe IsoDoc::BIPM do
                  <abbreviation>BIPM</abbreviation>
                </organization>
              </contributor>
-             <edition>2</edition>
+             <edition language=''>2</edition><edition language='en'>second edition</edition>
              <version>
                <revision-date>2000-01-01</revision-date>
                <draft>3.4</draft>
@@ -1202,7 +1202,7 @@ RSpec.describe IsoDoc::BIPM do
              <language current='true'>en</language>
              <script current='true'>Latn</script>
              <status>
-               <stage language=''>working-draft</stage>
+               <stage>working-draft</stage>
                <iteration>3</iteration>
              </status>
              <relation type='supersedes'>
@@ -1273,7 +1273,7 @@ RSpec.describe IsoDoc::BIPM do
       xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    expect(stripped_html).to(be_equivalent_to(presxml))
+    expect(stripped_html).to(be_equivalent_to(xmlpp(presxml)))
     stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
