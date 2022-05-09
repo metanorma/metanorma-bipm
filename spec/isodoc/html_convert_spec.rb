@@ -612,7 +612,7 @@ RSpec.describe IsoDoc::BIPM do
               <name>1.1.</name>
               <preferred>Term2</preferred>
               <termsource status="modified">[Adapted from
-        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, 3.1</origin>, modified &#x2013;
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, <span class='citesec'>3.1</span></origin>, modified &#x2013;
           The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]
       </termsource>
             </term>
@@ -2685,19 +2685,19 @@ RSpec.describe IsoDoc::BIPM do
             <locality type='clause'>
               <referenceFrom>3</referenceFrom>
             </locality>
-            [ISO 712], Clause 3
+            [ISO 712], <span class='citesec'>Clause 3</span>
           </eref>
           <eref bibitemid='ISO712'>
             <locality type='clause'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            [ISO 712], 3.1
+            [ISO 712], <span class='citesec'>3.1</span>
           </eref>
           <eref bibitemid='ISO712'>
             <locality type='table'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            [ISO 712], Table 3.1
+            [ISO 712], <span class='citetbl'>Table 3.1</span>
           </eref>
         </p>
       </foreword>
@@ -2843,7 +2843,9 @@ RSpec.describe IsoDoc::BIPM do
        </iso-standard>
     OUTPUT
     expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
-      .convert("test", input, true).sub(%r{<localized-strings>.*</localized-strings>}m, ""))).to be_equivalent_to xmlpp(output)
+      .convert("test", input, true)
+      .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "cross-references subfigures in JCGM" do
@@ -2998,7 +3000,9 @@ RSpec.describe IsoDoc::BIPM do
        </iso-standard>
     OUTPUT
     expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
-      .convert("test", input, true).sub(%r{<localized-strings>.*</localized-strings>}m, ""))).to be_equivalent_to xmlpp(output)
+      .convert("test", input, true)
+      .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
+      .to be_equivalent_to xmlpp(output)
   end
 
   it "handles brackets for multiple erefs in JCGM" do
@@ -3059,13 +3063,13 @@ RSpec.describe IsoDoc::BIPM do
             <locality type='clause'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            [ISO 712], 3.1
+            [ISO 712], <span class='citesec'>3.1</span>
           </eref>
           <eref bibitemid='ISO712'>
             <locality type='table'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            [ISO 712], Table 3.1
+            [ISO 712], <span class='citetbl'>Table 3.1</span>
           </eref>
         </p>
       </foreword>

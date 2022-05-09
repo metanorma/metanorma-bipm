@@ -153,8 +153,9 @@ module IsoDoc
 
       def annex_names(clause, num)
         @anchors[clause["id"]] = annex_name_anchors(clause, num)
-        if a = single_annex_special_section(clause)
-          annex_names1(a, num.to_s, 1)
+        if @klass.single_term_clause?(clause)
+          annex_names1(clause.at(ns("./references | ./terms | ./definitions")),
+                       num.to_s, 1)
         else
           i = Counter.new
           prefix = @jcgm ? "" : "A"
@@ -176,8 +177,9 @@ module IsoDoc
       def unnumbered_annex_names(clause)
         lbl = clause&.at(ns("./title"))&.text || "[#{clause['id']}]"
         @anchors[clause["id"]] = unnumbered_annex_anchors(lbl)
-        if a = single_annex_special_section(clause)
-          annex_names1(a, num.to_s, 1)
+        if @klass.single_term_clause?(clause)
+          annex_names1(clause.at(ns("./references | ./terms | ./definitions")),
+                       num.to_s, 1)
         else
           clause.xpath(ns(SUBCLAUSES))
             .each { |c| unnumbered_annex_names1(c, 2) }
