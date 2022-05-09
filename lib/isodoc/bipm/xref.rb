@@ -229,9 +229,11 @@ module IsoDoc
 
       def initial_anchor_names(doc)
         super
+        if @parse_settings.empty? || @parse_settings[:clauses]
         if @jcgm
           @iso.introduction_names(doc.at(ns("//introduction")))
           @anchors.merge!(@iso.get)
+        end
         end
       end
 

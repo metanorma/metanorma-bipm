@@ -55,7 +55,7 @@ module IsoDoc
             ref << (identifiers[0] || identifiers[1])
             ref << " #{identifiers[1]}" if identifiers[0] && identifiers[1]
           end
-          ref << " " unless biblio && !identifiers[1]
+          ref << " "
           reference_format(bibitem, ref)
         end
       end
@@ -69,7 +69,7 @@ module IsoDoc
             ref << " #{identifiers[1]}" if identifiers[0] && identifiers[1]
           end
           date_note_process(bibitem, ref)
-          ref << " " unless biblio && !identifiers[1]
+          ref << " "
           reference_format(bibitem, ref)
         end
       end
