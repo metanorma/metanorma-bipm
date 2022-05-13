@@ -591,8 +591,8 @@ RSpec.describe IsoDoc do
        <preface>
        <foreword>
        <p>
-          <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1'/>
-          <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105'/>
+          <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1 (1889)'/>
+          <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105 (2016)'/>
        </p>
        </foreword>
        </preface>
@@ -644,16 +644,16 @@ RSpec.describe IsoDoc do
     presxml_en = <<~PRESXML
       <foreword displayorder='1'>
         <p>
-          <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1'>CGPM Resolution 1</eref>
-          <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105'>CIPM Decision 105</eref>
+          <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1 (1889)'>CGPM Resolution 1 (1889)</eref>
+          <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105 (2016)'>CIPM Decision 105 (2016)</eref>
         </p>
       </foreword>
     PRESXML
     presxml_fr = <<~PRESXML
       <foreword displayorder='1'>
         <p>
-        <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1'>CGPM &#x2013; R&#xE9;solution 1</eref>
-        <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105'>CIPM &#x2013; D&#xE9;cision 105</eref>
+        <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1 (1889)'>CGPM &#x2013; R&#xE9;solution 1 (1889)</eref>
+        <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105 (2016)'>CIPM &#x2013; D&#xE9;cision 105 (2016)</eref>
         </p>
       </foreword>
     PRESXML

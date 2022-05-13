@@ -183,6 +183,7 @@ module IsoDoc
         Resolution: "Résolution",
         Decision: "Décision",
         Recommendation: "Recommandation",
+        Declaration: "Déclaration",
       }.freeze
 
       include Init
