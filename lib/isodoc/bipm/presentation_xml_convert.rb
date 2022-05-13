@@ -169,6 +169,22 @@ module IsoDoc
         super || @xrefs.klass.standard?(bibitem)
       end
 
+      def expand_citeas(text)
+        ret = super
+        if @lang == "fr" && /^(CGPM|CIPM) /.match?(ret)
+          ret.sub!(/^(CGPM|CIPM) (\S+)/) do |_m|
+            "#{$1} &#x2013; #{FR_OUTCOME_TYPE[$2.to_sym] || $2}"
+          end
+        end
+        ret
+      end
+
+      FR_OUTCOME_TYPE = {
+        Resolution: "Résolution",
+        Decision: "Décision",
+        Recommendation: "Recommandation",
+      }.freeze
+
       include Init
     end
   end

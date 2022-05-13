@@ -1312,8 +1312,8 @@ RSpec.describe Metanorma::BIPM do
              <clause id='_' obligation='normative'>
                <title>Clause</title>
                <p id='_'>
-                 <eref type='inline' bibitemid='a1' citeas='BIPM CGPM Resolution 1'/>
-                 <eref type='inline' bibitemid='a2' citeas='BIPM CIPM Decision 105'/>
+                 <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1'/>
+                 <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105'/>
                </p>
              </clause>
            </sections>
