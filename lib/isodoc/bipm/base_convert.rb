@@ -46,6 +46,13 @@ module IsoDoc
         ret
       end
 
+      def implicit_reference(bib)
+        b = bib.at(ns("./docidentifier[@primary = 'true'][@type = 'BIPM']"))
+        return true if /^BIPM CGPM Resolution|^BIPM CIPM Decision/.match?(b&.text)
+
+        super
+      end
+
       def nonstd_bibitem(list, bibitem, ordinal, biblio)
         list.p **attr_code(iso_bibitem_entry_attrs(bibitem, biblio)) do |ref|
           ids = bibitem_ref_code(bibitem)

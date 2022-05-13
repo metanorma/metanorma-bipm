@@ -1302,7 +1302,7 @@ RSpec.describe Metanorma::BIPM do
 
         [bibliography]
         == Bibliography
-        * [[[a1,BIPM CR 03]]]
+        * [[[a1,BIPM CGPM Resolution 1]]]
         * [[[a2,BIPM CIPM Decision 105]]]
       INPUT
 
@@ -1312,7 +1312,7 @@ RSpec.describe Metanorma::BIPM do
              <clause id='_' obligation='normative'>
                <title>Clause</title>
                <p id='_'>
-                 <eref type='inline' bibitemid='a1' citeas='BIPM CR 03'/>
+                 <eref type='inline' bibitemid='a1' citeas='BIPM CGPM Resolution 1'/>
                  <eref type='inline' bibitemid='a2' citeas='BIPM CIPM Decision 105'/>
                </p>
              </clause>
@@ -1320,32 +1320,48 @@ RSpec.describe Metanorma::BIPM do
            <bibliography>
              <references id='_' normative='false' obligation='informative'>
                <title>Bibliography</title>
-               <bibitem id='a1'>
-               <formattedref format='application/x-isodoc+xml'/>
-                <docidentifier type='BIPM'>BIPM CR 03</docidentifier>
-                <docnumber>03</docnumber>
-              </bibitem>
-               <bibitem id='a2'>
-                 <fetched>#{Date.today}</fetched>
-                 <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
-                 <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-                 <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
-                 <docnumber>CIPM Decision 105</docnumber>
-                 <date type='published'>
-                   <on>2016-10-28</on>
-                 </date>
-                 <contributor>
-                   <role type='publisher'/>
-                   <organization>
-                     <name>Bureau International des Poids et Mesures</name>
-                     <abbreviation>BIPM</abbreviation>
-                     <uri>www.bipm.org</uri>
-                   </organization>
-                 </contributor>
-                 <language>en</language>
-                 <language>fr</language>
-                 <script>Latn</script>
-               </bibitem>
+                            <bibitem id='a1'>
+               <fetched>#{Date.today}</fetched>
+               <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
+               <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
+               <docidentifier type='BIPM' primary='true'>BIPM CGPM Resolution 1</docidentifier>
+               <docnumber>CGPM Resolution 1</docnumber>
+               <date type='published'>
+                 <on>1889-09-28</on>
+               </date>
+               <contributor>
+                 <role type='publisher'/>
+                 <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <abbreviation>BIPM</abbreviation>
+                   <uri>www.bipm.org</uri>
+                 </organization>
+               </contributor>
+               <language>en</language>
+               <language>fr</language>
+               <script>Latn</script>
+             </bibitem>
+             <bibitem id='a2'>
+               <fetched>#{Date.today}</fetched>
+               <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
+               <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+               <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
+               <docnumber>CIPM Decision 105</docnumber>
+               <date type='published'>
+                 <on>2016-10-28</on>
+               </date>
+               <contributor>
+                 <role type='publisher'/>
+                 <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <abbreviation>BIPM</abbreviation>
+                   <uri>www.bipm.org</uri>
+                 </organization>
+               </contributor>
+               <language>en</language>
+               <language>fr</language>
+               <script>Latn</script>
+             </bibitem>
              </references>
            </bibliography>
          </bipm-standard>

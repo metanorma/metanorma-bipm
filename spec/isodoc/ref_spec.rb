@@ -500,4 +500,87 @@ RSpec.describe IsoDoc do
     ).at("//xmlns:bibliography").to_xml))
       .to be_equivalent_to xmlpp(presxml)
   end
+
+  it "hides BIPM CGPM Resolution and BIPM CIPM Decision references" do
+    input = <<~INPUT
+       <bipm-standard xmlns="http://riboseinc.com/isoxml">
+       <bibdata>
+       <language>en</language>
+       </bibdata>
+       <bibliography><references id="_normative_references" obligation="informative" normative="false"><title>Bibliography</title>
+                         <bibitem id='a1'>
+            <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
+            <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
+            <docidentifier type='BIPM' primary='true'>BIPM CGPM Resolution 1</docidentifier>
+            <docnumber>CGPM Resolution 1</docnumber>
+            <date type='published'>
+              <on>1889-09-28</on>
+            </date>
+            <contributor>
+              <role type='publisher'/>
+              <organization>
+                <name>Bureau International des Poids et Mesures</name>
+                <abbreviation>BIPM</abbreviation>
+                <uri>www.bipm.org</uri>
+              </organization>
+            </contributor>
+            <language>en</language>
+            <language>fr</language>
+            <script>Latn</script>
+          </bibitem>
+          <bibitem id='a2'>
+            <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
+            <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+            <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
+            <docnumber>CIPM Decision 105</docnumber>
+            <date type='published'>
+              <on>2016-10-28</on>
+            </date>
+            <contributor>
+              <role type='publisher'/>
+              <organization>
+                <name>Bureau International des Poids et Mesures</name>
+                <abbreviation>BIPM</abbreviation>
+                <uri>www.bipm.org</uri>
+              </organization>
+            </contributor>
+            <language>en</language>
+            <language>fr</language>
+            <script>Latn</script>
+          </bibitem>
+          </references>
+        </bibliography>
+      </bipm-standard>
+    INPUT
+    presxml = <<~PRESXML
+           <bibliography>
+         <references id='_normative_references' obligation='informative' normative='false' displayorder='1'>
+           <title depth='1'>Bibliography</title>
+           <bibitem id='a1' hidden='true'>
+             <formattedref>
+               Bureau International des Poids et Mesures.
+               <em>1st meeting of the CGPM</em>
+               . September 28, 1889.
+             </formattedref>
+             <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
+             <docidentifier type='BIPM' primary='true'>BIPM CGPM Resolution 1</docidentifier>
+           </bibitem>
+           <bibitem id='a2' hidden='true'>
+             <formattedref>
+               Bureau International des Poids et Mesures.
+               <em>105th meeting of the CIPM</em>
+               . October 28, 2016.
+             </formattedref>
+             <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+             <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
+           </bibitem>
+         </references>
+       </bibliography>
+    PRESXML
+    expect(xmlpp(Nokogiri::XML(
+      IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true),
+    ).at("//xmlns:bibliography").to_xml))
+      .to be_equivalent_to xmlpp(presxml)
+  end
 end
