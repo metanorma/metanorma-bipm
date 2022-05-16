@@ -1,75 +1,6 @@
 require "spec_helper"
 
-OPTIONS = [backend: :bipm, header_footer: true].freeze
-
 RSpec.describe Metanorma::BIPM do
-  it "processes a blank document" do
-    input = <<~"INPUT"
-      #{ASCIIDOC_BLANK_HDR}
-    INPUT
-
-    output = xmlpp(<<~"OUTPUT")
-      #{BLANK_HDR}
-        <sections/>
-      </bipm-standard>
-    OUTPUT
-
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
-  end
-
-  it "converts a blank document" do
-    FileUtils.rm_rf("test.html")
-    FileUtils.rm_rf("test.pdf")
-    input = <<~"INPUT"
-      = Document title
-      Author
-      :docfile: test.adoc
-      :novalid:
-    INPUT
-
-    output = xmlpp(<<~"OUTPUT")
-      #{BLANK_HDR}
-        <sections/>
-      </bipm-standard>
-    OUTPUT
-
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
-    expect(File.exist?("test.html")).to be true
-    expect(File.exist?("test.pdf")).to be true
-  end
-
-  it "converts a blank JCGM document" do
-    FileUtils.rm_rf("test.html")
-    FileUtils.rm_rf("test.pdf")
-    input = <<~"INPUT"
-      = Document title
-      Author
-      :docfile: test.adoc
-      :novalid:
-      :committee-acronym: JCGM
-      :committee-en: Joint Committee for Guides in Metrology#{' '}
-    INPUT
-
-    output = xmlpp(<<~"OUTPUT")
-         #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate('jcgm'))
-         .sub(/<docidentifier type="BIPM">BIPM/, %(<docidentifier type="BIPM">JCGM))
-         .sub(%r{</ext>}, "<editorialgroup>
-        <committee acronym='JCGM'>
-          <variant language='en' script='Latn'>Joint Committee for Guides in Metrology</variant>
-        </committee>
-      </editorialgroup></ext>") }
-             <sections/>
-           </bipm-standard>
-    OUTPUT
-
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
-    expect(File.exist?("test.html")).to be true
-    expect(File.exist?("test.pdf")).to be true
-  end
-
   it "processes default metadata" do
     input = <<~"INPUT"
       = Document title
@@ -1302,7 +1233,7 @@ RSpec.describe Metanorma::BIPM do
 
         [bibliography]
         == Bibliography
-        * [[[a1,BIPM CR 03]]]
+        * [[[a1,BIPM CGPM Resolution 1]]]
         * [[[a2,BIPM CIPM Decision 105]]]
       INPUT
 
@@ -1312,40 +1243,56 @@ RSpec.describe Metanorma::BIPM do
              <clause id='_' obligation='normative'>
                <title>Clause</title>
                <p id='_'>
-                 <eref type='inline' bibitemid='a1' citeas='BIPM CR 03'/>
-                 <eref type='inline' bibitemid='a2' citeas='BIPM CIPM Decision 105'/>
+                 <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1 (1889)'/>
+                 <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105 (2016)'/>
                </p>
              </clause>
            </sections>
            <bibliography>
              <references id='_' normative='false' obligation='informative'>
                <title>Bibliography</title>
-               <bibitem id='a1'>
-               <formattedref format='application/x-isodoc+xml'/>
-                <docidentifier type='BIPM'>BIPM CR 03</docidentifier>
-                <docnumber>03</docnumber>
-              </bibitem>
-               <bibitem id='a2'>
-                 <fetched>#{Date.today}</fetched>
-                 <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
-                 <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-                 <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
-                 <docnumber>CIPM Decision 105</docnumber>
-                 <date type='published'>
-                   <on>2016-10-28</on>
-                 </date>
-                 <contributor>
-                   <role type='publisher'/>
-                   <organization>
-                     <name>Bureau International des Poids et Mesures</name>
-                     <abbreviation>BIPM</abbreviation>
-                     <uri>www.bipm.org</uri>
-                   </organization>
-                 </contributor>
-                 <language>en</language>
-                 <language>fr</language>
-                 <script>Latn</script>
-               </bibitem>
+                            <bibitem id='a1'>
+               <fetched>#{Date.today}</fetched>
+               <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
+               <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
+               <docidentifier type='BIPM' primary='true'>BIPM CGPM Resolution 1</docidentifier>
+               <docnumber>CGPM Resolution 1</docnumber>
+               <date type='published'>
+                 <on>1889-09-28</on>
+               </date>
+               <contributor>
+                 <role type='publisher'/>
+                 <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <abbreviation>BIPM</abbreviation>
+                   <uri>www.bipm.org</uri>
+                 </organization>
+               </contributor>
+               <language>en</language>
+               <language>fr</language>
+               <script>Latn</script>
+             </bibitem>
+             <bibitem id='a2'>
+               <fetched>#{Date.today}</fetched>
+               <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
+               <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+               <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
+               <docnumber>CIPM Decision 105</docnumber>
+               <date type='published'>
+                 <on>2016-10-28</on>
+               </date>
+               <contributor>
+                 <role type='publisher'/>
+                 <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <abbreviation>BIPM</abbreviation>
+                   <uri>www.bipm.org</uri>
+                 </organization>
+               </contributor>
+               <language>en</language>
+               <language>fr</language>
+               <script>Latn</script>
+             </bibitem>
              </references>
            </bibliography>
          </bipm-standard>

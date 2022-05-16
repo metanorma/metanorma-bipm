@@ -42,6 +42,8 @@ RSpec.configure do |config|
   end
 end
 
+OPTIONS = [backend: :bipm, header_footer: true].freeze
+
 def metadata(hash)
   Hash[hash.sort].delete_if do |_, v|
     v.nil? || (v.respond_to?(:empty?) && v.empty?)
