@@ -5296,7 +5296,7 @@
 				
 				
 				
-				
+				 <!-- 10 -->
 				
 				10
 				
@@ -7325,7 +7325,7 @@
 						
 						
 						
-						
+						<!-- 9 -->
 						
 						9
 						
@@ -9058,6 +9058,20 @@
 		
 				<fo:block xsl:use-attribute-sets="admonition-style">
 				
+					
+					
+					<xsl:if test="@type = 'editorial'">
+						<xsl:attribute name="color">green</xsl:attribute>
+						<xsl:attribute name="font-weight">normal</xsl:attribute>
+						
+						<xsl:variable name="note-style">
+							<style xsl:use-attribute-sets="note-style"/>
+						</xsl:variable>
+						<xsl:for-each select="xalan:nodeset($note-style)//style/@*">
+							<xsl:attribute name="{local-name()}"><xsl:value-of select="."/></xsl:attribute>
+						</xsl:for-each>
+					</xsl:if>
+					
 					
 					
 					
