@@ -6924,6 +6924,11 @@
 						
 						
 						
+						
+						<xsl:if test="ancestor::*[local-name() = 'dd' or local-name() = 'td']">
+							<xsl:attribute name="margin-top">0</xsl:attribute>
+						</xsl:if>
+						
 						<fo:block>
 							
 							
