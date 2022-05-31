@@ -12,8 +12,7 @@ http_interactions:
       Accept:
       - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
       User-Agent:
-      - Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322;
-        .NET CLR 2.0.50727)
+      - Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)
       Accept-Charset:
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
       Accept-Language:
@@ -36,7 +35,7 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '387'
+      - '382'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
@@ -44,7 +43,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"3837986a00e0550414fc58136ef18a09424d3134bca4529d202d4a47420dc323"
+      - W/"4716225e40d94d6ec419767bcbeb90accdb85bb4eabfafdd6c5a88b5e5798ce4"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -54,36 +53,121 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 2B24:7333:1FB1A9:2B95C5:62822811
+      - AC14:575C:C9F2:1051D:6295EFA5
       Content-Encoding:
       - gzip
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 16 May 2022 10:31:45 GMT
+      - Tue, 31 May 2022 10:36:21 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-syd10148-SYD
+      - cache-mel11220-MEL
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1652697106.580126,VS0,VE277
+      - S1653993381.039500,VS0,VE298
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - 2e9e5eba23dd7eb2bcc59d1e4a5fa71219751d7d
+      - ca9f7ed8a99922efa0864a1f3eea1b193ddea508
       Expires:
-      - Mon, 16 May 2022 10:36:45 GMT
+      - Tue, 31 May 2022 10:41:21 GMT
       Source-Age:
       - '0'
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAAAAAAAAA42STU7DQAyF93MK77oaQpFAKMvCBolKXGGScVuL+Yk8nha4EefgYjgJ4U8skCqlsuyX974Xa60h38LN3cPW3mJPhXKy6/NLIyQBW2Ohz0kwSQs6lQNERKG0h7wDOeB0aACCS/vq9noAYAGTPkrPNMg8uHcyjnaZo1MlwSdphuAo/dJH4LfXmtQD+Pq39o7/rR0oPf5IcBAZSts0p9PprKMhnmXeN5iaPsdIIoil6Ul/Q2zUjL04X1+psjwP2ELh3vjcKyxVHJFt1N1kERZuY4LP/c1sfmCKjp/VF1ccBVKNHXL7x6V3MgGf74faBSoH9CpydKHqaDUa0nLsxfXKjKGYuiqZxyNN4hK9OFG1kQtAchHnfxY2ldFVuFMOnKYdF8BjgYdMvgAKbLHoTpn2XdcxHmnWWoIAVA4tfEenU87ho5fFLxu9naL89PvV4vR9TEUuNX6UqHTm7AsWU5RaL2rMk9cGaUeKTl/3jeNK0a3MO6335qrIAgAA
-  recorded_at: Mon, 16 May 2022 10:31:45 GMT
+        H4sIAAAAAAAAA42STU7DQAyF93MK77qaBpBAKEtggwQSV5hk3NZifiKPh1JuxDm4GE7SQEEskCqlsvxenr8Xa60h38Lt/dOjvcOeCuVkz88ujZAEbI2FPifBJC3oVHYQEYXSFvIGZIeT0AAEl7bVbVUAYAGTPkrPNMg8eHAyjjaZo1MnwVdphuAo/fJH4I/3mjQD+Pq394b/7R0oPf+4YCcylLZp9vv9uqMhrjNvG0xNn2MkEcTS9KS/ITYaxl6cnV+psxwGbKFwb3zuFZY6LshgQTaG/1q9mXMPTNHxQSNxxVGbauyQ/1J6JxPrWT/ULlDZoVeTFxeqjlZjFu3FXlyvzHgPU1cl8yjSI1yiNyfqNiIBSC7i/M/CTWV0Fe4VAadpxwXwWOApky+AAo9YdKdM+67rGF9o9loOAagcWjilplPO4VjJkpeNaqdTfub9LnD6NKYOlwaP/Smd+fYFiylKrRcN5slrebQhRaevO+G4UnQr8wlSlq+bwwIAAA==
+  recorded_at: Tue, 31 May 2022 10:36:21 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cgpm/resolution/1.yaml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept:
+      - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:43.0) Gecko/20100101 Firefox/43.0
+      Accept-Charset:
+      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
+      Accept-Language:
+      - en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7
+      Host:
+      - raw.githubusercontent.com
+      Cache-Control:
+      - max-age=0
+      Upgrade-Insecure-Requests:
+      - '1'
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '300'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '382'
+      Cache-Control:
+      - max-age=300
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Etag:
+      - W/"a95332bc362eab71d850203da099022010675448737044ec0214ca462cbd732f"
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 9F20:6BC5:B625:F146:6295EFA5
+      Content-Encoding:
+      - gzip
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Tue, 31 May 2022 10:36:21 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-mel11232-MEL
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1653993381.048717,VS0,VE302
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - ef47a3d67dd3da6a9be5b72778b877076a2f9c7e
+      Expires:
+      - Tue, 31 May 2022 10:41:21 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA42STU7DQAyF93MK77oaQliVLGGBKoGEuMEkcVOL+Yk8npZyI87BxXASSqnEAinSRJbfG/t7Y6011Ddw//D8ZF8wJ1+EUrS1ERKPjbHQpSgYpYE6CwREoThA2oLscJYZAO/iUNyg7QAWMOqRO6ZRlsKjk6m0TRyc+gi+STV6R/HCHYE/P0rU26FHtfzbfMv/NvcUXy8W2ImMuamqw+Fw1dIYrhIPFcaqSyGQCGKuukG/MVS1rdfrW/WV44gNZO5MnzolpX4nXnDmBfVP691mnnpkCo6POhAXnLSxhBb5L2XvZAa96MfSeso77NVk73zR0mqaxV7f2pv1ykzbMLVFEk8iXcFFeneT1wQEILqAy5+Fu8LoCmwUAMe5x3mlm+E5UZ8BBZ4wa0+e+13bMu5p8TotAlDYN/CbmVY5+e9ATvOyUe28yuW85/jmlzEneMrvOz2ls+x+xmKycutER+up1/BoSwpPL/xFclWvzBcqqOKZwAIAAA==
+  recorded_at: Tue, 31 May 2022 10:36:21 GMT
 recorded_with: VCR 6.1.0
