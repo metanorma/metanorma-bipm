@@ -1238,19 +1238,20 @@ RSpec.describe Metanorma::BIPM do
       INPUT
 
       output = <<~OUTPUT
-        <sections>
-         <clause id='_' obligation='normative'>
-           <title>Clause</title>
-           <p id='_'>
-             <eref type='inline' bibitemid='a1' citeas='CGPM Resolution (1889)'/>
-             <eref type='inline' bibitemid='a2' citeas='CIPM Decision 1 (2016)'/>
-           </p>
-         </clause>
-       </sections>
+         <sections>
+          <clause id='_' obligation='normative'>
+            <title>Clause</title>
+            <p id='_'>
+              <eref type='inline' bibitemid='a1' citeas='CGPM Resolution (1889)'/>
+              <eref type='inline' bibitemid='a2' citeas='CIPM Decision 1 (2016)'/>
+            </p>
+          </clause>
+        </sections>
       OUTPUT
       expect(xmlpp(strip_guid(
-        Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
-        .at("//xmlns:sections").to_xml)))
+                     Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
+                     .at("//xmlns:sections").to_xml,
+                   )))
         .to be_equivalent_to xmlpp(output)
     end
   end
