@@ -48,7 +48,9 @@ module IsoDoc
 
       def implicit_reference(bib)
         b = bib.at(ns("./docidentifier[@primary = 'true'][@type = 'BIPM']"))
-        return true if /^BIPM CGPM Resolution|^BIPM CIPM Decision/.match?(b&.text)
+        return true if /^(CGPM|CIPM|CCDS|CCTF)\s
+        (Resolution|Recommendation|Declaration|Decision|Recommendation)/x
+          .match?(b&.text)
 
         super
       end
