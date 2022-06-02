@@ -2,6 +2,92 @@
 http_interactions:
 - request:
     method: get
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cgpm/meetings/resolution/1889-00.yaml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept:
+      - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML,
+        like Gecko) Version/9.0.2 Safari/601.3.9
+      Accept-Charset:
+      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
+      Accept-Language:
+      - en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7
+      Host:
+      - raw.githubusercontent.com
+      Cache-Control:
+      - max-age=0
+      Upgrade-Insecure-Requests:
+      - '1'
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '300'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '490'
+      Cache-Control:
+      - max-age=300
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Etag:
+      - W/"698bad60879c76ada0a3cddc27b65028aa3344ada41f10c4257c7e7b00df0aef"
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 1B74:669F:F0E55:14F8E7:62982E57
+      Content-Encoding:
+      - gzip
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Thu, 02 Jun 2022 03:28:23 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-mel11277-MEL
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1654140503.260586,VS0,VE280
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - da9ff64d3fbd838feede1ca45689aa3c0e565693
+      Expires:
+      - Thu, 02 Jun 2022 03:33:23 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA41SS27bMBDd6xSzc7ugaamqY2mZLooANWC0J6DEkUyEH4GfOOmJeo9erEM5im20RQsIkjicefPmzWOMFUq28OnzYc++YnA6ReUsK3e7pogqamwLBr2zEW1s4Zuwfb4HN0A8IiiKeytySGiYvIsuvkwYlnuD0SMIK+fTo9Ju9MIUAFrYMYmR0AEYoKVP6L2a4jnwRcQcGpw3gtpGfI580kLZP5KR1PCq9zWp9Awygfn5I/PAmA8LC4O/8Rj8f/PQyj7eSHOMcQot56fTad2pyaydHzla3jtjVIyIgfcjPZPh5Swv9xe5qUfm3kLw/T9BpeuToevAq01ZbXl596Gsm92O5yWW60kOXHTb5q6pBKvwI7JqU29YWUt6lfW27vqmLuv+rad0qiBMsgG1XswAFzPAu0z3/Vv+/cNhT4fJKyP8C6niE2YAm0yH/q/lUsTZTGeQKXVahSNKQnoSOlFolfPYpmHVblVkCbzqUnQ+F9Hcwqrv81LzagCsMHj+Y3CfPIoEDzduzK44OCVD3vseA+WEOV90nccndcZapgFIXrdwLTRFvdOv1lj4+oJq51Fu+V6MNNt59tLipFcfkUTn2S+LLwKJ10eiJpWklapBkYLU8ErO1WZV/AKyaUsIpwMAAA==
+  recorded_at: Thu, 02 Jun 2022 03:28:23 GMT
+- request:
+    method: get
     uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cipm/meetings/decision/2016-01.yaml
     body:
       encoding: US-ASCII
@@ -12,8 +98,8 @@ http_interactions:
       Accept:
       - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
       User-Agent:
-      - Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322;
-        .NET CLR 2.0.50727)
+      - Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46
+        (KHTML, like Gecko) Version/9.0 Mobile/13B5110e Safari/601.1
       Accept-Charset:
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
       Accept-Language:
@@ -54,36 +140,36 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - DE9A:78C7:1580:1C88:62961625
+      - D102:01B1:5741F:B5BBF:62982E57
       Content-Encoding:
       - gzip
       Accept-Ranges:
       - bytes
       Date:
-      - Tue, 31 May 2022 14:58:43 GMT
+      - Thu, 02 Jun 2022 03:28:23 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11225-MEL
+      - cache-mel11266-MEL
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1654009123.228311,VS0,VE295
+      - S1654140503.261142,VS0,VE296
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - 23e6d896bc2c4cdb2bd059e8d6ddde76a9d4dd61
+      - c28f34a288a36f1ebd8120bf752078d310dedc31
       Expires:
-      - Tue, 31 May 2022 15:03:43 GMT
+      - Thu, 02 Jun 2022 03:33:23 GMT
       Source-Age:
       - '0'
     body:
       encoding: ASCII-8BIT
       string: !binary |-
         H4sIAAAAAAAAA41SwU7sMAy85yt8KxxCt0jvCfW4cEECiV9IG+9ikSaV47DAH/Ed/Nhz2+1j94CEVKmNMx6PZ2qtNeRbuL1/erR32FOmFO31pvlrGyMkAVtjoU9RMEoLK2LG183mj23gYkJfGoDg4r64vXYAWMCor9wzjbIUHpxMpV3iwSmV4JvUY3AUzwZ8ff56wo5/PSFQfDlb5FlkzG1dHw6Hq47G4SrxvsZY92kYSAQx1z3pMw6zhkmAMsv7iC1k7k+pqur/jU9kfOrVUAWstn6bdrLJgt/qtR5GpsHxuyrmghNBLEOH/GO7dzLHspCMpQuUn9Er06sLRUvVEuDGXt9UZhLK1BVJPDXpoi7ShxOlnGwDiG7A5cvCtjC6Ave6G8cZ4wJ4zPCUyGdAgUfMiskz3nUd4ystXOs2AIVDC6fOapVTOMa26mWjvfMq53q/Q55/ojnnNeVjxmrR0fCjNyardb2oME9eU6EdqX867sTMqqnMP12OVffvAgAA
-  recorded_at: Tue, 31 May 2022 14:58:43 GMT
+  recorded_at: Thu, 02 Jun 2022 03:28:23 GMT
 recorded_with: VCR 6.1.0
