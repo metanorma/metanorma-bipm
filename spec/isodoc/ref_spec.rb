@@ -511,7 +511,7 @@ RSpec.describe IsoDoc do
                          <bibitem id='a1'>
             <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
             <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
-            <docidentifier type='BIPM' primary='true'>BIPM CGPM Resolution 1</docidentifier>
+            <docidentifier type='BIPM' primary='true'>CGPM Resolution 1</docidentifier>
             <docnumber>CGPM Resolution 1</docnumber>
             <date type='published'>
               <on>1889-09-28</on>
@@ -531,7 +531,7 @@ RSpec.describe IsoDoc do
           <bibitem id='a2'>
             <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
             <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-            <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
+            <docidentifier type='BIPM' primary='true'>CIPM Decision 105</docidentifier>
             <docnumber>CIPM Decision 105</docnumber>
             <date type='published'>
               <on>2016-10-28</on>
@@ -563,7 +563,7 @@ RSpec.describe IsoDoc do
                . September 28, 1889.
              </formattedref>
              <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
-             <docidentifier type='BIPM' primary='true'>BIPM CGPM Resolution 1</docidentifier>
+             <docidentifier type='BIPM' primary='true'>CGPM Resolution 1</docidentifier>
            </bibitem>
            <bibitem id='a2' hidden='true'>
              <formattedref>
@@ -572,7 +572,7 @@ RSpec.describe IsoDoc do
                . October 28, 2016.
              </formattedref>
              <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-             <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
+             <docidentifier type='BIPM' primary='true'>CIPM Decision 105</docidentifier>
            </bibitem>
          </references>
        </bibliography>
@@ -600,7 +600,7 @@ RSpec.describe IsoDoc do
                          <bibitem id='a1'>
             <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
             <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
-            <docidentifier type='BIPM' primary='true'>BIPM CGPM Resolution 1</docidentifier>
+            <docidentifier type='BIPM' primary='true'>CGPM Resolution 1</docidentifier>
             <docnumber>CGPM Resolution 1</docnumber>
             <date type='published'>
               <on>1889-09-28</on>
@@ -620,7 +620,7 @@ RSpec.describe IsoDoc do
           <bibitem id='a2'>
             <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
             <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-            <docidentifier type='BIPM' primary='true'>BIPM CIPM Decision 105</docidentifier>
+            <docidentifier type='BIPM' primary='true'>CIPM Decision 105</docidentifier>
             <docnumber>CIPM Decision 105</docnumber>
             <date type='published'>
               <on>2016-10-28</on>
