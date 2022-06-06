@@ -2,7 +2,93 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cgpm/meetings/resolution/1889-00.yaml
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cipm/meeting/decision/2016-01.yaml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept:
+      - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+      User-Agent:
+      - Mozilla/5.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 1.1.4322;
+        .NET CLR 2.0.50727)
+      Accept-Charset:
+      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
+      Accept-Language:
+      - en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7
+      Host:
+      - raw.githubusercontent.com
+      Cache-Control:
+      - max-age=0
+      Upgrade-Insecure-Requests:
+      - '1'
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '300'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '439'
+      Cache-Control:
+      - max-age=300
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Etag:
+      - W/"fb0a312a84e43ae82ea0228ae95b43e86396124d9675720d933d76caac46b8da"
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - 69CA:3CCC:39D4F5:4FB52A:629DDB7C
+      Content-Encoding:
+      - gzip
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Mon, 06 Jun 2022 10:48:28 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-mel11270-MEL
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Timer:
+      - S1654512508.060884,VS0,VE302
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - f8bce459feb42908b88432cdd771100664c3a582
+      Expires:
+      - Mon, 06 Jun 2022 10:53:28 GMT
+      Source-Age:
+      - '0'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA71TS27bQAzd6xTcuVmMZAVoEWiZdhMgAXKFkUTLROcjcDhx3Bv1HLlYqR9iA02RVQEBGnHI9x7JJ2NMQX0D3x+en8wP7ChRDOZ2X38zdSEkDpvCQBeDYJAGtow5v6r3X00NX6bsmwLA2TBkO2gFgAEM+kod0yhL4NHKFDpE9lahBF+lGp2lcEXw9vvTDAf+NIOj8POqkaPImJqqOp1OZUujLyMPFYaqi96TCGKqOtJn9LOGSYAiy3nEBhJ3f4NieyoHkmNuc0Jer0sFrDyKDZOoaqIyvRVrYha9Uhqv+hYijygUhmRUx3o2Sl6evft/3Af+J3cfO7WLSthM826Jiz0t+fd6rR8jk7d81n1wxgkgZN8if1iuEmfTLSBjbh2lI/aK9GJd1tBusefe3N7tiqlXpjZL5KlI12gD/bKikJMpAIL1uJwM3GdGm+FBx8NhzrEOekzwHKlPgAJPmDQnzfm2bRlfaMHaugHI7Bq49I1GObrVlJteLrR2buVa77uF519kdvHm4dXBOqKl936dTZF0dJ2osJ56XSwdSOendBfD3NW74g9ovcdEzQMAAA==
+  recorded_at: Mon, 06 Jun 2022 10:48:26 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cgpm/meeting/resolution/1889-00.yaml
     body:
       encoding: US-ASCII
       string: ''
@@ -36,7 +122,7 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '490'
+      - '551'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
@@ -44,7 +130,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"698bad60879c76ada0a3cddc27b65028aa3344ada41f10c4257c7e7b00df0aef"
+      - W/"0ab450d312a0272530b9c5180e2e0029dffb6a47d7619f0ca5ddb1e09073de26"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -54,122 +140,36 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 1B74:669F:F0E55:14F8E7:62982E57
+      - 2EDC:3CCC:39D4F5:4FB52B:629DDB7C
       Content-Encoding:
       - gzip
       Accept-Ranges:
       - bytes
       Date:
-      - Thu, 02 Jun 2022 03:28:23 GMT
+      - Mon, 06 Jun 2022 10:48:28 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11277-MEL
+      - cache-mel11225-MEL
       X-Cache:
       - MISS
       X-Cache-Hits:
       - '0'
       X-Timer:
-      - S1654140503.260586,VS0,VE280
+      - S1654512508.060820,VS0,VE349
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - da9ff64d3fbd838feede1ca45689aa3c0e565693
+      - c6db8b973fab370c4ae14240389788a0b5f83cfd
       Expires:
-      - Thu, 02 Jun 2022 03:33:23 GMT
+      - Mon, 06 Jun 2022 10:53:28 GMT
       Source-Age:
       - '0'
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAAAAAAAAA41SS27bMBDd6xSzc7ugaamqY2mZLooANWC0J6DEkUyEH4GfOOmJeo9erEM5im20RQsIkjicefPmzWOMFUq28OnzYc++YnA6ReUsK3e7pogqamwLBr2zEW1s4Zuwfb4HN0A8IiiKeytySGiYvIsuvkwYlnuD0SMIK+fTo9Ju9MIUAFrYMYmR0AEYoKVP6L2a4jnwRcQcGpw3gtpGfI580kLZP5KR1PCq9zWp9Awygfn5I/PAmA8LC4O/8Rj8f/PQyj7eSHOMcQot56fTad2pyaydHzla3jtjVIyIgfcjPZPh5Swv9xe5qUfm3kLw/T9BpeuToevAq01ZbXl596Gsm92O5yWW60kOXHTb5q6pBKvwI7JqU29YWUt6lfW27vqmLuv+rad0qiBMsgG1XswAFzPAu0z3/Vv+/cNhT4fJKyP8C6niE2YAm0yH/q/lUsTZTGeQKXVahSNKQnoSOlFolfPYpmHVblVkCbzqUnQ+F9Hcwqrv81LzagCsMHj+Y3CfPIoEDzduzK44OCVD3vseA+WEOV90nccndcZapgFIXrdwLTRFvdOv1lj4+oJq51Fu+V6MNNt59tLipFcfkUTn2S+LLwKJ10eiJpWklapBkYLU8ErO1WZV/AKyaUsIpwMAAA==
-  recorded_at: Thu, 02 Jun 2022 03:28:23 GMT
-- request:
-    method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cipm/meetings/decision/2016-01.yaml
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip, deflate, br
-      Accept:
-      - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-      User-Agent:
-      - Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46
-        (KHTML, like Gecko) Version/9.0 Mobile/13B5110e Safari/601.1
-      Accept-Charset:
-      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
-      Accept-Language:
-      - en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7
-      Host:
-      - raw.githubusercontent.com
-      Cache-Control:
-      - max-age=0
-      Upgrade-Insecure-Requests:
-      - '1'
-      Connection:
-      - keep-alive
-      Keep-Alive:
-      - '300'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '384'
-      Cache-Control:
-      - max-age=300
-      Content-Security-Policy:
-      - default-src 'none'; style-src 'unsafe-inline'; sandbox
-      Content-Type:
-      - text/plain; charset=utf-8
-      Etag:
-      - W/"1a31c0ddd18929c8a4e22b2b0192affcd7ade62babea2efd06ec08127105794b"
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - deny
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Github-Request-Id:
-      - D102:01B1:5741F:B5BBF:62982E57
-      Content-Encoding:
-      - gzip
-      Accept-Ranges:
-      - bytes
-      Date:
-      - Thu, 02 Jun 2022 03:28:23 GMT
-      Via:
-      - 1.1 varnish
-      X-Served-By:
-      - cache-mel11266-MEL
-      X-Cache:
-      - MISS
-      X-Cache-Hits:
-      - '0'
-      X-Timer:
-      - S1654140503.261142,VS0,VE296
-      Vary:
-      - Authorization,Accept-Encoding,Origin
-      Access-Control-Allow-Origin:
-      - "*"
-      X-Fastly-Request-Id:
-      - c28f34a288a36f1ebd8120bf752078d310dedc31
-      Expires:
-      - Thu, 02 Jun 2022 03:33:23 GMT
-      Source-Age:
-      - '0'
-    body:
-      encoding: ASCII-8BIT
-      string: !binary |-
-        H4sIAAAAAAAAA41SwU7sMAy85yt8KxxCt0jvCfW4cEECiV9IG+9ikSaV47DAH/Ed/Nhz2+1j94CEVKmNMx6PZ2qtNeRbuL1/erR32FOmFO31pvlrGyMkAVtjoU9RMEoLK2LG183mj23gYkJfGoDg4r64vXYAWMCor9wzjbIUHpxMpV3iwSmV4JvUY3AUzwZ8ff56wo5/PSFQfDlb5FlkzG1dHw6Hq47G4SrxvsZY92kYSAQx1z3pMw6zhkmAMsv7iC1k7k+pqur/jU9kfOrVUAWstn6bdrLJgt/qtR5GpsHxuyrmghNBLEOH/GO7dzLHspCMpQuUn9Er06sLRUvVEuDGXt9UZhLK1BVJPDXpoi7ShxOlnGwDiG7A5cvCtjC6Ave6G8cZ4wJ4zPCUyGdAgUfMiskz3nUd4ystXOs2AIVDC6fOapVTOMa26mWjvfMq53q/Q55/ojnnNeVjxmrR0fCjNyardb2oME9eU6EdqX867sTMqqnMP12OVffvAgAA
-  recorded_at: Thu, 02 Jun 2022 03:28:23 GMT
+        H4sIAAAAAAAAA71TS27bMBDd6xSzc7ugKKlqYnuZLooANWC0J6DEkUxEJAV+4rgn6j16sQ4lK7bRFGg3BQSJnBnOe3yaxxjLlNzCp8/7HfuK3g4xKGtYuV5vsqDCgNuMQWtNQBO28E2YNuXBdhAOCIrizogUEgOMzgYbTiP6Ja8xOARh5LR7UoPtndAZwCBMH0VP3QEYoKGPb50awxz4IkIKddZpQbABXwIfB6HMm2QkAV5hX5OKLyAj6J8/Eg8MabOw0Pgbj879NY9BmacbaQ4hjH7L+fF4zBs16ty6nqPhrdVahYDoedvTM2peTvJyd5GbMBL3LXjXvtXUiWPeq3CITfTozumcWnNSWJhEjydQJkUQzMZAKQLUxHSG1IhBmd4zYnRes6LMT3r4f9Cd+0foGymlbaOmtOdVUVZ3vLz/UNab9Zqn0S3zUXZcNHeb+00lWIUfkVVFXbCylvQq67u6aTd1WbevmNKqjHrS8BP0YgG4WADepZ/0/rX+4XG/o83olBbuRLPgIqYGJuoG3R+PkyqTheYmY2wG5Q8oqdOzGCKFVqmOFRtWrVdZksCpJgbr0iG6tzDq+zTKaSABjNA4rxg8RIciwuONB5MX9lZJn6Z9h55q/FQvmsbhs5p7LbcBiG7YwrXQFHV2OBti4esyOjtd5ZbvxT6TiScHLf45u4ckmu9+GffMk3htIGpSSfqlqlOkIAFeybkqVtkv+nPzE50EAAA=
+  recorded_at: Mon, 06 Jun 2022 10:48:26 GMT
 recorded_with: VCR 6.1.0
