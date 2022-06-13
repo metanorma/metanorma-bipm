@@ -10966,7 +10966,7 @@
 												<xsl:value-of select="bipm:docidentifier[@type='metanorma']"/>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:number format="[1]"/>
+												<xsl:number format="[1]" count="*[local-name()='bibitem'][not(@hidden = 'true')]"/>
 											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:if>
