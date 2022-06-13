@@ -1350,22 +1350,70 @@ RSpec.describe Metanorma::BIPM do
              </p>
            </clause>
          </sections>
-         <bibliography>
+                          <bibliography>
            <references id='_' normative='false' obligation='informative'>
              <title>Bibliography</title>
              <bibitem id='a1'>
-               <formattedref format='application/x-isodoc+xml'/>
-               <docidentifier type='BIPM'>CGPM Résolution 1889-00</docidentifier>
-               <docnumber>1889-00</docnumber>
+               <fetched>2022-06-13</fetched>
+               <title format='text/plain' language='en' script='Latn'>Sanction of the international prototypes of the metre and the kilogram</title>
+               <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889/resolution-</uri>
+               <uri type='src'>
+                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cgpm/meetings-en/meeting-01.yml
+               </uri>
+               <uri type='src'>
+                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cgpm/meetings-fr/meeting-01.yml
+               </uri>
+               <uri type='pdf'>
+                 https://www.bipm.org/documents/20126/17314988/CGPM1.pdf/ab69792a-2e5e-2040-14d0-11464bc9414c
+               </uri>
+               <docidentifier type='BIPM' primary='true'>CGPM Resolution (1889)</docidentifier>
+               <docnumber>CGPM Resolution (1889)</docnumber>
+               <date type='published'>
+                 <on>1889-09-28</on>
+               </date>
+               <contributor>
+                 <role type='publisher'/>
+                 <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <abbreviation>BIPM</abbreviation>
+                   <uri>www.bipm.org</uri>
+                 </organization>
+               </contributor>
+               <language>en</language>
+               <language>fr</language>
+               <script>Latn</script>
              </bibitem>
              <bibitem id='a2'>
-               <formattedref format='application/x-isodoc+xml'/>
-               <docidentifier type='BIPM'>CIPM Décision 2016-01</docidentifier>
-               <docnumber>2016-01</docnumber>
+               <fetched>2022-06-13</fetched>
+               <title format='text/plain' language='en' script='Latn'>Decision CIPM/105-1 (2016)</title>
+               <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+               <uri type='src'>
+                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cipm/meetings-en/meeting-105.yml
+               </uri>
+               <uri type='src'>
+                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cipm/meetings-fr/meeting-105.yml
+               </uri>
+               <docidentifier type='BIPM' primary='true'>CIPM Decision 1 (2016)</docidentifier>
+               <docnumber>CIPM Decision 1 (2016)</docnumber>
+               <date type='published'>
+                 <on>2016-10-28</on>
+               </date>
+               <contributor>
+                 <role type='publisher'/>
+                 <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <abbreviation>BIPM</abbreviation>
+                   <uri>www.bipm.org</uri>
+                 </organization>
+               </contributor>
+               <language>en</language>
+               <language>fr</language>
+               <script>Latn</script>
              </bibitem>
            </references>
          </bibliography>
        </bipm-standard>
+
       OUTPUT
       expect(xmlpp(strip_guid(
                      Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
