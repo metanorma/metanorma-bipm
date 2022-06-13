@@ -1220,7 +1220,7 @@ RSpec.describe Metanorma::BIPM do
       .to be_equivalent_to xmlpp(output)
   end
 
-  it "references BIPM citations" do
+  it "references BIPM English citations" do
     VCR.use_cassette "bipm" do
       input = <<~INPUT
         = Document title
@@ -1251,6 +1251,60 @@ RSpec.describe Metanorma::BIPM do
       expect(xmlpp(strip_guid(
                      Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
                      .at("//xmlns:sections").to_xml,
+                   )))
+        .to be_equivalent_to xmlpp(output)
+    end
+  end
+
+  it "references BIPM French citations" do
+    VCR.use_cassette "bipm-fr" do
+      input = <<~INPUT
+        = Document title
+        Author
+
+        == Clause
+
+        <<a1>>
+        <<a2>>
+
+        [bibliography]
+        == Bibliography
+        * [[[a1,CGPM Résolution 1889-00]]]
+        * [[[a2,CIPM Décision 2016-01]]]
+      INPUT
+
+      output = <<~OUTPUT
+      #{BLANK_HDR}
+         <sections>
+           <clause id='_' obligation='normative'>
+             <title>Clause</title>
+             <p id='_'>
+               <eref type='inline' bibitemid='a1' citeas='CGPM Résolution 1889-00'/>
+               <eref type='inline' bibitemid='a2' citeas='CIPM Décision 2016-01'/>
+             </p>
+           </clause>
+         </sections>
+         <bibliography>
+           <references id='_' normative='false' obligation='informative'>
+             <title>Bibliography</title>
+             <bibitem id='a1'>
+               <formattedref format='application/x-isodoc+xml'/>
+               <docidentifier type='BIPM'>CGPM Résolution 1889-00</docidentifier>
+               <docnumber>1889-00</docnumber>
+             </bibitem>
+             <bibitem id='a2'>
+               <formattedref format='application/x-isodoc+xml'/>
+               <docidentifier type='BIPM'>CIPM Décision 2016-01</docidentifier>
+               <docnumber>2016-01</docnumber>
+             </bibitem>
+           </references>
+         </bibliography>
+       </bipm-standard>
+      OUTPUT
+      expect(xmlpp(strip_guid(
+                     Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
+                     #.at("//xmlns:sections").to_xml,
+        .to_xml
                    )))
         .to be_equivalent_to xmlpp(output)
     end
