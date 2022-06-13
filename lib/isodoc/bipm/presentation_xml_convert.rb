@@ -165,10 +165,6 @@ module IsoDoc
         elem.children = l10n("[#{@i18n.source} #{elem.children.to_xml.strip}]")
       end
 
-      def bibliography_bibitem_number_skip(bibitem)
-        super || @xrefs.klass.standard?(bibitem)
-      end
-
       def expand_citeas(text)
         ret = super
         if @lang == "fr" && /^(CGPM|CIPM) /.match?(ret)
