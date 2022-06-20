@@ -949,7 +949,9 @@
 					
 					<xsl:call-template name="insertFootnoteSeparator"/>
 					
-					<xsl:call-template name="insertHeaderDraftWatermark"/>
+					<xsl:call-template name="insertHeaderDraftWatermark">
+						<xsl:with-param name="lang" select="$curr_lang"/>
+					</xsl:call-template>
 					
 					<fo:flow flow-name="xsl-region-body" font-family="Arial">
 						
@@ -1164,6 +1166,7 @@
 				<!-- Index -->
 				<xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//bipm:indexsect" mode="index">
 					<xsl:with-param name="isDraft" select="normalize-space(//bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:draft or       contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'draft') or       contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'projet'))"/>
+					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:apply-templates>
 				
 				<!-- End Document Pages -->
@@ -1324,6 +1327,7 @@
 				<!-- Index -->
 				<xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//bipm:indexsect" mode="index">
 					<xsl:with-param name="isDraft" select="normalize-space(//bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:draft or       contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'draft') or       contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'projet'))"/>
+					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:apply-templates>
 				
 			</xsl:otherwise>
@@ -1640,7 +1644,9 @@
 			</fo:block>
 		</fo:block-container>
 	
-		<xsl:call-template name="insertDraftWatermark"/>
+		<xsl:call-template name="insertDraftWatermark">
+			<xsl:with-param name="lang" select="$doc_split_by_language"/>
+		</xsl:call-template>
 		
 		<!-- BIPM logo -->
 		<fo:block-container absolute-position="fixed" left="12.8mm" top="12.2mm">
@@ -3273,9 +3279,11 @@
 		<xsl:param name="header-title"/>
 		<xsl:param name="orientation"/>
 		<xsl:param name="isDraft"/>
+		<xsl:param name="lang"/>
 		<fo:static-content flow-name="header-odd" role="artifact">
 			<xsl:call-template name="insertDraftWatermark">
 				<xsl:with-param name="isDraft" select="$isDraft"/>
+				<xsl:with-param name="lang" select="$lang"/>
 			</xsl:call-template>
 			<fo:block-container font-family="Arial" font-size="8pt" padding-top="12.5mm">
 				<fo:block text-align="right">
@@ -3296,6 +3304,7 @@
 		<fo:static-content flow-name="header-even" role="artifact">
 			<xsl:call-template name="insertDraftWatermark">
 				<xsl:with-param name="isDraft" select="$isDraft"/>
+				<xsl:with-param name="lang" select="$lang"/>
 			</xsl:call-template>
 			<fo:block-container font-family="Arial" font-size="8pt" padding-top="12.5mm">
 				<fo:block>
@@ -3313,6 +3322,7 @@
 		<fo:static-content flow-name="header-blank" role="artifact">
 			<xsl:call-template name="insertDraftWatermark">
 				<xsl:with-param name="isDraft" select="$isDraft"/>
+				<xsl:with-param name="lang" select="$lang"/>
 			</xsl:call-template>
 			<fo:block/>
 		</fo:static-content>
@@ -3320,12 +3330,23 @@
 
 	<xsl:template name="insertDraftWatermark">
 		<xsl:param name="isDraft"/>
+		<xsl:param name="lang"/>
 		<xsl:if test="$isDraft = 'true' or normalize-space(//bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:draft or   contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'draft') or   contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'projet')) = 'true'">
 			<!-- DRAFT -->
 			<xsl:variable name="draft_label">
-				<xsl:call-template name="getLocalizedString">
-					<xsl:with-param name="key">draft_label</xsl:with-param>
-				</xsl:call-template>
+				<xsl:choose>
+					<xsl:when test="normalize-space($lang) != ''">
+						<xsl:call-template name="getLocalizedString">
+							<xsl:with-param name="key">draft_label</xsl:with-param>
+							<xsl:with-param name="lang" select="$lang"/>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="getLocalizedString">
+							<xsl:with-param name="key">draft_label</xsl:with-param>
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:variable>
 			<fo:block-container absolute-position="fixed" left="0mm" top="30mm">
 				<fo:block line-height="0">
@@ -3355,25 +3376,30 @@
 
 	<xsl:template name="insertHeaderDraftWatermark">
 		<xsl:variable name="isDraft" select="normalize-space(//bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:draft or   contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'draft') or   contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'projet'))"/>
+		<xsl:variable name="curr_lang" select="$doc_split_by_language"/>
 		<xsl:if test="$isDraft = 'true'">
 			<fo:static-content flow-name="header-blank" role="artifact">
 				<xsl:call-template name="insertDraftWatermark">
 					<xsl:with-param name="isDraft" select="$isDraft"/>
+					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:call-template>
 			</fo:static-content>
 			<fo:static-content flow-name="header" role="artifact">
 				<xsl:call-template name="insertDraftWatermark">
 					<xsl:with-param name="isDraft" select="$isDraft"/>
+					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:call-template>
 			</fo:static-content>
 			<fo:static-content flow-name="header-odd" role="artifact">
 				<xsl:call-template name="insertDraftWatermark">
 					<xsl:with-param name="isDraft" select="$isDraft"/>
+					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:call-template>
 			</fo:static-content>
 			<fo:static-content flow-name="header-even" role="artifact">
 				<xsl:call-template name="insertDraftWatermark">
 					<xsl:with-param name="isDraft" select="$isDraft"/>
+					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:call-template>
 			</fo:static-content>
 		</xsl:if>
@@ -3426,6 +3452,7 @@
 	<xsl:template match="bipm:indexsect"/>
 	<xsl:template match="bipm:indexsect" mode="index">
 		<xsl:param name="isDraft"/>
+		<xsl:param name="lang"/>
 	
 		<fo:page-sequence master-reference="index" force-page-count="no-force">
 			<xsl:variable name="header-title">
@@ -3441,6 +3468,7 @@
 			<xsl:call-template name="insertHeaderFooter">
 				<xsl:with-param name="header-title" select="$header-title"/>
 				<xsl:with-param name="isDraft" select="$isDraft"/>
+				<xsl:with-param name="lang" select="$lang"/>
 			</xsl:call-template>
 			
 			<fo:flow flow-name="xsl-region-body">
