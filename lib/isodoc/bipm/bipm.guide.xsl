@@ -4012,6 +4012,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:template name="insertRootStyle">
 		<xsl:param name="root-style"/>
 		<xsl:variable name="root-style_" select="xalan:nodeset($root-style)"/>
@@ -4162,6 +4163,7 @@
 		
 		
 		
+		
 				
 		
 		
@@ -4202,8 +4204,10 @@
 		
 		
 		
+		
 
 	</xsl:attribute-set><xsl:attribute-set name="example-style">
+		
 		
 		
 		
@@ -4227,6 +4231,7 @@
 		
 		
 	</xsl:attribute-set><xsl:attribute-set name="example-name-style">
+		
 		
 		
 		
@@ -4271,6 +4276,7 @@
 				
 	</xsl:attribute-set><xsl:variable name="table-border_">
 		
+		
 	</xsl:variable><xsl:variable name="table-border" select="normalize-space($table-border_)"/><xsl:attribute-set name="table-container-style">
 		<xsl:attribute name="margin-left">0mm</xsl:attribute>
 		<xsl:attribute name="margin-right">0mm</xsl:attribute>
@@ -4278,6 +4284,7 @@
 		
 			<xsl:attribute name="space-after">12pt</xsl:attribute>
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+		
 		
 		
 		
@@ -4325,12 +4332,14 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="table-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
 			
 		
 		
 		
+				
 		
 				
 		
@@ -4416,6 +4425,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="table-footer-cell-style">
 		<xsl:attribute name="border">solid black 1pt</xsl:attribute>
 		<xsl:attribute name="padding-left">1mm</xsl:attribute>
@@ -4430,7 +4440,7 @@
 		
 		
 		
-
+		
 		
 		
 		
@@ -4440,6 +4450,7 @@
 		
 			<xsl:attribute name="text-align">justify</xsl:attribute>
 			<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
+		
 		
 		
 		
@@ -4461,6 +4472,8 @@
 		
 		
 		
+		
+		
 	</xsl:attribute-set><xsl:attribute-set name="table-fn-number-style">
 		<xsl:attribute name="font-size">80%</xsl:attribute>
 		<xsl:attribute name="padding-right">5mm</xsl:attribute>
@@ -4469,6 +4482,7 @@
 		
 			<xsl:attribute name="font-style">italic</xsl:attribute>
 			<xsl:attribute name="padding-right">2.5mm</xsl:attribute>
+		
 		
 		
 		
@@ -4514,10 +4528,12 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="dl-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
 		<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
 			
+		
 		
 		
 		
@@ -4561,6 +4577,7 @@
 		
 		
 		
+				
 				
 		
 		
@@ -4676,6 +4693,7 @@
 			<xsl:attribute name="text-indent">-19mm</xsl:attribute>
 		
 		
+		
 				
 		
 		
@@ -4718,6 +4736,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="formula-stem-number-style">
 		<xsl:attribute name="text-align">right</xsl:attribute>
 		
@@ -4736,16 +4755,16 @@
 	</xsl:attribute-set><xsl:attribute-set name="figure-pseudocode-p-style">
 		
 	</xsl:attribute-set><xsl:attribute-set name="image-graphic-style">
+		<xsl:attribute name="width">100%</xsl:attribute>
+		<xsl:attribute name="content-height">100%</xsl:attribute>
+		<xsl:attribute name="scaling">uniform</xsl:attribute>			
 		
 		
-			<xsl:attribute name="width">100%</xsl:attribute>
 			<xsl:attribute name="content-height">scale-to-fit</xsl:attribute>
-			<xsl:attribute name="scaling">uniform</xsl:attribute>
 		
 		
 		
-				
-
+		
 	</xsl:attribute-set><xsl:attribute-set name="tt-style">
 		
 		
@@ -4807,6 +4826,7 @@
 		
 		
 	</xsl:attribute-set><xsl:attribute-set name="list-style">
+		
 		
 		
 		
@@ -4893,6 +4913,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="fn-body-style">
 		<xsl:attribute name="font-weight">normal</xsl:attribute>
 		<xsl:attribute name="font-style">normal</xsl:attribute>
@@ -4903,6 +4924,7 @@
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 			<xsl:attribute name="line-height">124%</xsl:attribute>
 			<xsl:attribute name="text-align">justify</xsl:attribute>
+		
 		
 		
 		
@@ -4944,6 +4966,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="admonition-style">
 		
 		
@@ -4964,13 +4987,15 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="admonition-container-style">
+		<xsl:attribute name="margin-left">0mm</xsl:attribute>
+		<xsl:attribute name="margin-right">0mm</xsl:attribute>
 		
 		
-			<xsl:attribute name="margin-left">0mm</xsl:attribute>
-			<xsl:attribute name="margin-right">0mm</xsl:attribute>
 			<xsl:attribute name="padding">2mm</xsl:attribute>
 			<xsl:attribute name="padding-top">3mm</xsl:attribute>
+		
 		
 		
 		
@@ -5005,6 +5030,7 @@
 		
 		
 			<xsl:attribute name="font-style">italic</xsl:attribute>
+		
 		
 		
 		
@@ -5055,6 +5081,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="bibitem-non-normative-style">
 		
 		
@@ -5065,6 +5092,7 @@
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 		
 			<xsl:attribute name="provisional-distance-between-starts">13mm</xsl:attribute>
+		
 		
 		
 		
@@ -5104,6 +5132,7 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="bibitem-note-fn-number-style">
 		<xsl:attribute name="keep-with-next.within-line">always</xsl:attribute>
 		
@@ -5125,10 +5154,12 @@
 		
 		
 		
+		
 	</xsl:attribute-set><xsl:attribute-set name="bibitem-note-fn-body-style">
 		<xsl:attribute name="font-size">10pt</xsl:attribute>
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 		<xsl:attribute name="start-indent">0pt</xsl:attribute>
+		
 		
 		
 		
@@ -5597,6 +5628,8 @@
 				
 				
 				
+				
+				
 			
 				
 				
@@ -5632,6 +5665,8 @@
 								<xsl:attribute name="border-top">0.5pt solid black</xsl:attribute>
 								<xsl:attribute name="border-bottom">0.5pt solid black</xsl:attribute>
 							</xsl:if>
+						
+						
 						
 						
 						
@@ -5785,30 +5820,36 @@
 	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name() = 'name']">
 		<xsl:param name="continued"/>
 		<xsl:if test="normalize-space() != ''">
-			<fo:block xsl:use-attribute-sets="table-name-style">
+		
+			
+				
+					<fo:block xsl:use-attribute-sets="table-name-style">
 
-				
-					<xsl:if test="not(*[local-name()='tab'])"> <!-- table without number -->
-						<xsl:attribute name="margin-top">0pt</xsl:attribute>
-					</xsl:if>
-					<xsl:if test="not(../preceding-sibling::*) and ancestor::node()[@orientation]">
-						<xsl:attribute name="margin-top">0pt</xsl:attribute>
-					</xsl:if>
-				
-				
-				
-				
-				<xsl:choose>
-					<xsl:when test="$continued = 'true'"> 
 						
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:apply-templates/>
-					</xsl:otherwise>
-				</xsl:choose>
+							<xsl:if test="not(*[local-name()='tab'])"> <!-- table without number -->
+								<xsl:attribute name="margin-top">0pt</xsl:attribute>
+							</xsl:if>
+							<xsl:if test="not(../preceding-sibling::*) and ancestor::node()[@orientation]">
+								<xsl:attribute name="margin-top">0pt</xsl:attribute>
+							</xsl:if>
+						
+						
+						
+						
+						<xsl:choose>
+							<xsl:when test="$continued = 'true'"> 
+								
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:apply-templates/>
+							</xsl:otherwise>
+						</xsl:choose>
+						
+						
+					</fo:block>
+			
 				
-				
-			</fo:block>
+			
 		</xsl:if>
 	</xsl:template><xsl:template name="calculate-columns-numbers">
 		<xsl:param name="table-row"/>
@@ -6206,10 +6247,16 @@
 		<fo:table-row>
 			<fo:table-cell number-columns-spanned="{$cols-count}" border-left="1.5pt solid white" border-right="1.5pt solid white" border-top="1.5pt solid white" border-bottom="1.5pt solid black">
 				
-				<xsl:apply-templates select="ancestor::*[local-name()='table']/*[local-name()='name']">
-					<xsl:with-param name="continued">true</xsl:with-param>
-				</xsl:apply-templates>
 				
+				
+				
+						<xsl:apply-templates select="ancestor::*[local-name()='table']/*[local-name()='name']">
+							<xsl:with-param name="continued">true</xsl:with-param>
+						</xsl:apply-templates>
+						
+						
+				
+					
 				
 				
 			</fo:table-cell>
@@ -6322,7 +6369,10 @@
 							
 							
 							<!-- fn processing -->
-							<xsl:call-template name="table_fn_display"/>
+							
+									<xsl:call-template name="table_fn_display"/>
+								
+							
 							
 							<!-- for PAS display Notes after footnotes -->
 							
@@ -6332,6 +6382,9 @@
 				</fo:table-body>
 				
 			</fo:table>
+			
+			
+			
 		</xsl:if>
 	</xsl:template><xsl:template match="*[local-name()='tbody']">
 		
@@ -6420,6 +6473,9 @@
 			
 			
 
+
+			
+
 			
 			
 			<xsl:call-template name="setTableRowAttributes"/>
@@ -6434,6 +6490,8 @@
 		</fo:table-row>
 	</xsl:template><xsl:template match="*[local-name()='tr']">
 		<fo:table-row xsl:use-attribute-sets="table-body-row-style">
+		
+			
 		
 			
 		
@@ -6549,6 +6607,8 @@
 			
 			
 			
+			
+			
 
 			
 			
@@ -6642,7 +6702,11 @@
 		
 		<xsl:variable name="gen_id" select="generate-id(.)"/>
 		<xsl:variable name="lang" select="ancestor::*[contains(local-name(), '-standard')]/*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>
-		<xsl:variable name="reference" select="@reference"/>
+		<xsl:variable name="reference_">
+			<xsl:value-of select="@reference"/>
+			<xsl:if test="normalize-space(@reference) = ''"><xsl:value-of select="$gen_id"/></xsl:if>
+		</xsl:variable>
+		<xsl:variable name="reference" select="normalize-space($reference_)"/>
 		<!-- fn sequence number in document -->
 		<xsl:variable name="current_fn_number">
 			<xsl:choose>
@@ -6717,7 +6781,7 @@
 						<xsl:copy-of select="node()"/>
 					</fn>
 				</xsl:for-each>
-				<xsl:for-each select="ancestor::*[contains(local-name(), '-standard')]/*[local-name()='preface']/* |      ancestor::*[contains(local-name(), '-standard')]/*[local-name()='sections']/* |       ancestor::*[contains(local-name(), '-standard')]/*[local-name()='annex'] |      ancestor::*[contains(local-name(), '-standard')]/*[local-name()='bibliography']/*">
+				<xsl:for-each select="ancestor::*[contains(local-name(), '-standard')]/*[local-name()='boilerplate']/* |       ancestor::*[contains(local-name(), '-standard')]/*[local-name()='preface']/* |      ancestor::*[contains(local-name(), '-standard')]/*[local-name()='sections']/* |       ancestor::*[contains(local-name(), '-standard')]/*[local-name()='annex'] |      ancestor::*[contains(local-name(), '-standard')]/*[local-name()='bibliography']/*">
 					<xsl:sort select="@displayorder" data-type="number"/>
 					<xsl:for-each select=".//*[local-name() = 'bibitem'][ancestor::*[local-name() = 'references']]/*[local-name() = 'note'] |      .//*[local-name() = 'fn'][not(ancestor::*[(local-name() = 'table' or local-name() = 'figure') and not(ancestor::*[local-name() = 'name'])])][generate-id(.)=generate-id(key('kfn',@reference)[1])]">
 						<!-- copy unique fn -->
@@ -8402,6 +8466,11 @@
 		</xsl:variable>
 		<fo:inline xsl:use-attribute-sets="link-style">
 			
+			<xsl:if test="starts-with(normalize-space(@target), 'mailto:')">
+				<xsl:attribute name="keep-together.within-line">always</xsl:attribute>
+			</xsl:if>
+			
+			
 			
 			
 			
@@ -9525,7 +9594,7 @@
 			</xsl:choose>
 	</xsl:template><xsl:template match="*[local-name() = 'fn']" mode="contents"/><xsl:template match="*[local-name() = 'fn']" mode="bookmarks"/><xsl:template match="*[local-name() = 'fn']" mode="contents_item"/><xsl:template match="*[local-name() = 'xref']" mode="contents">
 		<xsl:value-of select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'tab']" mode="contents_item">
+	</xsl:template><xsl:template match="*[local-name() = 'review']" mode="contents_item"/><xsl:template match="*[local-name() = 'tab']" mode="contents_item">
 		<xsl:text> </xsl:text>
 	</xsl:template><xsl:template match="*[local-name() = 'strong']" mode="contents_item">
 		<xsl:copy>
@@ -10365,6 +10434,7 @@
 		</xsl:variable>
 		
 		<xsl:variable name="padding">
+			
 			
 			
 			
@@ -11347,10 +11417,14 @@
 				<fo:block-container id="{@id}" xsl:use-attribute-sets="admonition-style">
 					
 					
+					
+					
 				
 					
 					
 							<fo:block-container xsl:use-attribute-sets="admonition-container-style">
+							
+								
 							
 								
 										<fo:block xsl:use-attribute-sets="admonition-name-style">
@@ -11669,6 +11743,27 @@
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$monthStr_"/></xsl:otherwise>
 		</xsl:choose>
+	</xsl:template><xsl:template name="getMonthLocalizedByNum">
+		<xsl:param name="num"/>
+		<xsl:variable name="monthStr">
+			<xsl:choose>
+				<xsl:when test="$num = '01'">january</xsl:when>
+				<xsl:when test="$num = '02'">february</xsl:when>
+				<xsl:when test="$num = '03'">march</xsl:when>
+				<xsl:when test="$num = '04'">april</xsl:when>
+				<xsl:when test="$num = '05'">may</xsl:when>
+				<xsl:when test="$num = '06'">june</xsl:when>
+				<xsl:when test="$num = '07'">july</xsl:when>
+				<xsl:when test="$num = '08'">august</xsl:when>
+				<xsl:when test="$num = '09'">september</xsl:when>
+				<xsl:when test="$num = '10'">october</xsl:when>
+				<xsl:when test="$num = '11'">november</xsl:when>
+				<xsl:when test="$num = '12'">december</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:call-template name="getLocalizedString">
+			<xsl:with-param name="key">month_<xsl:value-of select="$monthStr"/></xsl:with-param>
+		</xsl:call-template>
 	</xsl:template><xsl:template name="insertKeywords">
 		<xsl:param name="sorting" select="'true'"/>
 		<xsl:param name="charAtEnd" select="'.'"/>
@@ -11857,6 +11952,7 @@
 	</xsl:template><xsl:template name="namespaceCheck">
 		<xsl:variable name="documentNS" select="namespace-uri(/*)"/>
 		<xsl:variable name="XSLNS">			
+			
 			
 			
 			
