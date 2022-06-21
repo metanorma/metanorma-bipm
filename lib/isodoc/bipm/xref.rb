@@ -22,9 +22,7 @@ module IsoDoc
       end
 
       def wrap_brackets(txt)
-        return txt if /^\[.*\]$/.match?(txt)
-
-        "[#{txt}]"
+        /^\[.*\]$/.match?(txt) ? txt : "[#{txt}]"
       end
 
       def reference_names(ref)
@@ -34,10 +32,8 @@ module IsoDoc
       end
 
       def clause_names(docxml, sect_num)
-        if @jcgm
-          clause_names_jcgm(docxml, sect_num)
-        else
-          clause_names_bipm(docxml, sect_num)
+        if @jcgm then clause_names_jcgm(docxml, sect_num)
+        else clause_names_bipm(docxml, sect_num)
         end
       end
 
@@ -48,29 +44,29 @@ module IsoDoc
         end
       end
 
+      UNNUM = "@unnumbered = 'true'".freeze
+
       def clause_names_bipm(docxml, _sect_num)
         n = Counter.new
-        docxml.xpath(ns("//sections/clause[not(@unnumbered = 'true')] | "\
-                        "//sections/terms[not(@unnumbered = 'true')] | "\
-                        "//sections/definitions[not(@unnumbered = 'true')]"))
+        docxml.xpath(ns("//sections/clause[not(#{UNNUM})] | "\
+                        "//sections/terms[not(#{UNNUM})] | "\
+                        "//sections/definitions[not(#{UNNUM})]"))
           .each { |c| section_names(c, n, 1) }
-        docxml.xpath(ns("//sections/clause[@unnumbered = 'true'] | "\
-                        "//sections/terms[@unnumbered = 'true'] | "\
-                        "//sections/definitions[@unnumbered = 'true']"))
+        docxml.xpath(ns("//sections/clause[#{UNNUM}] | "\
+                        "//sections/terms[#{UNNUM}] | "\
+                        "//sections/definitions[#{UNNUM}]"))
           .each { |c| unnumbered_section_names(c, 1) }
       end
 
-      NUMBERED_SUBCLAUSES = "./clause[not(@unnumbered = 'true')] | "\
-                            "./references[not(@unnumbered = 'true')] | "\
-                            "./term[not(@unnumbered = 'true')] | "\
-                            "./terms[not(@unnumbered = 'true')] | "\
-                            "./definitions[not(@unnumbered = 'true')]".freeze
+      NUMBERED_SUBCLAUSES =
+        "./clause[not(#{UNNUM})] | ./references[not(#{UNNUM})] | "\
+        "./term[not(#{UNNUM})] | ./terms[not(#{UNNUM})] | "\
+        "./definitions[not(#{UNNUM})]".freeze
 
-      UNNUMBERED_SUBCLAUSES = "./clause[@unnumbered = 'true'] | "\
-                              "./references[@unnumbered = 'true'] | "\
-                              "./term[@unnumbered = 'true'] | "\
-                              "./terms[@unnumbered = 'true'] | "\
-                              "./definitions[@unnumbered = 'true']".freeze
+      UNNUMBERED_SUBCLAUSES =
+        "./clause[#{UNNUM}] | ./references[#{UNNUM}] | "\
+        "./term[#{UNNUM}] | ./terms[#{UNNUM}] | "\
+        "./definitions[#{UNNUM}]".freeze
 
       def section_name_anchors(clause, num, lvl)
         lbl = @jcgm ? "clause_jcgm" : "clause"
@@ -137,11 +133,11 @@ module IsoDoc
       def back_anchor_names(docxml)
         super
         i = @jcgm ? Counter.new("@", skip_i: true) : Counter.new(0)
-        docxml.xpath(ns("//annex[not(@unnumbered = 'true')]")).each do |c|
+        docxml.xpath(ns("//annex[not(#{UNNUM})]")).each do |c|
           i.increment(c)
           annex_names(c, i.print)
         end
-        docxml.xpath(ns("//annex[@unnumbered = 'true']"))
+        docxml.xpath(ns("//annex[#{UNNUM}]"))
           .each { |c| unnumbered_annex_names(c) }
         docxml.xpath(ns("//indexsect")).each { |b| preface_names(b) }
       end
@@ -231,11 +227,9 @@ module IsoDoc
 
       def initial_anchor_names(doc)
         super
-        if @parse_settings.empty? || @parse_settings[:clauses]
-        if @jcgm
+        if (@parse_settings.empty? || @parse_settings[:clauses]) && @jcgm
           @iso.introduction_names(doc.at(ns("//introduction")))
           @anchors.merge!(@iso.get)
-        end
         end
       end
 

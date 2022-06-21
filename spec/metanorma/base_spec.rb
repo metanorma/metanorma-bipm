@@ -1238,8 +1238,7 @@ RSpec.describe Metanorma::BIPM do
       INPUT
 
       output = <<~OUTPUT
-      #{BLANK_HDR}
-         <sections>
+        <sections>
           <clause id='_' obligation='normative'>
             <title>Clause</title>
             <p id='_'>
@@ -1248,75 +1247,10 @@ RSpec.describe Metanorma::BIPM do
             </p>
           </clause>
         </sections>
-                 <bibliography>
-           <references id='_' normative='false' obligation='informative'>
-             <title>Bibliography</title>
-             <bibitem id='a1'>
-               <fetched>2022-06-13</fetched>
-               <title format='text/plain' language='en' script='Latn'>Sanction of the international prototypes of the metre and the kilogram</title>
-               <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889/resolution-</uri>
-               <uri type='src'>
-                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cgpm/meetings-en/meeting-01.yml
-               </uri>
-               <uri type='src'>
-                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cgpm/meetings-fr/meeting-01.yml
-               </uri>
-               <uri type='pdf'>
-                 https://www.bipm.org/documents/20126/17314988/CGPM1.pdf/ab69792a-2e5e-2040-14d0-11464bc9414c
-               </uri>
-               <docidentifier type='BIPM' primary='true'>CGPM Resolution (1889)</docidentifier>
-               <docnumber>CGPM Resolution (1889)</docnumber>
-               <date type='published'>
-                 <on>1889-09-28</on>
-               </date>
-               <contributor>
-                 <role type='publisher'/>
-                 <organization>
-                   <name>Bureau International des Poids et Mesures</name>
-                   <abbreviation>BIPM</abbreviation>
-                   <uri>www.bipm.org</uri>
-                 </organization>
-               </contributor>
-               <language>en</language>
-               <language>fr</language>
-               <script>Latn</script>
-             </bibitem>
-             <bibitem id='a2'>
-               <fetched>2022-06-13</fetched>
-               <title format='text/plain' language='en' script='Latn'>Decision CIPM/105-1 (2016)</title>
-               <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-               <uri type='src'>
-                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cipm/meetings-en/meeting-105.yml
-               </uri>
-               <uri type='src'>
-                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cipm/meetings-fr/meeting-105.yml
-               </uri>
-               <docidentifier type='BIPM' primary='true'>CIPM Decision 1 (2016)</docidentifier>
-               <docnumber>CIPM Decision 1 (2016)</docnumber>
-               <date type='published'>
-                 <on>2016-10-28</on>
-               </date>
-               <contributor>
-                 <role type='publisher'/>
-                 <organization>
-                   <name>Bureau International des Poids et Mesures</name>
-                   <abbreviation>BIPM</abbreviation>
-                   <uri>www.bipm.org</uri>
-                 </organization>
-               </contributor>
-               <language>en</language>
-               <language>fr</language>
-               <script>Latn</script>
-             </bibitem>
-           </references>
-         </bibliography>
-       </bipm-standard>
-
       OUTPUT
       expect(xmlpp(strip_guid(
                      Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
-                     #.at("//xmlns:sections").to_xml,
-        .to_xml
+                     .at("//xmlns:sections").to_xml,
                    )))
         .to be_equivalent_to xmlpp(output)
     end
@@ -1340,85 +1274,19 @@ RSpec.describe Metanorma::BIPM do
       INPUT
 
       output = <<~OUTPUT
-      #{BLANK_HDR}
-         <sections>
-           <clause id='_' obligation='normative'>
-             <title>Clause</title>
-             <p id='_'>
-               <eref type='inline' bibitemid='a1' citeas='CGPM Résolution 1889-00'/>
-               <eref type='inline' bibitemid='a2' citeas='CIPM Décision 2016-01'/>
-             </p>
-           </clause>
-         </sections>
-                          <bibliography>
-           <references id='_' normative='false' obligation='informative'>
-             <title>Bibliography</title>
-             <bibitem id='a1'>
-               <fetched>2022-06-13</fetched>
-               <title format='text/plain' language='en' script='Latn'>Sanction of the international prototypes of the metre and the kilogram</title>
-               <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889/resolution-</uri>
-               <uri type='src'>
-                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cgpm/meetings-en/meeting-01.yml
-               </uri>
-               <uri type='src'>
-                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cgpm/meetings-fr/meeting-01.yml
-               </uri>
-               <uri type='pdf'>
-                 https://www.bipm.org/documents/20126/17314988/CGPM1.pdf/ab69792a-2e5e-2040-14d0-11464bc9414c
-               </uri>
-               <docidentifier type='BIPM' primary='true'>CGPM Resolution (1889)</docidentifier>
-               <docnumber>CGPM Resolution (1889)</docnumber>
-               <date type='published'>
-                 <on>1889-09-28</on>
-               </date>
-               <contributor>
-                 <role type='publisher'/>
-                 <organization>
-                   <name>Bureau International des Poids et Mesures</name>
-                   <abbreviation>BIPM</abbreviation>
-                   <uri>www.bipm.org</uri>
-                 </organization>
-               </contributor>
-               <language>en</language>
-               <language>fr</language>
-               <script>Latn</script>
-             </bibitem>
-             <bibitem id='a2'>
-               <fetched>2022-06-13</fetched>
-               <title format='text/plain' language='en' script='Latn'>Decision CIPM/105-1 (2016)</title>
-               <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-               <uri type='src'>
-                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cipm/meetings-en/meeting-105.yml
-               </uri>
-               <uri type='src'>
-                 https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cipm/meetings-fr/meeting-105.yml
-               </uri>
-               <docidentifier type='BIPM' primary='true'>CIPM Decision 1 (2016)</docidentifier>
-               <docnumber>CIPM Decision 1 (2016)</docnumber>
-               <date type='published'>
-                 <on>2016-10-28</on>
-               </date>
-               <contributor>
-                 <role type='publisher'/>
-                 <organization>
-                   <name>Bureau International des Poids et Mesures</name>
-                   <abbreviation>BIPM</abbreviation>
-                   <uri>www.bipm.org</uri>
-                 </organization>
-               </contributor>
-               <language>en</language>
-               <language>fr</language>
-               <script>Latn</script>
-             </bibitem>
-           </references>
-         </bibliography>
-       </bipm-standard>
-
+        <sections>
+          <clause id='_' obligation='normative'>
+            <title>Clause</title>
+            <p id='_'>
+              <eref type='inline' bibitemid='a1' citeas='CGPM Resolution (1889)'/>
+              <eref type='inline' bibitemid='a2' citeas='CIPM Decision 1 (2016)'/>
+            </p>
+          </clause>
+        </sections>
       OUTPUT
       expect(xmlpp(strip_guid(
                      Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
-                     #.at("//xmlns:sections").to_xml,
-        .to_xml
+                     .at("//xmlns:sections").to_xml,
                    )))
         .to be_equivalent_to xmlpp(output)
     end
