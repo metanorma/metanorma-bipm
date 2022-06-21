@@ -16,7 +16,6 @@ SimpleCov.start do
 end
 
 require "bundler/setup"
-require "metanorma"
 require "metanorma-bipm"
 require "metanorma/bipm"
 require "rspec/matchers"
