@@ -180,6 +180,7 @@ module IsoDoc
         Decision: "Décision",
         Recommendation: "Recommandation",
         Declaration: "Déclaration",
+        Meeting: "Réunion",
       }.freeze
 
       include Init
