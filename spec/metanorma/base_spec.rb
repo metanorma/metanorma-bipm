@@ -1269,8 +1269,8 @@ RSpec.describe Metanorma::BIPM do
 
         [bibliography]
         == Bibliography
-        * [[[a1,CGPM Résolution 1889-00]]]
         * [[[a2,CIPM Décision 2016-01]]]
+        * [[[a1,CGPM Résolution 1889-00]]]
       INPUT
 
       output = <<~OUTPUT
