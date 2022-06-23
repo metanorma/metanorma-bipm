@@ -1287,7 +1287,7 @@ RSpec.describe Metanorma::BIPM do
       expect(xmlpp(strip_guid(
                      Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
                      #.at("//xmlns:sections").to_xml,
-        .to_xml,
+                    .to_xml,
                    )))
         .to be_equivalent_to xmlpp(output)
     end
