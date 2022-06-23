@@ -1225,6 +1225,7 @@ RSpec.describe Metanorma::BIPM do
       input = <<~INPUT
         = Document title
         Author
+        :no-isobib-cache:
 
         == Clause
 
@@ -1257,10 +1258,11 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "references BIPM French citations" do
-    VCR.use_cassette "bipm-fr" do
+    VCR.use_cassette "bipm-fr", match_requests_on: %i[method uri body] do
       input = <<~INPUT
         = Document title
         Author
+        :no-isobib-cache:
 
         == Clause
 
@@ -1286,8 +1288,7 @@ RSpec.describe Metanorma::BIPM do
       OUTPUT
       expect(xmlpp(strip_guid(
                      Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
-                     #.at("//xmlns:sections").to_xml,
-                    .to_xml,
+                     .at("//xmlns:sections").to_xml,
                    )))
         .to be_equivalent_to xmlpp(output)
     end

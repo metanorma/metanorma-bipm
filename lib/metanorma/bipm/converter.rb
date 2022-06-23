@@ -162,11 +162,6 @@ module Metanorma
                                      nil, false, "#{@filename}.pdf")
       end
 
-      def fetch_ref_async(ref, idx, res)
-        warn HTMLEntities.new.encode(ref[:code], :hexadecimal)
-        super
-      end
-
       def html_converter(node)
         IsoDoc::BIPM::HtmlConvert.new(html_extract_attributes(node))
       end
