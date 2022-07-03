@@ -8,6 +8,7 @@ VCR.configure do |config|
     clean_outdated_http_interactions: true,
     re_record_interval: 1512000,
     record: :once,
+    allow_playback_repeats: true,
     # unicode characters in URL
     #serialize_with: :json,
   }
