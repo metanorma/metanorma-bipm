@@ -149,152 +149,152 @@ RSpec.describe IsoDoc do
     INPUT
 
     presxml = <<~PRESXML
-       <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
-         <bibdata>
-           <language current='true'>en</language>
-         </bibdata>
-         <preface>
-           <foreword displayorder='1'>
-             <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-               <eref bibitemid='ISO712'>[110]</eref>
-               <eref bibitemid='ISBN'>[1]</eref>
-               <eref bibitemid='ISSN'>[2]</eref>
-               <eref bibitemid='ISO16634'>ISO 16634:-- (all parts)</eref>
-               <eref bibitemid='ref1'>ICC/167</eref>
-               <eref bibitemid='ref10'>[10]</eref>
-               <eref bibitemid='ref12'>Citn</eref>
-               <eref bibitemid='zip_ffs'>[5]</eref>
-             </p>
-           </foreword>
-         </preface>
-         <bibliography>
-           <references id='_bibliography' normative='false' obligation='informative' displayorder='2'>
-             <title depth='1'>Bibliography</title>
-             <p>
-               The following documents are referred to in the text in such a way that
-               some or all of their content constitutes requirements of this document.
-               For dated references, only the edition cited applies. For undated
-               references, the latest edition of the referenced document (including any
-               amendments) applies.
-             </p>
-             <bibitem id='ISO712' type='standard'>
-               <formattedref>
-                 International Organization for Standardization. 
-                 <em>Cereals and cereal products</em>
-                 .
-               </formattedref>
-               <docidentifier type='ISO'>ISO 712</docidentifier>
-               <docidentifier type='metanorma'>[110]</docidentifier>
-             </bibitem>
-             <bibitem id='ISO16634' type='standard'>
-               <formattedref>
-                 <em>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</em>
-                 .
-               </formattedref>
-               <docidentifier type='metanorma-ordinal'>[1]</docidentifier>
-               <docidentifier type='ISO'>ISO 16634:-- (all parts)</docidentifier>
-               <note format='text/plain' reference='1' type='Unpublished-Status'>Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
-             </bibitem>
-             <bibitem id='ISO20483' type='standard'>
-               <formattedref>
-                 International Organization for Standardization. 
-                 <em>Cereals and pulses</em>
-                 . 2013&#x2013;2014.
-               </formattedref>
-               <docidentifier type='metanorma-ordinal'>[2]</docidentifier>
-               <docidentifier type='ISO'>ISO 20483:2013-2014</docidentifier>
-             </bibitem>
-             <bibitem id='ref1'>
-               <formattedref format='application/x-isodoc+xml'>
-                 <smallcap>Standard No I.C.C 167</smallcap>
-                 . 
-                 <em>
-                   Determination of the protein content in cereal and cereal products
-                   for food and animal feeding stuffs according to the Dumas combustion
-                   method
-                 </em>
-                  (see 
-                 <link target='http://www.icc.or.at'/>
-                  ) [ICC/167] 
-               </formattedref>
-               <docidentifier type='metanorma-ordinal'>[3]</docidentifier>
-               <docidentifier type='ICC'>ICC/167</docidentifier>
-             </bibitem>
-             <note>
-               <name>NOTE</name>
-               <p>This is an annotation of ISO 20483:2013-2014</p>
-             </note>
-             <bibitem id='zip_ffs'>
-               <formattedref format='application/x-isodoc+xml'>Title 5</formattedref>
-               <docidentifier type='metanorma'>[5]</docidentifier>
-             </bibitem>
-             <bibitem id='ISBN' type='book'>
-               <formattedref>
-                 <em>Chemicals for analytical laboratory use</em>
-                 . ISBN.
-               </formattedref>
-               <docidentifier type='ISBN'>ISBN</docidentifier>
-               <docidentifier type='metanorma'>[1]</docidentifier>
-             </bibitem>
-             <bibitem id='ISSN' type='journal'>
-               <formattedref>
-                 <em>Instruments for analytical laboratory use</em>
-                 . ISSN.
-               </formattedref>
-               <docidentifier type='ISSN'>ISSN</docidentifier>
-               <docidentifier type='metanorma'>[2]</docidentifier>
-             </bibitem>
-             <note>
-               <name>NOTE</name>
-               <p>This is an annotation of document ISSN.</p>
-             </note>
-             <note>
-               <name>NOTE</name>
-               <p>This is another annotation of document ISSN.</p>
-             </note>
-             <bibitem id='ISO3696' type='standard'>
-               <formattedref>
-                 <em>Water for analytical laboratory use</em>
-                 .
-               </formattedref>
-               <docidentifier type='metanorma-ordinal'>[3]</docidentifier>
-               <docidentifier type='BIPM'>BIPM 3696</docidentifier>
-             </bibitem>
-             <bibitem id='ref10'>
-               <formattedref format='application/x-isodoc+xml'>
-                 <smallcap>Standard No I.C.C 167</smallcap>
-                 . 
-                 <em>
-                   Determination of the protein content in cereal and cereal products
-                   for food and animal feeding stuffs according to the Dumas combustion
-                   method
-                 </em>
-                  (see 
-                 <link target='http://www.icc.or.at'/>
-                  )
-               </formattedref>
-               <docidentifier type='metanorma'>[10]</docidentifier>
-             </bibitem>
-             <bibitem id='ref11'>
-               <formattedref>
-                 <em>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</em>
-                 .
-               </formattedref>
-               <docidentifier type='metanorma-ordinal'>[4]</docidentifier>
-               <docidentifier type='IETF'>IETF RFC 10</docidentifier>
-             </bibitem>
-             <bibitem id='ref12'>
-               <formattedref format='application/x-isodoc+xml'>
-                 CitationWorks. 2019. 
-                 <em>How to cite a reference</em>
-                  . [IETF RFC 20] 
-               </formattedref>
-               <docidentifier type='metanorma'>[Citn]</docidentifier>
-               <docidentifier type='IETF'>IETF RFC 20</docidentifier>
-             </bibitem>
-           </references>
-         </bibliography>
-       </iso-standard>
+      <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+        <bibdata>
+          <language current='true'>en</language>
+        </bibdata>
+        <preface>
+          <foreword displayorder='1'>
+            <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
+              <eref bibitemid='ISO712'>[110]</eref>
+              <eref bibitemid='ISBN'>[1]</eref>
+              <eref bibitemid='ISSN'>[2]</eref>
+              <eref bibitemid='ISO16634'>ISO 16634:-- (all parts)</eref>
+              <eref bibitemid='ref1'>ICC/167</eref>
+              <eref bibitemid='ref10'>[10]</eref>
+              <eref bibitemid='ref12'>Citn</eref>
+              <eref bibitemid='zip_ffs'>[5]</eref>
+            </p>
+          </foreword>
+        </preface>
+        <bibliography>
+          <references id='_bibliography' normative='false' obligation='informative' displayorder='2'>
+            <title depth='1'>Bibliography</title>
+            <p>
+              The following documents are referred to in the text in such a way that
+              some or all of their content constitutes requirements of this document.
+              For dated references, only the edition cited applies. For undated
+              references, the latest edition of the referenced document (including any
+              amendments) applies.
+            </p>
+            <bibitem id='ISO712' type='standard'>
+              <formattedref>
+                International Organization for Standardization.
+                <em>Cereals and cereal products</em>
+                .
+              </formattedref>
+              <docidentifier type='ISO'>ISO 712</docidentifier>
+              <docidentifier type='metanorma'>[110]</docidentifier>
+            </bibitem>
+            <bibitem id='ISO16634' type='standard'>
+              <formattedref>
+                <em>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</em>
+                .
+              </formattedref>
+              <docidentifier type='metanorma-ordinal'>[1]</docidentifier>
+              <docidentifier type='ISO'>ISO 16634:-- (all parts)</docidentifier>
+              <note format='text/plain' reference='1' type='Unpublished-Status'>Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
+            </bibitem>
+            <bibitem id='ISO20483' type='standard'>
+              <formattedref>
+                International Organization for Standardization.
+                <em>Cereals and pulses</em>
+                . 2013&#x2013;2014.
+              </formattedref>
+              <docidentifier type='metanorma-ordinal'>[2]</docidentifier>
+              <docidentifier type='ISO'>ISO 20483:2013-2014</docidentifier>
+            </bibitem>
+            <bibitem id='ref1'>
+              <formattedref format='application/x-isodoc+xml'>
+                <smallcap>Standard No I.C.C 167</smallcap>
+                .
+                <em>
+                  Determination of the protein content in cereal and cereal products
+                  for food and animal feeding stuffs according to the Dumas combustion
+                  method
+                </em>
+                 (see
+                <link target='http://www.icc.or.at'/>
+                 ) [ICC/167]
+              </formattedref>
+              <docidentifier type='metanorma-ordinal'>[3]</docidentifier>
+              <docidentifier type='ICC'>ICC/167</docidentifier>
+            </bibitem>
+            <note>
+              <name>NOTE</name>
+              <p>This is an annotation of ISO 20483:2013-2014</p>
+            </note>
+            <bibitem id='zip_ffs'>
+              <formattedref format='application/x-isodoc+xml'>Title 5</formattedref>
+              <docidentifier type='metanorma'>[5]</docidentifier>
+            </bibitem>
+            <bibitem id='ISBN' type='book'>
+              <formattedref>
+                <em>Chemicals for analytical laboratory use</em>
+                . ISBN.
+              </formattedref>
+              <docidentifier type='ISBN'>ISBN</docidentifier>
+              <docidentifier type='metanorma'>[1]</docidentifier>
+            </bibitem>
+            <bibitem id='ISSN' type='journal'>
+              <formattedref>
+                <em>Instruments for analytical laboratory use</em>
+                . ISSN.
+              </formattedref>
+              <docidentifier type='ISSN'>ISSN</docidentifier>
+              <docidentifier type='metanorma'>[2]</docidentifier>
+            </bibitem>
+            <note>
+              <name>NOTE</name>
+              <p>This is an annotation of document ISSN.</p>
+            </note>
+            <note>
+              <name>NOTE</name>
+              <p>This is another annotation of document ISSN.</p>
+            </note>
+            <bibitem id='ISO3696' type='standard'>
+              <formattedref>
+                <em>Water for analytical laboratory use</em>
+                .
+              </formattedref>
+              <docidentifier type='metanorma-ordinal'>[3]</docidentifier>
+              <docidentifier type='BIPM'>BIPM 3696</docidentifier>
+            </bibitem>
+            <bibitem id='ref10'>
+              <formattedref format='application/x-isodoc+xml'>
+                <smallcap>Standard No I.C.C 167</smallcap>
+                .
+                <em>
+                  Determination of the protein content in cereal and cereal products
+                  for food and animal feeding stuffs according to the Dumas combustion
+                  method
+                </em>
+                 (see
+                <link target='http://www.icc.or.at'/>
+                 )
+              </formattedref>
+              <docidentifier type='metanorma'>[10]</docidentifier>
+            </bibitem>
+            <bibitem id='ref11'>
+              <formattedref>
+                <em>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</em>
+                .
+              </formattedref>
+              <docidentifier type='metanorma-ordinal'>[4]</docidentifier>
+              <docidentifier type='IETF'>IETF RFC 10</docidentifier>
+            </bibitem>
+            <bibitem id='ref12'>
+              <formattedref format='application/x-isodoc+xml'>
+                CitationWorks. 2019.
+                <em>How to cite a reference</em>
+                 . [IETF RFC 20]
+              </formattedref>
+              <docidentifier type='metanorma'>[Citn]</docidentifier>
+              <docidentifier type='IETF'>IETF RFC 20</docidentifier>
+            </bibitem>
+          </references>
+        </bibliography>
+      </iso-standard>
     PRESXML
 
     html = <<~OUTPUT
@@ -322,12 +322,12 @@ RSpec.describe IsoDoc do
                some or all of their content constitutes requirements of this document.
                For dated references, only the edition cited applies. For undated
                references, the latest edition of the referenced document (including any
-               amendments) applies. 
+               amendments) applies.
              </p>
              <p id='ISO712' class='Biblio'>
-               [110]&#160; ISO 712 International Organization for Standardization. 
+               [110]&#160; ISO 712 International Organization for Standardization.
                <i>Cereals and cereal products</i>
-                . 
+                .
              </p>
              <p id='ISO16634' class='Biblio'>
                [1]&#160; ISO 16634:-- (all parts)
@@ -335,26 +335,26 @@ RSpec.describe IsoDoc do
                  <sup>1</sup>
                </a>
                <i>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</i>
-                . 
+                .
              </p>
              <p id='ISO20483' class='Biblio'>
                [2]&#160; ISO 20483:2013-2014 International Organization for
-               Standardization. 
+               Standardization.
                <i>Cereals and pulses</i>
-                . 2013&#8211;2014. 
+                . 2013&#8211;2014.
              </p>
              <p id='ref1' class='Biblio'>
-               [3]&#160; ICC/167 
+               [3]&#160; ICC/167
                <span style='font-variant:small-caps;'>Standard No I.C.C 167</span>
-                . 
+                .
                <i>
                   Determination of the protein content in cereal and cereal products
                  for food and animal feeding stuffs according to the Dumas combustion
-                 method 
+                 method
                </i>
-                (see 
+                (see
                <a href='http://www.icc.or.at'>http://www.icc.or.at</a>
-                ) [ICC/167] 
+                ) [ICC/167]
              </p>
              <div class='Note'>
                <p>
@@ -364,14 +364,14 @@ RSpec.describe IsoDoc do
              </div>
              <p id='zip_ffs' class='Biblio'>[5]&#160; Title 5</p>
              <p id='ISBN' class='Biblio'>
-               [1]&#160; 
+               [1]&#160;
                <i>Chemicals for analytical laboratory use</i>
-                . ISBN. 
+                . ISBN.
              </p>
              <p id='ISSN' class='Biblio'>
-               [2]&#160; 
+               [2]&#160;
                <i>Instruments for analytical laboratory use</i>
-                . ISSN. 
+                . ISSN.
              </p>
              <div class='Note'>
                <p>
@@ -386,32 +386,32 @@ RSpec.describe IsoDoc do
                </p>
              </div>
              <p id='ISO3696' class='Biblio'>
-               [3]&#160; BIPM 3696 
+               [3]&#160; BIPM 3696
                <i>Water for analytical laboratory use</i>
-                . 
+                .
              </p>
              <p id='ref10' class='Biblio'>
-               [10]&#160; 
+               [10]&#160;
                <span style='font-variant:small-caps;'>Standard No I.C.C 167</span>
-                . 
+                .
                <i>
                   Determination of the protein content in cereal and cereal products
                  for food and animal feeding stuffs according to the Dumas combustion
-                 method 
+                 method
                </i>
-                (see 
+                (see
                <a href='http://www.icc.or.at'>http://www.icc.or.at</a>
-                ) 
+                )
              </p>
              <p id='ref11' class='Biblio'>
-               [4]&#160; IETF RFC 10 
+               [4]&#160; IETF RFC 10
                <i>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</i>
-                . 
+                .
              </p>
              <p id='ref12' class='Biblio'>
-               Citn&#160; IETF RFC 20 CitationWorks. 2019. 
+               Citn&#160; IETF RFC 20 CitationWorks. 2019.
                <i>How to cite a reference</i>
-                . [IETF RFC 20] 
+                . [IETF RFC 20]
              </p>
            </div>
            <aside id='fn:1' class='footnote'>
@@ -638,90 +638,5 @@ RSpec.describe IsoDoc do
       .convert("test", input, true),
     ).at("//xmlns:bibliography").to_xml))
       .to be_equivalent_to xmlpp(presxml)
-  end
-
-  it "renders and internationalises BIPM CGPM Resolution and BIPM CIPM Decision references" do
-    input = <<~INPUT
-       <bipm-standard xmlns="http://riboseinc.com/isoxml">
-       <bibdata><language>LANGUAGE</language></bibdata>
-       <preface>
-       <foreword>
-       <p>
-          <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1 (1889)'/>
-          <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105 (2016)'/>
-       </p>
-       </foreword>
-       </preface>
-       <bibliography><references id="_normative_references" obligation="informative" normative="false"><title>Bibliography</title>
-                         <bibitem id='a1'>
-            <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
-            <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
-            <docidentifier type='BIPM' primary='true'>CGPM Resolution 1</docidentifier>
-            <docnumber>CGPM Resolution 1</docnumber>
-            <date type='published'>
-              <on>1889-09-28</on>
-            </date>
-            <contributor>
-              <role type='publisher'/>
-              <organization>
-                <name>Bureau International des Poids et Mesures</name>
-                <abbreviation>BIPM</abbreviation>
-                <uri>www.bipm.org</uri>
-              </organization>
-            </contributor>
-            <language>en</language>
-            <language>fr</language>
-            <script>Latn</script>
-          </bibitem>
-          <bibitem id='a2'>
-            <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
-            <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-            <docidentifier type='BIPM' primary='true'>CIPM Decision 105</docidentifier>
-            <docnumber>CIPM Decision 105</docnumber>
-            <date type='published'>
-              <on>2016-10-28</on>
-            </date>
-            <contributor>
-              <role type='publisher'/>
-              <organization>
-                <name>Bureau International des Poids et Mesures</name>
-                <abbreviation>BIPM</abbreviation>
-                <uri>www.bipm.org</uri>
-              </organization>
-            </contributor>
-            <language>en</language>
-            <language>fr</language>
-            <script>Latn</script>
-          </bibitem>
-          </references>
-        </bibliography>
-      </bipm-standard>
-    INPUT
-    presxml_en = <<~PRESXML
-      <foreword displayorder='1'>
-        <p>
-          <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1 (1889)'>CGPM Resolution 1 (1889)</eref>
-          <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105 (2016)'>CIPM Decision 105 (2016)</eref>
-        </p>
-      </foreword>
-    PRESXML
-    presxml_fr = <<~PRESXML
-      <foreword displayorder='1'>
-        <p>
-        <eref type='inline' bibitemid='a1' citeas='CGPM Resolution 1 (1889)'>CGPM &#x2013; R&#xE9;solution 1 (1889)</eref>
-        <eref type='inline' bibitemid='a2' citeas='CIPM Decision 105 (2016)'>CIPM &#x2013; D&#xE9;cision 105 (2016)</eref>
-        </p>
-      </foreword>
-    PRESXML
-    expect(xmlpp(Nokogiri::XML(
-      IsoDoc::BIPM::PresentationXMLConvert.new({})
-      .convert("test", input.sub(/LANGUAGE/, "en"), true),
-    ).at("//xmlns:foreword").to_xml))
-      .to be_equivalent_to xmlpp(presxml_en)
-    expect(xmlpp(Nokogiri::XML(
-      IsoDoc::BIPM::PresentationXMLConvert.new({})
-      .convert("test", input.sub(/LANGUAGE/, "fr"), true),
-    ).at("//xmlns:foreword").to_xml))
-      .to be_equivalent_to xmlpp(presxml_fr)
   end
 end

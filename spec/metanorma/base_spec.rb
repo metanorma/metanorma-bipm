@@ -1221,10 +1221,13 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "references BIPM English citations" do
-    VCR.use_cassette "bipm" do
+    expect(File).to receive(:exist?).with(/index\.yaml/).and_return false
+    allow(File).to receive(:exist?).and_call_original
+    VCR.use_cassette "bipm", match_requests_on: %i[method uri body] do
       input = <<~INPUT
         = Document title
         Author
+        :no-isobib-cache:
 
         == Clause
 
@@ -1257,10 +1260,13 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "references BIPM French citations" do
-    VCR.use_cassette "bipm-fr" do
+    expect(File).to receive(:exist?).with(/index\.yaml/).and_return false
+    allow(File).to receive(:exist?).and_call_original
+    VCR.use_cassette "bipm-fr", match_requests_on: %i[method uri body] do
       input = <<~INPUT
         = Document title
         Author
+        :no-isobib-cache:
 
         == Clause
 
@@ -1269,8 +1275,8 @@ RSpec.describe Metanorma::BIPM do
 
         [bibliography]
         == Bibliography
-        * [[[a1,CGPM Résolution 1889-00]]]
         * [[[a2,CIPM Décision 2016-01]]]
+        * [[[a1,CGPM Résolution 1889-00]]]
       INPUT
 
       output = <<~OUTPUT

@@ -164,7 +164,7 @@ module IsoDoc
         end
         elem.children = l10n("[#{@i18n.source} #{elem.children.to_xml.strip}]")
       end
-
+=begin
       def expand_citeas(text)
         ret = super
         if @lang == "fr" && /^(CGPM|CIPM) /.match?(ret)
@@ -180,7 +180,9 @@ module IsoDoc
         Decision: "Décision",
         Recommendation: "Recommandation",
         Declaration: "Déclaration",
+        Meeting: "Réunion",
       }.freeze
+=end
 
       include Init
     end

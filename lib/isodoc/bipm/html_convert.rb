@@ -29,10 +29,10 @@ module IsoDoc
       end
 
       def ol_attrs(node)
-        klass, style = if node["type"] == "roman" &&
-            !node.at("./ancestor::xmlns:ol[@type = 'roman']") ||
-            node["type"] == "alphabet" &&
-                !node.at("./ancestor::xmlns:ol[@type = 'alphabet']")
+        klass, style = if (node["type"] == "roman" &&
+            !node.at("./ancestor::xmlns:ol[@type = 'roman']")) ||
+            (node["type"] == "alphabet" &&
+                !node.at("./ancestor::xmlns:ol[@type = 'alphabet']"))
                          [node["type"], counter_reset(node)]
                        end
         super.merge(attr_code(type: ol_style((node["type"] || "arabic").to_sym),
