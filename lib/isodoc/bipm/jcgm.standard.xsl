@@ -7545,7 +7545,7 @@
 						
 						9
 						<!-- <xsl:if test="$namespace = 'ieee'">							
-							<xsl:if test="$doctype = 'standard' and $stage = 'published'">8</xsl:if>
+							<xsl:if test="$current_template = 'standard'">8</xsl:if>
 						</xsl:if> -->
 						
 								
