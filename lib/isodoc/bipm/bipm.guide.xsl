@@ -1156,7 +1156,7 @@
 				<xsl:apply-templates select="bipm:annex" mode="sections"/>
 				
 				<!-- Bibliography -->
-				<xsl:if test="bipm:bibliography/bipm:references[not(@normative='true')]/bipm:bibitem[not(contains(bipm:docidentifier, 'si-brochure-'))]">
+				<xsl:if test="bipm:bibliography/bipm:references[not(@normative='true')][not(@hidden='true')]/bipm:bibitem[not(contains(bipm:docidentifier, 'si-brochure-'))]">
 					<xsl:apply-templates select="bipm:bibliography/bipm:references[not(@normative='true')]" mode="sections"/> 
 				</xsl:if>
 				
@@ -1317,7 +1317,7 @@
 
 				<xsl:apply-templates select="bipm:annex" mode="sections"/>
 				
-				<xsl:if test="bipm:bibliography/bipm:references[not(@normative='true')]/bipm:bibitem[not(contains(bipm:docidentifier, 'si-brochure-'))]">
+				<xsl:if test="bipm:bibliography/bipm:references[not(@normative='true')][not(@hidden='true')]/bipm:bibitem[not(contains(bipm:docidentifier, 'si-brochure-'))]">
 					<xsl:apply-templates select="bipm:bibliography/bipm:references[not(@normative='true')]" mode="sections"/> 
 				</xsl:if>
 				
