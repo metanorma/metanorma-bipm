@@ -69,6 +69,17 @@
         </zeroOrMore>
       </element>
     </define>
+    <define name="AdmonitionType">
+      <choice>
+        <value>warning</value>
+        <value>note</value>
+        <value>tip</value>
+        <value>important</value>
+        <value>caution</value>
+        <value>statement</value>
+        <value>editorial</value>
+      </choice>
+    </define>
     <define name="index">
       <element name="index">
         <optional>
@@ -2490,6 +2501,16 @@
       </optional>
       <optional>
         <element name="supplementnumber">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="amendment">
+          <text/>
+        </element>
+      </optional>
+      <optional>
+        <element name="corrigendum">
           <text/>
         </element>
       </optional>

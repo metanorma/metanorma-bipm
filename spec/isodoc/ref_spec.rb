@@ -610,7 +610,7 @@ RSpec.describe IsoDoc do
     INPUT
     presxml = <<~PRESXML
       <bibliography>
-         <references id='_normative_references' obligation='informative' normative='false' displayorder='1'>
+         <references id='_normative_references' obligation='informative' normative='false' displayorder='1' hidden="true">
            <title depth='1'>Bibliography</title>
            <bibitem id='a1' hidden='true'>
              <formattedref>
