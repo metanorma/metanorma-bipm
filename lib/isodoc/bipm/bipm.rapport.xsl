@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:bipm="https://www.metanorma.org/ns/bipm" xmlns:mathml="http://www.w3.org/1998/Math/MathML" xmlns:xalan="http://xml.apache.org/xalan" xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" xmlns:pdf="http://xmlgraphics.apache.org/fop/extensions/pdf" xmlns:java="http://xml.apache.org/xalan/java" exclude-result-prefixes="java" version="1.0">
 
 	<xsl:output version="1.0" method="xml" encoding="UTF-8" indent="no"/>
-	
+
 	<xsl:param name="initial_page_number"/>
 	<xsl:param name="doc_split_by_language"/>
-	
+
 	<xsl:param name="add_math_as_attachment">true</xsl:param>
-	
+
 	<xsl:key name="kfn" match="*[local-name() = 'fn'][not(ancestor::*[(local-name() = 'table' or local-name() = 'figure') and not(ancestor::*[local-name() = 'name'])])]" use="@reference"/>
-	
+
 	<xsl:variable name="first_pass" select="count($index//item) = 0"/>
-	
-	
 
 	<!-- DON'T DELETE IT -->
 	<!-- IT USES for mn2pdf -->
 	<xsl:variable name="coverpages_count">2</xsl:variable><!-- DON'T DELETE IT -->
-	
-	
+
 	<xsl:variable name="debug">false</xsl:variable>
-	
+
 	<xsl:variable name="copyrightYear" select="//bipm:bipm-standard/bipm:bibdata/bipm:copyright/bipm:from"/>
-	
+
 	<xsl:variable name="doc_first_language" select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:language[@current = 'true']"/>
 
 	<xsl:variable name="root-element" select="local-name(/*)"/>
@@ -37,7 +34,7 @@
 							<xsl:variable name="title-part"><xsl:value-of select="bipm:bibdata/bipm:title[@type = 'part']"/></xsl:variable>
 							<xsl:variable name="current_document">
 								<xsl:copy-of select="."/>
-							</xsl:variable>				
+							</xsl:variable>
 							<xsl:for-each select="xalan:nodeset($current_document)">
 								<xsl:variable name="docid">
 									<xsl:call-template name="getDocumentId"/>
@@ -45,7 +42,7 @@
 								<doc id="{$docid}" lang="{$lang}" doctype="{$doctype}" title-part="{$title-part}">
 									<xsl:call-template name="generateContents"/>
 								</doc>
-							</xsl:for-each>				
+							</xsl:for-each>
 						</xsl:for-each>
 					</xsl:when>
 					<xsl:otherwise>
@@ -54,7 +51,7 @@
 							<xsl:variable name="num"><xsl:number level="any" count="bipm:bipm-standard"/></xsl:variable>
 							<xsl:variable name="current_document">
 								<xsl:copy-of select="."/>
-							</xsl:variable>				
+							</xsl:variable>
 							<xsl:for-each select="xalan:nodeset($current_document)">
 								<xsl:variable name="docid">
 									<xsl:call-template name="getDocumentId"/>
@@ -62,12 +59,12 @@
 								<doc id="{$docid}" lang="{$lang}">
 									<xsl:call-template name="generateContents"/>
 								</doc>
-							</xsl:for-each>				
+							</xsl:for-each>
 						</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>
-			
-			</xsl:when>			
+
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:variable name="docid">
 					<xsl:call-template name="getDocumentId"/>
@@ -84,13 +81,13 @@
 		<xsl:choose>
 			<xsl:when test="$doc_split_by_language = ''"><!-- all documents -->
 				<xsl:for-each select="//bipm:bipm-standard">
-					
+
 					<xsl:variable name="current_document">
 						<xsl:copy-of select="."/>
 					</xsl:variable>
-					
+
 					<xsl:for-each select="xalan:nodeset($current_document)">
-					
+
 						<xsl:variable name="docid">
 							<xsl:call-template name="getDocumentId"/>
 						</xsl:variable>
@@ -99,56 +96,55 @@
 						<xsl:variable name="current_document_index_id">
 							<xsl:apply-templates select=".//bipm:indexsect" mode="index_add_id"/>
 						</xsl:variable>
-						
+
 						<xsl:variable name="current_document_index">
 							<xsl:apply-templates select="xalan:nodeset($current_document_index_id)" mode="index_update"/>
 						</xsl:variable>
-						
+
 						<xsl:for-each select="xalan:nodeset($current_document_index)">
 							<doc id="{$docid}">
 								<xsl:copy-of select="."/>
 							</doc>
 						</xsl:for-each>
-						
+
 					</xsl:for-each>
-					
+
 				</xsl:for-each>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:for-each select="(//bipm:bipm-standard)[*[local-name()='bibdata']/*[local-name()='language'][@current = 'true'] = $doc_split_by_language]">
-				
+
 					<xsl:variable name="current_document">
 						<xsl:copy-of select="."/>
 					</xsl:variable>
-				
+
 					<xsl:for-each select="xalan:nodeset($current_document)">
-					
+
 						<xsl:variable name="docid">
 							<xsl:call-template name="getDocumentId"/>
 						</xsl:variable>
-						
+
 						<xsl:variable name="current_document_index_id">
 							<xsl:apply-templates select=".//bipm:indexsect" mode="index_add_id"/>
 						</xsl:variable>
-						
+
 						<xsl:variable name="current_document_index">
 							<xsl:apply-templates select="xalan:nodeset($current_document_index_id)" mode="index_update"/>
 						</xsl:variable>
-						
+
 						<xsl:for-each select="xalan:nodeset($current_document_index)">
 							<doc id="{$docid}">
 								<xsl:copy-of select="."/>
 							</doc>
 						</xsl:for-each>
-						
+
 					</xsl:for-each>
-					
+
 				</xsl:for-each>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	
-	
+
 	<xsl:variable name="ids">
 		<xsl:for-each select="//*[@id]">
 			<id><xsl:value-of select="@id"/></id>
@@ -157,42 +153,39 @@
 			<referenceFrom><xsl:value-of select="."/></referenceFrom>
 		</xsl:for-each>
 	</xsl:variable>
-	
-	
-	
+
 	<xsl:variable name="independentAppendix" select="normalize-space((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:appendix)"/>
-	
+
 	<xsl:variable name="doctype" select="//bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:doctype"/>
 
 	<xsl:template name="generateContents">
 		<contents>
 
 			<xsl:apply-templates select="/*/bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')][position() &gt; 1]" mode="contents"/>
-			
+
 			<xsl:apply-templates select="/*/bipm:sections/*" mode="contents"/>
 			<xsl:apply-templates select="/*/bipm:bibliography/bipm:references[@normative='true']" mode="contents"/>
 			<xsl:apply-templates select="/*/bipm:annex" mode="contents"/>
 			<xsl:if test="/*/bipm:bibliography/bipm:references[not(@normative='true')]/bipm:bibitem[not(contains(bipm:docidentifier, 'si-brochure-'))]">
-				<xsl:apply-templates select="/*/bipm:bibliography/bipm:references[not(@normative='true')]" mode="contents"/> 
+				<xsl:apply-templates select="/*/bipm:bibliography/bipm:references[not(@normative='true')]" mode="contents"/>
 			</xsl:if>
-			
+
 			<!-- Index -->
 			<xsl:apply-templates select="//bipm:indexsect" mode="contents"/>
-			
+
 			<xsl:call-template name="processTablesFigures_Contents"/>
-			
+
 		</contents>
 	</xsl:template>
-	
-	
+
 	<xsl:variable name="mathml_attachments">
 		<xsl:if test="$add_math_as_attachment = 'true'">
 			<xsl:for-each select="//mathml:math">
-						
+
 				<xsl:variable name="sequence_number"><xsl:number level="any" format="00001"/></xsl:variable>
-				
+
 				<xsl:variable name="clause_title_number" select="ancestor-or-self::bipm:clause[bipm:title[bipm:tab]][1]/bipm:title/node()[1]"/>
-				
+
 				<xsl:variable name="mathml_filename">
 					<xsl:text>math</xsl:text>
 					<xsl:if test="$clause_title_number != '' and translate($clause_title_number, '.123456789', '') = ''">
@@ -203,20 +196,19 @@
 					<xsl:value-of select="$sequence_number"/>
 					<xsl:text>.mml</xsl:text>
 				</xsl:variable>
-				
+
 				<xsl:variable name="mathml_content">
 					<xsl:apply-templates select="." mode="mathml_actual_text"/>
 				</xsl:variable>
-				
+
 				<attachment filename="{$mathml_filename}">
 					<xsl:value-of select="$mathml_content"/>
 				</attachment>
-				
+
 			</xsl:for-each>
 		</xsl:if>
 	</xsl:variable>
-	
-	
+
 	<xsl:template match="/">
 		<fo:root xml:lang="{$lang}">
 			<xsl:variable name="root-style">
@@ -226,16 +218,16 @@
 				<xsl:with-param name="root-style" select="$root-style"/>
 			</xsl:call-template>
 			<fo:layout-master-set>
-			
+
 				<!-- blank page -->
 				<fo:simple-page-master master-name="blankpage" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
 					<fo:region-body margin-top="{$marginTop}mm" margin-bottom="{$marginBottom}mm" margin-left="{$marginLeftRight1}mm" margin-right="{$marginLeftRight2}mm"/>
-					<fo:region-before region-name="header-blank" extent="{$marginTop}mm"/> 
+					<fo:region-before region-name="header-blank" extent="{$marginTop}mm"/>
 					<fo:region-after region-name="footer-blank" extent="{$marginBottom}mm"/>
 					<fo:region-start region-name="left-region" extent="17mm"/>
 					<fo:region-end region-name="right-region" extent="26.5mm"/>
 				</fo:simple-page-master>
-				
+
 				<!-- Cover page -->
 				<fo:simple-page-master master-name="simple-cover-page" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
 					<fo:region-body margin-top="36mm" margin-bottom="43mm" margin-left="49mm" margin-right="48mm"/>
@@ -244,7 +236,7 @@
 					<fo:region-start extent="49mm"/>
 					<fo:region-end extent="48mm"/>
 				</fo:simple-page-master>
-				
+
 				<fo:page-sequence-master master-name="cover-page">
 					<fo:repeatable-page-master-alternatives>
 						<fo:conditional-page-master-reference master-reference="blankpage" blank-or-not-blank="blank"/>
@@ -252,7 +244,7 @@
 						<fo:conditional-page-master-reference master-reference="simple-cover-page" odd-or-even="even"/>
 					</fo:repeatable-page-master-alternatives>
 				</fo:page-sequence-master>
-				
+
 				<!-- Cover page -->
 				<fo:simple-page-master master-name="simple-cover-page-appendix" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
 					<fo:region-body margin-top="90mm" margin-bottom="40mm" margin-left="12.5mm" margin-right="53mm"/>
@@ -261,7 +253,7 @@
 					<fo:region-start extent="12.5mm"/>
 					<fo:region-end extent="53mm"/>
 				</fo:simple-page-master>
-				
+
 				<fo:page-sequence-master master-name="cover-page-appendix">
 					<fo:repeatable-page-master-alternatives>
 						<fo:conditional-page-master-reference master-reference="blankpage" blank-or-not-blank="blank"/>
@@ -269,8 +261,7 @@
 						<fo:conditional-page-master-reference master-reference="simple-cover-page-appendix" odd-or-even="even"/>
 					</fo:repeatable-page-master-alternatives>
 				</fo:page-sequence-master>
-				
-				
+
 				<!-- Title page  -->
 				<fo:simple-page-master master-name="simple-title-page" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
 					<fo:region-body margin-top="38mm" margin-bottom="25mm" margin-left="95mm" margin-right="12mm"/>
@@ -279,7 +270,7 @@
 					<fo:region-start extent="95mm"/>
 					<fo:region-end extent="12mm"/>
 				</fo:simple-page-master>
-				
+
 				<fo:page-sequence-master master-name="title-page">
 					<fo:repeatable-page-master-alternatives>
 						<fo:conditional-page-master-reference master-reference="blankpage" blank-or-not-blank="blank"/>
@@ -287,41 +278,41 @@
 						<fo:conditional-page-master-reference master-reference="simple-title-page" odd-or-even="even"/>
 					</fo:repeatable-page-master-alternatives>
 				</fo:page-sequence-master>
-				
+
 				<!-- Document pages -->
 				<fo:simple-page-master master-name="document-odd" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
 					<fo:region-body margin-top="{$marginTop}mm" margin-bottom="{$marginBottom}mm" margin-left="{$marginLeftRight1}mm" margin-right="{$marginLeftRight2}mm"/>
-					<fo:region-before region-name="header-odd" extent="{$marginTop}mm"/> 
+					<fo:region-before region-name="header-odd" extent="{$marginTop}mm"/>
 					<fo:region-after region-name="footer" extent="{$marginBottom}mm"/> <!-- debug:  background-color="green" -->
 					<fo:region-start region-name="left-region" extent="17mm"/>
 					<fo:region-end region-name="right-region" extent="26.5mm"/>
 				</fo:simple-page-master>
 				<fo:simple-page-master master-name="document-even" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
 					<fo:region-body margin-top="{$marginTop}mm" margin-bottom="{$marginBottom}mm" margin-left="{$marginLeftRight1}mm" margin-right="{$marginLeftRight2}mm"/>
-					<fo:region-before region-name="header-even" extent="{$marginTop}mm"/> 
+					<fo:region-before region-name="header-even" extent="{$marginTop}mm"/>
 					<fo:region-after region-name="footer" extent="{$marginBottom}mm"/> <!-- debug:  background-color="green" -->
 					<fo:region-start region-name="left-region" extent="17mm"/>
 					<fo:region-end region-name="right-region" extent="26.5mm"/>
 				</fo:simple-page-master>
 				<fo:page-sequence-master master-name="document">
-					<fo:repeatable-page-master-alternatives>						
+					<fo:repeatable-page-master-alternatives>
 						<fo:conditional-page-master-reference master-reference="blankpage" blank-or-not-blank="blank"/>
 						<fo:conditional-page-master-reference odd-or-even="even" master-reference="document-even"/>
 						<fo:conditional-page-master-reference odd-or-even="odd" master-reference="document-odd"/>
 					</fo:repeatable-page-master-alternatives>
 				</fo:page-sequence-master>
-				
+
 				<!-- Document pages (landscape orientation) -->
 				<fo:simple-page-master master-name="document-landscape-odd" page-width="{$pageHeight}mm" page-height="{$pageWidth}mm">
 					<fo:region-body margin-top="{$marginTop}mm" margin-bottom="{$marginBottom}mm" margin-left="{$marginLeftRight1}mm" margin-right="{$marginLeftRight2}mm"/>
-					<fo:region-before region-name="header-odd" extent="{$marginTop}mm"/> 
+					<fo:region-before region-name="header-odd" extent="{$marginTop}mm"/>
 					<fo:region-after region-name="footer" extent="{$marginBottom}mm"/> <!-- debug:  background-color="green" -->
 					<fo:region-start region-name="left-region" extent="17mm"/>
 					<fo:region-end region-name="right-region" extent="26.5mm"/>
 				</fo:simple-page-master>
 				<fo:simple-page-master master-name="document-landscape-even" page-width="{$pageHeight}mm" page-height="{$pageWidth}mm">
 					<fo:region-body margin-top="{$marginTop}mm" margin-bottom="{$marginBottom}mm" margin-left="{$marginLeftRight1}mm" margin-right="{$marginLeftRight2}mm"/>
-					<fo:region-before region-name="header-even" extent="{$marginTop}mm"/> 
+					<fo:region-before region-name="header-even" extent="{$marginTop}mm"/>
 					<fo:region-after region-name="footer" extent="{$marginBottom}mm"/> <!-- debug:  background-color="green" -->
 					<fo:region-start region-name="left-region" extent="17mm"/>
 					<fo:region-end region-name="right-region" extent="26.5mm"/>
@@ -333,18 +324,18 @@
 						<fo:conditional-page-master-reference odd-or-even="odd" master-reference="document-landscape-odd"/>
 					</fo:repeatable-page-master-alternatives>
 				</fo:page-sequence-master>
-				
+
 				<!-- Index pages -->
 				<fo:simple-page-master master-name="index-odd" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
 					<fo:region-body margin-top="{$marginTop}mm" margin-bottom="{$marginBottom}mm" margin-left="{$marginLeftRight1}mm" margin-right="41.7mm" column-count="2" column-gap="10mm"/>
-					<fo:region-before region-name="header-odd" extent="{$marginTop}mm"/> 
+					<fo:region-before region-name="header-odd" extent="{$marginTop}mm"/>
 					<fo:region-after region-name="footer" extent="{$marginBottom}mm"/>
 					<fo:region-start region-name="left-region" extent="17mm"/>
 					<fo:region-end region-name="right-region" extent="26.5mm"/>
 				</fo:simple-page-master>
 				<fo:simple-page-master master-name="index-even" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
 					<fo:region-body margin-top="{$marginTop}mm" margin-bottom="{$marginBottom}mm" margin-left="{$marginLeftRight1}mm" margin-right="41.7mm" column-count="2" column-gap="10mm"/>
-					<fo:region-before region-name="header-even" extent="{$marginTop}mm"/> 
+					<fo:region-before region-name="header-even" extent="{$marginTop}mm"/>
 					<fo:region-after region-name="footer" extent="{$marginBottom}mm"/>
 					<fo:region-start region-name="left-region" extent="17mm"/>
 					<fo:region-end region-name="right-region" extent="26.5mm"/>
@@ -356,32 +347,31 @@
 						<fo:conditional-page-master-reference odd-or-even="odd" master-reference="index-odd"/>
 					</fo:repeatable-page-master-alternatives>
 				</fo:page-sequence-master>
-				
-				
+
 			</fo:layout-master-set>
-			
+
 			<fo:declarations>
 				<xsl:call-template name="addPDFUAmeta"/>
-				
+
 				<xsl:if test="$add_math_as_attachment = 'true'">
 					<!-- DEBUG: mathml_attachments=<xsl:copy-of select="$mathml_attachments"/> -->
 					<xsl:for-each select="xalan:nodeset($mathml_attachments)//attachment">
-						
+
 						<xsl:variable name="mathml_filename" select="@filename"/>
 						<xsl:variable name="mathml_content" select="."/>
-						
+
 						<xsl:variable name="basepath" select="java:org.metanorma.fop.Util.saveFileToDisk($mathml_filename,$mathml_content)"/>
-						
+
 						<xsl:variable name="url" select="concat('url(file:',$basepath, ')')"/>
-						
+
 						<xsl:if test="normalize-space($url) != ''">
 							<pdf:embedded-file src="{$url}" filename="{$mathml_filename}"/>
 						</xsl:if>
 					</xsl:for-each>
 				</xsl:if>
-        
+
 			</fo:declarations>
-			
+
 			<xsl:call-template name="addBookmarks">
 				<xsl:with-param name="contents" select="$contents"/>
 			</xsl:call-template>
@@ -389,87 +379,84 @@
 			<!-- <contents>
 				<xsl:copy-of select="$contents"/>
 			</contents> -->
-			
+
 			<xsl:choose>
-			
+
 				<xsl:when test="$doctype = 'guide'">
-					<xsl:call-template name="insertCoverPageAppendix"/>				
+					<xsl:call-template name="insertCoverPageAppendix"/>
 				</xsl:when>
-				
+
 				<xsl:when test="$independentAppendix = ''">
 					<xsl:call-template name="insertCoverPage"/>
 					<xsl:call-template name="insertInnerCoverPage"/>
 				</xsl:when>
-				
+
 				<xsl:when test="$independentAppendix != ''">
-					<xsl:call-template name="insertCoverPageAppendix"/>				
+					<xsl:call-template name="insertCoverPageAppendix"/>
 				</xsl:when>
 			</xsl:choose>
-				
-			
+
 			<xsl:choose>
 				<xsl:when test="$root-element = 'metanorma-collection'">
-					
-					
+
 					<xsl:choose>
 						<xsl:when test="$doc_split_by_language = ''"><!-- all documents -->
 							<xsl:for-each select="//bipm:bipm-standard">
-								<xsl:variable name="lang" select="*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>						
+								<xsl:variable name="lang" select="*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>
 								<xsl:variable name="num"><xsl:number level="any" count="bipm:bipm-standard"/></xsl:variable>
-								
+
 								<xsl:variable name="title_eref">
 									<xsl:apply-templates select="." mode="title_eref"/>
 								</xsl:variable>
-								
+
 								<xsl:variable name="flatxml_">
 									<xsl:apply-templates select="xalan:nodeset($title_eref)" mode="flatxml"/>
 								</xsl:variable>
-								
+
 								<xsl:variable name="flatxml">
 									<xsl:apply-templates select="xalan:nodeset($flatxml_)" mode="pagebreak"/>
 								</xsl:variable>
-								
+
 								<!-- flatxml=<xsl:copy-of select="$flatxml"/> -->
-								
+
 								<xsl:apply-templates select="xalan:nodeset($flatxml)/bipm:bipm-standard" mode="bipm-standard">
 									<xsl:with-param name="curr_docnum" select="$num"/>
 								</xsl:apply-templates>
-								
+
 							</xsl:for-each>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:for-each select="(//bipm:bipm-standard)[*[local-name()='bibdata']/*[local-name()='language'][@current = 'true'] = $doc_split_by_language]">
-								<xsl:variable name="lang" select="*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>						
+								<xsl:variable name="lang" select="*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>
 								<xsl:variable name="num"><xsl:number level="any" count="bipm:bipm-standard"/></xsl:variable>
-								
+
 								<xsl:variable name="title_eref">
 									<xsl:apply-templates select="." mode="title_eref"/>
 								</xsl:variable>
-								
+
 								<xsl:variable name="flatxml_">
 									<xsl:apply-templates select="xalan:nodeset($title_eref)" mode="flatxml"/>
 								</xsl:variable>
-								
+
 								<xsl:variable name="flatxml">
 									<xsl:apply-templates select="xalan:nodeset($flatxml_)" mode="pagebreak"/>
 								</xsl:variable>
-								
+
 								<xsl:apply-templates select="xalan:nodeset($flatxml)/bipm:bipm-standard" mode="bipm-standard">
 									<xsl:with-param name="curr_docnum" select="$num"/>
 								</xsl:apply-templates>
-								
+
 							</xsl:for-each>
 						</xsl:otherwise>
 					</xsl:choose>
-					
-					
-				</xsl:when>			
+
+				</xsl:when>
 				<xsl:otherwise>
-				
+
 					<xsl:variable name="title_eref">
 						<xsl:apply-templates mode="title_eref"/>
 					</xsl:variable>
-					
+
 					<xsl:variable name="flatxml_">
 						<xsl:apply-templates select="xalan:nodeset($title_eref)" mode="flatxml"/>
 					</xsl:variable>
@@ -477,31 +464,29 @@
 					<xsl:variable name="flatxml">
 						<xsl:apply-templates select="xalan:nodeset($flatxml_)" mode="pagebreak"/>
 					</xsl:variable>
-					
+
 					<!-- flatxml=<xsl:copy-of select="$flatxml"/> -->
-					
+
 					<!-- indexes=<xsl:copy-of select="$indexes"/> -->
-					
-				
+
 					<xsl:apply-templates select="xalan:nodeset($flatxml)/bipm:bipm-standard" mode="bipm-standard">
 						<xsl:with-param name="curr_docnum" select="1"/>
 					</xsl:apply-templates>
 				</xsl:otherwise>
 			</xsl:choose>
-			
-			
+
 		</fo:root>
 	</xsl:template>
-	
+
 	<!-- ================================= -->
 	<!-- Move eref inside title -->
-	<!-- ================================= -->	
+	<!-- ================================= -->
 	<xsl:template match="@*|node()" mode="title_eref">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="title_eref"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<xsl:template match="bipm:title[following-sibling::*[1][self::bipm:eref]]" mode="title_eref">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="title_eref"/>
@@ -513,20 +498,20 @@
 	<xsl:template match="bipm:eref[preceding-sibling::*[1][self::bipm:title]]" mode="title_eref"/>
 	<!-- ================================= -->
 	<!-- END Move eref inside title -->
-	<!-- ================================= -->	
-	
+	<!-- ================================= -->
+
 	<!-- ================================= -->
 	<!-- Flattening xml for fit notes at page sides (margins) -->
-	<!-- ================================= -->	
+	<!-- ================================= -->
 	<xsl:template match="@*|node()" mode="flatxml">
 		<xsl:copy>
 			<xsl:if test="ancestor::bipm:quote">
-				<xsl:attribute name="parent-type">quote</xsl:attribute>				
+				<xsl:attribute name="parent-type">quote</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates select="@*|node()" mode="flatxml"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<xsl:template match="mathml:math" mode="flatxml" priority="2">
 		<xsl:copy-of select="."/>
 	</xsl:template>
@@ -535,9 +520,9 @@
 	<xsl:template match="bipm:annex" mode="flatxml">
 		<xsl:copy>
 			<xsl:apply-templates select="@*" mode="flatxml"/>
-			
+
 				<xsl:variable name="pos_first_clause_" select="count(bipm:clause[1]/preceding-sibling::*)"/>
-			
+
 				<xsl:variable name="pos_first_clause">
 					<xsl:choose>
 						<xsl:when test="$pos_first_clause_ = 0">
@@ -549,23 +534,23 @@
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:choose>
-				
+
 						<xsl:when test="$pos_first_clause &gt; 0">
 							<xsl:element name="clause" namespace="https://www.metanorma.org/ns/bipm">
 								<xsl:attribute name="id"><xsl:value-of select="concat(@id,'_clause')"/></xsl:attribute>
 								<xsl:for-each select="*[position() &gt; 0 and position() &lt;= $pos_first_clause]">
-									<xsl:apply-templates select="." mode="flatxml"/>									
-								</xsl:for-each>								
+									<xsl:apply-templates select="." mode="flatxml"/>
+								</xsl:for-each>
 							</xsl:element>
 							<xsl:for-each select="*[position() &gt; $pos_first_clause]">
-								<xsl:apply-templates select="." mode="flatxml"/>									
+								<xsl:apply-templates select="." mode="flatxml"/>
 							</xsl:for-each>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:apply-templates mode="flatxml"/>
 						</xsl:otherwise>
 				</xsl:choose>
-		
+
 		</xsl:copy>
 	</xsl:template>
 
@@ -576,48 +561,45 @@
 			<xsl:apply-templates mode="flatxml"/>
 		</xsl:copy>
 	</xsl:template>
-	
 
 	<!-- flattening clauses from 2nd level -->
 	<xsl:template match="bipm:clause[not(parent::bipm:sections) and not(parent::bipm:annex) and not(parent::bipm:preface) and not(ancestor::bipm:boilerplate)]" mode="flatxml">
 		<xsl:copy>
 			<xsl:apply-templates select="@*" mode="flatxml"/>
-			
-		</xsl:copy>		
+
+		</xsl:copy>
 		<xsl:apply-templates mode="flatxml"/>
 	</xsl:template>
-	
-	
+
 	<!-- move note(s) inside element -->
 	<!-- but ignore quote, move inside element which before quote -->
 	<xsl:template match="bipm:clause/*   [not(local-name() = 'quote')]   [following-sibling::*    [not(local-name()='quote')]    [1][local-name() = 'note']]" mode="flatxml"> <!-- find element, which has next 'note' -->
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="flatxml"/>
 			<xsl:variable name="element-id" select="generate-id(.)"/>
-			<xsl:for-each select="following-sibling::bipm:note[generate-id(preceding-sibling::*[not(local-name()='note') and not(local-name()='quote')][1]) = $element-id]">			
+			<xsl:for-each select="following-sibling::bipm:note[generate-id(preceding-sibling::*[not(local-name()='note') and not(local-name()='quote')][1]) = $element-id]">
 				<xsl:call-template name="change_note_kind"/>
 			</xsl:for-each>
-			
+
 			<!-- if current node is title level is 3 with notes, and next level is 4 -->
 			<xsl:if test="local-name() = 'title' and @depth = 3 and       ../bipm:clause/bipm:title/@depth = 4 and count(following-sibling::*[1][local-name() = 'note']) &gt; 0">
 				<!-- then move here footnotes from clause level 4 -->
-				<xsl:for-each select="../bipm:clause//bipm:fn[ancestor::bipm:quote or not(ancestor::bipm:table)]"> 
+				<xsl:for-each select="../bipm:clause//bipm:fn[ancestor::bipm:quote or not(ancestor::bipm:table)]">
 					<xsl:call-template name="fn_to_note_side"/>
 				</xsl:for-each>
 			</xsl:if>
-			
+
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!-- remove note(s), which was moved into element in previous template -->
 	<xsl:template match="bipm:clause/bipm:note" mode="flatxml" priority="2"/>
-	
-	
+
 	<!-- move clause/note inside title, p, ul or ol -->
 	<xsl:template match="bipm:clause2/*[local-name() != 'quote' and local-name() != 'note' and local-name() != 'clause'][last()]" mode="flatxml">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="flatxml"/>
-			
+
 			<xsl:for-each select="following-sibling::*[local-name() = 'note']">
 				<xsl:call-template name="change_note_kind"/>
 			</xsl:for-each>
@@ -627,10 +609,9 @@
 					<xsl:call-template name="fn_to_note_side"/>
 				</xsl:for-each>
 			</xsl:if>
-		</xsl:copy>	
+		</xsl:copy>
 	</xsl:template>
-		
-	
+
 	<xsl:template match="bipm:note[not(parent::bipm:preface)]" name="change_note_kind" mode="flatxml">
 		<xsl:variable name="element">
 			<xsl:choose>
@@ -642,17 +623,16 @@
 		<!-- <xsl:copy> -->
 		<xsl:element name="{$element}" namespace="https://www.metanorma.org/ns/bipm">
 			<xsl:if test="ancestor::bipm:quote">
-				<xsl:attribute name="parent-type">quote</xsl:attribute>				
+				<xsl:attribute name="parent-type">quote</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates select="@*|node()" mode="flatxml"/>
 		</xsl:element>
 		<!-- </xsl:copy> -->
 	</xsl:template>
-	
-	
+
 	<!-- change fn to xref with asterisks --> <!-- all fn except fn in table (but not quote table) -->
 	<xsl:template match="bipm:fn[ancestor::bipm:quote or not(ancestor::bipm:table)]" mode="flatxml">
-		<xsl:choose>		
+		<xsl:choose>
 			<!-- see template above with @depth = 4 -->
 			<xsl:when test="ancestor::bipm:clause[1]/bipm:title/@depth = 4 and                                  count(ancestor::bipm:clause[2]/bipm:title[@depth = 3]/following-sibling::*[1][local-name() = 'note']) &gt; 0">
 				<xsl:apply-templates select="." mode="fn_to_xref"/>
@@ -661,13 +641,13 @@
 				<xsl:apply-templates select="." mode="fn_to_xref"/> <!-- displays asterisks with link to side note -->
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:apply-templates select="." mode="fn_to_xref"/> <!-- displays asterisks with link to side note -->				
+				<xsl:apply-templates select="." mode="fn_to_xref"/> <!-- displays asterisks with link to side note -->
 				<xsl:call-template name="fn_to_note_side"/> <!-- convert footnote to side note with asterisk at start  -->
-				
+
 			</xsl:otherwise>
-		</xsl:choose>		
+		</xsl:choose>
 	</xsl:template>
-	
+
 	<!-- change fn to xref with asterisks --> <!-- all fn except fn in table (but not quote table) -->
 	<xsl:template match="bipm:fn[ancestor::bipm:quote or not(ancestor::bipm:table)]" mode="flatxml_list">
 		<xsl:choose>
@@ -676,26 +656,26 @@
 				<xsl:apply-templates select="." mode="fn_to_xref"/>
 			</xsl:when>
 			<xsl:when test="ancestor::bipm:li">
-				<xsl:apply-templates select="." mode="fn_to_xref"/> <!-- displays asterisks with link to side note -->	
+				<xsl:apply-templates select="." mode="fn_to_xref"/> <!-- displays asterisks with link to side note -->
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:apply-templates select="." mode="fn_to_xref"/>  <!-- displays asterisks with link to side note -->				
-				<xsl:call-template name="fn_to_note_side"/> <!-- convert footnote to side note with asterisk at start  -->					
-				
+				<xsl:apply-templates select="." mode="fn_to_xref"/>  <!-- displays asterisks with link to side note -->
+				<xsl:call-template name="fn_to_note_side"/> <!-- convert footnote to side note with asterisk at start  -->
+
 			</xsl:otherwise>
-		</xsl:choose>		
+		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:template match="bipm:fn" mode="fn_to_xref">
 		<xsl:element name="xref" namespace="https://www.metanorma.org/ns/bipm">
-			
+
 			<xsl:attribute name="target">
-				<xsl:call-template name="fn_reference_to_xref_target"/>				
+				<xsl:call-template name="fn_reference_to_xref_target"/>
 			</xsl:attribute>
-			
+
 			<xsl:variable name="curr_clause_id" select="normalize-space(ancestor::bipm:clause[1]/@id)"/>
 			<xsl:variable name="curr_annex_id" select="normalize-space(ancestor::bipm:annex[1]/@id)"/>
-			
+
 			<xsl:variable name="number">
 				<xsl:choose>
 					<xsl:when test="$curr_clause_id != ''">
@@ -706,14 +686,14 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			
+
 			<xsl:element name="sup_fn" namespace="https://www.metanorma.org/ns/bipm">
 				<xsl:value-of select="concat('(',$number,')')"/>
 			</xsl:element>
-			
+
 		</xsl:element>
 	</xsl:template>
-	
+
 	<xsl:template name="fn_reference_to_xref_target">
 		<xsl:variable name="lang" select="ancestor::bipm:bipm-standard/*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>
 			<xsl:variable name="gen_id" select="generate-id()"/>
@@ -723,17 +703,15 @@
 			</xsl:variable>
 		<xsl:value-of select="concat($lang, '_footnote_', @reference, '_', $number, '_', $gen_id)"/>
 	</xsl:template>
-	
-	
+
 	<xsl:template match="bipm:preface/bipm:clause[position() &gt; 1]" mode="flatxml">
 		<xsl:copy-of select="."/>
 	</xsl:template>
-	
+
 	<xsl:template match="bipm:quote" mode="flatxml" priority="2">
 		<xsl:apply-templates mode="flatxml"/>
 	</xsl:template>
-	
-	
+
 	<!-- flat lists -->
 	<xsl:template match="bipm:ul | bipm:ol" mode="flatxml" priority="2">
 		<xsl:apply-templates mode="flatxml_list"/>
@@ -743,34 +721,33 @@
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="flatxml_list"/>
 		</xsl:copy>
-	</xsl:template>	
-	
+	</xsl:template>
+
 	<xsl:template match="mathml:math" mode="flatxml_list" priority="2">
 		<xsl:copy-of select="."/>
 	</xsl:template>
-	
+
 	<!-- copy 'ol' 'ul' properties to each 'li' -->
 	<!-- OBSOLETE: move note for list (list level note)  into latest 'li' -->
 	<!-- NOW: move note for list (list level note)  into first 'li' -->
-	<!-- move fn for list-item (list-item level footnote)  into first 'li' -->	
-	<xsl:template match="bipm:li" mode="flatxml_list">	
+	<!-- move fn for list-item (list-item level footnote)  into first 'li' -->
+	<xsl:template match="bipm:li" mode="flatxml_list">
 		<xsl:copy>
 			<xsl:apply-templates select="@*" mode="flatxml_list"/>
 			<xsl:attribute name="list_type">
 				<xsl:value-of select="local-name(..)"/>
 			</xsl:attribute>
-			
+
 			<xsl:call-template name="setListItemLabel"/>
-			
+
 			<xsl:if test="ancestor::bipm:quote">
 				<xsl:attribute name="parent-type">quote</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates mode="flatxml_list"/>
-			
-			
+
 			<!-- if current li is first -->
 			<xsl:if test="not(preceding-sibling::*[local-name() = 'li'])">
-				
+
 				<!-- move note for list (list level note) into first 'li' -->
 				<xsl:for-each select="following-sibling::bipm:li[last()]/following-sibling::*">
 					<xsl:choose>
@@ -782,53 +759,50 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:for-each>
-				
+
 				<!-- move note(s) after ul/ol into first 'li' -->
 				<xsl:if test="not(ancestor::bipm:quote)">
 					<xsl:variable name="list_id" select="generate-id(..)"/>
-					<xsl:for-each select="../following-sibling::bipm:note[generate-id(preceding-sibling::*[not(local-name()='note') and not(local-name()='quote')][1]) = $list_id]">			
+					<xsl:for-each select="../following-sibling::bipm:note[generate-id(preceding-sibling::*[not(local-name()='note') and not(local-name()='quote')][1]) = $list_id]">
 						<xsl:call-template name="change_note_kind"/>
 					</xsl:for-each>
 				</xsl:if>
-				
-			
+
 				<xsl:if test="ancestor::bipm:quote or not(ancestor::bipm:table)">
-				
+
 					<xsl:choose>
 						<!-- see template above with @depth = 4 -->
 						<xsl:when test="ancestor::bipm:clause[1]/bipm:title/@depth = 4 and                                  count(ancestor::bipm:clause[2]/bipm:title[@depth = 3]/following-sibling::*[1][local-name() = 'note']) &gt; 0"/>
 						<xsl:otherwise>
-				
+
 							<!-- move all footnotes in the current list (not only current list item) into first 'li' -->
 							<xsl:variable name="curr_list_id" select="../@id"/>
 							<xsl:for-each select="..//bipm:fn[ancestor::bipm:ol[1]/@id = $curr_list_id or ancestor::bipm:ul[1]/@id = $curr_list_id]">
-								
+
 								<xsl:call-template name="fn_to_note_side"/>
-									
-								
+
 							</xsl:for-each>
-							
+
 						</xsl:otherwise>
 					</xsl:choose>
-					
+
 				</xsl:if>
-				
+
 			</xsl:if>
-			
+
 		</xsl:copy>
 	</xsl:template>
-	
-	
-	<xsl:template name="fn_to_note_side">		
+
+	<xsl:template name="fn_to_note_side">
 		<xsl:element name="note_side" namespace="https://www.metanorma.org/ns/bipm">
-	
-			<xsl:attribute name="id">						
-				<xsl:call-template name="fn_reference_to_xref_target"/>				
+
+			<xsl:attribute name="id">
+				<xsl:call-template name="fn_reference_to_xref_target"/>
 			</xsl:attribute>
-			
+
 			<xsl:variable name="curr_clause_id" select="normalize-space(ancestor::bipm:clause[1]/@id)"/>
 			<xsl:variable name="curr_annex_id" select="normalize-space(ancestor::bipm:annex[1]/@id)"/>
-			
+
 			<xsl:variable name="number">
 				<xsl:choose>
 					<xsl:when test="$curr_clause_id != ''">
@@ -839,21 +813,20 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			
-			
+
 			<xsl:element name="sup_fn" namespace="https://www.metanorma.org/ns/bipm">
 				<xsl:value-of select="concat('(',$number,')')"/>
 			</xsl:element>
 			<xsl:text> </xsl:text>
-			
+
 			<xsl:apply-templates mode="flatxml"/>
 		</xsl:element>
 	</xsl:template>
-	
+
 	<!-- remove latest elements (after li), because they moved into latest 'li' -->
 	<xsl:template match="bipm:ul/*[not(local-name() = 'li') and not(following-sibling::*[local-name() = 'li'])]" mode="flatxml_list"/>
 	<xsl:template match="bipm:ol/*[not(local-name() = 'li') and not(following-sibling::*[local-name() = 'li'])]" mode="flatxml_list"/>
-	
+
 	<xsl:template name="setListItemLabel">
 		<xsl:attribute name="label">
 			<xsl:call-template name="getListItemFormat"/>
@@ -865,28 +838,28 @@
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
-	
+
 	<xsl:template match="bipm:indexsect" mode="flatxml"/>
-	
+
 	<!-- ================================= -->
 	<!-- END: Flattening xml for fit notes at page sides (margins) -->
-	<!-- ================================= -->	
-	
+	<!-- ================================= -->
+
 	<!-- ================================= -->
 	<!-- Page breaks processing (close previous elements (clause) and start new) -->
-	<!-- ================================= -->	
+	<!-- ================================= -->
 	<xsl:template match="@*|node()" mode="pagebreak">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="pagebreak"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<xsl:template match="node()[bipm:pagebreak[@orientation]]" mode="pagebreak">
 		<xsl:variable name="element_name" select="local-name()"/>
 		<xsl:for-each select="bipm:pagebreak[@orientation]">
 			<xsl:variable name="pagebreak_id" select="generate-id()"/>
 			<xsl:variable name="pagebreak_previous_orientation" select="preceding-sibling::bipm:pagebreak[@orientation][1]/@orientation"/>
-			
+
 			<!-- copy elements before page break -->
 			<xsl:element name="{$element_name}" namespace="https://www.metanorma.org/ns/bipm">
 				<xsl:if test="not(preceding-sibling::bipm:pagebreak[@orientation])">
@@ -895,10 +868,10 @@
 				<xsl:if test="$pagebreak_previous_orientation != ''">
 					<xsl:attribute name="orientation"><xsl:value-of select="$pagebreak_previous_orientation"/></xsl:attribute>
 				</xsl:if>
-				
+
 				<xsl:apply-templates select="preceding-sibling::node()[following-sibling::bipm:pagebreak[@orientation][1][generate-id(.) = $pagebreak_id]][not(local-name() = 'pagebreak' and @orientation)]" mode="pagebreak"/>
 			</xsl:element>
-			
+
 			<!-- copy elements after last page break -->
 			<xsl:if test="position() = last() and following-sibling::node()">
 				<xsl:element name="{$element_name}" namespace="https://www.metanorma.org/ns/bipm">
@@ -906,15 +879,15 @@
 					<xsl:apply-templates select="following-sibling::node()" mode="pagebreak"/>
 				</xsl:element>
 			</xsl:if>
-			
+
 		</xsl:for-each>
-		
+
 	</xsl:template>
-	
+
 	<!-- ================================= -->
 	<!-- END: Page breaks processing  -->
-	<!-- ================================= -->	
-	
+	<!-- ================================= -->
+
 	<xsl:template match="bipm:bipm-standard"/>
 	<xsl:template match="bipm:bipm-standard" mode="bipm-standard">
 		<xsl:param name="curr_docnum"/>
@@ -924,20 +897,19 @@
 		<xsl:for-each select="xalan:nodeset($curr_xml)">
 			<xsl:call-template name="namespaceCheck"/>
 		</xsl:for-each>
-		
+
 		<xsl:variable name="curr_lang" select="bipm:bibdata/bipm:language[@current = 'true']"/>
-		
+
 		<xsl:if test="$debug = 'true'">
 			<xsl:text disable-output-escaping="yes">&lt;!--</xsl:text>
 				DEBUG
 				contents=<xsl:copy-of select="$contents"/>
 			<xsl:text disable-output-escaping="yes">--&gt;</xsl:text>
 		</xsl:if>
-		
-		
+
 		<xsl:choose>
 			<xsl:when test="$independentAppendix = '' and not($doctype = 'guide')">
-			
+
 				<!-- Document pages -->
 				<fo:page-sequence master-reference="document" force-page-count="no-force">
 					<!-- initial page number for English section -->
@@ -946,23 +918,23 @@
 							<xsl:value-of select="$initial_page_number"/>
 						</xsl:attribute>
 					</xsl:if>
-					
+
 					<xsl:call-template name="insertFootnoteSeparator"/>
-					
+
 					<xsl:call-template name="insertHeaderDraftWatermark">
 						<xsl:with-param name="lang" select="$curr_lang"/>
 					</xsl:call-template>
-					
+
 					<fo:flow flow-name="xsl-region-body" font-family="Arial">
-						
-						<fo:block-container font-size="12pt" font-weight="bold" border-top="1pt solid black" width="82mm" margin-top="2mm" padding-top="2mm">						
+
+						<fo:block-container font-size="12pt" font-weight="bold" border-top="1pt solid black" width="82mm" margin-top="2mm" padding-top="2mm">
 							<fo:block-container width="45mm">
 								<fo:block>
 									<xsl:value-of select="bipm:bibdata/bipm:contributor[bipm:role/@type='publisher']/bipm:organization/bipm:name"/>
-								</fo:block>						
+								</fo:block>
 							</fo:block-container>
 						</fo:block-container>
-						
+
 						<fo:block-container font-size="12pt" line-height="130%">
 							<fo:block margin-bottom="10pt"> </fo:block>
 							<fo:block margin-bottom="10pt"> </fo:block>
@@ -974,14 +946,14 @@
 							<fo:block margin-bottom="10pt"> </fo:block>
 							<fo:block margin-bottom="10pt"> </fo:block>
 						</fo:block-container>
-						
+
 						<fo:block-container font-size="18pt" font-weight="bold" text-align="center">
-							<fo:block role="H1">						
+							<fo:block role="H1">
 								<xsl:value-of select="//bipm:bipm-standard/bipm:bibdata/bipm:title[@language = $curr_lang and @type='cover']"/>
-							</fo:block>	
+							</fo:block>
 						</fo:block-container>
-						
-						<fo:block-container absolute-position="fixed" left="69.5mm" top="241mm" width="99mm">						
+
+						<fo:block-container absolute-position="fixed" left="69.5mm" top="241mm" width="99mm">
 							<fo:block-container font-size="9pt" border-bottom="1pt solid black" width="68mm" text-align="center" margin-bottom="14pt">
 								<fo:block font-weight="bold" margin-bottom="2.5mm">
 									<fo:inline padding-right="10mm">
@@ -997,15 +969,15 @@
 							<fo:block font-size="9pt">
 								<fo:block> </fo:block>
 								<fo:block> </fo:block>
-								<fo:block> </fo:block>							
-								<fo:block text-align="right"><xsl:value-of select="bipm:bibdata/bipm:version/bipm:draft"/></fo:block>						
+								<fo:block> </fo:block>
+								<fo:block text-align="right"><xsl:value-of select="bipm:bibdata/bipm:version/bipm:draft"/></fo:block>
 							</fo:block>
 						</fo:block-container>
-						
+
 						<fo:block break-after="page"/>
-						
+
 						<xsl:apply-templates select="bipm:boilerplate/bipm:license-statement"/>
-						
+
 						<fo:block-container absolute-position="fixed" top="200mm" height="69mm" font-family="Times New Roman" text-align="center" display-align="after">
 							<fo:block>
 								<xsl:apply-templates select="bipm:boilerplate/bipm:feedback-statement"/>
@@ -1017,15 +989,14 @@
 								</xsl:if>
 							</fo:block>
 						</fo:block-container>
-						
+
 					</fo:flow>
 				</fo:page-sequence>
-				
-				
+
 				<xsl:if test="bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')]">
 					<fo:page-sequence master-reference="document" force-page-count="no-force">
 						<xsl:call-template name="insertFootnoteSeparator"/>
-						
+
 						<xsl:variable name="header-title">
 							<xsl:choose>
 								<xsl:when test="bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')][1]/bipm:title[1]/*[local-name() = 'tab']">
@@ -1039,7 +1010,7 @@
 						<xsl:call-template name="insertHeaderFooter">
 							<xsl:with-param name="header-title" select="$header-title"/>
 						</xsl:call-template>
-						
+
 						<fo:flow flow-name="xsl-region-body">
 							<fo:block line-height="135%">
 								<xsl:apply-templates select="bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')][1]"/>
@@ -1048,14 +1019,13 @@
 					</fo:page-sequence>
 				</xsl:if>
 
-				
 				<xsl:variable name="docid">
 					<xsl:call-template name="getDocumentId"/>
 				</xsl:variable>
-				
+
 				<fo:page-sequence master-reference="document" force-page-count="no-force">
 					<xsl:call-template name="insertFootnoteSeparator"/>
-					
+
 					<xsl:variable name="title-toc">
 						<fo:inline>
 							<xsl:call-template name="getLocalizedString">
@@ -1066,11 +1036,11 @@
 					<xsl:call-template name="insertHeaderFooter">
 						<xsl:with-param name="header-title"><xsl:value-of select="$title-toc"/></xsl:with-param>
 					</xsl:call-template>
-					
+
 					<fo:flow flow-name="xsl-region-body">
-					
+
 						<fo:block-container margin-left="-14mm" margin-right="0mm">
-							<fo:block-container margin-left="0mm" margin-right="0mm">							
+							<fo:block-container margin-left="0mm" margin-right="0mm">
 								<fo:block font-family="Arial" font-size="16pt" font-weight="bold" text-align-last="justify" margin-bottom="82pt" role="H1">
 									<fo:inline><xsl:value-of select="//bipm:bipm-standard/bipm:bibdata/bipm:title[@language = $curr_lang and @type='main']"/></fo:inline>
 									<fo:inline keep-together.within-line="always">
@@ -1082,18 +1052,18 @@
 								</fo:block>
 							</fo:block-container>
 						</fo:block-container>
-					
+
 						<fo:block-container line-height="135%">
 							<fo:block role="TOC">
 								<!-- <xsl:copy-of select="$contents"/> -->
-								
+
 								<xsl:if test="$contents/doc[@id = $docid]//item[@display='true']">
 									<fo:table table-layout="fixed" width="100%">
 										<fo:table-column column-width="127mm"/>
 										<fo:table-column column-width="12mm"/>
-										<fo:table-body>											
-											<xsl:for-each select="$contents/doc[@id = $docid]//item[@display='true' and not(@type = 'annex') and not(@type = 'index') and not(@parent = 'annex')]">								
-												<xsl:call-template name="insertContentItem"/>								
+										<fo:table-body>
+											<xsl:for-each select="$contents/doc[@id = $docid]//item[@display='true' and not(@type = 'annex') and not(@type = 'index') and not(@parent = 'annex')]">
+												<xsl:call-template name="insertContentItem"/>
 											</xsl:for-each>
 											<xsl:if test="$doctype ='brochure'">
 												<!-- insert page break between main sections and appendixes in ToC -->
@@ -1104,12 +1074,12 @@
 												</fo:table-row>
 											</xsl:if>
 											<xsl:for-each select="$contents/doc[@id = $docid]//item[@display='true' and (@type = 'annex')]"> <!--  or (@level = 2 and @parent = 'annex') -->
-												<xsl:call-template name="insertContentItem"/>								
+												<xsl:call-template name="insertContentItem"/>
 											</xsl:for-each>
 											<xsl:for-each select="$contents/doc[@id = $docid]//item[@display='true' and (@type = 'index')]">
-												<xsl:call-template name="insertContentItem"/>								
+												<xsl:call-template name="insertContentItem"/>
 											</xsl:for-each>
-											
+
 											<!-- List of Tables -->
 											<xsl:if test="$contents/doc[@id = $docid]//tables/table">
 												<xsl:call-template name="insertListOf_Title">
@@ -1119,7 +1089,7 @@
 													<xsl:call-template name="insertListOf_Item"/>
 												</xsl:for-each>
 											</xsl:if>
-											
+
 											<!-- List of Figures -->
 											<xsl:if test="$contents/doc[@id = $docid]//figures/figure">
 												<xsl:call-template name="insertListOf_Title">
@@ -1129,75 +1099,69 @@
 													<xsl:call-template name="insertListOf_Item"/>
 												</xsl:for-each>
 											</xsl:if>
-											
+
 										</fo:table-body>
 									</fo:table>
 								</xsl:if>
 							</fo:block>
 						</fo:block-container>
-				
+
 					</fo:flow>
-					
+
 				</fo:page-sequence>
-				
-				
+
 				<xsl:apply-templates select="bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')][position() &gt; 1]" mode="sections"/> <!-- bipm:clause -->
-				
-				
-				
+
 				<!-- Document Pages -->
 				<xsl:apply-templates select="bipm:sections/*" mode="sections"/>
-				
-				
+
 				<!-- Normative references  -->
-				
+
 				<xsl:apply-templates select="bipm:bibliography/bipm:references[@normative='true']" mode="sections"/>
 
 				<xsl:apply-templates select="bipm:annex" mode="sections"/>
-				
+
 				<!-- Bibliography -->
 				<xsl:if test="bipm:bibliography/bipm:references[not(@normative='true')][not(@hidden='true')]/bipm:bibitem[not(contains(bipm:docidentifier, 'si-brochure-'))]">
-					<xsl:apply-templates select="bipm:bibliography/bipm:references[not(@normative='true')]" mode="sections"/> 
+					<xsl:apply-templates select="bipm:bibliography/bipm:references[not(@normative='true')]" mode="sections"/>
 				</xsl:if>
-				
+
 				<!-- Document Control -->
-				<xsl:apply-templates select="bipm:doccontrol" mode="sections"/> 
-				
+				<xsl:apply-templates select="bipm:doccontrol" mode="sections"/>
+
 				<!-- Index -->
 				<xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//bipm:indexsect" mode="index">
 					<xsl:with-param name="isDraft" select="normalize-space(//bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:draft or       contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'draft') or       contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'projet'))"/>
 					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:apply-templates>
-				
+
 				<!-- End Document Pages -->
-				
-				
+
 				<xsl:if test="($doc_split_by_language = '' and $curr_docnum = 1) or $doc_split_by_language = $doc_first_language">
 					<xsl:call-template name="insertSeparatorPage"/>
 				</xsl:if>
-		
+
 			</xsl:when>
 			<xsl:otherwise> <!-- independentAppendix != '' -->
-			
-		
+
 				<xsl:variable name="docid">
 					<xsl:call-template name="getDocumentId"/>
 				</xsl:variable>
-				
+
 				<fo:page-sequence master-reference="document" force-page-count="no-force">
-					
+
 					<xsl:call-template name="insertHeaderDraftWatermark"/>
-					
+
 					<fo:flow flow-name="xsl-region-body" font-family="Arial">
-						
-						<fo:block-container font-size="12pt" font-weight="bold" border-top="1pt solid black" width="82mm" margin-top="2mm" padding-top="2mm">						
+
+						<fo:block-container font-size="12pt" font-weight="bold" border-top="1pt solid black" width="82mm" margin-top="2mm" padding-top="2mm">
 							<fo:block-container width="45mm">
 								<fo:block>
 									<xsl:value-of select="bipm:bibdata/bipm:contributor[bipm:role/@type='publisher']/bipm:organization/bipm:name"/>
-								</fo:block>						
+								</fo:block>
 							</fo:block-container>
 						</fo:block-container>
-						
+
 						<fo:block-container font-size="12pt" line-height="130%">
 							<fo:block margin-bottom="10pt"> </fo:block>
 							<fo:block margin-bottom="10pt"> </fo:block>
@@ -1209,10 +1173,10 @@
 							<fo:block margin-bottom="10pt"> </fo:block>
 							<fo:block margin-bottom="10pt"> </fo:block>
 						</fo:block-container>
-						
+
 						<fo:block-container font-size="18pt" font-weight="bold" text-align="center">
 							<fo:block role="H1">
-								
+
 								<xsl:choose>
 									<xsl:when test="$independentAppendix != ''">
 										<xsl:apply-templates select="//bipm:bipm-standard/bipm:bibdata/bipm:title[@language = $curr_lang and @type='appendix']" mode="title"/>
@@ -1224,11 +1188,9 @@
 										<xsl:apply-templates select="//bipm:bipm-standard/bipm:bibdata/bipm:title[@language = $curr_lang and @type='main']" mode="title"/>
 									</xsl:otherwise>
 								</xsl:choose>
-								
-								
+
 							</fo:block>
-							
-							
+
 							<xsl:variable name="part_num" select="normalize-space(/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:part)"/>
 							<xsl:if test="/bipm:bipm-standard/bipm:bibdata/bipm:title[@language = $curr_lang and @type = 'part']">
 								<fo:block role="H2">
@@ -1254,15 +1216,14 @@
 									<xsl:apply-templates select="/bipm:bipm-standard/bipm:bibdata/bipm:title[@language = $curr_lang and @type = 'subpart']" mode="title"/>
 								</fo:block>
 							</xsl:if>
-							
-							
+
 							<fo:block> </fo:block>
 							<fo:block font-size="9pt">
 								<xsl:value-of select="/bipm:bipm-standard/bipm:bibdata/bipm:ext/bipm:editorialgroup/bipm:committee/bipm:variant[@language = $curr_lang]"/>
 							</fo:block>
 						</fo:block-container>
-						
-						<fo:block-container absolute-position="fixed" left="69.5mm" top="241mm" width="99mm">						
+
+						<fo:block-container absolute-position="fixed" left="69.5mm" top="241mm" width="99mm">
 							<fo:block-container font-size="9pt" border-bottom="1pt solid black" width="68mm" text-align="center" margin-bottom="14pt">
 								<fo:block font-weight="bold" margin-bottom="2.5mm">
 									<fo:inline padding-right="10mm">
@@ -1298,78 +1259,74 @@
 										</xsl:call-template>
 									</fo:inline>
 								</fo:block>
-								
+
 							</fo:block>
 						</fo:block-container>
-						
-						
+
 					</fo:flow>
 				</fo:page-sequence>
-				
-				
+
 				<xsl:apply-templates select="bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')]" mode="sections"/>
-				
+
 				<!-- Document Pages -->
 				<xsl:apply-templates select="bipm:sections/*" mode="sections"/>
-				
+
 				<!-- Normative references  -->
 				<xsl:apply-templates select="bipm:bibliography/bipm:references[@normative='true']" mode="sections"/>
 
 				<xsl:apply-templates select="bipm:annex" mode="sections"/>
-				
+
 				<xsl:if test="bipm:bibliography/bipm:references[not(@normative='true')][not(@hidden='true')]/bipm:bibitem[not(contains(bipm:docidentifier, 'si-brochure-'))]">
-					<xsl:apply-templates select="bipm:bibliography/bipm:references[not(@normative='true')]" mode="sections"/> 
+					<xsl:apply-templates select="bipm:bibliography/bipm:references[not(@normative='true')]" mode="sections"/>
 				</xsl:if>
-				
+
 				<!-- Document Control -->
-				<xsl:apply-templates select="bipm:doccontrol" mode="sections"/> 
-				
+				<xsl:apply-templates select="bipm:doccontrol" mode="sections"/>
+
 				<!-- Index -->
 				<xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//bipm:indexsect" mode="index">
 					<xsl:with-param name="isDraft" select="normalize-space(//bipm:bipm-standard/bipm:bibdata/bipm:version/bipm:draft or       contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'draft') or       contains(//bipm:bipm-standard/bipm:bibdata/bipm:status/bipm:stage, 'projet'))"/>
 					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:apply-templates>
-				
+
 			</xsl:otherwise>
 		</xsl:choose>
-		
-		
+
 	</xsl:template>
-	
-	
+
 	<!-- Cover Pages -->
-	<xsl:template name="insertCoverPage">	
-	
+	<xsl:template name="insertCoverPage">
+
 		<fo:page-sequence master-reference="cover-page" force-page-count="even">
-			
+
 			<xsl:call-template name="insertHeaderDraftWatermark"/>
-			
+
 			<fo:flow flow-name="xsl-region-body">
-			
+
 				<xsl:call-template name="insertCoverPageCommon"/>
-				
+
 				<fo:block-container height="100%" display-align="center" border="0pt solid black"><!--  -->
 					<fo:block font-family="Work Sans" font-size="50pt" line-height="115%">
-					
+
 						<xsl:variable name="languages">
 							<xsl:call-template name="getLanguages"/>
-						</xsl:variable>						
+						</xsl:variable>
 						<xsl:variable name="editionFO">
 							<xsl:apply-templates select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:edition[normalize-space(@language) = '']">
 								<xsl:with-param name="curr_lang" select="xalan:nodeset($languages)/lang[1]"/>
 							</xsl:apply-templates>
 						</xsl:variable>
-						
+
 						<xsl:variable name="titles">
 							<xsl:for-each select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title">
 								<xsl:copy-of select="."/>
 							</xsl:for-each>
 						</xsl:variable>
-						
+
 						<xsl:for-each select="xalan:nodeset($languages)/lang">
-							<xsl:variable name="title_num" select="position()"/>							
+							<xsl:variable name="title_num" select="position()"/>
 							<xsl:variable name="curr_lang" select="."/>
-							<xsl:variable name="title-cover" select="xalan:nodeset($titles)//bipm:title[@language = $curr_lang and @type='main']"/>							
+							<xsl:variable name="title-cover" select="xalan:nodeset($titles)//bipm:title[@language = $curr_lang and @type='main']"/>
 							<xsl:variable name="title-cover_" select="java:replaceAll(java:java.lang.String.new($title-cover),'( (of )| (and )| (or ))','#$2')"/>
 							<xsl:variable name="titleParts">
 								<xsl:call-template name="splitTitle">
@@ -1377,7 +1334,7 @@
 									<xsl:with-param name="sep" select="' '"/>
 								</xsl:call-template>
 							</xsl:variable>
-							<xsl:variable name="titleSplitted">							
+							<xsl:variable name="titleSplitted">
 								<xsl:call-template name="splitByParts">
 									<xsl:with-param name="items" select="$titleParts"/>
 									<xsl:with-param name="mergeEach" select="round(count(xalan:nodeset($titleParts)/item) div 4 + 0.49)"/>
@@ -1394,7 +1351,7 @@
 									<xsl:attribute name="text-align">right</xsl:attribute>
 								</xsl:if>
 								<xsl:for-each select="xalan:nodeset($titleSplitted)/part">
-									<fo:block font-weight="{$font-weight-initial + 100 * position()}">										
+									<fo:block font-weight="{$font-weight-initial + 100 * position()}">
 										<xsl:value-of select="translate(., '#', ' ')"/>
 										<xsl:if test="$title_num = 1 and position() = last()">
 											<fo:inline font-size="11.7pt" font-weight="normal" padding-left="5mm" baseline-shift="15%" line-height="125%">
@@ -1407,39 +1364,38 @@
 								</xsl:for-each>
 							</fo:block>
 						</xsl:for-each>
-						
-						
+
 					</fo:block>
 				</fo:block-container>
-				
+
 			</fo:flow>
-		</fo:page-sequence>	
+		</fo:page-sequence>
 	</xsl:template>
-	
-	<xsl:template name="insertCoverPageAppendix">	
-	
+
+	<xsl:template name="insertCoverPageAppendix">
+
 		<fo:page-sequence master-reference="cover-page-appendix" force-page-count="even" initial-page-number="1">
-			
+
 			<fo:flow flow-name="xsl-region-body" font-family="Work Sans">
-			
+
 				<xsl:call-template name="insertCoverPageCommon"/>
-				
+
 				<xsl:variable name="weight-normal">300</xsl:variable>
 				<xsl:variable name="weight-bold">500</xsl:variable>
-				
+
 				<fo:block-container absolute-position="fixed" left="12.5mm" top="60mm">
-					
+
 					<fo:block font-size="22.2pt" font-weight="{$weight-normal}" role="H1"><xsl:value-of select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@language = 'fr' and @type = 'main']"/></fo:block>
 					<fo:block font-size="22.2pt" font-weight="{$weight-bold}" margin-top="1mm" role="H1"><xsl:value-of select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@language = 'en' and @type = 'main']"/></fo:block>
-					
+
 					<xsl:variable name="edition_str">édition</xsl:variable>
-						
-					<fo:block font-size="14pt" font-weight="{$weight-bold}" margin-top="4mm"><xsl:value-of select="concat((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:edition[normalize-space(@language) = ''], ' ', $edition_str, ' ', $copyrightYear)"/></fo:block>				
+
+					<fo:block font-size="14pt" font-weight="{$weight-bold}" margin-top="4mm"><xsl:value-of select="concat((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:edition[normalize-space(@language) = ''], ' ', $edition_str, ' ', $copyrightYear)"/></fo:block>
 				</fo:block-container>
-				
+
 				<fo:block-container absolute-position="fixed" left="12.5mm" top="92mm" height="170mm" width="144mm" display-align="center">
 					<fo:block role="H1">
-					
+
 						<xsl:variable name="title_appendix_fr">
 							<xsl:apply-templates select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@language = 'fr' and @type = 'appendix']" mode="title"/>
 						</xsl:variable>
@@ -1464,10 +1420,9 @@
 						<xsl:variable name="title_subpart_en">
 							<xsl:apply-templates select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@language = 'en' and @type = 'subpart']" mode="title"/>
 						</xsl:variable>
-						
+
 						<xsl:variable name="titles_length" select="string-length($title_appendix_fr) +                               string-length($title_appendix_en) +                              string-length($title_annex_fr) +                              string-length($title_annex_en) +                              string-length($title_part_fr) +                              string-length($title_part_en) +                              string-length($title_subpart_fr) +                              string-length($title_subpart_fr)"/>
-																													
-						
+
 						<xsl:variable name="space-factor">
 							<xsl:choose>
 								<xsl:when test="$titles_length &gt; 250">0.3</xsl:when>
@@ -1476,7 +1431,7 @@
 								<xsl:otherwise>1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-						
+
 						<xsl:variable name="font-size-factor">
 							<xsl:choose>
 								<xsl:when test="$titles_length &gt; 350">0.5</xsl:when>
@@ -1486,21 +1441,20 @@
 								<xsl:otherwise>1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-						
+
 						<xsl:variable name="font-size-number-factor">
 							<xsl:choose>
 								<xsl:when test="$font-size-factor &lt; 1"><xsl:value-of select="$font-size-factor *1.3"/></xsl:when>
 								<xsl:otherwise>1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-						
+
 						<!-- Appendix titles processing -->
 						<xsl:variable name="appendix_num" select="normalize-space((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:appendix)"/>
 						<xsl:if test="$appendix_num != ''">
 							<fo:block font-size="{$font-size-number-factor * 17}pt" font-weight="{$weight-normal}">Annexe <xsl:value-of select="$appendix_num"/></fo:block>
 							<fo:block font-size="{$font-size-number-factor * 17}pt" font-weight="{$weight-bold}">Appendix  <xsl:value-of select="$appendix_num"/></fo:block>
 						</xsl:if>
-
 
 						<xsl:if test="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@type = 'appendix']">
 							<fo:block font-size="{$font-size-factor * 30.4}pt">
@@ -1513,10 +1467,10 @@
 							</fo:block>
 						</xsl:if>
 						<!-- End Appendix titles processing -->
-						
+
 						<!-- Annex title processing -->
 						<xsl:if test="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@type = 'annex']">
-							<xsl:variable name="annex_num" select="normalize-space((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:annexid)"/>					
+							<xsl:variable name="annex_num" select="normalize-space((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:annexid)"/>
 							<xsl:if test="$annex_num != ''">
 								<fo:block font-size="{$space-factor * 30.4}pt"> </fo:block>
 								<!-- Annexe -->
@@ -1524,14 +1478,14 @@
 								<!-- Annex -->
 								<fo:block font-size="{$font-size-number-factor * 17}pt" font-weight="{$weight-bold}">Annex  <xsl:value-of select="$annex_num"/></fo:block>
 							</xsl:if>
-						
+
 							<fo:block font-size="{$font-size-factor * 30.4}pt">
-								
+
 								<xsl:if test="normalize-space($title_annex_fr) != ''">
 									<fo:block font-size="{$space-factor * 30.4}pt"> </fo:block>
 									<fo:block font-weight="{$weight-normal}"><xsl:copy-of select="$title_annex_fr"/></fo:block>
 								</xsl:if>
-								
+
 								<xsl:if test="normalize-space($title_annex_en) != ''">
 									<fo:block font-size="{$space-factor * 30.4}pt"> </fo:block>
 									<fo:block font-weight="{$weight-bold}">
@@ -1541,10 +1495,10 @@
 							</fo:block>
 						</xsl:if>
 						<!-- End Annex titles  processing -->
-						
+
 						<!--  Part titles processing -->
 						<xsl:if test="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@type = 'part']">
-							<xsl:variable name="part_num" select="normalize-space((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:part)"/>					
+							<xsl:variable name="part_num" select="normalize-space((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:part)"/>
 							<xsl:if test="$part_num != ''">
 								<fo:block font-size="{$space-factor * 30.4}pt"> </fo:block>
 								<!-- Part -->
@@ -1556,14 +1510,14 @@
 									<xsl:value-of select="java:replaceAll(java:java.lang.String.new($titles/title-part[@lang='en']),'#',$part_num)"/>
 								</fo:block>
 							</xsl:if>
-						
+
 							<fo:block font-size="{$font-size-factor * 30.4}pt">
-								
+
 								<xsl:if test="normalize-space($title_part_fr) != ''">
 									<fo:block font-size="{$space-factor * 30.4}pt"> </fo:block>
 									<fo:block font-weight="{$weight-normal}"><xsl:copy-of select="$title_part_fr"/></fo:block>
 								</xsl:if>
-								
+
 								<xsl:if test="normalize-space($title_part_en) != ''">
 									<fo:block font-size="{$space-factor * 30.4}pt"> </fo:block>
 									<fo:block font-weight="{$weight-bold}">
@@ -1573,7 +1527,7 @@
 							</fo:block>
 						</xsl:if>
 						<!-- End Part titles  processing -->
-						
+
 						<!-- Sub-part titles  processing -->
 						<xsl:if test="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@type = 'subpart']">
 							<xsl:variable name="subpart_num" select="normalize-space((//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:structuredidentifier/bipm:subpart)"/>
@@ -1584,35 +1538,34 @@
 								<!-- Partie de sub -->
 								<fo:block font-size="{$font-size-number-factor * 17}pt" font-weight="{$weight-bold}"><xsl:value-of select="java:replaceAll(java:java.lang.String.new($titles/title-subpart[@lang='en']),'#',$subpart_num)"/>  <xsl:value-of select="$subpart_num"/></fo:block>
 							</xsl:if>
-						
+
 							<fo:block font-size="{$font-size-factor * 30.4}pt">
-								
+
 								<xsl:if test="normalize-space($title_subpart_fr) != ''">
 									<fo:block font-size="{$space-factor * 30.4}pt"> </fo:block>
 									<fo:block font-weight="{$weight-normal}"><xsl:copy-of select="$title_subpart_fr"/></fo:block>
 								</xsl:if>
-								
+
 								<xsl:if test="normalize-space($title_subpart_en) != ''">
 									<fo:block font-size="{$space-factor * 30.4}pt"> </fo:block>
 									<fo:block font-weight="{$weight-bold}">
 										<xsl:copy-of select="$title_subpart_en"/>
-										
+
 									</fo:block>
 								</xsl:if>
 							</fo:block>
 						</xsl:if>
 						<!-- End Sub-part titles processing -->
-				
+
 					</fo:block>
 				</fo:block-container>
-				
-				
+
 				<fo:block-container absolute-position="fixed" left="12mm" top="242mm" height="42mm" width="140mm" display-align="after">
 					<fo:block font-size="12pt">
 						<fo:block><xsl:value-of select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:editorialgroup/bipm:committee/bipm:variant[@language = 'fr']"/></fo:block>
 						<fo:block><xsl:value-of select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:ext/bipm:editorialgroup/bipm:committee/bipm:variant[@language = 'en']"/></fo:block>
 						<fo:block> </fo:block>
-				
+
 						<fo:block>
 							<xsl:call-template name="printRevisionDate">
 								<xsl:with-param name="date" select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:version/bipm:revision-date"/>
@@ -1627,11 +1580,11 @@
 						</fo:block>
 					</fo:block>
 				</fo:block-container>
-	
+
 			</fo:flow>
-		</fo:page-sequence>	
+		</fo:page-sequence>
 	</xsl:template>
-	
+
 	<xsl:template name="insertCoverPageCommon">
 		<!-- background color -->
 		<fo:block-container absolute-position="fixed" left="0" top="-1mm">
@@ -1643,66 +1596,66 @@
 				</fo:instream-foreign-object>
 			</fo:block>
 		</fo:block-container>
-	
+
 		<xsl:call-template name="insertDraftWatermark">
 			<xsl:with-param name="lang" select="$doc_split_by_language"/>
 		</xsl:call-template>
-		
+
 		<!-- BIPM logo -->
 		<fo:block-container absolute-position="fixed" left="12.8mm" top="12.2mm">
 			<fo:block>
 				<fo:external-graphic src="{concat('data:image/png;base64,', normalize-space($Image-Logo-BIPM))}" width="35mm" content-height="scale-to-fit" scaling="uniform" fox:alt-text="Image Logo"/>
 			</fo:block>
 		</fo:block-container>
-		
+
 		<!-- SI logo -->
 		<fo:block-container absolute-position="fixed" left="166.5mm" top="253mm">
 			<fo:block>
 				<fo:instream-foreign-object content-height="32mm" content-width="32mm" fox:alt-text="Image Logo">
 					<xsl:copy-of select="$Image-Logo-SI"/>
-				</fo:instream-foreign-object>	
-				
+				</fo:instream-foreign-object>
+
 			</fo:block>
 		</fo:block-container>
 	</xsl:template>
-	
+
 	<xsl:template name="insertInnerCoverPage">
-		
+
 		<xsl:if test="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title[@type='cover']">
-	
+
 			<fo:page-sequence master-reference="title-page" format="1" initial-page-number="1" force-page-count="even">
-				
+
 				<xsl:call-template name="insertHeaderDraftWatermark"/>
-				
+
 				<fo:flow flow-name="xsl-region-body" font-family="Arial">
-				
+
 					<xsl:variable name="languages">
 						<xsl:call-template name="getLanguages"/>
 					</xsl:variable>
-				
+
 					<xsl:variable name="titles">
 						<xsl:for-each select="(//bipm:bipm-standard)[1]/bipm:bibdata/bipm:title">
 							<xsl:copy-of select="."/>
 						</xsl:for-each>
 					</xsl:variable>
-				
+
 					<xsl:for-each select="xalan:nodeset($languages)/lang">
 						<xsl:variable name="curr_lang" select="."/>
 						<xsl:variable name="title" select="xalan:nodeset($titles)//bipm:title[@language = $curr_lang and @type='cover']"/>
 						<xsl:choose>
-							<xsl:when test="position() = 1">				
+							<xsl:when test="position() = 1">
 								<fo:block-container font-size="12pt" font-weight="bold" width="55mm">
 										<fo:block>
 											<xsl:call-template name="add-letter-spacing">
 												<xsl:with-param name="text" select="$title"/>
 												<xsl:with-param name="letter-spacing" select="0.09"/>
 											</xsl:call-template>
-										</fo:block>									
+										</fo:block>
 										<fo:block font-size="10pt">
 											<fo:block margin-bottom="6pt"> </fo:block>
 											<fo:block margin-bottom="6pt"> </fo:block>
 											<fo:block margin-bottom="6pt"> </fo:block>
-											<fo:block margin-bottom="6pt" line-height="2.4"> </fo:block>							
+											<fo:block margin-bottom="6pt" line-height="2.4"> </fo:block>
 										</fo:block>
 									</fo:block-container>
 								</xsl:when>
@@ -1718,8 +1671,8 @@
 											<xsl:with-param name="letter-spacing" select="0.09"/>
 										</xsl:call-template>
 									</fo:block>
-									<fo:block-container font-size="12pt" font-weight="bold" border-top="0.5pt solid black" padding-top="2mm" width="45mm">						
-										<fo:block role="H1">										
+									<fo:block-container font-size="12pt" font-weight="bold" border-top="0.5pt solid black" padding-top="2mm" width="45mm">
+										<fo:block role="H1">
 											<xsl:call-template name="add-letter-spacing">
 												<xsl:with-param name="text" select="$title"/>
 												<xsl:with-param name="letter-spacing" select="0.09"/>
@@ -1727,18 +1680,16 @@
 										</fo:block>
 									</fo:block-container>
 								</xsl:otherwise>
-								
+
 							</xsl:choose>
 						</xsl:for-each>
-					
-					
+
 				</fo:flow>
 			</fo:page-sequence>
 		</xsl:if>
 	</xsl:template>
 	<!-- End Cover Pages -->
-		
-	
+
 	<xsl:template match="bipm:bipm-standard/bipm:bibdata/bipm:title[@language = 'en']/text()" priority="3">
 		<xsl:variable name="mep_text" select="'Mise en pratique'"/>
 		<xsl:choose>
@@ -1752,25 +1703,22 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-	
-	
-	
-		
+
 	<xsl:template name="insertSeparatorPage">
 		<!-- 3 Pages with BIPM Metro logo -->
 		<fo:page-sequence master-reference="document" force-page-count="no-force">
 			<fo:flow flow-name="xsl-region-body">
 				<fo:block> </fo:block>
 				<fo:block break-after="page"/>
-				
+
 				<xsl:call-template name="insert_Logo-BIPM-Metro"/>
-				
+
 				<fo:block break-after="page"/>
 				<fo:block> </fo:block>
 			</fo:flow>
 		</fo:page-sequence>
 	</xsl:template>
-		
+
 	<xsl:template name="getLanguages">
 		<xsl:choose>
 			<xsl:when test="$doc_split_by_language = ''"><!-- all documents -->
@@ -1783,7 +1731,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-		
+
 	<xsl:template name="insertContentItem">
 		<fo:table-row>
 			<xsl:variable name="space-before">
@@ -1799,14 +1747,14 @@
 					<xsl:when test="@level = 3 and not(following-sibling::item[@display='true']) and not(../following-sibling::item[@display='true']) and not(position() = last())">12pt</xsl:when>
 				</xsl:choose>
 			</xsl:variable>
-			
+
 			<fo:table-cell>
 				<xsl:if test="normalize-space($space-before) != ''">
 					<xsl:attribute name="padding-top"><xsl:value-of select="normalize-space($space-before)"/></xsl:attribute>
 				</xsl:if>
 				<xsl:if test="normalize-space($space-after) != ''">
 					<xsl:attribute name="padding-bottom"><xsl:value-of select="normalize-space($space-after)"/></xsl:attribute>
-				</xsl:if>				
+				</xsl:if>
 				<fo:block role="TOCI">
 					<xsl:if test="@level = 1">
 						<xsl:attribute name="font-family">Arial</xsl:attribute>
@@ -1815,7 +1763,7 @@
 					</xsl:if>
 					<xsl:if test="@level &gt;= 2 and not(@parent = 'annex')">
 						<xsl:attribute name="font-size">10.5pt</xsl:attribute>
-					</xsl:if>									
+					</xsl:if>
 					<xsl:if test="@level = 2">
 						<xsl:attribute name="margin-left">8mm</xsl:attribute>
 					</xsl:if>
@@ -1834,19 +1782,18 @@
 						<xsl:attribute name="font-weight">bold</xsl:attribute>
 						<xsl:attribute name="space-before">14pt</xsl:attribute>
 					</xsl:if>
-					
-					
+
 					<fo:list-block>
 						<xsl:attribute name="provisional-distance-between-starts">
 							<xsl:choose>
 								<xsl:when test="@section = '' or @level &gt; 3">0mm</xsl:when>
 								<xsl:when test="@level = 2 and @parent = 'annex'">0mm</xsl:when>
-								<xsl:when test="@level = 2">8mm</xsl:when>								
+								<xsl:when test="@level = 2">8mm</xsl:when>
 								<xsl:when test="@type = 'annex' and @level = 1">25mm</xsl:when>
 								<xsl:otherwise>7mm</xsl:otherwise>
 							</xsl:choose>
 						</xsl:attribute>
-						
+
 						<fo:list-item>
 							<fo:list-item-label end-indent="label-end()">
 								<fo:block>
@@ -1854,7 +1801,7 @@
 										<xsl:value-of select="@section"/>
 										<xsl:if test="normalize-space(@section) != '' and @type = 'annex'">.</xsl:if>
 									</xsl:if>
-									
+
 								</fo:block>
 							</fo:list-item-label>
 							<fo:list-item-body start-indent="body-start()">
@@ -1867,17 +1814,17 @@
 										<xsl:if test="@level &gt;= 3">
 											<fo:inline padding-right="2mm"><xsl:value-of select="@section"/></fo:inline>
 										</xsl:if>
-										
+
 										<fo:inline>
 											<xsl:apply-templates select="title"/>
 										</fo:inline>
-										
+
 									</fo:basic-link>
 								</fo:block>
 							</fo:list-item-body>
 						</fo:list-item>
 					</fo:list-block>
-				</fo:block>				
+				</fo:block>
 			</fo:table-cell>
 			<fo:table-cell text-align="right">
 				<xsl:if test="normalize-space($space-before) != ''">
@@ -1894,21 +1841,21 @@
 			</fo:table-cell>
 		</fo:table-row>
 	</xsl:template>
-	
+
 	<xsl:template name="insertListOf_Title">
 		<xsl:param name="title"/>
 		<fo:table-row keep-with-next="always">
 			<fo:table-cell font-family="Arial" font-weight="bold" font-size="10pt" padding-top="14pt" padding-bottom="6pt">
 				<fo:block role="TOCI">
 					<xsl:value-of select="$title"/>
-				</fo:block>				
+				</fo:block>
 			</fo:table-cell>
 			<fo:table-cell>
 				<fo:block/>
 			</fo:table-cell>
 		</fo:table-row>
 	</xsl:template>
-	
+
 	<xsl:template name="insertListOf_Item">
 		<fo:table-row>
 			<fo:table-cell>
@@ -1932,7 +1879,7 @@
 							</fo:list-item-body>
 						</fo:list-item>
 					</fo:list-block>
-				</fo:block>				
+				</fo:block>
 			</fo:table-cell>
 			<fo:table-cell text-align="right" font-family="Arial" font-weight="bold" font-size="10pt">
 				<fo:block>
@@ -1946,11 +1893,11 @@
 			</fo:table-cell>
 		</fo:table-row>
 	</xsl:template>
-	
-	<xsl:template match="node()">		
-		<xsl:apply-templates/>			
+
+	<xsl:template match="node()">
+		<xsl:apply-templates/>
 	</xsl:template>
-	
+
 	<!-- ============================= -->
 	<!-- CONTENTS                                       -->
 	<!-- ============================= -->
@@ -1962,31 +1909,31 @@
 				<xsl:with-param name="depth" select="bipm:title/@depth"/>
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<xsl:variable name="display">
-			<xsl:choose>				
+			<xsl:choose>
 				<xsl:when test="$level &gt; $toc_level">false</xsl:when>
 				<xsl:otherwise>true</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:variable name="skip">
 			<xsl:choose>
 				<xsl:when test="ancestor-or-self::bipm:bibitem">true</xsl:when>
-				<xsl:when test="ancestor-or-self::bipm:term">true</xsl:when>								
+				<xsl:when test="ancestor-or-self::bipm:term">true</xsl:when>
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:if test="$skip = 'false'">
 			<xsl:variable name="section">
 				<xsl:call-template name="getSection"/>
 			</xsl:variable>
-			
+
 			<xsl:variable name="title">
 				<xsl:call-template name="getName"/>
 			</xsl:variable>
-			
+
 			<xsl:variable name="type">
 				<xsl:choose>
 					<xsl:when test="@type = 'index'">index</xsl:when>
@@ -1994,7 +1941,7 @@
 					<xsl:otherwise><xsl:value-of select="local-name()"/></xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			
+
 			<item id="{@id}" level="{$level}" section="{$section}" type="{$type}" display="{$display}">
 				<xsl:if test="ancestor::bipm:annex">
 					<xsl:attribute name="parent">annex</xsl:attribute>
@@ -2008,17 +1955,16 @@
 			</item>
 		</xsl:if>
 	</xsl:template>
-	
+
 	<xsl:template match="*[local-name() = 'strong']" mode="contents_item" priority="2">
 		<!-- <xsl:copy> -->
 			<xsl:apply-templates mode="contents_item"/>
-		<!-- </xsl:copy>	 -->	
+		<!-- </xsl:copy>	 -->
 	</xsl:template>
-	
+
 	<!-- ============================= -->
 	<!-- ============================= -->
-	
-	
+
 	<xsl:template match="node()" mode="sections">
 		<fo:page-sequence master-reference="document" force-page-count="no-force">
 			<xsl:if test="@orientation = 'landscape'">
@@ -2026,7 +1972,7 @@
 			</xsl:if>
 
 			<xsl:call-template name="insertFootnoteSeparator"/>
-			
+
 			<xsl:variable name="header-title">
 				<xsl:choose>
 					<xsl:when test="local-name(..) = 'sections'">
@@ -2039,7 +1985,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
-					
+
 					<xsl:when test="local-name() = 'annex'">
 						<xsl:choose>
 							<xsl:when test="./*[1]/bipm:title[1]/*[local-name() = 'tab']">
@@ -2060,18 +2006,18 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
-					
+
 					<xsl:otherwise>
 						<xsl:apply-templates select="./bipm:title[1]" mode="header"/>
 					</xsl:otherwise>
-					
+
 				</xsl:choose>
 			</xsl:variable>
 			<xsl:call-template name="insertHeaderFooter">
 				<xsl:with-param name="header-title" select="$header-title"/>
 				<xsl:with-param name="orientation" select="@orientation"/>
 			</xsl:call-template>
-			
+
 			<fo:flow flow-name="xsl-region-body">
 				<fo:block line-height="125%">
 					<xsl:apply-templates select="."/>
@@ -2079,13 +2025,13 @@
 			</fo:flow>
 		</fo:page-sequence>
 	</xsl:template>
-	
+
 	<xsl:template name="sections_appendix">
 		<fo:page-sequence master-reference="document" force-page-count="no-force">
 			<xsl:call-template name="insertFootnoteSeparator"/>
-			
+
 			<xsl:variable name="curr_lang" select="/bipm:bipm-standard/bipm:bibdata/bipm:language[@current = 'true']"/>
-												
+
 			<xsl:variable name="header-title">
 				<xsl:choose>
 					<xsl:when test="$lang = 'fr'">Annexe </xsl:when>
@@ -2096,18 +2042,18 @@
 			<xsl:call-template name="insertHeaderFooter">
 				<xsl:with-param name="header-title" select="$header-title"/>
 			</xsl:call-template>
-			
+
 			<fo:flow flow-name="xsl-region-body">
 				<fo:block line-height="125%">
-					
-					<xsl:for-each select=" bipm:sections/*">				
+
+					<xsl:for-each select=" bipm:sections/*">
 						<xsl:apply-templates select="."/>
 					</xsl:for-each>
 				</fo:block>
 			</fo:flow>
 		</fo:page-sequence>
 	</xsl:template>
-	
+
 	<xsl:template match="bipm:bipm-standard/bipm:bibdata/bipm:edition">
 		<xsl:param name="font-size" select="'65%'"/>
 		<xsl:param name="baseline-shift" select="'30%'"/>
@@ -2120,7 +2066,7 @@
 					<xsl:with-param name="curr_lang" select="$curr_lang"/>
 				</xsl:call-template>
 			</fo:inline>
-			<xsl:text> </xsl:text>			
+			<xsl:text> </xsl:text>
 			<xsl:call-template name="getLocalizedString">
 				<xsl:with-param name="key">edition</xsl:with-param>
 			</xsl:call-template>
@@ -2128,10 +2074,9 @@
 		</fo:inline>
 	</xsl:template>
 
-	
 	<xsl:template match="bipm:feedback-statement//bipm:p" priority="2">
 		<fo:block margin-top="6pt">
-			<xsl:variable name="p_num"><xsl:number/></xsl:variable>			
+			<xsl:variable name="p_num"><xsl:number/></xsl:variable>
 			<xsl:if test="$p_num = 1">Édité par le </xsl:if>
 			<xsl:apply-templates/>
 		</fo:block>
@@ -2140,14 +2085,13 @@
 	<!-- ====== -->
 	<!-- title      -->
 	<!-- ====== -->
-	
-	
+
 	<xsl:template match="bipm:title" name="title">
-		
+
 		<xsl:variable name="level">
 			<xsl:call-template name="getLevel"/>
 		</xsl:variable>
-		
+
 		<xsl:variable name="font-size">
 			<xsl:choose>
 				<xsl:when test="$level = 1">16pt</xsl:when>
@@ -2161,15 +2105,14 @@
 				<xsl:otherwise>11pt</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
-		
+
 		<xsl:variable name="element-name">
 			<xsl:choose>
 				<xsl:when test="../@inline-header = 'true'">fo:inline</xsl:when>
 				<xsl:otherwise>fo:block</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<fo:block-container margin-left="-14mm" font-family="Arial" font-size="{$font-size}" font-weight="bold" keep-with-next="always" line-height="130%">				 <!-- line-height="145%" -->
 			<xsl:if test="local-name(preceding-sibling::*[1]) = 'clause'">
 				<xsl:attribute name="id"><xsl:value-of select="preceding-sibling::*[1]/@id"/></xsl:attribute>
@@ -2183,8 +2126,8 @@
 					<xsl:when test="$level = 2">10pt</xsl:when>
 					<xsl:otherwise>6pt</xsl:otherwise>
 				</xsl:choose>
-			</xsl:attribute>			
-			
+			</xsl:attribute>
+
 			<xsl:if test="$level = 2 and ancestor::bipm:annex">
 				<xsl:attribute name="space-before">18pt</xsl:attribute> <!-- 24 pt -->
 			</xsl:if>
@@ -2200,17 +2143,17 @@
 			<xsl:if test="$level = 3 and not(ancestor::bipm:annex)">
 				<xsl:attribute name="space-before">20pt</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:if test="$level &gt;= 3 and ancestor::bipm:annex and ../@type = 'toc'">
 				<xsl:attribute name="space-before">0pt</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:if test="@type = 'quoted'">
 				<xsl:attribute name="font-weight">normal</xsl:attribute>
 			</xsl:if>
-			
+
 			<fo:block-container margin-left="0mm">
-				
+
 				<xsl:choose>
 					<xsl:when test="*[local-name() = 'tab'] and not(ancestor::bipm:annex) "><!-- split number and title -->
 						<fo:table table-layout="fixed" width="100%" role="H{$level}">
@@ -2235,7 +2178,7 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<fo:block role="H{$level}">
-							
+
 							<xsl:choose>
 								<xsl:when test="ancestor::bipm:annex and $level &gt;= 2">
 									<xsl:if test="$level &gt;= 3">
@@ -2247,15 +2190,15 @@
 									<xsl:if test="../@type = 'toc'">
 										<xsl:attribute name="text-align">left</xsl:attribute>
 									</xsl:if>
-									
+
 									<xsl:apply-templates/>
 									<xsl:apply-templates select="following-sibling::*[1][local-name() = 'variant-title'][@type = 'sub']" mode="subtitle"/>
 								</xsl:when>
 								<xsl:otherwise>
-									
+
 									<xsl:apply-templates/>
 									<xsl:apply-templates select="following-sibling::*[1][local-name() = 'variant-title'][@type = 'sub']" mode="subtitle"/>
-										
+
 								</xsl:otherwise>
 							</xsl:choose>
 							<xsl:if test=".//bipm:note_side">
@@ -2268,8 +2211,7 @@
 		</fo:block-container>
 
 	</xsl:template>
-	
-	
+
 	<xsl:template match="*" mode="header">
 		<xsl:apply-templates mode="header"/>
 	</xsl:template>
@@ -2281,10 +2223,9 @@
 	<xsl:template match="*[local-name() = 'br']" mode="header">
 		<xsl:text> </xsl:text>
 	</xsl:template>
-	
-	<!-- ====== -->
-	<!-- ====== -->
 
+	<!-- ====== -->
+	<!-- ====== -->
 
 	<xsl:template match="bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')][1]" priority="3">
 		<fo:table table-layout="fixed" width="173.5mm">
@@ -2293,23 +2234,23 @@
 			<fo:table-column column-width="2.5mm"/>
 			<fo:table-column column-width="34mm"/>
 			<fo:table-body>
-			
+
 				<xsl:variable name="rows2">
 					<xsl:for-each select="*">
 						<xsl:variable name="position" select="position()"/>
 						<!-- if this is  first element -->
-						<xsl:variable name="isFirstRow" select="not(preceding-sibling::*)"/>  
-						<!--  first element without note -->					
-						<xsl:variable name="isFirstCellAfterNote" select="$isFirstRow = true() or count(preceding-sibling::*[1][.//bipm:note]) = 1"/>					
-						<xsl:variable name="curr_id" select="generate-id()"/>						
+						<xsl:variable name="isFirstRow" select="not(preceding-sibling::*)"/>
+						<!--  first element without note -->
+						<xsl:variable name="isFirstCellAfterNote" select="$isFirstRow = true() or count(preceding-sibling::*[1][.//bipm:note]) = 1"/>
+						<xsl:variable name="curr_id" select="generate-id()"/>
 						<xsl:variable name="rowsUntilNote" select="count(following-sibling::*[.//bipm:note[not(ancestor::bipm:table)]][1]/preceding-sibling::*[preceding-sibling::*[generate-id() = $curr_id]])"/>
-						
+
 						<xsl:if test="$isFirstCellAfterNote = true()">
 							<num span_start="{$position}" span_num="{$rowsUntilNote + 2}" display-align="after">
 								<xsl:if test="count(following-sibling::*[.//bipm:note[not(ancestor::bipm:table)]]) = 0"><!-- if there aren't notes more, then set -1 -->
 									<xsl:attribute name="span_start"><xsl:value-of select="$position"/>_no_more_notes</xsl:attribute>
 								</xsl:if>
-								<xsl:if test="count(following-sibling::*[.//bipm:note[not(ancestor::bipm:table)]]) = 1"> <!-- if there is only one note, then set -1, because notes will be display near accoring text-->							
+								<xsl:if test="count(following-sibling::*[.//bipm:note[not(ancestor::bipm:table)]]) = 1"> <!-- if there is only one note, then set -1, because notes will be display near accoring text-->
 									<xsl:attribute name="span_start"><xsl:value-of select="$position"/>_last_note</xsl:attribute>
 								</xsl:if>
 							</num>
@@ -2320,21 +2261,20 @@
 						<xsl:if test=".//bipm:note[not(ancestor::bipm:table)] and following-sibling::*[1][.//bipm:note[not(ancestor::bipm:table)]] and preceding-sibling::*[1][.//bipm:note[not(ancestor::bipm:table)]]">
 							<num span_start="{$position}" span_num="1" display-align="before"/>
 						</xsl:if>
-						
+
 					</xsl:for-each>
 				</xsl:variable>
-				
-				
+
 				<xsl:variable name="total_rows" select="count(*)"/>
-				
-				<xsl:variable name="rows_with_notes">					
-					<xsl:for-each select="*">						
+
+				<xsl:variable name="rows_with_notes">
+					<xsl:for-each select="*">
 						<xsl:if test=".//bipm:note_side"> <!-- virtual element note_side -->
 							<row_num><xsl:value-of select="position()"/></row_num>
 						</xsl:if>
 					</xsl:for-each>
 				</xsl:variable>
-				
+
 				<xsl:variable name="rows">
 					<xsl:for-each select="xalan:nodeset($rows_with_notes)/row_num">
 						<xsl:variable name="num" select="number(.)"/>
@@ -2352,15 +2292,15 @@
 						</xsl:choose>
 					</xsl:for-each>
 				</xsl:variable>
-				
-				<xsl:variable name="rows3">					
+
+				<xsl:variable name="rows3">
 					<xsl:for-each select="xalan:nodeset($rows_with_notes)/row_num">
 						<xsl:variable name="num" select="number(.)"/>
-						<xsl:choose>						
+						<xsl:choose>
 							<xsl:when test="position() = last()">
 								<num span_start="{$num}" span_num="{$total_rows - $num + 1}" display-align="before"/>
 							</xsl:when>
-							<xsl:otherwise><!-- 2nd, 3rd, ... Nth-1 -->		
+							<xsl:otherwise><!-- 2nd, 3rd, ... Nth-1 -->
 								<xsl:variable name="next_num" select="number(following-sibling::*/text())"/>
 								<num span_start="{$num}" span_num="{$next_num - $num}" display-align="before"/>
 							</xsl:otherwise>
@@ -2368,64 +2308,58 @@
 					</xsl:for-each>
 				</xsl:variable>
 
-				
 				<xsl:apply-templates mode="clause_table">
 					<xsl:with-param name="rows" select="$rows"/>
 				</xsl:apply-templates>
 			</fo:table-body>
 		</fo:table>
 	</xsl:template>
-	
 
 	<xsl:template match="bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')][1]/*" mode="clause_table">
 		<xsl:param name="rows"/>
-		
+
 		<xsl:variable name="current_row"><xsl:number count="*"/></xsl:variable>
-		
+
 		<fo:table-row>
-			<fo:table-cell>				
-				<fo:block>					
+			<fo:table-cell>
+				<fo:block>
 					<xsl:apply-templates select="."/>
 				</fo:block>
 			</fo:table-cell>
 			<fo:table-cell><fo:block> </fo:block></fo:table-cell>
-			
-			
+
 			<xsl:if test="xalan:nodeset($rows)/num[@span_start = $current_row]">
 				<fo:table-cell font-size="8pt" line-height="120%" display-align="before">
-				
+
 					<xsl:variable name="current_row_with_note" select="xalan:nodeset($rows)/num[@span_start = $current_row]"/>
-					
+
 					<xsl:attribute name="display-align">
 						<xsl:value-of select="$current_row_with_note/@display-align"/>
 					</xsl:attribute>
-					
+
 					<xsl:variable name="number-rows-spanned" select="$current_row_with_note/@span_num"/>
 					<xsl:attribute name="number-rows-spanned">
 						<xsl:value-of select="$number-rows-spanned"/>
 					</xsl:attribute>
-					
+
 					<xsl:variable name="start_row" select="$current_row"/>
 					<xsl:variable name="end_row" select="$current_row + $number-rows-spanned"/>
 					<fo:block>
-						
+
 						<xsl:for-each select="ancestor::bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')][1]/*[position() &gt;= $start_row and position() &lt; $end_row]//bipm:note_side">
 							<xsl:apply-templates select="." mode="note_side"/>
 						</xsl:for-each>
 					</fo:block>
-					
-					
+
 				</fo:table-cell>
-				
+
 			</xsl:if>
-			
-			
+
 		</fo:table-row>
 	</xsl:template>
-	
-	
+
 	<xsl:template match="bipm:sections/bipm:clause | bipm:annex/bipm:clause" priority="3">
-			
+
 		<xsl:variable name="space-before"> <!-- margin-top for title, see bipm:title -->
 			<xsl:if test="local-name(*[1]) = 'title'">
 					<xsl:if test="*[1]/@depth = 1 and not(*[1]/ancestor::bipm:annex) and $independentAppendix != ''">30pt</xsl:if>
@@ -2434,10 +2368,10 @@
 					<xsl:if test="*[1]/@depth = 3 and not(*[1]/ancestor::bipm:annex)">20pt</xsl:if>
 					<xsl:if test="*[1]/@depth = 3 and *[1]/ancestor::bipm:annex">6pt</xsl:if> <!-- 6pt-->
 					<xsl:if test="*[1]/@depth = 4 and *[1]/ancestor::bipm:annex">12pt</xsl:if> <!-- 6pt-->
-			</xsl:if>						
-		</xsl:variable>					
-		<xsl:variable name="space-before-value" select="normalize-space($space-before)"/>			
-			
+			</xsl:if>
+		</xsl:variable>
+		<xsl:variable name="space-before-value" select="normalize-space($space-before)"/>
+
 		<fo:table table-layout="fixed" width="174mm" line-height="135%">
 			<xsl:if test="@orientation = 'landscape'">
 				<xsl:attribute name="width">261mm</xsl:attribute> <!-- 87 = (297 - 210) -->
@@ -2446,9 +2380,9 @@
 			<xsl:if test="$space-before-value != ''">
 				<xsl:attribute name="space-before"><xsl:value-of select="$space-before-value"/></xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:choose>
-				<xsl:when test="@orientation = 'landscape'"> 
+				<xsl:when test="@orientation = 'landscape'">
 					<fo:table-column column-width="224mm"/> <!-- +87  -->
 				</xsl:when>
 				<xsl:otherwise>
@@ -2457,19 +2391,19 @@
 			</xsl:choose>
 			<fo:table-column column-width="5mm"/>
 			<fo:table-column column-width="32mm"/>
-			
+
 			<fo:table-body>
-				
+
 				<xsl:variable name="total_rows" select="count(*)"/>
-				
-				<xsl:variable name="rows_with_notes">					
-					<xsl:for-each select="*">						
+
+				<xsl:variable name="rows_with_notes">
+					<xsl:for-each select="*">
 						<xsl:if test=".//bipm:note_side"> <!-- virtual element note_side -->
 							<row_num><xsl:value-of select="position()"/></row_num>
 						</xsl:if>
 					</xsl:for-each>
 				</xsl:variable>
-				
+
 				<xsl:variable name="rows3">
 					<xsl:for-each select="xalan:nodeset($rows_with_notes)/row_num">
 						<xsl:variable name="num" select="number(.)"/>
@@ -2487,9 +2421,9 @@
 						</xsl:choose>
 					</xsl:for-each>
 				</xsl:variable>
-				
+
 				<xsl:variable name="rows">
-					
+
 					<xsl:variable name="first_num" select="normalize-space(xalan:nodeset($rows_with_notes)/row_num[1])"/>
 					<xsl:choose>
 						<xsl:when test="$first_num = ''">
@@ -2499,37 +2433,36 @@
 							<num span_start="1" span_num="{$first_num -1}" display-align="before"/>
 						</xsl:when>
 					</xsl:choose>
-					
+
 					<xsl:for-each select="xalan:nodeset($rows_with_notes)/row_num">
 						<xsl:variable name="num" select="number(.)"/>
-						<xsl:choose>								
+						<xsl:choose>
 							<xsl:when test="position() = last()">
 								<num span_start="{$num}" span_num="{$total_rows - $num + 1}" display-align="before"/>
 							</xsl:when>
-							<xsl:otherwise><!-- 2nd, 3rd, ... Nth-1 -->		
+							<xsl:otherwise><!-- 2nd, 3rd, ... Nth-1 -->
 								<xsl:variable name="next_num" select="number(following-sibling::*/text())"/>
 								<num span_start="{$num}" span_num="{$next_num - $num}" display-align="before"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:for-each>
 				</xsl:variable>
-				
+
 				<!-- updated strategy: consolidated show all block with note, instead of spanned rows -->
-				
+
 				<xsl:call-template name="insertClauses">
 					<xsl:with-param name="rows" select="$rows"/>
 				</xsl:call-template>
-					
+
 			</fo:table-body>
 		</fo:table>
 
 	</xsl:template>
-	
-	
+
 	<xsl:template name="insertClauses">
 			<xsl:param name="rows"/>
 			<xsl:param name="curr_row_num" select="1"/>
-			
+
 			<xsl:if test="$curr_row_num &lt;=  count(xalan:nodeset($rows)/num)">
 				<xsl:variable name="start_row" select="xalan:nodeset($rows)/num[$curr_row_num]/@span_start"/>
 				<xsl:variable name="end_row" select="$start_row + xalan:nodeset($rows)/num[$curr_row_num]/@span_num - 1"/>
@@ -2537,33 +2470,31 @@
 					<xsl:if test="local-name(*[$end_row]) = 'title'"> <!-- if last element is title, then keep row with next--> <!--  or local-name(*[$end_row]) = 'clause' or clause, then keep row with next -->
 						<xsl:attribute name="keep-with-next.within-page">always</xsl:attribute>
 					</xsl:if>
-					
-					
+
 					<xsl:variable name="start_row_next" select="normalize-space(xalan:nodeset($rows)/num[$curr_row_num + 1]/@span_start)"/>
 					<xsl:variable name="start_row_next_num" select="number($start_row_next)"/>
-					
-					<xsl:variable name="table-row-padding-bottom">						
-						<xsl:if test="$start_row_next != '' and local-name(*[$start_row_next_num]) = 'title'">							
+
+					<xsl:variable name="table-row-padding-bottom">
+						<xsl:if test="$start_row_next != '' and local-name(*[$start_row_next_num]) = 'title'">
 								<xsl:if test="*[$start_row_next_num]/@depth = 2 and not(*[$start_row_next_num]/ancestor::bipm:annex)">30pt</xsl:if>
 								<xsl:if test="*[$start_row_next_num]/@depth = 2 and *[$start_row_next_num]/ancestor::bipm:annex">18pt</xsl:if> <!-- 24pt -->
 								<xsl:if test="*[$start_row_next_num]/@depth = 3 and not(*[$start_row_next_num]/ancestor::bipm:annex)">20pt</xsl:if>
 								<xsl:if test="*[$start_row_next_num]/@depth = 3 and *[$start_row_next_num]/ancestor::bipm:annex">6pt</xsl:if> <!-- 6pt -->
 								<xsl:if test="*[$start_row_next_num]/@depth = 4 and *[$start_row_next_num]/ancestor::bipm:annex">12pt</xsl:if> <!-- 6pt -->
-						</xsl:if>						
-					</xsl:variable>					
-					
+						</xsl:if>
+					</xsl:variable>
+
 					<xsl:variable name="table-row-padding-bottom-value" select="normalize-space($table-row-padding-bottom)"/>
-					
-					<fo:table-cell>	
-						
+
+					<fo:table-cell>
+
 						<xsl:if test="$table-row-padding-bottom-value != ''">
 							<xsl:attribute name="padding-bottom"><xsl:value-of select="$table-row-padding-bottom-value"/></xsl:attribute>
 						</xsl:if>
-						
-						
+
 						<fo:block>
 							<!-- insert elements from sections/clause annex/clause -->
-							<xsl:apply-templates select="*[position() &gt;= number($start_row) and position() &lt;= $end_row]"/>							
+							<xsl:apply-templates select="*[position() &gt;= number($start_row) and position() &lt;= $end_row]"/>
 						</fo:block>
 					</fo:table-cell>
 					<fo:table-cell>
@@ -2576,70 +2507,67 @@
 						<xsl:if test="$table-row-padding-bottom-value != ''">
 							<xsl:attribute name="padding-bottom"><xsl:value-of select="$table-row-padding-bottom-value"/></xsl:attribute>
 						</xsl:if>
-						
+
 						<xsl:attribute name="display-align">
 							<xsl:value-of select="xalan:nodeset($rows)/num[$curr_row_num]/@display-align"/>
 						</xsl:attribute>
-							
-							<fo:block>												
-								<xsl:for-each select="*[position() &gt;= $start_row and position() &lt;= $end_row]//bipm:note_side">												
+
+							<fo:block>
+								<xsl:for-each select="*[position() &gt;= $start_row and position() &lt;= $end_row]//bipm:note_side">
 									<xsl:apply-templates select="." mode="note_side"/>
 								</xsl:for-each>
 							</fo:block>
 					</fo:table-cell>
-				</fo:table-row>	
+				</fo:table-row>
 				<xsl:call-template name="insertClauses">
 					<xsl:with-param name="rows" select="$rows"/>
 					<xsl:with-param name="curr_row_num" select="$curr_row_num + 1"/>
 				</xsl:call-template>
 			</xsl:if>
-			
+
 		</xsl:template>
 
 	<xsl:template match="bipm:sections/bipm:clause/* | bipm:annex/bipm:clause/*" mode="clause_table">
 		<xsl:param name="rows"/>
-		
-		
+
 		<xsl:variable name="current_row"><xsl:number count="*"/></xsl:variable>
-		
-	
+
 		<fo:table-row>
 			<fo:table-cell>
-				<fo:block>					
-					<xsl:apply-templates select="."/>					
+				<fo:block>
+					<xsl:apply-templates select="."/>
 				</fo:block>
 			</fo:table-cell>
 			<fo:table-cell><fo:block> </fo:block></fo:table-cell> <!-- <fo:block/> <fo:block>&#xA0;</fo:block> -->
-			
-			
+
 			<xsl:if test="xalan:nodeset($rows)/num[@span_start = $current_row]">
 				<fo:table-cell font-size="8pt" line-height="120%" display-align="before" padding-bottom="6pt">
-					
+
 					<xsl:variable name="current_row_with_note" select="xalan:nodeset($rows)/num[@span_start = $current_row]"/>
-				
+
 					<xsl:attribute name="display-align">
 						<xsl:value-of select="$current_row_with_note/@display-align"/>
 					</xsl:attribute>
-					
+
 					<xsl:variable name="number-rows-spanned" select="$current_row_with_note/@span_num"/>
 					<xsl:attribute name="number-rows-spanned">
 						<xsl:value-of select="$number-rows-spanned"/>
 					</xsl:attribute>
-					
+
 					<xsl:variable name="start_row" select="$current_row"/>
 					<xsl:variable name="end_row" select="$current_row + $number-rows-spanned"/>
-					
+
 					<fo:block>
-						
+
 						<xsl:for-each select="ancestor::*[1]/*[position() &gt;= $start_row and position() &lt; $end_row]//bipm:note_side">
-							
+
 							<xsl:apply-templates select="." mode="note_side"/>
 						</xsl:for-each>
 					</fo:block>
-				
+
 				</fo:table-cell>
 			</xsl:if>
-		
+
 		</fo:table-row>
 	</xsl:template>
 
@@ -2651,7 +2579,7 @@
 					<xsl:when test="local-name(following-sibling::*[1]) = 'title'"/> <!-- id will set in title -->
 					<xsl:otherwise>
 						<fo:block>
-							<xsl:call-template name="setId"/>									
+							<xsl:call-template name="setId"/>
 							<xsl:apply-templates/>
 						</fo:block>
 					</xsl:otherwise>
@@ -2659,51 +2587,47 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<fo:block>
-					<xsl:call-template name="setId"/>									
+					<xsl:call-template name="setId"/>
 					<xsl:apply-templates/>
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
-		
-	</xsl:template>
 
+	</xsl:template>
 
 	<!-- skip, because it process in note_side template -->
 	<xsl:template match="bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')][1]//bipm:note_side" priority="3"/>
-	
-	
+
 	<xsl:template match="bipm:sections//bipm:note_side | bipm:annex//bipm:note_side" priority="3">
-	
+
 	</xsl:template>
-	
-	
+
 	<xsl:template match="bipm:note_side" mode="note_side">
 		<fo:block line-height-shift-adjustment="disregard-shifts" space-after="4pt">
 			<xsl:call-template name="setId"/>
-			
+
 			<xsl:if test="ancestor::bipm:table"><!-- move table note lower than title -->
 				<xsl:variable name="table_id" select="ancestor::bipm:table[1]/@id"/>
 				<xsl:variable name="num">
 					<xsl:number count="//bipm:table[@id = $table_id]//bipm:note_side" level="any"/>
 				</xsl:variable>
 				<xsl:if test="$num = 1 and ancestor::bipm:table[1]/bipm:name/bipm:tab">
-					<xsl:attribute name="margin-top">48pt</xsl:attribute>				
+					<xsl:attribute name="margin-top">48pt</xsl:attribute>
 				</xsl:if>
-				
+
 			</xsl:if>
-			
+
 			<!-- if note relates to title, but not fn -->
 			<xsl:if test="ancestor::bipm:title and not(bipm:sup_fn)"><fo:inline>* </fo:inline></xsl:if>
-			
+
 			<xsl:apply-templates mode="note_side"/>
 		</fo:block>
 	</xsl:template>
-	
-	<xsl:template match="bipm:note_side/bipm:name" mode="note_side" priority="2"/>	
+
+	<xsl:template match="bipm:note_side/bipm:name" mode="note_side" priority="2"/>
 	<xsl:template match="bipm:note_side/*" mode="note_side">
 		<xsl:apply-templates select="."/>
 	</xsl:template>
-
 
 	<xsl:template match="*[local-name() = 'note_side']/*[local-name() = 'p']">
 		<xsl:variable name="num"><xsl:number/></xsl:variable>
@@ -2715,7 +2639,7 @@
 				</fo:inline>
 			</xsl:when>
 			<xsl:otherwise>
-				<fo:block xsl:use-attribute-sets="note-p-style">						
+				<fo:block xsl:use-attribute-sets="note-p-style">
 					<xsl:attribute name="text-align">left</xsl:attribute>
 					<xsl:apply-templates/>
 				</fo:block>
@@ -2723,18 +2647,16 @@
 		</xsl:choose>
 	</xsl:template>
 
-
 	<xsl:template match="bipm:fn/bipm:p">
 		<fo:block>
 			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template>
-	
 
 	<xsl:template match="bipm:p" name="paragraph">
 		<xsl:param name="inline" select="'false'"/>
 		<xsl:param name="split_keep-within-line"/>
-		
+
 		<xsl:variable name="previous-element" select="local-name(preceding-sibling::*[1])"/>
 		<xsl:variable name="element-name">
 			<xsl:choose>
@@ -2744,7 +2666,7 @@
 				<xsl:otherwise>fo:block</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:element name="{$element-name}">
 			<xsl:attribute name="id">
 				<xsl:value-of select="@id"/>
@@ -2805,14 +2727,13 @@
 			<xsl:otherwise>
 				<xsl:apply-templates/>
 			</xsl:otherwise>
-		</xsl:choose>		
+		</xsl:choose>
 	</xsl:template>
-
 
 	<xsl:template match="bipm:ul | bipm:ol" mode="list" priority="2">
 		<xsl:apply-templates/><!-- for second level -->
 	</xsl:template>
-	
+
 	<!-- process list item as individual list --> <!-- flat list -->
 	<xsl:template match="bipm:li" priority="2">
 		<fo:block-container margin-left="0mm"> <!-- debug:  border="0.5pt solid black" -->
@@ -2825,25 +2746,25 @@
 				<xsl:attribute name="line-height">130%</xsl:attribute>
 				<xsl:attribute name="role">BlockQuote</xsl:attribute>
 			</xsl:if>
-			
-			<!-- last item -->		
-			<xsl:if test="not(following-sibling::*[1][local-name() = 'li'])"> 		
+
+			<!-- last item -->
+			<xsl:if test="not(following-sibling::*[1][local-name() = 'li'])">
 				<xsl:attribute name="space-after">6pt</xsl:attribute>
-				<xsl:if test="../ancestor::bipm:ul | ../ancestor::bipm:ol">					
+				<xsl:if test="../ancestor::bipm:ul | ../ancestor::bipm:ol">
 					<xsl:attribute name="space-after">0pt</xsl:attribute>
 				</xsl:if>
-				<xsl:if test="../following-sibling::*[1][local-name() = 'ul' or local-name() = 'ol']">					
+				<xsl:if test="../following-sibling::*[1][local-name() = 'ul' or local-name() = 'ol']">
 					<xsl:attribute name="space-after">0pt</xsl:attribute>
-				</xsl:if>						
+				</xsl:if>
 			</xsl:if>
-			
+
 			<fo:block-container margin-left="0mm">
 				<fo:list-block provisional-distance-between-starts="6.5mm"> <!-- debug: border="0.5pt solid blue" -->
 
 					<xsl:if test="ancestor::bipm:note_side">
 						<xsl:attribute name="provisional-distance-between-starts">0mm</xsl:attribute>
 					</xsl:if>
-	
+
 					<fo:list-item id="{@id}">
 						<fo:list-item-label end-indent="label-end()">
 							<fo:block> <!-- debug: border="0.5pt solid green" -->
@@ -2867,23 +2788,22 @@
 								<xsl:if test="ancestor::bipm:note_side">
 									<xsl:attribute name="text-indent">3mm</xsl:attribute>
 								</xsl:if>
-								
+
 								<xsl:apply-templates/>
 							</fo:block>
 						</fo:list-item-body>
 					</fo:list-item>
 				</fo:list-block>
-		
+
 			</fo:block-container>
 		</fo:block-container>
-		
-		<xsl:if test="not(following-sibling::*[1][local-name() = 'li']) and          not(../ancestor::bipm:ul | ../ancestor::bipm:ol) and not (../following-sibling::*[1][local-name() = 'ul' or local-name() = 'ol'])"> 		
+
+		<xsl:if test="not(following-sibling::*[1][local-name() = 'li']) and          not(../ancestor::bipm:ul | ../ancestor::bipm:ol) and not (../following-sibling::*[1][local-name() = 'ul' or local-name() = 'ol'])">
 			<fo:block/>
 		</xsl:if>
-		
+
 	</xsl:template>
 
-	
 	<xsl:template match="bipm:example" priority="2">
 		<fo:block margin-top="6pt" margin-bottom="6pt" keep-together.within-column="1">
 			<fo:table table-layout="fixed" width="100%">
@@ -2907,7 +2827,7 @@
 		</fo:block>
 	</xsl:template>
 
-	<xsl:template match="bipm:preferred" priority="2">		
+	<xsl:template match="bipm:preferred" priority="2">
 		<fo:block font-weight="bold" keep-with-next="always" space-before="8pt" margin-bottom="6pt">
 			<xsl:call-template name="setStyle_preferred"/>
 			<xsl:if test="ancestor::bipm:term[1]/bipm:name">
@@ -2922,23 +2842,19 @@
 		</fo:block>
 	</xsl:template>
 
-
-	
 	<xsl:template match="bipm:references/bipm:bibitem/bipm:docidentifier[(@type='metanorma' or @type='metanorma-ordinal') and ../bipm:formattedref]"/>
-	
 
 	<xsl:template match="bipm:pagebreak" priority="2">
 		<fo:block break-after="page"/>
 	</xsl:template>
 
-	
-	<xsl:template match="bipm:xref" priority="2">		
+	<xsl:template match="bipm:xref" priority="2">
 		<fo:basic-link internal-destination="{@target}" fox:alt-text="{@target}">
-		
+
 			<xsl:if test="parent::*[local-name() = 'title']">
 				<xsl:attribute name="font-weight">normal</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:choose>
 				<xsl:when test="@pagenumber='true'"><!-- ToC in Appendix, and page in references like this: « Le BIPM et la Convention du Mètre » (page 5). -->
 					<fo:inline>
@@ -2950,18 +2866,18 @@
 						<!-- <xsl:if test="@to">&#x2013;<fo:page-number-citation ref-id="{@to}"/></xsl:if> -->
 					</fo:inline>
 				</xsl:when>
-				<xsl:when test="starts-with(normalize-space(following-sibling::node()[1]), ')')">										
-					<!-- add , see p. N -->				
+				<xsl:when test="starts-with(normalize-space(following-sibling::node()[1]), ')')">
+					<!-- add , see p. N -->
 					<!-- add , voir p. N -->
-					<xsl:apply-templates/>	
-					
+					<xsl:apply-templates/>
+
 					<xsl:variable name="nopage" select="normalize-space(@nopage)"/>
-					
+
 					<xsl:if test="$nopage != 'true'">
 						<xsl:text>, </xsl:text>
 						<xsl:variable name="nosee" select="normalize-space(@nosee)"/>
 						<xsl:if test="$nosee != 'true'">
-							<xsl:variable name="curr_lang" select="ancestor::bipm:bipm-standard/bipm:bibdata/bipm:language[@current = 'true']"/>					
+							<xsl:variable name="curr_lang" select="ancestor::bipm:bipm-standard/bipm:bibdata/bipm:language[@current = 'true']"/>
 							<fo:inline>
 								<xsl:if test="ancestor::bipm:note_side">
 									<xsl:attribute name="font-style">italic</xsl:attribute>
@@ -2980,7 +2896,7 @@
 			</xsl:choose>
 		</fo:basic-link>
 	</xsl:template>
-	
+
 	<xsl:template match="bipm:eref[.//bipm:locality[@type = 'anchor']]" priority="2">
 		<xsl:variable name="target" select=".//bipm:locality[@type = 'anchor']/bipm:referenceFrom"/>
 		<fo:basic-link internal-destination="{$target}" fox:alt-text="{$target}">
@@ -2989,7 +2905,7 @@
 			</xsl:if>
 		</fo:basic-link>
 	</xsl:template>
-	
+
 	<xsl:template match="bipm:note[not(ancestor::bipm:preface)]/bipm:name" priority="2">
 		<xsl:choose>
 			<xsl:when test="not(../preceding-sibling::bipm:note) and not((../following-sibling::bipm:note))">
@@ -3016,7 +2932,7 @@
 			<xsl:apply-templates/>
 		</fo:inline>
 		<fo:inline><xsl:value-of select="$linebreak"/></fo:inline>
-		
+
 	</xsl:template>
 
 	<xsl:template match="*[local-name() = 'sup_fn']">
@@ -3080,7 +2996,7 @@
 		<mathml:mspace width="-0.1em"/>
 	</mfenced> 
 	-->
-	<xsl:template match="mathml:mfenced[count(*) = 1]" mode="mathml" priority="2"> 
+	<xsl:template match="mathml:mfenced[count(*) = 1]" mode="mathml" priority="2">
 		<xsl:if test="preceding-sibling::*">
 			<mathml:mo rspace="-0.35em"/><!-- decrease space before opening bracket -->
 		</xsl:if>
@@ -3090,17 +3006,17 @@
 				<xsl:attribute name="separators"/>
 			</xsl:if>
 			<mathml:mspace width="-0.15em"/> <!-- decrease space between opening brackets  and inside text-->
-			
+
 			<!-- if there is previous or next mfenced with superscript, then increase height of Parentheses -->
 			<xsl:if test="following-sibling::mathml:mfenced[.//mathml:msup] or preceding-sibling::mathml:mfenced[.//mathml:msup] or    ancestor::*[following-sibling::mathml:mfenced[.//mathml:msup] or preceding-sibling::mathml:mfenced[.//mathml:msup]]">
 				<mathml:mspace height="1.15em"/> <!-- increase height of parentheses -->
 			</xsl:if>
-			
+
 			<xsl:apply-templates mode="mathml"/>
 			<mathml:mspace width="-0.1em"/> <!-- decrease space between inside text and closing brackets -->
 		</xsl:copy>
 	</xsl:template>
-		
+
 	<!-- to: 
 		<mrow>
 			<mtext>(Cu)</mtext>
@@ -3144,7 +3060,7 @@
 			<xsl:apply-templates mode="mathml"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!-- Increase space before and after multiplication sign -->
 	<xsl:template match="mathml:mo[normalize-space(text()) = '×']" mode="mathml"> <!-- multiplication sign -->
 		<xsl:copy>
@@ -3158,7 +3074,7 @@
 			<xsl:apply-templates mode="mathml"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!-- Decrease a distance before and after of delta -->
 	<xsl:template match="mathml:mo[normalize-space(text()) = 'Δ']" mode="mathml">
 		<xsl:copy>
@@ -3172,7 +3088,7 @@
 			<xsl:apply-templates mode="mathml"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<!-- decrease space before and after sign 'minus' -->
 	<xsl:template match="mathml:mo[normalize-space(text()) = '−']" mode="mathml"> <!-- minus sign -->
 		<xsl:copy>
@@ -3195,7 +3111,7 @@
 			<xsl:apply-templates mode="mathml"/>
 		</xsl:copy>
 	</xsl:template>
-	
+
 	<xsl:template match="mathml:mi[string-length(normalize-space()) &gt; 1]" mode="mathml" priority="2">
 		<xsl:if test="preceding-sibling::* and preceding-sibling::*[1][not(local-name() = 'mfenced' or local-name() = 'mo')]">
 			<mathml:mspace width="0.3em"/>
@@ -3210,7 +3126,6 @@
 		<xsl:value-of select="translate(., ' ', ' ')"/>
 	</xsl:template>
 
-
 	<!-- =================== -->
 	<!-- Table of Contents (ToC) processing -->
 	<!-- =================== -->
@@ -3218,7 +3133,7 @@
 		<fo:block role="TOC">
 			<xsl:copy-of select="@id"/>
 			<xsl:apply-templates select="bipm:title[1]"/>
-			
+
 			<!-- create virtual table to determine column's width -->
 			<xsl:variable name="toc_table_simple">
 				<tbody>
@@ -3232,7 +3147,7 @@
 					<xsl:with-param name="table" select="$toc_table_simple"/>
 				</xsl:call-template>
 			</xsl:variable>
-			
+
 			<fo:table width="100%" table-layout="fixed">
 				<fo:table-column column-width="100%"/>
 				<fo:table-header>
@@ -3264,8 +3179,7 @@
 			</fo:table>
 		</fo:block>
 	</xsl:template>
-	
-	
+
 	<!-- ignore section number before tab -->
 	<xsl:template match="bipm:clause[@type = 'toc']//bipm:title/text()[1][not(preceding-sibling::bipm:tab) and following-sibling::*[1][self::bipm:tab]]"/>
 	<xsl:template match="bipm:clause[@type = 'toc']//bipm:title/bipm:tab" priority="2"/>
@@ -3273,7 +3187,6 @@
 	<!-- =================== -->
 	<!-- End Table of Contents (ToC) processing -->
 	<!-- =================== -->
-
 
 	<xsl:template name="insertHeaderFooter">
 		<xsl:param name="header-title"/>
@@ -3291,7 +3204,7 @@
 					<xsl:text>  </xsl:text>
 					<fo:inline font-size="13pt" baseline-shift="-15%">•</fo:inline>
 					<xsl:text>  </xsl:text>
-					<fo:inline font-weight="bold"><fo:page-number/></fo:inline>			
+					<fo:inline font-weight="bold"><fo:page-number/></fo:inline>
 				</fo:block>
 			</fo:block-container>
 			<fo:block-container font-size="1pt" border-top="0.5pt solid black" margin-left="81mm" width="86mm">
@@ -3300,7 +3213,7 @@
 				</xsl:if>
 				<fo:block> </fo:block>
 			</fo:block-container>
-		</fo:static-content>		
+		</fo:static-content>
 		<fo:static-content flow-name="header-even" role="artifact">
 			<xsl:call-template name="insertDraftWatermark">
 				<xsl:with-param name="isDraft" select="$isDraft"/>
@@ -3311,7 +3224,7 @@
 					<fo:inline font-weight="bold"><fo:page-number/></fo:inline>
 					<xsl:text>  </xsl:text>
 					<fo:inline font-size="13pt" baseline-shift="-15%">•</fo:inline>
-					<xsl:text>  </xsl:text>		
+					<xsl:text>  </xsl:text>
 					<xsl:copy-of select="$header-title"/>
 				</fo:block>
 				<fo:block-container font-size="1pt" border-top="0.5pt solid black" width="86.6mm">
@@ -3405,7 +3318,6 @@
 		</xsl:if>
 	</xsl:template>
 
-
 	<xsl:template name="printRevisionDate">
 		<xsl:param name="date"/>
 		<xsl:param name="lang"/>
@@ -3435,7 +3347,6 @@
 		</xsl:choose>
 	</xsl:template>
 
-
 	<xsl:template name="insertFootnoteSeparator">
 		<fo:static-content flow-name="xsl-footnote-separator">
 			<fo:block>
@@ -3443,17 +3354,16 @@
 			</fo:block>
 		</fo:static-content>
 	</xsl:template>
- 
-	 
+
 	<!-- =================== -->
 	<!-- Index processing -->
 	<!-- =================== -->
-	
+
 	<xsl:template match="bipm:indexsect"/>
 	<xsl:template match="bipm:indexsect" mode="index">
 		<xsl:param name="isDraft"/>
 		<xsl:param name="lang"/>
-	
+
 		<fo:page-sequence master-reference="index" force-page-count="no-force">
 			<xsl:variable name="header-title">
 				<xsl:choose>
@@ -3470,14 +3380,14 @@
 				<xsl:with-param name="isDraft" select="$isDraft"/>
 				<xsl:with-param name="lang" select="$lang"/>
 			</xsl:call-template>
-			
+
 			<fo:flow flow-name="xsl-region-body">
 				<fo:block id="{@id}" span="all">
 					<xsl:apply-templates select="bipm:title"/>
 				</fo:block>
 				<fo:block role="Index">
 					<xsl:apply-templates select="*[not(local-name() = 'title')]"/>
-					
+
 					<!-- TEST <xsl:variable name="alphabet" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'"/>
 					<xsl:for-each select="(document('')//node())[position() &lt; 26]">
 						<xsl:variable name="letter" select="substring($alphabet, position(), 1)"/>
@@ -3498,22 +3408,21 @@
 			</fo:flow>
 		</fo:page-sequence>
 	</xsl:template>
-	
-	
+
 	<xsl:template match="*[local-name() = 'stem']/text()">
 		<xsl:value-of select="normalize-space()"/>
 	</xsl:template>
-	
+
 	<!-- =================== -->
 	<!-- End of Index processing -->
 	<!-- =================== -->
-	
+
 	<xsl:variable name="Image-Logo-BIPM">
 		<xsl:text>iVBORw0KGgoAAAANSUhEUgAAAaIAAADRCAYAAACOyra0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2dpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDE0IDc5LjE1Njc5NywgMjAxNC8wOC8yMC0wOTo1MzowMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGOTdGMTE3NDA3MjA2ODExODIyQUJFNEQ3OTI1MkI2OSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCMTdGMTkxM0YzNEIxMUVBOEZCREQ0ODFDQjY0QzlCNyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCMTdGMTkxMkYzNEIxMUVBOEZCREQ0ODFDQjY0QzlCNyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBJbkRlc2lnbiBDUzYgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0idXVpZDoyNGQ2ZDM1ZS1kNDc4LTcxNGItYjYwZi1iMDMyYWFmYzM3OTYiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5pZDoxNjcwQkZBMDExMjA2ODExODIyQUJFNEQ3OTI1MkI2OSIvPiA8L3JkZjpEZXNjcmlw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</xsl:text>
 	</xsl:variable>
-	
+
 	<xsl:variable name="Image-Logo-SI">
-		<xsl:variable name="si-aspect" select="java:toLowerCase(java:java.lang.String.new(normalize-space(//bipm:bipm-standard/bipm:bibdata//bipm:si-aspect)))"/>		
+		<xsl:variable name="si-aspect" select="java:toLowerCase(java:java.lang.String.new(normalize-space(//bipm:bipm-standard/bipm:bibdata//bipm:si-aspect)))"/>
 		<xsl:choose>
 			<xsl:when test="$si-aspect = 'a_e_deltanu'">
 				<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" id="svg85" version="1.2" viewBox="0 0 595.28 595.28" height="595.28pt" width="595.28pt">
@@ -3772,7 +3681,7 @@
 				</svg>
 			</xsl:otherwise>
 		</xsl:choose>
-		
+
 	</xsl:variable>
 
 	<xsl:variable name="Image-Logo-BIPM-Metro">
@@ -3782,7 +3691,7 @@
 	<xsl:template name="insert_Logo-BIPM-Metro">
 		<fo:block-container absolute-position="fixed" left="47mm" top="67mm">
 			<fo:block>
-				<fo:instream-foreign-object content-width="118.6mm" fox:alt-text="Image Logo">								
+				<fo:instream-foreign-object content-width="118.6mm" fox:alt-text="Image Logo">
 					<svg xmlns="http://www.w3.org/2000/svg" height="547.66" width="547.66" version="1.0">
 						<path id="path4" d="m543.54 276.94a276.23 276.23 0 1 1 -552.47 0 276.23 276.23 0 1 1 552.47 0z" transform="matrix(.95831 0 0 .95831 17.669 8.4373)" fill="#fff"/>
 						 <path id="path6" d="m382 55.094c-2.56 0-7.13 3.091-7.91 5.344-1.88 5.447-2.31 5.759-1.81 1.312 0.32-2.85 0.14-4.688-0.47-4.688-2.15 0-6.03 2.346-6.03 3.657 0 0.988-0.64 1.191-2.22 0.687-4.12-1.314-5.15-0.987-5.47 1.75-0.16 1.461 0.23 3.597 0.85 4.75 0.92 1.723 0.79 2.38-0.69 3.5-0.99 0.75-2.98 1.358-4.44 1.375-3.34 0.04-4.08 1.18-2.28 3.563 1.98 2.616 1.81 4.344-0.44 4.344-1.05 0-2.17 0.416-2.5 0.937-0.36 0.596-33.67 0.916-90.06 0.844-82.35-0.106-89.47-0.26-89.47-1.75 0-1.939-1.85-3.969-3.62-3.969-0.71 0-1.31 0.772-1.32 1.719 0 0.947-0.37 2.298-0.84 3.031-0.49 0.774-0.64-1.666-0.34-5.812 0.5-6.969 0.47-7.112-1.63-6.563-1.78 0.467-2.29 0.077-2.78-2.375-1.05-5.272-5.15-4.555-5.19 0.906-0.01 2.427-1.12 2.744-4.03 1.188-1.33-0.711-2.52-0.695-3.93 0.062l-2.04 1.063 1.97 3.312c2.08 3.518 1.88 4.438-1 4.438-2.27 0-2.32 1.74-0.09 4.281 1.61 1.837 1.61 1.92 0.03 1.344-1.57-0.571-4.73 1.495-4.69 3.062 0.01 0.367 1.42 1.65 3.13 2.844l3.12 2.156-2.59 0.969c-2.98 1.134-4.92 4.21-4.06 6.437 0.76 1.988 5.9 2.038 6.65 0.063 0.81-2.113 2.25-1.806 2.88 0.594 0.4 1.561 1.05 1.891 2.59 1.411 1.47-0.47 2.03-0.24 2.03 0.87 0 0.85 0.59 1.56 1.31 1.56 2.14 0 4.64-3.438 5.26-7.216 0.71-4.436 3.15-5.477 5.62-2.438 1.02 1.251 2.55 3.165 3.44 4.25 0.88 1.085 2.71 2.704 4.09 3.594 3 1.93 4.29 6.75 6.38 23.94 0.79 6.5 2.47 14.74 3.71 18.34 2.3 6.64 7.35 15.6 8.79 15.6 0.43 0 0.75 0.48 0.75 1.09s0.79 1.84 1.75 2.72c2.04 1.88 7.53 9.13 7.71 10.19 0.07 0.4 0.27 5.06 0.41 10.34l0.25 9.59 0.72-7.12c0.85-8.07 1.56-10.46 2.81-9.69 0.48 0.29 1.2 1.98 1.6 3.75 1.61 7.17 2.93 36.36 1.43 31.75-0.52-1.62-0.85-4.58-0.75-6.59 0.11-2.02-0.12-3.97-0.5-4.35-1.93-1.93-0.29 22.53 1.94 28.85 0.48 1.35 0.35 1.49-0.56 0.65-0.66-0.6-1.81-6.12-2.59-12.28-2.86-22.5-2.99-23.12-3.85-21.19-0.48 1.08 0.02 7.74 1.19 16.22 1.09 7.93 1.83 14.58 1.66 14.78-0.18 0.2-2.01 0.05-4.07-0.37-3.7-0.77-3.71-0.81-0.9-1.38l2.81-0.56-4.28-4.66c-5.51-5.94-10.39-8-16.75-7.12l-4.78 0.66v-4.04c0-2.21 0.4-4.03 0.9-4.03s2.31-1.2 4.03-2.65c2.79-2.35 3.09-3.05 2.63-6.5-0.35-2.57-1.6-4.97-3.69-7.13l-3.12-3.28 3.06-3.91c3.29-4.15 3.83-6.44 1.84-7.71-2.35-1.51-8.11-3.24-10.84-3.25-3.68-0.02-7.98 4.18-7.1 6.96 0.58 1.8 0.42 1.95-1.34 1-2.83-1.51-6.21-1.31-8.81 0.5-2.11 1.48-2.41 1.41-4.81-1-1.4-1.4-3.51-2.53-4.72-2.53-8.22 0-17.78 11.67-10.32 12.6 1.35 0.17 4.34 1.01 6.66 1.87 4.2 1.56 4.22 1.57 2.34 3.63-3 3.3-4.29 6.47-3.65 9 0.81 3.21 6.27 9.28 8.37 9.28 1.57 0 4.94 2.84 4.94 4.15 0 0.31-1.2 0.86-2.69 1.22-4.9 1.21-11.85 6.72-13.75 10.88-0.98 2.16-3.11 6.27-4.72 9.12-2.38 4.25-3.36 5.14-5.37 5-2.59-0.17-5.55 0.81-7.66 2.54-0.69 0.56-1.84 1.49-2.53 2.03-0.68 0.54-2.64 2.28-4.34 3.84l-3.1 2.81-6.09-5.28c-4.892-4.24-6.849-6.83-9.842-13.16-2.583-5.45-4.963-8.9-7.719-11.15-2.288-1.87-3.969-4.1-3.969-5.25 0-1.19-0.819-2.22-2-2.53-1.382-0.36-1.825-1.06-1.438-2.28 0.308-0.97 0.127-2.06-0.437-2.41-0.599-0.37-0.815-2.15-0.469-4.31 0.402-2.52 0.143-4.21-0.781-5.16-0.87-0.89-1.324-3.59-1.313-7.5 0.022-7.2-1.811-9.49-6.937-8.62-2.025 0.34-3.481 0.05-4.281-0.91-1.067-1.29-1.505-1.31-3.594 0.06-1.303 0.86-2.375 2.4-2.375 3.41s-1.116 2.55-2.469 3.44c-1.612 1.05-2.425 2.52-2.406 4.21 0.036 3.2 4.833 8.68 8.375 9.57 1.719 0.43 3.11 1.76 4.031 3.97 0.768 1.83 2.635 4.13 4.156 5.06 1.522 0.93 2.587 2.18 2.376 2.81-0.212 0.63 0.247 1.75 1.031 2.47 1.028 0.95 1.3 2.72 0.937 6.28-0.425 4.18-0.11 5.6 2.188 9.41 1.494 2.47 3.954 5.32 5.468 6.34 1.68 1.13 3.554 3.92 4.782 7.13 2.146 5.6 4.968 10.29 4.968 8.25 0.001-0.68-1.116-3.49-2.5-6.22-1.383-2.73-2.312-5.46-2.093-6.1 0.337-0.97 4.593 7.05 4.593 8.66 0.001 0.31 0.943 2.55 2.094 5 2.328 4.95 1.909 7.13-0.531 2.75l-1.563-2.81 0.25 3.93c0.205 3.26-0.134 4.1-1.968 4.91-1.218 0.54-2.219 1.34-2.219 1.75s-0.684 0.72-1.531 0.72c-2.435 0-7.956 4.71-9.282 7.91-1.519 3.66-0.294 5.42 4.469 6.31 3.207 0.6 4.862 2.52 2.188 2.53-1.81 0.01-5.807 6.32-5.125 8.09 0.679 1.77 4.408 3.3 8.656 3.57 1.268 0.08 1.676 0.79 1.469 2.37-0.335 2.56 3.4 9.09 5.687 9.97 1.669 0.64-0.08 2.88-7.718 10.13-4.699 4.45-5.423 7.06-6.25 21.84-0.39 6.96-1.275 13.29-2.032 14.75-0.729 1.41-4.971 7-9.437 12.47-6.854 8.38-10.685 12.09-17.969 17.34-0.541 0.39-2.246 1.85-3.812 3.22-1.567 1.37-2.966 2.47-3.094 2.47-0.063 0-0.337-0.44-0.75-1.22l0.531 7.94 4.937 2.87c-0.651-1.08 0.805-1.44 5-1.44 4.263 0 6.007-0.53 8.876-2.71 1.958-1.5 3.562-3.13 3.562-3.63s1.116-2.1 2.469-3.56c1.352-1.46 2.437-3.19 2.437-3.84 0-0.66 1.468-2.56 3.219-4.19l3.156-2.94 1.188 2.25c1.015 1.94 0.694 3.19-2.188 9.06-1.842 3.75-3.358 7.8-3.375 9-0.019 1.43-1.049 2.74-3 3.75-3.26 1.69-5.038 5.05-4.25 8.07 0.437 1.67 0.104 1.85-2.75 1.46-2.273-0.31-2.996-0.12-2.312 0.6 0.541 0.57 3.181 1.17 5.844 1.34 2.762 0.18 4.987 0.83 5.218 1.53 0.223 0.68-0.334 1.25-1.281 1.25s-1.434 0.29-1.063 0.66c0.967 0.97 9.794 0.39 10.907-0.72 0.587-0.58-0.241-0.94-2.219-0.94-1.731 0-3.156-0.38-3.156-0.87 0-0.5 3.12-0.84 6.906-0.75 3.786 0.08 6.874 0.5 6.875 0.9 0.001 0.41 1.949 0.72 4.313 0.72 5.443 0 20.842 2.68 23.432 4.06 2.75 1.48 17.39 1.13 27.35-0.62 4.6-0.81 10.13-1.47 12.31-1.47s5.03-0.72 6.31-1.62l2.35-1.66-0.6 3.63c-0.7 4.31-0.01 4.46 7.28 1.59 3.16-1.24 6.15-1.8 7.82-1.44 2.52 0.55 2.6 0.8 1.59 3.47-1.49 3.96-0.34 4.6 5.03 2.78 3.75-1.27 6.93-1.45 16.91-0.9 6.76 0.37 13.05 0.32 13.94-0.1 0.88-0.42 2.89-0.78 4.43-0.75 1.55 0.03 4.79 0.07 7.22 0.06 7.22-0.01 23.66 4.03 20.25 4.82l4.94 4.93 8.34-5.9c-0.23-0.08-0.37-0.13-0.28-0.22 0.85-0.84 5.83-1.52 14.75-1.97 7.42-0.37 17.25-0.99 21.85-1.34 4.63-0.36 10.21-0.2 12.53 0.34 2.44 0.57 4.43 0.61 4.75 0.09 0.3-0.48 2.2-0.87 4.25-0.87 2.24 0 5.8-1.15 8.9-2.85 4.65-2.53 5.94-2.8 13.07-2.56 5.77 0.2 9.37-0.22 13.34-1.59 6.9-2.37 10.77-2.37 12.84 0 1.82 2.07 9 3.56 9 1.87 0-0.67 0.53-0.6 1.44 0.16 2.03 1.69 18.25-0.15 18.25-2.06 0-0.47 1.66-0.85 3.66-0.85 3.94 0 3.48-1.44-0.72-2.31-1.35-0.28-0.7-0.34 1.47-0.12 5.01 0.5 7.91 1.04 12.69 2.28 2.23 0.58 5.93 0.67 8.87 0.22 2.77-0.43 8.02-0.66 11.69-0.5 4.31 0.18 7.93-0.21 10.22-1.16 2.5-1.05 3.84-1.18 4.59-0.44 1.29 1.3 6.53 1.4 6.53 0.13 0-0.51-1.43-1.13-3.19-1.35l-3.18-0.37 3.53-0.16c2.89-0.13 3.71 0.27 4.62 2.28 1.11 2.43 1.35 2.47 12.88 2.47 6.43 0 13.04 0.27 14.68 0.6l2.76 0.59 7.21-2.59 5.13-17.63c-2.18 3.66-3.05 3.89-5.78 4.09-6.24 0.48-8.37-3.32-11.5-20.46-0.94-5.14-2.33-11.35-3.06-13.78-1.2-3.95-2.51-11.38-3.85-21.63-0.66-5.08-2.05-11.56-3.94-18.22-0.91-3.24-2.07-8.53-2.56-11.78s-1.35-7.91-1.87-10.34c-0.53-2.44-0.95-8.45-0.97-13.35-0.03-4.89-0.45-9.33-0.91-9.84-0.76-0.85-2.08-5.49-3.53-12.44-0.87-4.17 0.46-10.41 3-13.87 2.99-4.08 3.76-5.83 5.81-13.13 1.36-4.82 2.69-6.96 6.47-10.62 3.7-3.59 4.87-5.49 5.35-8.69 1.49-9.97-0.81-15.22-5.6-12.66-8.57 4.58-10.26 5.94-12.09 9.75-1.08 2.24-2.87 4.34-3.97 4.63-4.51 1.17-11.34 9.84-11.34 14.4-0.01 1.79-2.28 4.16-3.16 3.29-0.3-0.3-2.08 1.04-3.94 2.96-2.45 2.53-3.72 5.06-4.62 9.16-1.94 8.75-2.09 8.88-9.63 9.34-3.89 0.24-9.34 1.44-13.12 2.91-5.51 2.14-7.21 2.38-11.6 1.69-2.83-0.45-5.92-1.05-6.84-1.35-2.21-0.71-8.22-13.57-8.81-18.84l-0.47-4.13 3.78-0.53c2.09-0.3 6.93-0.86 10.72-1.21 3.78-0.36 7.33-0.96 7.87-1.35s2.74-1.22 4.91-1.84c2.16-0.63 5.18-2.14 6.72-3.38 2.47-1.99 2.91-3.24 3.78-10.62 0.54-4.59 0.68-14.75 0.34-22.6-0.57-13.08-0.84-14.77-3.5-20.34-5.49-11.5-20.47-24.43-25.9-22.34-1.57 0.6-1.57 0.76 0 2.5 0.91 1.01 2.18 1.84 2.84 1.84s1.73 0.6 2.34 1.34c0.86 1.03 0.72 1.68-0.5 2.69-1.26 1.05-1.45 2.38-0.97 6.5 0.73 6.2-0.04 7.8-6.81 14.41-6.03 5.89-13.39 10.69-18.78 12.25-5.68 1.64-5.63 1.67-4.94-3.41 0.52-3.76 0.18-5.52-1.97-9.91-1.43-2.92-3.97-6.32-5.65-7.56-3.93-2.9-10.69-5.5-14.28-5.5-4.8 0-12.93 3.17-16.19 6.32-2.96 2.85-2.97 3-0.94 3.31 1.17 0.18 2.36 1.01 2.69 1.87 0.68 1.77-2.01 5.22-4.06 5.22-0.75 0-1.6 0.66-1.91 1.47-0.76 1.97-2.31 1.89-2.31-0.13 0-1.93 2.76-4.2 5.15-4.24 0.95-0.02 1.72-0.52 1.72-1.1 0-0.59-0.82-0.77-1.87-0.44-1.32 0.42-2.02 0.05-2.28-1.18-0.3-1.4-0.8-1.04-2.5 1.68-1.47 2.35-2.19 5.03-2.19 8.38 0 5.38 3.29 15.28 5.5 16.53 2.08 1.18 1.66 3.62-0.97 5.69-1.8 1.41-2.41 3.02-2.75 7.09-0.3 3.64-1.12 6.01-2.59 7.59-1.18 1.27-2.16 3.02-2.16 3.88s-0.58 2.43-1.31 3.5-2.78 5.71-4.53 10.31-3.54 9.13-4.03 10.07c-0.5 0.93-0.96 2.71-1 3.93-0.04 1.23-0.93 3.57-1.97 5.19s-2.74 4.71-3.78 6.88c-1.6 3.3-1.91 3.56-1.97 1.59-0.04-1.29 0.82-3.83 1.94-5.63 1.81-2.93 1.97-4.36 1.53-14.12-0.53-11.61 0.39-16.32 3.31-17.25 3.39-1.08 6.74-7.7 9.22-18.22 3.95-16.74 4.56-22.39 4.56-40.78v-17.47l6-6.09c6.7-6.86 8.44-10.16 11.69-22.22 2.75-10.21 3.97-17.17 4.59-25.57 0.47-6.3 0.59-6.45 6.1-11.53 3.07-2.828 5.88-5.144 6.24-5.152 0.37-0.009 0.98-2.577 1.38-5.688 0.65-5.09 0.8-5.393 1.5-2.812 1.07 3.911 4.81 6.298 4.81 3.062 0-1.654 2.5-2.02 3.44-0.5 0.33 0.541 1.48 0.969 2.53 0.969 2.66 0 2.48-3.649-0.31-6.688l-2.22-2.406 2.22 1.344c1.22 0.742 2.22 1.665 2.22 2.062 0 0.825 5.3 3.719 6.81 3.719 0.55 0 1.5-0.934 2.12-2.094 0.98-1.828 0.69-2.519-2.03-5.062-2.4-2.249-3.01-3.457-2.56-5.25 0.45-1.783 0.2-2.344-1.09-2.344-1.32 0-1.42-0.238-0.5-1.156 0.65-0.649 1.18-2.026 1.18-3.063 0-1.513 0.42-1.767 2.19-1.187 1.22 0.397 3.57 0.803 5.19 0.875 2.78 0.122 2.94-0.083 2.94-3.594 0-2.175 0.58-4.115 1.4-4.625 2.04-1.257-0.4-3.969-3.56-3.969-1.96 0-2.29-0.367-1.78-1.969 0.45-1.429 0.19-1.968-1-1.968zm-2.31 2.156c0.8-0.108 0.85 1.148-0.5 3.219-0.9 1.369-2.04 2.5-2.57 2.5-1.42 0-1.16-1.206 0.94-3.938 0.9-1.169 1.64-1.716 2.13-1.781zm-10.94 2.781c0.54 0 0.98 0.543 0.97 1.219s-0.45 1.907-0.97 2.719c-0.74 1.15-0.96 0.858-0.97-1.25-0.01-1.488 0.43-2.688 0.97-2.688zm15.69 1.344c0.29-0.018 0.54-0.015 0.75 0.063 0.84 0.324 1.33 0.79 1.09 1.031-1.16 1.164-7.72 3.367-7.72 2.593 0-1.319 3.84-3.56 5.88-3.687zm-23.66 1.719c0.44-0.019 1.21 0.547 2.34 1.687 1.88 1.877 1.96 2.323 0.69 3.125-2.24 1.426-2.65 1.184-3.22-1.75-0.39-2.053-0.37-3.038 0.19-3.062zm-204.72 3.281c0.07-0.016 0.11-0.016 0.19 0.031 0.54 0.335 1 2.598 1 5 0 2.403-0.46 4.344-1 4.344s-0.97-2.232-0.97-4.969c0-2.684 0.3-4.294 0.78-4.406zm225.66 0.719c1.32-0.047 2.75 0.724 2.75 1.75 0 1.227-1.95 1.316-3.78 0.156-0.98-0.617-1.05-1.05-0.22-1.562 0.35-0.218 0.81-0.329 1.25-0.344zm-12.97 2.844c0.81-0.03 2.13 0.381 2.94 0.906 1.8 1.162 0.23 1.162-2.47 0-1.3-0.558-1.44-0.871-0.47-0.906zm-221.22 0.937c0.57 0.001 1.66 0.356 3.28 1.094 1.38 0.628 2.5 1.973 2.5 2.969 0 2.4-0.31 2.299-4.09-1.157-2.1-1.915-2.63-2.908-1.69-2.906zm13.13 1.5c0.36-0.043 0.52 1.09 0.53 3.625 0.01 2.57-0.13 4.688-0.31 4.688-1.77 0-2.26-5.45-0.69-7.876 0.17-0.266 0.34-0.423 0.47-0.437zm195.28 1.406c2.58 0 6.99 2.538 5.78 3.313-0.2 0.127-1.12 0.806-2.06 1.531-0.95 0.725-1.75 0.948-1.75 0.469s-0.95-1.341-2.13-1.875c-3.46-1.562-3.38-3.438 0.16-3.438zm13.22 0c0.23 0 0.72 0.459 1.06 1 0.33 0.541 0.13 0.969-0.44 0.969s-1.03-0.428-1.03-0.969 0.17-1 0.41-1zm2.03 3.969c1.96 0.016 1.96 0.054 0 1.219-2.56 1.512-6.38 2.031-6.38 0.875 0-1.005 3.36-2.119 6.38-2.094zm-223.63 1.125c0.33-0.012 0.67-0.006 1.06 0.031 1.76 0.17 3.22 0.74 3.22 1.282 0 1.1-3.29 1.604-5.18 0.812-2.15-0.897-1.4-2.043 0.9-2.125zm18.03 2.437c0.33 0.009 0.56 0.835 0.91 2.688 0.7 3.744 1.43 4.289 3.25 2.469 0.6-0.602 1.61-0.768 2.25-0.375 0.78 0.481 0.47 1.091-1.03 1.844-2.45 1.23-4.07 4.241-1.78 3.312 4.83-1.964 5.29-1.89 2.81 0.312-2.3 2.044-2.32 2.125-0.31 1.5 1.99-0.619 2.07-0.507 1 1.813-0.64 1.372-1.41 2.527-1.72 2.531-1.05 0.015-5.96-8.222-6.5-10.906-0.3-1.47-0.09-3.438 0.44-4.375 0.29-0.53 0.49-0.818 0.68-0.813zm207.72 0.844c0.09-0.012 0.18-0.004 0.28 0 0.23 0.011 0.5 0.076 0.82 0.188 2.18 0.775 5.15 3.288 5.15 4.375 0 1.281-2.23 0.897-4.68-0.813-2.19-1.521-2.81-3.562-1.57-3.75zm-221.53 0.719c3.12-0.082 5.7 0.327 6.28 1.031 0.76 0.914-0.27 1.188-4.4 1.188-7.32 0-9.03-2.031-1.88-2.219zm31.13 0.75c3.19 0 3.84 0.336 3.84 1.969 0 1.729-0.65 1.968-5.41 1.968-3.96 0-5.4-0.369-5.4-1.374 0-1.77 2.16-2.563 6.97-2.563zm103.59 0c5.33 0 7.42 0.364 7.81 1.375 0.29 0.759 0.26 1.645-0.06 1.969-0.32 0.323-3.84 0.593-7.81 0.593-6.56 0-7.22-0.18-7.22-1.968 0-1.79 0.66-1.969 7.28-1.969zm64.28 0c1.22-0.008 2.22 0.459 2.22 1 0 1.232-1.03 1.232-2.94 0-1.19-0.771-1.07-0.988 0.72-1zm-85.03 0.125c0.9-0.008 2.04 0.029 3.5 0.094 5.28 0.233 6.58 0.604 6.84 2 0.29 1.515-0.52 1.718-7 1.718-6.92 0-7.37-0.108-6.87-2 0.35-1.355 0.84-1.788 3.53-1.812zm-73.78 0.438c0.15-0.016 0.3-0.006 0.47 0 11.3 0.361 12.03 0.477 12.03 1.843 0 1.951-0.55 2.052-8.19 1.719-5.7-0.248-6.62-0.545-6.34-1.969 0.17-0.884 0.95-1.487 2.03-1.593zm23.72 0.437c5.37 0 7.42 0.346 7.81 1.375 0.29 0.767-0.15 1.653-0.97 1.969-0.82 0.315-4.34 0.562-7.81 0.562-5.66 0-6.31-0.174-6.31-1.937 0-1.79 0.66-1.969 7.28-1.969zm18.28 0c5.46 0 6.91 0.298 6.91 1.469s-1.45 1.468-6.91 1.468c-5.47 0-6.88-0.297-6.88-1.468s1.41-1.469 6.88-1.469zm16.72 0c5.46 0 6.9 0.298 6.9 1.469s-1.44 1.468-6.9 1.468c-5.47 0-6.88-0.297-6.88-1.468s1.41-1.469 6.88-1.469zm74.84 0c4.55 0 7.78 0.396 7.78 0.969 0 0.579-3.45 1-8.4 1-5.37 0-8.2-0.374-7.82-1 0.34-0.541 4.14-0.969 8.44-0.969zm14.75 0c2.41 0 3.74 0.375 3.38 0.969-0.34 0.541-2.14 1-4 1-1.87 0-3.38-0.459-3.38-1s1.81-0.969 4-0.969zm25.81 0.375c0.36-0.067 1.08 0.515 2.38 1.812 1.46 1.46 2.43 2.882 2.15 3.157-0.9 0.901-4.84-2.475-4.84-4.157 0-0.482 0.1-0.772 0.31-0.812zm-60.5 0.062c4.08-0.069 8.12 0.264 8.32 1.032 0.14 0.584-3.3 1.08-8.47 1.25-6.77 0.222-8.58 0.018-8.25-0.969 0.26-0.775 4.33-1.243 8.4-1.313zm49.82 0c0.47 0.033 0.53 0.614 0.53 1.969 0 4.746-4.95 12.24-9.91 14.939-5.56 3.02-6.77 5.42-7.78 15.59-1.5 15.08-6.35 32.05-8.75 30.56-0.44-0.27-2.07 0.92-3.59 2.63-1.72 1.93-2.32 3.26-1.6 3.5 0.75 0.25 0.23 1.67-1.47 4-2.96 4.09-8.22 8.68-8.22 7.19 0.01-0.55 1.35-1.97 2.97-3.13 1.63-1.15 2.94-2.51 2.94-3.03s-1.29 0.02-2.91 1.22c-3.28 2.43-3.92 2.23-3.96-1.22-0.07-5.98 1.51-10.52 4.65-13.16 1.76-1.47 3.22-3.29 3.22-4.06 0-0.76 0.46-1.37 1.03-1.37 0.58 0 0.8-0.45 0.47-0.97-0.32-0.53-1.88 0.48-3.47 2.22-3.95 4.35-3.7 1.83 0.72-6.53 3.65-6.92 4.52-8.28 6.91-10.94 0.67-0.76 1.22-1.77 1.22-2.28 0-0.52 0.68-1.52 1.53-2.22 0.84-0.7 2.22-2.52 3-4.03 1.24-2.41 1.22-2.67-0.03-2.19-1.22 0.47-1.25 0.07-0.25-2.72 1.5-4.2 3.19-6.04 8.15-8.87 5.07-2.905 10.22-7.264 10.22-8.629 0-0.576-0.92-1.062-2.03-1.062-1.22 0-1.74-0.414-1.34-1.063 0.36-0.593 1.94-0.916 3.5-0.687s2.84 0.098 2.84-0.313c0-1.242-3.77-2.058-6.12-1.312-1.97 0.622-2.1 0.563-0.91-0.875 0.74-0.89 2.23-1.625 3.28-1.625s2.77-0.471 3.81-1.032c0.62-0.33 1.06-0.519 1.35-0.5zm-211.29 0.532c1.07 0 2.77 0.589 3.76 1.312 2.85 2.089 1.38 3.506-1.69 1.625-3.86-2.364-4.27-2.937-2.07-2.937zm218.54 0.406c0.06 0.011 0.11 0.051 0.18 0.094 0.54 0.334 0.97 1.45 0.97 2.5s-0.43 1.906-0.97 1.906-1-1.115-1-2.5c0-1.071 0.27-1.815 0.63-1.969 0.06-0.025 0.13-0.042 0.19-0.031zm-208.13 0.594c2.43 0.011 2.84 0.245 1.72 0.968-1.93 1.25-4.91 1.25-4.91 0 0-0.541 1.43-0.977 3.19-0.968zm149.47 6.031c31.7-0.018 35.18 0.524 32.44 2.219-0.47 0.289-0.68 1.576-0.44 2.812 0.28 1.459-0.47 3.244-2.12 5.154-1.41 1.62-2.8 4.06-3.1 5.41s-0.98 3.64-1.53 5.09c-0.55 1.46-0.69 3.19-0.28 3.85 0.42 0.68 0.33 0.96-0.22 0.62-0.53-0.32-2.24 1.92-3.78 5-1.55 3.08-3.03 5.82-3.35 6.1-0.31 0.27-1.8 2.93-3.28 5.9-3.21 6.47-11.09 13.68-19.56 17.91-3.26 1.63-6.18 3.59-6.47 4.34-0.3 0.79-1.91 1.35-3.84 1.35-1.84-0.01-3.35 0.45-3.35 1 0.01 1.39-7.2 1.23-8.62-0.19-0.65-0.65-1.22-2.02-1.22-3.07 0-2.35 5.43-13.25 7.97-16 2.56-2.77 2.39-4.85-1.06-11.93-1.91-3.91-3.77-6.31-5.19-6.75-1.21-0.38-3.44-1.72-4.97-3s-3.19-2.35-3.69-2.35-1.82-0.88-2.9-1.97c-1.48-1.47-1.86-2.88-1.53-5.53 0.81-6.52-2.44-8.801-8.29-5.78-2.87 1.49-3.02 2.16-1.59 8.38 0.23 0.98-4.12 5.87-5.22 5.87-1.75 0-7.89 4.33-7.9 5.56-0.01 0.62-0.72 1.41-1.53 1.72-0.82 0.32-1.47 1.36-1.47 2.38 0 1.01-0.68 3.28-1.53 5-2.6 5.2 0.43 16.84 4.37 16.84 0.98 0 2.34 1.05 3.03 2.35 1.04 1.94 1.01 3.1-0.16 6.59-0.77 2.33-1.7 3.77-2.06 3.19s-2.44-1.37-4.65-1.72c-2.45-0.39-6.08-2.16-9.22-4.53-2.85-2.15-5.71-3.91-6.35-3.91-0.63 0-1.93-0.43-2.87-0.94-0.94-0.5-2.38-1.15-3.19-1.47-0.81-0.31-2.64-1.34-4.06-2.28s-3.98-2.61-5.69-3.68c-1.72-1.08-3.32-3.08-3.59-4.44s-0.92-3.81-1.44-5.47-0.96-3.63-0.97-4.41c-0.01-2.37-11.79-24.93-13.87-26.56-1.49-1.16-1.82-2.173-1.32-4.186 0.37-1.463 1.12-2.903 1.63-3.219s34.73-0.812 76.09-1.063c17.66-0.106 31.37-0.181 41.94-0.187zm-156.12 0.094c0.07-0.001 0.15 0.03 0.18 0.062 0.29 0.287-0.4 1.436-1.53 2.563-1.74 1.746-6 2.924-6 1.656 0-0.752 6.15-4.271 7.35-4.281zm193.59 0c0.72 0.037 1.48 0.418 2.19 1.125 2 2.008 1.92 2.23-1.63 4-3.92 1.955-3.66 2.031-3.56-1.406 0.07-2.372 1.42-3.801 3-3.719zm-184.28 0.25c0.71-0.117 1.03 0.479 1.03 1.812 0 2.856-2.38 6.289-3.31 4.781-0.97-1.571 0.31-5.875 1.93-6.5 0.12-0.045 0.25-0.077 0.35-0.093zm21.72 1c0.98-0.125 2.93 1.434 2.93 2.562 0 0.475-0.88 0.875-1.96 0.875-1.9 0-2.66-1.903-1.32-3.25 0.1-0.093 0.21-0.169 0.35-0.187zm-27.07 1.469c0.82 0 1.47 0.253 1.47 0.562s-0.65 1.22-1.47 2.031c-1.31 1.312-1.46 1.249-1.46-0.562-0.01-1.156 0.63-2.031 1.46-2.031zm26.57 6.002 2.43 0.56c3.38 0.79 6.72 4.75 8 9.56 1.03 3.85 2.84 8.29 6.88 16.75 2.28 4.77 2.44 7.89 0.37 7.1-0.9-0.35-1.47-0.01-1.47 0.87 0 0.8 0.43 1.44 0.94 1.44s1.65 1.23 2.53 2.72c0.89 1.49 3.35 3.94 5.47 5.47 3.98 2.85 5.07 5.59 2.25 5.59-1.21 0-1.32 0.29-0.5 1.28 0.6 0.72 0.91 3.49 0.72 6.16-0.19 2.66 0.08 5.68 0.59 6.65 2.14 4.08-0.02 3-5.31-2.59-3.1-3.28-5.91-5.68-6.22-5.38-0.3 0.31 0.98 2.25 2.88 4.32s3.25 3.97 2.97 4.25c-0.87 0.87-7.26-7.23-6.78-8.6 0.25-0.71-1.09-2.94-2.97-4.93-1.89-1.99-3.4-4.11-3.41-4.72 0-0.61-0.66-1.63-1.4-2.25-1.68-1.39-2.38-4.56-4.07-17.78-1.23-9.65-2.05-14.21-3.87-20.97-0.71-2.64-0.65-2.72 2.06-2.06l2.81 0.65-2.47-2.03-2.43-2.06zm79.87 1.87c2.07 0.04 3.43 1.87 2.81 3.81-0.76 2.41-3.29 2.77-4.12 0.6-0.65-1.68 0.16-4.43 1.31-4.41zm0.06 9.81c0.74-0.03 2.31 0.58 4.25 1.72 3.04 1.8 3.83 4.19 1.38 4.19-0.81 0-1.47 0.52-1.47 1.13 0 0.66-1.05 0.87-2.66 0.56-1.46-0.28-3.61-0.14-4.81 0.31-1.97 0.75-2.17 0.55-2.03-2.22 0.09-1.68 0.7-3.24 1.38-3.47 0.76-0.25 1.04 0.19 0.68 1.13-0.49 1.28-0.23 1.34 1.88 0.34 1.83-0.86 2.2-1.51 1.44-2.43-0.67-0.81-0.61-1.22-0.04-1.26zm0.69 4.41c-0.69 0-1.44 0.45-1.44 1.09 0 0.24 0.69 0.41 1.53 0.41 0.85 0 1.25-0.45 0.91-1-0.21-0.34-0.58-0.5-1-0.5zm-12.34 2.31c0.7-0.11 1.55 0.87 3.43 3.6 2.15 3.1 3.74 4.46 5.35 4.47 1.39 0 2.12 0.47 1.87 1.21-0.24 0.74-2.14 1.22-4.75 1.22-3.21 0-4.54 0.45-5.06 1.72-0.77 1.89-3.23 2.31-4.22 0.72-0.34-0.55-0.35-2.33 0-3.94 0.51-2.3 1.2-2.9 3.16-2.9h2.47l-2.28-1.85c-1.98-1.59-2.09-2.11-0.94-3.5 0.37-0.44 0.65-0.7 0.97-0.75zm20.22 1.32c0.88-0.05 2.05 0.28 4.15 0.93 5.03 1.57 6.83 3.85 3.03 3.85-1.29 0-2.85 0.43-3.5 0.97-0.85 0.71-0.93 0.67-0.21-0.19 1.54-1.86 1.14-3.47-1-4.03-1.99-0.52-2.37 0.14-2 3.59 0.1 1.02-0.38 2.26-1.1 2.72-2.42 1.53-5.75 0.51-5.75-1.78 0-1.01-0.62-1.34-1.91-1-1.05 0.28-2.71-0.18-3.68-0.97-1.64-1.33-1.57-1.39 0.87-0.87 1.46 0.3 2.9 0.17 3.22-0.35s1.25-0.72 2.06-0.41c0.82 0.32 2.37-0.21 3.44-1.18 0.9-0.81 1.49-1.24 2.38-1.28zm6.31 7.72c0.84-0.09 2.04 0.45 2.4 1.4 0.31 0.8 1.35 1.18 2.41 0.91 1.02-0.27 2.39 0.21 3.09 1.06 1.18 1.41 0.18 2.3-1.12 1-0.31-0.31-1.18-0.73-1.91-0.91-3.68-0.88-5.75-1.81-5.75-2.59 0-0.53 0.37-0.82 0.88-0.87zm-33.56 1.71c0.68 0.03 1.42 0.79 2.12 2.25 0.78 1.61 1.78 2.91 2.22 2.91s0.78 0.69 0.78 1.5c0 0.82-0.87 1.47-1.97 1.47-1.15 0-1.93-0.66-1.93-1.6 0-1.12-0.61-1.44-2.07-1.06-1.81 0.48-1.98 0.22-1.4-2.09 0.57-2.27 1.37-3.41 2.25-3.38zm20.18 0.85c1.95-0.19 4.45 1.08 6.32 3.34 0.85 1.03 1.19 1.11 1.22 0.25 0.04-1.8 2.46-1.48 4.31 0.56 2.71 3 1.2 14.29-2.66 19.72-3.39 4.78-6.39 6.33-10.19 5.38-1.63-0.41-2.31-0.25-1.9 0.4 0.34 0.56 1.85 1.22 3.34 1.47 1.5 0.26 3.59 0.84 4.63 1.28 1.33 0.57 1.66 0.44 1.15-0.37-0.39-0.63-0.26-1.16 0.32-1.16 0.57 0 1.03 0.71 1.03 1.53 0 0.83 1.11 1.98 2.47 2.6 2.36 1.07 3.35 2.78 1.62 2.78-0.46 0-2.54 1.69-4.66 3.75-4.47 4.35-7.36 4.44-10.96 0.34-3.59-4.06-5.19-8.73-5.19-15.31 0-3.98-0.52-6.85-1.57-8.34-0.91-1.32-1.64-4.35-1.68-7.22-0.07-4.25 0.34-5.29 2.65-7.28 1.49-1.28 3.57-2.35 4.66-2.35s2.84-0.44 3.87-1c0.38-0.2 0.78-0.33 1.22-0.37zm15.44 2.34c0.54 0 1 0.46 1 1s-0.46 0.97-1 0.97-0.97-0.43-0.97-0.97 0.43-1 0.97-1zm-6.28 2.97c-3.67 0-6.17 3.28-5.22 6.91 0.4 1.5-0.18 2.84-1.97 4.5l-2.53 2.37h3.1c2.87 0 3.06-0.27 3.06-3.44 0-3.38 2.34-5.8 5-5.18 0.62 0.14 1.26-0.98 1.44-2.47 0.29-2.47 0.04-2.69-2.88-2.69zm-14.59 0.16c-2.06 0.1-2.6 1.32-2.07 4.03 0.47 2.38 1 2.68 4.25 2.68 2.98 0 3.84-0.43 4.29-2.15 0.76-2.92 0.17-3.55-3.88-4.31-1.04-0.2-1.91-0.29-2.59-0.25zm-16.13 1.15c0.32-0.06 1 0.41 1.6 1.13 0.77 0.93 0.83 1.5 0.18 1.5-1.19 0-2.55-1.88-1.87-2.57 0.03-0.03 0.05-0.05 0.09-0.06zm70.13 11.56c0.29 0.01 0.31 2.27 0 5.32-0.33 3.24-0.93 11.34-1.29 17.97-0.35 6.62-1 12.03-1.46 12.03-0.47 0-0.76 3-0.66 6.65l0.16 6.63 0.37-5.66c0.2-3.11 0.8-5.65 1.31-5.65 0.52 0 0.91-1.98 0.91-4.41 0-2.6 0.45-4.44 1.09-4.44 0.69 0 0.9 1.04 0.54 2.72-0.32 1.49-0.89 10.2-1.26 19.41-0.57 14.49-0.43 17.19 0.97 19.9 2.01 3.89 2.03 5.19 0.13 5.19-0.81 0-1.48-0.11-1.5-0.25-0.02-0.13-0.31-2.03-0.63-4.19-0.31-2.16-1.15-4.8-1.9-5.87-1.22-1.74-1.36-1.27-1.35 4.44 0.02 7.38 0.74 10.76 2.32 10.81 0.61 0.02 1.89 0.66 2.87 1.4 0.98 0.75 1.44 1.53 1 1.76-1.59 0.8-5.2-1.72-6.31-4.41-1.62-3.92-1.8-16.21-0.25-18.25 1.77-2.34 1.63-10.14-0.28-13.97-1.59-3.19-1.59-9.11 0.06-30.5 0.32-4.22 3.74-15.32 5.09-16.59 0.03-0.02 0.05-0.04 0.07-0.04zm-95.53 0.63c0.07-0.01 0.14 0 0.21 0 0.35 0.02 0.64 0.25 0.72 0.75 0.09 0.54-0.03 0.59-0.28 0.12-0.24-0.46-0.86-0.23-1.37 0.5-0.64 0.91-0.84 0.96-0.63 0.13 0.22-0.84 0.81-1.4 1.35-1.5zm51.06 1.47c-2.16-0.07-5.38 1.09-5.38 2.34 0 1.67 1.18 1.8 2.66 0.32 0.77-0.78 1.27-0.78 1.75 0 0.37 0.59-0.05 1.06-0.91 1.06-1.83 0-2.05 1.61-0.31 2.31 2.27 0.92 2.75 0.66 3.75-1.97 0.62-1.63 0.67-2.96 0.09-3.53-0.33-0.33-0.93-0.51-1.65-0.53zm-44.75 1.37c0.47-0.02 1.13 0.03 2 0.16 2.78 0.41 4.78 2 8.43 6.63 1.44 1.82 1.53 1.81 0.97 0.09-0.5-1.58-0.37-1.65 0.91-0.59 0.83 0.68 2.92 1.52 4.62 1.87 3.62 0.74 4.24 2.76 2.16 6.94-0.92 1.84-1.96 2.69-2.87 2.34-0.79-0.3-1.44 0.03-1.44 0.72s-0.27 0.95-0.59 0.63c-0.33-0.33 0.13-2.02 1-3.76 1.96-3.93 2-3.66-0.91-3.5-2.26 0.14-2.44 0.56-2.44 4.85 0 2.57-0.46 4.65-1 4.65-1.08 0-1.22-0.51-1.09-3.43 0.05-1.08-0.18-1.46-0.47-0.81-0.29 0.64-1.16 0.95-1.94 0.65-0.9-0.35-1.42 0.11-1.47 1.28-0.04 1.09-0.61 0.43-1.4-1.62-1.62-4.21-1.81-6.22-0.5-5.41 1.55 0.96 1.16-1.12-0.47-2.47-0.91-0.75-1.23-2.08-0.88-3.5 0.42-1.65-0.04-2.63-1.53-3.56-2.16-1.35-2.51-2.09-1.09-2.16zm-3.91 0.38c0.53 0 1.24 1.23 1.6 2.72 0.35 1.49 0.95 3.14 1.31 3.69 0.36 0.54 0.57 3.47 0.5 6.56-0.07 3.08 0.27 5.4 0.72 5.12 0.44-0.27 0.82-1.7 0.87-3.15l0.1-2.63 0.84 2.75c1.77 5.9 2.78 23.44 2.16 37.56-0.66 14.76-0.66 14.77-1.32 6.41-0.36-4.6-0.73-13.78-0.78-20.41-0.06-7.31-0.5-12.06-1.09-12.06-0.97 0-1.15 4.45-1.47 33.44-0.16 14.42-0.84 19.25-3.19 21.91-0.83 0.94-1.81 1.71-2.15 1.71-1.02 0-3.01-2.24-2.97-3.37 0.04-1.33 4.87-4.92 4.87-3.63 0 0.54-0.43 1.26-0.97 1.6-1.19 0.73-1.31 3.43-0.15 3.43 1.19 0.01 3.19-6.7 3.37-11.31 0.5-12.61-0.38-43.78-1.25-43.78-0.62 0-1.06 7.9-1.16 21.41l-0.15 21.37-0.69-13.75c-0.38-7.57-1.03-21.1-1.44-30.03-0.4-8.93-0.93-16.55-1.18-16.97s-0.14-2.19 0.25-3.94c0.61-2.77 0.82-2.94 1.5-1.21 0.67 1.71 0.78 1.63 0.84-0.72 0.04-1.49 0.5-2.72 1.03-2.72zm85.97 0c0.91 0 0.46 11.8-0.47 12.37-0.48 0.3-0.9 1.8-0.9 3.35-0.01 1.54-0.45 2.96-1.04 3.15-0.58 0.2-1.41 2.79-1.84 5.75s-0.87 4.13-0.94 2.57c-0.06-1.57-0.73-3.34-1.5-3.94-1.06-0.83-1.22-2.23-0.65-5.81 0.77-4.88-0.26-7.31-1.47-3.47-0.38 1.2-1.34 2.83-2.13 3.62-1.23 1.23-1.55 1.23-2.34 0.03-0.51-0.76-0.76-2.6-0.56-4.09 0.22-1.71-0.12-2.72-0.91-2.72-2.51 0-2.41-1.99 0.16-2.97 1.78-0.68 3.03-0.67 3.84 0 0.87 0.72 1.51 0.32 2.31-1.43 0.73-1.59 1.65-2.23 2.63-1.85 0.96 0.37 1.5 0.02 1.5-0.97 0-1.33 2.7-3.59 4.31-3.59zm-53.78 1.41c0.14-0.1 0.05 0.88-0.22 3.03-0.27 2.16-0.52 5.15-0.5 6.65 0.03 2.86-4.01 7.6-6.5 7.6-0.73 0-1.34 0.48-1.34 1.03 0 0.56 1 0.7 2.31 0.37 3.23-0.81 3.97 1.73 1.84 6.25-0.94 2-2.49 3.79-3.44 3.97-1.49 0.29-1.71-0.5-1.71-5.9 0-5.04 0.48-6.96 2.47-9.88 1.35-1.99 2.43-3.92 2.43-4.31s0.64-1.4 1.38-2.25c0.74-0.86 1.83-2.91 2.43-4.53 0.47-1.26 0.74-1.96 0.85-2.03zm79.94 2.81c0.02 0 0.03 0.04 0.03 0.06 0 0.19-0.89 1.15-1.97 2.13-1.08 0.97-1.97 1.36-1.97 0.87s0.89-1.48 1.97-2.16c0.95-0.59 1.75-0.95 1.94-0.9zm-17.79 4.25c0.39 0.06 0.54 2.48 0.35 5.62-0.54 9.12-1 9.91-1.13 1.97-0.06-3.89 0.25-7.29 0.69-7.56 0.03-0.02 0.07-0.04 0.09-0.03zm-39.84 0.68c0.27-0.07 0.66 0.43 0.94 1.16 0.66 1.73 0.09 2.01-0.88 0.44-0.35-0.58-0.44-1.27-0.18-1.53 0.03-0.03 0.08-0.05 0.12-0.07zm26.69 1.35c-0.2 0.17-0.48 2.01-0.81 5.5-0.25 2.57-0.07 4.65 0.4 4.65 0.48 0 0.86-2.54 0.82-5.65-0.05-3.17-0.21-4.67-0.41-4.5zm-17.09 0.41c0.91-0.12 2.34 0.66 4.09 2.28 1.95 1.8 2.45 3 2.06 5.12-0.28 1.53-1.04 3.12-1.69 3.53-2.58 1.65-3.62 0.74-3.62-3.15 0-2.17-0.46-3.94-1-3.94s-0.97-0.89-0.97-1.97c0-1.16 0.41-1.79 1.13-1.87zm40.87 0.5c0.17-0.04 0.28-0.02 0.28 0.09 0 1.44-5.46 7.26-6.15 6.56-1.23-1.22-0.79-2.05 2.71-4.72 1.42-1.08 2.64-1.82 3.16-1.93zm84.53 2.37c0.85 0 11.19 10.66 11.19 11.53 0 0.26 0.94 1.79 2.09 3.41 1.15 1.61 2.49 4.51 3 6.5 1.24 4.84 1.89 32.64 0.82 35.12-0.83 1.92-0.84 1.93-0.91 0.07-0.09-2.52-1.61-0.9-2.44 2.62-0.63 2.67 0.73 3.88 1.69 1.5 0.27-0.68 0.55-0.28 0.59 0.91 0.08 2.28-5.06 6.95-8.4 7.62-1.01 0.2-3.08 0.83-4.57 1.41-1.69 0.65-2.72 0.69-2.72 0.09 0-0.53-0.45-0.94-1.03-0.94-0.57 0-0.77 0.43-0.43 0.97 0.33 0.54-0.55 1.43-1.97 1.97-3.56 1.35-4.45 1.23-3.78-0.5 0.46-1.21-0.49-1.47-5.25-1.47-6.02 0-8.19-1.08-8.19-4.12 0-0.98-0.43-1.78-0.97-1.78s-1-0.37-1-0.85c0-0.47 1.97-1.36 4.38-1.97 5.31-1.34 6.43-1.37 4.5-0.12-2.09 1.35 2.93 1.32 6.5-0.03 1.97-0.75 2.86-0.71 3.4 0.15 0.54 0.88 1.16 0.75 2.38-0.46 2.08-2.09 3.36-2.06 5.09 0.09 1.24 1.55 1.35 1.4 0.81-1.38-0.36-1.86 0.02-4.55 0.94-6.75 0.84-2 1.32-3.96 1.06-4.37-0.25-0.41 0.41-1.58 1.5-2.56 1.09-0.99 1.75-2.37 1.47-3.1-0.49-1.29-0.19-2.17 2.35-7.03 0.74-1.42 0.8-2.06 0.15-1.66-1.29 0.8-1.35-0.4-0.12-2.34 0.49-0.78 0.58-1.9 0.21-2.47-1.16-1.79-0.79-5.47 0.54-5.47 2.44 0 1.26-2.73-1.72-3.96-1.65-0.69-3.68-2.55-4.5-4.13-1.16-2.24-2.07-2.8-4.06-2.56-1.42 0.17-2.74-0.23-2.97-0.91s0.27-1.25 1.09-1.25 1.8-0.5 2.19-1.12c0.48-0.78-0.12-0.98-1.94-0.63-2.61 0.5-2.61 0.49-1-1.97 1.49-2.27 1.49-2.43 0.03-1.87-2.1 0.8-2.04-0.26 0.1-1.82 1.42-1.04 1.45-1.47 0.34-2.81-0.72-0.87-0.9-1.56-0.44-1.56zm-138.5 0.25c-0.6 0.09-1.26 0.62-1.56 1.53-0.22 0.64 0.3 1.16 1.16 1.16 0.85 0 1.53-0.71 1.53-1.57s-0.52-1.21-1.13-1.12zm-61.5 2.12c0.44 0.02 1.52 0.85 2.63 2.04 1.26 1.35 1.89 2.46 1.34 2.46-1.26 0-4.75-3.78-4.09-4.43 0.03-0.04 0.06-0.07 0.12-0.07zm71.06 0.13c0.3-0.02 0.54 0 0.69 0.09 1.52 0.92 0.64 1.98-3.03 3.6-4.61 2.03-6.18 2.09-5.47 0.25 0.51-1.34 5.72-3.82 7.81-3.94zm-27.12 1.44c0.53 0 1.74 1.2 2.69 2.69 0.94 1.48 2 2.94 2.34 3.21s1.14 1.47 1.78 2.69 1.93 2.22 2.91 2.22c0.97 0 2.27 1.09 2.87 2.41 0.97 2.13 0.81 2.48-1.4 3.21l-2.47 0.85 2.06 1.84c1.81 1.64 2.03 1.63 2.03 0.19 0-1.89 1.51-2.14 2.56-0.44 0.4 0.65 0.18 1.35-0.47 1.56-0.64 0.22-1.76 1.02-2.53 1.79-0.76 0.76-1.6 1.06-1.84 0.65s-2.35-4.29-4.66-8.62c-2.3-4.33-4.76-8.59-5.5-9.44-1.54-1.8-1.78-4.81-0.37-4.81zm-13.44 1.72c1.22-0.17 1.64 2.13 1.1 6.71-0.48 3.99-0.28 5.36 1.09 6.72 1.64 1.64 2.82 1.65 6.59 0.1 1.26-0.52 1.99 0.01 2.91 2.03 0.98 2.16 1 2.8 0.03 3.12-0.67 0.23-1.22 1.25-1.22 2.25 0 1.01-0.46 2.08-1 2.41-1.24 0.77-1.28 2.47-0.06 2.47 0.96 0 2.59-3.83 2.22-5.22-0.12-0.45 0.22-0.53 0.78-0.19 1.25 0.78 1.34 3.72 0.12 4.97-0.5 0.52-1.22 2.71-1.62 4.88-0.62 3.34-0.54 3.73 0.66 2.75 1.18-0.98 1.37-0.54 1.06 2.71-0.68 7.14 1.41 3.97 2.62-3.96 1.35-8.83 0.44-14.51-2.9-17.85-2.1-2.09-1.86-3.25 1-4.78 1.52-0.82 2.18-0.26 4.22 3.69 11.7 22.64 14.52 28.48 14.53 29.97 0 0.94 0.45 1.72 0.97 1.72 0.51 0 1.2 1.53 1.56 3.43 0.35 1.9 1.05 3.71 1.53 4 0.48 0.3 0.87 1.65 0.87 2.97s0.35 2.38 0.78 2.38c0.44 0 1.64 1.89 2.63 4.19 0.99 2.29 2.51 4.9 3.37 5.78 0.87 0.88 2.34 2.48 3.22 3.56 0.89 1.08 2.2 2.21 2.94 2.47s1.11 0.73 0.81 1.06c-0.71 0.79-8.84-3.2-8.84-4.34 0-0.49-0.83-1.74-1.84-2.75-2.07-2.07-7.05-12.31-8.91-18.32-0.67-2.16-2.07-5.8-3.12-8.06-1.06-2.26-2.17-5.34-2.44-6.87-0.28-1.53-0.9-2.93-1.38-3.1-0.47-0.17-1.63-2.6-2.56-5.4s-2.4-6.28-3.28-7.72c-1.53-2.52-1.59-2.11-1.56 9.03 0.01 6.39 0.12 11.5 0.25 11.37s0.88-1.94 1.62-4.06l1.35-3.87 1.03 8.34 1.06 8.38-0.25-6.66c-0.23-6.94 0.32-8.13 2.03-4.41 3.87 8.46 6.32 14.62 7.28 18.44 0.61 2.43 1.4 4.64 1.75 4.91s1.41 2.15 2.34 4.18c1.59 3.43 1.6 3.69 0.07 3.69-1.43 0-1.41 0.21 0.25 1.53 1.66 1.33 1.47 1.3-1.35-0.06-1.77-0.86-2.99-1.91-2.71-2.34 0.6-0.98-2.94-10.89-4.41-12.35-0.77-0.75-0.79-0.28-0.06 1.66 0.56 1.48 0.77 3.35 0.47 4.15-0.31 0.81 0.13 2.14 1 3 0.86 0.87 1.56 2.05 1.56 2.6 0 1.86-2.44 0.2-3.78-2.56-1.12-2.29-1.1-2.89 0-3.57 0.72-0.44 0.95-1.14 0.53-1.56s-1.18-0.12-1.66 0.66c-0.71 1.14-1.34 0.86-3.37-1.5-3.17-3.68-3.33-1.96-0.19 1.97 1.9 2.38 2.07 3.11 1.03 4.15-1.8 1.8-2.72 1.6-5.72-1.19-1.45-1.34-2.96-2.34-3.34-2.24-1.77 0.44-6.99-1.44-7.47-2.69-0.3-0.77-1.16-1.18-1.94-0.88-0.8 0.31-2.07-0.43-2.97-1.72-1.54-2.2-1.59-2.21-1.59-0.18 0 3.1-3.63 3.69-5.47 0.87-1.13-1.72-1.35-3.89-0.91-9.03 0.94-10.76 3.56-26.32 4.66-27.69 0.56-0.69 0.69-1.56 0.31-1.94-0.37-0.37-1.09-0.01-1.59 0.79-0.64 1-0.9-0.1-0.91-3.6-0.01-3.3 0.48-5.48 1.44-6.28 0.81-0.67 1.47-1.68 1.47-2.22 0-0.55-0.65-0.43-1.47 0.25-2.18 1.82-1.76-0.3 0.66-3.37 0.87-1.12 1.57-1.71 2.12-1.78zm-63.56 1.53c0.75-0.02 1.65 0.08 2.69 0.25 8.14 1.34 10.2 4.34 3 4.34-2.44 0-4.41-0.43-4.41-0.97s-0.43-0.97-0.94-0.97-1.05 1.66-1.22 3.69l-0.31 3.69-1.31-3.72c-1.5-4.23-0.78-6.22 2.5-6.31zm69.16 0.68c-0.55 0-1 0.43-1 0.97s0.45 1 1 1c0.54 0 0.96-0.46 0.96-1s-0.42-0.97-0.96-0.97zm34.9 0.13c1.23-0.03 1.47 0.62 1.47 1.91 0 1.78 0.39 2 2.72 1.37 5.37-1.46 9.09-1.26 9.09 0.47 0 2.01 3.8 12.94 5 14.41 0.92 1.11 3.13 31.96 2.35 32.75-0.25 0.24-0.47-0.64-0.47-1.97 0-1.34-0.49-2.96-1.1-3.57-1.52-1.52-2.77-9.01-1.62-9.71 0.51-0.32 0.64-1.3 0.28-2.19s-0.86-2.51-1.09-3.6c-1.78-8.18-2.18-8.73-1.82-2.46 0.98 16.78 2.11 26.18 3.53 28.84 0.53 0.97 0.83 2.95 0.66 4.41-0.24 2.11-0.49 2.36-1.25 1.18-0.91-1.4-1.52-4.7-3.37-18.34-0.45-3.31-1.18-6.59-1.63-7.31-0.44-0.72-0.91-3.65-1.06-6.53-0.51-9.51-2-9.04-2.63 0.84-0.55 8.75-2.14 14.61-4 14.63-0.47 0-0.54-1.01-0.15-2.22 1.44-4.56 1.64-7.42 0.59-8.07-0.65-0.4-1.06 0.15-1.06 1.41 0 1.3-0.43 1.84-1.13 1.41-1.12-0.7-0.79-6.02 1.07-18.13 0.45-2.97 0.51-5.76 0.12-6.19-0.39-0.42-0.78-0.19-0.87 0.5-0.8 6.08-1.4 9.38-1.88 10.63-0.31 0.81-0.46 2.45-0.34 3.66 0.35 3.61-0.9 4.5-2.97 2.12-1.19-1.37-1.81-3.48-1.72-5.72 0.12-2.97 0.19-3.08 0.53-0.81 0.74 4.89 2.39 2.88 2.09-2.56-0.21-3.97-0.65-5.23-1.78-5.16-0.82 0.05-1.78 0.75-2.15 1.56-0.49 1.07-0.67 0.88-0.72-0.72-0.04-1.21-0.58-2.21-1.16-2.21-0.57 0-0.75-0.46-0.43-0.97 0.31-0.52 1.33-0.66 2.21-0.32 1.18 0.46 1.43 0.22 1-0.9-0.32-0.85 0.08-2.45 0.88-3.6 0.8-1.14 1.04-2.09 0.53-2.09s-1.64 1.12-2.53 2.47-2.26 2.44-3.06 2.44c-2.02 0-1.83-0.98 0.75-3.72l2.22-2.31-2.97 0.65c-1.63 0.39-3.17 0.73-3.44 0.72-3.99-0.08-3.88-1.4 0.25-3.13 6.27-2.61 9.48-3.83 11.06-3.87zm43.56 1.84c1.12 0 0.52 20.14-0.81 27.53-0.63 3.52-1.63 6.72-2.25 7.13-0.82 0.54-0.78 0.97 0.19 1.59 1.36 0.88 0.99 5.24-0.81 9.47-0.46 1.08-1.08 2.74-1.38 3.69s-0.94 1.72-1.4 1.72c-1.19 0-0.15-6.23 1.18-7.1 0.71-0.46 0.23-1.28-1.31-2.37l-2.34-1.69 2.12-0.75c2.06-0.76 2.12-1.32 2.19-17.31 0.04-9.08 0.44-17.39 0.9-18.47 0.73-1.68 0.85-1.72 0.91-0.25 0.11 2.71 2.03 2 2.03-0.75 0-1.35 0.37-2.44 0.78-2.44zm-173.81 1.94c3.47 0 4.21 1.23 3.41 5.5-0.68 3.63-2.5 4.65-2.5 1.41 0-2.98-5.95-3.12-9.22-0.22-1.85 1.64-1.86 1.59-0.78-0.47 1.72-3.28 6.03-6.22 9.09-6.22zm202.03 1.97c2.18 0 1.85 1.73-0.47 2.47-1.08 0.34-1.97 1.21-1.97 1.94 0 0.72-1.31 1.77-2.93 2.34-1.63 0.57-2.97 1.49-2.97 2.06s-0.77 1.02-1.72 1c-1.36-0.03-1.14-0.5 1-2.25 1.49-1.22 2.69-2.72 2.69-3.31 0-1.35 4.35-4.25 6.37-4.25zm-186.37 1.09c1.17-0.09 1.97 0.15 1.97 0.88 0 0.54-0.89 1-1.97 1-3.75 0-1.96 1.87 2.43 2.53 4.68 0.7 5.16 2.36 0.69 2.38-1.45 0-4.63 0.65-7.06 1.4-2.43 0.76-5.32 1.66-6.41 2.03-1.66 0.58-1.58 0.41 0.41-1.22 1.63-1.33 1.97-2.12 1.16-2.62-0.89-0.55-0.89-1.06-0.03-2.09 1.79-2.17 6.22-4.08 8.81-4.29zm156.4 0.88c-0.54 0-1 0.92-1 2.03s0.46 1.77 1 1.44c0.54-0.34 0.97-1.25 0.97-2.03s-0.43-1.44-0.97-1.44zm19.32 0c0.81 0 1.17 0.46 0.84 1s-1.28 0.97-2.09 0.97c-0.82 0-1.18-0.43-0.85-0.97 0.34-0.54 1.28-1 2.1-1zm17.47 0.09c0.66 0 1.24 0.19 1.68 0.63 0.46 0.45-0.36 0.91-1.81 1.03-3.21 0.26-5.51 2.16-2.66 2.19 1.57 0.01 1.65 0.22 0.47 0.97-2.14 1.35-0.54 2.33 1.78 1.09 2.5-1.34 5.37-1.4 4.57-0.09-0.34 0.54-1.68 1-3 1s-2.41 0.42-2.41 0.96 0.54 1 1.22 1c0.82 0.01 0.76 0.34-0.22 0.97-2.77 1.79-6.91 0.16-6.91-2.75 0-3.25 4.39-6.98 7.29-7zm-180 2.22c0.35-0.06 0.56 0.17 0.56 0.6 0 0.57-0.43 1.03-0.97 1.03s-0.97-0.17-0.97-0.41 0.43-0.73 0.97-1.06c0.13-0.09 0.29-0.14 0.41-0.16zm-33.85 0.66c0.54 0 0.97 0.43 0.97 0.97s-0.43 1-0.97 1-1-0.46-1-1 0.46-0.97 1-0.97zm263.72 0c2.69 0 2.78 1.14 0.5 6.37-0.71 1.63-1.91 4.38-2.66 6.13-1.27 3-3.54 4.86-4.62 3.78-0.27-0.27 0.08-1.19 0.78-2.03s1.05-1.77 0.75-2.07c-0.3-0.29-1.96 1.52-3.69 4.04-4.26 6.19-13.5 15.15-16.37 15.87-1.29 0.32-2.97 0.33-3.75 0.03s-1.61-0.02-1.88 0.63c-0.37 0.9-0.47 0.91-0.53 0-0.04-0.65 1.53-1.94 3.5-2.88 3.16-1.49 11.86-7.51 14.6-10.06 0.54-0.5 2.08-2.34 3.43-4.06 1.36-1.73 3.36-4.15 4.44-5.41 3.95-4.6 5.41-6.85 5.41-8.31 0-1.8-7.8 5.71-7.85 7.56-0.02 0.68-0.46 1.22-1 1.22s-1 0.5-1 1.13c0 1.83-7.31 8.01-12.97 10.93-6.04 3.12-7.49 3.37-5.59 1.03 1.16-1.42 1.14-1.55-0.13-1.09-5.02 1.84-5.87 1.91-5.31 0.44 0.31-0.82 1.98-1.77 3.69-2.13 1.71-0.35 5.03-1.78 7.38-3.12 2.34-1.35 4.41-2.27 4.62-2.06 0.21 0.2-1.59 1.46-4 2.78-3.72 2.03-5.62 3.9-3.94 3.9 2.04 0 13.32-7.65 13.32-9.03-0.01-0.61-0.71-0.51-1.72 0.28-0.95 0.74 1.73-2.06 5.96-6.25 4.24-4.19 8.13-7.62 8.63-7.62zm-176.53 1.84c0.14-0.11 0.15 1.36 0.22 4.78 0.07 3.38-0.01 6.16-0.22 6.16-0.94 0-1.24-3.89-0.6-7.91 0.31-1.9 0.49-2.94 0.6-3.03zm-84.25 0.13c0.54 0 1 0.2 1 0.43 0 0.24-0.46 0.7-1 1.04-0.54 0.33-0.97 0.13-0.97-0.44 0-0.58 0.43-1.03 0.97-1.03zm268.72 0.53c0.09 0 0.19 0 0.28 0.03 2.94 1.13 2.03 13.28-1.72 23.53-0.79 2.17-1.71 5.8-2.09 8.06-0.75 4.45-1.84 5.06-10.32 5.69-2.09 0.16-4.27 0.57-4.87 0.94s-1.13 0.4-1.13 0.09c0-1.11 2.48-4.98 3.69-5.75 0.68-0.43 1.25-1.43 1.25-2.22 0-0.78 0.37-1.4 0.84-1.4 0.48 0 1.44-1.43 2.1-3.19s1.98-4.76 2.97-6.66c2.01-3.86 4.94-11.5 5.25-13.75 0.34-2.48 2.11-5.08 3.47-5.34 0.09-0.02 0.18-0.04 0.28-0.03zm-344.19 1.53c0.28 0.04 0.677 0.45 1.312 1.31 0.773 1.05 1.376 2.71 1.376 3.69-0.001 0.98-0.447 1.78-0.969 1.78-1.496 0-3.173-3.93-2.469-5.75 0.288-0.74 0.47-1.07 0.75-1.03zm248.59 0.87c-1.1 0-1.3 3.26-0.28 4.28 1.09 1.09 1.28 0.77 1.28-1.81 0-1.35-0.46-2.47-1-2.47zm-161.31 1c0.54 0 0.97 0.17 0.97 0.41s-0.43 0.73-0.97 1.06c-0.54 0.34-1 0.14-1-0.43 0-0.58 0.46-1.04 1-1.04zm134.38 0c-1.58 0-3.77 2.4-2.94 3.22 0.87 0.87 3.11-0.22 3.72-1.81 0.3-0.78-0.04-1.41-0.78-1.41zm-216.47 0.32c0.152 0.02 0.338 0.15 0.562 0.37 1.215 1.22-0.372 7.48-2.562 10.13-0.673 0.81-1.483 2.12-1.782 2.93-0.357 0.97-0.542 1.06-0.594 0.22-0.042-0.7 0.793-3 1.876-5.12 1.082-2.12 1.968-5.08 1.968-6.57 0-1.23 0.126-1.83 0.406-1.93 0.043-0.02 0.075-0.04 0.126-0.03zm288.22 0.12c1.71-0.13 2.4 0.52 2.4 2.06 0 1.69-2.65 1.8-5.37 0.22-1.85-1.07-1.79-1.15 0.9-1.87 0.81-0.22 1.49-0.36 2.07-0.41zm-17.88 0.75c2.02-0.04 3.69 0.16 4.03 0.72 0.35 0.57 1.4 1.03 2.32 1.03 0.91 0 3.62 1.67 6 3.72 3.71 3.2 4.15 4.03 3.24 5.72-0.95 1.78-0.42 5.47 2.54 17.37 0.1 0.41 0.18 1.47 0.18 2.35 0 1.22 0.65 1.46 2.72 1.03 1.49-0.31 4.15-0.85 5.91-1.22 2.57-0.53 3.19-0.38 3.19 0.91 0 0.88-0.49 1.51-1.1 1.37-0.61-0.13-1.3 0.25-1.53 0.88-0.23 0.62 1.54 1.89 3.94 2.81 4.78 1.82 7.8 6.01 5.41 7.53-2.05 1.29-2.8 1-5.72-2.13-1.52-1.62-3.48-2.96-4.35-2.96-2.22 0-1.98 0.87 1.07 3.68l2.68 2.47-3.62 3.31c-3.82 3.5-7.51 4.25-9.78 1.97-0.75-0.74-2.71-2.04-4.38-2.9s-3.31-2.3-3.66-3.19c-0.34-0.91-1.25-1.37-2.06-1.06-0.79 0.3-1.71 0.14-2.03-0.38-0.32-0.51-1.53-0.89-2.72-0.84-1.84 0.07-1.73 0.24 0.85 1.37 3.26 1.44 7.04 5.01 4.09 3.88-1.13-0.43-1.51-0.05-1.41 1.37 0.12 1.54 1.08 2.1 4.38 2.6 4.49 0.67 4.87 2.47 0.53 2.47-1.41 0-2.26 0.33-1.87 0.71 0.38 0.39 2.48 0.57 4.62 0.41 2.3-0.16 3.88 0.16 3.88 0.78 0 0.6-1.93 1.07-4.41 1.07-3.39-0.01-4.63-0.46-5.44-1.97-0.58-1.09-1.47-1.97-2-1.97s-1.7 0.88-2.62 1.97c-1.99 2.32-6.19 2.66-6.19 0.5 0-0.82-0.46-1.5-1-1.5s-0.97 0.42-0.97 0.93 0.43 1.2 0.97 1.54c0.54 0.33 1 1.02 1 1.53 0 1.87-1.68 0.84-2.91-1.79-1.18-2.53-1.31-2.56-2.06-0.71-0.99 2.45-1.19-6.06-0.28-11.57 0.71-4.29 5.18-9.2 9.22-10.09 1.91-0.42 2.87-1.38 3.28-3.25 0.34-1.6 2.14-3.74 4.53-5.41 2.18-1.52 3.94-3.21 3.94-3.75 0-0.53-1.51 0.2-3.38 1.63-2.5 1.91-3.99 2.4-5.65 1.87-6.86-2.17-12.59-9.92-12.57-16.96 0.01-2.55 0.37-5.25 0.85-6 0.66-1.05 4.98-1.79 8.34-1.85zm-78.69 0.41c0.3 0.02 0.51 0.22 0.72 0.56 0.94 1.52 0.19 2.75-1.65 2.75-0.78 0-1.41 0.46-1.41 1s0.66 0.97 1.47 0.97 1.47-0.43 1.47-0.97 0.46-1 1-1 0.97 0.66 0.97 1.47-0.38 1.5-0.88 1.5-1.59 0.22-2.41 0.53c-0.9 0.35-1.9-0.24-2.59-1.53-0.95-1.78-0.77-2.41 1.09-4.03 1.04-0.9 1.72-1.29 2.22-1.25zm-104.87 0.44c2.05 0.05 1.66 0.34-1.75 1.28-2.44 0.66-6.41 2.46-8.84 4-2.44 1.54-4.73 3.31-5.13 3.9-0.52 0.78-0.74 0.78-0.75-0.03-0.05-3.49 10.39-9.31 16.47-9.15zm-98.658 0.28c0.209-0.01 0.492 0.18 0.907 0.53 0.753 0.62 1.597 2.03 1.875 3.09 0.278 1.07 0.153 2.13-0.25 2.38-1.246 0.77-3-1.68-3-4.19 0-1.2 0.121-1.8 0.468-1.81zm115.53 0.62c0.58 0 1.07 0.46 1.07 1s-0.2 0.97-0.44 0.97-0.7-0.43-1.03-0.97c-0.34-0.54-0.17-1 0.4-1zm99.82 0.19c-0.21 0.07-0.32 0.6-0.28 1.37 0.04 1.15 0.24 1.38 0.56 0.6 0.28-0.71 0.26-1.55-0.06-1.88-0.09-0.08-0.16-0.12-0.22-0.09zm-219.13 0.09c0.256-0.12 0.328 0.46 0.344 1.88 0.03 2.64 1.638 4.85 4.75 6.59 2.331 1.31 1.163 1.88-1.406 0.69-3.151-1.46-5.619-6.09-4.375-8.22 0.325-0.56 0.534-0.86 0.687-0.94zm178.59 0.38c-0.92 0.08-0.93 0.56-0.56 1.75 0.35 1.11 1.03 2.19 1.5 2.37s0.85 1.36 0.85 2.63c0 3.1 2.58 15.47 4.56 21.97 1.1 3.61 1.89 4.89 2.59 4.18 0.7-0.7 0.56-2.33-0.53-5.25-0.86-2.32-1.85-5.99-2.15-8.15-0.46-3.18 0.05-2.43 2.65 3.94 1.77 4.32 3.59 8.48 4.06 9.21 0.56 0.86 0.37 1.64-0.5 2.19-0.74 0.47-0.88 0.88-0.34 0.88 2.95 0 3.1-1.64 0.69-6.88-2.6-5.64-3.96-10.08-4.82-15.47-0.27-1.75-0.88-2.97-1.34-2.69-1.1 0.69-2.28-5.75-1.5-8.21 0.52-1.65 0.1-1.97-2.84-2.32-0.79-0.09-1.39-0.14-1.85-0.15-0.17-0.01-0.33-0.01-0.47 0zm-66.21 0.68-2.6 2.26c-2.15 1.85-2.55 2.95-2.31 6.28 0.16 2.21-0.26 4.65-0.91 5.43-0.93 1.13-0.91 1.4 0.16 1.41 1.1 0.01 1.09 0.21-0.06 0.94-1.17 0.74-1.19 1.15-0.13 2.44 1.42 1.7 5.97 2.13 5.97 0.56 0-0.54-0.54-0.96-1.22-0.97-0.82-0.01-0.73-0.35 0.25-1 1.06-0.7 1.13-1.19 0.32-1.72-0.63-0.41-1.29-2.29-1.47-4.19-0.31-3.12-0.08-3.47 2.37-3.75 3.25-0.37 3.63-2.09 0.5-2.25-1.59-0.08-1.73-0.24-0.53-0.56 0.92-0.24 1.95-1.3 2.28-2.34 1.07-3.39 2.19-2.03 2.88 3.46 0.76 6.09-0.54 9.71-5.38 15.04-1.6 1.75-3.01 3.18-3.15 3.12-0.15-0.05-1.77-0.47-3.6-0.9-7.12-1.69-11.27-7.03-11.37-14.66-0.06-3.82 0.29-4.51 2.93-6 1.65-0.93 5.71-1.92 9.04-2.16l6.03-0.44zm160.75 0.97c0.22-0.04 0.41 0.01 0.53 0.13 0.26 0.26-0.58 2.03-1.88 3.94-2.64 3.88-3.84 4.36-3.84 1.56 0-1.63 3.64-5.35 5.19-5.63zm15.84 0.66c-4.78 0-8.29 3.24-4.56 4.22 2.93 0.76 3.2 0.72 5.68-0.91 2.85-1.86 2.35-3.31-1.12-3.31zm15.53 0.06c0.92-0.04 1.95 0.37 2.28 0.91 0.7 1.13 0.67 1.13-1.97 0-1.6-0.69-1.66-0.85-0.31-0.91zm-180.81 0.1c0.07-0.03 0.17 0.01 0.25 0.09 0.33 0.33 0.35 1.16 0.06 1.88-0.31 0.78-0.55 0.58-0.59-0.57-0.03-0.78 0.08-1.33 0.28-1.4zm135.03 0.18c-0.44-0.09-0.6 0.72-0.56 2.66 0.06 3.19 0.14 3.23 1.15 1.13 0.8-1.67 0.79-2.53-0.06-3.38-0.22-0.22-0.38-0.37-0.53-0.41zm-33.84 1.07c-0.07 0-0.15 0.02-0.22 0.06-0.54 0.33-1 1.71-1 3.06 0 1.39 0.44 2.19 1 1.84 0.54-0.33 0.97-1.7 0.97-3.06 0-1.21-0.3-1.96-0.75-1.9zm-57.1 1.75c0.2-0.08 0.53 0.12 0.97 0.56 0.64 0.64 0.94 1.38 0.66 1.65-0.28 0.28-0.77 0.24-1.13-0.12s-0.69-1.13-0.69-1.69c0-0.23 0.07-0.36 0.19-0.4zm75.13 0.34c0.05-0.11 0.12 0.24 0.18 1.13 0.2 2.82 0.2 7.68 0 10.81-0.19 3.13-0.37 0.82-0.37-5.13 0-4.09 0.08-6.57 0.19-6.81zm-142.5 0.41c-2.56 0-4.63 0.48-4.63 1.06 0 0.61 1.62 0.87 3.94 0.66 5.63-0.53 6.11-1.72 0.69-1.72zm179.15 0c-0.99-0.01-1.81 0.81-1.81 2.46 0 1.98 0.51 2.47 2.5 2.47 1.75 0 2.75 0.75 3.41 2.47 1.07 2.81 2.2 3.1 3.93 1 1.01-1.21 0.77-1.65-1.37-2.47-1.42-0.54-3.07-2.07-3.69-3.43-0.75-1.66-1.97-2.5-2.97-2.5zm-68.21 0.12c0.91 0 1.59 1.25 2.68 4.06 0.89 2.3 2.51 6.43 3.6 9.19l1.96 5.06-2.87-0.12c-3.44-0.12-3.75-1.29-0.69-2.59 2.05-0.88 2.03-0.91-0.62-0.69-3.38 0.28-4.77-2.1-1.69-2.91 2.11-0.55 2.61-1.45 1.44-2.62-0.36-0.37-1.44 0.05-2.38 0.9-2.45 2.22-3.23 0.12-0.93-2.53 2.28-2.63 1.77-3.94-1.54-3.94-2.75 0-2.94-0.52-0.96-2.5 0.81-0.82 1.45-1.31 2-1.31zm-35.94 1.41c-0.44 0.03-0.92 1-1.13 2.4-0.34 2.34-0.16 2.68 0.88 1.82 1.49-1.24 1.72-3.4 0.43-4.19-0.06-0.04-0.12-0.04-0.18-0.03zm164.09 0.65c1.56-0.2-5.23 9.87-10.03 14.32-4.29 3.96-6.47 5.09-6.47 3.4 0-0.42 3.12-3.6 6.91-7.09 3.78-3.49 6.87-6.85 6.87-7.47s0.66-1.7 1.47-2.38c0.59-0.49 1.03-0.75 1.25-0.78zm-237.34 0.13c-0.57-0.1-1.66 0.25-3.1 1.03l-2.78 1.5 2.63 0.06c1.45 0.02 2.98-0.45 3.34-1.03 0.57-0.93 0.48-1.46-0.09-1.56zm170.12 0.06c0.47-0.01 0.57 1.09 0.57 4.03 0 4.1 0.43 5.19 2.71 7.06 3.39 2.77 2.43 3.03-1.06 0.29-3.38-2.67-5.12-8.69-3.09-10.72 0.4-0.41 0.66-0.65 0.87-0.66zm69.13 1.72c0.21-0.04 0.27 0.3 0.28 0.97 0.02 0.88-0.66 2.14-1.47 2.81-1.89 1.57-1.91-0.01-0.03-2.5 0.61-0.8 1-1.24 1.22-1.28zm-173.41 0.34 0.5 9.85c0.3 5.41 0.28 17.13-0.06 26.06s-0.9 24.66-1.25 34.94-1.05 21.54-1.56 25.06c-1.94 13.24-1.9 15.68 0.25 17.19 1.19 0.83 1.73 2.01 1.37 2.93-0.32 0.85-0.17 1.54 0.31 1.54 0.49 0 1.02-1.23 1.19-2.72 0.57-4.97 7.69-3.53 7.69 1.56 0 1.08-0.47 2.11-1.06 2.31-0.6 0.2-1.1 2.04-1.1 4.07 0 2.55-0.55 3.98-1.81 4.65-2.54 1.36-3.02 1.2-3.59-1-0.28-1.06-1.25-2.18-2.16-2.47s-1.73-1.45-1.81-2.59c-0.09-1.14-0.85-2.82-1.69-3.75-2.07-2.28-2.11-28.15-0.06-42.72 0.81-5.78 1.51-14.14 1.56-18.59 0.05-4.46 0.74-14.3 1.5-21.88 0.76-7.57 1.46-18.41 1.56-24.09l0.22-10.35zm-77.28 0.57c0.28-0.06 0.52-0.01 0.72 0.18 0.25 0.25 0.18 1.18-0.16 2.07-0.76 1.99-2.37 2.14-2.37 0.21 0-1.1 0.98-2.28 1.81-2.46zm88.13 0.09c-0.4 0.13-1.09 1.74-2.19 5.16-1.21 3.74-2.19 7.6-2.19 8.59 0 3.04 0.85 2.05 1.97-2.34 0.58-2.3 1.53-5.12 2.09-6.25 0.57-1.14 0.89-3.14 0.69-4.44-0.08-0.54-0.2-0.78-0.37-0.72zm-164.29 0.28c0.065 0.01 0.142 0.09 0.218 0.28 0.273 0.68 0.273 1.79 0 2.47-0.272 0.68-0.499 0.14-0.5-1.22 0-0.84 0.087-1.38 0.219-1.5 0.02-0.01 0.041-0.03 0.063-0.03zm-3 2.38c0.294 0.01 0.781 0.65 1.25 1.65 0.635 1.36 0.734 2.41 0.218 2.41-1.093 0-2.169-2.48-1.687-3.88 0.047-0.13 0.121-0.19 0.219-0.18zm278.29 1.34c-1.22-0.03-4.22 1.72-4.22 2.66 0 1.07 3.78 0.16 4.56-1.1 0.32-0.51 0.34-1.16 0.06-1.43-0.08-0.09-0.23-0.13-0.4-0.13zm-13.66 0.09c0.35-0.06 1 0.58 1.53 1.57 1.29 2.4 0.83 2.69-0.94 0.56-0.68-0.83-1.02-1.76-0.72-2.06 0.04-0.04 0.08-0.06 0.13-0.07zm-258.6 1.07c0.1-0.03 0.206-0.02 0.281 0.06 0.303 0.3 0.016 1.11-0.656 1.78-0.972 0.96-1.096 0.84-0.562-0.56 0.277-0.73 0.637-1.21 0.937-1.28zm291.88 0c0.45-0.1 0.75 0.49 0.75 1.43 0 1.09-0.43 2.26-0.97 2.6-0.54 0.33-1-0.26-1-1.35 0-1.08 0.46-2.26 1-2.59 0.07-0.04 0.16-0.08 0.22-0.09zm-115.31 0.59c-0.54 0-1 0.89-1 1.97s0.46 1.97 1 1.97 0.97-0.89 0.97-1.97-0.43-1.97-0.97-1.97zm143.19 0.25c0.28-0.02 0.11 0.44-0.47 1.53-0.6 1.12-1.57 2.32-2.16 2.69-0.77 0.48-0.78 0.11 0-1.35 0.6-1.11 1.6-2.32 2.19-2.68 0.19-0.12 0.34-0.18 0.44-0.19zm-48.38 2.06c-0.12 0.02-0.24 0.04-0.38 0.13-0.54 0.33-1 0.82-1 1.06s0.46 0.44 1 0.44c0.55 0 0.97-0.49 0.97-1.06 0-0.43-0.24-0.63-0.59-0.57zm67.88 0c-0.12 0.02-0.24 0.04-0.38 0.13-0.54 0.33-1 0.82-1 1.06s0.46 0.44 1 0.44 0.97-0.49 0.97-1.06c0-0.43-0.24-0.63-0.59-0.57zm65 0.16 0.78 5.25c0.83 5.77-1.18 11.94-3.88 11.94-1.19 0-1.13-0.28 0.19-1.6 0.87-0.87 1.29-1.86 0.97-2.18-0.33-0.33-0.99 0.07-1.5 0.87-0.82 1.27-1.07 1.26-1.97-0.03-0.85-1.23-0.99-1.14-0.75 0.47 0.19 1.29-0.37 2.02-1.69 2.25-1.62 0.27-1.71 0.15-0.5-0.69 1-0.69 1.08-1.05 0.25-1.06-0.69-0.01-1.22-1.21-1.22-2.75 0-1.52 0.54-3.34 1.22-4.06 1.01-1.09 0.94-1.25-0.47-0.76-2.47 0.88-2.23-1.93 0.28-3.28 1.12-0.59 2.55-0.92 3.16-0.72 0.61 0.21 2.02-0.54 3.13-1.65l2-2zm-295.41 1.03c0.09-0.02 0.29 0 0.65 0.09 0.73 0.19 1.96 0.35 2.72 0.35 2.56 0 1.43 1.9-1.93 3.31-1.83 0.76-3.64 1.9-4 2.5-0.84 1.35-3.5 1.42-3.5 0.09 0-0.54 0.59-1 1.31-1 1.65 0 6.02-4.53 4.94-5.12-0.23-0.12-0.28-0.2-0.19-0.22zm210.22 2.72c0.07 0.01 0.1 0.09 0.09 0.22-0.02 0.51-0.67 1.79-1.47 2.84-0.79 1.05-1.42 1.48-1.4 0.97 0.01-0.51 0.67-1.76 1.47-2.81 0.59-0.79 1.1-1.26 1.31-1.22zm-4.07 0.19c0.16-0.01 0.26 0.08 0.26 0.28 0 0.51-0.66 1.48-1.47 2.15-0.82 0.68-1.47 0.94-1.47 0.57 0-0.38 0.65-1.38 1.47-2.19 0.5-0.51 0.95-0.8 1.21-0.81zm-230.62 1.9c3.48-0.07 8.56 1.25 8.56 2.53 0 0.52-1.77 0.94-3.94 0.94-2.16 0-3.93-0.43-3.93-0.97s-0.43-0.97-0.97-0.97-1 0.66-1 1.47c0 0.84-0.88 1.47-2.03 1.47-2.95 0-2.02-3.07 1.25-4.16 0.54-0.18 1.26-0.29 2.06-0.31zm28.81 0.57c0.15-0.01 0.28-0.02 0.41 0 0.61 0.06 1 0.36 1 0.87 0 0.5-0.57 1.15-1.25 1.47-0.98 0.46-0.98 0.7 0 1.16 2.16 1 1.33 2.37-1.47 2.4-2.59 0.03-2.61 0.09-0.78 1.47 1.79 1.36 1.68 1.44-1.66 1.44-1.95 0-4.12 0.15-4.84 0.34-2.09 0.55-21.5-1.45-21.5-2.22 0-1.1 8.72-2.94 16.72-3.53 4.04-0.3 8.32-1.21 9.53-2 1.35-0.89 2.82-1.37 3.84-1.4zm152.19 0.03c0.5 0.03-0.27 1.3-2.53 3.5-2.01 1.95-3.66 3.95-3.66 4.43s-0.44 0.85-1 0.85c-1.49 0 0.71-3.77 3.81-6.5 1.83-1.61 2.99-2.31 3.38-2.28zm-147.69 0.15c0.19-0.08 0.61 0.2 1.31 0.78 0.82 0.68 1.5 1.59 1.5 2.07 0 1.46-1.71 0.96-2.34-0.69-0.52-1.35-0.71-2.05-0.47-2.16zm29 0.78c0.21 0 0.35 1.32 0.35 2.94s-0.34 2.94-0.78 2.94c-0.45 0-0.65-1.32-0.41-2.94s0.63-2.94 0.84-2.94zm54.35 0c0.84-0.04 2.1 1.14 3 3.19 1.85 4.25 7.73 13.35 10.78 16.72 1.34 1.49 3.44 2.72 4.65 2.72 2.31 0 6.29-4.18 6.29-6.59-0.01-0.78 0.42-1.15 0.96-0.82 0.54 0.34 1 0.05 1-0.65 0.01-0.71 0.98-0.13 2.19 1.31 1.22 1.43 2.91 2.81 3.72 3.09 0.95 0.33 0.68 0.55-0.72 0.6-1.24 0.04-2.61-0.78-3.22-1.91-1.41-2.63-3.11-1.5-2.34 1.56 0.45 1.8 0.18 2.41-1 2.41-0.87 0-1.59 0.69-1.59 1.56-0.01 1-0.54 1.39-1.47 1.03-0.89-0.34-1.47-0.01-1.47 0.82 0 2.07-1.59 2.68-2.91 1.09-0.64-0.77-2.46-1.69-4.03-2.03-3.35-0.74-11.3-9.19-13.47-14.28-0.8-1.9-1.86-4.21-2.34-5.16-0.55-1.08-0.5-1.72 0.12-1.72 0.55 0 0.97-0.66 0.97-1.47 0-0.99 0.37-1.44 0.88-1.47zm53.43 0.1c0.57-0.09 0.81 0.29 0.6 0.94-0.24 0.71-1.01 1.48-1.72 1.71-0.74 0.25-1.09-0.1-0.85-0.84 0.24-0.71 1.01-1.51 1.72-1.75 0.1-0.03 0.17-0.05 0.25-0.06zm-138.47 0.87c0.24 0 0.7 0.43 1.04 0.97 0.33 0.54 0.16 1-0.41 1s-1.06-0.46-1.06-1 0.2-0.97 0.43-0.97zm-44.24 1.07c0.36 0.05 0.25 0.49-0.07 1.31-0.58 1.53-5.31 2.78-5.31 1.4 0-0.48 1.14-1.31 2.53-1.84 1.63-0.62 2.48-0.93 2.85-0.87zm91.4 0c-0.22-0.08-0.14 0.31 0.19 1.18 0.37 0.97 0.91 1.52 1.22 1.22 0.3-0.3 0.01-1.11-0.66-1.78-0.36-0.36-0.61-0.58-0.75-0.62zm-24.56 0.28c0.35 0.01 0.59 0.43 0.59 1.06 0 0.84-0.46 1.53-1 1.53s-0.97-0.43-0.97-0.94 0.43-1.19 0.97-1.53c0.14-0.08 0.29-0.13 0.41-0.12zm-63.34 0.62c0.54 0 0.96 0.43 0.96 0.97s-0.42 1-0.96 1c-0.55 0-1-0.46-1-1s0.45-0.97 1-0.97zm-66.818 1.97c0.445-0.09 1.434 0.21 2.844 0.97 2.394 1.28 5.906 7.07 5.906 9.72 0.001 1.15-0.395 2.09-0.906 2.09-1.459 0-4-4.14-4-6.53 0-1.19-1.168-3.1-2.594-4.22-1.5-1.18-1.821-1.92-1.25-2.03zm213.5 0.13c0.14-0.07 0.46 0.28 0.97 1.15 0.58 0.99 0.85 2.03 0.59 2.28-0.25 0.26-0.75-0.24-1.09-1.12-0.53-1.39-0.65-2.23-0.47-2.31zm53.19 0.09c-0.12 0.04-0.19 0.17-0.19 0.41 0 0.55 0.3 1.32 0.66 1.68s0.88 0.41 1.16 0.13c0.27-0.28-0.02-1.02-0.66-1.66-0.44-0.44-0.77-0.63-0.97-0.56zm116.22 0.19c0.23 0.06 0.43 0.74 0.78 2.06 0.9 3.36 0.59 4-1 2.09-0.63-0.75-0.82-2.19-0.44-3.19 0.22-0.57 0.41-0.87 0.57-0.93 0.03-0.02 0.06-0.04 0.09-0.03zm-389.5 0.12c0.079 0.04 0.168 0.25 0.281 0.69 0.409 1.57 1.519 2.16 3.5 1.84 0.406-0.06 0.75 0.34 0.75 0.88s-0.428 0.97-0.969 0.97c-1.75 0-1.06 1.98 0.719 2.06 1.028 0.05 1.235 0.26 0.5 0.56-1.74 0.7-1.52 2.31 0.312 2.31 0.918 0 1.237 0.44 0.813 1.13-0.415 0.67 0.471 2.09 2.125 3.4 1.554 1.24 2.604 2.49 2.344 2.76-0.602 0.6-6.209-4.36-7.156-6.32-0.393-0.81-1.374-2.58-2.157-3.94-0.782-1.35-1.367-3.55-1.312-4.9 0.042-1.04 0.117-1.51 0.25-1.44zm68.281 2.1c1.8-0.12 3.97 1.38 9.53 5.71 5.13 4 13.99 9.37 15.53 9.41 0.67 0.02 2.96 0.86 5.13 1.91 2.16 1.04 4.72 1.92 5.68 1.93 1.35 0.03 1.67 0.68 1.38 2.75-0.35 2.47-0.69 2.71-4.19 2.5-2.11-0.12-5.32 0.02-7.15 0.32-3.13 0.5-3.27 0.61-1.72 2.15 1.28 1.28 3.5 1.66 9.9 1.66 6.99 0 8.41 0.32 9.38 1.87 0.82 1.32 0.86 2.12 0.09 2.88-0.76 0.76-1.06 0.58-1.06-0.66 0-2.47-1.63-1.12-2.19 1.81-0.36 1.9-0.09 2.47 1.25 2.47 0.96 0 1.95-0.54 2.19-1.21 0.24-0.68 0.8-0.89 1.25-0.47s-1.41 3.08-4.16 5.9c-2.74 2.83-5.51 6.12-6.12 7.31-0.77 1.51-1.63 1.96-2.81 1.5-1.61-0.61-1.62-0.49-0.07 1.88 1.33 2.03 1.48 3.31 0.72 6.69-1.03 4.6-3.88 8.32-4.62 6.09-0.3-0.89-0.9-0.56-1.97 0.97-1.12 1.6-1.22 2.31-0.38 2.59 1.44 0.48 1.61 11.66 0.19 12.54-1.16 0.71-1.33 3.43-0.22 3.43 0.42 0 1.49-2.31 2.38-5.15 1.31-4.2 1.65-4.64 1.72-2.32 0.08 3.18-4.02 10.87-6.25 11.72-2.23 0.86-3.88-1.77-2.07-3.28 0.82-0.68 1.48-1.93 1.47-2.81 0-1.03-0.7-0.56-1.97 1.34-1.07 1.63-1.74 3.5-1.5 4.16 0.25 0.66-0.29 1.65-1.21 2.19-1.55 0.9-1.53 0.97 0.15 1 1.5 0.02 1.27 0.5-1.15 2.62-3.14 2.75-17.82 9.65-18.69 8.78-0.29-0.28 1.2-1.23 3.31-2.09 7.46-3.05 14.09-6.34 14.69-7.31 0.84-1.37 0.11-1.23-4.07 0.75-2.68 1.27-3.73 1.41-4.03 0.53-0.41-1.22-0.64-1.14-6.68 1.94-1.63 0.82-4.49 1.79-6.38 2.18-1.89 0.4-3.9 1.09-4.44 1.5-1.06 0.81-8.35 2.5-14.87 3.47-3.01 0.45-5.25 1.73-8.6 4.94-2.49 2.39-4.56 4.49-4.56 4.65 0 0.17 0.91 0.36 2 0.44 1.1 0.08 1.73-0.29 1.41-0.81s-0.04-0.84 0.65-0.69c0.7 0.15 1.29-0.21 1.32-0.84 0.05-1.46 4.86-5.25 6.65-5.25 0.76 0 1.83-0.48 2.41-1.06s2.52-0.93 4.31-0.75c3.23 0.31 3.25 0.35 0.88 1.5-1.32 0.63-3.67 1.42-5.19 1.75-2.88 0.62-14.44 11.2-14.44 13.21 0 0.64-2.89 4.06-6.4 7.6-3.52 3.53-6.379 6.64-6.379 6.94 0 0.29 1.085 0.32 2.438 0.06 1.352-0.26 2.471-0.12 2.471 0.28 0 1.15-4.792 1.79-5.159 0.69-0.18-0.54-2.509 0.61-5.187 2.62-7.641 5.73-8.438 6.47-7.875 7.38 0.29 0.47-0.195 1.11-1.031 1.43-1.02 0.4-1.274 0.23-0.813-0.59 0.527-0.93 0.39-0.97-0.563-0.09-0.683 0.63-1.747 2.17-2.374 3.44-0.628 1.26-2.12 2.45-3.313 2.62-1.571 0.23-2.487 1.39-3.344 4.25-1.009 3.37-1.525 3.87-3.469 3.5-1.253-0.24-2.281-0.06-2.281 0.41 0 0.46 0.428 0.87 0.969 0.87 1.817 0 1.012 1.61-1.469 2.94-1.352 0.72-2.468 1.87-2.469 2.53 0 0.66-1.084 1.4-2.437 1.66-1.649 0.31-2.469 0.02-2.469-0.88 0-0.74-0.427-1.34-0.968-1.34-0.542 0-1 0.88-1 1.97 0 1.08-0.428 1.97-0.969 1.97s-1.015-0.78-1.031-1.72c-0.029-1.64-0.046-1.64-1 0-1.41 2.42-3.836 2.23-3.188-0.25 0.283-1.09 1.127-1.97 1.875-1.97s1.375-0.43 1.375-0.97c0-1.79-2.819-1.04-4.375 1.19-1.696 2.42-2.097 1.65-0.594-1.16 1.346-2.52 15.913-13.09 19.657-14.28 1.442-0.46 1.935-1.2 1.562-2.38-0.361-1.13 0.883-3.28 3.656-6.31 5.035-5.49 5.546-6.12 8.625-10.53 1.322-1.89 5.128-6.1 8.469-9.34 3.341-3.25 7.48-8.54 9.219-11.78 3.161-5.91 11.801-15.26 19.161-20.72 2.14-1.6 4.7-3.69 5.68-4.66 0.99-0.97 2.81-2.17 4-2.69 1.2-0.52 2.82-1.33 3.63-1.81s2.58-1.35 3.93-1.88c1.36-0.52 4.02-1.59 5.91-2.4s7.37-2.07 12.16-2.78c5.51-0.82 9.51-1.95 10.84-3.1l2.06-1.81-2.84 0.66c-2.02 0.46-2.65 0.33-2.16-0.47 0.42-0.67 0.08-1.16-0.87-1.16-1.48 0-1.47-0.12 0-1.59 2.69-2.69 0.65-2.86-2.22-0.19-5.06 4.71-12.02 4.37-10.47-0.53 0.55-1.73 0.46-1.91-0.75-0.91-1.14 0.95-1.94 0.87-3.84-0.43-3.19-2.18-3.83-3.23-3.85-6.29-0.02-3.69 3.41-7.56 7.38-8.31 1.86-0.35 3.12-1.03 2.81-1.53s-2.12-0.64-4.03-0.28c-3.27 0.61-3.36 0.55-2.34-1.34 0.59-1.11 1.52-2.19 2.09-2.38s1.46-3.15 1.94-6.56c1.07-7.58 2.13-9 6.84-9 4.22 0 9.88-1.73 9.88-3.03 0-1.21-4.65-1.13-5.41 0.09-0.8 1.29-4.44 1.26-4.44-0.03 0-0.55-1.24-0.9-2.75-0.78-4.03 0.31-4.99-0.73-5.68-6-0.56-4.22-0.9-4.75-3.04-4.75-1.83 0-2.25 0.37-1.75 1.59 1.78 4.3 1.67 4.94-1.15 5.57-4.63 1.01-5.32 1.35-5.32 2.53 0 0.62 0.85 0.89 1.88 0.62 2.32-0.6 4.78 0.7 3.19 1.69-0.6 0.37-1.13 0.17-1.13-0.44s-2.66 1.46-5.9 4.66c-3.25 3.19-5.88 6.22-5.88 6.68 0 0.47 1.32-0.44 2.94-2 1.62-1.55 2.94-2.39 2.94-1.84s-2.11 2.72-4.72 4.84c-2.62 2.13-4.6 4.46-4.38 5.13 0.4 1.19-2.8 1.76-3.87 0.69-0.69-0.69 2.85-13.74 4.69-17.28 0.79-1.53 2.89-4.22 4.71-6 1.83-1.79 3.66-4.34 4.07-5.69 1.62-5.43 5.75-10.91 10.62-14.06 0.95-0.62 1.65-0.98 2.47-1.03zm52.34 0.34c1.16 0 2.75 0.34 3.97 1 1.04 0.55 2.42 1.98 3.06 3.19 1.06 1.98 1.02 2.06-0.46 0.84-0.9-0.74-1.66-0.99-1.66-0.56s-1.12-0.26-2.47-1.53c-1.97-1.85-2.47-1.99-2.47-0.72 0 0.87 0.46 1.85 1 2.18 0.54 0.34 0.97 1.03 0.97 1.54 0 0.9-2.18 1.31-3 0.56-0.22-0.21-6.41-0.72-13.72-1.1-7.3-0.37-15.71-1.32-18.69-2.15-6.47-1.81-8.99-3.68-3.93-2.91 9.2 1.41 13.66 1.74 21.03 1.56 4.4-0.1 9.71-0.13 11.78-0.06 2.36 0.09 3.52-0.21 3.12-0.84-0.4-0.66 0.32-1 1.47-1zm264.5 0c0.87 0 1.1 0.52 0.69 1.59-0.35 0.91-0.06 2.01 0.63 2.44 1 0.62 0.97 1.03 0 2-0.68 0.67-1.22 1.93-1.22 2.75 0 1.05 0.46 0.81 1.53-0.72 1.83-2.61 4.34-2.87 4.5-0.47 0.06 0.95 0.26 3 0.44 4.53 0.24 2.09-0.05 2.65-1.1 2.25-0.77-0.29-1.75 0.15-2.22 0.97-1.07 1.92-5.32 2.42-7.43 0.88-1.73-1.27-2.17-3.44-0.72-3.44 0.48 0 1.13-0.8 1.47-1.75 0.33-0.95 0.84-2.26 1.15-2.94 0.33-0.69-0.06-1.22-0.9-1.22-0.82 0-1.79 0.89-2.13 1.97s-1.29 1.97-2.12 1.97c-1.06 0-1.31-0.52-0.82-1.72 0.39-0.94 0.95-2.53 1.22-3.47s0.87-1.45 1.35-1.15c0.47 0.29 0.54-0.23 0.18-1.16-0.5-1.31-0.25-1.57 1.07-1.06 0.93 0.36 1.45 0.26 1.15-0.22-0.29-0.48 0.15-1.14 1-1.47 0.99-0.38 1.76-0.56 2.28-0.56zm-242.87 0.97c0.54 0 0.97 0.65 0.97 1.47 0 0.81-0.43 1.46-0.97 1.46s-0.97-0.65-0.97-1.46c0-0.82 0.43-1.47 0.97-1.47zm-66.13 0.28c0.54 0.02 1.63 0.4 3.16 1.19 4.97 2.57 21.54 5.36 32.47 5.5 4.81 0.06 9.5 1.25 14.5 3.62 3.56 1.7 4.39 3.67 1.09 2.63-1.76-0.56-1.98-0.38-1.43 1.15 0.55 1.55 0.36 1.5-1.1-0.28-1.24-1.5-2.3-1.89-3.69-1.37-1.07 0.39-3.5 0.38-5.4-0.07-4.45-1.03-4.94-1.03-4.94 0 0 0.48 1.68 1.12 3.72 1.44 3.98 0.64 13 5.84 13 7.5 0 1.32-1.03 1.24-3.44-0.37-1.87-1.26-11.03-3.98-21.65-6.41-5.08-1.16-21.16-8.6-21.16-9.78 0-0.37-1.34-1.49-3-2.47-2.44-1.44-3.03-2.32-2.13-2.28zm177.63 0.19c0.29-0.04 0.24 0.42-0.03 1.46-0.65 2.47-2.28 3.67-2.28 1.69 0-0.77 0.63-1.95 1.4-2.59 0.43-0.36 0.74-0.54 0.91-0.56zm-102.19 0.81c0.07-0.11 0.47 0.26 1.22 0.94 1.17 1.05 3.49 1.71 6 1.71 3.66 0.01 4.16 0.27 4.69 2.69 1.13 5.18 1.69 5.81 2.44 2.72 0.53-2.21 0.72-1.29 0.81 3.69 0.06 3.65 0 6.62-0.16 6.62-0.96 0-2.65-2.59-2.65-4.09 0-0.97-0.45-1.78-0.97-1.78-1.67 0-7.68-5.84-9.91-9.63-1.08-1.84-1.56-2.74-1.47-2.87zm193.85 0.65c0.33 0.01 0.39 0.32-0.04 1-0.33 0.54-1.56 1.48-2.75 2.1-2.14 1.12-2.14 1.16-0.28-0.94 1.18-1.32 2.5-2.17 3.07-2.16zm-126.16 0.44c0.21 0.02 0.61 0.3 1.22 0.91 0.81 0.81 1.47 1.75 1.47 2.06 0 0.77-1.48 0.71-2.29-0.09-0.36-0.36-0.68-1.3-0.68-2.06 0-0.58 0.06-0.83 0.28-0.82zm30.28 2.72c1.19 0.03 1.25 3.44-0.06 4.25-0.54 0.34-0.97 1.45-0.97 2.47 0 2.96-2.2 6.98-3.53 6.47-0.73-0.28-1.9 1.2-2.88 3.65-1.43 3.57-2.09 6.39-3.94 16.91-0.19 1.08-1.05 5.67-1.93 10.19-1.5 7.67-1.46 10.27 0.15 8.66 0.38-0.38 1.26-4.33 1.94-8.79 1.06-6.89 1.15-7.12 0.66-1.68-0.32 3.51-0.74 10.94-0.88 16.53-0.14 5.58-0.43 10.37-0.68 10.62-0.26 0.26-0.67-2.29-0.91-5.65-0.41-5.65-0.75-6.34-4.22-9.25-3.46-2.91-3.7-3.46-3.22-7.07 0.29-2.15 1.2-5.41 2.03-7.25 0.84-1.83 2.24-5.55 3.13-8.25 0.88-2.69 1.96-5.35 2.4-5.9 0.44-0.56 1.57-3.43 2.47-6.41 1.93-6.35 8.49-18.9 10.19-19.47 0.09-0.03 0.17-0.03 0.25-0.03zm89.91 0.88c0.56-0.03 0.39 0.4-0.44 1.4-1.36 1.64-2.97 1.96-2.97 0.6 0-0.49 0.71-1.18 1.56-1.5 0.9-0.35 1.51-0.49 1.85-0.5zm-86.75 1.9c0.12 0 0.08 6.27-0.1 13.97-0.38 16.47 0.31 22.86 2.38 22.06 1.82-0.7 1.95 6.79 0.15 8.69-0.67 0.71-1.95 2.17-2.84 3.25-0.89 1.09-2.42 2.44-3.37 2.97-2.15 1.2-3.41 12-1.41 12 0.85 0 1.03-1.02 0.59-3.38-0.36-1.95-0.21-3.6 0.38-3.96 0.59-0.37 1 0.42 1 1.93 0 1.47 0.44 2.32 1 1.97 0.54-0.33 0.97-1.71 0.97-3.06 0-1.39 0.44-2.19 1-1.84 0.54 0.33 0.97 2.28 0.97 4.34 0 5.21 1.06 9.91 2.21 9.91 0.56 0 0.74-1.36 0.41-3.19-1.69-9.37-1.55-11.69 0.28-4.69 1.06 4.06 2.13 8.49 2.41 9.85 0.3 1.46 2.52 3.99 5.5 6.21 2.74 2.05 4.72 4.17 4.37 4.72-0.34 0.56-2.35 0.9-4.44 0.75-2.08-0.15-4.08 0.03-4.46 0.41-0.87 0.87-1.34 0.79-3.82-0.63-3.82-2.19-6.04-4.12-8.28-7.18-2.05-2.82-2.28-4.23-2.4-15.44-0.13-11.28 0.02-12.5 1.81-13.81 1.34-0.99 2.18-1.07 2.62-0.35 0.45 0.72 1.13 0.6 2.1-0.37 2.01-2.01 2.8-5.04 1.75-6.72-0.74-1.18-1.35-1.23-3.56-0.22-4.23 1.92-4.87 0.42-3.57-8.41 0.62-4.2 1.42-10.54 1.78-14.06 0.37-3.52 0.73-6.83 0.85-7.37 0.27-1.3 3.42-8.35 3.72-8.35zm-120.85 0.32c0.36-0.07 0.57 0.12 0.57 0.53 0 0.54-0.43 1.26-0.97 1.59s-1 0.2-1-0.34 0.46-1.29 1-1.63c0.13-0.08 0.28-0.13 0.4-0.15zm39.31 0.46c0.29-0.06 0.61 0.01 1.04 0.16 1.69 0.6 1.72 0.72 0.25 1.28-1.14 0.44-1.66 1.79-1.66 4.28 0 4.23 0.9 3.88 1.94-0.78 0.6-2.71 0.86-1.91 1.5 4.88 1.05 11.17 2.74 11.65 1.97 0.56-0.47-6.62-0.34-8.3 0.5-6.97 0.6 0.96 1.37 7.22 1.68 13.91 0.63 13.36 0.74 12.97-5.96 20.22-1.97 2.12-3.59 4.68-3.6 5.65-0.05 4.19-4.44 10.99-11.37 17.66-9.69 9.32-9.61 11.33 0.5 12.47 6.95 0.78 8.51 2.3 7 6.72-1.07 3.1-7.94 8.83-7.94 6.62 0-0.54 1.35-1.7 2.97-2.62 3.36-1.92 3.88-5.09 0.97-5.85-1.09-0.28-1.97-0.82-1.97-1.19s-2.22-1.45-4.94-2.43l-4.97-1.79 0.56-19.34c0.32-10.62 0.8-21.97 1.03-25.22 0.24-3.24 0.74-10.88 1.1-16.97 0.66-11.18 1.9-15.43 1.72-5.9-0.08 4.24-0.02 4.43 0.31 1 0.57-6.04 3.22-4.96 3.22 1.31 0 1.46 0.56 2.38 1.47 2.38 1.29-0.01 1.43 2.71 0.87 21.62-0.47 15.97-0.33 21.66 0.5 21.66 0.81 0 1.1-5.44 1.1-19.19 0-11.2 0.4-19.19 0.93-19.19 0.55 0 0.77 6.24 0.57 15.25-0.2 8.62 0.05 15.5 0.56 15.81 0.53 0.33 0.91-5.69 0.91-14.75 0-9.54 0.35-15.31 0.96-15.31 0.54 0 1.02 2.32 1.07 5.16 0.04 2.84 0.45 7.39 0.87 10.09 0.72 4.59 0.78 4.37 0.91-3.37 0.09-5.95 0.43-8.04 1.19-7.28 0.58 0.58 1.29 2.89 1.59 5.12s0.94 4.03 1.44 4.03c0.49 0 0.83-0.54 0.75-1.22-0.09-0.67-0.12-1.87-0.04-2.69 0.12-1.16 0.38-1.12 1.19 0.29 0.77 1.32 0.66 2.38-0.5 4.15-1.78 2.72-2.02 4.41-0.59 4.41 0.54 0 0.97-0.66 0.97-1.47s0.42-1.5 0.9-1.5c0.49 0 1.15-1.14 1.5-2.56 0.48-1.92-0.03-3.65-2.06-6.66-5.6-8.33-5.89-9.35-4.78-16.44 0.68-4.35 1.03-5.8 1.87-6zm98.97 0.19c-0.54 0-0.97 0.49-0.97 1.06 0 0.58 0.43 0.74 0.97 0.41s1-0.79 1-1.03-0.46-0.44-1-0.44zm45.25 0.13c0.63 0 1.25 0.06 1.72 0.18 0.95 0.25 0.18 0.47-1.72 0.47-1.89 0-2.66-0.22-1.72-0.47 0.48-0.12 1.1-0.18 1.72-0.18zm-16.72 0.87c1.62 0 1.15 3.64-1 7.47-1.1 1.97-1.81 3.78-1.53 4.06 0.76 0.76 3.63-1.81 4.57-4.12 0.77-1.91 0.81-1.88 0.87 0.28 0.04 1.35-1.23 3.42-3.12 5.16-1.75 1.59-2.75 2.93-2.22 3 0.52 0.06 1.62 0.17 2.43 0.24 0.88 0.08 1.63 1.32 1.82 3.07 0.45 4.19 1.9 5.23 2.72 1.97l0.65-2.72 1.28 2.34c1.17 2.17 1 2.36-2.37 3.53-4.81 1.68-4.66 1.76-4.53-2.15 0.07-2.27-0.33-3.44-1.19-3.44-0.72 0-1.3 0.54-1.31 1.22-0.01 0.82-0.27 0.89-0.75 0.18-0.4-0.58-1.52-1.33-2.47-1.68-1.26-0.47-1.72-1.75-1.72-4.69 0-2.22-0.44-4.89-1-5.94-0.85-1.58-0.69-1.9 0.94-1.9 3.26 0 6.97-2.15 6.97-4.07 0-0.99 0.42-1.81 0.96-1.81zm13.72 0.97c0.58 0 1.04 0.46 1.04 1s-0.2 0.97-0.44 0.97-0.7-0.43-1.03-0.97c-0.34-0.54-0.14-1 0.43-1zm75.25 0.31c-0.53 0.09-1.28 1.15-1.68 2.69-0.44 1.67-0.31 1.83 0.84 0.88 0.77-0.64 1.41-1.82 1.41-2.6 0-0.74-0.25-1.02-0.57-0.97zm-371.46 0.72c0.579 0.03 1.413 0.54 2.187 1.47 0.685 0.82 0.942 1.78 0.594 2.12-0.347 0.35-0.625 0.1-0.625-0.53s-0.657-1.12-1.469-1.12c-0.811 0-1.5-0.46-1.5-1 0.001-0.55 0.246-0.83 0.594-0.91 0.073-0.01 0.136-0.03 0.219-0.03zm366.5 1.28c-0.11 0.02-0.23 0.08-0.37 0.16-0.54 0.33-1 0.79-1 1.03s0.46 0.44 1 0.44 0.97-0.46 0.97-1.03c0-0.43-0.24-0.66-0.6-0.6zm-7.15 0.57c0.49-0.09 1.31 0.73 2.53 2.53 3.15 4.63 2.43 6.69-0.88 2.47-1.4-1.8-2.31-3.91-2.03-4.66 0.09-0.23 0.22-0.32 0.38-0.34zm-193.91 0.15c0.5-0.05 1.05 0.98 1.13 3.13 0.23 6.67 1.04 7.84 1.84 2.68 0.61-3.91 0.68-3.53 0.81 3.22 0.09 4.2-0.07 7.63-0.34 7.63s-0.47-1.12-0.47-2.47-0.39-2.47-0.84-2.47c-1.35 0-3.1-4.76-3.1-8.41 0-2.15 0.47-3.26 0.97-3.31zm-36.15 0.13-0.63 4.59c-0.36 2.51-1.08 9.57-1.62 15.69-0.55 6.11-1.43 12.2-1.94 13.56-0.52 1.36-0.97 5.68-0.97 9.62 0 3.95-0.28 9.9-0.63 13.22-0.56 5.42-0.84 6.07-2.81 6.07-1.21 0-2.76 0.65-3.43 1.47-0.68 0.81-1.62 1.5-2.1 1.5-1.12-0.01-1.12-2.33 0-3.54 1.55-1.67 3.99-15.42 4.63-26 0.34-5.68 0.94-10.77 1.28-11.31s0.82-6.27 1.09-12.75l0.5-11.78 3.31-0.19 3.32-0.15zm-95.03 0.15c0.8 0.03 1.34 0.22 1.34 0.6 0 0.55-0.11 1-0.25 1s-1.68 0.43-3.44 0.93c-3 0.86-4.4-0.03-2.19-1.4 1.18-0.73 3.2-1.17 4.54-1.13zm80.21 0.03c0.17-0.05 0.52 0.53 0.91 1.5 0.52 1.3 0.75 2.51 0.53 2.72-0.49 0.5-1.64-2.43-1.56-3.97 0.01-0.15 0.07-0.23 0.12-0.25zm260.29 0.66c0.28-0.1 0.01 0.4-0.66 1.66-1.22 2.29-2.06 2.84-2.06 1.34 0-0.47 0.75-1.44 1.65-2.19 0.56-0.46 0.9-0.75 1.07-0.81zm-377.16 1c0.134 0.05 0.385 0.26 0.75 0.62 0.672 0.67 0.959 1.48 0.656 1.79-0.303 0.3-0.849-0.25-1.219-1.22-0.333-0.88-0.411-1.27-0.187-1.19zm356.31 0.38c0.06-0.01 0.11-0.02 0.16 0 0.2 0.07 0.27 0.47 0.28 1.09 0.01 1.56 0.16 1.62 0.91 0.44 0.5-0.8 1.26-1.11 1.65-0.72s-0.26 1.72-1.44 2.97c-2.14 2.28-2.88 5.59-1.25 5.59 0.49 0 1.15-1.02 1.47-2.31 0.84-3.34 3.53-4.23 3.53-1.16 0 1.3-0.42 2.67-0.96 3-0.55 0.34-1 3.63-1 7.34-0.01 7.13-0.56 9.85-2.1 9.85-0.51 0-0.64-0.46-0.28-1.03 0.86-1.4-0.43-7.82-1.56-7.82-0.49 0-0.83 2.62-0.82 5.82 0.02 3.85-0.55 6.69-1.65 8.37-0.92 1.4-2.05 2.53-2.53 2.53-1.33 0-1.04-1.11 0.78-3.12 1.21-1.34 1.66-3.77 1.72-9.19 0.04-4.5-0.34-7.23-0.94-7.03-0.54 0.18-1.12 1.14-1.31 2.12-0.19 0.99-0.75 2.29-1.25 2.88-0.51 0.59-1.55 1.95-2.32 3.03-1.26 1.79-1.33 1.65-0.5-1.47 0.51-1.89 1.61-6.26 2.44-9.72 1.04-4.31 2.45-7.21 4.47-9.28 1.39-1.42 2.11-2.12 2.5-2.18zm-352.25 1.28c0.427-0.03 1.697 1.08 4.313 3.62 2.756 2.67 5.286 4.56 5.626 4.22s-0.53-1.69-1.94-3c-3.723-3.45-3.18-4.16 0.84-1.09 4.1 3.12 4.28 4.27 1 7.12-1.35 1.18-2.81 2.16-3.21 2.16-0.91 0-5.627-8.47-6.598-11.81-0.224-0.78-0.287-1.21-0.031-1.22zm25.279 0.68c0.88-0.15-4.22 5.72-7.87 9-5.91 5.31-7.07 6.54-7.07 7.38 0 0.48 0.22 0.87 0.5 0.87 0.74 0 7.13-5.78 10.72-9.71 5.16-5.65 5.59-6.04 7.28-6.04 1.15 0 0.56 1-1.9 3.22-2.55 2.3-4.72 6.03-7.72 13.28-2.3 5.56-4.58 10.32-5.03 10.6s-1.3-0.42-1.91-1.56c-0.93-1.74-0.63-2.75 1.69-6.16 4.53-6.65 4.68-7.24 1.13-3.88-3.87 3.66-6.32 4.1-7.22 1.25-0.42-1.3 0.14-2.93 1.62-4.71 2.31-2.8 12.71-11.81 15.5-13.44 0.11-0.07 0.22-0.09 0.28-0.1zm262.91 0.88c0.04-0.01 0.07-0.01 0.12 0 0.14 0.03 0.34 0.18 0.53 0.37 0.78 0.78 0.79 1.58 0.04 2.88-0.93 1.59-1.1 1.48-1.13-1.06-0.01-1.39 0.13-2.1 0.44-2.19zm-115.25 0.03c0.21-0.05 0.56 0.37 1.16 1.16 1.42 1.88 1.43 1.88 1.59-0.07 0.08-1.08 0.51 0.92 0.97 4.44 0.92 7.18 2.89 12.03 3.81 9.41 0.5-1.42 0.78-1.4 2.78 0 1.21 0.84 2.17 2.27 2.16 3.19-0.03 1.45-0.24 1.42-1.5-0.26-1.43-1.89-1.43-1.89-1.44 0-0.01 1.62-0.17 1.69-1.03 0.44-0.84-1.21-0.98-1.12-0.72 0.5 0.23 1.43 1.06 1.98 3.12 2 2.02 0.03 3.12 0.68 3.69 2.22 0.45 1.2 1.23 2.16 1.72 2.16 0.5 0 1.12 0.88 1.41 1.97 0.28 1.08 0.95 1.97 1.53 1.97 1.2 0 0.53-2.14-2-6.38-2.21-3.71-4.75-9.33-4.75-10.47 0-0.47-0.44-0.84-0.97-0.84-1.14 0-3.98-6.43-3.87-8.75 0.04-0.88 0.61-0.25 1.24 1.37 1.2 3.07 3.64 7.09 6.88 11.31 1.75 2.28 1.83 2.29 1.22 0.29-0.64-2.1-0.58-2.12 2.22-0.72 2.49 1.24 2.99 2.16 3.56 6.75 0.36 2.92 0.36 6.9 0 8.84-0.46 2.44-0.31 3.53 0.5 3.53 0.78 0 1 1.06 0.62 3.19l-0.56 3.19 1.47-3.19c2.29-4.99 3.43-3.76 1.66 1.78-1.55 4.86-1.55 5.11 0.69 9.6 2.67 5.36 3.57 7.47 5.03 11.46 0.82 2.27 1.25 2.6 1.93 1.5 0.98-1.58 0.84-1.89 2.91 5.72 0.66 2.43 0.85 6.08 0.47 8.63-0.5 3.34-0.29 4.73 0.81 5.62 1.8 1.46 2.97 4.63 1.72 4.63-0.51 0-1.39-0.89-1.97-1.97s-1.56-1.97-2.19-1.97c-0.85 0-0.84 0.28 0.03 1.16 0.65 0.65 1.19 3.19 1.19 5.65 0 2.69 0.79 5.75 1.94 7.63 1.05 1.72 2.19 4.76 2.56 6.75 0.48 2.52 0.91 3.21 1.5 2.28 0.68-1.07 0.87-1.01 0.88 0.22 0.01 0.84-0.5 2.02-1.13 2.65-0.86 0.87-0.87 2.07-0.03 4.88 0.61 2.05 1.4 6.21 1.75 9.25 0.41 3.46 0.27 5.73-0.37 6.12-1.12 0.69-7.1-5.94-7.1-7.87 0-0.65-0.57-1.8-1.25-2.53-2.33-2.54-12.3-21.26-12.87-24.16-0.19-0.93-0.67-2.42-1.07-3.34-0.39-0.92-0.44-2.15-0.09-2.72s-0.05-1.06-0.87-1.06c-0.99 0-2.05-1.96-3.13-5.66-0.9-3.1-2-6.31-2.41-7.13-0.4-0.81-1.51-4.78-2.46-8.84s-2.01-7.83-2.38-8.37c-1.17-1.74-2.98-8.98-2.97-11.91 0.01-2.19 0.23-2.52 0.97-1.38 0.53 0.82 0.96 2.48 0.97 3.69 0.01 1.22 0.38 2.22 0.81 2.22 0.44 0 1.61 2.93 2.63 6.47 1.01 3.54 2.23 6.67 2.72 6.97 1.76 1.09 1.87-0.57 0.25-4.25-2.32-5.26-3.74-9.14-7.13-19.5-0.88-2.71-2.08-5.22-2.62-5.6-1.31-0.89-1.82-8.68-0.57-8.68 0.54 0 1 0.77 1 1.72 0.03 2.99 5.3 18.51 9.28 27.31 0.74 1.62 2.73 6.06 4.44 9.84 5.95 13.14 9.08 19.19 9.91 19.19 0.46 0-0.65-3-2.47-6.66-5.87-11.74-9.21-19.35-9.81-22.37-0.55-2.74-0.54-2.8 0.53-0.75 0.63 1.22 1.47 2.22 1.84 2.22 0.38 0 1.55 1.89 2.56 4.18 1.02 2.3 2.12 4.39 2.44 4.66 0.33 0.27 1.46 2.05 2.5 3.94 2.76 5 5.34 8.35 5.25 6.78-0.04-0.75-0.93-2.69-1.97-4.31-1.03-1.63-2.45-4.06-3.12-5.41s-1.51-2.67-1.88-2.94c-0.36-0.27-1.75-2.93-3.09-5.9-1.34-2.98-3.15-6.3-4-7.38-1.48-1.87-1.56-1.87-1.59-0.12-0.06 3.23-2.4 0.15-3.82-5-0.72-2.61-1.9-6.07-2.62-7.69-1.49-3.36-4.39-12.95-4.44-14.63-0.02-0.61-0.63-1.91-1.4-2.93-1.28-1.68-1.38-1.5-0.85 1.97 0.33 2.1 0.32 3.57 0 3.28s-0.8-3.15-1.09-6.32c-0.3-3.16-1.22-7.05-2.03-8.68-0.82-1.63-1.5-4.56-1.5-6.47 0-1.84 0.04-2.66 0.31-2.72zm78.5 0.59c0.56-0.02 0.87 0.2 0.87 0.69 0 1.27-3.77 5.22-5 5.22-0.55 0-1.68 0.66-2.5 1.47-0.81 0.81-2.04 1.5-2.75 1.5-0.7 0-1.85-0.69-2.53-1.5-0.84-1.02-0.89-1.47-0.12-1.47 0.6 0 1.13 0.57 1.15 1.25 0.03 0.68 1.49-0.42 3.25-2.41 2.27-2.55 5.94-4.68 7.63-4.75zm-111.78 0.5c-0.17 0.02-0.27 0.76-0.25 1.97 0.02 1.63 0.22 2.15 0.47 1.19s0.23-2.27-0.04-2.94c-0.06-0.16-0.13-0.22-0.18-0.22zm87.18 0c0.36-0.06 0.47 0.53 0.22 1.47-0.6 2.3-1.31 2.6-1.31 0.57 0-0.78 0.42-1.67 0.91-1.97 0.06-0.04 0.13-0.06 0.18-0.07zm35.38 0.57c2.08 0 4.41 1.57 7.75 4.97 2.74 2.77 4.97 5.57 4.97 6.18s1.16 2.3 2.53 3.78c2.16 2.33 3.27 2.69 8.13 2.69 5.82 0 17.52 2.01 21.81 3.72 1.35 0.54 5.78 1.3 9.84 1.69 4.43 0.42 9.41 1.64 12.47 3.06 2.81 1.3 5.65 2.38 6.28 2.38s2.46 1.08 4.06 2.43c2.71 2.28 2.4 2.99-1.06 2.5-0.86-0.12-1.13 0.39-0.75 1.38s0.04 1.56-0.94 1.56c-0.96 0-1.42 0.77-1.31 2.19 0.1 1.21 0.12 2.79 0.06 3.47-0.21 2.45-2.66 1.17-2.62-1.38 0.03-2.02-0.5-2.67-2.41-2.97-1.34-0.21-4.01-1.51-5.93-2.84-1.93-1.34-4.14-2.41-4.88-2.41s-2.16-0.72-3.16-1.62c-1.59-1.45-2.11-1.48-4.4-0.25-3.14 1.68-24.07 1.82-26.1 0.18-0.71-0.57-2.8-1.38-4.65-1.78-3.99-0.85-9.42-3.72-9.44-5-0.02-1.19-3.64-5.31-4.66-5.31-0.44 0-0.33 0.89 0.25 1.97 1.75 3.26 0.1 2.25-5.18-3.19-2.76-2.84-4.69-4.61-4.28-3.93 0.4 0.67 0.29 1.21-0.26 1.21-1.44 0-1.98-1.23-2.18-5-0.24-4.46 0.23-5.97 2.47-8.03 1.19-1.09 2.34-1.66 3.59-1.65zm-73.53 0.62c0.58-0.03 0.69 0.46 0.69 1.66 0 1.18 0.71 3.12 1.56 4.34 1.79 2.56 1.52 4.87-0.34 3-0.67-0.67-1.24-1.68-1.26-2.25-0.01-0.57-0.74-1.92-1.59-3-1.51-1.92-1.53-1.94-0.84 0.34 0.43 1.46 0.35 2.13-0.25 1.76-2.13-1.32-1.91-4.16 0.4-5.26 0.78-0.36 1.28-0.57 1.63-0.59zm-18.47 0.5c0.05 0.04 0.13 0.23 0.19 0.53 0.23 1.22 0.23 3.22 0 4.44-0.24 1.22-0.44 0.22-0.44-2.22 0-1.82 0.1-2.87 0.25-2.75zm120.69 1.53c0.3-0.13 0.68 0.82 1.47 3.16 1.58 4.69 1.26 5.76-1.07 3.44-1.78-1.79-1.84-1.98-0.97-5.25 0.22-0.79 0.38-1.27 0.57-1.35zm-176.38 0.22c0.58 0 1.07 0.46 1.07 1s-0.2 0.97-0.44 0.97-0.73-0.43-1.06-0.97c-0.34-0.54-0.14-1 0.43-1zm63.94 0c0.45 0 1.09 1.23 1.37 2.72 0.58 2.97 0.26 3.91-0.74 2.28-1.08-1.74-1.5-5-0.63-5zm185.78 0c0.42 0 0.86 1.12 0.97 2.47 0.23 2.8-0.25 3.2-1.12 0.91-0.82-2.12-0.77-3.38 0.15-3.38zm-285.25 0.1c1.94-0.06 3.02 0.31 2.66 0.9-0.34 0.54-0.71 0.93-0.82 0.88-0.1-0.06-1.27-0.45-2.62-0.88-2.31-0.74-2.28-0.81 0.78-0.9zm19.25 0.03c0.73-0.07 1.85 0.04 3.59 0.21 8.5 0.85 10.44 5.73 9.54 24.26-0.6 12.18-3.86 25.92-8.04 33.96-0.76 1.47-1.15 3.22-0.9 3.88s-0.25 1.77-1.1 2.47c-1.19 0.99-1.27 1.58-0.37 2.65 0.87 1.05 0.86 1.67 0 2.54-0.63 0.62-1.13 1.74-1.13 2.46 0 0.73-0.83 2.23-1.87 3.35-2.07 2.22-1.73 4.98 0.5 4.12 0.77-0.29 1.37-0.03 1.37 0.57 0 1.96-4.08 1.16-4.62-0.91-0.28-1.08-0.9-1.97-1.38-1.97-1.13 0-1.12 0.7 0.13 3.03 0.78 1.47 0.7 1.88-0.37 1.88-0.77 0-1.73-0.97-2.13-2.19l-0.72-2.22-0.44 2.22c-0.54 2.74-2.28 2.93-2.28 0.25 0-1.09-0.65-1.97-1.47-1.97-0.91 0-1.46 0.91-1.46 2.44 0 1.35-0.46 2.47-1 2.47-2.77 0 0.84-7.21 6.78-13.57 1.65-1.77 3.51-5.09 4.09-7.37 0.58-2.29 1.25-4.74 1.5-5.47s0.68-6.27 0.97-12.28c0.33-6.79 1.26-13.11 2.44-16.69l1.87-5.75-2.44-9.03c-1.33-4.97-2.4-10.08-2.4-11.34 0-1.36 0.12-1.9 1.34-2zm-52.75 1.84c0.11 0-0.06 0.49-0.37 1.47-0.35 1.08-2.24 3.67-4.19 5.75-4.37 4.64-8.97 8.04-8.97 6.62 0-0.57 0.42-1.06 0.91-1.06 0.87 0 8.44-7.52 11.37-11.31 0.76-0.98 1.14-1.47 1.25-1.47zm159.72 0c2.14 0 2.17 0.1 0.97 3.25-0.51 1.34-0.51 2.94-0.03 3.72 0.59 0.96 1.03 0.12 1.5-2.78 0.36-2.28 0.94-3.95 1.31-3.72 0.92 0.57 0.08 7.3-1 7.97-0.48 0.29-0.91 1.61-0.91 2.93 0 1.33-0.46 2.41-1.06 2.41-0.64 0-0.86-0.92-0.53-2.25 0.34-1.37-0.19-3.5-1.34-5.4-2.15-3.54-1.69-6.13 1.09-6.13zm46.31 0c2.28 0 2.21 1.22-0.56 10.84-1.93 6.7-2 10.85-0.22 13.29 1.14 1.55 1.61 1.64 2.88 0.59 0.83-0.7 1.33-1.77 1.09-2.41-0.24-0.63 0.71-1.67 2.09-2.31 2.48-1.15 2.54-1.11 1.88 1.97-0.37 1.72-1.11 3.67-1.66 4.34-1.41 1.76-5.25 1.53-7.22-0.44-2.1-2.1-4.39-7.35-3.68-8.5 0.76-1.24 0.9-9.5 0.15-9.5-0.34 0.01-0.94 1.66-1.34 3.69l-0.75 3.69-1.28-2.94c-2.26-5.12-1.79-7.33 1.97-8.9 1.85-0.78 3.66-1.86 4-2.41s1.54-1 2.65-1zm-133.62 1.19c0.06-0.03 0.17 0.01 0.25 0.09 0.32 0.33 0.34 1.17 0.06 1.88-0.31 0.78-0.52 0.55-0.56-0.6-0.03-0.78 0.05-1.3 0.25-1.37zm-76.28 0.28c0.36 0 0.35 0.46-0.25 1.44-0.36 0.57-1.63 1.54-2.82 2.15-2.05 1.07-2.05 0.97 0.22-1.5 1.28-1.38 2.38-2.09 2.85-2.09zm182.53 0.69c0.06-0.03 0.17 0.01 0.25 0.09 0.32 0.33 0.34 1.16 0.06 1.88-0.31 0.78-0.55 0.55-0.59-0.6-0.04-0.78 0.08-1.3 0.28-1.37zm-85.06 0.81c-0.89 0-1.99 5.88-1.32 6.97 0.94 1.51 1.21 1.03 1.6-3.03 0.2-2.17 0.07-3.94-0.28-3.94zm-71.16 0.47c-0.41 0.12-1.21 0.72-2.5 1.81-1.72 1.45-3.67 2.62-4.38 2.62-0.7 0-1.85 0.66-2.53 1.47-1.58 1.92-0.57 1.86 3.28-0.15 1.71-0.89 3.79-1.9 4.6-2.28 0.81-0.39 1.65-1.52 1.84-2.5 0.15-0.74 0.1-1.1-0.31-0.97zm169.09 0.34c0.02-0.01 0.04-0.01 0.07 0 0.05 0.03 0.09 0.17 0.15 0.41 0.25 0.94 0.25 2.49 0 3.44-0.25 0.94-0.44 0.17-0.44-1.72 0-1.25 0.09-2.02 0.22-2.13zm-72.15 0.72c0.89 0.01 1.55 13.99 1 21.91-0.13 1.8 0.29 3.88 0.9 4.62 0.62 0.74 0.84 2.2 0.5 3.25-0.33 1.05-0.12 4.97 0.47 8.66s0.84 7.59 0.56 8.69c-0.76 3.05-5.5 9.12-5.5 7.06 0-0.94 0.61-1.94 1.35-2.22 1.56-0.6 4.21-7.95 3.22-8.94-1.9-1.9-6.69-0.97-9.75 1.91-4.03 3.78-8.89 4.92-15.57 3.65-2.84-0.53-5.31-1.12-5.5-1.31-0.77-0.78 0.98-3.56 2.25-3.56 0.76 0 1.38-0.49 1.38-1.06 0-0.6 0.84-0.8 1.97-0.44 1.56 0.5 1.83 0.3 1.31-1.06-0.4-1.05-0.28-1.45 0.34-1.07 0.56 0.35 2.03-0.47 3.29-1.81 2.94-3.13 4.08-3.09 2.87 0.09s-1.25 9.29-0.06 9.29c0.49 0 1.09-2.55 1.31-5.66 0.3-4.21 0.01-5.99-1.09-6.91-0.94-0.78-1.03-1.22-0.29-1.22 0.65 0.01 1.16-1.08 1.16-2.4s0.35-2.61 0.78-2.88c0.43-0.26 0.59 1.02 0.38 2.88-0.24 2.05 0.05 3.37 0.72 3.37 0.62 0 1.13-1.97 1.22-4.65 0.1-3.31 0.29-3.81 0.59-1.72 0.85 5.99 2.24 4.81 2.41-2.03 0.09-4.01 0.3-5.29 0.53-3.13 0.21 2.03 0.82 3.69 1.34 3.69 0.56 0 0.73-1.83 0.37-4.44-0.39-2.89-0.25-4.43 0.44-4.43 0.7 0 1.06 3.74 1.06 10.96 0.01 6.05 0.27 10.74 0.6 10.41s0.61-6.03 0.62-12.69c0.02-9.06 0.23-11 0.82-7.68 0.42 2.43 0.8 7.83 0.84 12.03 0.04 4.37 0.5 7.62 1.06 7.62 1.2 0 1.21-0.25 0-21.06-0.64-11.08-0.65-17.04 0-17.69 0.03-0.03 0.07-0.03 0.1-0.03zm192.96 0.59c0.16 0.04 0.42 0.39 0.85 1.13 0.57 0.99 0.85 1.99 0.62 2.22-0.69 0.69-1.75-0.78-1.71-2.44 0.01-0.64 0.09-0.94 0.24-0.91zm-161.18 0.19c0.35 0.02 0.56 0.43 0.56 1.06 0 0.85-0.43 1.53-0.97 1.53s-1-0.39-1-0.9 0.46-1.23 1-1.56c0.14-0.09 0.29-0.13 0.41-0.13zm64.47 0.63c-1.4 0-1.13 1.33 0.78 3.72 1.83 2.29 3.19 2.82 3.19 1.21-0.01-0.54-0.41-1-0.91-1-0.51 0-1.19-0.88-1.53-1.97-0.35-1.08-1.03-1.96-1.53-1.96zm-258.19 0.31c0.07-0.06 0.236 0.03 0.437 0.15 1.037 0.65 9.384 17.59 10.434 21.19 0.4 1.36 1.17 3.03 1.72 3.72s0.78 1.47 0.5 1.75c-0.27 0.28-1.17-0.97-2-2.75s-3.44-7.19-5.78-12.06c-4.448-9.25-5.616-11.75-5.311-12zm67.811 1.09c-0.13 0.06 0.07 0.66 0.47 1.72 0.54 1.45 1.54 3.54 2.22 4.63 0.68 1.08 1.6 1.73 2.03 1.47 1.26-0.78 0.87-1.63-2.28-5.29-1.54-1.78-2.26-2.6-2.44-2.53zm100.5 0.06 0.72 11.82c0.39 6.49 1.13 15.36 1.66 19.68 1.87 15.48 1.96 17.34 0.97 16.72-0.54-0.33-0.97-2.1-0.97-3.93s-0.38-3.56-0.85-3.85c-0.46-0.28-0.65 3.77-0.44 9.03 0.55 13.44 1.29 20 2.26 19.41 0.45-0.28 0.71-1.64 0.56-3.03s0.05-2.16 0.47-1.72c0.41 0.44 0.9 2.9 1.09 5.47 0.37 4.95-0.11 5.66-2.19 3.16-0.7-0.86-2.92-2.41-4.93-3.44-4.1-2.09-5.48-5.59-4.32-11.03 1.48-6.91 4.41-7.04 4.41-0.22 0 2.37 0.43 4.57 0.97 4.9 1.18 0.74 1.19 0.24 0.03-14.75-1.17-15.14-1.22-28.2-0.22-39.34l0.78-8.88zm-125.12 0.5c1.13 0 0.52 1.8-3.85 11.66l-3.62 8.22 1.78 4.06c0.97 2.25 2.71 5.44 3.87 7.06 2.41 3.35 3.65 7.38 2.32 7.38-0.49 0-0.88-0.74-0.88-1.66 0-1.72-4.66-7.22-6.12-7.22-0.46 0 0.04 1.24 1.09 2.72 3.31 4.69 3.42 6.71 0.5 9-3.86 3.04-4.67 2.64-3.94-1.93 0.57-3.52 0.29-4.5-2.44-7.94-2.88-3.64-3.07-4.32-2.59-9.66 0.36-4 1.31-6.89 3.13-9.53 2.56-3.71 2.6-3.73 1.93-0.84-0.37 1.62-1.1 3.73-1.59 4.68-0.55 1.07-0.49 2.39 0.12 3.44 0.9 1.53 0.98 1.51 1-0.4 0.02-1.18 0.73-3.38 1.54-4.91s2.15-4.36 3-6.25c2.59-5.82 3.85-7.88 4.75-7.88zm41.9 0c-0.54 0-0.97 0.46-0.97 1 0 0.55 0.43 0.97 0.97 0.97s1-0.42 1-0.97c0-0.54-0.46-1-1-1zm25.69 0c0.49 0 0.88 0.89 0.88 1.97 0 1.09-0.17 1.97-0.38 1.97s-0.59-0.88-0.88-1.97c-0.28-1.08-0.11-1.97 0.38-1.97zm247.38 2.13c0.28-0.07 0.69 0.42 1 1.22 0.35 0.91 0.42 1.88 0.15 2.15-0.27 0.28-0.8-0.24-1.15-1.15-0.36-0.91-0.37-1.89-0.1-2.16 0.04-0.03 0.05-0.05 0.1-0.06zm-130.82 0.19c-0.32 0.12-0.59 1.8-0.59 4.09 0 2.62 0.18 4.54 0.41 4.31 0.76-0.78 1.01-7.67 0.31-8.37-0.05-0.05-0.08-0.05-0.13-0.03zm-164.94 0.9c-0.34 0.01-0.68 0.09-1 0.28-0.75 0.47-0.68 0.95 0.26 1.54 1.75 1.11 2.78 1.08 2.78-0.07 0-1.02-1-1.76-2.04-1.75zm293.1 1.22 0.06 2.82c0.04 1.61-0.68 3.41-1.66 4.15-2.29 1.74-4.18 1.72-4.18-0.06 0-0.8 0.57-1.21 1.28-0.94 0.75 0.29 1.97-0.86 2.9-2.75l1.6-3.22zm-356 0.1c1.016 0.04 1.64 0.71 2.5 2.37 1.871 3.61 1.851 6.75-0.031 7.47-0.812 0.31-1.469 1.13-1.469 1.75s-1.03 2.21-2.281 3.56c-1.252 1.35-2.743 3.33-3.344 4.41-0.965 1.72-1.125 1.49-1.406-1.97-0.247-3.03-0.699-3.87-1.969-3.66-0.906 0.15-1.938-0.16-2.281-0.71-0.344-0.56-1.91-1.04-3.469-1.04s-3.061-0.35-3.344-0.81c-1.13-1.83 10.041-9.71 15.906-11.22 0.44-0.11 0.849-0.17 1.188-0.15zm19.311 0.31c0.37 0.01 0.43 0.69-0.06 2.28-0.38 1.22-0.93 3.22-1.22 4.44-0.29 1.21-0.9 2.22-1.37 2.22-0.48 0-0.91 0.65-0.91 1.47 0 0.81-0.43 1.46-0.97 1.46-1.46 0-1.22-1.55 1.09-6.93 1.31-3.03 2.82-4.95 3.44-4.94zm181.38 0.06c1.46 0 1.18 3.55-0.38 4.85-0.75 0.61-1.6 2.33-1.91 3.81-0.53 2.59-3.53 7.44-3.59 5.81-0.02-0.44 1.09-3.23 2.44-6.19 1.35-2.95 2.47-6.01 2.47-6.81s0.43-1.47 0.97-1.47zm-35.19 0.5 0.87 3.85c0.91 3.86 0.81 5.08-0.4 3.87-0.36-0.36-0.65-2.25-0.6-4.19l0.13-3.53zm-71.91 0.09c0.07-0.01 0.15-0.01 0.19 0.04 0.34 0.34-0.66 2.48-2.22 4.75-3.2 4.65-5.97 7.27-5.97 5.65 0-0.58 0.67-1.41 1.44-1.84s2.44-2.7 3.75-5c1.14-2.01 2.31-3.48 2.81-3.6zm238.66 0.41c2.74 0.01 3.32 0.26 2.22 0.97-1.94 1.25-5.91 1.25-5.91 0 0-0.54 1.66-0.98 3.69-0.97zm-80 1.35c0.35 0 0.59 0.36 0.59 0.96 0 0.8 0.54 1.63 1.19 1.85 0.92 0.3 0.92 0.55 0 1.12-0.65 0.4-1.19 0.23-1.19-0.37 0-0.61-0.46-0.81-1-0.47-0.54 0.33-0.97-0.06-0.97-0.88 0-0.81 0.43-1.76 0.97-2.09 0.14-0.08 0.29-0.13 0.41-0.12zm92.47 0.12c0.02-0.01 0.04-0.01 0.06 0 0.11 0.05 0.24 0.34 0.34 0.84 0.22 1.01-0.07 2.26-0.59 2.78-0.62 0.62-0.74-0.04-0.37-1.84 0.22-1.12 0.4-1.7 0.56-1.78zm-233.1 0.34c0.35-0.05 0.73 0.47 1.16 1.6 0.8 2.09-2.56 25.12-4.16 28.47-0.75 1.57-1.37 3.46-1.37 4.18 0 0.73-0.46 1.32-1 1.32-1.25 0-1.26-2.43-0.03-4.66 2-3.65 4.17-15.81 4.12-23.09-0.03-4.85 0.52-7.7 1.28-7.82zm70.75 0.25c-0.22-0.08-0.14 0.28 0.19 1.16 0.37 0.97 0.92 1.55 1.22 1.25s0.02-1.11-0.66-1.78c-0.36-0.36-0.61-0.58-0.75-0.63zm-125.5 0.16c-0.32 0-0.61 0.01-0.87 0.03-5.95 0.56-5.74 1.69 0.31 1.69 3.55 0 5.86 0.48 6.63 1.41 0.8 0.96 3.08 1.4 7.09 1.34 3.35-0.05 5.49-0.45 5-0.94-1.31-1.31-13.27-3.57-18.16-3.53zm217.29 0.72c-0.71 0.01-0.58 0.43 0.31 1 1.89 1.22 2.22 1.22 1.47 0-0.34-0.54-1.14-1.01-1.78-1zm-93.94 0.12c-0.17 0.04-0.19 0.55-0.19 1.63 0 1.21 0.44 2.97 0.94 3.9 0.5 0.94 1.14 2.53 1.43 3.47 0.3 0.95 0.79 1.72 1.1 1.72 0.95 0-0.67-7.24-2.1-9.31-0.65-0.95-1.01-1.44-1.18-1.41zm179.62 0.03c0.18 0.01 0.39 0.01 0.6 0.04 1.79 0.25 2.11 1.05 2.37 5.65 0.17 2.95 0.06 6.38-0.25 7.63-0.31 1.24-1.07 2.28-1.66 2.28-0.58 0-0.76-0.7-0.43-1.56 1.46-3.8 1.72-6.32 0.69-6.32-0.6 0-1.09 1.23-1.1 2.72-0.01 2.02-0.26 2.35-0.94 1.28-0.54-0.86-0.52-2.08 0.04-3.12 0.5-0.94 0.87-3.21 0.81-5-0.07-2.07-0.33-2.53-0.63-1.28-0.8 3.32-1.91 3.69-1.44 0.47 0.32-2.13 0.72-2.81 1.94-2.79zm-26.34 0.97c0.44 0 0.88 0.09 1.22 0.22 0.67 0.28 0.13 0.47-1.22 0.47s-1.93-0.19-1.25-0.47c0.34-0.13 0.8-0.22 1.25-0.22zm-93 0.1c0.22-0.23 0.88 1.52 1.5 3.87 3.2 12.2 14.82 29.35 19.84 29.35 0.96 0 3.35 1.11 5.35 2.47l3.62 2.46h-4.44c-2.75 0-4.93-0.58-5.68-1.5-1.57-1.89-4.91-1.91-4.91-0.03 0 2.54 3.18 3.28 14.97 3.44 10.28 0.14 12.23-0.14 18.19-2.44 9.18-3.54 16.95-7.33 20.62-10.06 1.7-1.26 4.04-2.46 5.22-2.69s3.11-0.71 4.28-1.06c1.63-0.48 1.32 0.1-1.31 2.41-1.89 1.65-3.99 2.8-4.69 2.56s-1.55 0.34-1.9 1.28c-0.73 1.9-4.2 5.04-5.6 5.09-0.5 0.02-1.61 0.65-2.47 1.41-2.16 1.91-13.45 7.73-18.78 9.69-2.43 0.89-7.07 2.08-10.28 2.65-7.82 1.4-9.13 1.39-7.63-0.12 2.07-2.06 1.33-2.47-5.71-3.13-5.22-0.48-7.8-1.3-10.75-3.34-2.15-1.48-3.95-3.08-3.97-3.56s-1.08-1.83-2.35-3c-2.51-2.33-4.44-11.38-2.43-11.38 0.59 0 0.84-0.88 0.56-1.97-0.28-1.08-0.15-1.97 0.34-1.97 0.49 0.01 0.91 0.69 0.91 1.54 0 0.84 1.11 3.95 2.47 6.9 1.35 2.96 2.43 5.75 2.43 6.19 0 1 3.47 5.03 4.32 5.03 1.33 0 0.51-2.3-1.82-5.06-1.33-1.59-2.92-4.73-3.53-7-0.6-2.28-1.5-4.65-2-5.25-0.49-0.6-1.32-4.38-1.84-8.38-0.52-3.99-1.39-8.76-1.94-10.62s-0.82-3.56-0.59-3.78zm-153.16 0.31c0.05 0 0.1 0 0.13 0.03 0.26 0.26-0.31 1.22-1.28 2.16-1.7 1.62-1.75 1.6-0.5-0.47 0.62-1.04 1.32-1.73 1.65-1.72zm253.75 0.56c0.36-0.11 0.35 0.31 0.16 1.32-0.2 1.02-0.92 2.02-1.59 2.24-1.76 0.59-1.54-1.22 0.34-2.78 0.51-0.42 0.88-0.71 1.09-0.78zm-282.69 1c-0.83 0.08-1.69 0.94-1.81 2.56-0.11 1.55 0.4 2.22 1.66 2.22 1.28 0 1.78-0.7 1.78-2.5 0-1.61-0.79-2.35-1.63-2.28zm-28.71 0.85c0.4 0 0.24 1.46-0.35 3.21-1.6 4.81-2.66 5.41-1.44 0.82 0.59-2.21 1.39-4.03 1.79-4.03zm249.78 1.09c-0.76 0.01-0.93 0.26-0.63 0.75 0.38 0.61 2.09 1.16 3.82 1.22 1.72 0.05 4.24 0.44 5.59 0.87 3.37 1.08 9.84 1.19 9.84 0.16 0-0.46-3-1.14-6.65-1.5-3.66-0.36-8.14-0.92-9.97-1.25-0.89-0.16-1.55-0.26-2-0.25zm-187.72 0.03c0.48 0 0.17 0.79-0.85 2.19-1.02 1.41-2.24 2.54-2.71 2.56-1.22 0.05 1.76-4.17 3.31-4.69 0.1-0.03 0.18-0.06 0.25-0.06zm177.91 0.13c0.03-0.06 0.56 0.17 1.62 0.68 1.22 0.59 2.22 1.28 2.22 1.54 0 0.75-0.53 0.54-2.53-1.07-0.92-0.73-1.35-1.09-1.31-1.15zm-206.19 0.4c-1.63 0.03-1.88 0.6-0.81 1.66 0.9 0.91 3.51 0.77 5.12-0.25 0.93-0.59 0.25-0.99-2.22-1.28-0.85-0.1-1.55-0.14-2.09-0.13zm-59.5 1.32c1.84 0 4.95 3.68 5.5 6.5 0.48 2.52 0.06 3.59-2.41 6.12-1.65 1.69-3.3 4.66-3.66 6.56-0.35 1.9-1.014 3.44-1.495 3.44s-0.906 1.31-0.906 2.94c0 2.26-0.441 2.97-1.907 2.97-2.482 0-3.336-1.5-3.968-6.91-0.487-4.17-0.687-4.41-3.594-4.5-6.712-0.21-8.173-2.99-3.781-7.16 3.048-2.89 3.216-1.59 0.219 1.66l-2.219 2.38 2.469-0.72c1.352-0.41 3.003-1.17 3.656-1.69 0.652-0.52 1.573-0.72 2.031-0.44 1.313 0.81 7.917-5.8 8.625-8.62 0.35-1.4 1.02-2.53 1.44-2.53zm181.97 0c-0.54 0-0.97 0.42-0.97 0.96s0.43 1 0.97 1 1-0.46 1-1-0.46-0.96-1-0.96zm168.37 0c0.5 0 0.43 0.88-0.15 1.96-0.58 1.09-1.21 1.97-1.41 1.97s-0.13-0.88 0.15-1.97c0.29-1.08 0.91-1.96 1.41-1.96zm-92.69 0.43c1.81 0 3.56 0.65 4.94 2.03 1.28 1.29 1.24 1.48-0.47 1.57-1.06 0.05-0.24 0.48 1.81 0.97 2.06 0.48 6.27 2.07 9.35 3.53l5.59 2.65-5.65 1.69c-4.13 1.22-6.65 1.41-9.35 0.78-4.8-1.11-5.42-1.09-4.68 0.09 0.33 0.55 1.92 1 3.53 1 2.57 0.01 2.86 0.3 2.47 2.47-0.4 2.16-0.11 2.44 2.37 2.44 3.25 0 4.84-1.57 2.25-2.25-1.08-0.28-0.75-0.49 0.94-0.56 1.58-0.07 2.72-0.68 2.72-1.47s1.51-1.58 3.68-1.94c5.67-0.93 20.87-0.72 25.82 0.38 6.79 1.51 7.4 1.82 6.12 3.09-0.82 0.82-1.47 0.83-2.47 0-1.82-1.51-14.68-3.28-19.19-2.62-2 0.29-5.16 0.7-7.03 0.87-4.56 0.43-4.94 2.21-0.56 2.72 2.82 0.33 3.42 0.12 2.97-1.06-0.41-1.07-0.02-0.95 1.44 0.37 1.95 1.77 2 1.76 2.03-0.06 0.03-1.83 0.06-1.83 1.47 0.03 0.79 1.05 1.44 1.33 1.44 0.66 0-0.68 0.52-0.91 1.12-0.53 0.6 0.37 1.47 0.05 1.94-0.69 0.72-1.15 0.86-1.14 0.87 0 0.01 1.04 0.32 1.1 1.38 0.22s1.75-0.78 2.97 0.43c0.87 0.87 1.56 1.08 1.56 0.5 0-0.57 0.66-1.03 1.47-1.03s1.47 0.47 1.47 1.07 0.73 0.83 1.59 0.5 1.97-0.33 2.5 0c1.84 1.13-11.36 7.02-16.19 7.22-1.08 0.04-1.52 0.52-1.09 1.21 0.5 0.82-0.43 0.97-3.41 0.57-3.66-0.49-4-0.39-2.87 0.96 1.11 1.34 0.95 1.43-1.19 0.76-1.35-0.43-3.13-0.99-3.94-1.29-1.26-0.46-1.25-0.33-0.09 1.1 2.61 3.21-4.73 1.96-10.66-1.81-2.95-1.88-5.95-3.41-6.69-3.41-0.73 0-1.04-0.45-0.68-1.03s-0.29-1.96-1.44-3.03-3.44-4.77-5.12-8.22l-3.1-6.28 2.84-2.53c1.55-1.39 3.42-2.06 5.22-2.07zm-240.25 0.22c1.91 0.01 3.25 2.54 3.25 7.09 0 2.56-0.53 5.2-1.18 5.85-1.77 1.76-3.45 1.41-5.16-1.03-1.59-2.28-2.03-7.42-0.78-9.13 1.39-1.89 2.73-2.79 3.87-2.78zm50.66 1.69c-0.07 0.02-0.12 0.05-0.19 0.09-0.54 0.34-1 1.06-1 1.57 0 0.5 0.46 0.9 1 0.9s0.97-0.69 0.97-1.53c0-0.63-0.24-1.02-0.59-1.03-0.06 0-0.12-0.02-0.19 0zm12.87 0.06c0.29-0.12 0.23 0.59-0.03 2.34-0.25 1.71-0.86 3.13-1.34 3.13-1.3 0-1.07-2.34 0.44-4.41 0.45-0.61 0.77-0.99 0.93-1.06zm193.6 0.66c0.34-0.02 0.71 0.04 1.06 0.18 0.79 0.32 0.58 0.55-0.56 0.6-1.04 0.04-1.64-0.17-1.31-0.5 0.16-0.16 0.47-0.27 0.81-0.28zm18.59 1.97c0.63 0 1.25 0.06 1.72 0.18 0.95 0.25 0.18 0.47-1.72 0.47-1.89 0-2.66-0.22-1.72-0.47 0.48-0.12 1.1-0.18 1.72-0.18zm-289.65 0.21c-1.45 0.11-8.41 5.58-8.41 6.76 0 1.09 5.52-2.06 7.63-4.38 0.86-0.95 1.32-1.99 1-2.31-0.05-0.05-0.13-0.07-0.22-0.07zm342.46 0.94c2.02-0.1 4.19 0.61 6.72 2.1 3.23 1.88 4.41 3.24 4.41 4.87 0 3.19-1 3.83-3.09 1.94-2.6-2.35-3.46-0.79-1.44 2.62 1.46 2.48 1.48 2.81 0.19 2.32-0.84-0.33-1.57-0.06-1.57 0.56 0 0.61 0.71 1.37 1.54 1.69 1.1 0.42 1.21 0.9 0.43 1.84-0.75 0.91-0.77 1.46 0 1.94 0.72 0.44 0.78 1.06 0.13 1.84-0.61 0.73-0.63 1.73-0.06 2.63 0.5 0.79 0.9 2.75 0.9 4.37 0 2.71-0.2 2.53-2.56-2.22-1.42-2.84-2.96-5.15-3.44-5.15s-0.35 1 0.28 2.21c2.45 4.73 2.78 5.71 2.78 7.57 0 1.05 0.46 2.19 1 2.53 1.24 0.76 1.32 4.4 0.1 4.4-0.5 0.01-1.5 0.19-2.22 0.41-1.61 0.5-5.58-0.66-8.47-2.47-1.75-1.09-2.77-1.11-5.31-0.15-1.74 0.65-3.29 1.05-3.47 0.87-0.57-0.57 5.01-5.76 7.06-6.56 1.9-0.74 1.93-0.78 0.13-1.5-1.27-0.51-2.26-0.2-3.07 0.9-2.9 3.98-4.43 0.26-4.43-10.84 0-7.14 0.66-8.81 5.75-14.22 2.74-2.91 5.13-4.37 7.71-4.5zm-306.18 0.03c-0.12 0.03-0.27 0.08-0.41 0.16-0.54 0.33-1 1.08-1 1.63 0 0.54 0.46 0.67 1 0.34 0.54-0.34 0.97-1.05 0.97-1.6 0-0.4-0.21-0.59-0.56-0.53zm158.75 0.66c0.43 0 0.77 1.18 0.75 2.63-0.03 1.44-0.68 2.83-1.44 3.09-0.97 0.32-1.21-0.03-0.75-1.22 0.36-0.93 0.66-2.36 0.66-3.13 0-0.76 0.35-1.37 0.78-1.37zm113.75 0.13c0.44 0 0.56 0.29 0.56 0.74 0 0.47-1.9 1.56-4.22 2.44-6.29 2.4-7.83 1.79-2.19-0.87 3.44-1.62 5.1-2.32 5.85-2.31zm-131.32 0.87c-0.57 0-0.77 0.43-0.43 0.97 0.33 0.54 0.79 1 1.03 1s0.44-0.46 0.44-1-0.46-0.97-1.04-0.97zm77.47 0c-3.22-0.03-0.78 1.66 3.5 2.44 2.32 0.42 4.5 0.73 4.91 0.65s0.75 0.28 0.75 0.82 0.25 1 0.56 1c0.32 0 0.42-0.47 0.22-1.07-0.4-1.2-7.14-3.82-9.94-3.84zm43.85 0.13c0.52 0 0.72 0.26 0.72 0.84 0 0.54-1.23 0.97-2.72 0.94-2.4-0.07-2.46-0.19-0.72-0.94 1.34-0.58 2.19-0.84 2.72-0.84zm-11.1 0.96c0.45 0 0.92 0.09 1.25 0.22 0.68 0.28 0.11 0.5-1.25 0.5-1.35 0-1.89-0.22-1.22-0.5 0.34-0.13 0.78-0.22 1.22-0.22zm-117.65 0.07c0.06-0.03 0.13 0.01 0.22 0.09 0.32 0.33 0.34 1.16 0.06 1.88-0.32 0.78-0.52 0.55-0.56-0.6-0.04-0.78 0.08-1.3 0.28-1.37zm141.93 0.15c0.28 0 0.54 0.18 0.76 0.53 0.34 0.57-0.7 1.7-2.32 2.53-3.63 1.89-4.03 1.88-4.03 0.04 0-0.82 0.81-1.47 1.78-1.47 0.98 0 2.26-0.48 2.85-1.07 0.36-0.36 0.69-0.55 0.96-0.56zm-227.34 1.28c0.79 0.02 0.93 2.74 0.63 11-0.23 6.3-0.78 11.93-1.19 12.47-0.42 0.54-1.05 2.37-1.41 4.07-0.36 1.69-1.76 4.12-3.15 5.4-4.08 3.77-7.23 9.39-7.88 14.13-0.65 4.76 0.29 5.62 3.13 2.78 1.38-1.39 2.28-1.48 5.59-0.6 3.21 0.86 4.47 0.73 6.72-0.56 2.86-1.64 5.84-6.71 5.84-9.91 0-2.42 1-2.61 11.1-2.21l8.59 0.34v5.87 5.85l-3.69-0.66c-2.03-0.37-3.91-1.01-4.18-1.4-0.28-0.39-1.52-1.05-2.79-1.44-1.7-0.53-2.79-0.13-4.25 1.44-1.08 1.16-4.35 3.14-7.28 4.43-2.93 1.3-5.34 2.74-5.34 3.22s-1.12 1.47-2.47 2.19-2.47 1.72-2.47 2.19-0.87 1.79-1.94 2.94c-1.06 1.14-2.28 3.88-2.72 6.09-0.61 3.15-1.3 4.09-3.06 4.34-1.23 0.18-2.45 0.95-2.75 1.72-0.68 1.78-1.75 1.7-7.09-0.47-5.02-2.03-7.22-4.5-6.81-7.81 0.22-1.85 1.29-2.68 4.97-3.84 2.56-0.82 4.65-2.07 4.65-2.75 0-0.69 0.5-1.41 1.06-1.6 0.67-0.22 0.49-1.61-0.5-3.97-0.9-2.16-1.32-5.01-1-7.03 0.61-3.84-0.52-5.02-3.97-4.15-1.74 0.43-2.45 1.5-2.93 4.28-0.36 2.03-1.65 4.94-2.91 6.5-2.14 2.65-2.39 2.73-3.28 1-0.66-1.28-0.47-3.45 0.59-6.97 1.72-5.71 4.78-8.04 13.19-10.16 2.57-0.64 4.66-1.58 4.66-2.06s0.69-0.88 1.5-0.88c0.81 0.01 1.47-0.36 1.47-0.84s0.94-1.14 2.06-1.44c1.12-0.29 2.24-1.44 2.53-2.56s1.02-2.03 1.56-2.03 0.72-0.89 0.44-1.97-0.13-1.74 0.31-1.47c1.56 0.97 2.87-5.97 2.47-13.09-0.43-7.66-0.08-9.6 1.84-10.34 0.06-0.03 0.11-0.04 0.16-0.04zm255.63 0.41c-0.48 0.04-1.31 0.38-2.82 1.06-1.37 0.63-2.53 1.48-2.53 1.91 0 0.42 1.35 0.35 2.97-0.22s2.94-1.42 2.94-1.91c0-0.57-0.09-0.88-0.56-0.84zm-126.57 0.56c0.51-0.31 1.23 4.42 1.6 10.88 0.63 11.05 0.38 14.18-0.75 10.43-1.05-3.46-1.74-20.76-0.85-21.31zm138 0.35c-0.2-0.02-0.4 0.06-0.62 0.28-0.33 0.32-0.27 1.12 0.16 1.81 0.61 1 0.85 1 1.18 0 0.36-1.07-0.1-2.03-0.72-2.09zm-36.34 0.5c0.53-0.06 0.88 0.13 0.88 0.53 0 0.52-0.66 0.93-1.47 0.93-0.82 0-1.47-0.16-1.47-0.37s0.65-0.66 1.47-0.97c0.2-0.08 0.41-0.1 0.59-0.12zm-240.31 0.5c0.12 0 0.15 0.31 0.12 0.96-0.03 0.82-0.47 2.39-0.93 3.47-0.85 1.97-0.83 1.97-0.88 0-0.03-1.08 0.35-2.65 0.88-3.47 0.42-0.65 0.68-0.96 0.81-0.96zm-29.07 1.37c-0.15 0.01-0.37 0.08-0.65 0.19-0.78 0.3-1.64 1.17-1.94 1.94-0.82 2.13 1.16 1.68 2.35-0.54 0.62-1.17 0.71-1.62 0.24-1.59zm145.91 0.06c0.03-0.01 0.06 0 0.09 0 0.18 0.03 0.45 0.24 0.88 0.6 0.77 0.64 1.41 1.55 1.41 2.03 0 1.71-1.74 0.79-2.25-1.19-0.24-0.91-0.31-1.36-0.13-1.44zm-170.97 0.19 2.66 2.88c2.26 2.43 2.55 3.41 2.03 6.65-0.57 3.57-2.58 6.19-6.66 8.57-1.35 0.78-1.58 0.67-1.12-0.54 0.49-1.28 0.11-1.25-2.47 0.22-2.01 1.14-2.59 1.86-1.62 2.06 0.8 0.18 1.5 0.63 1.5 1 0 1.26-3.85 3.1-5.32 2.54-0.8-0.31-2.27-0.14-3.25 0.43-1.59 0.93-1.51 1.07 0.66 1.1 2.3 0.03 2.34 0.12 0.72 1.75-0.94 0.94-2.48 1.71-3.41 1.72-0.93 0-1.72 0.68-1.72 1.53 0 1.96-3.11 5.18-4.31 4.43-0.5-0.3-2.17-0.07-3.688 0.5-1.688 0.65-2.31 1.3-1.624 1.72 0.806 0.5 0.616 2.11-0.688 5.82-2.386 6.77-6.636 12.56-10.625 14.46-1.777 0.86-3.366 1.54-3.531 1.54-0.66 0 0.625-21.17 1.312-21.63 0.406-0.27 1.029-1.61 1.375-2.97 0.551-2.15 17.349-20.65 18.749-20.65 0.29 0 2.81-2.15 5.56-4.79 3.26-3.1 6.83-5.4 10.22-6.56l5.25-1.78zm-15.53 0.44c0.53-0.03 1 0.5 1.41 1.56 0.42 1.1-0.38 2.55-2.38 4.38-3.36 3.07-3.98 1.7-1.47-3.16 0.96-1.84 1.76-2.75 2.44-2.78zm44.63 0.22c-0.48 0-1.19 0.37-1.85 1.03-1.73 1.73-0.88 2.12 1.44 0.65 0.8-0.5 1.18-1.19 0.81-1.56-0.09-0.09-0.24-0.12-0.4-0.12zm-48.91 0.09c0.21-0.04 0.34 0.03 0.34 0.22 0 0.5-0.88 1.67-1.97 2.59-1.08 0.93-1.96 1.33-1.96 0.88s0.88-1.65 1.96-2.63c0.68-0.61 1.28-0.98 1.63-1.06zm69.84 0.97c0.25 0.05 0.34 0.76 0.35 2.25 0.01 1.73-0.46 3.42-1 3.75-1.26 0.78-1.26-3.46 0-5.41 0.27-0.42 0.51-0.62 0.65-0.59zm5.63 0.44c0.29 0.11 0.14 3.1-0.56 7.09-0.62 3.49-1.49 6.74-1.94 7.25-1.12 1.28-1.05-2.04 0.12-5.78 0.53-1.66 1.25-4.26 1.57-5.81 0.35-1.75 0.58-2.59 0.75-2.72 0.02-0.02 0.04-0.04 0.06-0.03zm241.4 0.28c0.19 0.03 0.22 0.39 0.22 1.12 0 0.93-0.33 1.69-0.75 1.69-0.69 0-5.54 6.71-9.12 12.63-0.84 1.37-2.12 2.68-2.88 2.93-1.24 0.42 8.2-14.07 11.41-17.5 0.59-0.63 0.94-0.91 1.12-0.87zm-70.96 0.69c0.18-0.02 0.76 0.46 1.75 1.56 1.41 1.57 2.53 3 2.53 3.19 0 0.73-0.72 0.26-2.13-1.38-1.67-1.95-2.45-3.34-2.15-3.37zm-48.6 1.15c0.95 0 1.87 1.91 2.69 5.6 1.22 5.43 1.3 5.51 2.59 3.18 1.47-2.64 1.7-1.74 0.78 2.85-0.33 1.65-1.24 3.26-2.03 3.56-1.01 0.39-1.25 0.03-0.87-1.19 0.61-1.93-1.77-10.64-3.47-12.68-0.85-1.03-0.79-1.32 0.31-1.32zm156.56 0.19c0.07-0.02 0.14 0.01 0.22 0.09 0.33 0.33 0.35 1.17 0.07 1.88-0.32 0.78-0.52 0.55-0.57-0.6-0.03-0.77 0.08-1.3 0.28-1.37zm-120.5 0.78c-1.13 0-1.1 0.71 0.19 3.13 0.59 1.09 1.27 1.8 1.47 1.59 0.67-0.67-0.76-4.72-1.66-4.72zm-183.09 0.09c3.29 0.09 3.41 0.21 1.22 0.91-3.52 1.13-4.94 1.13-4.94 0 0-0.54 1.69-0.96 3.72-0.91zm270.72 0.79c0.35 0-0.47 1.24-2.63 4.15-2.16 2.93-4.67 6.63-5.59 8.25-2.18 3.85-6.08 9.28-8.75 12.13-1.67 1.78-1.84 2.42-0.81 3.06 0.91 0.57 0.98 1 0.22 1.47-0.6 0.37-1.1 0.17-1.1-0.47 0-0.82-0.48-0.77-1.68 0.19-1.6 1.26-1.61 1.18-0.16-1.13 5.33-8.49 5.3-8.46 9.03-13.28 1.26-1.62 3.49-4.94 5-7.37 1.51-2.44 3.91-5.28 5.28-6.32 0.63-0.46 1.03-0.69 1.19-0.68zm-99.31 0.12c-1.39 0-1.25 5.96 0.22 9.13 0.67 1.45 1.57 2.68 2 2.68 0.42 0.01 0.34-0.86-0.22-1.9-0.56-1.05-1.03-3.71-1.03-5.91s-0.43-4-0.97-4zm102.72 1.97c1.3 0 0.4 2.64-1.69 4.91-3.25 3.52-13.92 20.85-16.06 26.06-1.01 2.43-2.22 4.43-2.66 4.44-1.01 0 0.15-3.8 1.94-6.38 0.74-1.07 1.31-2.7 1.31-3.62 0-0.93 0.63-2.26 1.38-3 0.74-0.74 1.59-2.23 1.93-3.32 0.35-1.08 2.63-5.04 5.07-8.75 2.43-3.7 4.4-7.09 4.4-7.53 0-0.76 3.2-2.81 4.38-2.81zm30.43 0.41c0.15-0.04 0.36 0.14 0.63 0.56 0.52 0.81 0.96 2.27 0.97 3.22 0.01 0.94-0.43 1.72-0.97 1.72s-0.98-1.46-0.97-3.22c0.01-1.52 0.1-2.22 0.34-2.28zm-159.75 0.56c0.53 0 0.72 0.66 0.41 1.47s-0.76 1.5-0.97 1.5-0.4-0.69-0.4-1.5c-0.01-0.81 0.44-1.47 0.96-1.47zm141.35 1c-1.69 0-6.57 3.72-6.57 5.03 0.01 0.54 1.78 0 3.94-1.22 3.98-2.23 5.09-3.81 2.63-3.81zm9.19 0c-0.55 0-1 0.46-1 1.03-0.01 0.57 0.45 0.77 1 0.44 0.54-0.34 0.96-0.83 0.96-1.06 0-0.24-0.42-0.41-0.96-0.41zm-177.16 0.97c0.41 0 1.25 1.89 1.84 4.18 0.6 2.3 1.93 6.85 3 10.1 1.08 3.24 2.73 8.53 3.66 11.78 3.13 10.91 12.31 29.52 22.4 45.47 2.92 4.61 13.88 16.19 16.82 17.75 1.82 0.97 1.81 1.03-0.22 2.12-1.76 0.94-2.04 0.88-1.56-0.37 0.31-0.83 0.16-1.5-0.38-1.5-0.53 0-3.11-2.01-5.75-4.44-2.63-2.43-5.11-4.43-5.53-4.44-1.41-0.02 2.19 4.44 5.62 6.91 3.84 2.77 4.43 3.98 1.54 3.22-2.67-0.7-10.68-9.57-17.16-19-4.51-6.57-4.53-6.53-4.53-4.69 0 0.82 1.15 2.74 2.53 4.31 1.38 1.58 3.13 4.29 3.88 6.04 0.74 1.74 4.66 6.52 8.71 10.59 6.04 6.05 7.03 7.41 5.25 7.41-5.77 0-24.32-16.82-34.31-31.1-1.85-2.65-4.69-7.16-6.28-10s-3.25-5.15-3.69-5.16c-0.44 0-0.6 0.35-0.37 0.76 4.48 8.09 9.79 16.67 13.15 21.24 2.34 3.18 4.25 6.11 4.25 6.54 0 1.18 5.01 6.19 8.85 8.84 1.89 1.31 3.66 2.66 3.94 3 0.27 0.34 2.5 1.78 4.93 3.22 2.44 1.44 3.88 2.65 3.19 2.66-0.69 0-2.89-1.03-4.91-2.29-6.28-3.91-8.06-4.2-4.75-0.75 1.59 1.66 3.63 3.04 4.5 3.04 0.88 0 2.45 0.64 3.5 1.43 1.05 0.8 2.8 1.43 3.88 1.44 1.59 0.01 1.67-0.13 0.5-0.87-2.34-1.49-0.75-1.79 1.94-0.38 1.35 0.71 1.89 1.3 1.18 1.31-0.7 0.01-1.02 0.43-0.68 0.97 0.33 0.54 0.07 1-0.57 1-0.86 0-0.85 0.37 0.07 1.47 1.43 1.73 1.28 1.71-1.97-0.09-1.36-0.75-3.21-1.37-4.16-1.38s-1.72-0.46-1.72-1-0.52-0.97-1.12-0.97c-2.05 0-12.11-6.71-18.72-12.47-6.26-5.45-16.43-16.75-21.31-23.72-1.44-2.04-2.17-4.31-1.97-6.15 0.29-2.83 0.44-2.73 4.47 3.25 2.28 3.38 5.17 7.24 6.4 8.59 1.24 1.36 3.94 4.56 6 7.13 2.07 2.56 4.2 4.68 4.75 4.68 0.96 0-1.73-3.85-6.03-8.59-1.09-1.2-2-2.46-2-2.81s-2.2-3.43-4.9-6.88c-2.71-3.44-4.94-6.54-4.94-6.87 0-0.34-0.82-1.78-1.82-3.22-1.95-2.81-3.3-7.05-2.24-7.03 0.35 0 1.51 1.83 2.56 4.03 1.75 3.66 6.44 10.68 6.44 9.66-0.01-0.24-1.53-3.53-3.41-7.32-1.89-3.78-3.43-7.19-3.44-7.56-0.02-0.99 3.89-2.08 7.81-2.19 3.3-0.08 3.58 0.2 7.63 7.78 2.31 4.33 4.53 8.54 4.94 9.35 2.7 5.41 12.61 20.86 15.47 24.12 1.89 2.17 3.45 4.25 3.46 4.66 0.03 0.97 1.97 0.97 1.97 0 0-0.41-0.99-1.84-2.22-3.19-2.08-2.3-4.84-6.07-7.12-9.72-0.55-0.87-1.87-2.87-2.91-4.4-3.26-4.85-5.4-8.78-8.97-16.38-1.9-4.06-4.29-9.15-5.31-11.31-1.01-2.16-2.11-5.71-2.44-7.87l-0.59-3.94 2.44 4.94c1.35 2.7 2.48 5.67 2.5 6.62 0.03 1.63 2 2.59 2 0.97 0-0.42-1.58-4.52-3.5-9.06-1.92-4.55-3.31-9.17-3.1-10.29 0.31-1.6 0.56-1.36 1.16 1.16 0.42 1.76 1.15 3.22 1.63 3.22 1.1 0 1.1-1.51 0-3.69-1.53-3-2.93-6.6-3.44-8.93-0.41-1.88-0.22-2.06 0.94-1.1 1.78 1.48 1.74 1.28-0.54-6.94-1.04-3.78-1.54-6.9-1.12-6.9zm-60.28 3.94c3.13 0 2.95 0.68-1.06 4.59-3.29 3.19-7.44 4.4-7.44 2.19 0-1.94 6.08-6.78 8.5-6.78zm196.22 0c0.9 0-2.94 6.6-5.91 10.15-1.21 1.45-1.24 1.91-0.19 2.56 0.91 0.57 0.98 1.03 0.22 1.5-0.6 0.37-1.14 0.09-1.16-0.62-0.05-2.44-4.87 4.23-4.87 6.75 0 2 0.27 2.3 1.31 1.44 2.37-1.97 2.64 0.05 0.41 3.18-1.2 1.69-2.06 3.72-1.91 4.54 0.25 1.29 0.17 1.3-0.68 0.03-0.7-1.03-0.53-1.95 0.59-3.19 0.87-0.96 1.31-2.06 0.97-2.41-0.79-0.78-4.45 3.69-4.16 5.07 0.12 0.55 0.01 0.68-0.22 0.28-0.67-1.21-3.22-0.87-3.75 0.5-0.27 0.69-1.48 1.35-2.69 1.43l-2.15 0.13 2.22-1.81c1.22-1.01 2.8-2.01 3.47-2.25s0.95-0.69 0.68-0.97c-0.6-0.64-13.13 5.17-13.59 6.31-0.18 0.45-0.98 0.81-1.75 0.81s-3.27 0.87-5.56 1.94c-2.3 1.07-6.1 2.64-8.47 3.47-4.76 1.66-10.25 2.11-6.53 0.53 1.08-0.46 4.19-1.41 6.87-2.09 3.45-0.89 5.84-2.35 8.28-5 1.9-2.07 4.06-3.75 4.75-3.75 0.7 0 1.25-0.41 1.25-0.88s2.62-2 5.82-3.44c6.84-3.07 16.45-11.2 14.97-12.68-0.65-0.65-2.47-0.27-5.44 1.12-2.46 1.16-4.79 2.09-5.16 2.09-1.47 0.01-8.22 3.39-8.22 4.13 0 0.44-1.94 0.81-4.31 0.81s-5.96 0.69-7.97 1.53c-4.02 1.69-11.46 1.57-12.03-0.18-0.23-0.71 2.07-1.38 6.34-1.82 8.65-0.89 20.44-4.21 25.1-7.09 2.02-1.25 4.16-2.28 4.75-2.28s4.04-2.1 7.65-4.63c3.62-2.52 5.99-3.96 5.32-3.21-2.43 2.66-1.16 3.05 1.81 0.56 1.66-1.4 3.43-2.56 3.94-2.56zm-95.13 0.24c0.17 0 0.4 0.15 0.69 0.44 0.59 0.59 0.9 1.8 0.72 2.72-0.44 2.16-1.82 0.79-1.82-1.81 0.01-0.91 0.13-1.33 0.41-1.35zm-18.59 2c-0.07 0-0.12 0.03-0.16 0.07-0.3 0.3 0.39 1.83 1.53 3.43 1.14 1.61 2.07 3.41 2.07 4-0.01 0.6 0.22 1.07 0.5 1.07 0.27 0 0.5-0.54 0.5-1.22-0.01-1.62-3.47-7.2-4.44-7.35zm134.97 0.54c0.14 0.02 0.28 0.12 0.4 0.31 1.39 2.19 0.98 6.12-1.09 10.19-3 5.88-2.56 9.48 1.66 14.18 2.27 2.54 4.44 4 5.9 4 1.27 0 3.09 0.4 4.03 0.88s3.45 1.71 5.6 2.72c2.15 1 4.78 2.62 5.84 3.56s2.62 1.91 3.47 2.19c0.85 0.27 2.28 2.27 3.19 4.43 0.93 2.23 2.31 3.94 3.18 3.94 0.9 0 1.57 0.84 1.57 1.97 0 2.83-2.41 2.4-5.19-0.91-1.7-2.01-2.81-2.58-3.78-1.96-2.19 1.38-2.69 1.12-5.72-3.07-1.58-2.17-3.03-3.38-3.25-2.71-0.22 0.66-4.94-3.36-10.53-8.88l-10.19-10.03 0.56-6.69c0.57-6.74 2.8-13.8 4.22-14.09 0.05-0.01 0.08-0.04 0.13-0.03zm-215.63 0.68 0.63 6.41c0.34 3.51 0.46 6.52 0.25 6.75s-0.38-0.09-0.38-0.72c0-0.78-2.53-1.16-7.87-1.16-7.26 0.01-7.88-0.15-7.88-2 0-2.27 0.77-2.65 6.69-3.31 3.14-0.35 4.82-1.2 6.4-3.22l2.16-2.75zm-15.9 0.85c0.26 0 0.28 0.37 0.03 1.03-0.66 1.7-1.35 2.04-1.35 0.62 0-0.51 0.44-1.2 0.97-1.53 0.14-0.08 0.26-0.12 0.35-0.12zm54.34 0.22c0.02-0.01 0.06 0.02 0.09 0.06 0.45 0.62 0.98 10.23 1.16 21.37 0.18 11.15 0.06 20.28-0.25 20.28-0.32 0-0.6-4.16-0.6-9.21 0-5.06-0.21-14.67-0.53-21.38-0.29-6.29-0.25-11.07 0.13-11.12zm-79.84 0.37c0.33-0.01 0.56 0.23 0.56 0.88 0 0.47-0.61 1.39-1.38 2.03-1.14 0.95-1.28 0.78-0.84-0.88 0.32-1.23 1.1-2.01 1.66-2.03zm134.15 0.13c1.06-0.23 2.15 2.3 1.56 4.18-0.41 1.32-0.22 1.64 0.66 1.1 0.93-0.57 1.07-0.08 0.56 1.93-0.39 1.58-0.31 2.43 0.22 2.1 0.5-0.31 1.16 0.33 1.44 1.4 0.32 1.23 0.04 1.97-0.78 1.97-0.72 0-1.62-1.32-1.97-2.93s-1.13-2.81-1.75-2.69-1.32-0.79-1.5-2c-0.26-1.67 0.05-2.04 1.22-1.59 0.85 0.32 1.53 0.11 1.53-0.44 0-0.56-0.54-1.2-1.22-1.44s-0.87-0.85-0.44-1.31c0.15-0.16 0.32-0.25 0.47-0.28zm-131.91 0.28c0.16-0.1 0.19 0.33 0.22 1.19 0.05 1.13-0.82 2.86-1.9 3.84-1.12 1.01-1.94 1.27-1.94 0.62 0-0.62 0.41-1.12 0.91-1.12 0.49 0 1.33-1.23 1.87-2.72 0.41-1.13 0.69-1.72 0.84-1.81zm93.29 0.15c0.06 0.01 0.11 0.22 0.18 0.69 0.23 1.5 0.24 3.7 0 4.91-0.23 1.21-0.44 0.02-0.43-2.69 0-1.86 0.12-2.92 0.25-2.91zm-18.63 0.19c0.33-0.13 0.75 1.52 0.91 3.69 0.46 6.42 1.74 37.69 1.9 46.53 0.29 15.53-1.75 9.06-2.71-8.66-0.17-2.97-0.43-0.54-0.57 5.41-0.2 8.8-0.44 10.37-1.31 8.38-0.86-1.99-1.14-2.14-1.47-0.79-0.31 1.31-1.1 1.59-3.53 1.16-11.74-2.06-19.38-11.29-19.38-23.41 0-3.87 0.22-4.27 1.97-3.81 2.82 0.74 4.91-1.42 4.91-5.06 0-3.62 3.02-8.13 9.38-14 3.05-2.82 4.4-4.85 4.4-6.63 0-2.08 0.48-2.56 2.47-2.56 1.35 0 2.71-0.11 3.03-0.25zm212.06 1.69c1.15-0.04 1.99 4.83 1.25 7.78-0.5 1.99-0.28 2.59 0.94 2.59 1.88 0 2.1 1.53 0.35 2.35-0.99 0.46-0.99 0.73 0 1.18 0.67 0.32 1.24 0.91 1.24 1.35s-0.57 1.01-1.28 1.28c-2.3 0.89-4.94-15.06-2.72-16.44 0.08-0.05 0.15-0.09 0.22-0.09zm-55.72 0.94c0.1-0.03 0.21-0.02 0.29 0.06 0.3 0.3-0.02 1.11-0.69 1.78-0.97 0.96-1.07 0.84-0.53-0.56 0.27-0.73 0.64-1.21 0.93-1.28zm16.16 0.03c0.04 0 0.03 0.05 0.03 0.12 0.01 0.58-0.64 1.89-1.43 2.94-1.88 2.47-1.91 3.97-0.07 2.44 1.18-0.98 1.56-0.75 2.07 1.28 0.34 1.36 0.41 3.26 0.15 4.25-0.25 0.99-0.54 0.27-0.62-1.63l-0.13-3.43-1.5 2.72c-1.31 2.41-1.65 2.53-2.94 1.24-1.29-1.28-1.11-1.98 1.5-6.15 1.43-2.27 2.66-3.81 2.94-3.78zm31.78 0.72c0.18-0.07 0.44 0.13 0.85 0.53 0.6 0.6 0.92 1.59 0.71 2.22-0.48 1.46-1.81 0.14-1.81-1.82 0-0.55 0.08-0.87 0.25-0.93zm-284.53 0.81c0.54 0 0.97 0.2 0.97 0.44 0 0.23-0.43 0.69-0.97 1.03-0.54 0.33-1 0.13-1-0.44s0.46-1.03 1-1.03zm189.35 2.81-7.88 4.09c-4.33 2.26-8.3 4.48-8.84 4.91-2.1 1.65-8.18 2.44-15.25 1.97l-7.38-0.5-0.28-4.09-0.31-4.13 5.25-0.56c2.87-0.3 11.82-0.78 19.93-1.1l14.76-0.59zm-254.29 2.09c-0.54 0.01-0.97 0.46-0.97 1 0 0.55 0.43 0.97 0.97 0.97s0.97-0.42 0.97-0.97c0-0.54-0.43-1-0.97-1zm46.57 0.1c0.48-0.01 0.43 0.44-0.35 1.37-0.67 0.82-1.9 1.5-2.75 1.5-1.23 0-1.15-0.31 0.38-1.47 1.25-0.94 2.23-1.39 2.72-1.4zm287.4 0.06c0.98-0.09 2.45 0.2 4.44 0.81 2.42 0.75 2.39 0.8-1.22 2.38-4.1 1.8-7.41 2-9.59 0.62-1.17-0.74-1.23-1.18-0.25-2.15 0.92-0.93 1.22-0.93 1.22-0.03 0 0.65 0.88 1.18 1.96 1.18 1.1 0 1.97-0.68 1.97-1.5 0-0.78 0.49-1.22 1.47-1.31zm15.47 0.91c0.06-0.06 0.5 0.31 1.35 1.12 0.97 0.94 1.54 1.93 1.28 2.19s-1.07-0.49-1.78-1.69c-0.63-1.03-0.91-1.56-0.85-1.62zm-66.69 1c0.08-0.01 0.16-0.01 0.22 0 0.29 0.04 0.35 0.33 0.35 0.81 0 0.49-1.42 1.37-3.13 1.97-4.46 1.55-4.68 1.32-1.03-0.91 1.98-1.2 3.04-1.79 3.59-1.87zm-295 0.9c-0.712 0-1.551 0.69-1.875 1.53-0.325 0.85-0.989 1.31-1.438 1.04-0.783-0.49-4.125 2.7-4.125 3.93 0 0.33 0.632 0.12 1.375-0.5 0.743-0.61 2.021-0.84 2.844-0.53 1.001 0.39 1.993-0.45 3-2.47 1.191-2.38 1.244-3 0.219-3zm52.596 0.1c0.81 0-0.25 0.84-2.38 1.9-2.12 1.06-4.36 1.93-4.94 1.91-1.58-0.06 5.61-3.81 7.32-3.81zm303.87 0.12c0.61-0.06 1.27 0.34 2.47 1.13 1.39 0.91 2.53 2.29 2.53 3.09 0 1.65-1.55 1.95-2.47 0.47-0.33-0.54-2-0.97-3.72-0.97h-3.09l2.13-2.12c1.01-1.02 1.55-1.54 2.15-1.6zm-338.87 0.75c-0.24 0-0.44 0.46-0.44 1s0.49 0.97 1.06 0.97c0.58 0 0.77-0.43 0.44-0.97s-0.82-1-1.06-1zm306.31 0c0.12 0 0.13 0.35 0.09 1-0.04 0.81-0.47 2.59-0.9 3.94l-0.75 2.44-0.1-2.44c-0.04-1.35 0.32-3.13 0.85-3.94 0.42-0.65 0.69-1 0.81-1zm-108 0.78c0.01 0 0.05 0.02 0.06 0.04 1.52 1.8 2.86 9.32 2.28 12.9-0.64 4.03-2.23 5.47-2.53 2.28-0.42-4.57-0.27-15.1 0.19-15.22zm97.44 1.69-1.5 3.13c-1.79 3.69-1.88 4.25-0.57 4.25 0.55 0 1.06-0.78 1.1-1.72 0.04-0.95 0.3-1.23 0.56-0.6 0.26 0.64-1.14 3.23-3.06 5.75-1.93 2.52-3.5 3.94-3.5 3.13s0.5-1.67 1.12-1.88c0.99-0.33 1.43-1.82 1.75-6.28 0.05-0.61 0.99-2.16 2.1-3.43l2-2.35zm34.34 0.5c0.54 0 1 0.43 1 0.97s-0.46 1-1 1-0.97-0.46-0.97-1 0.43-0.97 0.97-0.97zm-305.47 0.13c0.5 0 0.43 0.26-0.47 0.84-0.81 0.52-2.12 0.94-2.93 0.91-0.98-0.04-0.8-0.35 0.5-0.91 1.35-0.58 2.4-0.84 2.9-0.84zm241.91 0.93c0.7-0.01 0.59 0.26 0.59 0.79 0 0.93-9.29 5.22-14.75 6.81-6.4 1.87-8.73 2.16-9.31 1.22-0.51-0.83 2.7-2.01 8.84-3.25 1.09-0.22-1.05-0.39-4.75-0.35-5.06 0.06-7-0.29-7.87-1.47-0.63-0.86-1.81-1.86-2.63-2.22-0.81-0.35 0.28-0.38 2.44-0.06 5.63 0.85 16.05 0.59 22.13-0.56 3.14-0.6 4.61-0.89 5.31-0.91zm-238.35 0.03c0.35-0.01 0.74 0.05 1.1 0.19 0.78 0.32 0.55 0.55-0.6 0.6-1.03 0.04-1.6-0.18-1.28-0.5 0.17-0.17 0.44-0.27 0.78-0.29zm-43.682 0.1c-0.224 0.07-0.569 1.04-1.032 2.97-0.385 1.6-0.22 2.72 0.375 2.72 0.552 0 0.969-1.38 0.969-3.1 0-1.79-0.089-2.66-0.312-2.59zm191.34 0c-0.12 0.04-0.19 0.17-0.19 0.4 0 0.56 0.33 1.33 0.69 1.69s0.85 0.41 1.13 0.13-0.02-1.02-0.66-1.66c-0.44-0.44-0.77-0.63-0.97-0.56zm-132.5 0.22c0.33-0.09 0.5 0.51 0.5 1.75 0 2.26-5.29 12.9-8.09 16.28-0.57 0.69-0.8 1.48-0.5 1.78 0.74 0.74 5.62-6.57 5.62-8.41 0-0.91 1.1-0.25 2.91 1.72 1.59 1.75 3.07 3.16 3.28 3.16 1.43 0 6.62-9.18 6.62-11.72 0-1.67 0.43-3.03 0.97-3.03s1.04 1.43 1.07 3.19c0.02 1.75 0.58 4.53 1.28 6.15 1.21 2.82 1.14 3.05-1.94 5.16-1.78 1.22-3.87 2.22-4.62 2.22-1.95 0-4.63 3.24-4.63 5.59 0 1.09 0.82 2.92 1.81 4.06 2.13 2.46 11.4 7.29 13.19 6.88 2.41-0.55 5.46 3.99 7.19 10.69l1.75 6.75-3 6.37c-1.65 3.51-4.03 8.84-5.28 11.81-3.06 7.28-5.25 9.58-12.22 12.91-6.5 3.11-10.28 3.48-14.75 1.44-1.63-0.75-4.94-2.26-7.38-3.38-2.43-1.11-6.21-2.69-8.37-3.47-7.55-2.72-15.25-6.51-15.25-7.5 0-0.54-0.54-0.99-1.22-1-1.4-0.01-10.45-10-12.31-13.59-0.68-1.3-1.22-2.93-1.22-3.59 0-0.67-0.686-2.62-1.534-4.32-2.095-4.2-1.472-7.91 1.754-10.31 2.6-1.93 2.75-1.94 4.68-0.19 1.1 0.99 1.97 2.62 1.97 3.6 0 3.78 8.96 16.59 11.6 16.59 0.52 0 2.02 0.83 3.31 1.85 3.13 2.44 7.51 3.13 24.65 3.9 7.94 0.36 14.73 1 15.13 1.41 1.46 1.47-1.74 8.18-4.94 10.37-5.13 3.52-9.12-0.02-4.62-4.09 2.35-2.13 5.21-2.17 4.4-0.06-0.39 1.03-0.83 1.19-1.28 0.47-0.45-0.73-1.23-0.46-2.37 0.81-2.36 2.6-0.45 3.55 3.28 1.62 3.34-1.72 4.85-5.68 3-7.9-1.57-1.89-2.44-1.86-5.06 0.25-8.8 7.04-10.11 12.15-4 15.56 3.62 2.02 3.73 2.03 8.5 0.28 6.4-2.34 8.26-4.11 6.31-6.06-1.15-1.15-1.78-1.2-3.13-0.22-2.31 1.69-2.08 2.78 0.32 1.5 1.08-0.58 1.96-0.69 1.96-0.25 0 1.11-6.76 4.64-7.5 3.91-0.33-0.34 1-2.45 2.91-4.69 1.92-2.24 3.85-5.69 4.31-7.66 0.76-3.18 1.22-3.57 4.25-3.81 6.71-0.53 7.45-1.71 2.94-4.72-1.62-1.08-2.97-2.5-2.97-3.19 0-0.68-0.5-2.23-1.12-3.43-0.63-1.21-1.46-2.91-1.85-3.72-0.73-1.52-3.14-1.63-10.31-0.57-9.77 1.45-9.77 1.43-10.31-2.59-0.27-2.02-1.25-4.57-2.19-5.66-2.03-2.35-6.85-2.64-8.97-0.53-1.63 1.64-3.62 1.96-3.62 0.6 0-0.49-1.11-1.15-2.5-1.5-1.89-0.48-3.71 0.15-7.07 2.37-2.48 1.64-4.74 2.76-5 2.5-0.25-0.25 0.96-2.34 2.66-4.66 12.92-17.61 15.25-21 22.63-32.59 2.5-3.93 4.03-4.31 2.03-0.5-2.08 3.97-8.17 12.92-10.5 15.44-1.23 1.33-2.25 2.79-2.25 3.25s-0.87 1.74-1.97 2.84c-1.93 1.93-1.84 4.56 0.12 3.35 0.85-0.53 4.41-5.61 7.28-10.47 0.56-0.93 2.86-4.38 5.16-7.66s4.19-6.34 4.19-6.78 0.98-1.63 2.15-2.66c2.47-2.15 2.33-1.92-4 8.44-2.47 4.06-4.86 7.54-5.28 7.72-0.41 0.18-0.75 0.79-0.75 1.34 0 0.56-1.11 2.3-2.47 3.91-1.35 1.61-2.46 3.31-2.46 3.81 0 2.05 1.66 0.66 4.4-3.75 1.6-2.57 3.17-4.88 3.5-5.15s2.19-3.13 4.13-6.38c9.06-15.21 8.87-14.91 8.22-11.97-0.34 1.54-1.74 4.49-3.07 6.6-1.33 2.1-2.4 4.11-2.4 4.47 0 0.35-2.15 3.57-4.78 7.15-4.69 6.38-7.04 10.17-7.04 11.44 0.01 2.51 14.47-19.13 17-25.44 1.6-3.96 2.61-5.95 3.16-6.09zm66.06 0.06 0.69 8.84c0.37 4.87 1.12 11.57 1.66 14.88 0.53 3.31 0.93 7.2 0.93 8.62 0 1.43-0.42 2.57-0.96 2.57s-1-1.52-1-3.38-0.45-3.69-1-4.03c-0.56-0.34-0.92-1.11-0.82-1.75 0.11-0.64-0.11-4.05-0.5-7.56-0.38-3.52-0.31-9.04 0.16-12.28l0.84-5.91zm-83.56 0.62c0.42-0.01 0.02 0.37-1.12 1.29-1.05 0.84-2.56 1.53-3.38 1.53-2.08 0-0.22-1.6 2.81-2.41 0.89-0.23 1.44-0.4 1.69-0.41zm315.75 0.85c0.65-0.01 1.45 0.46 1.78 1 0.76 1.22 0.42 1.22-1.47 0-0.88-0.57-1.01-0.99-0.31-1zm-12.06 1c0.84 0 1.56 0.43 1.56 0.97s-0.43 0.97-0.94 0.97-1.19-0.43-1.53-0.97c-0.33-0.54 0.07-0.97 0.91-0.97zm25.31 0.44c0.08-0.01 0.18 0.01 0.31 0.03 0.53 0.08 1.32 1.86 1.75 3.97 0.44 2.11 0.63 4.51 0.41 5.34-0.36 1.31-0.45 1.32-0.66 0.03-0.12-0.81-0.13-2.06-0.03-2.81 0.13-0.94-0.36-1.16-1.59-0.69-1.44 0.55-1.58 0.4-0.59-0.59 1.35-1.37 1.65-4.36 0.5-5-0.31-0.17-0.33-0.28-0.1-0.28zm-363 0.56c-1.34 0.03-1.32 0.25 0.28 1.47 2.49 1.88 4.1 1.86 2.53-0.03-0.67-0.82-1.93-1.46-2.81-1.44zm157.81 0c0.05 0 0.11 0.1 0.16 0.28 0.33 1.27 1.2 1.69 3.06 1.47 2.21-0.26 2.68 0.11 2.94 2.34 0.24 2.11-0.3 2.97-2.66 4.19-1.63 0.84-3.2 1.53-3.5 1.53-0.29 0-0.5-2.54-0.43-5.66 0.05-2.52 0.23-4.16 0.43-4.15zm164.94 0.31c0.87-0.03 4.86 3.46 11.35 10.13 8.87 9.12 11.77 11.44 18.06 14.47 4.11 1.97 8.43 3.59 9.59 3.59 1.2 0 2.09 0.61 2.09 1.44 0 0.88-0.6 1.25-1.5 0.9-2.07-0.79-1.93 2.94 0.19 5.07 0.92 0.91 2.92 2.12 4.44 2.65 1.72 0.6 2.75 1.65 2.75 2.81 0 1.03-0.2 1.88-0.47 1.88s-0.5-0.43-0.5-0.97-0.47-1-1.03-1c-1.08 0-2.54-1.05-6.44-4.63-1.3-1.19-2.37-1.73-2.37-1.18s-0.54 0.67-1.22 0.25-2.12-0.9-3.19-1.07c-4.52-0.7-16.98-11.34-22.19-18.93-2.84-4.15-3.87-5.46-6.12-7.94-0.95-1.04-1.43-1.91-1.09-1.91 0.33 0-0.15-1.16-1.07-2.56-1.32-2.02-1.74-2.98-1.28-3zm-82 0.03c0.19 0.03 0.39 0.22 0.56 0.5 0.38 0.61 0.14 1.1-0.5 1.1-0.86 0-0.85 0.37 0.07 1.47 0.77 0.93 0.84 1.46 0.18 1.46-1.65 0-2.36-1.8-1.37-3.56 0.31-0.55 0.61-0.85 0.87-0.94 0.07-0.02 0.13-0.04 0.19-0.03zm-116.31 0.03c0.05-0.01 0.1-0.01 0.16 0 0.06 0.02 0.11 0.06 0.18 0.1 0.54 0.33 1 1.25 1 2.03s-0.46 1.41-1 1.41c-0.54-0.01-0.97-0.92-0.97-2.04 0-0.85 0.26-1.42 0.63-1.5zm107.56 0.5v3.5 3.47h-5.66c-6.71-0.02-8.38-0.9-7.93-4.06 0.31-2.18 0.81-2.36 6.97-2.63l6.62-0.28zm14.75 0.57-0.47 5.9c-0.63 8.15-1.57 13.58-2.53 14.78-0.45 0.56-1.68 5.17-2.78 10.22-1.1 5.06-2.42 9.68-2.91 10.28-0.82 1.03-1.31 3.4-2.72 12.69-0.3 2.03-0.98 3.92-1.46 4.22-0.49 0.3-0.88 1.65-0.88 2.97s-0.49 2.41-1.06 2.41c-1.24 0-0.28-7.62 1.59-12.82 0.69-1.89 1.97-6.98 2.88-11.31 0.9-4.33 2.05-8.65 2.56-9.59s0.92-2.91 0.94-4.41c0.02-2.52 2-10.17 5.4-20.91l1.44-4.43zm-212.62 0.47c0.16 0.02 0.17 0.29-0.07 0.78-2.16 4.55-3.3 6.71-3.72 7.12-0.27 0.27-2.12 3.05-4.15 6.16-3.65 5.58-4.69 6.58-4.69 4.65 0-0.54 0.46-0.97 1-0.97s0.97-0.66 0.97-1.43c0-0.78 0.54-1.99 1.22-2.72 1.82-1.98 3.69-5.51 3.69-6.94 0-0.69 1.15-2.42 2.53-3.91 1.64-1.77 2.85-2.8 3.22-2.74zm-35.88 0.21c-0.2 0.08-0.28 0.6-0.25 1.38 0.05 1.14 0.25 1.38 0.56 0.59 0.29-0.71 0.27-1.55-0.06-1.87-0.08-0.08-0.18-0.12-0.25-0.1zm313.97 0.69c0.78 0.14 1.44 2.32 1.44 6.5 0 3.61-0.42 6.41-0.97 6.41-0.6 0-0.95 4.08-0.88 10.56 0.11 9.57 0.23 10.05 0.97 5.16 0.45-2.98 0.57-6.95 0.32-8.85-0.44-3.18-0.37-3.24 0.62-0.97 0.59 1.36 0.94 5.45 0.75 9.1s-0.02 6.62 0.41 6.62c1.27 0 0.85 8.53-0.47 9.6-0.68 0.54-2.58 1.27-4.22 1.62-3.85 0.82-15.12 10.87-13.75 12.25 1.15 1.17 6.4 0.32 6.4-1.03 0.01-0.51 0.47-0.63 1.04-0.28s1.85-0.3 2.84-1.44c1.1-1.26 2.4-1.81 3.38-1.44 1.16 0.45 1.59 0.06 1.59-1.5 0-1.31 0.45-1.88 1.12-1.47 0.61 0.38 1.47 0.06 1.94-0.68 0.69-1.09 0.86-1.04 0.88 0.28 0 0.9-0.48 1.82-1.1 2.03-0.84 0.28-0.81 2.06 0.16 6.94 1.22 6.13 1.17 6.67-0.59 8.62-1.54 1.7-2.69 2.04-6.1 1.66-4.48-0.51-5.96 0.32-3.78 2.12 2.08 1.73 9.58 1.65 13.12-0.12 3.02-1.51 3.19-1.49 3.19 0.19 0 1.01-0.93 2.03-2.19 2.37-2.3 0.62-10.34 0.7-12.06 0.13-0.54-0.18-2.2-0.58-3.68-0.91-2.32-0.51-2.72-1.07-2.72-3.97 0-2.38 0.58-3.73 1.96-4.47 1.28-0.68 1.97-0.7 1.97-0.06 0 0.54 0.72 0.73 1.57 0.41 0.84-0.33 2.57-0.04 3.87 0.65 1.92 1.03 2.67 1.03 3.91 0 2.45-2.03 0.05-3.76-6.19-4.43-11.61-1.26-12.95-1.59-12.94-3.29 0.02-2.27 4.7-20.95 5.44-21.68 0.33-0.33 0.32 1.03-0.06 3.06-0.52 2.77-0.38 3.73 0.62 3.81 11.93 1.01 14.63 0.53 14.63-2.62 0-2.89-2.55-3.17-8.88-0.94-2.3 0.81-4.33 1.5-4.53 1.5-0.75 0-0.35-4.13 0.56-5.84 0.52-0.98 2.11-6.16 3.5-11.5 1.4-5.35 2.95-10.84 3.44-12.19 0.49-1.36 1.08-4.09 1.31-6.07 0.49-4.09 1.38-5.98 2.16-5.84zm-211.75 0.1c0.51-0.01 0.65 1 0.28 2.21-2.66 8.76-3.65 13.54-3.81 18.35l-0.19 5.53 9.59 0.25c5.31 0.15 9.6 0.72 9.6 1.25 0 0.55-4.32 0.94-10.22 0.94-11.54 0-11.38 0.13-11.41-8.72-0.01-4.74 4.67-19.81 6.16-19.81zm249.03 0c0.24-0.01 0.73 0.45 1.06 1 0.34 0.54 0.14 0.96-0.43 0.96-0.58 0-1.07-0.42-1.07-0.96 0-0.55 0.2-1 0.44-1zm-44.06 0.9c0.21 0 0.36 0.17 0.53 0.47 0.6 1.08 0.13 2.84-1.59 5.75-1.38 2.31-3 5.42-3.6 6.91-1.29 3.24-3.28 3.67-2.31 0.5 0.37-1.22 2.02-5.04 3.66-8.47 1.74-3.65 2.67-5.15 3.31-5.16zm-277.81 1.06c0.42 0 0.75 0.35 0.75 0.75-0.01 1.06-4.84 6.82-4.88 5.82-0.05-1.29 3.26-6.57 4.13-6.57zm236.47 0c0.81 0 1.2 0.46 0.87 1s-1.28 0.97-2.09 0.97c-0.82 0-1.18-0.43-0.85-0.97 0.34-0.54 1.25-1 2.07-1zm88.9 0c0.54 0 1 0.46 1 1s-0.46 0.97-1 0.97-0.97-0.43-0.97-0.97 0.43-1 0.97-1zm-245.22 0.1c1.69 0.04 3.48 0.55 4.72 1.5 1.89 1.45 1.85 1.48-0.75 0.84-2.98-0.73-3.86 0.99-0.97 1.91 0.95 0.3 2.35 1.59 3.1 2.81l1.34 2.19-2.41-2.19c-3.8-3.5-4.01-1.4-0.25 2.56 1.87 1.97 3.37 4.6 3.38 5.85 0.01 3.1-1.58 1.9-2.31-1.75-0.33-1.64-1-2.97-1.5-2.97-0.51 0-0.18 2.16 0.71 4.81 0.9 2.65 1.94 4.63 2.35 4.38 0.4-0.26 0.75-0.02 0.75 0.56 0 0.57-1.27 1.06-2.81 1.06-1.55 0-4.75 0.21-7.13 0.47-5.32 0.57-6.78-0.04-6.78-2.78 0-4.18 3.06-16.59 4.41-17.94 0.9-0.9 2.46-1.35 4.15-1.31zm-84.9 1.28c0.35 0.01 0.59 0.36 0.59 0.97 0 0.81-0.43 1.76-0.97 2.09-0.54 0.34-1-0.03-1-0.84s0.46-1.76 1-2.1c0.14-0.08 0.26-0.12 0.38-0.12zm298.03 0c0.28-0.12 1.19 1.3 2.87 4.53 4.39 8.42 5.92 10.84 6.97 10.84 0.48 0 0.44-0.57-0.06-1.25-0.5-0.67-1.44-2.56-2.09-4.18l-1.19-2.94 2.56 2.94c8.12 9.44 11.84 13.28 12.87 13.28 0.65 0 1.32 0.34 1.5 0.75 0.54 1.19 7.45 6.15 8.6 6.15 0.58 0 1.06 0.41 1.06 0.91s1 1.21 2.22 1.59 2.42 0.98 2.69 1.32c0.9 1.11 7.05 4.06 8.47 4.06 2.05 0 1.67 2.3-0.6 3.72-2.2 1.37-2.64 5.33-0.75 6.84 0.68 0.54 2.34 1.28 3.69 1.66 8.11 2.23 10.79 4.77 3.69 3.47-2.82-0.52-5.18-0.35-7.28 0.53-2.68 1.12-3.42 1.08-5.41-0.28-2.16-1.49-2.2-1.48-0.94 0.09 1.72 2.13 0.77 2.11-2.62-0.03-2.63-1.66-2.63-1.65-1 0.25 1.58 1.85 1.51 1.94-1.16 1.94-1.53 0-3.67-0.85-4.81-1.88s-2.09-1.51-2.09-1.06c-0.01 0.45-1.12-0.23-2.47-1.5-3.89-3.65-3.73-1.8 0.28 3.22 3.78 4.74 7.02 5.85 10.93 3.75 0.96-0.51 4.13-1.25 7.07-1.63l5.34-0.69-2.91 2.35c-1.6 1.28-5.34 3.54-8.34 5.03-7.31 3.64-9.25 3.51-11.78-0.78-1.14-1.93-2.06-3.86-2.06-4.31 0-0.46-1.5-3.52-3.35-6.79-1.84-3.26-3.68-6.94-4.06-8.18-0.8-2.64-3.19-8.41-4.53-10.94-0.51-0.97-0.67-2.15-0.38-2.62 0.3-0.48-1-3.54-2.9-6.79-3.83-6.53-4.13-7.49-2.03-6.68 0.95 0.36 1.24 0.04 0.87-0.91-0.3-0.78-1.04-1.4-1.65-1.41-1.2-0.01-4.49-8.33-5.25-13.28-0.11-0.68-0.1-1.04 0.03-1.09zm-225.47 0.5c0.64-0.01 0.89 0.41 0.5 1.34-0.29 0.68-1.05 3.11-1.69 5.41-0.71 2.58-1.73 4.19-2.65 4.19-2.12 0-4.12 2.93-4.16 6.12-0.03 2.34-0.41 2.72-2.97 2.72-2.02 0-2.97-0.48-2.97-1.53 0-0.9-0.43-1.25-1.09-0.85-1.71 1.06-0.14-4.42 2.28-7.96 2.91-4.27 10.45-9.43 12.75-9.44zm144.87 0.09c0.24 0 0.7 0.46 1.03 1 0.34 0.54 0.17 0.97-0.4 0.97s-1.06-0.43-1.06-0.97 0.2-1 0.43-1zm18 0.28c0.61 0.03 0.54 0.23-0.21 0.57-3.45 1.54-8.98 2.43-7.88 1.28 0.54-0.57 2.97-1.29 5.41-1.6 0.75-0.09 1.36-0.18 1.84-0.22 0.36-0.02 0.64-0.04 0.84-0.03zm-111.4 0.57c-0.13 0.11-0.22 0.88-0.22 2.12 0 1.89 0.16 2.67 0.41 1.72 0.24-0.95 0.24-2.49 0-3.44-0.07-0.23-0.08-0.37-0.13-0.4-0.02-0.02-0.04-0.02-0.06 0zm-141.94 1.12c-0.51 0-1.48 0.69-2.16 1.5-0.67 0.81-0.9 1.47-0.53 1.47 0.38 0 1.35-0.66 2.16-1.47s1.04-1.5 0.53-1.5zm9.25 0c0.78 0 1.06 0.99 0.78 2.72-0.24 1.49-0.68 6.23-0.97 10.56-0.28 4.33-0.89 8.76-1.34 9.85-0.45 1.08-1.37 3.41-2.03 5.18-1.78 4.72-2.68 4.72-3.94 0-1.22-4.58-3.45-7.65-5.53-7.65-1.81 0-1.67-1.88 0.19-2.6 0.82-0.31 2.86-3.5 4.56-7.09 3.3-6.98 6.31-10.97 8.28-10.97zm223.31 0.31c1.23-0.17 4.31 0.99 4.31 1.79 0 1.23-3.65 1.07-4.43-0.19-0.36-0.58-0.5-1.23-0.28-1.44 0.08-0.08 0.23-0.13 0.4-0.16zm-243.15 0.69c-0.238 0-0.406 0.43-0.406 0.97s0.458 1 1.031 1 0.772-0.46 0.438-1c-0.335-0.54-0.824-0.97-1.063-0.97zm290.93 0c0.46 0 0.82 5.75 0.82 12.78 0 14.33-0.89 17.54-1.16 4.19-0.1-4.73-0.23-10.48-0.31-12.78-0.09-2.3 0.2-4.19 0.65-4.19zm3.03 0.97c0.41 0 0.75 4.55 0.76 10.09 0 5.55 0.28 11.76 0.62 13.78 0.38 2.33 0.22 3.69-0.44 3.69-0.57 0-1.29-2.34-1.59-5.19-0.73-6.88-0.27-22.37 0.65-22.37zm-74.74 0.03c0.12-0.03 0.28 0.04 0.46 0.19 0.68 0.56 1.22 2.47 1.22 4.25s0.69 6.7 1.5 10.94 1.47 10.29 1.47 13.43c0 3.15 0.46 6.59 1.03 7.66 1.1 2.06 0.89 9.98-0.22 8.28-0.35-0.54-0.97-2.79-1.37-4.94-0.59-3.11-0.86-3.49-1.41-1.93-0.38 1.07-0.48-2.38-0.22-7.66 0.42-8.46 0.29-9.59-1.15-9.59-1.3 0-1.43-0.37-0.63-1.88 0.56-1.05 0.61-2.04 0.13-2.22s-1.03-4.15-1.22-8.84c-0.22-5.47-0.15-7.54 0.41-7.69zm62.06 0.16c0.06-0.03 0.17 0.01 0.25 0.09 0.32 0.33 0.34 1.17 0.06 1.88-0.31 0.78-0.55 0.55-0.59-0.6-0.04-0.78 0.08-1.3 0.28-1.37zm3.4 0.22c0.05 0 0.05 0.03 0.1 0.06 0.59 0.37 1.06 3.8 1.06 7.9 0 10.18-1.52 10.05-1.84-0.15-0.17-5.42 0.06-7.9 0.68-7.81zm-56.37 0.59c0.35-0.01 0.77 0 1.22 0 3.62 0.01 3.69 0.08 3.84 3.97 0.09 2.47 1.01 5.14 2.5 7.12 1.31 1.75 2.71 3.93 3.06 4.88 0.56 1.51-0.06 1.72-5.03 1.72h-5.65l-1.19-5.19c-0.67-2.86-1.22-6.83-1.22-8.84 0-3.13 0.04-3.6 2.47-3.66zm143.34 0c0.41 0 0.75 0.66 0.75 1.47v2.22c0 0.4-0.34 0.83-0.75 0.97-0.4 0.13-0.72-0.87-0.72-2.22 0-1.36 0.32-2.44 0.72-2.44zm-347.75 0.41c0.09 0.03 0.13 0.22 0.13 0.56-0.02 0.81-0.41 2.58-0.85 3.94-0.63 1.97-0.75 2.08-0.78 0.5-0.01-1.09 0.32-2.86 0.78-3.94 0.26-0.6 0.49-0.95 0.63-1.03 0.03-0.02 0.07-0.05 0.09-0.03zm125.5 0.28c-0.09 0.12-0.14 1.13-0.18 2.9-0.07 2.26 0.16 4.84 0.5 5.72 1.14 2.99 1.38 0.84 0.5-4.5-0.5-2.96-0.7-4.28-0.82-4.12zm65 0.9c0.31-0.07 0.95 1.65 1.56 4.19 1.03 4.24 1.03 5.38 0.04 6-0.79 0.49-1 1.75-0.6 3.38 0.66 2.6 0.5 3.08-0.68 1.9-1.05-1.04-0.81-7.03 0.31-7.4 0.68-0.23 0.65-1.39-0.1-3.53-0.6-1.75-0.88-3.69-0.65-4.38 0.03-0.09 0.08-0.15 0.12-0.16zm73.82 0.16c0.39 0.06 0.51 1.82 0.53 5.88 0.01 3.92-0.11 7.12-0.32 7.12-1 0-1.63-10.93-0.71-12.5 0.19-0.33 0.36-0.52 0.5-0.5zm-259.47 0.53c0.21 0.04 0.34 0.23 0.34 0.53 0 0.54-0.43 1.26-0.97 1.6-0.54 0.33-1 0.19-1-0.35s0.46-1.29 1-1.62c0.14-0.09 0.26-0.1 0.38-0.13 0.08-0.01 0.17-0.04 0.25-0.03zm270.28 0.72c0.25-0.11 0.61 0.19 1.03 0.87 0.31 0.51 0.14 1.2-0.41 1.54s-1.03-0.1-1.03-0.94c0-0.87 0.15-1.36 0.41-1.47zm-17.75 0.13c0.06-0.03 0.17 0.01 0.25 0.09 0.32 0.33 0.34 1.16 0.06 1.87-0.31 0.79-0.55 0.56-0.59-0.59-0.04-0.78 0.08-1.3 0.28-1.37zm82.68 0.81c0.24 0 0.73 0.43 1.07 0.97 0.33 0.54 0.13 1-0.44 1s-1.03-0.46-1.03-1 0.17-0.97 0.4-0.97zm-67.96 0.75c0.16-0.21 0.39 1.84 0.78 6.12 0.46 5.14 0.7 9.81 0.53 10.35-0.52 1.59-1.61-9.45-1.47-14.79 0.03-1.02 0.08-1.59 0.16-1.68zm24.28 0.22c0.54 0 0.97 0.2 0.97 0.43 0 0.24-0.43 0.7-0.97 1.03-0.54 0.34-1 0.17-1-0.4s0.46-1.06 1-1.06zm-295.69 0.43c0.06 0.01 0.14 0.13 0.22 0.32 0.27 0.67 0.27 1.76 0 2.43-0.27 0.68-0.47 0.14-0.47-1.22 0-0.84 0.06-1.38 0.19-1.5 0.02-0.01 0.04-0.03 0.06-0.03zm241.84 0.66c0.16 0.03 0.29 0.56 0.47 1.63 0.46 2.59 2.96 2.88 4.66 0.56 1.43-1.96 3.47-0.94 3.47 1.72 0 1.94 0.74 2.22 4.65 1.9 1.85-0.15 2.22 0.34 2.22 2.82 0 3.36 0.94 4.31 2.97 3.06 2.31-1.43 4 0.72 2.75 3.47-1.38 3.03-0.48 5.16 2.34 5.59 1.43 0.22 2.15 0.9 1.91 1.81-1.32 5.04-1.27 5.85 0.5 6.5 2.74 1.01 3.37 2.55 1.59 3.85-1.36 0.99-1.4 1.57-0.31 4.22 0.7 1.68 1.68 2.85 2.16 2.56 0.48-0.3 0.84 0.38 0.84 1.53 0 1.14-0.36 1.83-0.84 1.53-0.49-0.3-1.17 0.15-1.5 1-0.97 2.53-0.69 5.11 0.62 5.66 0.87 0.36 0.65 0.99-0.71 2.09-1.07 0.86-1.99 2.77-2.1 4.25s-0.24 2.98-0.28 3.38c-0.04 0.39-1.46 0.45-3.12 0.12-2.58-0.51-2.97-0.33-2.69 1.22 0.34 1.97-2.93 3.3-4 1.62-0.34-0.52-1.63-1.24-2.85-1.62-1.64-0.52-2.18-0.31-2.18 0.84 0 2.47-2.91 1.78-3.94-0.94-0.77-2.03-1.41-2.35-3.44-1.84-2.16 0.54-2.47 0.28-2.47-1.9 0-2.79-1.57-4.18-4.19-3.76-1.84 0.31-2.37-1.31-0.74-2.31 1.57-0.97-1.69-6.42-3.44-5.75-1.16 0.45-1.47-0.31-1.47-3.53 0-3.15-0.6-4.65-2.59-6.5-2.02-1.86-2.34-2.71-1.47-3.75 0.82-0.99 0.81-2.16 0-4.5-0.61-1.75-0.83-4.92-0.47-7.12 0.39-2.48 0.23-4.53-0.47-5.38-0.91-1.09-0.72-1.34 0.91-1.34 2.58 0 5.04-3.46 4.34-6.13-0.46-1.75-0.21-1.96 1.81-1.47 2.64 0.65 5.03-0.74 6.31-3.72 0.41-0.94 0.59-1.4 0.75-1.37zm58.41 0.31c0.06 0 0.14 0.06 0.25 0.19 0.4 0.47 1.33 2.85 2.03 5.28 0.71 2.44 1.85 6.21 2.56 8.38 0.71 2.16 2.28 7.37 3.47 11.56 1.2 4.19 2.59 7.62 3.13 7.62 1.39 0 3.59 3.12 3.62 5.16 0.02 0.95 0.49 1.72 1.03 1.72 1.37 0 1.32-0.19-1.62-6.59-1.44-3.13-2.55-6.04-2.47-6.44 0.08-0.41-0.25-0.72-0.75-0.72s-1.21-1.46-1.56-3.22c-0.36-1.76-0.86-4.07-1.13-5.16-0.27-1.08 1.1 1.09 3.03 4.85 1.94 3.75 3.5 7.19 3.5 7.62s2.22 5.35 4.91 10.91 5 11.17 5.16 12.5c0.5 4.42-3.76 3.56-5.41-1.1-0.32-0.9-1.82-2.27-3.34-3-3.26-1.55-5.61-5.88-7.53-14.06-0.77-3.24-2.81-11.22-4.57-17.72-3.78-13.99-4.71-17.73-4.31-17.78zm-83.28 0.56c0.54 0.01 1 0.66 1 1.47 0 0.82-0.46 1.5-1 1.5s-0.97-0.68-0.97-1.5c0-0.81 0.43-1.47 0.97-1.47zm130.28 0c0.24 0.01 0.73 0.46 1.06 1 0.34 0.55 0.14 0.97-0.44 0.97-0.57 0-1.06-0.42-1.06-0.97 0-0.54 0.2-1 0.44-1zm-274.88 1.16c1.11-0.03 1.37 2.65 0.41 5.16-0.33 0.85-1.01 1.56-1.53 1.56-1.38 0-0.57-6.18 0.88-6.66 0.08-0.02 0.17-0.06 0.24-0.06zm-73.5 2.13c0.22-0.1 0.57 0.13 1.16 0.62 1.28 1.06 1.3 1.55 0 4.06-1.75 3.4-2.86 3.77-2.03 0.66 0.33-1.22 0.59-3.05 0.59-4.06 0.01-0.76 0.07-1.19 0.28-1.28zm137.16 1.56c0.07-0.01 0.14 0.02 0.22 0.15 1.21 1.93 1.57 26.5 0.41 27.35-0.46 0.33-1.61 2.17-2.57 4.06-0.95 1.89-3.02 5.52-4.62 8.09-1.6 2.58-3.33 6.12-3.81 7.88-0.79 2.84-0.96 3-1.66 1.25-0.44-1.08-1.07-2.21-1.37-2.5-0.31-0.29-2.41-2.49-4.66-4.91-4.06-4.36-4.1-4.47-5.22-15.22-0.62-5.95-1.37-11.92-1.69-13.28l-0.59-2.46 2.59 2.4c1.43 1.31 2.65 3.28 2.69 4.41 0.07 1.98 0.07 1.98 0.81 0.09 0.69-1.75 0.89-1.64 1.85 1 0.86 2.38 1.06 2.49 1.12 0.78 0.11-2.84 4.4-3.9 7.5-1.87 1.66 1.09 2.46 2.78 2.91 6.19 0.34 2.58 0.68 5.32 0.78 6.09s0.8 1.62 1.56 1.87c1.08 0.36 1.25-0.3 0.75-2.9-0.39-2.06-0.28-2.8 0.25-1.97 1.91 2.97 2.71-2.31 2.35-14.97-0.23-7.78-0.08-11.45 0.4-11.53zm146.5 0.34c0.2 0.02 0.3 0.16 0.28 0.41-0.04 0.44-0.44 1.7-0.9 2.78-0.82 1.9-0.84 1.89-0.91-0.19-0.04-1.18 0.37-2.44 0.91-2.78 0.13-0.08 0.29-0.15 0.4-0.19 0.09-0.02 0.15-0.03 0.22-0.03zm30.81 0.22c-0.46-0.03-0.58 0.35-0.31 1.06 0.3 0.79 0.99 1.41 1.47 1.41 1.41 0 0.99-1.72-0.56-2.31-0.24-0.09-0.44-0.15-0.6-0.16zm-333.31 0.5c0.54 0 0.71 0.43 0.38 0.97-0.34 0.54-1.06 1-1.6 1s-0.71-0.46-0.37-1c0.33-0.54 1.05-0.97 1.59-0.97zm295.47 0.22c0.02-0.02 0.01-0.01 0.03 0 0.05 0.04 0.13 0.23 0.19 0.53 0.23 1.22 0.23 3.19 0 4.41-0.24 1.21-0.44 0.21-0.44-2.22 0-1.6 0.1-2.58 0.22-2.72zm-82.91 1.25 0.91 4.44c0.49 2.43 0.77 5.52 0.63 6.87l-0.26 2.47-0.74-2.47c-0.4-1.35-0.68-4.44-0.63-6.87l0.09-4.44zm51 0.41c-2.63 0-5.17 1.16-7.5 3.56-3.11 3.21-3.37 3.91-3.37 9.78 0 3.48 0.42 7.32 0.91 8.56 5.13 13.25 10.04 20.99 15.65 24.63 3.61 2.34 10.33 1.72 13.5-1.25 2.16-2.03 2.41-3.07 2.41-10.28 0-6.16-0.56-9.39-2.41-14.1-5.26-13.41-12.47-20.91-19.19-20.9zm41.07 0.15c0.13 0.03 0.18 0.38 0.18 1.1 0.01 0.91-0.42 1.94-0.97 2.28-1.24 0.77-1.24-0.54 0-2.47 0.42-0.64 0.65-0.93 0.79-0.91zm-275.94 0.25c-0.46 0.03-1.09 0.38-1.72 1.22-0.79 1.04-1.45 2.3-1.47 2.75-0.05 1.28 2.18 0.2 3.31-1.59 0.93-1.48 0.64-2.42-0.12-2.38zm48.75 1.13c0.79-0.04 1.75-0.01 2.87 0.12 5.04 0.6 6.13 1.05 6.13 2.44 0 1.24-10.54 1.19-11.31-0.06-0.93-1.51-0.07-2.38 2.31-2.5zm185.78 0.5c1.39-0.02 2.37 1.1 2.78 3.31 0.34 1.81 0.49 4.58 0.31 6.16l-0.34 2.84-3.66-4.91c-3.3-4.45-3.5-5.04-2.03-6.15 1.11-0.84 2.1-1.24 2.94-1.25zm37.53 1.28c0.08 0.01 0.09 0.18 0.09 0.47 0.03 0.67-1.28 5.94-2.9 11.72-1.62 5.77-3.22 10.74-3.56 11.06s-0.37-0.29-0.07-1.38c0.3-1.08 1.34-5.28 2.29-9.34 1.49-6.43 3.6-12.64 4.15-12.53zm-146.87 0.09c0.05-0.04 0.12 0.24 0.18 0.88 0.22 2.03 0.22 5.34 0 7.37-0.21 2.03-0.37 0.37-0.37-3.68 0-2.79 0.07-4.46 0.19-4.57zm-64.35 0.13-0.65 2.47c-0.37 1.35-1.74 5.15-3.04 8.43-1.29 3.29-2.34 6.54-2.34 7.22s-0.89 1.98-1.97 2.88-2.86 3.4-3.97 5.56c-2.74 5.37-1.29 0.42 2-6.88 1.47-3.24 3.43-7.9 4.35-10.34 0.92-2.43 2.56-5.52 3.65-6.87l1.97-2.47zm36.07 0.5c0.54 0 1.49 1.43 2.12 3.18 1.5 4.21 3.98 18.02 4 22.38 0.02 3.39 1.9 10.15 3.22 11.47 0.37 0.37 0.69 4.59 0.69 9.41 0 10.08 1.47 10.85 2.5 1.28 0.37-3.51 1.08-6.41 1.56-6.41s0.84 2.89 0.84 6.41c0 3.51 0.43 6.37 0.91 6.37 1.06 0 2.06-2.41 2.06-4.94 0-1.01 1.13-3.02 2.47-4.47 1.34-1.44 2.69-4.13 3.03-5.96 0.35-1.84 1.1-3.63 1.66-3.97 1.2-0.75 0.28 6.28-1.47 11.19-1.33 3.7-0.7 4.8 1.97 3.37 1.4-0.75 2.07-2.54 2.56-6.69 0.85-7.19 1.59-10.15 2.56-10.15 0.42 0 0.53 3.66 0.25 8.18-0.32 5.1-0.12 8.49 0.5 8.88 0.66 0.41 1.14-4.26 1.38-13.59 0.23-8.99 0.78-14.66 1.5-15.38 1.15-1.15 1.39-0.06 2.62 11.59 0.34 3.23 0.14 3.98-0.93 3.57-1.03-0.4-1.25 0.2-0.91 2.31 0.25 1.54 0.69 5.21 1 8.19s1.03 6.1 1.59 6.9c1.03 1.48 0.91-1.53-0.53-11.31-0.43-2.91-0.32-3.43 0.38-1.97 0.52 1.08 1.21 4.12 1.56 6.75 0.42 3.22 0.96 4.45 1.62 3.78 0.67-0.66 0.49-2.84-0.5-6.72-1.29-5.09-2.28-13.1-3.03-24-0.13-1.89-0.37-3.86-0.53-4.4-0.15-0.54-0.18-2.32-0.06-3.94 0.2-2.74 0.25-2.68 1 0.97 0.44 2.16 1.12 6.48 1.47 9.59 0.34 3.11 1.1 5.66 1.65 5.66 0.64 0 0.77-1.89 0.38-5.16-0.4-3.27-0.32-4.62 0.25-3.69 0.49 0.82 1.22 4.99 1.59 9.29 0.38 4.29 0.98 8.27 1.35 8.84 0.36 0.57 0.74 2.15 0.81 3.5 0.37 6.91 1.73 14.78 2.59 14.78 0.61 0 0.76-3.06 0.41-8.12-0.32-4.59-0.22-6.8 0.22-5.1 0.89 3.51 4.11 9.28 5.19 9.28 0.4 0 0.49 0.66 0.18 1.47-0.68 1.77 0.76 1.96 2.41 0.32 1.8-1.81 1.39-3.76-0.78-3.76-1.16 0-2.55-1.18-3.44-2.9-1.66-3.22-3.41-13.91-3.41-20.72 0-4.34 0.05-4.25 2.82 3.94 1.55 4.6 3.33 10.27 3.96 12.62 1.55 5.77 2.35 4.5 2.22-3.53l-0.12-6.62 1.9 3.93c1.05 2.17 2.19 5.37 2.54 7.13 0.4 2.05 1.98 4.35 4.43 6.37 2.11 1.74 3.82 3.52 3.82 3.94 0 0.43-1.79 0.75-3.97 0.75-2.19 0-5.15 0.77-6.6 1.72-3.88 2.54-19.99 2.43-24.81-0.16-4.01-2.15-15.38-2.35-19-0.37-2.02 1.11-14.47 1.94-14.47 0.97 0-0.24 1.32-1.94 2.94-3.78 2.05-2.34 2.94-4.34 2.88-6.53l-0.1-3.16-0.9 2.97c-1.15 3.76-7.38 10.77-8.29 9.31-0.85-1.37 0.32-7.61 1.57-8.38 0.52-0.32 0.9 0.59 0.9 2 0 1.42 0.41 2.36 0.88 2.07 0.46-0.29 0.71-4.87 0.53-10.16-0.28-7.95-0.2-8.96 0.62-5.72 0.55 2.16 1.5 4.39 2.1 4.94 0.78 0.72 0.91 0.3 0.47-1.47-0.34-1.35-0.62-3.9-0.63-5.72-0.01-2.63-0.35-3.2-1.62-2.72-1.42 0.55-1.49-0.29-0.94-7.53 0.58-7.71-0.24-16.89-1.85-20.65-0.41-0.99-0.31-1.72 0.26-1.72zm106.43 0.53c5.2-0.03 5.41 0.04 5.13 2.41-0.89 7.3-1.49 10.42-2.16 11.31-0.41 0.54-1.77 5.51-3.03 11.06-1.86 8.22-2.61 10.09-4.06 10.09-1.4 0-1.78-0.78-1.78-3.68-0.01-2.03-0.64-7.67-1.44-12.54-0.8-4.86-1.46-10.74-1.47-13.06-0.02-4.96 0.89-5.55 8.81-5.59zm70.38 1.84c0.03-0.02 0.07 0 0.09 0 0.16 0.05 0.08 0.69-0.22 2.03-0.81 3.62-1.39 4.43-1.37 1.91 0.01-1.04 0.48-2.56 1.03-3.37 0.2-0.31 0.36-0.5 0.47-0.57zm-34.44 0.41c0.05 0.03 0.09 0.17 0.16 0.4 0.24 0.95 0.24 2.5 0 3.44-0.25 0.95-0.44 0.18-0.44-1.72 0-1.42 0.12-2.21 0.28-2.12zm2.91 0.37c0.01-0.02 0.01-0.01 0.03 0 0.05 0.04 0.13 0.23 0.19 0.53 0.23 1.22 0.23 3.23 0 4.44-0.24 1.22-0.44 0.22-0.44-2.22 0-1.59 0.1-2.6 0.22-2.75zm-150.5 0.63-3.19 3.03c-3.28 3.09-3.34 4.34-0.06 1.37 0.99-0.89 2.13-1.3 2.53-0.9 0.86 0.87-4.91 5.85-9.22 7.94-2.96 1.43-6.24 4.43-4.84 4.43 1.47 0 10.03-5.36 13.06-8.18 1.76-1.65 3.18-2.69 3.18-2.32 0 0.94-2.73 3.54-7.37 7.03-2.13 1.61-4.66 3.73-5.63 4.69-2.2 2.21-2.95 2.2-4.34-0.03-1.51-2.41-3.61-12.78-2.94-14.53 0.3-0.77 1.58-1.37 2.82-1.34 1.23 0.02 5.33-0.23 9.12-0.57l6.88-0.62zm-133.72 0.16c0.843 0 1.271 0.42 0.937 0.96s-1.053 1-1.563 1c-0.509 0-0.906-0.46-0.906-1s0.688-0.96 1.532-0.96zm95.282 0c0.87 0 1.57 0.54 1.56 1.21-0.02 1.6-1.92 4.57-1.94 3.03 0-0.63-0.29-1.83-0.62-2.68-0.39-1.02-0.04-1.56 1-1.56zm291.03 0.21c0.12 0.05 0.36 0.74 0.78 2.16 0.9 2.99 0.77 4.02-0.37 2.87-0.36-0.36-0.64-1.78-0.6-3.18 0.04-1.25 0.07-1.89 0.19-1.85zm-372.22 0.91c-0.63-0.05-0.69 0.68-0.25 2.47 0.38 1.54 1.04 2.94 1.5 3.12s0.84 1.09 0.84 2.03c0 0.95 1.36 3.82 3.04 6.35 2.12 3.2 3.67 4.52 5.15 4.47 1.43-0.05 1.66-0.22 0.69-0.6-3.25-1.28-7.47-8.25-8.81-14.5-0.34-1.58-1.19-3.05-1.88-3.28-0.11-0.04-0.19-0.05-0.28-0.06zm243.94 0.09c1.09 0.14 1.29 4.69 1.25 24.6-0.02 11.45-0.25 11.78-5.31 9.03-2.48-1.35-2.69-1.95-2.69-7.28 0-3.2 0.37-6.06 0.84-6.35 0.73-0.44 1.67-4.03 2.69-10.4 0.83-5.2 2.08-9.27 2.97-9.57 0.08-0.02 0.18-0.04 0.25-0.03zm12.31 0.1c0.11-0.07 0.23-0.02 0.41 0.15 0.56 0.54 1.19 3.75 1.37 7.13s-0.03 6.16-0.44 6.15c-0.4 0-0.74-1.06-0.74-2.34-0.01-1.28-0.26-4.48-0.6-7.12-0.32-2.5-0.31-3.77 0-3.97zm-178.69 0.15c0.28 0.04 0.65 0.65 1.16 1.88 0.65 1.58 0.99 3.58 0.78 4.44-0.26 1.06-0.75 0.65-1.56-1.32-0.65-1.58-0.99-3.55-0.78-4.4 0.09-0.4 0.24-0.62 0.4-0.6zm11.5 0.1c0.49-0.16 0.49 2.32-0.37 6.47-0.6 2.88-1.74 8.99-2.5 13.59-0.77 4.6-1.84 9.92-2.38 11.81-0.81 2.89-0.93 2.33-0.59-3.43 0.62-10.57 1.65-18.6 2.5-19.69 0.42-0.54 1.3-2.97 1.97-5.41 0.6-2.21 1.08-3.25 1.37-3.34zm184.53 0.4c0.55 0 0.97 1.09 0.97 2.44s-0.42 2.47-0.97 2.47c-0.54 0-1-1.12-1-2.47s0.46-2.44 1-2.44zm-177.62 0.25c0.1-0.01 0.22 0.04 0.38 0.13 0.55 0.34 1.31 2.48 1.68 4.78 0.38 2.3 1.24 5.5 1.94 7.12 0.7 1.63 1.53 3.75 1.84 4.69 0.35 1.06 0.05 1.72-0.75 1.72-0.81 0-1.92-2.83-3-7.62-0.94-4.2-1.94-8.46-2.21-9.47-0.23-0.83-0.18-1.31 0.12-1.35zm-61.66 0.03c0.68-0.03 1.33 0.42 2.57 1.32 1.88 1.37 2.54 2.73 2.56 5.37 0.04 4.43 2.44 6.85 6.15 6.13 1.49-0.29 2.72-0.91 2.72-1.38s1.01-0.85 2.22-0.81c1.22 0.04 3.85-0.25 5.82-0.63 3.48-0.67 3.57-0.57 4.74 3.13 0.67 2.09 1.73 4.24 2.35 4.78s1.72 1.77 2.47 2.72c1.24 1.58 1 1.72-3.03 1.72-2.41 0-4.68-0.3-5.03-0.66-0.36-0.35-6.24-0.57-13.07-0.47-8.34 0.13-12.9-0.19-13.84-0.96-0.77-0.64-3.54-1.52-6.19-1.94-2.64-0.42-5.78-1.64-6.97-2.69s-3.01-2.62-4.03-3.5c-2.82-2.45-2.22-3.75 3.63-7.81 4.87-3.39 5.55-3.6 6.93-2.22 2.07 2.06 3.9 1.95 7.25-0.53 1.39-1.03 2.07-1.53 2.75-1.57zm220.19 0.35c0.25-0.08 0.28 0.97 0.31 3.53 0.04 2.57-0.11 4.69-0.37 4.69-1.1 0-1.52-4.66-0.63-6.91 0.32-0.8 0.54-1.26 0.69-1.31zm79.09 0.34c-0.05 0.05 0.24 0.47 0.85 1.25 1.28 1.64 2.09 2.16 2.09 1.35 0-0.21-0.77-0.98-1.72-1.72-0.78-0.61-1.16-0.93-1.22-0.88zm-240.03 0.07c0.55-0.07 0.97 0.71 0.97 2.34 0 1.33 0.54 3.54 1.16 4.9 0.87 1.92 0.84 2.81-0.13 3.97-0.68 0.83-1.76 1.45-2.37 1.41-0.7-0.05-0.65-0.22 0.12-0.53 1.93-0.78 1.48-1.92-1.31-3.19-1.82-0.83-2.27-1.49-1.59-2.34 0.52-0.67 1.2-2.42 1.56-3.91 0.4-1.68 1.05-2.59 1.59-2.65zm229.5 2.21c0.03 0.02 0.05 0.09 0.1 0.19 0.23 0.54 1.41 5.4 2.59 10.81 1.19 5.41 2.39 10.5 2.69 11.32 0.3 0.81 0.71 2.58 0.94 3.93 0.47 2.89 2.72 5.62 5.31 6.44 1.13 0.36 1.84 1.5 1.84 2.97 0 2.2-0.36 2.41-4.72 2.41-7.28 0-8.59-1.5-8.34-9.47 0.12-3.66-0.18-7.12-0.66-7.69-0.47-0.57-0.89-2.15-0.93-3.5-0.05-1.35-0.28-4.67-0.53-7.38-0.46-4.84-0.44-4.88 0.59-1.24 0.57 2.02 1.48 3.68 2.03 3.68s0.68-0.77 0.31-1.72c-0.67-1.74-1.67-10.95-1.22-10.75zm-31.34 0.13c0.06 0.01 0.14 0.12 0.22 0.31 0.27 0.68 0.27 1.76 0 2.44s-0.5 0.13-0.5-1.22c0-0.85 0.09-1.38 0.22-1.5 0.02-0.02 0.04-0.03 0.06-0.03zm-80.22 0.62c0.49-0.05 1.09 0.44 1.5 1.5 0.33 0.86 0.56 1.65 0.56 1.78 0 0.14-0.65 0.26-1.47 0.26-0.81-0.01-1.46-0.79-1.46-1.79 0-1.1 0.38-1.7 0.87-1.75zm64.41 0.13c0.06-0.03 0.17-0.02 0.25 0.06 0.32 0.33 0.34 1.17 0.06 1.88-0.31 0.78-0.55 0.58-0.59-0.57-0.04-0.77 0.08-1.3 0.28-1.37zm-15.35 0.22c0.07-0.01 0.15 0.01 0.22 0.06 0.54 0.33 1 2.37 1 4.5s-0.46 3.87-1 3.87-0.97-2.03-0.97-4.5c0-2.39 0.28-3.86 0.75-3.93zm-271.59 0.25c0.154-0.01 0.144 1.16 0.031 3.75-0.17 3.88-0.63 5.11-2.219 5.81-2.286 1.01-4.826 7.47-2.937 7.47 0.623 0 1.65-0.49 2.281-1.13 1.428-1.42 2.516 0.87 2.032 4.28-0.232 1.64-0.989 2.27-2.626 2.29-2.523 0.02-5.997 3.89-6.031 6.68-0.056 4.56-4.873 8.68-7.531 6.47-1.102-0.91-1.7-0.92-2.562-0.06-1.371 1.37-2.75 1.48-2.75 0.22-0.001-1.4 2.955-4 4.531-4 1.006 0 1.375-1.2 1.375-4.31 0-4.39 2.911-12.6 4.875-13.82 0.586-0.36 1.045-2.31 1.062-4.31 0.023-2.7 0.678-4.07 2.469-5.37 2.202-1.61 2.335-1.62 1.75-0.1-0.433 1.13-0.247 1.45 0.531 0.97 0.633-0.39 1.125-1.34 1.125-2.12s0.454-1.41 1.032-1.41c0.602 0 0.795 0.84 0.437 1.97-0.351 1.1-0.168 1.94 0.406 1.94 0.562 0 1.466-1.43 2-3.19 0.398-1.31 0.6-2.03 0.719-2.03zm-16.281 0.37c-0.502 0-1.4 0.45-2.625 1.38-1.871 1.41-1.878 1.47 0.187 1.5 1.16 0.01 2.376-0.66 2.688-1.47 0.359-0.94 0.252-1.4-0.25-1.41zm296 1.1c2.67 0.18 5.87 3.95 5.87 8.56 0 3.78-0.2 4.08-2.71 4.06-1.49-0.01-3.23-0.41-3.91-0.84-1.94-1.23-3.23-6.83-2.19-9.57 0.63-1.64 1.73-2.3 2.94-2.21zm-89.16 0.12c-0.05 0.01-0.08 0.03-0.12 0.06-0.31 0.31 0.03 1.24 0.72 2.07 1.76 2.13 2.25 1.87 0.96-0.54-0.52-0.98-1.2-1.65-1.56-1.59zm-13.72 1.13c0.07 0 0.15 0.12 0.22 0.31 0.28 0.68 0.28 1.76 0 2.44-0.27 0.67-0.5 0.13-0.5-1.22 0-0.85 0.09-1.39 0.22-1.5 0.02-0.02 0.04-0.04 0.06-0.03zm112.32 0.68c1.84 0.13 2.92 3.83 1.22 4.91-2.09 1.32-2.82 1.01-2.82-1.13 0-1.08-0.06-2.28-0.15-2.68-0.1-0.41 0.51-0.9 1.37-1.06 0.13-0.03 0.25-0.04 0.38-0.04zm-284.97 0.54c0.634-0.17 1.062 0.58 1.062 2.28 0 1.02 1.288 4.06 2.87 6.75 2.25 3.81 2.73 5.52 2.16 7.68-0.58 2.18-1.39 2.86-3.78 3.1-2.681 0.26-3.142-0.1-4.031-2.97-2.239-7.23-2.361-9.81-0.625-13.66 0.869-1.93 1.709-3.02 2.344-3.18zm275.93 0.5c-0.25-0.02-0.53 0.03-0.78 0.12-2.09 0.8-2.06 2.68 0.1 5.38 1.99 2.49 3.56 2.33 3.97-0.38 0.35-2.36-1.49-5.01-3.29-5.12zm105.63 0c0.1-0.01 0.16 0.1 0.16 0.31 0 0.54-0.45 1.62-0.97 2.43-0.53 0.82-0.94 1.05-0.94 0.5 0-0.54 0.41-1.65 0.94-2.46 0.33-0.51 0.64-0.78 0.81-0.78zm-233.81 2.28c-0.07-0.02-0.13-0.01-0.19 0.03-1.21 0.75-0.16 16.21 1.22 17.87 1.81 2.18 3.05 1.43 2.34-1.44-0.77-3.11-1.39-6.86-2.12-12.81-0.25-2.02-0.78-3.52-1.25-3.65zm231.62 2.72c0.28 0.02 0.41 0.5 0.41 1.5 0 2.37-0.48 2.74-1.5 1.09-0.36-0.59-0.2-1.56 0.41-2.16 0.3-0.3 0.51-0.45 0.68-0.43zm-114.15 0.71h1.47c4.98 0 6.28 2.33 2.81 5-3.16 2.43-3.53 2.39-5.28-1-1.79-3.46-1.99-3.94 1-4zm-140.66 0.97c0.38 0 0.11 0.69-0.56 1.5-0.68 0.81-1.61 1.47-2.13 1.47-0.51 0-0.28-0.66 0.53-1.47 0.82-0.81 1.78-1.5 2.16-1.5zm-26.63 0.1c0.56-0.12 1.63 0.36 3.44 1.4 1.36 0.78 1.81 1.36 1 1.32-2.76-0.15-4.9-0.97-4.9-1.88 0-0.47 0.13-0.78 0.46-0.84zm189.44 0.09c0.88 0.07 1.32 1.85 1.69 5.69 0.51 5.35-0.07 5.89-3.47 3.06-2.71-2.26-2.77-4.06-0.31-7.09 0.9-1.11 1.57-1.7 2.09-1.66zm-169.78 0.94c0.5 0 0.43 0.26-0.47 0.84-0.81 0.53-2.12 0.94-2.93 0.91-0.98-0.04-0.83-0.35 0.46-0.91 1.36-0.58 2.44-0.84 2.94-0.84zm-29.72 0.84c0.41 0 0.72 2.23 0.72 4.94 0 4.31-0.39 5.33-3.19 7.87-1.75 1.6-3.91 2.89-4.78 2.91-1.23 0.02-0.68-1.7 2.47-7.84 2.22-4.33 4.38-7.87 4.78-7.88zm20.91 2.47c3.95 0 6.65 0.35 6.03 0.75s-3.33 0.69-6.03 0.69c-2.71 0-5.44-0.29-6.06-0.69-0.63-0.4 2.1-0.75 6.06-0.75zm217.25 0.69c0.07-0.03 0.17 0.01 0.25 0.09 0.33 0.33 0.35 1.17 0.06 1.88-0.31 0.78-0.55 0.55-0.59-0.6-0.03-0.78 0.08-1.3 0.28-1.37zm-230.53 0.78c0.54 0 0.97 0.2 0.97 0.44 0 0.23-0.43 0.69-0.97 1.03-0.54 0.33-1 0.16-1-0.41s0.46-1.06 1-1.06zm184.69 1c1.34 0.01 7 5.84 7.65 7.91 0.36 1.11 0.13 2.61-0.47 3.34-0.6 0.72-2.16 1.53-3.47 1.78-2.15 0.41-2.47-0.01-3.4-4.38-1.22-5.67-1.34-8.66-0.31-8.65zm-159.5 0.47 0.18 9.12c0.17 8.21-0.08 10.49-0.97 8.35-0.16-0.41-0.05-4.5 0.25-9.1l0.54-8.37zm-12.29 0.5c1.88 0 2.74 0.41 2.32 1.09-0.37 0.59-1.55 0.81-2.6 0.53-1.19-0.31-1.77-0.03-1.53 0.69 0.47 1.42 2.56 1.57 5 0.37 1.37-0.67 1.73-0.55 1.41 0.44-0.63 1.91-6.11 2.2-7.6 0.41-1.72-2.08-0.47-3.53 3-3.53zm161.19 0c1.53 0 1.97 0.67 1.97 2.97 0 3.49-0.07 3.52-2.25 0.97-2.23-2.61-2.13-3.94 0.28-3.94zm3.34 0.18c0.07-0.02 0.14 0.02 0.22 0.1 0.33 0.33 0.35 1.16 0.07 1.87-0.32 0.79-0.52 0.56-0.57-0.59-0.03-0.78 0.08-1.3 0.28-1.38zm-155.62 0.32c0.59-0.22 0.81 1.32 0.81 5.22 0 3.35-0.18 6.09-0.4 6.09-1.06 0-1.69-10.1-0.69-11.09 0.1-0.1 0.2-0.19 0.28-0.22zm60.03 0.59c0.13 0.02 0.37 0.18 0.72 0.5 0.67 0.62 1.01 2.57 0.78 4.44-0.33 2.7-0.43 2.85-0.56 0.72-0.09-1.45-0.43-3.45-0.78-4.44-0.31-0.86-0.38-1.26-0.16-1.22zm-53.81 0.25c0.24-0.11 0.35 1.4 0.4 4.81 0.06 3.66-0.06 6.63-0.28 6.63-0.82 0-1.2-7.47-0.53-10.28 0.17-0.7 0.3-1.11 0.41-1.16zm4.84 0.63c0.24 0 0.73 0.46 1.06 1 0.34 0.54 0.14 0.97-0.43 0.97-0.58 0-1.07-0.43-1.07-0.97s0.2-1 0.44-1zm-57.4 1c-1.12 0-2.04 0.42-2.04 0.97 0 0.54 0.63 1 1.41 1s1.7-0.46 2.03-1c0.34-0.55-0.29-0.97-1.4-0.97zm206.03 0.53c0.06 0 0.11 0.22 0.19 0.68 0.22 1.5 0.23 3.7 0 4.91-0.24 1.21-0.45 0.02-0.44-2.69 0-1.86 0.12-2.91 0.25-2.9zm105.84 0.31c2.28-0.05 5.32 0.86 7.35 2.59 1.57 1.36 3.75 2.44 4.81 2.44 1.46 0 1.62 0.29 0.75 1.16s-0.75 1.47 0.53 2.4c0.93 0.68 1.37 1.57 0.97 1.97-0.41 0.41-0.75 0.2-0.75-0.43 0-0.79-1.69-1.05-5.38-0.79-4.97 0.36-5.65 0.17-8.37-2.62-1.63-1.67-2.97-3.83-2.97-4.81 0-1.25 1.29-1.87 3.06-1.91zm-370.47 1.13c0.81 0 1.47 0.13 1.47 0.34 0 0.2-0.66 0.95-1.47 1.62-1.21 1.01-1.5 0.94-1.5-0.37 0-0.88 0.69-1.59 1.5-1.59zm181.25 0c0.03-0.02 0.09 0 0.13 0 0.85 0 2.18 2.45 4.5 8.24 1.78 4.48 1.54 5.29-0.85 2.66-1.84-2.04-4.69-10.39-3.78-10.9zm29.16 0c0.21 0 0.66 0.65 0.97 1.46 0.31 0.82 0.12 1.47-0.41 1.47-0.52 0-0.97-0.65-0.97-1.47 0-0.81 0.2-1.46 0.41-1.46zm-121.85 0.96c0.06-0.04 0.12 0.2 0.19 0.75 0.22 1.76 0.22 4.62 0 6.38s-0.37 0.33-0.37-3.19c0-2.42 0.06-3.85 0.18-3.94zm24.6 0c0.05-0.04 0.12 0.2 0.19 0.75 0.21 1.76 0.21 4.62 0 6.38-0.22 1.76-0.38 0.33-0.38-3.19 0-2.42 0.07-3.85 0.19-3.94zm-103.41 0.07c-0.28 0.02-0.4 0.29-0.4 0.78 0 0.46 1 1.32 2.21 1.9 3.2 1.54 3.34 1.42 0.97-0.78-1.42-1.33-2.31-1.94-2.78-1.9zm353.81 1.12c0.53 0.03 1.17 0.39 2.19 1.06 1.32 0.86 2.62 2.48 2.91 3.6 0.48 1.85 0.08 2.03-4.38 2.03-4.61 0-4.81-0.13-4.18-2.22 0.36-1.22 1.24-2.83 1.96-3.59 0.57-0.6 0.98-0.9 1.5-0.88zm-269.15 0.09c0.59-0.14 1.55 1.44 1.65 3.47 0.12 2.32 0.16 2.35 0.54 0.41 0.66-3.46 2.25-2.57 2.25 1.25 0 1.89 0.48 3.44 1.06 3.44 0.61 0 0.79-0.93 0.44-2.22l-0.6-2.22 2.03 2.34c1.11 1.28 2 3.53 2 5.03 0 2.45-0.39 2.82-3.68 3.13-4.99 0.47-11.1-0.13-11.1-1.06 0-0.42 1.12-2.93 2.47-5.6 1.35-2.66 2.47-5.61 2.47-6.59 0-0.87 0.2-1.31 0.47-1.38zm-7.81 0.29c0.05-0.04 0.11 0.19 0.18 0.65 0.23 1.49 0.23 3.92 0 5.41-0.22 1.49-0.4 0.26-0.4-2.72 0-2.05 0.09-3.27 0.22-3.34zm-100 0.06c2.187-0.05 5.444 0.57 10.254 1.84 5.5 1.45 11.57 3.47 13.47 4.47 1.89 1 4.32 2.15 5.4 2.56 1.44 0.56 0.69 0.85-2.87 1.1-2.68 0.18-5.88-0.21-7.13-0.88-1.24-0.66-2.52-0.94-2.84-0.62-1.42 1.42 4.54 2.94 13.47 3.44 9.47 0.52 11.97 1.39 7.5 2.59-1.22 0.32-2.65 0.51-3.19 0.47-3.7-0.32-19.96-3-21.16-3.5-0.81-0.34-2.58-0.78-3.94-1-1.35-0.22-2.86-0.84-3.37-1.35-0.51-0.5-1.739-0.9-2.688-0.9-3.441 0-6.718-2.24-6.718-4.57 0-2.42 1.001-3.59 3.812-3.65zm202.65 0.34c0.49 0 1.21 2.32 1.6 5.16 0.75 5.6 1.97 8.62 3.47 8.62 1.41 0 1.08-3.17-0.57-5.34-3.13-4.14-0.78-4.76 4.07-1.06 3.35 2.56 4.94 3.01 5.5 1.62 0.4-1.01 13.59 0.96 13.59 2.03 0 0.43-1.48 0.78-3.25 0.78-3.35 0-5.96 1.46-10 5.5-3.39 3.39-6.77 3.05-9.81-0.93-3.71-4.86-6.95-16.38-4.6-16.38zm30 0.03c4.33-0.05 13.56 2.36 18.03 5.25 3.57 2.31 4.28 4.05 1.28 3.1-1.5-0.48-2.04-0.05-2.53 1.9-0.66 2.67-0.59 2.67-10.03 1.82-4.02-0.37-5.6-2.23-3.18-3.72 1.53-0.95 1.14-4.44-0.5-4.44-0.82 0-1.47-0.46-1.47-1s-0.89-0.97-1.97-0.97-1.97-0.46-1.97-1c0-0.65 0.9-0.92 2.34-0.94zm-240.22 1.41c1.838-0.22 2.882 1.54 2.594 4.56-0.282 2.95-0.699 3.39-3.438 3.66-3.744 0.36-5.021-1.29-2.875-3.66 0.865-0.95 1.563-2.2 1.563-2.78-0.001-0.57 0.587-1.28 1.312-1.56 0.294-0.11 0.581-0.19 0.844-0.22zm377.57 0.53c0.54 0 0.96 0.4 0.96 0.91s-0.42 1.23-0.96 1.56-1-0.09-1-0.94c0-0.84 0.46-1.53 1-1.53zm-393.32 0.06c0.493-0.09 0.812 0.32 0.812 1.28 0 0.75-0.856 1.61-1.906 1.88-1.657 0.43-1.758 0.27-0.75-1.34 0.682-1.1 1.35-1.72 1.844-1.82zm423.04 0c0.36-0.03 0.81 0 1.34 0.1 1.54 0.3 1.54 0.47 0.16 1.62-1.11 0.92-1.74 0.95-2.22 0.16-0.68-1.09-0.37-1.77 0.72-1.88zm-369.85 0.04c-0.34-0.03-0.1 0.24 0.56 0.96 0.7 0.76 2.68 1.93 4.41 2.57 3.58 1.31 6.28 1.62 5.28 0.62-0.37-0.37-2.09-1.2-3.84-1.84s-4.11-1.49-5.19-1.91c-0.62-0.24-1.01-0.39-1.22-0.4zm229.44 0.12c0.02-0.02 0.01-0.01 0.03 0 0.05 0.04 0.13 0.23 0.19 0.53 0.23 1.22 0.23 3.19 0 4.41-0.24 1.21-0.44 0.21-0.44-2.22 0-1.6 0.1-2.58 0.22-2.72zm-32.06 0.69c0.2-0.02 0.47 0.09 0.71 0.34 0.33 0.33 0.39 1.13 0.16 1.81-0.33 1-0.57 1.01-1.19 0-0.61-0.99-0.3-2.09 0.32-2.15zm-3.91 0.06c0.57 0 1.06 0.46 1.06 1s-0.2 0.97-0.44 0.97c-0.23 0-0.69-0.43-1.03-0.97-0.33-0.54-0.16-1 0.41-1zm-94.97 0.47c0.08-0.07 0.18 0.03 0.28 0.28 0.28 0.68 0.28 1.79 0 2.47-0.27 0.68-0.5 0.1-0.5-1.25 0-0.85 0.09-1.39 0.22-1.5zm-38.37 0.72c0.06-0.03 0.16 0.01 0.25 0.09 0.32 0.33 0.34 1.17 0.06 1.88-0.32 0.78-0.55 0.55-0.59-0.6-0.04-0.78 0.07-1.3 0.28-1.37zm130.56 0.9c0.34-0.01 0.71 0.05 1.06 0.19 0.79 0.32 0.58 0.55-0.56 0.59-1.04 0.05-1.64-0.17-1.31-0.5 0.16-0.16 0.47-0.26 0.81-0.28zm-178.53 1.85c-0.51 0.04-0.64 0.29-0.19 0.75 0.4 0.4 2.16 1.27 3.88 1.9 4.89 1.81 6.39 1.4 2.59-0.68-2.31-1.27-5.17-2.07-6.28-1.97zm82.4 0.19c0.07-0.03 0.17 0.01 0.25 0.09 0.33 0.33 0.35 1.16 0.07 1.87-0.32 0.79-0.55 0.59-0.6-0.56-0.03-0.78 0.08-1.33 0.28-1.4zm-125.37 1.06c0.41 0.01 0.97 0.15 1.687 0.53 1 0.52 2.929 1.44 4.284 2l2.47 1.03-2.972 0.03c-1.624 0.02-3.77-0.62-4.813-1.41-1.431-1.08-1.687-1.97-1.031-2.15 0.098-0.03 0.238-0.04 0.375-0.03zm384.9 1.62c2.36-0.02 4.34-0.02 5.44 0.03 0.68 0.04 1.25 0.95 1.25 2.03 0 1.86-0.66 1.97-11.84 1.97-9.76 0-11.96-0.24-12.44-1.5-0.32-0.83-0.37-1.72-0.15-1.93 0.24-0.24 10.67-0.54 17.74-0.6zm-290.46 1.06c0.38 0 1.5 0.62 2.5 1.35 1.25 0.92 1.47 1.54 0.68 2.03-0.62 0.39-1.15 1.79-1.15 3.12 0 1.7-0.77 2.71-2.53 3.38-3.27 1.24-3.38 1.22-3.38-0.5 0-2.03 3.04-9.38 3.88-9.38zm-100.28 0.1c0.973 0.03 0.829 0.35-0.469 0.9-2.704 1.17-4.267 1.17-2.468 0 0.811-0.52 2.125-0.93 2.937-0.9zm89.845 0.31c2.54 0.03 4.59 0.77 4.59 2.31 0 1.12-0.68 1.32-2.87 0.88-1.66-0.33-4.41 0.05-6.38 0.87-4.85 2.03-5.77 1.81-4-0.9 1.36-2.07 5.39-3.19 8.66-3.16zm42.28 0.59c0.89 0 2.08 0.89 2.66 1.97 0.8 1.51 0.75 1.97-0.25 1.97-0.73 0-1.85-0.54-2.5-1.18-0.92-0.92-1.19-0.59-1.19 1.43 0 1.43-0.46 2.88-1.06 3.25-0.74 0.46-0.91-0.07-0.47-1.65 0.62-2.23 0.57-2.24-1.44 0.34-2.02 2.61-2.44 2.72-11.13 2.69-10.28-0.04-13-1.01-11.4-4 0.57-1.07 1.47-1.63 2.03-1.28 0.56 0.34 4.95 0.6 9.75 0.56 7.69-0.07 8.64 0.08 8.09 1.5-0.41 1.07-0.2 1.35 0.57 0.87 0.63-0.39 1.12-1.27 1.12-1.97 0-1.71 3.24-4.5 5.22-4.5zm103.91 1.26c0.96-0.06 1.81 0.05 2.43 0.4 1.44 0.8 1.3 1.09-0.93 2.28-2.03 1.09-2.91 1.13-4.41 0.19-1.67-1.04-1.86-0.92-1.66 1.03 0.17 1.61-0.36 2.31-1.9 2.53-1.17 0.17-2.35-0.09-2.63-0.53-1.34-2.16 4.92-5.66 9.1-5.9zm69.34 0.18c0.91-0.05 1.56 0.09 1.56 0.5 0 0.55-0.4 1-0.87 1-0.48 0-2.36 0.26-4.19 0.56-2.27 0.39-2.85 0.26-1.84-0.37 1.53-0.95 3.82-1.59 5.34-1.69zm-282.66 0.66c0.35-0.02 0.74 0.04 1.1 0.19 0.78 0.31 0.55 0.51-0.6 0.56-1.03 0.04-1.6-0.14-1.28-0.47 0.17-0.16 0.44-0.27 0.78-0.28zm7.07 0.97c2.03-0.07 3.68 0.33 3.68 0.87 0 1.09-0.17 1.09-4.43 0-2.94-0.74-2.93-0.76 0.75-0.87zm316.06 0.09c-1.93 0.05-2.53 0.41-2.53 1.31 0 1.2 1 1.49 4.62 1.25 6.22-0.4 6.44-2.23 0.31-2.53-0.96-0.04-1.76-0.05-2.4-0.03zm-296.22 0.22c1.97 0.01 3.28 0.13 3.12 0.38-0.3 0.49-4.62 0.99-9.62 1.09s-8.91-0.02-8.66-0.25c0.63-0.55 7.83-1.08 13-1.19 0.78-0.02 1.5-0.03 2.16-0.03zm223.84 0.69c-0.8 0-1.58 0.04-2.18 0.15-1.22 0.24-0.25 0.41 2.18 0.41 2.44 0 3.44-0.17 2.22-0.41-0.61-0.11-1.41-0.15-2.22-0.15zm-268.53 0.84c-5.246 0-8.874 0.42-8.874 1-0.001 0.58 3.628 0.97 8.874 0.97 5.247 0 8.848-0.39 8.848-0.97s-3.601-1-8.848-1zm298.53 1c-2.68 0-3.08 0.92-1.25 2.75 1.43 1.42 12.57 1.59 12.57 0.19 0-0.54-1.98-0.97-4.41-0.97s-4.44-0.46-4.44-1-1.11-0.97-2.47-0.97zm-39.81 0.13c-0.44 0-0.91 0.05-1.25 0.18-0.68 0.28-0.1 0.5 1.25 0.5s1.9-0.22 1.22-0.5c-0.34-0.13-0.77-0.18-1.22-0.18zm-99.5 0.28c1.17-0.05 3.18 0.42 4.78 1.09 3.26 1.36 3.29 1.43 1.75 3.78-0.87 1.33-2.24 2.65-3 2.94-1.94 0.74-2.83-1.12-1.37-2.87 1.84-2.22 0.3-2.88-2.47-1.07-2.29 1.5-2.4 1.5-1.81-0.03 0.42-1.1 0.27-1.38-0.5-0.9-0.64 0.39-1.19 0.21-1.19-0.38 0-0.77-0.56-0.79-1.97-0.03-1.3 0.69-1.97 0.72-1.97 0.06 0-0.9 1-1.25 7.31-2.53 0.13-0.03 0.27-0.06 0.44-0.06zm-159.22 1.56c-1.623 0-2.968 0.32-2.968 0.75s1.345 0.91 2.968 1.03c1.624 0.12 2.938-0.23 2.938-0.78s-1.314-1-2.938-1zm266.72 0c-2.08 0.06-5.36 0.5-6.53 1.03-1.32 0.6-0.37 0.69 2.94 0.28 2.7-0.33 5.12-0.77 5.34-0.97 0.32-0.28-0.5-0.38-1.75-0.34zm-202.69 0.12c-0.34 0.02-0.65 0.09-0.81 0.26-0.33 0.32 0.28 0.54 1.31 0.5 1.15-0.05 1.35-0.28 0.57-0.6-0.36-0.14-0.72-0.17-1.07-0.16zm-11.4 1.85c-1.9 0-3.44 0.43-3.44 0.97s1.54 0.97 3.44 0.97c1.89 0 3.44-0.43 3.44-0.97s-1.55-0.97-3.44-0.97z"/>
@@ -3805,7 +3714,7 @@
 				</fo:block>
 			</fo:block-container>
 	</xsl:template>
-	
+
 	<xsl:template name="splitTitle">
 		<xsl:param name="pText" select="."/>
 		<xsl:param name="sep" select="','"/>
@@ -3819,7 +3728,7 @@
 		</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-	
+
 	<xsl:template name="splitByParts">
 		<xsl:param name="items"/>
 		<xsl:param name="start" select="1"/>
@@ -3837,111 +3746,187 @@
 				<xsl:with-param name="start" select="$start + $mergeEach"/>
 				<xsl:with-param name="mergeEach" select="$mergeEach"/>
 			</xsl:call-template>
-		</xsl:if>		
+		</xsl:if>
 	</xsl:template>
 
-	
-<xsl:param name="svg_images"/><xsl:variable name="images" select="document($svg_images)"/><xsl:param name="basepath"/><xsl:param name="external_index"/><xsl:param name="syntax-highlight">false</xsl:param><xsl:param name="add_math_as_text">true</xsl:param><xsl:param name="table_if">false</xsl:param><xsl:param name="table_widths"/><xsl:variable name="table_widths_from_if" select="xalan:nodeset($table_widths)"/><xsl:variable name="table_widths_from_if_calculated_">
+	<!-- external parameters -->
+
+	<xsl:param name="svg_images"/> <!-- svg images array -->
+	<xsl:variable name="images" select="document($svg_images)"/>
+	<xsl:param name="basepath"/> <!-- base path for images -->
+	<xsl:param name="external_index"/><!-- path to index xml, generated on 1st pass, based on FOP Intermediate Format -->
+	<xsl:param name="syntax-highlight">false</xsl:param> <!-- syntax highlighting feature, default - off -->
+	<xsl:param name="add_math_as_text">true</xsl:param> <!-- add math in text behind svg formula, to copy-paste formula from PDF as text -->
+
+	<xsl:param name="table_if">false</xsl:param> <!-- generate extended table in IF for autolayout-algorithm -->
+	<xsl:param name="table_widths"/> <!-- path to xml with table's widths, generated on 1st pass, based on FOP Intermediate Format -->
+	<!-- Example: <tables>
+			<table id="table_if_tab-symdu" page-width="75"> - table id prefixed by 'table_if_' to simple search in IF 
+				<tbody>
+					<tr>
+						<td id="tab-symdu_1_1">
+							<p_len>6</p_len>
+							<p_len>100</p_len>  for 2nd paragraph
+							<word_len>6</word_len>
+							<word_len>20</word_len>
+						...
+	-->
+
+	<!-- for command line debug: <xsl:variable name="table_widths_from_if" select="document($table_widths)"/> -->
+	<xsl:variable name="table_widths_from_if" select="xalan:nodeset($table_widths)"/>
+
+	<xsl:variable name="table_widths_from_if_calculated_">
 		<xsl:for-each select="$table_widths_from_if//table">
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:call-template name="calculate-column-widths-autolayout-algorithm"/>
 			</xsl:copy>
 		</xsl:for-each>
-	</xsl:variable><xsl:variable name="table_widths_from_if_calculated" select="xalan:nodeset($table_widths_from_if_calculated_)"/><xsl:param name="table_if_debug">false</xsl:param><xsl:variable name="isGenerateTableIF_">
+	</xsl:variable>
+	<xsl:variable name="table_widths_from_if_calculated" select="xalan:nodeset($table_widths_from_if_calculated_)"/>
+
+	<xsl:param name="table_if_debug">false</xsl:param> <!-- set 'true' to put debug width data before table or dl -->
+
+	<xsl:variable name="isGenerateTableIF_">
 		false
-	</xsl:variable><xsl:variable name="isGenerateTableIF" select="normalize-space($isGenerateTableIF_)"/><xsl:variable name="lang">
+	</xsl:variable>
+	<xsl:variable name="isGenerateTableIF" select="normalize-space($isGenerateTableIF_)"/>
+
+	<xsl:variable name="lang">
 		<xsl:call-template name="getLang"/>
-	</xsl:variable><xsl:variable name="papersize" select="java:toLowerCase(java:java.lang.String.new(normalize-space(//*[contains(local-name(), '-standard')]/*[local-name() = 'misc-container']/*[local-name() = 'presentation-metadata']/*[local-name() = 'papersize'])))"/><xsl:variable name="papersize_width_">
+	</xsl:variable>
+
+	<!-- Note 1: Each xslt has declated variable `namespace` that allows to set some properties, processing logic, etc. for concrete xslt.
+	You can put such conditions by using xslt construction `xsl:if test="..."` or <xsl:choose><xsl:when test=""></xsl:when><xsl:otherwiste></xsl:otherwiste></xsl:choose>,
+	BUT DON'T put any another conditions together with $namespace = '...' (such conditions will be ignored). For another conditions, please use nested xsl:if or xsl:choose -->
+
+	<!--
+	<misc-container>
+		<presentation-metadata>
+			<papersize>letter</papersize>
+		</presentation-metadata>
+	</misc-container>
+	-->
+
+	<xsl:variable name="papersize" select="java:toLowerCase(java:java.lang.String.new(normalize-space(//*[contains(local-name(), '-standard')]/*[local-name() = 'misc-container']/*[local-name() = 'presentation-metadata']/*[local-name() = 'papersize'])))"/>
+	<xsl:variable name="papersize_width_">
 		<xsl:choose>
 			<xsl:when test="$papersize = 'letter'">215.9</xsl:when>
 			<xsl:when test="$papersize = 'a4'">210</xsl:when>
 		</xsl:choose>
-	</xsl:variable><xsl:variable name="papersize_width" select="normalize-space($papersize_width_)"/><xsl:variable name="papersize_height_">
+	</xsl:variable>
+	<xsl:variable name="papersize_width" select="normalize-space($papersize_width_)"/>
+	<xsl:variable name="papersize_height_">
 		<xsl:choose>
 			<xsl:when test="$papersize = 'letter'">279.4</xsl:when>
 			<xsl:when test="$papersize = 'a4'">297</xsl:when>
 		</xsl:choose>
-	</xsl:variable><xsl:variable name="papersize_height" select="normalize-space($papersize_height_)"/><xsl:variable name="pageWidth_">
+	</xsl:variable>
+	<xsl:variable name="papersize_height" select="normalize-space($papersize_height_)"/>
+
+	<!-- page width in mm -->
+	<xsl:variable name="pageWidth_">
 		<xsl:choose>
 			<xsl:when test="$papersize_width != ''"><xsl:value-of select="$papersize_width"/></xsl:when>
 			<xsl:otherwise>
 				210
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:variable><xsl:variable name="pageWidth" select="normalize-space($pageWidth_)"/><xsl:variable name="pageHeight_">
+	</xsl:variable>
+	<xsl:variable name="pageWidth" select="normalize-space($pageWidth_)"/>
+
+	<!-- page height in mm -->
+	<xsl:variable name="pageHeight_">
 		<xsl:choose>
 			<xsl:when test="$papersize_height != ''"><xsl:value-of select="$papersize_height"/></xsl:when>
 			<xsl:otherwise>
 				297
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:variable><xsl:variable name="pageHeight" select="normalize-space($pageHeight_)"/><xsl:variable name="marginLeftRight1_">
+	</xsl:variable>
+	<xsl:variable name="pageHeight" select="normalize-space($pageHeight_)"/>
+
+	<!-- Page margins in mm (just digits, without 'mm')-->
+	<!-- marginLeftRight1 and marginLeftRight2 - is left or right margin depends on odd/even page,
+	for example, left margin on odd page and right margin on even page -->
+	<xsl:variable name="marginLeftRight1_">
 		31.7
-	</xsl:variable><xsl:variable name="marginLeftRight1" select="normalize-space($marginLeftRight1_)"/><xsl:variable name="marginLeftRight2_">
+	</xsl:variable>
+	<xsl:variable name="marginLeftRight1" select="normalize-space($marginLeftRight1_)"/>
+
+	<xsl:variable name="marginLeftRight2_">
 		40
-	</xsl:variable><xsl:variable name="marginLeftRight2" select="normalize-space($marginLeftRight2_)"/><xsl:variable name="marginTop_">
+	</xsl:variable>
+	<xsl:variable name="marginLeftRight2" select="normalize-space($marginLeftRight2_)"/>
+
+	<xsl:variable name="marginTop_">
 		25.4
-	</xsl:variable><xsl:variable name="marginTop" select="normalize-space($marginTop_)"/><xsl:variable name="marginBottom_">
+	</xsl:variable>
+	<xsl:variable name="marginTop" select="normalize-space($marginTop_)"/>
+
+	<xsl:variable name="marginBottom_">
 		22
-	</xsl:variable><xsl:variable name="marginBottom" select="normalize-space($marginBottom_)"/><xsl:variable name="titles_">
-		
-		
+	</xsl:variable>
+	<xsl:variable name="marginBottom" select="normalize-space($marginBottom_)"/>
+
+	<!-- Note 2: almost all localized string determined in the element //localized-strings in metanorma xml, but there are a few cases when:
+	 - string didn't determined yet
+	 - we need to put the string on two-languages (for instance, on English and French both), but xml contains only localized strings for one language
+	 - there is a difference between localized string value and text that should be displayed in PDF
+	-->
+	<xsl:variable name="titles_">
+
 		<!-- These titles of Table of contents renders different than determined in localized-strings -->
 		<title-toc lang="en">
-			
-			
-			
+
 		</title-toc>
 		<title-toc lang="fr">
 			<xsl:text>Sommaire</xsl:text>
 		</title-toc>
 		<title-toc lang="zh">
-			
+
 					<xsl:text>Contents</xsl:text>
-				
+
 		</title-toc>
-		
+
 		<title-descriptors lang="en">Descriptors</title-descriptors>
-		
+
 		<title-part lang="en">
-			
-			
-			
+
 				<xsl:text>Part #</xsl:text>
-			
+
 		</title-part>
 		<title-part lang="fr">
-			
-			
-			
+
 				<xsl:text>Partie #</xsl:text>
-			
+
 		</title-part>
 		<title-part lang="ru">
-			
-			
+
 		</title-part>
 		<title-part lang="zh">第 # 部分:</title-part>
-		
+
 		<title-subpart lang="en">Sub-part #</title-subpart>
 		<title-subpart lang="fr">Partie de sub #</title-subpart>
-		
+
 		<title-list-tables lang="en">List of Tables</title-list-tables>
-		
+
 		<title-list-figures lang="en">List of Figures</title-list-figures>
-		
+
 		<title-table-figures lang="en">Table of Figures</title-table-figures>
-		
+
 		<title-list-recommendations lang="en">List of Recommendations</title-list-recommendations>
-		
+
 		<title-summary lang="en">Summary</title-summary>
-		
+
 		<title-continued lang="ru">(продолжение)</title-continued>
 		<title-continued lang="en">(continued)</title-continued>
 		<title-continued lang="fr">(continué)</title-continued>
-		
-	</xsl:variable><xsl:variable name="titles" select="xalan:nodeset($titles_)"/><xsl:variable name="title-list-tables">
+
+	</xsl:variable>
+	<xsl:variable name="titles" select="xalan:nodeset($titles_)"/>
+
+	<xsl:variable name="title-list-tables">
 		<xsl:variable name="toc_table_title" select="//*[contains(local-name(), '-standard')]/*[local-name() = 'misc-container']/*[local-name() = 'toc'][@type='table']/*[local-name() = 'title']"/>
 		<xsl:value-of select="$toc_table_title"/>
 		<xsl:if test="normalize-space($toc_table_title) = ''">
@@ -3949,7 +3934,9 @@
 				<xsl:with-param name="name" select="'title-list-tables'"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:variable><xsl:variable name="title-list-figures">
+	</xsl:variable>
+
+	<xsl:variable name="title-list-figures">
 		<xsl:variable name="toc_figure_title" select="//*[contains(local-name(), '-standard')]/*[local-name() = 'misc-container']/*[local-name() = 'toc'][@type='figure']/*[local-name() = 'title']"/>
 		<xsl:value-of select="$toc_figure_title"/>
 		<xsl:if test="normalize-space($toc_figure_title) = ''">
@@ -3957,7 +3944,9 @@
 				<xsl:with-param name="name" select="'title-list-figures'"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:variable><xsl:variable name="title-list-recommendations">
+	</xsl:variable>
+
+	<xsl:variable name="title-list-recommendations">
 		<xsl:variable name="toc_requirement_title" select="//*[contains(local-name(), '-standard')]/*[local-name() = 'misc-container']/*[local-name() = 'toc'][@type='requirement']/*[local-name() = 'title']"/>
 		<xsl:value-of select="$toc_requirement_title"/>
 		<xsl:if test="normalize-space($toc_requirement_title) = ''">
@@ -3965,10 +3954,23 @@
 				<xsl:with-param name="name" select="'title-list-recommendations'"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:variable><xsl:variable name="bibdata">
+	</xsl:variable>
+
+	<xsl:variable name="bibdata">
 		<xsl:copy-of select="//*[contains(local-name(), '-standard')]/*[local-name() = 'bibdata']"/>
 		<xsl:copy-of select="//*[contains(local-name(), '-standard')]/*[local-name() = 'localized-strings']"/>
-	</xsl:variable><xsl:variable name="linebreak">&#8232;</xsl:variable><xsl:variable name="tab_zh">　</xsl:variable><xsl:variable name="non_breaking_hyphen">‑</xsl:variable><xsl:variable name="thin_space"> </xsl:variable><xsl:variable name="zero_width_space">​</xsl:variable><xsl:variable name="hair_space"> </xsl:variable><xsl:variable name="en_dash">–</xsl:variable><xsl:template name="getTitle">
+	</xsl:variable>
+
+	<!-- Characters -->
+	<xsl:variable name="linebreak">&#8232;</xsl:variable>
+	<xsl:variable name="tab_zh">　</xsl:variable>
+	<xsl:variable name="non_breaking_hyphen">‑</xsl:variable>
+	<xsl:variable name="thin_space"> </xsl:variable>
+	<xsl:variable name="zero_width_space">​</xsl:variable>
+	<xsl:variable name="hair_space"> </xsl:variable>
+	<xsl:variable name="en_dash">–</xsl:variable>
+
+	<xsl:template name="getTitle">
 		<xsl:param name="name"/>
 		<xsl:param name="lang"/>
 		<xsl:variable name="lang_">
@@ -3991,56 +3993,55 @@
 				<xsl:value-of select="$titles/*[local-name() = $name][@lang = 'en']"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:variable name="lower">abcdefghijklmnopqrstuvwxyz</xsl:variable><xsl:variable name="upper">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable><xsl:variable name="en_chars" select="concat($lower,$upper,',.`1234567890-=~!@#$%^*()_+[]{}\|?/')"/><xsl:variable name="font_noto_sans">Noto Sans, Noto Sans HK, Noto Sans JP, Noto Sans KR, Noto Sans SC, Noto Sans TC</xsl:variable><xsl:variable name="font_noto_sans_mono">Noto Sans Mono, Noto Sans Mono CJK HK, Noto Sans Mono CJK JP, Noto Sans Mono CJK KR, Noto Sans Mono CJK SC, Noto Sans Mono CJK TC</xsl:variable><xsl:variable name="font_noto_serif">Noto Serif, Noto Serif HK, Noto Serif JP, Noto Serif KR, Noto Serif SC, Noto Serif TC</xsl:variable><xsl:attribute-set name="root-style">
-		
+	</xsl:template>
+
+	<xsl:variable name="lower">abcdefghijklmnopqrstuvwxyz</xsl:variable>
+	<xsl:variable name="upper">ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:variable>
+
+	<xsl:variable name="en_chars" select="concat($lower,$upper,',.`1234567890-=~!@#$%^*()_+[]{}\|?/')"/>
+
+	<!-- ====================================== -->
+	<!-- STYLES -->
+	<!-- ====================================== -->
+	<xsl:variable name="font_noto_sans">Noto Sans, Noto Sans HK, Noto Sans JP, Noto Sans KR, Noto Sans SC, Noto Sans TC</xsl:variable>
+	<xsl:variable name="font_noto_sans_mono">Noto Sans Mono, Noto Sans Mono CJK HK, Noto Sans Mono CJK JP, Noto Sans Mono CJK KR, Noto Sans Mono CJK SC, Noto Sans Mono CJK TC</xsl:variable>
+	<xsl:variable name="font_noto_serif">Noto Serif, Noto Serif HK, Noto Serif JP, Noto Serif KR, Noto Serif SC, Noto Serif TC</xsl:variable>
+	<xsl:attribute-set name="root-style">
+
 			<xsl:attribute name="font-family">Times New Roman, STIX Two Math, <xsl:value-of select="$font_noto_serif"/></xsl:attribute>
 			<xsl:attribute name="font-family-generic">Serif</xsl:attribute>
 			<xsl:attribute name="font-size">10.5pt</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:template name="insertRootStyle">
+
+	</xsl:attribute-set> <!-- root-style -->
+
+	<xsl:template name="insertRootStyle">
 		<xsl:param name="root-style"/>
 		<xsl:variable name="root-style_" select="xalan:nodeset($root-style)"/>
-		
+
 		<xsl:variable name="additional_fonts_">
 			<xsl:for-each select="//*[contains(local-name(), '-standard')][1]/*[local-name() = 'misc-container']/*[local-name() = 'presentation-metadata'][*[local-name() = 'name'] = 'fonts']/*[local-name() = 'value'] |       //*[contains(local-name(), '-standard')][1]/*[local-name() = 'presentation-metadata'][*[local-name() = 'name'] = 'fonts']/*[local-name() = 'value']">
 				<xsl:value-of select="."/><xsl:if test="position() != last()">, </xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="additional_fonts" select="normalize-space($additional_fonts_)"/>
-		
+
 		<xsl:variable name="font_family_generic" select="$root-style_/root-style/@font-family-generic"/>
-		
+
 		<xsl:for-each select="$root-style_/root-style/@*">
-		
+
 			<xsl:choose>
 				<xsl:when test="local-name() = 'font-family-generic'"><!-- skip, it's using for determine 'sans' or 'serif' --></xsl:when>
 				<xsl:when test="local-name() = 'font-family'">
-				
+
 					<xsl:variable name="font_regional_prefix">
 						<xsl:choose>
 							<xsl:when test="$font_family_generic = 'Sans'">Noto Sans</xsl:when>
 							<xsl:otherwise>Noto Serif</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-				
+
 					<xsl:attribute name="{local-name()}">
-					
+
 						<xsl:variable name="font_extended">
 							<xsl:choose>
 								<xsl:when test="$lang = 'zh'"><xsl:value-of select="$font_regional_prefix"/> SC</xsl:when>
@@ -4055,9 +4056,9 @@
 							<xsl:value-of select="$font_regional_prefix"/><xsl:text>, </xsl:text>
 							<xsl:value-of select="$font_extended"/><xsl:text>, </xsl:text>
 						</xsl:if>
-					
+
 						<xsl:value-of select="."/>
-						
+
 						<xsl:if test="$additional_fonts != ''">
 							<xsl:text>, </xsl:text><xsl:value-of select="$additional_fonts"/>
 						</xsl:if>
@@ -4067,7 +4068,7 @@
 					<xsl:copy-of select="."/>
 				</xsl:otherwise>
 			</xsl:choose>
-		
+
 			<!-- <xsl:choose>
 				<xsl:when test="local-name() = 'font-family'">
 					<xsl:attribute name="{local-name()}">
@@ -4079,1279 +4080,994 @@
 				</xsl:otherwise>
 			</xsl:choose> -->
 		</xsl:for-each>
-	</xsl:template><xsl:attribute-set name="copyright-statement-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="copyright-statement-title-style">
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="copyright-statement-p-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="license-statement-style">
-		
+	</xsl:template> <!-- insertRootStyle -->
+
+	<!-- Preface sections styles -->
+	<xsl:attribute-set name="copyright-statement-style">
+
+	</xsl:attribute-set> <!-- copyright-statement-style -->
+
+	<xsl:attribute-set name="copyright-statement-title-style">
+
+	</xsl:attribute-set> <!-- copyright-statement-title-style -->
+
+	<xsl:attribute-set name="copyright-statement-p-style">
+
+	</xsl:attribute-set> <!-- copyright-statement-p-style -->
+
+	<xsl:attribute-set name="license-statement-style">
+
 			<xsl:attribute name="font-family">Times New Roman</xsl:attribute>
 			<xsl:attribute name="font-size">10.5pt</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="license-statement-title-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="license-statement-title-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
-		
+
 			<xsl:attribute name="text-decoration">underline</xsl:attribute>
 			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="license-statement-p-style">
-		
+
+	</xsl:attribute-set> <!-- license-statement-title-style -->
+
+	<xsl:attribute-set name="license-statement-p-style">
+
 			<xsl:attribute name="text-align">justify</xsl:attribute>
 			<xsl:attribute name="line-height">135%</xsl:attribute>
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="legal-statement-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="legal-statement-title-style">
+
+	</xsl:attribute-set> <!-- license-statement-p-style -->
+
+	<xsl:attribute-set name="legal-statement-style">
+
+	</xsl:attribute-set> <!-- legal-statement-style -->
+
+	<xsl:attribute-set name="legal-statement-title-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="legal-statement-p-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="feedback-statement-style">
-		
+
+	</xsl:attribute-set> <!-- legal-statement-title-style -->
+
+	<xsl:attribute-set name="legal-statement-p-style">
+
+	</xsl:attribute-set> <!-- legal-statement-p-style -->
+
+	<xsl:attribute-set name="feedback-statement-style">
+
 			<xsl:attribute name="font-size">10pt</xsl:attribute>
 			<xsl:attribute name="line-height">125%</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="feedback-statement-title-style">
+
+	</xsl:attribute-set> <!-- feedback-statement-style -->
+
+	<xsl:attribute-set name="feedback-statement-title-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
-		
-	</xsl:attribute-set><xsl:attribute-set name="feedback-statement-p-style">
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="link-style">
-		
-		
+
+	</xsl:attribute-set> <!-- feedback-statement-title-style -->
+
+	<xsl:attribute-set name="feedback-statement-p-style">
+
+	</xsl:attribute-set> <!-- feedback-statement-p-style -->
+
+	<!-- End Preface sections styles -->
+
+	<xsl:attribute-set name="link-style">
+
 			<xsl:attribute name="color">blue</xsl:attribute>
 			<xsl:attribute name="text-decoration">underline</xsl:attribute>
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="sourcecode-container-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="sourcecode-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="sourcecode-container-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="sourcecode-style">
 		<xsl:attribute name="white-space">pre</xsl:attribute>
 		<xsl:attribute name="wrap-option">wrap</xsl:attribute>
 		<xsl:attribute name="role">Code</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-				
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="permission-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="permission-name-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="permission-label-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="requirement-style">
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="requirement-name-style">
-		<xsl:attribute name="keep-with-next">always</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="requirement-label-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="subject-style">
-	</xsl:attribute-set><xsl:attribute-set name="inherit-style">
-	</xsl:attribute-set><xsl:attribute-set name="description-style">
-	</xsl:attribute-set><xsl:attribute-set name="specification-style">
-	</xsl:attribute-set><xsl:attribute-set name="measurement-target-style">
-	</xsl:attribute-set><xsl:attribute-set name="verification-style">
-	</xsl:attribute-set><xsl:attribute-set name="import-style">
-	</xsl:attribute-set><xsl:attribute-set name="recommendation-style">
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="recommendation-name-style">
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="recommendation-label-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="termexample-style">
-		
-		
-		
-		
-		
-		
-		
 
-	</xsl:attribute-set><xsl:attribute-set name="example-style">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="permission-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="permission-name-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="permission-label-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="requirement-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="requirement-name-style">
+		<xsl:attribute name="keep-with-next">always</xsl:attribute>
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="requirement-label-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="subject-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="inherit-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="description-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="specification-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="measurement-target-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="verification-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="import-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="recommendation-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="recommendation-name-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="recommendation-label-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="termexample-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="example-style">
+
 			<xsl:attribute name="margin-top">6pt</xsl:attribute>
 			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="example-body-style">
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="example-name-style">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-				
-				
-		
-		
-		
+
+	</xsl:attribute-set> <!-- example-style -->
+
+	<xsl:attribute-set name="example-body-style">
+
+	</xsl:attribute-set> <!-- example-body-style -->
+
+	<xsl:attribute-set name="example-name-style">
+
 			<xsl:attribute name="font-style">italic</xsl:attribute>
-		
-	</xsl:attribute-set><xsl:attribute-set name="example-p-style">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="termexample-name-style">
-		
-		
-		
-		
-				
-				
-	</xsl:attribute-set><xsl:variable name="table-border_">
-		
-		
-	</xsl:variable><xsl:variable name="table-border" select="normalize-space($table-border_)"/><xsl:attribute-set name="table-container-style">
+
+	</xsl:attribute-set> <!-- example-name-style -->
+
+	<xsl:attribute-set name="example-p-style">
+
+	</xsl:attribute-set> <!-- example-p-style -->
+
+	<xsl:attribute-set name="termexample-name-style">
+
+	</xsl:attribute-set> <!-- termexample-name-style -->
+
+	<!-- ========================== -->
+	<!-- Table styles -->
+	<!-- ========================== -->
+	<xsl:variable name="table-border_">
+
+	</xsl:variable>
+	<xsl:variable name="table-border" select="normalize-space($table-border_)"/>
+
+	<xsl:attribute-set name="table-container-style">
 		<xsl:attribute name="margin-left">0mm</xsl:attribute>
 		<xsl:attribute name="margin-right">0mm</xsl:attribute>
-		
-		
+
 			<xsl:attribute name="space-after">12pt</xsl:attribute>
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-					
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-style">
+
+	</xsl:attribute-set> <!-- table-container-style -->
+
+	<xsl:attribute-set name="table-style">
 		<xsl:attribute name="table-omit-footer-at-break">true</xsl:attribute>
 		<xsl:attribute name="table-layout">fixed</xsl:attribute>
 		<xsl:attribute name="margin-left">0mm</xsl:attribute>
 		<xsl:attribute name="margin-right">0mm</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-name-style">
+
+	</xsl:attribute-set><!-- table-style -->
+
+	<xsl:attribute-set name="table-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
-			
-		
-		
-		
-				
-		
-				
-		
-		
-		
-				
-		
-		
-		
+
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
 			<xsl:attribute name="text-align">left</xsl:attribute>
 			<xsl:attribute name="margin-top">24pt</xsl:attribute>
 			<xsl:attribute name="margin-left">25mm</xsl:attribute>
 			<xsl:attribute name="text-indent">-25mm</xsl:attribute>
-			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>			
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-row-style">
-		<xsl:attribute name="min-height">4mm</xsl:attribute>
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-header-row-style" use-attribute-sets="table-row-style">
-		<xsl:attribute name="font-weight">bold</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-				
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-footer-row-style" use-attribute-sets="table-row-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-body-row-style" use-attribute-sets="table-row-style">
+			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
 
-	</xsl:attribute-set><xsl:attribute-set name="table-header-cell-style">
+	</xsl:attribute-set> <!-- table-name-style -->
+
+	<xsl:attribute-set name="table-row-style">
+		<xsl:attribute name="min-height">4mm</xsl:attribute>
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="table-header-row-style" use-attribute-sets="table-row-style">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="table-footer-row-style" use-attribute-sets="table-row-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="table-body-row-style" use-attribute-sets="table-row-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="table-header-cell-style">
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
 		<xsl:attribute name="border">solid black 1pt</xsl:attribute>
 		<xsl:attribute name="padding-left">1mm</xsl:attribute>
 		<xsl:attribute name="padding-right">1mm</xsl:attribute>
 		<xsl:attribute name="display-align">center</xsl:attribute>
-		
+
 			<xsl:attribute name="font-weight">normal</xsl:attribute>
-			<xsl:attribute name="border">solid black 0pt</xsl:attribute>				
+			<xsl:attribute name="border">solid black 0pt</xsl:attribute>
 			<xsl:attribute name="border-bottom">solid black 0.5pt</xsl:attribute>
 			<xsl:attribute name="height">8mm</xsl:attribute>
 			<xsl:attribute name="padding-top">2mm</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-cell-style">
+
+	</xsl:attribute-set> <!-- table-header-cell-style -->
+
+	<xsl:attribute-set name="table-cell-style">
 		<xsl:attribute name="display-align">center</xsl:attribute>
 		<xsl:attribute name="border">solid black 1pt</xsl:attribute>
 		<xsl:attribute name="padding-left">1mm</xsl:attribute>
 		<xsl:attribute name="padding-right">1mm</xsl:attribute>
-		
-		
+
 			<xsl:attribute name="border">solid 0pt white</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-footer-cell-style">
+
+	</xsl:attribute-set> <!-- table-cell-style -->
+
+	<xsl:attribute-set name="table-footer-cell-style">
 		<xsl:attribute name="border">solid black 1pt</xsl:attribute>
 		<xsl:attribute name="padding-left">1mm</xsl:attribute>
 		<xsl:attribute name="padding-right">1mm</xsl:attribute>
 		<xsl:attribute name="padding-top">1mm</xsl:attribute>
-		
-		
+
 			<xsl:attribute name="border">solid black 0pt</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-note-style">
+
+	</xsl:attribute-set> <!-- table-footer-cell-style -->
+
+	<xsl:attribute-set name="table-note-style">
 		<xsl:attribute name="font-size">10pt</xsl:attribute>
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-		
+
 			<xsl:attribute name="text-align">justify</xsl:attribute>
 			<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-fn-style">
+
+	</xsl:attribute-set><!-- table-note-style -->
+
+	<xsl:attribute-set name="table-fn-style">
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-		
+
 			<xsl:attribute name="font-size">9pt</xsl:attribute>
 			<xsl:attribute name="text-indent">-6.5mm</xsl:attribute>
 			<xsl:attribute name="margin-left">6.5mm</xsl:attribute>
 			<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-fn-number-style">
+
+	</xsl:attribute-set> <!-- table-fn-style -->
+
+	<xsl:attribute-set name="table-fn-number-style">
 		<xsl:attribute name="font-size">80%</xsl:attribute>
 		<xsl:attribute name="padding-right">5mm</xsl:attribute>
-		
-		
-		
+
 			<xsl:attribute name="font-style">italic</xsl:attribute>
 			<xsl:attribute name="padding-right">2.5mm</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="fn-container-body-style">
+
+	</xsl:attribute-set> <!-- table-fn-number-style -->
+
+	<xsl:attribute-set name="fn-container-body-style">
 		<xsl:attribute name="text-indent">0</xsl:attribute>
 		<xsl:attribute name="start-indent">0</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-fn-body-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="figure-fn-number-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="table-fn-body-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="figure-fn-number-style">
 		<xsl:attribute name="font-size">80%</xsl:attribute>
 		<xsl:attribute name="padding-right">5mm</xsl:attribute>
 		<xsl:attribute name="vertical-align">super</xsl:attribute>
-		
-	</xsl:attribute-set><xsl:attribute-set name="figure-fn-body-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="figure-fn-body-style">
 		<xsl:attribute name="text-align">justify</xsl:attribute>
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-		
-	</xsl:attribute-set><xsl:attribute-set name="dt-row-style">
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="dt-cell-style">
-	</xsl:attribute-set><xsl:attribute-set name="dt-block-style">
+
+	</xsl:attribute-set>
+	<!-- ========================== -->
+	<!-- END Table styles -->
+	<!-- ========================== -->
+
+	<!-- ========================== -->
+	<!-- Definition's list styles -->
+	<!-- ========================== -->
+	<xsl:attribute-set name="dt-row-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="dt-cell-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="dt-block-style">
 		<xsl:attribute name="margin-top">6pt</xsl:attribute>
-		
-		
+
 			<xsl:attribute name="margin-top">0pt</xsl:attribute>
 			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="dl-name-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="dl-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
 		<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
-			
-		
-		
-		
-		
-		
-				
-		
-		
-		
-				
-		
-		
-		
+
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="dd-cell-style">
+
+	</xsl:attribute-set> <!-- dl-name-style -->
+
+	<xsl:attribute-set name="dd-cell-style">
 		<xsl:attribute name="padding-left">2mm</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="appendix-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="appendix-example-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="xref-style">
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="eref-style">
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="note-style">
-		
-		
-		
-		
-				
-				
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	</xsl:attribute-set>
+
+	<!-- ========================== -->
+	<!-- END Definition's list styles -->
+	<!-- ========================== -->
+
+	<xsl:attribute-set name="appendix-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="appendix-example-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="xref-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="eref-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="note-style">
+
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:variable name="note-body-indent">10mm</xsl:variable><xsl:variable name="note-body-indent-table">5mm</xsl:variable><xsl:attribute-set name="note-name-style">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="table-note-name-style">
+
+	</xsl:attribute-set>
+
+	<xsl:variable name="note-body-indent">10mm</xsl:variable>
+	<xsl:variable name="note-body-indent-table">5mm</xsl:variable>
+
+	<xsl:attribute-set name="note-name-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="table-note-name-style">
 		<xsl:attribute name="padding-right">2mm</xsl:attribute>
-		
+
 			<xsl:attribute name="font-size">10pt</xsl:attribute>
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="note-p-style">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="note-p-style">
+
 			<xsl:attribute name="text-align">justify</xsl:attribute>
-		
-	</xsl:attribute-set><xsl:attribute-set name="termnote-style">
-		
-		
-				
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="termnote-name-style">
-		
-				
-		
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="termnote-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="termnote-name-style">
+
 			<xsl:attribute name="padding-right">1mm</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="termnote-p-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="quote-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="termnote-p-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="quote-style">
 		<xsl:attribute name="margin-left">12mm</xsl:attribute>
 		<xsl:attribute name="margin-right">12mm</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="quote-source-style">		
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="quote-source-style">
 		<xsl:attribute name="text-align">right</xsl:attribute>
-		
-				
-	</xsl:attribute-set><xsl:attribute-set name="termsource-style">
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="termsource-text-style">
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="origin-style">
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="term-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="term-name-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="termsource-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="termsource-text-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="origin-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="term-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="term-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="figure-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="figure-name-style">
-		
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="figure-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="figure-name-style">
+
 			<xsl:attribute name="keep-with-previous">always</xsl:attribute>
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
-			<xsl:attribute name="text-align">left</xsl:attribute>			
+			<xsl:attribute name="text-align">left</xsl:attribute>
 			<xsl:attribute name="margin-left">19mm</xsl:attribute>
 			<xsl:attribute name="text-indent">-19mm</xsl:attribute>
-		
-		
-		
-				
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
-		
-		
-		
-			
-	</xsl:attribute-set><xsl:attribute-set name="formula-style">
+	</xsl:attribute-set>
+
+	<!-- Formula's styles -->
+	<xsl:attribute-set name="formula-style">
 		<xsl:attribute name="margin-top">6pt</xsl:attribute>
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-		
-			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>			
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="formula-stem-block-style">
+
+			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
+
+	</xsl:attribute-set> <!-- formula-style -->
+
+	<xsl:attribute-set name="formula-stem-block-style">
 		<xsl:attribute name="text-align">center</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="formula-stem-number-style">
+
+	</xsl:attribute-set> <!-- formula-stem-block-style -->
+
+	<xsl:attribute-set name="formula-stem-number-style">
 		<xsl:attribute name="text-align">right</xsl:attribute>
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="image-style">
+
+	</xsl:attribute-set> <!-- formula-stem-number-style -->
+	<!-- End Formula's styles -->
+
+	<xsl:attribute-set name="image-style">
 		<xsl:attribute name="text-align">center</xsl:attribute>
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="figure-pseudocode-p-style">
-		
-	</xsl:attribute-set><xsl:attribute-set name="image-graphic-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="figure-pseudocode-p-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="image-graphic-style">
 		<xsl:attribute name="width">100%</xsl:attribute>
 		<xsl:attribute name="content-height">100%</xsl:attribute>
-		<xsl:attribute name="scaling">uniform</xsl:attribute>			
-		
-		
+		<xsl:attribute name="scaling">uniform</xsl:attribute>
+
 			<xsl:attribute name="content-height">scale-to-fit</xsl:attribute>
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="tt-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="sourcecode-name-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="tt-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="sourcecode-name-style">
 		<xsl:attribute name="font-size">11pt</xsl:attribute>
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
 		<xsl:attribute name="text-align">center</xsl:attribute>
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 		<xsl:attribute name="keep-with-previous">always</xsl:attribute>
-		
-	</xsl:attribute-set><xsl:attribute-set name="preferred-block-style">
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="preferred-term-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="preferred-block-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="preferred-term-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="domain-style">
-				
-	</xsl:attribute-set><xsl:attribute-set name="admitted-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="deprecates-style">
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="definition-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:variable name="color-added-text">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="domain-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="admitted-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="deprecates-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="definition-style">
+
+	</xsl:attribute-set>
+
+	<xsl:variable name="color-added-text">
 		<xsl:text>rgb(0, 255, 0)</xsl:text>
-	</xsl:variable><xsl:attribute-set name="add-style">
-		
+	</xsl:variable>
+	<xsl:attribute-set name="add-style">
+
 				<xsl:attribute name="color">red</xsl:attribute>
 				<xsl:attribute name="text-decoration">underline</xsl:attribute>
 				<!-- <xsl:attribute name="color">black</xsl:attribute>
 				<xsl:attribute name="background-color"><xsl:value-of select="$color-added-text"/></xsl:attribute>
 				<xsl:attribute name="padding-top">1mm</xsl:attribute>
 				<xsl:attribute name="padding-bottom">0.5mm</xsl:attribute> -->
-			
-	</xsl:attribute-set><xsl:variable name="add-style">
+
+	</xsl:attribute-set>
+
+	<xsl:variable name="add-style">
 			<add-style xsl:use-attribute-sets="add-style"/>
-		</xsl:variable><xsl:template name="append_add-style">
+		</xsl:variable>
+	<xsl:template name="append_add-style">
 		<xsl:copy-of select="xalan:nodeset($add-style)/add-style/@*"/>
-	</xsl:template><xsl:variable name="color-deleted-text">
+	</xsl:template>
+
+	<xsl:variable name="color-deleted-text">
 		<xsl:text>red</xsl:text>
-	</xsl:variable><xsl:attribute-set name="del-style">
+	</xsl:variable>
+	<xsl:attribute-set name="del-style">
 		<xsl:attribute name="color"><xsl:value-of select="$color-deleted-text"/></xsl:attribute>
 		<xsl:attribute name="text-decoration">line-through</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="mathml-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="mathml-style">
 		<xsl:attribute name="font-family">STIX Two Math</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="list-style">
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="list-name-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="list-style">
+
+	</xsl:attribute-set> <!-- list-style -->
+
+	<xsl:attribute-set name="list-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
-			
-		
-		
-		
-		
-				
-		
-		
-		
-				
-		
-		
-		
+
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="list-item-style">
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="list-item-label-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="list-item-body-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="toc-style">
+
+	</xsl:attribute-set> <!-- list-name-style -->
+
+	<xsl:attribute-set name="list-item-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="list-item-label-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="list-item-body-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="toc-style">
 		<xsl:attribute name="line-height">135%</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="fn-reference-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="fn-reference-style">
 		<xsl:attribute name="font-size">80%</xsl:attribute>
 		<xsl:attribute name="keep-with-previous.within-line">always</xsl:attribute>
-		
+
 			<xsl:attribute name="font-size">70%</xsl:attribute>
 			<xsl:attribute name="vertical-align">super</xsl:attribute>
 			<xsl:attribute name="font-style">italic</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="fn-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="fn-style">
 		<xsl:attribute name="keep-with-previous.within-line">always</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="fn-num-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="fn-num-style">
 		<xsl:attribute name="keep-with-previous.within-line">always</xsl:attribute>
-		
+
 			<xsl:attribute name="font-size">65%</xsl:attribute>
 			<xsl:attribute name="vertical-align">super</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="fn-body-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="fn-body-style">
 		<xsl:attribute name="font-weight">normal</xsl:attribute>
 		<xsl:attribute name="font-style">normal</xsl:attribute>
 		<xsl:attribute name="text-indent">0</xsl:attribute>
 		<xsl:attribute name="start-indent">0</xsl:attribute>
-		
+
 			<xsl:attribute name="font-size">9pt</xsl:attribute>
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 			<xsl:attribute name="line-height">124%</xsl:attribute>
 			<xsl:attribute name="text-align">justify</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="fn-body-num-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="fn-body-num-style">
 		<xsl:attribute name="keep-with-next.within-line">always</xsl:attribute>
-		
+
 			<xsl:attribute name="font-size">60%</xsl:attribute>
 			<xsl:attribute name="vertical-align">super</xsl:attribute>
 			<xsl:attribute name="padding-right">1mm</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="admonition-style">
-		
-		
-		
+
+	</xsl:attribute-set> <!-- fn-body-num-style -->
+
+	<!-- admonition -->
+	<xsl:attribute-set name="admonition-style">
+
 			<xsl:attribute name="border">0.25pt solid black</xsl:attribute>
 			<xsl:attribute name="margin-left">16mm</xsl:attribute>
 			<xsl:attribute name="margin-right">16mm</xsl:attribute>
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="admonition-container-style">
+
+	</xsl:attribute-set> <!-- admonition-style -->
+
+	<xsl:attribute-set name="admonition-container-style">
 		<xsl:attribute name="margin-left">0mm</xsl:attribute>
 		<xsl:attribute name="margin-right">0mm</xsl:attribute>
-		
-		
+
 			<xsl:attribute name="padding">2mm</xsl:attribute>
 			<xsl:attribute name="padding-top">3mm</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="admonition-name-style">
+
+	</xsl:attribute-set> <!-- admonition-container-style -->
+
+	<xsl:attribute-set name="admonition-name-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
-		
-		
+
 			<xsl:attribute name="font-size">11pt</xsl:attribute>
 			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
 			<xsl:attribute name="font-style">italic</xsl:attribute>
 			<xsl:attribute name="text-align">center</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="admonition-p-style">
-		
-		
+
+	</xsl:attribute-set> <!-- admonition-name-style -->
+
+	<xsl:attribute-set name="admonition-p-style">
+
 			<xsl:attribute name="font-style">italic</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="bibitem-normative-style">
-		
+
+	</xsl:attribute-set> <!-- admonition-p-style -->
+	<!-- end admonition -->
+
+	<!-- bibitem in Normative References (references/@normative="true") -->
+	<xsl:attribute-set name="bibitem-normative-style">
+
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 			<xsl:attribute name="start-indent">25mm</xsl:attribute>
 			<xsl:attribute name="text-indent">-25mm</xsl:attribute>
 			<xsl:attribute name="line-height">115%</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="bibitem-normative-list-style">
+
+	</xsl:attribute-set> <!-- bibitem-normative-style -->
+
+	<!-- bibitem in Normative References (references/@normative="true"), renders as list -->
+	<xsl:attribute-set name="bibitem-normative-list-style">
 		<xsl:attribute name="provisional-distance-between-starts">12mm</xsl:attribute>
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-		
+
 			<xsl:attribute name="provisional-distance-between-starts">13mm</xsl:attribute>
-		
-		
-		
-		
+
 		<!-- <xsl:if test="$namespace = 'ieee'">
 			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
 			<xsl:attribute name="provisional-distance-between-starts">9.5mm</xsl:attribute>
 		</xsl:if> -->
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="bibitem-non-normative-style">
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="bibitem-non-normative-list-style">
+
+	</xsl:attribute-set> <!-- bibitem-normative-list-style -->
+
+	<xsl:attribute-set name="bibitem-non-normative-style">
+
+	</xsl:attribute-set> <!-- bibitem-non-normative-style -->
+
+	<!-- bibitem in bibliography section (references/@normative="false"), renders as list -->
+	<xsl:attribute-set name="bibitem-non-normative-list-style">
 		<xsl:attribute name="provisional-distance-between-starts">12mm</xsl:attribute>
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-		
+
 			<xsl:attribute name="provisional-distance-between-starts">13mm</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="bibitem-normative-list-body-style">
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="bibitem-non-normative-list-body-style">
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="bibitem-note-fn-style">
+
+	</xsl:attribute-set> <!-- bibitem-non-normative-list-style -->
+
+	<!-- bibitem in bibliography section (references/@normative="false"), list body -->
+	<xsl:attribute-set name="bibitem-normative-list-body-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="bibitem-non-normative-list-body-style">
+
+	</xsl:attribute-set> <!-- bibitem-non-normative-list-body-style -->
+
+	<!-- footnote reference number for bibitem, in the text  -->
+	<xsl:attribute-set name="bibitem-note-fn-style">
 		<xsl:attribute name="keep-with-previous.within-line">always</xsl:attribute>
 		<xsl:attribute name="font-size">65%</xsl:attribute>
-		
+
 			<xsl:attribute name="vertical-align">super</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="bibitem-note-fn-number-style">
+
+	</xsl:attribute-set> <!-- bibitem-note-fn-style -->
+
+	<!-- footnote number on the page bottom -->
+	<xsl:attribute-set name="bibitem-note-fn-number-style">
 		<xsl:attribute name="keep-with-next.within-line">always</xsl:attribute>
-		
+
 			<xsl:attribute name="font-size">60%</xsl:attribute>
 			<xsl:attribute name="vertical-align">super</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="bibitem-note-fn-body-style">
+
+	</xsl:attribute-set> <!-- bibitem-note-fn-number-style -->
+
+	<!-- footnote body (text) on the page bottom -->
+	<xsl:attribute-set name="bibitem-note-fn-body-style">
 		<xsl:attribute name="font-size">10pt</xsl:attribute>
 		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 		<xsl:attribute name="start-indent">0pt</xsl:attribute>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="references-non-normative-style">
-		
+
+	</xsl:attribute-set> <!-- bibitem-note-fn-body-style -->
+
+	<xsl:attribute-set name="references-non-normative-style">
+
 			<xsl:attribute name="line-height">120%</xsl:attribute>
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="hljs-doctag">
+
+	</xsl:attribute-set> <!-- references-non-normative-style -->
+
+	<!-- Highlight.js syntax GitHub styles -->
+	<xsl:attribute-set name="hljs-doctag">
 		<xsl:attribute name="color">#d73a49</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-keyword">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-keyword">
 		<xsl:attribute name="color">#d73a49</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-meta_hljs-keyword">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-meta_hljs-keyword">
 		<xsl:attribute name="color">#d73a49</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-template-tag">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-template-tag">
 		<xsl:attribute name="color">#d73a49</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-template-variable">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-template-variable">
 		<xsl:attribute name="color">#d73a49</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-type">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-type">
 		<xsl:attribute name="color">#d73a49</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-variable_and_language_">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-variable_and_language_">
 		<xsl:attribute name="color">#d73a49</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-title">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-title">
 		<xsl:attribute name="color">#6f42c1</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-title_and_class_">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-title_and_class_">
 		<xsl:attribute name="color">#6f42c1</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-title_and_class__and_inherited__">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-title_and_class__and_inherited__">
 		<xsl:attribute name="color">#6f42c1</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-title_and_function_">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-title_and_function_">
 		<xsl:attribute name="color">#6f42c1</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-attr">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-attr">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-attribute">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-attribute">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-literal">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-literal">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-meta">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-meta">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-number">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-number">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-operator">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-operator">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-variable">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-variable">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-selector-attr">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-selector-attr">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-selector-class">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-selector-class">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-selector-id">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-selector-id">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-regexp">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-regexp">
 		<xsl:attribute name="color">#032f62</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-string">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-string">
 		<xsl:attribute name="color">#032f62</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-meta_hljs-string">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-meta_hljs-string">
 		<xsl:attribute name="color">#032f62</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-built_in">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-built_in">
 		<xsl:attribute name="color">#e36209</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-symbol">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-symbol">
 		<xsl:attribute name="color">#e36209</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-comment">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-comment">
 		<xsl:attribute name="color">#6a737d</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-code">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-code">
 		<xsl:attribute name="color">#6a737d</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-formula">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-formula">
 		<xsl:attribute name="color">#6a737d</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-name">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-name">
 		<xsl:attribute name="color">#22863a</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-quote">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-quote">
 		<xsl:attribute name="color">#22863a</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-selector-tag">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-selector-tag">
 		<xsl:attribute name="color">#22863a</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-selector-pseudo">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-selector-pseudo">
 		<xsl:attribute name="color">#22863a</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-subst">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-subst">
 		<xsl:attribute name="color">#24292e</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-section">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-section">
 		<xsl:attribute name="color">#005cc5</xsl:attribute>
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-bullet">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-bullet">
 		<xsl:attribute name="color">#735c0f</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-emphasis">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-emphasis">
 		<xsl:attribute name="color">#24292e</xsl:attribute>
 		<xsl:attribute name="font-style">italic</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-strong">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-strong">
 		<xsl:attribute name="color">#24292e</xsl:attribute>
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-addition">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-addition">
 		<xsl:attribute name="color">#22863a</xsl:attribute>
 		<xsl:attribute name="background-color">#f0fff4</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-deletion">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-deletion">
 		<xsl:attribute name="color">#b31d28</xsl:attribute>
 		<xsl:attribute name="background-color">#ffeef0</xsl:attribute>
-	</xsl:attribute-set><xsl:attribute-set name="hljs-char_and_escape_">
-	</xsl:attribute-set><xsl:attribute-set name="hljs-link">
-	</xsl:attribute-set><xsl:attribute-set name="hljs-params">
-	</xsl:attribute-set><xsl:attribute-set name="hljs-property">
-	</xsl:attribute-set><xsl:attribute-set name="hljs-punctuation">
-	</xsl:attribute-set><xsl:attribute-set name="hljs-tag">
-	</xsl:attribute-set><xsl:attribute-set name="indexsect-title-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="hljs-char_and_escape_">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-link">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-params">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-property">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-punctuation">
+	</xsl:attribute-set>
+	<xsl:attribute-set name="hljs-tag">
+	</xsl:attribute-set>
+	<!-- End Highlight syntax styles -->
+
+	<!-- Index section styles -->
+	<xsl:attribute-set name="indexsect-title-style">
 		<xsl:attribute name="role">H1</xsl:attribute>
-		
+
 			<xsl:attribute name="font-size">16pt</xsl:attribute>
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
 			<xsl:attribute name="margin-bottom">84pt</xsl:attribute>
 			<xsl:attribute name="margin-left">-18mm</xsl:attribute>
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:attribute-set name="indexsect-clause-title-style">
+
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="indexsect-clause-title-style">
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
-		
+
 			<xsl:attribute name="font-size">10pt</xsl:attribute>
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
 			<xsl:attribute name="margin-bottom">3pt</xsl:attribute>
-		
-		
-		
-		
-		
-	</xsl:attribute-set><xsl:variable name="border-block-added">2.5pt solid rgb(0, 176, 80)</xsl:variable><xsl:variable name="border-block-deleted">2.5pt solid rgb(255, 0, 0)</xsl:variable><xsl:variable name="ace_tag">ace-tag_</xsl:variable><xsl:template name="processPrefaceSectionsDefault_Contents">
+
+	</xsl:attribute-set>
+
+	<!-- End Index section styles -->
+	<!-- ====================================== -->
+	<!-- END STYLES -->
+	<!-- ====================================== -->
+
+	<xsl:variable name="border-block-added">2.5pt solid rgb(0, 176, 80)</xsl:variable>
+	<xsl:variable name="border-block-deleted">2.5pt solid rgb(255, 0, 0)</xsl:variable>
+
+	<xsl:variable name="ace_tag">ace-tag_</xsl:variable>
+
+	<xsl:template name="processPrefaceSectionsDefault_Contents">
 		<xsl:variable name="nodes_preface_">
 			<xsl:for-each select="/*/*[local-name()='preface']/*[not(local-name() = 'note' or local-name() = 'admonition')]">
 				<node id="{@id}"/>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="nodes_preface" select="xalan:nodeset($nodes_preface_)"/>
-		
+
 		<xsl:for-each select="/*/*[local-name()='preface']/*[not(local-name() = 'note' or local-name() = 'admonition')]">
 			<xsl:sort select="@displayorder" data-type="number"/>
-			
+
 			<!-- process Section's title -->
 			<xsl:variable name="preceding-sibling_id" select="$nodes_preface/node[@id = current()/@id]/preceding-sibling::node[1]/@id"/>
 			<xsl:if test="$preceding-sibling_id != ''">
 				<xsl:apply-templates select="parent::*/*[@type = 'section-title' and @id = $preceding-sibling_id and not(@displayorder)]" mode="contents_no_displayorder"/>
 			</xsl:if>
-			
+
 			<xsl:apply-templates select="." mode="contents"/>
 		</xsl:for-each>
-	</xsl:template><xsl:template name="processMainSectionsDefault_Contents">
-	
+	</xsl:template>
+
+	<xsl:template name="processMainSectionsDefault_Contents">
+
 		<xsl:variable name="nodes_sections_">
 			<xsl:for-each select="/*/*[local-name()='sections']/*">
 				<node id="{@id}"/>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="nodes_sections" select="xalan:nodeset($nodes_sections_)"/>
-		
+
 		<xsl:for-each select="/*/*[local-name()='sections']/* | /*/*[local-name()='bibliography']/*[local-name()='references'][@normative='true'] |    /*/*[local-name()='bibliography']/*[local-name()='clause'][*[local-name()='references'][@normative='true']]">
 			<xsl:sort select="@displayorder" data-type="number"/>
-			
+
 			<!-- process Section's title -->
 			<xsl:variable name="preceding-sibling_id" select="$nodes_sections/node[@id = current()/@id]/preceding-sibling::node[1]/@id"/>
 			<xsl:if test="$preceding-sibling_id != ''">
 				<xsl:apply-templates select="parent::*/*[@type = 'section-title' and @id = $preceding-sibling_id and not(@displayorder)]" mode="contents_no_displayorder"/>
 			</xsl:if>
-			
+
 			<xsl:apply-templates select="." mode="contents"/>
 		</xsl:for-each>
-		
+
 		<xsl:for-each select="/*/*[local-name()='annex']">
 			<xsl:sort select="@displayorder" data-type="number"/>
 			<xsl:apply-templates select="." mode="contents"/>
 		</xsl:for-each>
-		
+
 		<xsl:for-each select="/*/*[local-name()='bibliography']/*[not(@normative='true') and not(*[local-name()='references'][@normative='true'])] |          /*/*[local-name()='bibliography']/*[local-name()='clause'][*[local-name()='references'][not(@normative='true')]]">
 			<xsl:sort select="@displayorder" data-type="number"/>
 			<xsl:apply-templates select="." mode="contents"/>
 		</xsl:for-each>
-	</xsl:template><xsl:template name="processTablesFigures_Contents">
+	</xsl:template>
+
+	<xsl:template name="processTablesFigures_Contents">
 		<xsl:param name="always"/>
 		<xsl:if test="(//*[contains(local-name(), '-standard')]/*[local-name() = 'misc-container']/*[local-name() = 'toc'][@type='table']/*[local-name() = 'title']) or normalize-space($always) = 'true'">
 			<xsl:call-template name="processTables_Contents"/>
@@ -5359,7 +5075,9 @@
 		<xsl:if test="(//*[contains(local-name(), '-standard')]/*[local-name() = 'misc-container']/*[local-name() = 'toc'][@type='figure']/*[local-name() = 'title']) or normalize-space($always) = 'true'">
 			<xsl:call-template name="processFigures_Contents"/>
 		</xsl:if>
-	</xsl:template><xsl:template name="processTables_Contents">
+	</xsl:template>
+
+	<xsl:template name="processTables_Contents">
 		<tables>
 			<xsl:for-each select="//*[local-name() = 'table'][@id and *[local-name() = 'name'] and normalize-space(@id) != '']">
 				<table id="{@id}" alt-text="{*[local-name() = 'name']}">
@@ -5367,7 +5085,9 @@
 				</table>
 			</xsl:for-each>
 		</tables>
-	</xsl:template><xsl:template name="processFigures_Contents">
+	</xsl:template>
+
+	<xsl:template name="processFigures_Contents">
 		<figures>
 			<xsl:for-each select="//*[local-name() = 'figure'][@id and *[local-name() = 'name'] and not(@unnumbered = 'true') and normalize-space(@id) != ''] | //*[@id and starts-with(*[local-name() = 'name'], 'Figure ') and normalize-space(@id) != '']">
 				<figure id="{@id}" alt-text="{*[local-name() = 'name']}">
@@ -5375,29 +5095,37 @@
 				</figure>
 			</xsl:for-each>
 		</figures>
-	</xsl:template><xsl:template name="processPrefaceSectionsDefault">
+	</xsl:template>
+
+	<xsl:template name="processPrefaceSectionsDefault">
 		<xsl:for-each select="/*/*[local-name()='preface']/*[not(local-name() = 'note' or local-name() = 'admonition')]">
 			<xsl:sort select="@displayorder" data-type="number"/>
 			<xsl:apply-templates select="."/>
 		</xsl:for-each>
-	</xsl:template><xsl:template name="processMainSectionsDefault">
+	</xsl:template>
+
+	<xsl:template name="processMainSectionsDefault">
 		<xsl:for-each select="/*/*[local-name()='sections']/* | /*/*[local-name()='bibliography']/*[local-name()='references'][@normative='true']">
 			<xsl:sort select="@displayorder" data-type="number"/>
 			<xsl:apply-templates select="."/>
-			
+
 		</xsl:for-each>
-		
+
 		<xsl:for-each select="/*/*[local-name()='annex']">
 			<xsl:sort select="@displayorder" data-type="number"/>
 			<xsl:apply-templates select="."/>
 		</xsl:for-each>
-		
+
 		<xsl:for-each select="/*/*[local-name()='bibliography']/*[not(@normative='true')] |          /*/*[local-name()='bibliography']/*[local-name()='clause'][*[local-name()='references'][not(@normative='true')]]">
 			<xsl:sort select="@displayorder" data-type="number"/>
 			<xsl:apply-templates select="."/>
 		</xsl:for-each>
-	</xsl:template><xsl:variable name="tag_fo_inline_keep-together_within-line_open">###fo:inline keep-together_within-line###</xsl:variable><xsl:variable name="tag_fo_inline_keep-together_within-line_close">###/fo:inline keep-together_within-line###</xsl:variable><xsl:template match="text()" name="text">
-		
+	</xsl:template>
+
+	<xsl:variable name="tag_fo_inline_keep-together_within-line_open">###fo:inline keep-together_within-line###</xsl:variable>
+	<xsl:variable name="tag_fo_inline_keep-together_within-line_close">###/fo:inline keep-together_within-line###</xsl:variable>
+	<xsl:template match="text()" name="text">
+
 				<xsl:variable name="regex_standard_reference">([A-Z]{2,}(/[A-Z]{2,})* \d+(-\d+)*(:\d{4})?)</xsl:variable>
 				<xsl:variable name="text" select="java:replaceAll(java:java.lang.String.new(.),$regex_standard_reference,concat($tag_fo_inline_keep-together_within-line_open,'$1',$tag_fo_inline_keep-together_within-line_close))"/>
 				<xsl:call-template name="replace_fo_inline_tags">
@@ -5405,8 +5133,10 @@
 					<xsl:with-param name="tag_close" select="$tag_fo_inline_keep-together_within-line_close"/>
 					<xsl:with-param name="text" select="$text"/>
 				</xsl:call-template>
-			
-	</xsl:template><xsl:template name="replace_fo_inline_tags">
+
+	</xsl:template>
+
+	<xsl:template name="replace_fo_inline_tags">
 		<xsl:param name="tag_open"/>
 		<xsl:param name="tag_close"/>
 		<xsl:param name="text"/>
@@ -5427,14 +5157,19 @@
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$text"/></xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name()='br']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='br']">
 		<xsl:value-of select="$linebreak"/>
-	</xsl:template><xsl:template match="*[local-name() = 'keep-together_within-line']">
+	</xsl:template>
+
+	<!-- keep-together for standard's name (ISO 12345:2020) -->
+	<xsl:template match="*[local-name() = 'keep-together_within-line']">
 		<xsl:param name="split_keep-within-line"/>
-		
+
 		<!-- <fo:inline>split_keep-within-line='<xsl:value-of select="$split_keep-within-line"/>'</fo:inline> -->
 		<xsl:choose>
-		
+
 			<xsl:when test="normalize-space($split_keep-within-line) = 'true'">
 				<xsl:variable name="sep">_</xsl:variable>
 				<xsl:variable name="items">
@@ -5456,87 +5191,115 @@
 					</xsl:choose>
 				</xsl:for-each>
 			</xsl:when>
-			
+
 			<xsl:otherwise>
 				<fo:inline keep-together.within-line="always"><xsl:apply-templates/></fo:inline>
 			</xsl:otherwise>
-			
+
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name()='copyright-statement']">
+	</xsl:template>
+
+	<!-- ================================= -->
+	<!-- Preface boilerplate sections processing -->
+	<!-- ================================= -->
+	<xsl:template match="*[local-name()='copyright-statement']">
 		<fo:block xsl:use-attribute-sets="copyright-statement-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name()='copyright-statement']//*[local-name()='title']">
-		
+	</xsl:template> <!-- copyright-statement -->
+
+	<xsl:template match="*[local-name()='copyright-statement']//*[local-name()='title']">
+
 				<!-- process in the template 'title' -->
 				<xsl:call-template name="title"/>
-			
-	</xsl:template><xsl:template match="*[local-name()='copyright-statement']//*[local-name()='p']">
-		
-		
+
+	</xsl:template> <!-- copyright-statement//title -->
+
+	<xsl:template match="*[local-name()='copyright-statement']//*[local-name()='p']">
+
 				<!-- process in the template 'paragraph' -->
 				<xsl:call-template name="paragraph"/>
-			
-	</xsl:template><xsl:template match="*[local-name()='license-statement']">
+
+	</xsl:template> <!-- copyright-statement//p -->
+
+	<xsl:template match="*[local-name()='license-statement']">
 		<fo:block xsl:use-attribute-sets="license-statement-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name()='license-statement']//*[local-name()='title']">
-		
+	</xsl:template> <!-- license-statement -->
+
+	<xsl:template match="*[local-name()='license-statement']//*[local-name()='title']">
+
 				<xsl:variable name="level">
 					<xsl:call-template name="getLevel"/>
 				</xsl:variable>
 				<fo:block role="H{$level}" xsl:use-attribute-sets="license-statement-title-style">
 					<xsl:apply-templates/>
 				</fo:block>
-			
-	</xsl:template><xsl:template match="*[local-name()='license-statement']//*[local-name()='p']">
-		
+
+	</xsl:template> <!-- license-statement/title -->
+
+	<xsl:template match="*[local-name()='license-statement']//*[local-name()='p']">
+
 				<fo:block xsl:use-attribute-sets="license-statement-p-style">
-		
-					
-					
-					
-					
+
 					<xsl:apply-templates/>
 				</fo:block>
-			
-	</xsl:template><xsl:template match="*[local-name()='legal-statement']">
+
+	</xsl:template> <!-- license-statement/p -->
+
+	<xsl:template match="*[local-name()='legal-statement']">
 		<fo:block xsl:use-attribute-sets="legal-statement-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name()='legal-statement']//*[local-name()='title']">
-		
+	</xsl:template> <!-- legal-statement -->
+
+	<xsl:template match="*[local-name()='legal-statement']//*[local-name()='title']">
+
 				<!-- process in the template 'title' -->
 				<xsl:call-template name="title"/>
-			
-	
-	</xsl:template><xsl:template match="*[local-name()='legal-statement']//*[local-name()='p']">
+
+	</xsl:template> <!-- legal-statement/title -->
+
+	<xsl:template match="*[local-name()='legal-statement']//*[local-name()='p']">
 		<xsl:param name="margin"/>
-		
+
 				<!-- process in the template 'paragraph' -->
 				<xsl:call-template name="paragraph">
 					<xsl:with-param name="margin" select="$margin"/>
 				</xsl:call-template>
-			
-	</xsl:template><xsl:template match="*[local-name()='feedback-statement']">
+
+	</xsl:template> <!-- legal-statement/p -->
+
+	<xsl:template match="*[local-name()='feedback-statement']">
 		<fo:block xsl:use-attribute-sets="feedback-statement-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name()='feedback-statement']//*[local-name()='title']">
-		
+	</xsl:template> <!-- feedback-statement -->
+
+	<xsl:template match="*[local-name()='feedback-statement']//*[local-name()='title']">
+
 				<!-- process in the template 'title' -->
 				<xsl:call-template name="title"/>
-			
-	</xsl:template><xsl:template match="*[local-name()='feedback-statement']//*[local-name()='p']">
+
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='feedback-statement']//*[local-name()='p']">
 		<xsl:param name="margin"/>
-		
+
 				<!-- process in the template 'paragraph' -->
 				<xsl:call-template name="paragraph">
 					<xsl:with-param name="margin" select="$margin"/>
 				</xsl:call-template>
-			
-	</xsl:template><xsl:template match="*[local-name()='td']//text() | *[local-name()='th']//text() | *[local-name()='dt']//text() | *[local-name()='dd']//text()" priority="1">
+
+	</xsl:template>
+
+	<!-- ================================= -->
+	<!-- END Preface boilerplate sections processing -->
+	<!-- ================================= -->
+
+	<!-- add zero spaces into table cells text -->
+	<xsl:template match="*[local-name()='td']//text() | *[local-name()='th']//text() | *[local-name()='dt']//text() | *[local-name()='dd']//text()" priority="1">
 		<xsl:choose>
 			<xsl:when test="parent::*[local-name() = 'keep-together_within-line']">
 				<xsl:value-of select="."/>
@@ -5545,7 +5308,9 @@
 				<xsl:call-template name="addZeroWidthSpacesToTextNodes"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="addZeroWidthSpacesToTextNodes">
+	</xsl:template>
+
+	<xsl:template name="addZeroWidthSpacesToTextNodes">
 		<xsl:variable name="text"><text><xsl:call-template name="text"/></text></xsl:variable>
 		<!-- <xsl:copy-of select="$text"/> -->
 		<xsl:for-each select="xalan:nodeset($text)/text/node()">
@@ -5554,37 +5319,34 @@
 				<xsl:otherwise><xsl:copy-of select="."/></xsl:otherwise> <!-- copy 'as-is' for <fo:inline keep-together.within-line="always" ...  -->
 			</xsl:choose>
 		</xsl:for-each>
-	</xsl:template><xsl:template match="*[local-name()='table']" name="table">
-	
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='table']" name="table">
+
 		<xsl:variable name="table-preamble">
-			
-			
+
 		</xsl:variable>
-		
+
 		<xsl:variable name="table">
-	
+
 			<xsl:variable name="simple-table">
 				<xsl:call-template name="getSimpleTable">
 					<xsl:with-param name="id" select="@id"/>
 				</xsl:call-template>
 			</xsl:variable>
 			<!-- <xsl:variable name="simple-table" select="xalan:nodeset($simple-table_)"/> -->
-		
+
 			<!-- simple-table=<xsl:copy-of select="$simple-table"/> -->
-		
-			
+
 			<!-- Display table's name before table as standalone block -->
 			<!-- $namespace = 'iso' or  -->
-			
+
 					<xsl:apply-templates select="*[local-name()='name']"/> <!-- table's title rendered before table -->
-				
-			
-			
+
 					<xsl:call-template name="table_name_fn_display"/>
-				
-			
+
 			<xsl:variable name="cols-count" select="count(xalan:nodeset($simple-table)/*/tr[1]/td)"/>
-			
+
 			<xsl:variable name="colwidths">
 				<xsl:if test="not(*[local-name()='colgroup']/*[local-name()='col'])">
 					<xsl:call-template name="calculate-column-widths">
@@ -5594,37 +5356,30 @@
 				</xsl:if>
 			</xsl:variable>
 			<!-- <xsl:variable name="colwidths" select="xalan:nodeset($colwidths_)"/> -->
-			
+
 			<!-- DEBUG -->
 			<xsl:if test="$table_if_debug = 'true'">
 				<fo:block font-size="60%">
 					<xsl:apply-templates select="xalan:nodeset($colwidths)" mode="print_as_xml"/>
 				</fo:block>
 			</xsl:if>
-			
-			
+
 			<!-- <xsl:copy-of select="$colwidths"/> -->
-			
+
 			<!-- <xsl:text disable-output-escaping="yes">&lt;!- -</xsl:text>
 			DEBUG
 			colwidths=<xsl:copy-of select="$colwidths"/>
 		<xsl:text disable-output-escaping="yes">- -&gt;</xsl:text> -->
-			
-			
-			
+
 			<xsl:variable name="margin-side">
 				<xsl:choose>
 					<xsl:when test="sum(xalan:nodeset($colwidths)//column) &gt; 75">15</xsl:when>
 					<xsl:otherwise>0</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			
-			
+
 			<fo:block-container xsl:use-attribute-sets="table-container-style">
-			
-				
-			
-				
+
 					<xsl:if test="not(ancestor::*[local-name()='note_side'])">
 						<xsl:attribute name="font-size">10pt</xsl:attribute>
 					</xsl:if>
@@ -5632,89 +5387,57 @@
 						<xsl:attribute name="font-family">Arial</xsl:attribute>
 						<xsl:attribute name="font-size">9pt</xsl:attribute>
 					</xsl:if>
-				
-			
-				
-			
-				
-				
-				
-				
-				
-			
-				
-				
-				
-				
-				
+
 				<!-- end table block-container attributes -->
-				
+
 				<!-- display table's name before table for PAS inside block-container (2-columnn layout) -->
-				
-				
+
 				<xsl:variable name="table_width_default">100%</xsl:variable>
 				<xsl:variable name="table_width">
 					<!-- for centered table always 100% (@width will be set for middle/second cell of outer table) -->
-					
+
 							<xsl:choose>
 								<xsl:when test="@width"><xsl:value-of select="@width"/></xsl:when>
 								<xsl:otherwise><xsl:value-of select="$table_width_default"/></xsl:otherwise>
 							</xsl:choose>
-						
+
 				</xsl:variable>
-				
-				
+
 				<xsl:variable name="table_attributes">
-				
+
 					<xsl:element name="table_attributes" use-attribute-sets="table-style">
 						<xsl:attribute name="width"><xsl:value-of select="normalize-space($table_width)"/></xsl:attribute>
-						
-						
-						
-											
+
 							<xsl:if test="not(ancestor::*[local-name()='preface']) and not(ancestor::*[local-name()='note_side']) and not(ancestor::*[local-name() = 'annex'] and .//*[local-name() = 'xref'][@pagenumber]) and not(ancestor::*[local-name() = 'doccontrol'])">
 								<xsl:attribute name="border-top">0.5pt solid black</xsl:attribute>
 								<xsl:attribute name="border-bottom">0.5pt solid black</xsl:attribute>
 							</xsl:if>
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
+
 					</xsl:element>
 				</xsl:variable>
-				
+
 				<xsl:if test="$isGenerateTableIF = 'true'">
 					<!-- to determine start of table -->
 					<fo:block id="{concat('table_if_start_',@id)}" keep-with-next="always" font-size="1pt">Start table '<xsl:value-of select="@id"/>'.</fo:block>
 				</xsl:if>
-				
+
 				<fo:table id="{@id}">
-					
+
 					<xsl:if test="$isGenerateTableIF = 'true'">
 						<xsl:attribute name="wrap-option">no-wrap</xsl:attribute>
 					</xsl:if>
-					
-					<xsl:for-each select="xalan:nodeset($table_attributes)/table_attributes/@*">					
+
+					<xsl:for-each select="xalan:nodeset($table_attributes)/table_attributes/@*">
 						<xsl:attribute name="{local-name()}">
 							<xsl:value-of select="."/>
 						</xsl:attribute>
 					</xsl:for-each>
-					
-					<xsl:variable name="isNoteOrFnExist" select="./*[local-name()='note'] or .//*[local-name()='fn'][local-name(..) != 'name']"/>				
+
+					<xsl:variable name="isNoteOrFnExist" select="./*[local-name()='note'] or .//*[local-name()='fn'][local-name(..) != 'name']"/>
 					<xsl:if test="$isNoteOrFnExist = 'true'">
 						<xsl:attribute name="border-bottom">0pt solid black</xsl:attribute> <!-- set 0pt border, because there is a separete table below for footer  -->
 					</xsl:if>
-					
-					
+
 					<xsl:choose>
 						<xsl:when test="$isGenerateTableIF = 'true'">
 							<!-- generate IF for table widths -->
@@ -5731,10 +5454,10 @@
 								</tr>
 							-->
 							<xsl:apply-templates select="xalan:nodeset($simple-table)" mode="process_table-if"/>
-							
+
 						</xsl:when>
 						<xsl:otherwise>
-					
+
 							<xsl:choose>
 								<xsl:when test="*[local-name()='colgroup']/*[local-name()='col']">
 									<xsl:for-each select="*[local-name()='colgroup']/*[local-name()='col']">
@@ -5747,7 +5470,7 @@
 									</xsl:call-template>
 								</xsl:otherwise>
 							</xsl:choose>
-							
+
 							<xsl:choose>
 								<xsl:when test="not(*[local-name()='tbody']) and *[local-name()='thead']">
 									<xsl:apply-templates select="*[local-name()='thead']" mode="process_tbody"/>
@@ -5756,26 +5479,21 @@
 									<xsl:apply-templates select="node()[not(local-name() = 'name') and not(local-name() = 'note')          and not(local-name() = 'thead') and not(local-name() = 'tfoot')]"/> <!-- process all table' elements, except name, header, footer and note that renders separaterely -->
 								</xsl:otherwise>
 							</xsl:choose>
-					
+
 						</xsl:otherwise>
 					</xsl:choose>
-					
+
 				</fo:table>
-				
-				<xsl:variable name="colgroup" select="*[local-name()='colgroup']"/>				
+
+				<xsl:variable name="colgroup" select="*[local-name()='colgroup']"/>
 				<xsl:for-each select="*[local-name()='tbody']"><!-- select context to tbody -->
 					<xsl:call-template name="insertTableFooterInSeparateTable">
 						<xsl:with-param name="table_attributes" select="$table_attributes"/>
-						<xsl:with-param name="colwidths" select="$colwidths"/>				
-						<xsl:with-param name="colgroup" select="$colgroup"/>				
+						<xsl:with-param name="colwidths" select="$colwidths"/>
+						<xsl:with-param name="colgroup" select="$colgroup"/>
 					</xsl:call-template>
 				</xsl:for-each>
-				
-				
-				
-				
-				
-				
+
 				<xsl:if test="*[local-name()='bookmark']"> <!-- special case: table/bookmark -->
 					<fo:block keep-with-previous="always" line-height="0.1">
 						<xsl:for-each select="*[local-name()='bookmark']">
@@ -5783,20 +5501,18 @@
 						</xsl:for-each>
 					</fo:block>
 				</xsl:if>
-				
+
 			</fo:block-container>
 		</xsl:variable>
-		
+
 		<xsl:variable name="isAdded" select="@added"/>
 		<xsl:variable name="isDeleted" select="@deleted"/>
-		
+
 		<xsl:choose>
 			<xsl:when test="@width">
-	
+
 				<!-- centered table when table name is centered (see table-name-style) -->
-				
-				
-				
+
 					<xsl:choose>
 						<xsl:when test="$isAdded = 'true' or $isDeleted = 'true'">
 							<xsl:copy-of select="$table-preamble"/>
@@ -5813,8 +5529,7 @@
 							<xsl:copy-of select="$table"/>
 						</xsl:otherwise>
 					</xsl:choose>
-				
-				
+
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:choose>
@@ -5835,64 +5550,66 @@
 				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
-		
-	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name() = 'name']">
+
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='table']/*[local-name() = 'name']">
 		<xsl:param name="continued"/>
 		<xsl:if test="normalize-space() != ''">
-		
-			
-				
+
 					<fo:block xsl:use-attribute-sets="table-name-style">
 
-						
 							<xsl:if test="not(*[local-name()='tab'])"> <!-- table without number -->
 								<xsl:attribute name="margin-top">0pt</xsl:attribute>
 							</xsl:if>
 							<xsl:if test="not(../preceding-sibling::*) and ancestor::node()[@orientation]">
 								<xsl:attribute name="margin-top">0pt</xsl:attribute>
 							</xsl:if>
-						
-						
-						
-						
+
 						<xsl:choose>
-							<xsl:when test="$continued = 'true'"> 
-								
+							<xsl:when test="$continued = 'true'">
+
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:apply-templates/>
 							</xsl:otherwise>
 						</xsl:choose>
-						
-						
+
 					</fo:block>
-			
-				
-			
+
 		</xsl:if>
-	</xsl:template><xsl:template name="calculate-columns-numbers">
+	</xsl:template> <!-- table/name -->
+
+	<xsl:template name="calculate-columns-numbers">
 		<xsl:param name="table-row"/>
 		<xsl:variable name="columns-count" select="count($table-row/*)"/>
 		<xsl:variable name="sum-colspans" select="sum($table-row/*/@colspan)"/>
 		<xsl:variable name="columns-with-colspan" select="count($table-row/*[@colspan])"/>
 		<xsl:value-of select="$columns-count + $sum-colspans - $columns-with-colspan"/>
-	</xsl:template><xsl:template name="calculate-column-widths">
+	</xsl:template>
+
+	<xsl:template name="calculate-column-widths">
 		<xsl:param name="table"/>
 		<xsl:param name="cols-count"/>
-		
+
 				<xsl:call-template name="calculate-column-widths-proportional">
 					<xsl:with-param name="cols-count" select="$cols-count"/>
 					<xsl:with-param name="table" select="$table"/>
 				</xsl:call-template>
-			
-	</xsl:template><xsl:template name="calculate-column-widths-proportional">
+
+	</xsl:template>
+
+	<!-- ================================================== -->
+	<!-- Calculate column's width based on text string max widths -->
+	<!-- ================================================== -->
+	<xsl:template name="calculate-column-widths-proportional">
 		<xsl:param name="table"/>
 		<xsl:param name="cols-count"/>
 		<xsl:param name="curr-col" select="1"/>
 		<xsl:param name="width" select="0"/>
-		
+
 		<!-- table=<xsl:copy-of select="$table"/> -->
-		
+
 		<xsl:if test="$curr-col &lt;= $cols-count">
 			<xsl:variable name="widths">
 				<xsl:choose>
@@ -5926,12 +5643,12 @@
 							<width>
 								<xsl:value-of select="$max_length"/>
 							</width>
-							
+
 						</xsl:for-each>
 					</xsl:when>
 					<xsl:otherwise>
 						<!-- <curr_col><xsl:value-of select="$curr-col"/></curr_col> -->
-						
+
 						<!-- <table><xsl:copy-of select="$table"/></table>
 						 -->
 						<xsl:for-each select="xalan:nodeset($table)/*/*[local-name()='tr']">
@@ -5971,15 +5688,15 @@
 								</xsl:variable>
 								<xsl:value-of select="$max_length div $divider"/>
 							</width>
-							
+
 						</xsl:for-each>
-					
+
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			
+
 			<!-- widths=<xsl:copy-of select="$widths"/> -->
-			
+
 			<column>
 				<xsl:for-each select="xalan:nodeset($widths)//width">
 					<xsl:sort select="." data-type="number" order="descending"/>
@@ -5994,11 +5711,17 @@
 				<xsl:with-param name="table" select="$table"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[@keep-together.within-line or local-name() = 'keep-together_within-line']/text()" priority="2" mode="td_text">
+	</xsl:template> <!-- calculate-column-widths-proportional -->
+
+	<!-- ================================= -->
+	<!-- mode="td_text" -->
+	<!-- ================================= -->
+	<!-- replace each each char to 'X', just to process the tag 'keep-together_within-line' as whole word in longest word calculation -->
+	<xsl:template match="*[@keep-together.within-line or local-name() = 'keep-together_within-line']/text()" priority="2" mode="td_text">
 		<!-- <xsl:message>DEBUG t1=<xsl:value-of select="."/></xsl:message>
 		<xsl:message>DEBUG t2=<xsl:value-of select="java:replaceAll(java:java.lang.String.new(.),'.','X')"/></xsl:message> -->
 		<xsl:value-of select="java:replaceAll(java:java.lang.String.new(.),'.','X')"/>
-		
+
 		<!-- if all capitals english letters or digits -->
 		<xsl:if test="normalize-space(translate(., concat($upper,'0123456789'), '')) = ''">
 			<xsl:call-template name="repeat">
@@ -6006,13 +5729,21 @@
 				<xsl:with-param name="count" select="string-length(normalize-space(.)) * 0.5"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:template><xsl:template match="text()" mode="td_text">
+	</xsl:template>
+
+	<xsl:template match="text()" mode="td_text">
 		<xsl:value-of select="translate(., $zero_width_space, ' ')"/><xsl:text> </xsl:text>
-	</xsl:template><xsl:template match="*[local-name()='termsource']" mode="td_text">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='termsource']" mode="td_text">
 		<xsl:value-of select="*[local-name()='origin']/@citeas"/>
-	</xsl:template><xsl:template match="*[local-name()='link']" mode="td_text">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='link']" mode="td_text">
 		<xsl:value-of select="@target"/>
-	</xsl:template><xsl:template match="*[local-name()='math']" mode="td_text" name="math_length">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='math']" mode="td_text" name="math_length">
 		<xsl:if test="$isGenerateTableIF = 'false'">
 			<xsl:variable name="mathml_">
 				<xsl:for-each select="*">
@@ -6030,40 +5761,52 @@
 			</xsl:variable>
 			<xsl:value-of select="translate($math_text, ' ', '#')"/><!-- mathml images as one 'word' without spaces -->
 		</xsl:if>
-	</xsl:template><xsl:template name="calculate-column-widths-autolayout-algorithm">
+	</xsl:template>
+	<!-- ================================= -->
+	<!-- END mode="td_text" -->
+	<!-- ================================= -->
+	<!-- ================================================== -->
+	<!-- END Calculate column's width based on text string max widths -->
+	<!-- ================================================== -->
+
+	<!-- ================================================== -->
+	<!-- Calculate column's width based on HTML4 algorithm -->
+	<!-- (https://www.w3.org/TR/REC-html40/appendix/notes.html#h-B.5.2) -->
+	<!-- ================================================== -->
+
+	<xsl:template name="calculate-column-widths-autolayout-algorithm">
 		<xsl:param name="parent_table_page-width"/> <!-- for nested tables, in re-calculate step -->
-		
+
 		<!-- via intermediate format -->
 
 		<!-- The algorithm uses two passes through the table data and scales linearly with the size of the table -->
-	 
+
 		<!-- In the first pass, line wrapping is disabled, and the user agent keeps track of the minimum and maximum width of each cell. -->
-	 
+
 		<!-- Since line wrap has been disabled, paragraphs are treated as long lines unless broken by BR elements. -->
-		 
+
 		<!-- get current table id -->
 		<xsl:variable name="table_id" select="@id"/>
 		<!-- find table by id in the file 'table_widths' -->
 	<!-- 	<xsl:variable name="table-if_" select="$table_widths_from_if//table[@id = $table_id]"/>
 		<xsl:variable name="table-if" select="xalan:nodeset($table-if_)"/> -->
-		
+
 		<!-- table='<xsl:copy-of select="$table"/>' -->
 		<!-- table_id='<xsl:value-of select="$table_id"/>\ -->
 		<!-- table-if='<xsl:copy-of select="$table-if"/>' -->
 		<!-- table_widths_from_if='<xsl:copy-of select="$table_widths_from_if"/>' -->
-		
+
 		<xsl:variable name="table_with_cell_widths_">
 			<xsl:apply-templates select="." mode="determine_cell_widths-if"/> <!-- read column's width from IF -->
 		</xsl:variable>
 		<xsl:variable name="table_with_cell_widths" select="xalan:nodeset($table_with_cell_widths_)"/>
-		
+
 		<!-- <xsl:if test="$table_if_debug = 'true'">
 			<xsl:copy-of select="$table_with_cell_widths"/>
 		</xsl:if> -->
-		
-		
+
 		<!-- The minimum and maximum cell widths are then used to determine the corresponding minimum and maximum widths for the columns. -->
-		
+
 		<xsl:variable name="column_widths_">
 			<!-- iteration of columns -->
 			<xsl:for-each select="$table_with_cell_widths//tr[1]/td">
@@ -6085,11 +5828,11 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="column_widths" select="xalan:nodeset($column_widths_)"/>
-		
+
 		<!-- <column_widths>
 			<xsl:copy-of select="$column_widths"/>
 		</column_widths> -->
-		
+
 		<!-- These in turn, are used to find the minimum and maximum width for the table. -->
 		<xsl:variable name="table_widths_">
 			<table>
@@ -6102,7 +5845,7 @@
 			</table>
 		</xsl:variable>
 		<xsl:variable name="table_widths" select="xalan:nodeset($table_widths_)"/>
-		
+
 		<xsl:variable name="page_width">
 			<xsl:choose>
 				<xsl:when test="$parent_table_page-width != ''">
@@ -6113,15 +5856,14 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:if test="$table_if_debug = 'true'">
 			<table_width>
 				<xsl:copy-of select="$table_widths"/>
 			</table_width>
 			<debug>$page_width=<xsl:value-of select="$page_width"/></debug>
 		</xsl:if>
-		
-		
+
 		<!-- There are three cases: -->
 		<xsl:choose>
 			<!-- 1. The minimum table width is equal to or wider than the available space -->
@@ -6171,19 +5913,21 @@
 						<xsl:value-of select="round(@width_min + $d * $W div $D)"/> <!--  * 10 -->
 					</column>
 				</xsl:for-each>
-				
+
 			</xsl:when>
 			<xsl:otherwise><unknown_case/></xsl:otherwise>
 		</xsl:choose>
-		
-	</xsl:template><xsl:template name="get-calculated-column-widths-autolayout-algorithm">
-		
+
+	</xsl:template> <!-- calculate-column-widths-autolayout-algorithm -->
+
+	<xsl:template name="get-calculated-column-widths-autolayout-algorithm">
+
 		<!-- if nested 'dl' or 'table' -->
 		<xsl:variable name="parent_table_id" select="normalize-space(ancestor::*[local-name() = 'table' or local-name() = 'dl'][1]/@id)"/>
 		<parent_table_id><xsl:value-of select="$parent_table_id"/></parent_table_id>
-			
+
 		<parent_element><xsl:value-of select="local-name(..)"/></parent_element>
-			
+
 		<xsl:variable name="parent_table_page-width_">
 			<xsl:if test="$parent_table_id != ''">
 				<!-- determine column number in the parent table -->
@@ -6200,10 +5944,10 @@
 			</xsl:if>
 		</xsl:variable>
 		<xsl:variable name="parent_table_page-width" select="normalize-space($parent_table_page-width_)"/>
-		
+
 		<!-- get current table id -->
 		<xsl:variable name="table_id" select="@id"/>
-		
+
 		<xsl:choose>
 			<xsl:when test="$parent_table_id = '' or $parent_table_page-width = ''">
 				<!-- find table by id in the file 'table_widths' and get all `<column>...</column> -->
@@ -6218,15 +5962,22 @@
 				</xsl:for-each>
 			</xsl:otherwise>
 		</xsl:choose>
-		
-	</xsl:template><xsl:template match="@*|node()" mode="determine_cell_widths-if">
+
+	</xsl:template> <!-- get-calculated-column-widths-autolayout-algorithm -->
+
+	<!-- ============================= -->
+	<!-- mode: determine_cell_widths-if -->
+	<!-- ============================= -->
+	<xsl:template match="@*|node()" mode="determine_cell_widths-if">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="determine_cell_widths-if"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="td | th" mode="determine_cell_widths-if">
+	</xsl:template>
+
+	<xsl:template match="td | th" mode="determine_cell_widths-if">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
-			
+
 			 <!-- The maximum width is given by the widest line.  -->
 			<xsl:attribute name="width_max">
 				<xsl:for-each select="p_len">
@@ -6234,7 +5985,7 @@
 					<xsl:if test="position() = 1"><xsl:value-of select="."/></xsl:if>
 				</xsl:for-each>
 			</xsl:attribute>
-			
+
 			<!-- The minimum width is given by the widest text element (word, image, etc.) -->
 			<xsl:variable name="width_min">
 				<xsl:for-each select="word_len">
@@ -6245,67 +5996,78 @@
 			<xsl:attribute name="width_min">
 				<xsl:value-of select="$width_min"/>
 			</xsl:attribute>
-			
+
 			<xsl:if test="$width_min = 0">
 				<xsl:attribute name="width_min">1</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:apply-templates select="node()" mode="determine_cell_widths-if"/>
-			
+
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name()='thead']">
+	</xsl:template>
+	<!-- ============================= -->
+	<!-- END mode: determine_cell_widths-if -->
+	<!-- ============================= -->
+
+	<!-- ================================================== -->
+	<!-- Calculate column's width based on HTML4 algorithm -->
+	<!-- ================================================== -->
+
+	<xsl:template match="*[local-name()='thead']">
 		<xsl:param name="cols-count"/>
 		<fo:table-header>
-			
-			
+
 			<xsl:apply-templates/>
 		</fo:table-header>
-	</xsl:template><xsl:template name="table-header-title">
+	</xsl:template> <!-- thead -->
+
+	<!-- template is using for iso, jcgm, bsi only -->
+	<xsl:template name="table-header-title">
 		<xsl:param name="cols-count"/>
 		<!-- row for title -->
 		<fo:table-row>
 			<fo:table-cell number-columns-spanned="{$cols-count}" border-left="1.5pt solid white" border-right="1.5pt solid white" border-top="1.5pt solid white" border-bottom="1.5pt solid black">
-				
-				
-				
-				
+
 						<xsl:apply-templates select="ancestor::*[local-name()='table']/*[local-name()='name']">
 							<xsl:with-param name="continued">true</xsl:with-param>
 						</xsl:apply-templates>
-						
-						
-				
-					
-				
-				
+
 			</fo:table-cell>
 		</fo:table-row>
-	</xsl:template><xsl:template match="*[local-name()='thead']" mode="process_tbody">		
+	</xsl:template> <!-- table-header-title -->
+
+	<xsl:template match="*[local-name()='thead']" mode="process_tbody">
 		<fo:table-body>
 			<xsl:apply-templates/>
 		</fo:table-body>
-	</xsl:template><xsl:template match="*[local-name()='tfoot']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='tfoot']">
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template name="insertTableFooter">
+	</xsl:template>
+
+	<xsl:template name="insertTableFooter">
 		<xsl:param name="cols-count"/>
 		<xsl:if test="../*[local-name()='tfoot']">
-			<fo:table-footer>			
+			<fo:table-footer>
 				<xsl:apply-templates select="../*[local-name()='tfoot']"/>
 			</fo:table-footer>
 		</xsl:if>
-	</xsl:template><xsl:template name="insertTableFooterInSeparateTable">
+	</xsl:template>
+
+	<xsl:template name="insertTableFooterInSeparateTable">
 		<xsl:param name="table_attributes"/>
 		<xsl:param name="colwidths"/>
 		<xsl:param name="colgroup"/>
-		
+
 		<xsl:variable name="isNoteOrFnExist" select="../*[local-name()='note'] or ..//*[local-name()='fn'][local-name(..) != 'name']"/>
-		
+
 		<xsl:variable name="isNoteOrFnExistShowAfterTable">
-			
+
 		</xsl:variable>
-		
+
 		<xsl:if test="$isNoteOrFnExist = 'true' or normalize-space($isNoteOrFnExistShowAfterTable) = 'true'">
-		
+
 			<xsl:variable name="cols-count">
 				<xsl:choose>
 					<xsl:when test="xalan:nodeset($colgroup)//*[local-name()='col']">
@@ -6316,10 +6078,9 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			
-			
+
 			<xsl:variable name="tableWithNotesAndFootnotes">
-			
+
 				<fo:table keep-with-previous="always">
 					<xsl:for-each select="xalan:nodeset($table_attributes)/table_attributes/@*">
 						<xsl:variable name="name" select="local-name()"/>
@@ -6336,9 +6097,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:for-each>
-					
-					
-					
+
 					<xsl:choose>
 						<xsl:when test="xalan:nodeset($colgroup)//*[local-name()='col']">
 							<xsl:for-each select="xalan:nodeset($colgroup)//*[local-name()='col']">
@@ -6352,19 +6111,13 @@
 							</xsl:call-template>
 						</xsl:otherwise>
 					</xsl:choose>
-					
+
 					<fo:table-body>
 						<fo:table-row>
 							<fo:table-cell xsl:use-attribute-sets="table-footer-cell-style" number-columns-spanned="{$cols-count}">
-								
-								
 
-								
-								
 								<!-- fn will be processed inside 'note' processing -->
-								
-								
-								
+
 									<xsl:if test="count(ancestor::bipm:table//*[local-name()='note']) &gt; 1">
 										<fo:block font-weight="bold">
 											<xsl:variable name="curr_lang" select="ancestor::bipm:bipm-standard/bipm:bibdata/bipm:language"/>
@@ -6374,93 +6127,84 @@
 											</xsl:choose>
 										</fo:block>
 									</xsl:if>
-								
-								
-								
-								
+
 								<!-- for BSI (not PAS) display Notes before footnotes -->
-								
-								
+
 								<!-- except gb and bsi  -->
-								
+
 										<xsl:apply-templates select="../*[local-name()='note']"/>
-									
-								
-								
+
 								<!-- horizontal row separator -->
-								
-								
+
 								<!-- fn processing -->
-								
+
 										<xsl:call-template name="table_fn_display"/>
-									
-								
-								
+
 								<!-- for PAS display Notes after footnotes -->
-								
-								
+
 							</fo:table-cell>
 						</fo:table-row>
 					</fo:table-body>
-					
+
 				</fo:table>
 			</xsl:variable>
-			
+
 			<xsl:if test="normalize-space($tableWithNotesAndFootnotes) != ''">
 				<xsl:copy-of select="$tableWithNotesAndFootnotes"/>
 			</xsl:if>
-			
-			
-			
+
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name()='tbody']">
-		
+	</xsl:template> <!-- insertTableFooterInSeparateTable -->
+
+	<xsl:template match="*[local-name()='tbody']">
+
 		<xsl:variable name="cols-count">
 			<xsl:choose>
-				<xsl:when test="../*[local-name()='thead']">					
+				<xsl:when test="../*[local-name()='thead']">
 					<xsl:call-template name="calculate-columns-numbers">
 						<xsl:with-param name="table-row" select="../*[local-name()='thead']/*[local-name()='tr'][1]"/>
 					</xsl:call-template>
 				</xsl:when>
-				<xsl:otherwise>					
+				<xsl:otherwise>
 					<xsl:call-template name="calculate-columns-numbers">
 						<xsl:with-param name="table-row" select="./*[local-name()='tr'][1]"/>
 					</xsl:call-template>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
-		
-		
+
 		<xsl:apply-templates select="../*[local-name()='thead']">
 			<xsl:with-param name="cols-count" select="$cols-count"/>
 		</xsl:apply-templates>
-		
+
 		<xsl:call-template name="insertTableFooter">
 			<xsl:with-param name="cols-count" select="$cols-count"/>
 		</xsl:call-template>
-		
+
 		<fo:table-body>
-			
 
 			<xsl:apply-templates/>
-			
+
 		</fo:table-body>
-		
-	</xsl:template><xsl:template match="/" mode="process_table-if">
+
+	</xsl:template> <!-- tbody -->
+
+	<xsl:template match="/" mode="process_table-if">
 		<xsl:param name="table_or_dl">table</xsl:param>
 		<xsl:apply-templates mode="process_table-if">
 			<xsl:with-param name="table_or_dl" select="$table_or_dl"/>
 		</xsl:apply-templates>
-	</xsl:template><xsl:template match="*[local-name()='tbody']" mode="process_table-if">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='tbody']" mode="process_table-if">
 		<xsl:param name="table_or_dl">table</xsl:param>
-		
+
 		<fo:table-body>
 			<xsl:for-each select="*[local-name() = 'tr']">
 				<xsl:variable name="col_count" select="count(*)"/>
 
 				<!-- iteration for each tr/td -->
-				
+
 				<xsl:choose>
 					<xsl:when test="$table_or_dl = 'table'">
 						<xsl:for-each select="*[local-name() = 'td' or local-name() = 'th']/*">
@@ -6473,7 +6217,7 @@
 					<xsl:otherwise> <!-- $table_or_dl = 'dl' -->
 						<xsl:for-each select="*[local-name() = 'td' or local-name() = 'th']">
 							<xsl:variable name="is_dt" select="position() = 1"/>
-							
+
 							<xsl:for-each select="*">
 								<!-- <test><xsl:copy-of select="."/></test> -->
 								<fo:table-row number-columns-spanned="{$col_count}">
@@ -6490,66 +6234,63 @@
 						</xsl:for-each>
 					</xsl:otherwise>
 				</xsl:choose>
-				
+
 			</xsl:for-each>
 		</fo:table-body>
-	</xsl:template><xsl:template match="*[local-name()='thead']/*[local-name()='tr']" priority="2">
+	</xsl:template> <!-- process_table-if -->
+
+	<!-- ===================== -->
+	<!-- Table's row processing -->
+	<!-- ===================== -->
+	<!-- row in table header (thead) -->
+	<xsl:template match="*[local-name()='thead']/*[local-name()='tr']" priority="2">
 		<fo:table-row xsl:use-attribute-sets="table-header-row-style">
-		
-			
-			
-			
 
-
-			
-
-			
-			
 			<xsl:call-template name="setTableRowAttributes"/>
-			
+
 			<xsl:apply-templates/>
 		</fo:table-row>
-	</xsl:template><xsl:template match="*[local-name()='tfoot']/*[local-name()='tr']" priority="2">
+	</xsl:template>
+
+	<!-- row in table footer (tfoot) -->
+	<xsl:template match="*[local-name()='tfoot']/*[local-name()='tr']" priority="2">
 		<fo:table-row xsl:use-attribute-sets="table-footer-row-style">
-			
+
 			<xsl:call-template name="setTableRowAttributes"/>
 			<xsl:apply-templates/>
 		</fo:table-row>
-	</xsl:template><xsl:template match="*[local-name()='tr']">
+	</xsl:template>
+
+	<!-- row in table's body (tbody) -->
+	<xsl:template match="*[local-name()='tr']">
 		<fo:table-row xsl:use-attribute-sets="table-body-row-style">
-		
-			
-		
-			
-		
-			
-		
+
 			<xsl:call-template name="setTableRowAttributes"/>
 			<xsl:apply-templates/>
 		</fo:table-row>
-	</xsl:template><xsl:template name="setTableRowAttributes">
-	
-		
+	</xsl:template>
+
+	<xsl:template name="setTableRowAttributes">
+
 			<xsl:if test="count(*) = 1 and local-name(*[1]) = 'th'">
 				<xsl:attribute name="keep-with-next.within-page">always</xsl:attribute>
 			</xsl:if>
 			<xsl:if test="not(ancestor::*[local-name()='note_side'])">
 			 <xsl:attribute name="min-height">5mm</xsl:attribute>
 			 </xsl:if>
-		
-	
-		
 
-		
-		
-		
-	</xsl:template><xsl:template match="*[local-name()='th']">
+	</xsl:template> <!-- setTableRowAttributes -->
+	<!-- ===================== -->
+	<!-- END Table's row processing -->
+	<!-- ===================== -->
+
+	<!-- cell in table header row -->
+	<xsl:template match="*[local-name()='th']">
 		<fo:table-cell xsl:use-attribute-sets="table-header-cell-style"> <!-- text-align="{@align}" -->
 			<xsl:call-template name="setTextAlignment">
 				<xsl:with-param name="default">center</xsl:with-param>
 			</xsl:call-template>
-			
-			
+
 				<xsl:if test="(ancestor::*[local-name() = 'annex'] and ancestor::*[local-name() = 'table']//*[local-name() = 'xref'][@pagenumber]) or ancestor::*[local-name() = 'doccontrol']"><!-- for Annex ToC -->
 					<xsl:attribute name="border-top">solid black 0pt</xsl:attribute>
 					<xsl:attribute name="border-bottom">solid black 0pt</xsl:attribute>
@@ -6560,26 +6301,20 @@
 					</xsl:call-template>
 					<xsl:attribute name="display-align">before</xsl:attribute>
 				</xsl:if>
-			
-			
-			
 
-			
-			
-			
-			
-			
 			<xsl:if test="$lang = 'ar'">
 				<xsl:attribute name="padding-right">1mm</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:call-template name="setTableCellAttributes"/>
 
 			<fo:block>
 				<xsl:apply-templates/>
 			</fo:block>
 		</fo:table-cell>
-	</xsl:template><xsl:template name="setTableCellAttributes">
+	</xsl:template> <!-- cell in table header row - 'th' -->
+
+	<xsl:template name="setTableCellAttributes">
 		<xsl:if test="@colspan">
 			<xsl:attribute name="number-columns-spanned">
 				<xsl:value-of select="@colspan"/>
@@ -6591,7 +6326,9 @@
 			</xsl:attribute>
 		</xsl:if>
 		<xsl:call-template name="display-align"/>
-	</xsl:template><xsl:template name="display-align">
+	</xsl:template>
+
+	<xsl:template name="display-align">
 		<xsl:if test="@valign">
 			<xsl:attribute name="display-align">
 				<xsl:choose>
@@ -6599,20 +6336,22 @@
 					<xsl:when test="@valign = 'middle'">center</xsl:when>
 					<xsl:when test="@valign = 'bottom'">after</xsl:when>
 					<xsl:otherwise>before</xsl:otherwise>
-				</xsl:choose>					
+				</xsl:choose>
 			</xsl:attribute>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name()='td']" name="td">
+	</xsl:template>
+
+	<!-- cell in table body, footer -->
+	<xsl:template match="*[local-name()='td']" name="td">
 		<fo:table-cell xsl:use-attribute-sets="table-cell-style"> <!-- text-align="{@align}" -->
 			<xsl:call-template name="setTextAlignment">
 				<xsl:with-param name="default">left</xsl:with-param>
 			</xsl:call-template>
-			
+
 			<xsl:if test="$lang = 'ar'">
 				<xsl:attribute name="padding-right">1mm</xsl:attribute>
 			</xsl:if>
-			
-			
+
 				<xsl:variable name="rownum"><xsl:number count="*[local-name()='tr']"/></xsl:variable>
 				<xsl:if test="$rownum = 1">
 					<xsl:attribute name="padding-top">3mm</xsl:attribute>
@@ -6623,45 +6362,26 @@
 				<xsl:if test="ancestor::*[local-name() = 'doccontrol']">
 					<xsl:attribute name="display-align">before</xsl:attribute>
 				</xsl:if>
-			
-			
-			 <!-- bsi -->
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 
-			
-			
-			
-			
-			
-			
+			 <!-- bsi -->
+
 			<xsl:if test=".//*[local-name() = 'table']"> <!-- if there is nested table -->
 				<xsl:attribute name="padding-right">1mm</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:call-template name="setTableCellAttributes"/>
-			
+
 			<xsl:if test="$isGenerateTableIF = 'true'">
 				<xsl:attribute name="border">1pt solid black</xsl:attribute> <!-- border is mandatory, to determine page width -->
 				<xsl:attribute name="text-align">left</xsl:attribute>
 			</xsl:if>
-			
+
 			<fo:block>
-			
+
 				<xsl:if test="$isGenerateTableIF = 'true'">
 					<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 				</xsl:if>
-			
-			
-				
+
 					<xsl:if test="not(.//bipm:image)">
 						<xsl:attribute name="line-stacking-strategy">font-height</xsl:attribute>
 					</xsl:if>
@@ -6670,63 +6390,65 @@
 						<xsl:attribute name="text-indent">-3mm</xsl:attribute>
 						<xsl:attribute name="start-indent">3mm</xsl:attribute>
 					</xsl:if>
-				
-				
+
 				<xsl:apply-templates/>
-				
+
 				<xsl:if test="$isGenerateTableIF = 'true'"><fo:inline id="{@id}_end">end</fo:inline></xsl:if> <!-- to determine width of text --> <!-- <xsl:value-of select="$hair_space"/> -->
 
-			</fo:block>			
+			</fo:block>
 		</fo:table-cell>
-	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name()='note']" priority="2">
+	</xsl:template> <!-- td -->
+
+	<xsl:template match="*[local-name()='table']/*[local-name()='note']" priority="2">
 
 		<fo:block xsl:use-attribute-sets="table-note-style">
 
-								
 				<xsl:if test="ancestor::bipm:preface">
 					<xsl:attribute name="margin-top">18pt</xsl:attribute>
 					<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 				</xsl:if>
-			
-			
-			
-		
+
 			<!-- Table's note name (NOTE, for example) -->
 			<fo:inline xsl:use-attribute-sets="table-note-name-style">
-				
-				
+
 					<xsl:if test="ancestor::bipm:preface">
 						<xsl:attribute name="text-decoration">underline</xsl:attribute>
 					</xsl:if>
-				
-				
-				
-				
-				
-				
+
 				<xsl:apply-templates select="*[local-name() = 'name']"/>
-					
+
 			</fo:inline>
-			
-			
+
 				<xsl:if test="ancestor::bipm:preface">
 					<fo:block> </fo:block>
 				</xsl:if>
-			
-			
+
 			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-		
-	</xsl:template><xsl:template match="*[local-name()='table']/*[local-name()='note']/*[local-name()='p']" priority="2">
+
+	</xsl:template> <!-- table/note -->
+
+	<xsl:template match="*[local-name()='table']/*[local-name()='note']/*[local-name()='p']" priority="2">
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name() = 'fn'][not(ancestor::*[(local-name() = 'table' or local-name() = 'figure') and not(ancestor::*[local-name() = 'name'])])]" priority="2" name="fn">
-	
+	</xsl:template>
+
+	<!-- ===================== -->
+	<!-- Footnotes processing  -->
+	<!-- ===================== -->
+	<!--
+	<fn reference="1">
+			<p id="_8e5cf917-f75a-4a49-b0aa-1714cb6cf954">Formerly denoted as 15 % (m/m).</p>
+		</fn>
+	-->
+	<!-- footnotes in text (title, bibliography, main body, table's, figure's names), not for tables, figures -->
+	<xsl:template match="*[local-name() = 'fn'][not(ancestor::*[(local-name() = 'table' or local-name() = 'figure') and not(ancestor::*[local-name() = 'name'])])]" priority="2" name="fn">
+
 		<!-- list of footnotes to calculate actual footnotes number -->
 		<xsl:variable name="p_fn_">
 			<xsl:call-template name="get_fn_list"/>
 		</xsl:variable>
 		<xsl:variable name="p_fn" select="xalan:nodeset($p_fn_)"/>
-		
+
 		<xsl:variable name="gen_id" select="generate-id(.)"/>
 		<xsl:variable name="lang" select="ancestor::*[contains(local-name(), '-standard')]/*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>
 		<xsl:variable name="reference_">
@@ -6745,15 +6467,13 @@
 		</xsl:variable>
 		<xsl:variable name="current_fn_number_text">
 			<xsl:value-of select="$current_fn_number"/>
-			
-			
+
 		</xsl:variable>
-		
+
 		<xsl:variable name="ref_id" select="concat('footnote_', $lang, '_', $reference, '_', $current_fn_number)"/>
 		<xsl:variable name="footnote_inline">
 			<fo:inline xsl:use-attribute-sets="fn-num-style">
-				
-				
+
 				<fo:basic-link internal-destination="{$ref_id}" fox:alt-text="footnote {$current_fn_number}">
 					<xsl:value-of select="$current_fn_number_text"/>
 				</fo:basic-link>
@@ -6769,18 +6489,13 @@
 				<fo:footnote xsl:use-attribute-sets="fn-style">
 					<xsl:copy-of select="$footnote_inline"/>
 					<fo:footnote-body>
-						
+
 						<fo:block-container xsl:use-attribute-sets="fn-container-body-style">
-							
+
 							<fo:block xsl:use-attribute-sets="fn-body-style">
-								
-								
-								
+
 								<fo:inline id="{$ref_id}" xsl:use-attribute-sets="fn-body-num-style">
-									
-									
-									
-									
+
 									<xsl:value-of select="$current_fn_number_text"/>
 								</fo:inline>
 								<xsl:apply-templates/>
@@ -6793,7 +6508,9 @@
 				<xsl:copy-of select="$footnote_inline"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="get_fn_list">
+	</xsl:template> <!-- fn in text -->
+
+	<xsl:template name="get_fn_list">
 		<xsl:choose>
 			<xsl:when test="@current_fn_number"> <!-- for BSI, footnote reference number calculated already -->
 				<fn gen_id="{generate-id(.)}">
@@ -6825,39 +6542,32 @@
 				</xsl:for-each>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="table_fn_display">
+	</xsl:template>
+
+	<!-- ============================ -->
+	<!-- table's footnotes rendering -->
+	<!-- ============================ -->
+	<xsl:template name="table_fn_display">
 		<xsl:variable name="references">
-			
+
 			<xsl:for-each select="..//*[local-name()='fn'][local-name(..) != 'name']">
 				<xsl:call-template name="create_fn"/>
 			</xsl:for-each>
 		</xsl:variable>
-		
+
 		<xsl:for-each select="xalan:nodeset($references)//fn">
 			<xsl:variable name="reference" select="@reference"/>
 			<xsl:if test="not(preceding-sibling::*[@reference = $reference])"> <!-- only unique reference puts in note-->
 				<fo:block xsl:use-attribute-sets="table-fn-style">
-				
-					
-					
+
 					<fo:inline id="{@id}" xsl:use-attribute-sets="table-fn-number-style">
-						
-						
-						
-						
+
 							<fo:inline font-style="normal">(</fo:inline>
-						
-						
+
 						<xsl:value-of select="@reference"/>
-						
-						
+
 							<fo:inline font-style="normal">)</fo:inline>
-						
-						
-						
-						
-						
-						
+
 					</fo:inline>
 					<fo:inline xsl:use-attribute-sets="table-fn-body-style">
 						<xsl:copy-of select="./node()"/>
@@ -6865,13 +6575,17 @@
 				</fo:block>
 			</xsl:if>
 		</xsl:for-each>
-	</xsl:template><xsl:template name="create_fn">
+	</xsl:template>
+
+	<xsl:template name="create_fn">
 		<fn reference="{@reference}" id="{@reference}_{ancestor::*[@id][1]/@id}">
-			
-			
+
 			<xsl:apply-templates/>
 		</fn>
-	</xsl:template><xsl:template name="table_name_fn_display">
+	</xsl:template>
+
+	<!-- footnotes for table's name rendering -->
+	<xsl:template name="table_name_fn_display">
 		<xsl:for-each select="*[local-name()='name']//*[local-name()='fn']">
 			<xsl:variable name="reference" select="@reference"/>
 			<fo:block id="{@reference}_{ancestor::*[@id][1]/@id}"><xsl:value-of select="@reference"/></fo:block>
@@ -6879,8 +6593,14 @@
 				<xsl:apply-templates/>
 			</fo:block>
 		</xsl:for-each>
-	</xsl:template><xsl:template name="fn_display_figure">
-	
+	</xsl:template>
+	<!-- ============================ -->
+	<!-- EMD table's footnotes rendering -->
+	<!-- ============================ -->
+
+	<!-- figure's footnotes rendering -->
+	<xsl:template name="fn_display_figure">
+
 		<xsl:variable name="references">
 			<xsl:for-each select=".//*[local-name()='fn'][not(parent::*[local-name()='name'])]">
 				<fn reference="{@reference}" id="{@reference}_{ancestor::*[@id][1]/@id}">
@@ -6888,13 +6608,13 @@
 				</fn>
 			</xsl:for-each>
 		</xsl:variable>
-	
+
 		<xsl:if test="xalan:nodeset($references)//fn">
-		
+
 			<xsl:variable name="key_iso">
-				
+
 			</xsl:variable>
-			
+
 			<!-- current hierarchy is 'figure' element -->
 			<xsl:variable name="following_dl_colwidths">
 				<xsl:if test="*[local-name() = 'dl']"><!-- if there is a 'dl', then set the same columns width as for 'dl' -->
@@ -6912,25 +6632,25 @@
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable> -->
-						
+
 						<xsl:for-each select="*[local-name() = 'dl'][1]">
 							<tbody>
 								<xsl:apply-templates mode="dl"/>
 							</tbody>
 						</xsl:for-each>
 					</xsl:variable>
-					
+
 					<xsl:call-template name="calculate-column-widths">
 						<xsl:with-param name="cols-count" select="2"/>
 						<xsl:with-param name="table" select="$simple-table"/>
 					</xsl:call-template>
-					
+
 				</xsl:if>
 			</xsl:variable>
-			
+
 			<xsl:variable name="maxlength_dt">
 				<xsl:for-each select="*[local-name() = 'dl'][1]">
-					<xsl:call-template name="getMaxLength_dt"/>			
+					<xsl:call-template name="getMaxLength_dt"/>
 				</xsl:for-each>
 			</xsl:variable>
 
@@ -6938,14 +6658,14 @@
 				<fo:table width="95%" table-layout="fixed">
 					<xsl:if test="normalize-space($key_iso) = 'true'">
 						<xsl:attribute name="font-size">10pt</xsl:attribute>
-						
+
 					</xsl:if>
 					<xsl:choose>
 						<!-- if there 'dl', then set same columns width -->
 						<xsl:when test="xalan:nodeset($following_dl_colwidths)//column">
 							<xsl:call-template name="setColumnWidth_dl">
-								<xsl:with-param name="colwidths" select="$following_dl_colwidths"/>								
-								<xsl:with-param name="maxlength_dt" select="$maxlength_dt"/>								
+								<xsl:with-param name="colwidths" select="$following_dl_colwidths"/>
+								<xsl:with-param name="maxlength_dt" select="$maxlength_dt"/>
 							</xsl:call-template>
 						</xsl:when>
 						<xsl:otherwise>
@@ -6968,9 +6688,9 @@
 									<fo:table-cell>
 										<fo:block xsl:use-attribute-sets="figure-fn-body-style">
 											<xsl:if test="normalize-space($key_iso) = 'true'">
-												
+
 														<xsl:attribute name="margin-bottom">0</xsl:attribute>
-													
+
 											</xsl:if>
 											<xsl:copy-of select="./node()"/>
 										</fo:block>
@@ -6982,45 +6702,53 @@
 				</fo:table>
 			</fo:block>
 		</xsl:if>
-		
-	</xsl:template><xsl:template match="*[local-name()='fn']">
+
+	</xsl:template> <!-- fn_display_figure -->
+
+	<!-- fn reference in the text rendering (for instance, 'some text 1) some text' ) -->
+	<xsl:template match="*[local-name()='fn']">
 		<fo:inline xsl:use-attribute-sets="fn-reference-style">
-		
-			
-			
-			
-			
+
 			<fo:basic-link internal-destination="{@reference}_{ancestor::*[@id][1]/@id}" fox:alt-text="{@reference}"> <!-- @reference   | ancestor::*[local-name()='clause'][1]/@id-->
-				
-				
+
 					<fo:inline font-style="normal"> (</fo:inline>
-				
+
 				<xsl:value-of select="@reference"/>
-				
+
 					<fo:inline font-style="normal">)</fo:inline>
-				
-				
+
 			</fo:basic-link>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='fn']/text()[normalize-space() != '']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='fn']/text()[normalize-space() != '']">
 		<fo:inline><xsl:value-of select="."/></fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='fn']//*[local-name()='p']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='fn']//*[local-name()='p']">
 		<fo:inline>
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='dl']">
+	</xsl:template>
+	<!-- ===================== -->
+	<!-- END Footnotes processing  -->
+	<!-- ===================== -->
+
+	<!-- ===================== -->
+	<!-- Definition List -->
+	<!-- ===================== -->
+	<xsl:template match="*[local-name()='dl']">
 		<xsl:variable name="isAdded" select="@added"/>
 		<xsl:variable name="isDeleted" select="@deleted"/>
 		<fo:block-container>
-			
+
 					<xsl:if test="not(ancestor::*[local-name() = 'li'])">
 						<xsl:attribute name="margin-left">0mm</xsl:attribute>
 					</xsl:if>
 					<xsl:if test="ancestor::*[local-name() = 'li']">
 						<xsl:attribute name="margin-left">6.5mm</xsl:attribute><!-- 8 mm -->
 					</xsl:if>
-				
-			
+
 			<xsl:if test="parent::*[local-name() = 'note']">
 				<xsl:attribute name="margin-left">
 					<xsl:choose>
@@ -7028,31 +6756,29 @@
 						<xsl:otherwise><xsl:value-of select="$note-body-indent-table"/></xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>
-				
+
 			</xsl:if>
-			
+
 			<xsl:call-template name="setTrackChangesStyles">
 				<xsl:with-param name="isAdded" select="$isAdded"/>
 				<xsl:with-param name="isDeleted" select="$isDeleted"/>
 			</xsl:call-template>
-			
+
 			<fo:block-container margin-left="0mm">
-			
-				
-				
+
 				<xsl:variable name="parent" select="local-name(..)"/>
-				
+
 				<xsl:variable name="key_iso">
 					 <!-- and  (not(../@class) or ../@class !='pseudocode') -->
 				</xsl:variable>
-				
+
 				<xsl:variable name="onlyOneComponent" select="normalize-space($parent = 'formula' and count(*[local-name()='dt']) = 1)"/>
-				
+
 				<xsl:choose>
 					<xsl:when test="$onlyOneComponent = 'true'"> <!-- only one component -->
-						
+
 								<fo:block margin-bottom="12pt" text-align="left">
-									
+
 									<xsl:variable name="title-where">
 										<xsl:call-template name="getLocalizedString">
 											<xsl:with-param name="key">where</xsl:with-param>
@@ -7063,14 +6789,11 @@
 									<xsl:text/>
 									<xsl:apply-templates select="*[local-name()='dd']/*" mode="inline"/>
 								</fo:block>
-							
+
 					</xsl:when> <!-- END: only one component -->
 					<xsl:when test="$parent = 'formula'"> <!-- a few components -->
 						<fo:block margin-bottom="12pt" text-align="left">
-							
-							
-							
-							
+
 							<xsl:variable name="title-where">
 								<xsl:call-template name="getLocalizedString">
 									<xsl:with-param name="key">where</xsl:with-param>
@@ -7081,10 +6804,7 @@
 					</xsl:when>  <!-- END: a few components -->
 					<xsl:when test="$parent = 'figure' and  (not(../@class) or ../@class !='pseudocode')"> <!-- definition list in a figure -->
 						<fo:block font-weight="bold" text-align="left" margin-bottom="12pt" keep-with-next="always">
-							
-							
-							
-							
+
 							<xsl:variable name="title-key">
 								<xsl:call-template name="getLocalizedString">
 									<xsl:with-param name="key">key</xsl:with-param>
@@ -7094,50 +6814,40 @@
 						</fo:block>
 					</xsl:when>  <!-- END: definition list in a figure -->
 				</xsl:choose>
-				
+
 				<!-- a few components -->
 				<xsl:if test="$onlyOneComponent = 'false'">
 					<fo:block>
-						
-						
-						
-						
-						
+
 						<xsl:if test="ancestor::*[local-name() = 'dd' or local-name() = 'td']">
 							<xsl:attribute name="margin-top">0</xsl:attribute>
 						</xsl:if>
-						
+
 						<fo:block>
-							
-							
-							
-							
+
 							<xsl:apply-templates select="*[local-name() = 'name']">
 								<xsl:with-param name="process">true</xsl:with-param>
 							</xsl:apply-templates>
-							
+
 							<xsl:if test="$isGenerateTableIF = 'true'">
 								<!-- to determine start of table -->
 								<fo:block id="{concat('table_if_start_',@id)}" keep-with-next="always" font-size="1pt">Start table '<xsl:value-of select="@id"/>'.</fo:block>
 							</xsl:if>
-							
+
 							<fo:table width="95%" table-layout="fixed">
-							
+
 								<xsl:if test="$isGenerateTableIF = 'true'">
 									<xsl:attribute name="wrap-option">no-wrap</xsl:attribute>
 								</xsl:if>
-							
-								
+
 								<xsl:choose>
 									<xsl:when test="normalize-space($key_iso) = 'true' and $parent = 'formula'"/>
 									<xsl:when test="normalize-space($key_iso) = 'true'">
 										<xsl:attribute name="font-size">10pt</xsl:attribute>
-										
+
 									</xsl:when>
 								</xsl:choose>
-								
-								
-								
+
 								<xsl:choose>
 									<xsl:when test="$isGenerateTableIF = 'true'">
 										<!-- generate IF for table widths -->
@@ -7153,10 +6863,10 @@
 												</td>
 											</tr>
 										-->
-										
+
 										<!-- create virtual html table for dl/[dt and dd] -->
 										<xsl:variable name="simple-table">
-											
+
 											<xsl:variable name="dl_table">
 												<tbody>
 													<xsl:apply-templates mode="dl_if">
@@ -7164,16 +6874,16 @@
 													</xsl:apply-templates>
 												</tbody>
 											</xsl:variable>
-											
+
 											<!-- dl_table='<xsl:copy-of select="$dl_table"/>' -->
-											
+
 											<!-- Step: replace <br/> to <p>...</p> -->
 											<xsl:variable name="table_without_br">
 												<xsl:apply-templates select="xalan:nodeset($dl_table)" mode="table-without-br"/>
 											</xsl:variable>
-											
+
 											<!-- table_without_br='<xsl:copy-of select="$table_without_br"/>' -->
-											
+
 											<!-- Step: add id to each cell -->
 											<!-- add <word>...</word> for each word, image, math -->
 											<xsl:variable name="simple-table-id">
@@ -7181,24 +6891,24 @@
 													<xsl:with-param name="id" select="@id"/>
 												</xsl:apply-templates>
 											</xsl:variable>
-											
+
 											<!-- simple-table-id='<xsl:copy-of select="$simple-table-id"/>' -->
-											
+
 											<xsl:copy-of select="xalan:nodeset($simple-table-id)"/>
-											
+
 										</xsl:variable>
-										
+
 										<!-- DEBUG: simple-table<xsl:copy-of select="$simple-table"/> -->
-										
+
 										<xsl:apply-templates select="xalan:nodeset($simple-table)" mode="process_table-if">
 											<xsl:with-param name="table_or_dl">dl</xsl:with-param>
 										</xsl:apply-templates>
-										
+
 									</xsl:when>
 									<xsl:otherwise>
-								
+
 										<xsl:variable name="simple-table">
-										
+
 											<xsl:variable name="dl_table">
 												<tbody>
 													<xsl:apply-templates mode="dl">
@@ -7206,43 +6916,42 @@
 													</xsl:apply-templates>
 												</tbody>
 											</xsl:variable>
-											
+
 											<xsl:copy-of select="$dl_table"/>
 										</xsl:variable>
-								
+
 										<xsl:variable name="colwidths">
 											<xsl:call-template name="calculate-column-widths">
 												<xsl:with-param name="cols-count" select="2"/>
 												<xsl:with-param name="table" select="$simple-table"/>
 											</xsl:call-template>
 										</xsl:variable>
-										
+
 										<!-- <xsl:text disable-output-escaping="yes">&lt;!- -</xsl:text>
 											DEBUG
 											colwidths=<xsl:copy-of select="$colwidths"/>
 										<xsl:text disable-output-escaping="yes">- -&gt;</xsl:text> -->
-										
+
 										<!-- colwidths=<xsl:copy-of select="$colwidths"/> -->
-										
+
 										<xsl:variable name="maxlength_dt">
-											<xsl:call-template name="getMaxLength_dt"/>							
+											<xsl:call-template name="getMaxLength_dt"/>
 										</xsl:variable>
-										
+
 										<xsl:variable name="isContainsKeepTogetherTag_">
 											false
 										</xsl:variable>
 										<xsl:variable name="isContainsKeepTogetherTag" select="normalize-space($isContainsKeepTogetherTag_)"/>
 										<!-- isContainsExpressReference=<xsl:value-of select="$isContainsExpressReference"/> -->
-										
-										
+
 										<xsl:call-template name="setColumnWidth_dl">
-											<xsl:with-param name="colwidths" select="$colwidths"/>							
+											<xsl:with-param name="colwidths" select="$colwidths"/>
 											<xsl:with-param name="maxlength_dt" select="$maxlength_dt"/>
 											<xsl:with-param name="isContainsKeepTogetherTag" select="$isContainsKeepTogetherTag"/>
 										</xsl:call-template>
-										
+
 										<fo:table-body>
-											
+
 											<!-- DEBUG -->
 											<xsl:if test="$table_if_debug = 'true'">
 												<fo:table-row>
@@ -7256,7 +6965,7 @@
 												<xsl:with-param name="key_iso" select="normalize-space($key_iso)"/>
 												<xsl:with-param name="split_keep-within-line" select="xalan:nodeset($colwidths)/split_keep-within-line"/>
 											</xsl:apply-templates>
-											
+
 										</fo:table-body>
 									</xsl:otherwise>
 								</xsl:choose>
@@ -7266,25 +6975,29 @@
 				</xsl:if> <!-- END: a few components -->
 			</fo:block-container>
 		</fo:block-container>
-		
+
 		<xsl:if test="$isGenerateTableIF = 'true'"> <!-- process nested 'dl' -->
 			<xsl:apply-templates select="*[local-name() = 'dd']/*[local-name() = 'dl']"/>
 		</xsl:if>
-		
-	</xsl:template><xsl:template match="*[local-name() = 'dl']/*[local-name() = 'name']">
+
+	</xsl:template> <!-- END: dl -->
+
+	<xsl:template match="*[local-name() = 'dl']/*[local-name() = 'name']">
 		<xsl:param name="process">false</xsl:param>
 		<xsl:if test="$process = 'true'">
 			<fo:block xsl:use-attribute-sets="dl-name-style">
 				<xsl:apply-templates/>
 			</fo:block>
 		</xsl:if>
-	</xsl:template><xsl:template name="setColumnWidth_dl">
-		<xsl:param name="colwidths"/>		
+	</xsl:template>
+
+	<xsl:template name="setColumnWidth_dl">
+		<xsl:param name="colwidths"/>
 		<xsl:param name="maxlength_dt"/>
 		<xsl:param name="isContainsKeepTogetherTag"/>
-		
+
 		<!-- <colwidths><xsl:copy-of select="$colwidths"/></colwidths> -->
-		
+
 		<xsl:choose>
 			<xsl:when test="xalan:nodeset($colwidths)/autolayout">
 				<xsl:call-template name="insertTableColumnWidth">
@@ -7344,9 +7057,11 @@
 				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="insertTableColumnWidth">
+	</xsl:template>
+
+	<xsl:template name="insertTableColumnWidth">
 		<xsl:param name="colwidths"/>
-		
+
 		<xsl:for-each select="xalan:nodeset($colwidths)//column">
 			<xsl:choose>
 				<xsl:when test=". = 1 or . = 0">
@@ -7362,7 +7077,9 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
-	</xsl:template><xsl:template name="getMaxLength_dt">
+	</xsl:template>
+
+	<xsl:template name="getMaxLength_dt">
 		<xsl:variable name="lengths">
 			<xsl:for-each select="*[local-name()='dt']">
 				<xsl:variable name="maintext_length" select="string-length(normalize-space(.))"/>
@@ -7383,7 +7100,11 @@
 		</xsl:variable>
 		<!-- <xsl:message>DEBUG:<xsl:value-of select="$maxLength"/></xsl:message> -->
 		<xsl:value-of select="$maxLength"/>
-	</xsl:template><xsl:template match="*[local-name()='dl']/*[local-name()='note']" priority="2">
+	</xsl:template>
+
+	<!-- note in definition list: dl/note -->
+	<!-- renders in the 2-column spanned table row -->
+	<xsl:template match="*[local-name()='dl']/*[local-name()='note']" priority="2">
 		<xsl:param name="key_iso"/>
 		<!-- <tr>
 			<td>NOTE</td>
@@ -7419,7 +7140,10 @@
 				</fo:block>
 			</fo:table-cell>
 		</fo:table-row>
-	</xsl:template><xsl:template match="*[local-name()='dt']" mode="dl">
+	</xsl:template> <!-- END: dl/note -->
+
+	<!-- virtual html table for dl/[dt and dd]  -->
+	<xsl:template match="*[local-name()='dt']" mode="dl">
 		<xsl:param name="id"/>
 		<xsl:variable name="row_number" select="count(preceding-sibling::*[local-name()='dt']) + 1"/>
 		<tr>
@@ -7433,18 +7157,21 @@
 				<xsl:attribute name="id">
 					<xsl:value-of select="concat($id,'_',$row_number,'_2')"/>
 				</xsl:attribute>
-				
+
 						<xsl:apply-templates select="following-sibling::*[local-name()='dd'][1]">
 							<xsl:with-param name="process">true</xsl:with-param>
 						</xsl:apply-templates>
-					
+
 			</td>
 		</tr>
-		
-	</xsl:template><xsl:template match="*[local-name()='dt']">
+
+	</xsl:template>
+
+	<!-- Definition's term -->
+	<xsl:template match="*[local-name()='dt']">
 		<xsl:param name="key_iso"/>
 		<xsl:param name="split_keep-within-line"/>
-		
+
 		<fo:table-row xsl:use-attribute-sets="dt-row-style">
 			<xsl:call-template name="insert_dt_cell">
 				<xsl:with-param name="key_iso" select="$key_iso"/>
@@ -7456,51 +7183,50 @@
 				</xsl:call-template>
 			</xsl:for-each>
 		</fo:table-row>
-	</xsl:template><xsl:template name="insert_dt_cell">
+	</xsl:template> <!-- END: dt -->
+
+	<xsl:template name="insert_dt_cell">
 		<xsl:param name="key_iso"/>
 		<xsl:param name="split_keep-within-line"/>
 		<fo:table-cell xsl:use-attribute-sets="dt-cell-style">
-		
+
 			<xsl:if test="$isGenerateTableIF = 'true'">
 				<!-- border is mandatory, to calculate real width -->
 				<xsl:attribute name="border">0.1pt solid black</xsl:attribute>
 				<xsl:attribute name="text-align">left</xsl:attribute>
 			</xsl:if>
-			
-			
+
 			<fo:block xsl:use-attribute-sets="dt-block-style">
 				<xsl:copy-of select="@id"/>
-				
+
 				<xsl:if test="normalize-space($key_iso) = 'true'">
 					<xsl:attribute name="margin-top">0</xsl:attribute>
 				</xsl:if>
-				
-				
-				
+
 				<xsl:apply-templates>
 					<xsl:with-param name="split_keep-within-line" select="$split_keep-within-line"/>
 				</xsl:apply-templates>
-				
+
 				<xsl:if test="$isGenerateTableIF = 'true'"><fo:inline id="{@id}_end">end</fo:inline></xsl:if> <!-- to determine width of text --> <!-- <xsl:value-of select="$hair_space"/> -->
-				
+
 			</fo:block>
 		</fo:table-cell>
-	</xsl:template><xsl:template name="insert_dd_cell">
+	</xsl:template> <!-- insert_dt_cell -->
+
+	<xsl:template name="insert_dd_cell">
 		<xsl:param name="split_keep-within-line"/>
 		<fo:table-cell xsl:use-attribute-sets="dd-cell-style">
-		
+
 			<xsl:if test="$isGenerateTableIF = 'true'">
 				<!-- border is mandatory, to calculate real width -->
 				<xsl:attribute name="border">0.1pt solid black</xsl:attribute>
 			</xsl:if>
-		
+
 			<fo:block>
-			
+
 				<xsl:if test="$isGenerateTableIF = 'true'">
 					<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
 				</xsl:if>
-			
-				
 
 				<xsl:choose>
 					<xsl:when test="$isGenerateTableIF = 'true'">
@@ -7514,16 +7240,23 @@
 							<xsl:with-param name="split_keep-within-line" select="$split_keep-within-line"/>
 						</xsl:apply-templates>
 					</xsl:otherwise>
-				
+
 				</xsl:choose>
-				
+
 				<xsl:if test="$isGenerateTableIF = 'true'"><fo:inline id="{@id}_end">end</fo:inline></xsl:if> <!-- to determine width of text --> <!-- <xsl:value-of select="$hair_space"/> -->
-				
+
 			</fo:block>
 		</fo:table-cell>
-	</xsl:template><xsl:template match="*[local-name()='dd']" mode="dl"/><xsl:template match="*[local-name()='dd']" mode="dl_process">
+	</xsl:template> <!-- insert_dd_cell -->
+
+	<!-- END Definition's term -->
+
+	<xsl:template match="*[local-name()='dd']" mode="dl"/>
+	<xsl:template match="*[local-name()='dd']" mode="dl_process">
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name()='dd']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='dd']">
 		<xsl:param name="process">false</xsl:param>
 		<xsl:param name="split_keep-within-line"/>
 		<xsl:if test="$process = 'true'">
@@ -7532,9 +7265,14 @@
 				<xsl:with-param name="split_keep-within-line" select="$split_keep-within-line"/>
 			</xsl:apply-templates>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name()='dd']/*[local-name()='p']" mode="inline">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='dd']/*[local-name()='p']" mode="inline">
 		<fo:inline><xsl:text> </xsl:text><xsl:apply-templates/></fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='dt']" mode="dl_if">
+	</xsl:template>
+
+	<!-- virtual html table for dl/[dt and dd] for IF (Intermediate Format) -->
+	<xsl:template match="*[local-name()='dt']" mode="dl_if">
 		<xsl:param name="id"/>
 		<xsl:variable name="row_number" select="count(preceding-sibling::*[local-name()='dt']) + 1"/>
 		<tr>
@@ -7542,17 +7280,19 @@
 				<xsl:copy-of select="node()"/>
 			</td>
 			<td>
-				
+
 						<xsl:copy-of select="following-sibling::*[local-name()='dd'][1]/node()[not(local-name() = 'dl')]"/>
-						
+
 						<!-- get paragraphs from nested 'dl' -->
 						<xsl:apply-templates select="following-sibling::*[local-name()='dd'][1]/*[local-name() = 'dl']" mode="dl_if_nested"/>
-						
-					
+
 			</td>
 		</tr>
-		
-	</xsl:template><xsl:template match="*[local-name()='dd']" mode="dl_if"/><xsl:template match="*[local-name()='dl']" mode="dl_if_nested">
+
+	</xsl:template>
+	<xsl:template match="*[local-name()='dd']" mode="dl_if"/>
+
+	<xsl:template match="*[local-name()='dl']" mode="dl_if_nested">
 		<xsl:for-each select="*[local-name() = 'dt']">
 			<p>
 				<xsl:copy-of select="node()"/>
@@ -7560,50 +7300,56 @@
 				<xsl:copy-of select="following-sibling::*[local-name()='dd'][1]/*[local-name() = 'p']/node()"/>
 			</p>
 		</xsl:for-each>
-	</xsl:template><xsl:template match="*[local-name()='dd']" mode="dl_if_nested"/><xsl:template match="*[local-name()='em']">
+	</xsl:template>
+	<xsl:template match="*[local-name()='dd']" mode="dl_if_nested"/>
+	<!-- ===================== -->
+	<!-- END Definition List -->
+	<!-- ===================== -->
+
+	<!-- ========================= -->
+	<!-- Rich text formatting -->
+	<!-- ========================= -->
+	<xsl:template match="*[local-name()='em']">
 		<fo:inline font-style="italic">
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='strong'] | *[local-name()='b']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='strong'] | *[local-name()='b']">
 		<xsl:param name="split_keep-within-line"/>
 		<fo:inline font-weight="bold">
-			
+
 			<xsl:apply-templates>
 				<xsl:with-param name="split_keep-within-line" select="$split_keep-within-line"/>
 			</xsl:apply-templates>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='padding']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='padding']">
 		<fo:inline padding-right="{@value}"> </fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='sup']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='sup']">
 		<fo:inline font-size="80%" vertical-align="super">
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='sub']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='sub']">
 		<fo:inline font-size="80%" vertical-align="sub">
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='tt']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='tt']">
 		<fo:inline xsl:use-attribute-sets="tt-style">
-		
+
 			<xsl:variable name="_font-size">
-				
-				
-				
-				
-				
+
 				 <!-- 10 -->
-				
-				
-				
-				
-				
-				
-				
-				
-				
-						
+
 			</xsl:variable>
-			<xsl:variable name="font-size" select="normalize-space($_font-size)"/>		
+			<xsl:variable name="font-size" select="normalize-space($_font-size)"/>
 			<xsl:if test="$font-size != ''">
 				<xsl:attribute name="font-size">
 					<xsl:choose>
@@ -7616,13 +7362,22 @@
 			</xsl:if>
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='tt']/text()" priority="2">
+	</xsl:template> <!-- tt -->
+
+	<xsl:template match="*[local-name()='tt']/text()" priority="2">
 		<xsl:call-template name="add_spaces_to_sourcecode"/>
-	</xsl:template><xsl:template match="*[local-name()='underline']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='underline']">
 		<fo:inline text-decoration="underline">
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='add']" name="tag_add">
+	</xsl:template>
+
+	<!-- ================= -->
+	<!-- Added,deleted text -->
+	<!-- ================= -->
+	<xsl:template match="*[local-name()='add']" name="tag_add">
 		<xsl:param name="skip">true</xsl:param>
 		<xsl:param name="block">false</xsl:param>
 		<xsl:param name="type"/>
@@ -7647,7 +7402,7 @@
 						<xsl:choose>
 							<xsl:when test="$block = 'false'">
 								<fo:inline>
-									<xsl:copy-of select="$tag"/>									
+									<xsl:copy-of select="$tag"/>
 								</fo:inline>
 							</xsl:when>
 							<xsl:otherwise>
@@ -7659,7 +7414,7 @@
 								</fo:block>
 							</xsl:otherwise>
 						</xsl:choose>
-						
+
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
@@ -7697,7 +7452,9 @@
 				</fo:inline>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="insertTag">
+	</xsl:template> <!-- add -->
+
+	<xsl:template name="insertTag">
 		<xsl:param name="type"/>
 		<xsl:param name="kind"/>
 		<xsl:param name="value"/>
@@ -7724,15 +7481,25 @@
 					</text>
 				</svg>
 			</fo:instream-foreign-object>
-	</xsl:template><xsl:template match="*[local-name()='del']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='del']">
 		<fo:inline xsl:use-attribute-sets="del-style">
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='hi']">
+	</xsl:template>
+	<!-- ================= -->
+	<!-- END Added,deleted text -->
+	<!-- ================= -->
+
+	<!-- highlight text -->
+	<xsl:template match="*[local-name()='hi']">
 		<fo:inline background-color="yellow">
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="text()[ancestor::*[local-name()='smallcap']]">
+	</xsl:template>
+
+	<xsl:template match="text()[ancestor::*[local-name()='smallcap']]">
 		<xsl:variable name="text" select="normalize-space(.)"/>
 		<fo:inline font-size="75%">
 				<xsl:if test="string-length($text) &gt; 0">
@@ -7740,8 +7507,10 @@
 						<xsl:with-param name="text" select="$text"/>
 					</xsl:call-template>
 				</xsl:if>
-			</fo:inline> 
-	</xsl:template><xsl:template name="recursiveSmallCaps">
+			</fo:inline>
+	</xsl:template>
+
+	<xsl:template name="recursiveSmallCaps">
     <xsl:param name="text"/>
     <xsl:variable name="char" select="substring($text,1,1)"/>
     <!-- <xsl:variable name="upperCase" select="translate($char, $lower, $upper)"/> -->
@@ -7761,17 +7530,64 @@
         <xsl:with-param name="text" select="substring($text,2)"/>
       </xsl:call-template>
     </xsl:if>
-  </xsl:template><xsl:template match="*[local-name() = 'pagebreak']">
+  </xsl:template>
+
+	<xsl:template match="*[local-name() = 'pagebreak']">
 		<fo:block break-after="page"/>
 		<fo:block> </fo:block>
 		<fo:block break-after="page"/>
-	</xsl:template><xsl:template match="*[local-name() = 'span']">
+	</xsl:template>
+
+	<!-- Example: <span style="font-family:&quot;Noto Sans JP&quot;">styled text</span> -->
+	<xsl:template match="*[local-name() = 'span'][@style]" priority="2">
+		<xsl:variable name="styles__">
+			<xsl:call-template name="split">
+				<xsl:with-param name="pText" select="concat(@style,';')"/>
+				<xsl:with-param name="sep" select="';'"/>
+			</xsl:call-template>
+		</xsl:variable>
+
+		<xsl:variable name="quot">"</xsl:variable>
+		<xsl:variable name="styles_">
+			<xsl:for-each select="xalan:nodeset($styles__)/item">
+				<xsl:variable name="key" select="normalize-space(substring-before(., ':'))"/>
+				<xsl:variable name="value" select="normalize-space(substring-after(translate(.,$quot,''), ':'))"/>
+				<xsl:if test="$key = 'font-family' or $key = 'color'">
+					<style name="{$key}"><xsl:value-of select="$value"/></style>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:variable name="styles" select="xalan:nodeset($styles_)"/>
+		<xsl:choose>
+			<xsl:when test="$styles/style">
+				<fo:inline>
+					<xsl:for-each select="$styles/style">
+						<xsl:attribute name="{@name}"><xsl:value-of select="."/></xsl:attribute>
+					</xsl:for-each>
+					<xsl:apply-templates/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template> <!-- END: span[@style] -->
+
+	<!-- Note: to enable the addition of character span markup with semantic styling for DIS Word output -->
+	<xsl:template match="*[local-name() = 'span']">
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template name="tokenize">
+	</xsl:template>
+
+	<!-- ========================= -->
+	<!-- END Rich text formatting -->
+	<!-- ========================= -->
+
+	<!-- split string 'text' by 'separator' -->
+	<xsl:template name="tokenize">
 		<xsl:param name="text"/>
 		<xsl:param name="separator" select="' '"/>
 		<xsl:choose>
-		
+
 			<xsl:when test="$isGenerateTableIF = 'true' and not(contains($text, $separator))">
 				<word><xsl:value-of select="normalize-space($text)"/></word>
 			</xsl:when>
@@ -7794,8 +7610,8 @@
 										<xsl:value-of select="$len_str_tmp"/>
 									</xsl:otherwise>
 								</xsl:choose>
-							</xsl:variable> 
-							
+							</xsl:variable>
+
 							<!-- <xsl:if test="$len_str_no_en_chars div $len_str &gt; 0.8">
 								<xsl:message>
 									div=<xsl:value-of select="$len_str_no_en_chars div $len_str"/>
@@ -7834,12 +7650,15 @@
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="tokenize_with_tags">
+	</xsl:template>
+
+	<!-- split string 'text' by 'separator', enclosing in formatting tags -->
+	<xsl:template name="tokenize_with_tags">
 		<xsl:param name="tags"/>
 		<xsl:param name="text"/>
 		<xsl:param name="separator" select="' '"/>
 		<xsl:choose>
-		
+
 			<xsl:when test="not(contains($text, $separator))">
 				<word>
 					<xsl:call-template name="enclose_text_in_tags">
@@ -7860,13 +7679,15 @@
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="enclose_text_in_tags">
+	</xsl:template>
+
+	<xsl:template name="enclose_text_in_tags">
 		<xsl:param name="text"/>
 		<xsl:param name="tags"/>
 		<xsl:param name="num">1</xsl:param> <!-- default (start) value -->
-		
+
 		<xsl:variable name="tag_name" select="normalize-space(xalan:nodeset($tags)//tag[$num])"/>
-		
+
 		<xsl:choose>
 			<xsl:when test="$tag_name = ''"><xsl:value-of select="$text"/></xsl:when>
 			<xsl:otherwise>
@@ -7879,7 +7700,10 @@
 				</xsl:element>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="max_length">
+	</xsl:template>
+
+	<!-- get max value in array -->
+	<xsl:template name="max_length">
 		<xsl:param name="words"/>
 		<xsl:for-each select="$words//word">
 				<xsl:sort select="." data-type="number" order="descending"/>
@@ -7887,15 +7711,22 @@
 						<xsl:value-of select="."/>
 				</xsl:if>
 		</xsl:for-each>
-	</xsl:template><xsl:template name="add-zero-spaces-java">
+	</xsl:template>
+
+	<xsl:template name="add-zero-spaces-java">
 		<xsl:param name="text" select="."/>
 		<!-- add zero-width space (#x200B) after characters: dash, dot, colon, equal, underscore, em dash, thin space  -->
 		<xsl:value-of select="java:replaceAll(java:java.lang.String.new($text),'(-|\.|:|=|_|—| )','$1​')"/>
-	</xsl:template><xsl:template name="add-zero-spaces-link-java">
+	</xsl:template>
+
+	<xsl:template name="add-zero-spaces-link-java">
 		<xsl:param name="text" select="."/>
 		<!-- add zero-width space (#x200B) after characters: dash, dot, colon, equal, underscore, em dash, thin space  -->
 		<xsl:value-of select="java:replaceAll(java:java.lang.String.new($text),'(-|\.|:|=|_|—| |,)','$1​')"/>
-	</xsl:template><xsl:template name="add-zero-spaces">
+	</xsl:template>
+
+	<!-- add zero space after dash character (for table's entries) -->
+	<xsl:template name="add-zero-spaces">
 		<xsl:param name="text" select="."/>
 		<xsl:variable name="zero-space-after-chars">-</xsl:variable>
 		<xsl:variable name="zero-space-after-dot">.</xsl:variable>
@@ -7948,7 +7779,9 @@
 				<xsl:value-of select="$text"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="add-zero-spaces-equal">
+	</xsl:template>
+
+	<xsl:template name="add-zero-spaces-equal">
 		<xsl:param name="text" select="."/>
 		<xsl:variable name="zero-space-after-equals">==========</xsl:variable>
 		<xsl:variable name="regex_zero-space-after-equals">(==========)</xsl:variable>
@@ -7978,28 +7811,31 @@
 				<xsl:value-of select="$text"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="getSimpleTable">
+	</xsl:template>
+
+	<!-- Table normalization (colspan,rowspan processing for adding TDs) for column width calculation -->
+	<xsl:template name="getSimpleTable">
 		<xsl:param name="id"/>
-		
+
 		<xsl:variable name="simple-table">
-		
+
 			<!-- Step 0. replace <br/> to <p>...</p> -->
 			<xsl:variable name="table_without_br">
 				<xsl:apply-templates mode="table-without-br"/>
 			</xsl:variable>
-		
+
 			<!-- Step 1. colspan processing -->
 			<xsl:variable name="simple-table-colspan">
 				<tbody>
 					<xsl:apply-templates select="xalan:nodeset($table_without_br)" mode="simple-table-colspan"/>
 				</tbody>
 			</xsl:variable>
-			
+
 			<!-- Step 2. rowspan processing -->
 			<xsl:variable name="simple-table-rowspan">
 				<xsl:apply-templates select="xalan:nodeset($simple-table-colspan)" mode="simple-table-rowspan"/>
 			</xsl:variable>
-			
+
 			<!-- Step 3: add id to each cell -->
 			<!-- add <word>...</word> for each word, image, math -->
 			<xsl:variable name="simple-table-id">
@@ -8007,23 +7843,32 @@
 					<xsl:with-param name="id" select="$id"/>
 				</xsl:apply-templates>
 			</xsl:variable>
-			
+
 			<xsl:copy-of select="xalan:nodeset($simple-table-id)"/>
 
 		</xsl:variable>
 		<xsl:copy-of select="$simple-table"/>
-	</xsl:template><xsl:template match="@*|node()" mode="table-without-br">
+	</xsl:template>
+
+	<!-- ================================== -->
+	<!-- Step 0. replace <br/> to <p>...</p> -->
+	<!-- ================================== -->
+	<xsl:template match="@*|node()" mode="table-without-br">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="table-without-br"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name()='th' or local-name() = 'td'][not(*[local-name()='br']) and not(*[local-name()='p'])]" mode="table-without-br">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='th' or local-name() = 'td'][not(*[local-name()='br']) and not(*[local-name()='p'])]" mode="table-without-br">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<p>
 				<xsl:copy-of select="node()"/>
 			</p>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name()='th' or local-name()='td'][*[local-name()='br']]" mode="table-without-br">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='th' or local-name()='td'][*[local-name()='br']]" mode="table-without-br">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<xsl:for-each select="*[local-name()='br']">
@@ -8042,7 +7887,9 @@
 				</xsl:if>
 			</xsl:for-each>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name()='th' or local-name()='td']/*[local-name() = 'p'][*[local-name()='br']]" mode="table-without-br">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='th' or local-name()='td']/*[local-name() = 'p'][*[local-name()='br']]" mode="table-without-br">
 		<xsl:for-each select="*[local-name()='br']">
 			<xsl:variable name="current_id" select="generate-id()"/>
 			<p>
@@ -8058,12 +7905,35 @@
 				</p>
 			</xsl:if>
 		</xsl:for-each>
-	</xsl:template><xsl:template match="text()[not(ancestor::*[local-name() = 'sourcecode'])]" mode="table-without-br">
+	</xsl:template>
+
+	<!-- remove redundant white spaces -->
+	<xsl:template match="text()[not(ancestor::*[local-name() = 'sourcecode'])]" mode="table-without-br">
 		<xsl:variable name="text" select="translate(.,'&#9;&#10;&#13;','')"/>
 		<xsl:value-of select="java:replaceAll(java:java.lang.String.new($text),' {2,}',' ')"/>
-	</xsl:template><xsl:template match="*[local-name()='thead'] | *[local-name()='tbody']" mode="simple-table-colspan">
+	</xsl:template>
+
+	<!-- mode="table-without-br" -->
+	<!-- ================================== -->
+	<!-- END: Step 0. replace <br/> to <p>...</p> -->
+	<!-- ================================== -->
+
+	<!-- ===================== -->
+	<!-- 1. mode "simple-table-colspan" 
+			1.1. remove thead, tbody, fn
+			1.2. rename th -> td
+			1.3. repeating N td with colspan=N
+			1.4. remove namespace
+			1.5. remove @colspan attribute
+			1.6. add @divide attribute for divide text width in further processing 
+	-->
+	<!-- ===================== -->
+	<xsl:template match="*[local-name()='thead'] | *[local-name()='tbody']" mode="simple-table-colspan">
 		<xsl:apply-templates mode="simple-table-colspan"/>
-	</xsl:template><xsl:template match="*[local-name()='fn']" mode="simple-table-colspan"/><xsl:template match="*[local-name()='th'] | *[local-name()='td']" mode="simple-table-colspan">
+	</xsl:template>
+	<xsl:template match="*[local-name()='fn']" mode="simple-table-colspan"/>
+
+	<xsl:template match="*[local-name()='th'] | *[local-name()='td']" mode="simple-table-colspan">
 		<xsl:choose>
 			<xsl:when test="@colspan">
 				<xsl:variable name="td">
@@ -8085,19 +7955,28 @@
 				</xsl:element>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="@colspan" mode="simple-table-colspan"/><xsl:template match="*[local-name()='tr']" mode="simple-table-colspan">
+	</xsl:template>
+
+	<xsl:template match="@colspan" mode="simple-table-colspan"/>
+
+	<xsl:template match="*[local-name()='tr']" mode="simple-table-colspan">
 		<xsl:element name="tr">
 			<xsl:apply-templates select="@*" mode="simple-table-colspan"/>
 			<xsl:apply-templates mode="simple-table-colspan"/>
 		</xsl:element>
-	</xsl:template><xsl:template match="@*|node()" mode="simple-table-colspan">
+	</xsl:template>
+
+	<xsl:template match="@*|node()" mode="simple-table-colspan">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="simple-table-colspan"/>
 		</xsl:copy>
-	</xsl:template><xsl:template name="repeatNode">
+	</xsl:template>
+
+	<!-- repeat node 'count' times -->
+	<xsl:template name="repeatNode">
 		<xsl:param name="count"/>
 		<xsl:param name="node"/>
-		
+
 		<xsl:if test="$count &gt; 0">
 			<xsl:call-template name="repeatNode">
 				<xsl:with-param name="count" select="$count - 1"/>
@@ -8105,21 +7984,34 @@
 			</xsl:call-template>
 			<xsl:copy-of select="$node"/>
 		</xsl:if>
-	</xsl:template><xsl:template match="@*|node()" mode="simple-table-rowspan">
+	</xsl:template>
+	<!-- End mode simple-table-colspan  -->
+	<!-- ===================== -->
+	<!-- ===================== -->
+
+	<!-- ===================== -->
+	<!-- 2. mode "simple-table-rowspan" 
+	Row span processing, more information http://andrewjwelch.com/code/xslt/table/table-normalization.html	-->
+	<!-- ===================== -->
+	<xsl:template match="@*|node()" mode="simple-table-rowspan">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="simple-table-rowspan"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="tbody" mode="simple-table-rowspan">
+	</xsl:template>
+
+	<xsl:template match="tbody" mode="simple-table-rowspan">
 		<xsl:copy>
 				<xsl:copy-of select="tr[1]"/>
 				<xsl:apply-templates select="tr[2]" mode="simple-table-rowspan">
 						<xsl:with-param name="previousRow" select="tr[1]"/>
 				</xsl:apply-templates>
 		</xsl:copy>
-	</xsl:template><xsl:template match="tr" mode="simple-table-rowspan">
+	</xsl:template>
+
+	<xsl:template match="tr" mode="simple-table-rowspan">
 		<xsl:param name="previousRow"/>
 		<xsl:variable name="currentRow" select="."/>
-	
+
 		<xsl:variable name="normalizedTDs">
 				<xsl:for-each select="xalan:nodeset($previousRow)//td">
 						<xsl:choose>
@@ -8150,20 +8042,28 @@
 		<xsl:apply-templates select="following-sibling::tr[1]" mode="simple-table-rowspan">
 				<xsl:with-param name="previousRow" select="$newRow"/>
 		</xsl:apply-templates>
-	</xsl:template><xsl:template match="/" mode="simple-table-id">
+	</xsl:template>
+	<!-- End mode simple-table-rowspan  -->
+
+	<!-- Step 3: add id for each cell -->
+	<!-- mode: simple-table-id -->
+	<xsl:template match="/" mode="simple-table-id">
 		<xsl:param name="id"/>
 		<xsl:variable name="id_prefixed" select="concat('table_if_',$id)"/> <!-- table id prefixed by 'table_if_' to simple search in IF  -->
 		<xsl:apply-templates select="@*|node()" mode="simple-table-id">
 			<xsl:with-param name="id" select="$id_prefixed"/>
 		</xsl:apply-templates>
-	</xsl:template><xsl:template match="@*|node()" mode="simple-table-id">
+	</xsl:template>
+	<xsl:template match="@*|node()" mode="simple-table-id">
 		<xsl:param name="id"/>
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="simple-table-id">
 					<xsl:with-param name="id" select="$id"/>
 				</xsl:apply-templates>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name()='tbody']" mode="simple-table-id">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='tbody']" mode="simple-table-id">
 		<xsl:param name="id"/>
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
@@ -8172,7 +8072,9 @@
 				<xsl:with-param name="id" select="$id"/>
 			</xsl:apply-templates>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name()='th' or local-name()='td']" mode="simple-table-id">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='th' or local-name()='td']" mode="simple-table-id">
 		<xsl:param name="id"/>
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
@@ -8181,7 +8083,7 @@
 			<xsl:attribute name="id">
 				<xsl:value-of select="concat($id,'_',$row_number,'_',$col_number)"/>
 			</xsl:attribute>
-			
+
 			<xsl:for-each select="*[local-name() = 'p']">
 				<xsl:copy>
 					<xsl:copy-of select="@*"/>
@@ -8189,33 +8091,32 @@
 					<xsl:attribute name="id">
 						<xsl:value-of select="concat($id,'_',$row_number,'_',$col_number,'_p_',$p_num)"/>
 					</xsl:attribute>
-					
+
 					<xsl:copy-of select="node()"/>
 				</xsl:copy>
 			</xsl:for-each>
-			
-			
+
 			<xsl:if test="$isGenerateTableIF = 'true'"> <!-- split each paragraph to words, image, math -->
-			
+
 				<xsl:variable name="td_text">
 					<xsl:apply-templates select="." mode="td_text_with_formatting"/>
 				</xsl:variable>
-				
+
 				<!-- td_text='<xsl:copy-of select="$td_text"/>' -->
-			
+
 				<xsl:variable name="words">
 					<xsl:for-each select=".//*[local-name() = 'image' or local-name() = 'stem']">
 						<word>
 							<xsl:copy-of select="."/>
 						</word>
 					</xsl:for-each>
-					
+
 					<xsl:for-each select="xalan:nodeset($td_text)//*[local-name() = 'word'][normalize-space() != '']">
 						<xsl:copy-of select="."/>
 					</xsl:for-each>
-					
+
 				</xsl:variable>
-				
+
 				<xsl:for-each select="xalan:nodeset($words)/word">
 					<xsl:variable name="num" select="count(preceding-sibling::word) + 1"/>
 					<xsl:copy>
@@ -8227,12 +8128,24 @@
 				</xsl:for-each>
 			</xsl:if>
 		</xsl:copy>
-		
-	</xsl:template><xsl:template match="@*|node()" mode="td_text_with_formatting">
+
+	</xsl:template>
+	<!-- End mode: simple-table-id -->
+	<!-- ===================== -->
+	<!-- ===================== -->
+
+	<!-- =============================== -->
+	<!-- mode="td_text_with_formatting" -->
+	<!-- =============================== -->
+	<xsl:template match="@*|node()" mode="td_text_with_formatting">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="td_text_with_formatting"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'stem' or local-name() = 'image']" mode="td_text_with_formatting"/><xsl:template match="*[local-name() = 'keep-together_within-line']/text()" mode="td_text_with_formatting">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'stem' or local-name() = 'image']" mode="td_text_with_formatting"/>
+
+	<xsl:template match="*[local-name() = 'keep-together_within-line']/text()" mode="td_text_with_formatting">
 		<xsl:variable name="formatting_tags">
 			<xsl:call-template name="getFormattingTags"/>
 		</xsl:variable>
@@ -8242,26 +8155,30 @@
 				<xsl:with-param name="tags" select="$formatting_tags"/>
 			</xsl:call-template>
 		</word>
-	</xsl:template><xsl:template match="*[local-name() != 'keep-together_within-line']/text()" mode="td_text_with_formatting">
-		
+	</xsl:template>
+
+	<xsl:template match="*[local-name() != 'keep-together_within-line']/text()" mode="td_text_with_formatting">
+
 		<xsl:variable name="td_text" select="."/>
-		
+
 		<xsl:variable name="string_with_added_zerospaces">
 			<xsl:call-template name="add-zero-spaces-java">
 				<xsl:with-param name="text" select="$td_text"/>
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<xsl:variable name="formatting_tags">
 			<xsl:call-template name="getFormattingTags"/>
 		</xsl:variable>
-		
+
 		<!-- <word>text</word> -->
 		<xsl:call-template name="tokenize_with_tags">
 			<xsl:with-param name="tags" select="$formatting_tags"/>
 			<xsl:with-param name="text" select="normalize-space(translate($string_with_added_zerospaces, '​­', '  '))"/> <!-- replace zero-width-space and soft-hyphen to space -->
 		</xsl:call-template>
-	</xsl:template><xsl:template name="getFormattingTags">
+	</xsl:template>
+
+	<xsl:template name="getFormattingTags">
 		<tags>
 			<xsl:if test="ancestor::*[local-name() = 'strong']"><tag>strong</tag></xsl:if>
 			<xsl:if test="ancestor::*[local-name() = 'em']"><tag>em</tag></xsl:if>
@@ -8270,7 +8187,12 @@
 			<xsl:if test="ancestor::*[local-name() = 'tt']"><tag>tt</tag></xsl:if>
 			<xsl:if test="ancestor::*[local-name() = 'keep-together_within-line']"><tag>keep-together_within-line</tag></xsl:if>
 		</tags>
-	</xsl:template><xsl:template name="getLang">
+	</xsl:template>
+	<!-- =============================== -->
+	<!-- END mode="td_text_with_formatting" -->
+	<!-- =============================== -->
+
+	<xsl:template name="getLang">
 		<xsl:variable name="language_current" select="normalize-space(//*[local-name()='bibdata']//*[local-name()='language'][@current = 'true'])"/>
 		<xsl:variable name="language">
 			<xsl:choose>
@@ -8290,12 +8212,14 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:choose>
 			<xsl:when test="$language = 'English'">en</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$language"/></xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="capitalizeWords">
+	</xsl:template>
+
+	<xsl:template name="capitalizeWords">
 		<xsl:param name="str"/>
 		<xsl:variable name="str2" select="translate($str, '-', ' ')"/>
 		<xsl:choose>
@@ -8315,41 +8239,40 @@
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="capitalize">
+	</xsl:template>
+
+	<xsl:template name="capitalize">
 		<xsl:param name="str"/>
 		<xsl:value-of select="java:toUpperCase(java:java.lang.String.new(substring($str, 1, 1)))"/>
-		<xsl:value-of select="substring($str, 2)"/>		
-	</xsl:template><xsl:template match="mathml:math">
+		<xsl:value-of select="substring($str, 2)"/>
+	</xsl:template>
+
+	<xsl:template match="mathml:math">
 		<xsl:variable name="isAdded" select="@added"/>
 		<xsl:variable name="isDeleted" select="@deleted"/>
-		
+
 		<fo:inline xsl:use-attribute-sets="mathml-style">
-		
-			
+
 				<xsl:if test="ancestor::*[local-name()='table']">
 					<xsl:attribute name="font-size">95%</xsl:attribute> <!-- base font in table is 10pt -->
 				</xsl:if>
-			
-			
-			
-			
+
 			<xsl:call-template name="setTrackChangesStyles">
 				<xsl:with-param name="isAdded" select="$isAdded"/>
 				<xsl:with-param name="isDeleted" select="$isDeleted"/>
 			</xsl:call-template>
-			
+
 			<xsl:if test="$add_math_as_text = 'true'">
 				<!-- insert helper tag -->
 				<!-- set unique font-size (fiction) -->
 				<xsl:variable name="font-size_sfx"><xsl:number level="any"/></xsl:variable>
 				<fo:inline color="white" font-size="1.{$font-size_sfx}pt" font-style="normal" font-weight="normal"><xsl:value-of select="$zero_width_space"/></fo:inline> <!-- zero width space -->
 			</xsl:if>
-			
+
 			<xsl:variable name="mathml_content">
 				<xsl:apply-templates select="." mode="mathml_actual_text"/>
 			</xsl:variable>
-			
-			
+
 					<xsl:variable name="filename" select="xalan:nodeset($mathml_attachments)//attachment[. = $mathml_content]/@filename"/>
 					<xsl:choose>
 						<xsl:when test="$add_math_as_attachment = 'true' and normalize-space($filename) != ''">
@@ -8377,10 +8300,11 @@
 						</xsl:otherwise>
 					</xsl:choose>
 					<!-- end BSI -->
-				
-			
+
 		</fo:inline>
-	</xsl:template><xsl:template name="getMathml_comment_text">
+	</xsl:template>
+
+	<xsl:template name="getMathml_comment_text">
 		<xsl:variable name="comment_text_following" select="following-sibling::node()[1][self::comment()]"/>
 		<xsl:variable name="comment_text_">
 			<xsl:choose>
@@ -8391,46 +8315,42 @@
 					<xsl:value-of select="normalize-space(translate(.,' ⁢','  '))"/>
 				</xsl:otherwise>
 			</xsl:choose>
-		</xsl:variable> 
+		</xsl:variable>
 		<xsl:variable name="comment_text_2" select="java:org.metanorma.fop.Util.unescape($comment_text_)"/>
 		<xsl:variable name="comment_text" select="java:trim(java:java.lang.String.new($comment_text_2))"/>
 		<xsl:value-of select="$comment_text"/>
-	</xsl:template><xsl:template name="mathml_instream_object">
+	</xsl:template>
+
+	<xsl:template name="mathml_instream_object">
 		<xsl:param name="comment_text"/>
 		<xsl:param name="mathml_content"/>
-	
+
 		<xsl:variable name="comment_text_">
 			<xsl:choose>
 				<xsl:when test="normalize-space($comment_text) != ''"><xsl:value-of select="$comment_text"/></xsl:when>
 				<xsl:otherwise><xsl:call-template name="getMathml_comment_text"/></xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-	
+
 		<xsl:variable name="mathml">
 			<xsl:apply-templates select="." mode="mathml"/>
 		</xsl:variable>
-			
+
 		<fo:instream-foreign-object fox:alt-text="Math">
-					
-			
+
 				<xsl:if test="local-name(../..) = 'formula'">
 					<xsl:attribute name="width">95%</xsl:attribute>
 					<xsl:attribute name="content-height">100%</xsl:attribute>
 					<xsl:attribute name="content-width">scale-down-to-fit</xsl:attribute>
 					<xsl:attribute name="scaling">uniform</xsl:attribute>
 				</xsl:if>
-			
-			
-			
-			
-			
-			
+
 			<!-- put MathML in Actual Text -->
 			<!-- DEBUG: mathml_content=<xsl:value-of select="$mathml_content"/> -->
 			<xsl:attribute name="fox:actual-text">
 				<xsl:value-of select="$mathml_content"/>
 			</xsl:attribute>
-			
+
 			<!-- <xsl:if test="$add_math_as_text = 'true'"> -->
 			<xsl:if test="normalize-space($comment_text_) != ''">
 			<!-- put Mathin Alternate Text -->
@@ -8439,11 +8359,13 @@
 				</xsl:attribute>
 			</xsl:if>
 			<!-- </xsl:if> -->
-		
+
 			<xsl:copy-of select="xalan:nodeset($mathml)"/>
-			
+
 		</fo:instream-foreign-object>
-	</xsl:template><xsl:template match="mathml:*" mode="mathml_actual_text">
+	</xsl:template>
+
+	<xsl:template match="mathml:*" mode="mathml_actual_text">
 		<!-- <xsl:text>a+b</xsl:text> -->
 		<xsl:text>&lt;</xsl:text>
 		<xsl:value-of select="local-name()"/>
@@ -8457,25 +8379,58 @@
 			<xsl:value-of select="."/>
 			<xsl:text>"</xsl:text>
 		</xsl:for-each>
-		<xsl:text>&gt;</xsl:text>		
-		<xsl:apply-templates mode="mathml_actual_text"/>		
+		<xsl:text>&gt;</xsl:text>
+		<xsl:apply-templates mode="mathml_actual_text"/>
 		<xsl:text>&lt;/</xsl:text>
 		<xsl:value-of select="local-name()"/>
 		<xsl:text>&gt;</xsl:text>
-	</xsl:template><xsl:template match="text()" mode="mathml_actual_text">
+	</xsl:template>
+
+	<xsl:template match="text()" mode="mathml_actual_text">
 		<xsl:value-of select="normalize-space()"/>
-	</xsl:template><xsl:template match="@*|node()" mode="mathml">
+	</xsl:template>
+
+	<xsl:template match="@*|node()" mode="mathml">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="mathml"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="mathml:mtext" mode="mathml">
+	</xsl:template>
+
+	<xsl:template match="mathml:mtext" mode="mathml">
 		<xsl:copy>
 			<!-- replace start and end spaces to non-break space -->
 			<xsl:value-of select="java:replaceAll(java:java.lang.String.new(.),'(^ )|( $)',' ')"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="mathml:math/*[local-name()='unit']" mode="mathml"/><xsl:template match="mathml:math/*[local-name()='prefix']" mode="mathml"/><xsl:template match="mathml:math/*[local-name()='dimension']" mode="mathml"/><xsl:template match="mathml:math/*[local-name()='quantity']" mode="mathml"/><xsl:template match="mathml:mtd/mathml:mo/text()[. = '/']" mode="mathml">
+	</xsl:template>
+
+	<!-- <xsl:template match="mathml:mi[. = ',' and not(following-sibling::*[1][local-name() = 'mtext' and text() = '&#xa0;'])]" mode="mathml">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()" mode="mathml"/>
+		</xsl:copy>
+		<xsl:choose>
+			if in msub, then don't add space
+			<xsl:when test="ancestor::mathml:mrow[parent::mathml:msub and preceding-sibling::*[1][self::mathml:mrow]]"></xsl:when>
+			if next char in digit,  don't add space
+			<xsl:when test="translate(substring(following-sibling::*[1]/text(),1,1),'0123456789','') = ''"></xsl:when>
+			<xsl:otherwise>
+				<mathml:mspace width="0.5ex"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template> -->
+
+	<xsl:template match="mathml:math/*[local-name()='unit']" mode="mathml"/>
+	<xsl:template match="mathml:math/*[local-name()='prefix']" mode="mathml"/>
+	<xsl:template match="mathml:math/*[local-name()='dimension']" mode="mathml"/>
+	<xsl:template match="mathml:math/*[local-name()='quantity']" mode="mathml"/>
+
+	<!-- patch: slash in the mtd wrong rendering -->
+	<xsl:template match="mathml:mtd/mathml:mo/text()[. = '/']" mode="mathml">
 		<xsl:value-of select="."/><xsl:value-of select="$zero_width_space"/>
-	</xsl:template><xsl:template match="*[local-name()='localityStack']"/><xsl:template match="*[local-name()='link']" name="link">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='localityStack']"/>
+
+	<xsl:template match="*[local-name()='link']" name="link">
 		<xsl:variable name="target">
 			<xsl:choose>
 				<xsl:when test="@updatetype = 'true'">
@@ -8497,20 +8452,11 @@
 			</xsl:choose>
 		</xsl:variable>
 		<fo:inline xsl:use-attribute-sets="link-style">
-			
+
 			<xsl:if test="starts-with(normalize-space(@target), 'mailto:')">
 				<xsl:attribute name="keep-together.within-line">always</xsl:attribute>
 			</xsl:if>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 			<xsl:choose>
 				<xsl:when test="$target_text = ''">
 					<xsl:apply-templates/>
@@ -8532,48 +8478,73 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='appendix']">
+	</xsl:template> <!-- link -->
+
+	<!-- ======================== -->
+	<!-- Appendix processing -->
+	<!-- ======================== -->
+	<xsl:template match="*[local-name()='appendix']">
 		<fo:block id="{@id}" xsl:use-attribute-sets="appendix-style">
 			<xsl:apply-templates select="*[local-name()='title']"/>
 		</fo:block>
 		<xsl:apply-templates select="node()[not(local-name()='title')]"/>
-	</xsl:template><xsl:template match="*[local-name()='appendix']/*[local-name()='title']" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='appendix']/*[local-name()='title']" priority="2">
 		<xsl:variable name="level">
 			<xsl:call-template name="getLevel"/>
 		</xsl:variable>
 		<fo:inline role="H{$level}"><xsl:apply-templates/></fo:inline>
-	</xsl:template><xsl:template match="*[local-name()='appendix']//*[local-name()='example']" priority="2">
-		<fo:block id="{@id}" xsl:use-attribute-sets="appendix-example-style">			
+	</xsl:template>
+	<!-- ======================== -->
+	<!-- END Appendix processing -->
+	<!-- ======================== -->
+
+	<xsl:template match="*[local-name()='appendix']//*[local-name()='example']" priority="2">
+		<fo:block id="{@id}" xsl:use-attribute-sets="appendix-example-style">
 			<xsl:apply-templates select="*[local-name()='name']"/>
 		</fo:block>
 		<xsl:apply-templates select="node()[not(local-name()='name')]"/>
-	</xsl:template><xsl:template match="*[local-name() = 'callout']">		
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'callout']">
 		<fo:basic-link internal-destination="{@target}" fox:alt-text="{@target}">&lt;<xsl:apply-templates/>&gt;</fo:basic-link>
-	</xsl:template><xsl:template match="*[local-name() = 'annotation']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'annotation']">
 		<xsl:variable name="annotation-id" select="@id"/>
-		<xsl:variable name="callout" select="//*[@target = $annotation-id]/text()"/>		
-		<fo:block id="{$annotation-id}" white-space="nowrap">			
-			<fo:inline>				
+		<xsl:variable name="callout" select="//*[@target = $annotation-id]/text()"/>
+		<fo:block id="{$annotation-id}" white-space="nowrap">
+			<fo:inline>
 				<xsl:apply-templates>
 					<xsl:with-param name="callout" select="concat('&lt;', $callout, '&gt; ')"/>
 				</xsl:apply-templates>
 			</fo:inline>
-		</fo:block>		
-	</xsl:template><xsl:template match="*[local-name() = 'annotation']/*[local-name() = 'p']">
+		</fo:block>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'annotation']/*[local-name() = 'p']">
 		<xsl:param name="callout"/>
 		<fo:inline id="{@id}">
 			<!-- for first p in annotation, put <x> -->
 			<xsl:if test="not(preceding-sibling::*[local-name() = 'p'])"><xsl:value-of select="$callout"/></xsl:if>
 			<xsl:apply-templates/>
-		</fo:inline>		
-	</xsl:template><xsl:template match="*[local-name() = 'xref']">
+		</fo:inline>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'xref']">
 		<fo:basic-link internal-destination="{@target}" fox:alt-text="{@target}" xsl:use-attribute-sets="xref-style">
 			<xsl:if test="parent::*[local-name() = 'add']">
 				<xsl:call-template name="append_add-style"/>
 			</xsl:if>
 			<xsl:apply-templates/>
 		</fo:basic-link>
-	</xsl:template><xsl:template match="*[local-name() = 'formula']" name="formula">
+	</xsl:template>
+
+	<!-- ====== -->
+	<!-- formula  -->
+	<!-- ====== -->
+	<xsl:template match="*[local-name() = 'formula']" name="formula">
 		<fo:block-container margin-left="0mm">
 			<xsl:if test="parent::*[local-name() = 'note']">
 				<xsl:attribute name="margin-left">
@@ -8582,31 +8553,38 @@
 						<xsl:otherwise><xsl:value-of select="$note-body-indent-table"/></xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>
-				
+
 			</xsl:if>
-			<fo:block-container margin-left="0mm">	
+			<fo:block-container margin-left="0mm">
 				<fo:block id="{@id}">
 					<xsl:apply-templates select="node()[not(local-name() = 'name')]"/> <!-- formula's number will be process in 'stem' template -->
 				</fo:block>
 			</fo:block-container>
 		</fo:block-container>
-	</xsl:template><xsl:template match="*[local-name() = 'formula']/*[local-name() = 'dt']/*[local-name() = 'stem']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'formula']/*[local-name() = 'dt']/*[local-name() = 'stem']">
 		<fo:inline>
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'admitted']/*[local-name() = 'stem']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'admitted']/*[local-name() = 'stem']">
 		<fo:inline>
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'formula']/*[local-name() = 'name']"> <!-- show in 'stem' template -->
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'formula']/*[local-name() = 'name']"> <!-- show in 'stem' template -->
 		<xsl:if test="normalize-space() != ''">
 			<xsl:text>(</xsl:text><xsl:apply-templates/><xsl:text>)</xsl:text>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'formula'][*[local-name() = 'name']]/*[local-name() = 'stem']">
+	</xsl:template>
+
+	<!-- stem inside formula with name (with formula's number) -->
+	<xsl:template match="*[local-name() = 'formula'][*[local-name() = 'name']]/*[local-name() = 'stem']">
 		<fo:block xsl:use-attribute-sets="formula-style">
-		
-			
-		
+
 			<fo:table table-layout="fixed" width="100%">
 				<fo:table-column column-width="95%"/>
 				<fo:table-column column-width="5%"/>
@@ -8614,9 +8592,7 @@
 					<fo:table-row>
 						<fo:table-cell display-align="center">
 							<fo:block xsl:use-attribute-sets="formula-stem-block-style">
-							
-								
-							
+
 								<xsl:apply-templates/>
 							</fo:block>
 						</fo:table-cell>
@@ -8629,82 +8605,73 @@
 				</fo:table-body>
 			</fo:table>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'formula'][not(*[local-name() = 'name'])]/*[local-name() = 'stem']">
+	</xsl:template>
+
+	<!-- stem inside formula without name (without formula's number) -->
+	<xsl:template match="*[local-name() = 'formula'][not(*[local-name() = 'name'])]/*[local-name() = 'stem']">
 		<fo:block xsl:use-attribute-sets="formula-style">
 			<fo:block xsl:use-attribute-sets="formula-stem-block-style">
 				<xsl:apply-templates/>
 			</fo:block>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'note']" name="note">
-	
+	</xsl:template>
+
+	<!-- ====== -->
+	<!-- ====== -->
+
+	<!-- ====== -->
+	<!-- note      -->
+	<!-- termnote -->
+	<!-- ====== -->
+
+	<xsl:template match="*[local-name() = 'note']" name="note">
+
 		<fo:block-container id="{@id}" xsl:use-attribute-sets="note-style">
-		
-			
+
 				<xsl:if test="parent::*[local-name() = 'li']">
 					<xsl:attribute name="margin-top">4pt</xsl:attribute>
 					<xsl:attribute name="margin-bottom">4pt</xsl:attribute>
 				</xsl:if>
-			
-			
-			
-			
-			
-			
-			
-		
-			
-			
+
 			<fo:block-container margin-left="0mm">
-			
-				
-				
-				
-			
-				
+
 						<fo:block>
-							
-							
+
 								<xsl:if test="@parent-type = 'quote'">
 									<xsl:attribute name="font-family">Arial</xsl:attribute>
 									<xsl:attribute name="font-size">9pt</xsl:attribute>
 									<xsl:attribute name="line-height">130%</xsl:attribute>
 									<xsl:attribute name="text-align">justify</xsl:attribute>
 								</xsl:if>
-							
-						
-							
-							
-							
-							
+
 							<fo:inline xsl:use-attribute-sets="note-name-style">
-							
-								
-								
+
 								<!-- if 'p' contains all text in 'add' first and last elements in first p are 'add' -->
 								<!-- <xsl:if test="*[not(local-name()='name')][1][node()[normalize-space() != ''][1][local-name() = 'add'] and node()[normalize-space() != ''][last()][local-name() = 'add']]"> -->
 								<xsl:if test="*[not(local-name()='name')][1][count(node()[normalize-space() != '']) = 1 and *[local-name() = 'add']]">
 									<xsl:call-template name="append_add-style"/>
 								</xsl:if>
-								
-								
+
 								<!-- if note contains only one element and first and last childs are `add` ace-tag, then move start ace-tag before NOTE's name-->
 								<xsl:if test="count(*[not(local-name() = 'name')]) = 1 and *[not(local-name() = 'name')]/node()[last()][local-name() = 'add'][starts-with(text(), $ace_tag)]">
 									<xsl:apply-templates select="*[not(local-name() = 'name')]/node()[1][local-name() = 'add'][starts-with(text(), $ace_tag)]">
 										<xsl:with-param name="skip">false</xsl:with-param>
-									</xsl:apply-templates> 
+									</xsl:apply-templates>
 								</xsl:if>
-								
+
 								<xsl:apply-templates select="*[local-name() = 'name']"/>
-								
+
 							</fo:inline>
-							
+
 							<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 						</fo:block>
-					
+
 			</fo:block-container>
 		</fo:block-container>
-		
-	</xsl:template><xsl:template match="*[local-name() = 'note']/*[local-name() = 'p']">
+
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'note']/*[local-name() = 'p']">
 		<xsl:variable name="num"><xsl:number/></xsl:variable>
 		<xsl:choose>
 			<xsl:when test="$num = 1"> <!-- display first NOTE's paragraph in the same line with label NOTE -->
@@ -8713,49 +8680,47 @@
 				</fo:inline>
 			</xsl:when>
 			<xsl:otherwise>
-				<fo:block xsl:use-attribute-sets="note-p-style">						
+				<fo:block xsl:use-attribute-sets="note-p-style">
 					<xsl:apply-templates/>
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name() = 'termnote']">
-		<fo:block id="{@id}" xsl:use-attribute-sets="termnote-style">			
-			
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'termnote']">
+		<fo:block id="{@id}" xsl:use-attribute-sets="termnote-style">
+
 			<fo:inline xsl:use-attribute-sets="termnote-name-style">
-			
+
 				<xsl:if test="not(*[local-name() = 'name']/following-sibling::node()[1][self::text()][normalize-space()=''])">
 					<xsl:attribute name="padding-right">1mm</xsl:attribute>
 				</xsl:if>
-			
-				
 
-				
-				
 				<!-- if 'p' contains all text in 'add' first and last elements in first p are 'add' -->
 				<!-- <xsl:if test="*[not(local-name()='name')][1][node()[normalize-space() != ''][1][local-name() = 'add'] and node()[normalize-space() != ''][last()][local-name() = 'add']]"> -->
 				<xsl:if test="*[not(local-name()='name')][1][count(node()[normalize-space() != '']) = 1 and *[local-name() = 'add']]">
 					<xsl:call-template name="append_add-style"/>
 				</xsl:if>
-				
+
 				<xsl:apply-templates select="*[local-name() = 'name']"/>
-				
+
 			</fo:inline>
-			
+
 			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'note']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'note']/*[local-name() = 'name']">
 		<xsl:param name="sfx"/>
 		<xsl:variable name="suffix">
 			<xsl:choose>
 				<xsl:when test="$sfx != ''">
-					<xsl:value-of select="$sfx"/>					
+					<xsl:value-of select="$sfx"/>
 				</xsl:when>
 				<xsl:otherwise>
-					
-					
+
 						<xsl:text>:</xsl:text>
-					
-					
+
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -8763,19 +8728,19 @@
 			<xsl:apply-templates/>
 			<xsl:value-of select="$suffix"/>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'termnote']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'termnote']/*[local-name() = 'name']">
 		<xsl:param name="sfx"/>
 		<xsl:variable name="suffix">
 			<xsl:choose>
 				<xsl:when test="$sfx != ''">
-					<xsl:value-of select="$sfx"/>					
+					<xsl:value-of select="$sfx"/>
 				</xsl:when>
 				<xsl:otherwise>
-					
-					
+
 						<xsl:text>:</xsl:text>
-					
-					
+
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -8783,7 +8748,9 @@
 			<xsl:apply-templates/>
 			<xsl:value-of select="$suffix"/>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'termnote']/*[local-name() = 'p']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'termnote']/*[local-name() = 'p']">
 		<xsl:variable name="num"><xsl:number/></xsl:variable>
 		<xsl:choose>
 			<xsl:when test="$num = 1"> <!-- first paragraph renders in the same line as titlenote name -->
@@ -8792,29 +8759,38 @@
 				</fo:inline>
 			</xsl:when>
 			<xsl:otherwise>
-				<fo:block xsl:use-attribute-sets="termnote-p-style">						
+				<fo:block xsl:use-attribute-sets="termnote-p-style">
 					<xsl:apply-templates/>
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name() = 'terms']">
+	</xsl:template>
+
+	<!-- ====== -->
+	<!-- ====== -->
+
+	<!-- ====== -->
+	<!-- term      -->
+	<!-- ====== -->
+
+	<xsl:template match="*[local-name() = 'terms']">
 		<!-- <xsl:message>'terms' <xsl:number/> processing...</xsl:message> -->
 		<fo:block id="{@id}">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'term']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'term']">
 		<fo:block id="{@id}" xsl:use-attribute-sets="term-style">
 
-			
-			
-			
-			
 			<xsl:if test="parent::*[local-name() = 'term'] and not(preceding-sibling::*[local-name() = 'term'])">
-				
+
 			</xsl:if>
 			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'term']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'term']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<xsl:variable name="level">
 				<xsl:call-template name="getLevelTermName"/>
@@ -8823,22 +8799,29 @@
 				<xsl:apply-templates/>
 			</fo:inline>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'figure']" name="figure">
+	</xsl:template>
+	<!-- ====== -->
+	<!-- ====== -->
+
+	<!-- ====== -->
+	<!-- figure    -->
+	<!-- image    -->
+	<!-- ====== -->
+
+	<xsl:template match="*[local-name() = 'figure']" name="figure">
 		<xsl:variable name="isAdded" select="@added"/>
 		<xsl:variable name="isDeleted" select="@deleted"/>
-		<fo:block-container id="{@id}">			
-			
+		<fo:block-container id="{@id}">
+
 				<xsl:if test="*[local-name() = 'name']">
 					<xsl:attribute name="space-after">12pt</xsl:attribute>
 				</xsl:if>
-			
+
 			<xsl:call-template name="setTrackChangesStyles">
 				<xsl:with-param name="isAdded" select="$isAdded"/>
 				<xsl:with-param name="isDeleted" select="$isDeleted"/>
 			</xsl:call-template>
-			
-			
-			
+
 			<fo:block xsl:use-attribute-sets="figure-style">
 				<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 			</fo:block>
@@ -8846,22 +8829,26 @@
 			<xsl:for-each select="*[local-name() = 'note']">
 				<xsl:call-template name="note"/>
 			</xsl:for-each>
-			
-			
+
 					<xsl:apply-templates select="*[local-name() = 'name']"/> <!-- show figure's name AFTER image -->
-				
-			
+
 		</fo:block-container>
-	</xsl:template><xsl:template match="*[local-name() = 'figure'][@class = 'pseudocode']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'figure'][@class = 'pseudocode']">
 		<fo:block id="{@id}">
 			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
 		<xsl:apply-templates select="*[local-name() = 'name']"/>
-	</xsl:template><xsl:template match="*[local-name() = 'figure'][@class = 'pseudocode']//*[local-name() = 'p']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'figure'][@class = 'pseudocode']//*[local-name() = 'p']">
 		<fo:block xsl:use-attribute-sets="figure-pseudocode-p-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'image']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'image']">
 		<xsl:variable name="isAdded" select="../@added"/>
 		<xsl:variable name="isDeleted" select="../@deleted"/>
 		<xsl:choose>
@@ -8875,12 +8862,11 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<fo:block xsl:use-attribute-sets="image-style">
-					
-					
+
 					<xsl:variable name="src">
 						<xsl:call-template name="image_src"/>
 					</xsl:variable>
-					
+
 					<xsl:choose>
 						<xsl:when test="$isDeleted = 'true'">
 							<!-- enclose in svg -->
@@ -8889,38 +8875,39 @@
 								<xsl:attribute name="content-height">100%</xsl:attribute>
 								<xsl:attribute name="content-width">scale-down-to-fit</xsl:attribute>
 								<xsl:attribute name="scaling">uniform</xsl:attribute>
-								
-								
+
 									<xsl:apply-templates select="." mode="cross_image"/>
-									
+
 							</fo:instream-foreign-object>
 						</xsl:when>
 						<xsl:otherwise>
 							<fo:external-graphic src="{$src}" fox:alt-text="Image {@alt}" xsl:use-attribute-sets="image-graphic-style">
 								<xsl:if test="not(@mimetype = 'image/svg+xml') and ../*[local-name() = 'name'] and not(ancestor::*[local-name() = 'table'])">
-										
+
 									<xsl:variable name="img_src">
 										<xsl:choose>
 											<xsl:when test="not(starts-with(@src, 'data:'))"><xsl:value-of select="concat($basepath, @src)"/></xsl:when>
 											<xsl:otherwise><xsl:value-of select="@src"/></xsl:otherwise>
 										</xsl:choose>
 									</xsl:variable>
-									
+
 									<xsl:variable name="scale" select="java:org.metanorma.fop.Util.getImageScale($img_src, $width_effective, $height_effective)"/>
 									<xsl:if test="number($scale) &lt; 100">
 										<xsl:attribute name="content-width"><xsl:value-of select="$scale"/>%</xsl:attribute>
 									</xsl:if>
-								
+
 								</xsl:if>
-							
+
 							</fo:external-graphic>
 						</xsl:otherwise>
 					</xsl:choose>
-					
+
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="image_src">
+	</xsl:template>
+
+	<xsl:template name="image_src">
 		<xsl:choose>
 			<xsl:when test="@mimetype = 'image/svg+xml' and $images/images/image[@id = current()/@id]">
 				<xsl:value-of select="$images/images/image[@id = current()/@id]/@src"/>
@@ -8932,7 +8919,9 @@
 				<xsl:value-of select="@src"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name() = 'image']" mode="cross_image">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'image']" mode="cross_image">
 		<xsl:choose>
 			<xsl:when test="@mimetype = 'image/svg+xml' and $images/images/image[@id = current()/@id]">
 				<xsl:variable name="src">
@@ -8973,19 +8962,34 @@
 				</svg>
 			</xsl:otherwise>
 		</xsl:choose>
-		
-	</xsl:template><xsl:template name="svg_cross">
+
+	</xsl:template>
+
+	<xsl:template name="svg_cross">
 		<xsl:param name="width"/>
 		<xsl:param name="height"/>
 		<line xmlns="http://www.w3.org/2000/svg" x1="0" y1="0" x2="{$width}" y2="{$height}" style="stroke: rgb(255, 0, 0); stroke-width:4px; "/>
 		<line xmlns="http://www.w3.org/2000/svg" x1="0" y1="{$height}" x2="{$width}" y2="0" style="stroke: rgb(255, 0, 0); stroke-width:4px; "/>
-	</xsl:template><xsl:variable name="figure_name_height">14</xsl:variable><xsl:variable name="width_effective" select="$pageWidth - $marginLeftRight1 - $marginLeftRight2"/><xsl:variable name="height_effective" select="$pageHeight - $marginTop - $marginBottom - $figure_name_height"/><xsl:variable name="image_dpi" select="96"/><xsl:variable name="width_effective_px" select="$width_effective div 25.4 * $image_dpi"/><xsl:variable name="height_effective_px" select="$height_effective div 25.4 * $image_dpi"/><xsl:template match="*[local-name() = 'figure'][not(*[local-name() = 'image']) and *[local-name() = 'svg']]/*[local-name() = 'name']/*[local-name() = 'bookmark']" priority="2"/><xsl:template match="*[local-name() = 'figure'][not(*[local-name() = 'image'])]/*[local-name() = 'svg']" priority="2" name="image_svg">
+	</xsl:template>
+
+	<!-- =================== -->
+	<!-- SVG images processing -->
+	<!-- =================== -->
+	<xsl:variable name="figure_name_height">14</xsl:variable>
+	<xsl:variable name="width_effective" select="$pageWidth - $marginLeftRight1 - $marginLeftRight2"/><!-- paper width minus margins -->
+	<xsl:variable name="height_effective" select="$pageHeight - $marginTop - $marginBottom - $figure_name_height"/><!-- paper height minus margins and title height -->
+	<xsl:variable name="image_dpi" select="96"/>
+	<xsl:variable name="width_effective_px" select="$width_effective div 25.4 * $image_dpi"/>
+	<xsl:variable name="height_effective_px" select="$height_effective div 25.4 * $image_dpi"/>
+
+	<xsl:template match="*[local-name() = 'figure'][not(*[local-name() = 'image']) and *[local-name() = 'svg']]/*[local-name() = 'name']/*[local-name() = 'bookmark']" priority="2"/>
+	<xsl:template match="*[local-name() = 'figure'][not(*[local-name() = 'image'])]/*[local-name() = 'svg']" priority="2" name="image_svg">
 		<xsl:param name="name"/>
-		
+
 		<xsl:variable name="svg_content">
 			<xsl:apply-templates select="." mode="svg_update"/>
 		</xsl:variable>
-		
+
 		<xsl:variable name="alt-text">
 			<xsl:choose>
 				<xsl:when test="normalize-space(../*[local-name() = 'name']) != ''">
@@ -8997,13 +9001,13 @@
 				<xsl:otherwise>Figure</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:choose>
 			<xsl:when test=".//*[local-name() = 'a'][*[local-name() = 'rect'] or *[local-name() = 'polygon'] or *[local-name() = 'circle'] or *[local-name() = 'ellipse']]">
 				<fo:block>
 					<xsl:variable name="width" select="@width"/>
 					<xsl:variable name="height" select="@height"/>
-					
+
 					<xsl:variable name="scale_x">
 						<xsl:choose>
 							<xsl:when test="$width &gt; $width_effective_px">
@@ -9012,7 +9016,7 @@
 							<xsl:otherwise>1</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-					
+
 					<xsl:variable name="scale_y">
 						<xsl:choose>
 							<xsl:when test="$height * $scale_x &gt; $height_effective_px">
@@ -9021,7 +9025,7 @@
 							<xsl:otherwise>1</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-					
+
 					<xsl:variable name="scale">
 						<xsl:choose>
 							<xsl:when test="$scale_y != 1">
@@ -9032,10 +9036,10 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-					 
+
 					<xsl:variable name="width_scale" select="round($width * $scale)"/>
 					<xsl:variable name="height_scale" select="round($height * $scale)"/>
-					
+
 					<fo:table table-layout="fixed" width="100%">
 						<fo:table-column column-width="proportional-column-width(1)"/>
 						<fo:table-column column-width="{$width_scale}px"/>
@@ -9063,7 +9067,7 @@
 													<xsl:apply-templates select="xalan:nodeset($svg_content)" mode="svg_remove_a"/>
 												</fo:instream-foreign-object>
 											</fo:block>
-											
+
 											<xsl:apply-templates select=".//*[local-name() = 'a'][*[local-name() = 'rect'] or *[local-name() = 'polygon'] or *[local-name() = 'circle'] or *[local-name() = 'ellipse']]" mode="svg_imagemap_links">
 												<xsl:with-param name="scale" select="$scale"/>
 											</xsl:apply-templates>
@@ -9074,7 +9078,7 @@
 						</fo:table-body>
 					</fo:table>
 				</fo:block>
-				
+
 			</xsl:when>
 			<xsl:otherwise>
 				<fo:block xsl:use-attribute-sets="image-style">
@@ -9097,15 +9101,24 @@
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="@*|node()" mode="svg_update">
+	</xsl:template>
+
+	<!-- ============== -->
+	<!-- svg_update     -->
+	<!-- ============== -->
+	<xsl:template match="@*|node()" mode="svg_update">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="svg_update"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'image']/@href" mode="svg_update">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'image']/@href" mode="svg_update">
 		<xsl:attribute name="href" namespace="http://www.w3.org/1999/xlink">
 			<xsl:value-of select="."/>
 		</xsl:attribute>
-	</xsl:template><xsl:template match="*[local-name() = 'svg'][not(@width and @height)]" mode="svg_update">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'svg'][not(@width and @height)]" mode="svg_update">
 		<xsl:copy>
 			<xsl:apply-templates select="@*" mode="svg_update"/>
 			<xsl:variable name="viewbox_">
@@ -9117,7 +9130,7 @@
 			<xsl:variable name="viewbox" select="xalan:nodeset($viewbox_)"/>
 			<xsl:variable name="width" select="normalize-space($viewbox//item[3])"/>
 			<xsl:variable name="height" select="normalize-space($viewbox//item[4])"/>
-			
+
 			<xsl:attribute name="width">
 				<xsl:choose>
 					<xsl:when test="$width != ''">
@@ -9134,17 +9147,25 @@
 					<xsl:otherwise>400</xsl:otherwise> <!-- default height -->
 				</xsl:choose>
 			</xsl:attribute>
-			
+
 			<xsl:apply-templates mode="svg_update"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'image'][*[local-name() = 'svg']]" priority="3">
+	</xsl:template>
+	<!-- ============== -->
+	<!-- END: svg_update -->
+	<!-- ============== -->
+
+	<!-- image with svg and emf -->
+	<xsl:template match="*[local-name() = 'figure']/*[local-name() = 'image'][*[local-name() = 'svg']]" priority="3">
 		<xsl:variable name="name" select="ancestor::*[local-name() = 'figure']/*[local-name() = 'name']"/>
 		<xsl:for-each select="*[local-name() = 'svg']">
 			<xsl:call-template name="image_svg">
 				<xsl:with-param name="name" select="$name"/>
 			</xsl:call-template>
 		</xsl:for-each>
-	</xsl:template><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'image'][@mimetype = 'image/svg+xml' and @src[not(starts-with(., 'data:image/'))]]" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'figure']/*[local-name() = 'image'][@mimetype = 'image/svg+xml' and @src[not(starts-with(., 'data:image/'))]]" priority="2">
 		<xsl:variable name="svg_content" select="document(@src)"/>
 		<xsl:variable name="name" select="ancestor::*[local-name() = 'figure']/*[local-name() = 'name']"/>
 		<xsl:for-each select="xalan:nodeset($svg_content)/node()">
@@ -9152,13 +9173,19 @@
 				<xsl:with-param name="name" select="$name"/>
 			</xsl:call-template>
 		</xsl:for-each>
-	</xsl:template><xsl:template match="@*|node()" mode="svg_remove_a">
+	</xsl:template>
+
+	<xsl:template match="@*|node()" mode="svg_remove_a">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="svg_remove_a"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'a']" mode="svg_remove_a">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'a']" mode="svg_remove_a">
 		<xsl:apply-templates mode="svg_remove_a"/>
-	</xsl:template><xsl:template match="*[local-name() = 'a']" mode="svg_imagemap_links">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'a']" mode="svg_imagemap_links">
 		<xsl:param name="scale"/>
 		<xsl:variable name="dest">
 			<xsl:choose>
@@ -9179,7 +9206,7 @@
 				<xsl:with-param name="dest" select="$dest"/>
 			</xsl:call-template>
 		</xsl:for-each>
-		
+
 		<xsl:for-each select="./*[local-name() = 'polygon']">
 			<xsl:variable name="points">
 				<xsl:call-template name="split">
@@ -9210,7 +9237,7 @@
 				<xsl:with-param name="dest" select="$dest"/>
 			</xsl:call-template>
 		</xsl:for-each>
-		
+
 		<xsl:for-each select="./*[local-name() = 'circle']">
 			<xsl:call-template name="insertSVGMapLink">
 				<xsl:with-param name="left" select="floor((@cx - @r) * $scale)"/>
@@ -9229,7 +9256,9 @@
 				<xsl:with-param name="dest" select="$dest"/>
 			</xsl:call-template>
 		</xsl:for-each>
-	</xsl:template><xsl:template name="insertSVGMapLink">
+	</xsl:template>
+
+	<xsl:template name="insertSVGMapLink">
 		<xsl:param name="left"/>
 		<xsl:param name="top"/>
 		<xsl:param name="width"/>
@@ -9248,29 +9277,56 @@
 			</fo:basic-link>
 		 </fo:block>
 	  </fo:block-container>
-	</xsl:template><xsl:template match="*[local-name() = 'emf']"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |                *[local-name() = 'table']/*[local-name() = 'name'] |               *[local-name() = 'permission']/*[local-name() = 'name'] |               *[local-name() = 'recommendation']/*[local-name() = 'name'] |               *[local-name() = 'requirement']/*[local-name() = 'name']" mode="contents">		
+	</xsl:template>
+	<!-- =================== -->
+	<!-- End SVG images processing -->
+	<!-- =================== -->
+
+	<!-- ignore emf processing (Apache FOP doesn't support EMF) -->
+	<xsl:template match="*[local-name() = 'emf']"/>
+
+	<xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |                *[local-name() = 'table']/*[local-name() = 'name'] |               *[local-name() = 'permission']/*[local-name() = 'name'] |               *[local-name() = 'recommendation']/*[local-name() = 'name'] |               *[local-name() = 'requirement']/*[local-name() = 'name']" mode="contents">
 		<xsl:apply-templates mode="contents"/>
 		<xsl:text> </xsl:text>
-	</xsl:template><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |                *[local-name() = 'table']/*[local-name() = 'name'] |               *[local-name() = 'permission']/*[local-name() = 'name'] |               *[local-name() = 'recommendation']/*[local-name() = 'name'] |               *[local-name() = 'requirement']/*[local-name() = 'name'] |               *[local-name() = 'sourcecode']/*[local-name() = 'name']" mode="bookmarks">		
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |                *[local-name() = 'table']/*[local-name() = 'name'] |               *[local-name() = 'permission']/*[local-name() = 'name'] |               *[local-name() = 'recommendation']/*[local-name() = 'name'] |               *[local-name() = 'requirement']/*[local-name() = 'name'] |               *[local-name() = 'sourcecode']/*[local-name() = 'name']" mode="bookmarks">
 		<xsl:apply-templates mode="bookmarks"/>
 		<xsl:text> </xsl:text>
-	</xsl:template><xsl:template match="*[local-name() = 'figure' or local-name() = 'table' or local-name() = 'permission' or local-name() = 'recommendation' or local-name() = 'requirement']/*[local-name() = 'name']/text()" mode="contents" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'figure' or local-name() = 'table' or local-name() = 'permission' or local-name() = 'recommendation' or local-name() = 'requirement']/*[local-name() = 'name']/text()" mode="contents" priority="2">
 		<xsl:value-of select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'figure' or local-name() = 'table' or local-name() = 'permission' or local-name() = 'recommendation' or local-name() = 'requirement' or local-name() = 'sourcecode']/*[local-name() = 'name']//text()" mode="bookmarks" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'figure' or local-name() = 'table' or local-name() = 'permission' or local-name() = 'recommendation' or local-name() = 'requirement' or local-name() = 'sourcecode']/*[local-name() = 'name']//text()" mode="bookmarks" priority="2">
 		<xsl:value-of select="."/>
-	</xsl:template><xsl:template match="node()" mode="contents">
+	</xsl:template>
+
+	<xsl:template match="node()" mode="contents">
 		<xsl:apply-templates mode="contents"/>
-	</xsl:template><xsl:template match="*[local-name() = 'preface' or local-name() = 'sections']/*[local-name() = 'p'][@type = 'section-title' and not(@displayorder)]" priority="3" mode="contents"/><xsl:template match="*[local-name() = 'p'][@type = 'section-title' and not(@displayorder)]" mode="contents_no_displayorder">
+	</xsl:template>
+
+	<!-- special case: ignore preface/section-title and sections/section-title without @displayorder  -->
+	<xsl:template match="*[local-name() = 'preface' or local-name() = 'sections']/*[local-name() = 'p'][@type = 'section-title' and not(@displayorder)]" priority="3" mode="contents"/>
+	<!-- process them by demand (mode="contents_no_displayorder") -->
+	<xsl:template match="*[local-name() = 'p'][@type = 'section-title' and not(@displayorder)]" mode="contents_no_displayorder">
 		<xsl:call-template name="contents_section-title"/>
-	</xsl:template><xsl:template match="*[local-name() = 'p'][@type = 'section-title']" mode="contents_in_clause">
+	</xsl:template>
+	<xsl:template match="*[local-name() = 'p'][@type = 'section-title']" mode="contents_in_clause">
 		<xsl:call-template name="contents_section-title"/>
-	</xsl:template><xsl:template match="*[local-name() = 'clause']/*[local-name() = 'p'][@type = 'section-title' and (@depth != ../*[local-name() = 'title']/@depth or ../*[local-name() = 'title']/@depth = 1)]" priority="3" mode="contents"/><xsl:template match="*[local-name() = 'p'][@type = 'floating-title' or @type = 'section-title']" priority="2" name="contents_section-title" mode="contents">
+	</xsl:template>
+
+	<!-- special case: ignore section-title if @depth different than @depth of parent clause, or @depth of parent clause = 1 -->
+	<xsl:template match="*[local-name() = 'clause']/*[local-name() = 'p'][@type = 'section-title' and (@depth != ../*[local-name() = 'title']/@depth or ../*[local-name() = 'title']/@depth = 1)]" priority="3" mode="contents"/>
+
+	<xsl:template match="*[local-name() = 'p'][@type = 'floating-title' or @type = 'section-title']" priority="2" name="contents_section-title" mode="contents">
 		<xsl:variable name="level">
 			<xsl:call-template name="getLevel">
 				<xsl:with-param name="depth" select="@depth"/>
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<xsl:variable name="section">
 			<xsl:choose>
 				<xsl:when test="@type = 'section-title'"/>
@@ -9279,9 +9335,9 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:variable name="type"><xsl:value-of select="@type"/></xsl:variable>
-			
+
 		<xsl:variable name="display">
 			<xsl:choose>
 				<xsl:when test="normalize-space(@id) = ''">false</xsl:when>
@@ -9289,11 +9345,11 @@
 				<xsl:otherwise>false</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:variable name="skip">false</xsl:variable>
 
-		<xsl:if test="$skip = 'false'">		
-		
+		<xsl:if test="$skip = 'false'">
+
 			<xsl:variable name="title">
 				<xsl:choose>
 					<xsl:when test="*[local-name() = 'tab']">
@@ -9313,29 +9369,48 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			
+
 			<xsl:variable name="root">
 				<xsl:if test="ancestor-or-self::*[local-name() = 'preface']">preface</xsl:if>
 				<xsl:if test="ancestor-or-self::*[local-name() = 'annex']">annex</xsl:if>
 			</xsl:variable>
-			
+
 			<item id="{@id}" level="{$level}" section="{$section}" type="{$type}" root="{$root}" display="{$display}">
 				<title>
 					<xsl:apply-templates select="xalan:nodeset($title)" mode="contents_item"/>
 				</title>
 			</item>
 		</xsl:if>
-	</xsl:template><xsl:template match="node()" mode="bookmarks">
+	</xsl:template>
+
+	<xsl:template match="node()" mode="bookmarks">
 		<xsl:apply-templates mode="bookmarks"/>
-	</xsl:template><xsl:template match="*[local-name() = 'title' or local-name() = 'name']//*[local-name() = 'stem']" mode="contents">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'title' or local-name() = 'name']//*[local-name() = 'stem']" mode="contents">
 		<xsl:apply-templates select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" mode="contents" priority="3"/><xsl:template match="*[local-name() = 'references']/*[local-name() = 'bibitem']" mode="contents"/><xsl:template match="*[local-name() = 'span']" mode="contents">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'references'][@hidden='true']" mode="contents" priority="3"/>
+
+	<xsl:template match="*[local-name() = 'references']/*[local-name() = 'bibitem']" mode="contents"/>
+
+	<!-- Note: to enable the addition of character span markup with semantic styling for DIS Word output -->
+	<xsl:template match="*[local-name() = 'span']" mode="contents">
 		<xsl:apply-templates mode="contents"/>
-	</xsl:template><xsl:template match="*[local-name() = 'stem']" mode="bookmarks">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'stem']" mode="bookmarks">
 		<xsl:apply-templates mode="bookmarks"/>
-	</xsl:template><xsl:template match="*[local-name() = 'span']" mode="bookmarks">
+	</xsl:template>
+
+	<!-- Note: to enable the addition of character span markup with semantic styling for DIS Word output -->
+	<xsl:template match="*[local-name() = 'span']" mode="bookmarks">
 		<xsl:apply-templates mode="bookmarks"/>
-	</xsl:template><xsl:template name="addBookmarks">
+	</xsl:template>
+
+	<!-- Bookmarks -->
+	<xsl:template name="addBookmarks">
 		<xsl:param name="contents"/>
 		<xsl:variable name="contents_nodes" select="xalan:nodeset($contents)"/>
 		<xsl:if test="$contents_nodes//item">
@@ -9378,65 +9453,60 @@
 												</xsl:otherwise>
 											</xsl:choose>
 										</fo:bookmark-title>
-										
+
 										<xsl:apply-templates select="contents/item" mode="bookmark"/>
-										
+
 										<xsl:call-template name="insertFigureBookmarks">
 											<xsl:with-param name="contents" select="contents"/>
 										</xsl:call-template>
-										
+
 										<xsl:call-template name="insertTableBookmarks">
 											<xsl:with-param name="contents" select="contents"/>
 											<xsl:with-param name="lang" select="@lang"/>
 										</xsl:call-template>
-										
+
 									</fo:bookmark>
-									
+
 								</xsl:for-each>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:for-each select="$contents_nodes/doc">
-								
+
 									<xsl:apply-templates select="contents/item" mode="bookmark"/>
-									
+
 									<xsl:call-template name="insertFigureBookmarks">
 										<xsl:with-param name="contents" select="contents"/>
 									</xsl:call-template>
-										
+
 									<xsl:call-template name="insertTableBookmarks">
 										<xsl:with-param name="contents" select="contents"/>
 										<xsl:with-param name="lang" select="@lang"/>
 									</xsl:call-template>
-									
+
 								</xsl:for-each>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:apply-templates select="$contents_nodes/contents/item" mode="bookmark"/>				
-						
+						<xsl:apply-templates select="$contents_nodes/contents/item" mode="bookmark"/>
+
 						<xsl:call-template name="insertFigureBookmarks">
 							<xsl:with-param name="contents" select="$contents_nodes/contents"/>
 						</xsl:call-template>
-							
+
 						<xsl:call-template name="insertTableBookmarks">
 							<xsl:with-param name="contents" select="$contents_nodes/contents"/>
 							<xsl:with-param name="lang" select="@lang"/>
 						</xsl:call-template>
-						
+
 					</xsl:otherwise>
 				</xsl:choose>
-				
-				 
-				
-				
-				
-				
-				 
-				
+
 			</fo:bookmark-tree>
 		</xsl:if>
-	</xsl:template><xsl:template name="insertFigureBookmarks">
+	</xsl:template>
+
+	<xsl:template name="insertFigureBookmarks">
 		<xsl:param name="contents"/>
 		<xsl:variable name="contents_nodes" select="xalan:nodeset($contents)"/>
 		<xsl:if test="$contents_nodes/figure">
@@ -9449,19 +9519,16 @@
 						</fo:bookmark-title>
 					</fo:bookmark>
 				</xsl:for-each>
-			</fo:bookmark>	
+			</fo:bookmark>
 		</xsl:if>
-		
-		
+
 				<xsl:if test="$contents_nodes//figures/figure">
 					<fo:bookmark internal-destination="empty_bookmark" starting-state="hide">
-					
-						
-						
+
 						<xsl:variable name="bookmark-title">
-							
+
 									<xsl:value-of select="$title-list-figures"/>
-								
+
 						</xsl:variable>
 						<fo:bookmark-title><xsl:value-of select="normalize-space($bookmark-title)"/></fo:bookmark-title>
 						<xsl:for-each select="$contents_nodes//figures/figure">
@@ -9471,8 +9538,10 @@
 						</xsl:for-each>
 					</fo:bookmark>
 				</xsl:if>
-			
-	</xsl:template><xsl:template name="insertTableBookmarks">
+
+	</xsl:template> <!-- insertFigureBookmarks -->
+
+	<xsl:template name="insertTableBookmarks">
 		<xsl:param name="contents"/>
 		<xsl:param name="lang"/>
 		<xsl:variable name="contents_nodes" select="xalan:nodeset($contents)"/>
@@ -9491,23 +9560,20 @@
 						</fo:bookmark-title>
 					</fo:bookmark>
 				</xsl:for-each>
-			</fo:bookmark>	
+			</fo:bookmark>
 		</xsl:if>
-		
-		
+
 				<xsl:if test="$contents_nodes//tables/table">
 					<fo:bookmark internal-destination="empty_bookmark" starting-state="hide">
-						
-						
-						
+
 						<xsl:variable name="bookmark-title">
-							
+
 									<xsl:value-of select="$title-list-tables"/>
-								
+
 						</xsl:variable>
-						
+
 						<fo:bookmark-title><xsl:value-of select="$bookmark-title"/></fo:bookmark-title>
-						
+
 						<xsl:for-each select="$contents_nodes//tables/table">
 							<fo:bookmark internal-destination="{@id}">
 								<fo:bookmark-title><xsl:value-of select="normalize-space(.)"/></fo:bookmark-title>
@@ -9515,44 +9581,47 @@
 						</xsl:for-each>
 					</fo:bookmark>
 				</xsl:if>
-			
-	</xsl:template><xsl:template name="getLangVersion">
+
+	</xsl:template> <!-- insertTableBookmarks -->
+	<!-- End Bookmarks -->
+
+	<xsl:template name="getLangVersion">
 		<xsl:param name="lang"/>
 		<xsl:param name="doctype" select="''"/>
 		<xsl:param name="title" select="''"/>
 		<xsl:choose>
 			<xsl:when test="$lang = 'en'">
-				
-				
+
 					<xsl:choose>
 						<xsl:when test="$doctype = 'guide'">
 							<xsl:value-of select="$title"/>
 						</xsl:when>
 						<xsl:otherwise>English version</xsl:otherwise>
 					</xsl:choose>
-				
+
 				</xsl:when>
 			<xsl:when test="$lang = 'fr'">
-				
-				
+
 					<xsl:choose>
 						<xsl:when test="$doctype = 'guide'">
 							<xsl:value-of select="$title"/>
 						</xsl:when>
 						<xsl:otherwise>Version française</xsl:otherwise>
 					</xsl:choose>
-				
+
 			</xsl:when>
 			<xsl:when test="$lang = 'de'">Deutsche</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$lang"/> version</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="item" mode="bookmark">
+	</xsl:template>
+
+	<xsl:template match="item" mode="bookmark">
 		<xsl:choose>
 			<xsl:when test="@id != ''">
 				<fo:bookmark internal-destination="{@id}" starting-state="hide">
 					<fo:bookmark-title>
 						<xsl:if test="@section != ''">
-							<xsl:value-of select="@section"/> 
+							<xsl:value-of select="@section"/>
 							<xsl:text> </xsl:text>
 						</xsl:if>
 						<xsl:value-of select="normalize-space(title)"/>
@@ -9564,26 +9633,38 @@
 				<xsl:apply-templates mode="bookmark"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="title" mode="bookmark"/><xsl:template match="text()" mode="bookmark"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |         *[local-name() = 'image']/*[local-name() = 'name']">
-		<xsl:if test="normalize-space() != ''">			
+	</xsl:template>
+
+	<xsl:template match="title" mode="bookmark"/>
+	<xsl:template match="text()" mode="bookmark"/>
+
+	<xsl:template match="*[local-name() = 'figure']/*[local-name() = 'name'] |         *[local-name() = 'image']/*[local-name() = 'name']">
+		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="figure-name-style">
-				
-				
-				
-				
-				
+
 				<xsl:apply-templates/>
 			</fo:block>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'fn']" priority="2"/><xsl:template match="*[local-name() = 'figure']/*[local-name() = 'note']"/><xsl:template match="*[local-name() = 'title']" mode="contents_item">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'figure']/*[local-name() = 'fn']" priority="2"/>
+	<xsl:template match="*[local-name() = 'figure']/*[local-name() = 'note']"/>
+
+	<!-- ====== -->
+	<!-- ====== -->
+	<xsl:template match="*[local-name() = 'title']" mode="contents_item">
 		<xsl:param name="mode">bookmarks</xsl:param>
 		<xsl:apply-templates mode="contents_item">
 			<xsl:with-param name="mode" select="$mode"/>
 		</xsl:apply-templates>
 		<!-- <xsl:text> </xsl:text> -->
-	</xsl:template><xsl:template name="getSection">
+	</xsl:template>
+
+	<xsl:template name="getSection">
 		<xsl:value-of select="*[local-name() = 'title']/*[local-name() = 'tab'][1]/preceding-sibling::node()"/>
-	</xsl:template><xsl:template name="getName">
+	</xsl:template>
+
+	<xsl:template name="getName">
 		<xsl:choose>
 			<xsl:when test="*[local-name() = 'title']/*[local-name() = 'tab']">
 				<xsl:copy-of select="*[local-name() = 'title']/*[local-name() = 'tab'][1]/following-sibling::node()"/>
@@ -9592,14 +9673,16 @@
 				<xsl:copy-of select="*[local-name() = 'title']/node()"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="insertTitleAsListItem">
+	</xsl:template>
+
+	<xsl:template name="insertTitleAsListItem">
 		<xsl:param name="provisional-distance-between-starts" select="'9.5mm'"/>
-		<xsl:variable name="section">						
+		<xsl:variable name="section">
 			<xsl:for-each select="..">
 				<xsl:call-template name="getSection"/>
 			</xsl:for-each>
-		</xsl:variable>							
-		<fo:list-block provisional-distance-between-starts="{$provisional-distance-between-starts}">						
+		</xsl:variable>
+		<fo:list-block provisional-distance-between-starts="{$provisional-distance-between-starts}">
 			<fo:list-item>
 				<fo:list-item-label end-indent="label-end()">
 					<fo:block>
@@ -9607,7 +9690,7 @@
 					</fo:block>
 				</fo:list-item-label>
 				<fo:list-item-body start-indent="body-start()">
-					<fo:block>						
+					<fo:block>
 						<xsl:choose>
 							<xsl:when test="*[local-name() = 'tab']">
 								<xsl:apply-templates select="*[local-name() = 'tab'][1]/following-sibling::node()"/>
@@ -9621,9 +9704,13 @@
 				</fo:list-item-body>
 			</fo:list-item>
 		</fo:list-block>
-	</xsl:template><xsl:template name="extractSection">
+	</xsl:template>
+
+	<xsl:template name="extractSection">
 		<xsl:value-of select="*[local-name() = 'tab'][1]/preceding-sibling::node()"/>
-	</xsl:template><xsl:template name="extractTitle">
+	</xsl:template>
+
+	<xsl:template name="extractTitle">
 		<xsl:choose>
 				<xsl:when test="*[local-name() = 'tab']">
 					<xsl:apply-templates select="*[local-name() = 'tab'][1]/following-sibling::node()"/>
@@ -9632,57 +9719,90 @@
 					<xsl:apply-templates/>
 				</xsl:otherwise>
 			</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name() = 'fn']" mode="contents"/><xsl:template match="*[local-name() = 'fn']" mode="bookmarks"/><xsl:template match="*[local-name() = 'fn']" mode="contents_item"/><xsl:template match="*[local-name() = 'xref'] | *[local-name() = 'eref']" mode="contents">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'fn']" mode="contents"/>
+	<xsl:template match="*[local-name() = 'fn']" mode="bookmarks"/>
+
+	<xsl:template match="*[local-name() = 'fn']" mode="contents_item"/>
+
+	<xsl:template match="*[local-name() = 'xref'] | *[local-name() = 'eref']" mode="contents">
 		<xsl:value-of select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'review']" mode="contents_item"/><xsl:template match="*[local-name() = 'tab']" mode="contents_item">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'review']" mode="contents_item"/>
+
+	<xsl:template match="*[local-name() = 'tab']" mode="contents_item">
 		<xsl:text> </xsl:text>
-	</xsl:template><xsl:template match="*[local-name() = 'strong']" mode="contents_item">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'strong']" mode="contents_item">
 		<xsl:copy>
 			<xsl:apply-templates mode="contents_item"/>
-		</xsl:copy>		
-	</xsl:template><xsl:template match="*[local-name() = 'em']" mode="contents_item">
+		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'em']" mode="contents_item">
 		<xsl:copy>
 			<xsl:apply-templates mode="contents_item"/>
-		</xsl:copy>		
-	</xsl:template><xsl:template match="*[local-name() = 'stem']" mode="contents_item">
+		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'stem']" mode="contents_item">
 		<xsl:copy-of select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'br']" mode="contents_item">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'br']" mode="contents_item">
 		<xsl:text> </xsl:text>
-	</xsl:template><xsl:template match="*[local-name() = 'name']" mode="contents_item">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'name']" mode="contents_item">
 		<xsl:param name="mode">bookmarks</xsl:param>
 		<xsl:apply-templates mode="contents_item">
 			<xsl:with-param name="mode" select="$mode"/>
 		</xsl:apply-templates>
-	</xsl:template><xsl:template match="*[local-name() = 'add']" mode="contents_item">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'add']" mode="contents_item">
 		<xsl:param name="mode">bookmarks</xsl:param>
 		<xsl:choose>
 			<xsl:when test="starts-with(text(), $ace_tag)">
 				<xsl:if test="$mode = 'contents'">
 					<xsl:copy>
 						<xsl:apply-templates mode="contents_item"/>
-					</xsl:copy>		
+					</xsl:copy>
 				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise><xsl:apply-templates mode="contents_item"/></xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="text()" mode="contents_item">
+	</xsl:template>
+
+	<xsl:template match="text()" mode="contents_item">
 		<xsl:call-template name="keep_together_standard_number"/>
-	</xsl:template><xsl:template match="*[local-name() = 'span']" mode="contents_item">
+	</xsl:template>
+
+	<!-- Note: to enable the addition of character span markup with semantic styling for DIS Word output -->
+	<xsl:template match="*[local-name() = 'span']" mode="contents_item">
 		<xsl:apply-templates mode="contents_item"/>
-	</xsl:template><xsl:template match="*[local-name()='sourcecode']" name="sourcecode">
-	
+	</xsl:template>
+
+	<!-- ====== -->
+	<!-- sourcecode   -->
+	<!-- ====== -->
+	<xsl:template match="*[local-name()='sourcecode']" name="sourcecode">
+
 		<fo:block-container xsl:use-attribute-sets="sourcecode-container-style">
-		
+
 			<xsl:if test="not(ancestor::*[local-name() = 'li']) or ancestor::*[local-name() = 'example']">
 				<xsl:attribute name="margin-left">0mm</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:if test="ancestor::*[local-name() = 'example']">
 				<xsl:attribute name="margin-right">0mm</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:copy-of select="@id"/>
-			
+
 			<xsl:if test="parent::*[local-name() = 'note']">
 				<xsl:attribute name="margin-left">
 					<xsl:choose>
@@ -9690,38 +9810,22 @@
 						<xsl:otherwise><xsl:value-of select="$note-body-indent-table"/></xsl:otherwise>
 					</xsl:choose>
 				</xsl:attribute>
-				
+
 			</xsl:if>
 			<fo:block-container margin-left="0mm">
-		
-				
-				
-				
-				
+
 				<fo:block xsl:use-attribute-sets="sourcecode-style">
 					<xsl:variable name="_font-size">
-						
-												
-						
-						
-						
+
 						<!-- 9 -->
-						
-						
+
 						<!-- <xsl:if test="$namespace = 'ieee'">							
 							<xsl:if test="$current_template = 'standard'">8</xsl:if>
 						</xsl:if> -->
-						
-								
-						
-						
-						
-												
-						
-								
+
 				</xsl:variable>
-				
-				<xsl:variable name="font-size" select="normalize-space($_font-size)"/>		
+
+				<xsl:variable name="font-size" select="normalize-space($_font-size)"/>
 				<xsl:if test="$font-size != ''">
 					<xsl:attribute name="font-size">
 						<xsl:choose>
@@ -9732,23 +9836,17 @@
 						</xsl:choose>
 					</xsl:attribute>
 				</xsl:if>
-				
-				
-				
-				
-				
+
 				<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 			</fo:block>
-			
-			
+
 					<xsl:apply-templates select="*[local-name()='name']"/> <!-- show sourcecode's name AFTER content -->
-				
-				
-			
-				
+
 			</fo:block-container>
 		</fo:block-container>
-	</xsl:template><xsl:template match="*[local-name()='sourcecode']/text()" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='sourcecode']/text()" priority="2">
 		<xsl:choose>
 			<xsl:when test="normalize-space($syntax-highlight) = 'true' and normalize-space(../@lang) != ''"> <!-- condition for turn on of highlighting -->
 				<xsl:variable name="syntax" select="java:org.metanorma.fop.Util.syntaxHighlight(., ../@lang)"/>
@@ -9765,8 +9863,10 @@
 				<xsl:call-template name="add_spaces_to_sourcecode"/>
 			</xsl:otherwise>
 		</xsl:choose>
-		
-	</xsl:template><xsl:template name="add_spaces_to_sourcecode">
+
+	</xsl:template>
+
+	<xsl:template name="add_spaces_to_sourcecode">
 		<xsl:variable name="text_step1">
 			<xsl:call-template name="add-zero-spaces-equal"/>
 		</xsl:variable>
@@ -9775,12 +9875,12 @@
 				<xsl:with-param name="text" select="$text_step1"/>
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<!-- <xsl:value-of select="$text_step2"/> -->
-		
+
 		<!-- add zero-width space after space -->
 		<xsl:variable name="text_step3" select="java:replaceAll(java:java.lang.String.new($text_step2),' ',' ​')"/>
-		
+
 		<!-- split text by zero-width space -->
 		<xsl:variable name="text_step4">
 			<xsl:call-template name="split_for_interspers">
@@ -9788,7 +9888,7 @@
 				<xsl:with-param name="sep" select="$zero_width_space"/>
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<xsl:for-each select="xalan:nodeset($text_step4)/node()">
 			<xsl:choose>
 				<xsl:when test="local-name() = 'interspers'"> <!-- word with length more than 30 will be interspersed with zero-width space -->
@@ -9801,8 +9901,13 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
-		
-	</xsl:template><xsl:variable name="interspers_tag_open">###interspers123###</xsl:variable><xsl:variable name="interspers_tag_close">###/interspers123###</xsl:variable><xsl:template name="split_for_interspers">
+
+	</xsl:template> <!-- add_spaces_to_sourcecode -->
+
+	<xsl:variable name="interspers_tag_open">###interspers123###</xsl:variable>
+	<xsl:variable name="interspers_tag_close">###/interspers123###</xsl:variable>
+	<!-- split string by separator for interspers -->
+	<xsl:template name="split_for_interspers">
 		<xsl:param name="pText" select="."/>
 		<xsl:param name="sep" select="','"/>
 		<!-- word with length more than 30 will be interspersed with zero-width space -->
@@ -9811,7 +9916,9 @@
 		<xsl:call-template name="replace_tag_interspers">
 			<xsl:with-param name="text" select="$text"/>
 		</xsl:call-template>
-	</xsl:template><xsl:template name="replace_tag_interspers">
+	</xsl:template> <!-- end: split string by separator for interspers -->
+
+	<xsl:template name="replace_tag_interspers">
 		<xsl:param name="text"/>
 		<xsl:choose>
 			<xsl:when test="contains($text, $interspers_tag_open)">
@@ -9826,29 +9933,38 @@
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$text"/></xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="interspers">
+	</xsl:template>
+
+	<!-- insert 'char' between each character in the string -->
+	<xsl:template name="interspers">
 		<xsl:param name="str"/>
 		<xsl:param name="char" select="$zero_width_space"/>
 		<xsl:if test="$str != ''">
 			<xsl:value-of select="substring($str, 1, 1)"/>
-			
+
 			<xsl:variable name="next_char" select="substring($str, 2, 1)"/>
 			<xsl:if test="not(contains(concat(' -.:=_— ', $char), $next_char))">
 				<xsl:value-of select="$char"/>
 			</xsl:if>
-			
+
 			<xsl:call-template name="interspers">
 				<xsl:with-param name="str" select="substring($str, 2)"/>
 				<xsl:with-param name="char" select="$char"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:template><xsl:template name="interspers-java">
+	</xsl:template>
+
+	<xsl:template name="interspers-java">
 		<xsl:param name="str"/>
 		<xsl:param name="char" select="$zero_width_space"/>
 		<xsl:value-of select="java:replaceAll(java:java.lang.String.new($str),'([^ -.:=_—])',concat('$1', $char))"/> <!-- insert $char after each char excep space, - . : = _ etc. -->
-	</xsl:template><xsl:template match="*" mode="syntax_highlight">
+	</xsl:template>
+
+	<xsl:template match="*" mode="syntax_highlight">
 		<xsl:apply-templates mode="syntax_highlight"/>
-	</xsl:template><xsl:variable name="syntax_highlight_styles_">
+	</xsl:template>
+
+	<xsl:variable name="syntax_highlight_styles_">
 		<style class="hljs-addition" xsl:use-attribute-sets="hljs-addition"/>
 		<style class="hljs-attr" xsl:use-attribute-sets="hljs-attr"/>
 		<style class="hljs-attribute" xsl:use-attribute-sets="hljs-attribute"/>
@@ -9884,7 +10000,7 @@
 		<style class="hljs-string" xsl:use-attribute-sets="hljs-string"/>
 		<style class="hljs-strong" xsl:use-attribute-sets="hljs-strong"/>
 		<style class="hljs-subst" xsl:use-attribute-sets="hljs-subst"/>
-		<style class="hljs-symbol" xsl:use-attribute-sets="hljs-symbol"/>		
+		<style class="hljs-symbol" xsl:use-attribute-sets="hljs-symbol"/>
 		<style class="hljs-tag" xsl:use-attribute-sets="hljs-tag"/>
 		<!-- <style class="hljs-tag_hljs-attr" xsl:use-attribute-sets="hljs-tag_hljs-attr"></style> -->
 		<!-- <style class="hljs-tag_hljs-name" xsl:use-attribute-sets="hljs-tag_hljs-name"></style> -->
@@ -9897,7 +10013,10 @@
 		<style class="hljs-type" xsl:use-attribute-sets="hljs-type"/>
 		<style class="hljs-variable" xsl:use-attribute-sets="hljs-variable"/>
 		<style class="hljs-variable_and_language_" xsl:use-attribute-sets="hljs-variable_and_language_"/>
-	</xsl:variable><xsl:variable name="syntax_highlight_styles" select="xalan:nodeset($syntax_highlight_styles_)"/><xsl:template match="span" mode="syntax_highlight" priority="2">
+	</xsl:variable>
+	<xsl:variable name="syntax_highlight_styles" select="xalan:nodeset($syntax_highlight_styles_)"/>
+
+	<xsl:template match="span" mode="syntax_highlight" priority="2">
 		<!-- <fo:inline color="green" font-style="italic"><xsl:apply-templates mode="syntax_highlight"/></fo:inline> -->
 		<fo:inline>
 			<xsl:variable name="classes_">
@@ -9930,14 +10049,14 @@
 				</xsl:if>
 			</xsl:variable>
 			<xsl:variable name="classes" select="xalan:nodeset($classes_)"/>
-			
+
 			<xsl:for-each select="$classes/item">
 				<xsl:variable name="class_name" select="."/>
 				<xsl:for-each select="$syntax_highlight_styles/style[@class = $class_name]/@*[not(local-name() = 'class')]">
 					<xsl:attribute name="{local-name()}"><xsl:value-of select="."/></xsl:attribute>
 				</xsl:for-each>
 			</xsl:for-each>
-			
+
 			<!-- <xsl:variable name="class_name">
 				<xsl:choose>
 					<xsl:when test="@class = 'hljs-attr' and ancestor::*/@class = 'hljs-tag'">hljs-tag_hljs-attr</xsl:when>
@@ -9949,105 +10068,177 @@
 			<xsl:for-each select="$syntax_highlight_styles/style[@class = $class_name]/@*[not(local-name() = 'class')]">
 				<xsl:attribute name="{local-name()}"><xsl:value-of select="."/></xsl:attribute>
 			</xsl:for-each> -->
-			
+
 		<xsl:apply-templates mode="syntax_highlight"/></fo:inline>
-	</xsl:template><xsl:template match="text()" mode="syntax_highlight" priority="2">
+	</xsl:template>
+
+	<xsl:template match="text()" mode="syntax_highlight" priority="2">
 		<xsl:call-template name="add_spaces_to_sourcecode"/>
-	</xsl:template><xsl:template match="*[local-name() = 'sourcecode']/*[local-name() = 'name']">
-		<xsl:if test="normalize-space() != ''">		
-			<fo:block xsl:use-attribute-sets="sourcecode-name-style">				
+	</xsl:template>
+
+	<!-- end mode="syntax_highlight" -->
+
+	<xsl:template match="*[local-name() = 'sourcecode']/*[local-name() = 'name']">
+		<xsl:if test="normalize-space() != ''">
+			<fo:block xsl:use-attribute-sets="sourcecode-name-style">
 				<xsl:apply-templates/>
 			</fo:block>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'permission']">
-		<fo:block id="{@id}" xsl:use-attribute-sets="permission-style">			
+	</xsl:template>
+	<!-- ====== -->
+	<!-- ====== -->
+
+	<!-- ========== -->
+	<!-- permission -->
+	<!-- ========== -->
+	<xsl:template match="*[local-name() = 'permission']">
+		<fo:block id="{@id}" xsl:use-attribute-sets="permission-style">
 			<xsl:apply-templates select="*[local-name()='name']"/>
 			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'permission']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'permission']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="permission-name-style">
 				<xsl:apply-templates/>
-				
+
 			</fo:block>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'permission']/*[local-name() = 'label']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'permission']/*[local-name() = 'label']">
 		<fo:block xsl:use-attribute-sets="permission-label-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'requirement']">
-		<fo:block id="{@id}" xsl:use-attribute-sets="requirement-style">			
+	</xsl:template>
+	<!-- ========== -->
+	<!-- ========== -->
+
+	<!-- ========== -->
+	<!-- requirement -->
+<!-- ========== -->
+	<xsl:template match="*[local-name() = 'requirement']">
+		<fo:block id="{@id}" xsl:use-attribute-sets="requirement-style">
 			<xsl:apply-templates select="*[local-name()='name']"/>
 			<xsl:apply-templates select="*[local-name()='label']"/>
 			<xsl:apply-templates select="@obligation"/>
 			<xsl:apply-templates select="*[local-name()='subject']"/>
 			<xsl:apply-templates select="node()[not(local-name() = 'name') and not(local-name() = 'label') and not(local-name() = 'subject')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="requirement-name-style">
-				
+
 				<xsl:apply-templates/>
-				
+
 			</fo:block>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'label']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'label']">
 		<fo:block xsl:use-attribute-sets="requirement-label-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'requirement']/@obligation">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'requirement']/@obligation">
 			<fo:block>
 				<fo:inline padding-right="3mm">Obligation</fo:inline><xsl:value-of select="."/>
 			</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'subject']" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'requirement']/*[local-name() = 'subject']" priority="2">
 		<fo:block xsl:use-attribute-sets="subject-style">
 			<xsl:text>Target Type </xsl:text><xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'recommendation']">
-		<fo:block id="{@id}" xsl:use-attribute-sets="recommendation-style">			
+	</xsl:template>
+
+	<!-- ========== -->
+	<!-- ========== -->
+
+	<!-- ========== -->
+	<!-- recommendation -->
+	<!-- ========== -->
+	<xsl:template match="*[local-name() = 'recommendation']">
+		<fo:block id="{@id}" xsl:use-attribute-sets="recommendation-style">
 			<xsl:apply-templates select="*[local-name()='name']"/>
 			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'recommendation']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'recommendation']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<fo:block xsl:use-attribute-sets="recommendation-name-style">
 				<xsl:apply-templates/>
-				
+
 			</fo:block>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'recommendation']/*[local-name() = 'label']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'recommendation']/*[local-name() = 'label']">
 		<fo:block xsl:use-attribute-sets="recommendation-label-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'subject']">
+	</xsl:template>
+	<!-- ========== -->
+	<!-- END recommendation -->
+	<!-- ========== -->
+
+	<!-- ========== -->
+	<!-- ========== -->
+
+	<xsl:template match="*[local-name() = 'subject']">
 		<fo:block xsl:use-attribute-sets="subject-style">
 			<xsl:text>Target Type </xsl:text><xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'inherit'] | *[local-name() = 'component'][@class = 'inherit']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'inherit'] | *[local-name() = 'component'][@class = 'inherit']">
 		<fo:block xsl:use-attribute-sets="inherit-style">
 			<xsl:text>Dependency </xsl:text><xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'description'] | *[local-name() = 'component'][@class = 'description']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'description'] | *[local-name() = 'component'][@class = 'description']">
 		<fo:block xsl:use-attribute-sets="description-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'specification'] | *[local-name() = 'component'][@class = 'specification']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'specification'] | *[local-name() = 'component'][@class = 'specification']">
 		<fo:block xsl:use-attribute-sets="specification-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'measurement-target'] | *[local-name() = 'component'][@class = 'measurement-target']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'measurement-target'] | *[local-name() = 'component'][@class = 'measurement-target']">
 		<fo:block xsl:use-attribute-sets="measurement-target-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'verification'] | *[local-name() = 'component'][@class = 'verification']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'verification'] | *[local-name() = 'component'][@class = 'verification']">
 		<fo:block xsl:use-attribute-sets="verification-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'import'] | *[local-name() = 'component'][@class = 'import']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'import'] | *[local-name() = 'component'][@class = 'import']">
 		<fo:block xsl:use-attribute-sets="import-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']">
+	</xsl:template>
+	<!-- ========== -->
+	<!-- END  -->
+	<!-- ========== -->
+
+	<!-- ========== -->
+	<!-- requirement, recommendation, permission table -->
+	<!-- ========== -->
+	<xsl:template match="*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']">
 		<fo:block-container margin-left="0mm" margin-right="0mm" margin-bottom="12pt">
 			<xsl:if test="ancestor::*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']">
 				<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
@@ -10057,11 +10248,11 @@
 					<xsl:if test="ancestor::*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']">
 						<!-- <xsl:attribute name="border">0.5pt solid black</xsl:attribute> -->
 					</xsl:if>
-					<xsl:variable name="simple-table">	
+					<xsl:variable name="simple-table">
 						<xsl:call-template name="getSimpleTable">
 							<xsl:with-param name="id" select="@id"/>
 						</xsl:call-template>
-					</xsl:variable>					
+					</xsl:variable>
 					<xsl:variable name="cols-count" select="count(xalan:nodeset($simple-table)//tr[1]/td)"/>
 					<xsl:if test="$cols-count = 2 and not(ancestor::*[local-name()='table'])">
 						<fo:table-column column-width="30%"/>
@@ -10079,16 +10270,22 @@
 				</xsl:if>
 			</fo:block-container>
 		</fo:block-container>
-	</xsl:template><xsl:template match="*[local-name()='thead']" mode="requirement">		
-		<fo:table-header>			
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='thead']" mode="requirement">
+		<fo:table-header>
 			<xsl:apply-templates mode="requirement"/>
 		</fo:table-header>
-	</xsl:template><xsl:template match="*[local-name()='tbody']" mode="requirement">		
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='tbody']" mode="requirement">
 		<fo:table-body>
 			<xsl:apply-templates mode="requirement"/>
 		</fo:table-body>
-	</xsl:template><xsl:template match="*[local-name()='tr']" mode="requirement">
-		<fo:table-row height="7mm" border-bottom="0.5pt solid grey">			
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='tr']" mode="requirement">
+		<fo:table-row height="7mm" border-bottom="0.5pt solid grey">
 			<xsl:if test="parent::*[local-name()='thead']"> <!-- and not(ancestor::*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']) -->
 				<xsl:attribute name="background-color">rgb(33, 55, 92)</xsl:attribute>
 			</xsl:if>
@@ -10100,19 +10297,23 @@
 			</xsl:if>
 			<xsl:apply-templates mode="requirement"/>
 		</fo:table-row>
-	</xsl:template><xsl:template match="*[local-name()='th']" mode="requirement">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='th']" mode="requirement">
 		<fo:table-cell text-align="{@align}" display-align="center" padding="1mm" padding-left="2mm"> <!-- border="0.5pt solid black" -->
 			<xsl:call-template name="setTextAlignment">
 				<xsl:with-param name="default">left</xsl:with-param>
 			</xsl:call-template>
-			
+
 			<xsl:call-template name="setTableCellAttributes"/>
-			
+
 			<fo:block>
 				<xsl:apply-templates/>
 			</fo:block>
 		</fo:table-cell>
-	</xsl:template><xsl:template match="*[local-name()='td']" mode="requirement">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='td']" mode="requirement">
 		<fo:table-cell text-align="{@align}" display-align="center" padding="1mm" padding-left="2mm"> <!-- border="0.5pt solid black" -->
 			<xsl:if test="*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']">
 				<xsl:attribute name="padding">0mm</xsl:attribute>
@@ -10121,48 +10322,62 @@
 			<xsl:call-template name="setTextAlignment">
 				<xsl:with-param name="default">left</xsl:with-param>
 			</xsl:call-template>
-			
+
 			<xsl:if test="following-sibling::*[local-name()='td'] and not(preceding-sibling::*[local-name()='td'])">
 				<xsl:attribute name="font-weight">bold</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:call-template name="setTableCellAttributes"/>
-			
-			<fo:block>			
+
+			<fo:block>
 				<xsl:apply-templates/>
-			</fo:block>			
+			</fo:block>
 		</fo:table-cell>
-	</xsl:template><xsl:template match="*[local-name() = 'p'][@class='RecommendationTitle' or @class = 'RecommendationTestTitle']" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'p'][@class='RecommendationTitle' or @class = 'RecommendationTestTitle']" priority="2">
 		<fo:block font-size="11pt">
-			
+
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'p2'][ancestor::*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']]">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'p2'][ancestor::*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']]">
 		<fo:block>
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'termexample']">
-		<fo:block id="{@id}" xsl:use-attribute-sets="termexample-style">			
+	</xsl:template>
+	<!-- ========== -->
+	<!-- END requirement, recommendation, permission table -->
+	<!-- ========== -->
+
+	<!-- ====== -->
+	<!-- termexample -->
+	<!-- ====== -->
+	<xsl:template match="*[local-name() = 'termexample']">
+		<fo:block id="{@id}" xsl:use-attribute-sets="termexample-style">
 			<xsl:apply-templates select="*[local-name()='name']"/>
 			<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'termexample']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'termexample']/*[local-name() = 'name']">
 		<xsl:if test="normalize-space() != ''">
 			<fo:inline xsl:use-attribute-sets="termexample-name-style">
 				<xsl:apply-templates/>
 			</fo:inline>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'termexample']/*[local-name() = 'p']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'termexample']/*[local-name() = 'p']">
 		<xsl:variable name="element">inline
-			
-			
-		</xsl:variable>		
-		<xsl:choose>			
+
+
+		</xsl:variable>
+		<xsl:choose>
 			<xsl:when test="contains($element, 'block')">
 				<fo:block xsl:use-attribute-sets="example-p-style">
-				
-					
-						
+
 					<xsl:apply-templates/>
 				</fo:block>
 			</xsl:when>
@@ -10170,41 +10385,57 @@
 				<fo:inline><xsl:apply-templates/></fo:inline>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name() = 'example']">
-		
+	</xsl:template>
+	<!-- ====== -->
+	<!-- ====== -->
+
+	<!-- ====== -->
+	<!-- example -->
+	<!-- ====== -->
+
+	<!-- There are a few cases:
+	1. EXAMPLE text
+	2. EXAMPLE
+	        text
+	3. EXAMPLE text line 1
+	     text line 2
+	4. EXAMPLE
+	     text line 1
+			 text line 2
+	-->
+	<xsl:template match="*[local-name() = 'example']">
+
 		<fo:block-container id="{@id}" xsl:use-attribute-sets="example-style">
-		
-			
-		
+
 			<xsl:variable name="fo_element">
-				<xsl:if test=".//*[local-name() = 'table'] or .//*[local-name() = 'dl'] or *[not(local-name() = 'name')][1][local-name() = 'sourcecode']">block</xsl:if> 
+				<xsl:if test=".//*[local-name() = 'table'] or .//*[local-name() = 'dl'] or *[not(local-name() = 'name')][1][local-name() = 'sourcecode']">block</xsl:if>
 				block
 			</xsl:variable>
-			
+
 			<fo:block-container margin-left="0mm">
-			
+
 				<xsl:choose>
-					
+
 					<xsl:when test="contains(normalize-space($fo_element), 'block')">
-					
+
 						<!-- display name 'EXAMPLE' in a separate block  -->
 						<fo:block>
 							<xsl:apply-templates select="*[local-name()='name']">
 								<xsl:with-param name="fo_element" select="$fo_element"/>
 							</xsl:apply-templates>
 						</fo:block>
-						
+
 						<fo:block-container xsl:use-attribute-sets="example-body-style">
-							<fo:block-container margin-left="0mm" margin-right="0mm"> 
+							<fo:block-container margin-left="0mm" margin-right="0mm">
 								<xsl:apply-templates select="node()[not(local-name() = 'name')]">
 									<xsl:with-param name="fo_element" select="$fo_element"/>
 								</xsl:apply-templates>
 							</fo:block-container>
 						</fo:block-container>
 					</xsl:when> <!-- end block -->
-					
+
 					<xsl:otherwise> <!-- inline -->
-					
+
 						<!-- display 'EXAMPLE' and first element in the same line -->
 						<fo:block>
 							<xsl:apply-templates select="*[local-name()='name']">
@@ -10215,8 +10446,8 @@
 									<xsl:with-param name="fo_element" select="$fo_element"/>
 								</xsl:apply-templates>
 							</fo:inline>
-						</fo:block> 
-						
+						</fo:block>
+
 						<xsl:if test="*[not(local-name() = 'name')][position() &gt; 1]">
 							<!-- display further elements in blocks -->
 							<fo:block-container xsl:use-attribute-sets="example-body-style">
@@ -10228,13 +10459,15 @@
 							</fo:block-container>
 						</xsl:if>
 					</xsl:otherwise> <!-- end inline -->
-					
+
 				</xsl:choose>
 			</fo:block-container>
 		</fo:block-container>
-	</xsl:template><xsl:template match="*[local-name() = 'example']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'example']/*[local-name() = 'name']">
 		<xsl:param name="fo_element">block</xsl:param>
-	
+
 		<xsl:choose>
 			<xsl:when test="ancestor::*[local-name() = 'appendix']">
 				<fo:inline>
@@ -10253,15 +10486,17 @@
 			</xsl:otherwise>
 		</xsl:choose>
 
-	</xsl:template><xsl:template match="*[local-name() = 'example']/*[local-name() = 'p']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'example']/*[local-name() = 'p']">
 		<xsl:param name="fo_element">block</xsl:param>
-		
+
 		<xsl:variable name="num"><xsl:number/></xsl:variable>
 		<xsl:variable name="element">
-			
+
 			<xsl:value-of select="$fo_element"/>
-		</xsl:variable>		
-		<xsl:choose>			
+		</xsl:variable>
+		<xsl:choose>
 			<xsl:when test="starts-with(normalize-space($element), 'block')">
 				<fo:block-container>
 					<xsl:if test="ancestor::*[local-name() = 'li'] and contains(normalize-space($fo_element), 'block')">
@@ -10269,24 +10504,30 @@
 						<xsl:attribute name="margin-right">0mm</xsl:attribute>
 					</xsl:if>
 					<fo:block xsl:use-attribute-sets="example-p-style">
-						
-						
+
 						<xsl:apply-templates/>
 					</fo:block>
 				</fo:block-container>
 			</xsl:when>
 			<xsl:otherwise>
 				<fo:inline xsl:use-attribute-sets="example-p-style">
-					<xsl:apply-templates/>					
+					<xsl:apply-templates/>
 				</fo:inline>
 			</xsl:otherwise>
-		</xsl:choose>	
-	</xsl:template><xsl:template match="*[local-name() = 'termsource']" name="termsource">
+		</xsl:choose>
+	</xsl:template> <!-- example/p -->
+	<!-- ====== -->
+	<!-- ====== -->
+
+	<!-- ====== -->
+	<!-- termsource -->
+	<!-- origin -->
+	<!-- modification -->
+	<!-- ====== -->
+	<xsl:template match="*[local-name() = 'termsource']" name="termsource">
 		<fo:block xsl:use-attribute-sets="termsource-style">
-			
-			
-			
-			<!-- Example: [SOURCE: ISO 5127:2017, 3.1.6.02] -->			
+
+			<!-- Example: [SOURCE: ISO 5127:2017, 3.1.6.02] -->
 			<xsl:variable name="termsource_text">
 				<xsl:apply-templates/>
 			</xsl:variable>
@@ -10318,17 +10559,26 @@
 				</xsl:otherwise>
 			</xsl:choose> -->
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'termsource']/text()[starts-with(., '[SOURCE: Adapted from: ') or     starts-with(., '[SOURCE: Quoted from: ') or     starts-with(., '[SOURCE: Modified from: ')]" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'termsource']/text()[starts-with(., '[SOURCE: Adapted from: ') or     starts-with(., '[SOURCE: Quoted from: ') or     starts-with(., '[SOURCE: Modified from: ')]" priority="2">
 		<xsl:text>[</xsl:text><xsl:value-of select="substring-after(., '[SOURCE: ')"/>
-	</xsl:template><xsl:template match="*[local-name() = 'termsource']/text()">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'termsource']/text()">
 		<xsl:if test="normalize-space() != ''">
 			<xsl:value-of select="."/>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'termsource']/*[local-name() = 'strong'][1][following-sibling::*[1][local-name() = 'origin']]/text()">
+	</xsl:template>
+
+	<!-- text SOURCE: -->
+	<xsl:template match="*[local-name() = 'termsource']/*[local-name() = 'strong'][1][following-sibling::*[1][local-name() = 'origin']]/text()">
 		<fo:inline xsl:use-attribute-sets="termsource-text-style">
 			<xsl:value-of select="."/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'origin']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'origin']">
 		<fo:basic-link internal-destination="{@bibitemid}" fox:alt-text="{@citeas}">
 			<xsl:if test="normalize-space(@citeas) = ''">
 				<xsl:attribute name="fox:alt-text"><xsl:value-of select="@bibitemid"/></xsl:attribute>
@@ -10337,38 +10587,54 @@
 				<xsl:apply-templates/>
 			</fo:inline>
 		</fo:basic-link>
-	</xsl:template><xsl:template match="*[local-name() = 'modification']">
+	</xsl:template>
+
+	<!-- not using, see https://github.com/glossarist/iev-document/issues/23 -->
+	<xsl:template match="*[local-name() = 'modification']">
 		<xsl:variable name="title-modified">
 			<xsl:call-template name="getLocalizedString">
 				<xsl:with-param name="key">modified</xsl:with-param>
 			</xsl:call-template>
 		</xsl:variable>
-		
+
     <xsl:variable name="text"><xsl:apply-templates/></xsl:variable>
 		<xsl:choose>
 			<xsl:when test="$lang = 'zh'"><xsl:text>、</xsl:text><xsl:value-of select="$title-modified"/><xsl:if test="normalize-space($text) != ''"><xsl:text>—</xsl:text></xsl:if></xsl:when>
 			<xsl:otherwise><xsl:text>, </xsl:text><xsl:value-of select="$title-modified"/><xsl:if test="normalize-space($text) != ''"><xsl:text> — </xsl:text></xsl:if></xsl:otherwise>
 		</xsl:choose>
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name() = 'modification']/*[local-name() = 'p']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'modification']/*[local-name() = 'p']">
 		<fo:inline><xsl:apply-templates/></fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'modification']/text()">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'modification']/text()">
 		<xsl:if test="normalize-space() != ''">
 			<!-- <xsl:value-of select="."/> -->
 			<xsl:call-template name="text"/>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'quote']">		
+	</xsl:template>
+
+	<!-- ====== -->
+	<!-- ====== -->
+
+	<!-- ====== -->
+	<!-- qoute -->
+	<!-- source -->
+	<!-- author  -->
+	<!-- ====== -->
+	<xsl:template match="*[local-name() = 'quote']">
 		<fo:block-container margin-left="0mm">
 			<xsl:if test="parent::*[local-name() = 'note']">
 				<xsl:if test="not(ancestor::*[local-name() = 'table'])">
 					<xsl:attribute name="margin-left">5mm</xsl:attribute>
 				</xsl:if>
 			</xsl:if>
-			
-			
+
 			<fo:block-container margin-left="0mm">
 				<fo:block-container xsl:use-attribute-sets="quote-style">
-					
+
 					<fo:block-container margin-left="0mm" margin-right="0mm">
 						<fo:block role="BlockQuote">
 							<xsl:apply-templates select="./node()[not(local-name() = 'author') and not(local-name() = 'source')]"/> <!-- process all nested nodes, except author and source -->
@@ -10379,34 +10645,51 @@
 					<fo:block xsl:use-attribute-sets="quote-source-style">
 						<!-- — ISO, ISO 7301:2011, Clause 1 -->
 						<xsl:apply-templates select="*[local-name() = 'author']"/>
-						<xsl:apply-templates select="*[local-name() = 'source']"/>				
+						<xsl:apply-templates select="*[local-name() = 'source']"/>
 					</fo:block>
 				</xsl:if>
-				
+
 			</fo:block-container>
 		</fo:block-container>
-	</xsl:template><xsl:template match="*[local-name() = 'source']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'source']">
 		<xsl:if test="../*[local-name() = 'author']">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
 		<fo:basic-link internal-destination="{@bibitemid}" fox:alt-text="{@citeas}">
 			<xsl:apply-templates/>
 		</fo:basic-link>
-	</xsl:template><xsl:template match="*[local-name() = 'author']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'author']">
 		<xsl:text>— </xsl:text>
 		<xsl:apply-templates/>
-	</xsl:template><xsl:variable name="bibitems_">
+	</xsl:template>
+	<!-- ====== -->
+	<!-- ====== -->
+
+	<xsl:variable name="bibitems_">
 		<xsl:for-each select="//*[local-name() = 'bibitem']">
 			<xsl:copy-of select="."/>
 		</xsl:for-each>
-	</xsl:variable><xsl:variable name="bibitems" select="xalan:nodeset($bibitems_)"/><xsl:variable name="bibitems_hidden_">
+	</xsl:variable>
+	<xsl:variable name="bibitems" select="xalan:nodeset($bibitems_)"/>
+
+	<!-- get all hidden bibitems to exclude them from eref/origin processing -->
+	<xsl:variable name="bibitems_hidden_">
 		<xsl:for-each select="//*[local-name() = 'bibitem'][@hidden='true']">
 			<xsl:copy-of select="."/>
 		</xsl:for-each>
 		<xsl:for-each select="//*[local-name() = 'references'][@hidden='true']//*[local-name() = 'bibitem']">
 			<xsl:copy-of select="."/>
 		</xsl:for-each>
-	</xsl:variable><xsl:variable name="bibitems_hidden" select="xalan:nodeset($bibitems_hidden_)"/><xsl:template match="*[local-name() = 'eref']">
+	</xsl:variable>
+	<xsl:variable name="bibitems_hidden" select="xalan:nodeset($bibitems_hidden_)"/>
+	<!-- ====== -->
+	<!-- eref -->
+	<!-- ====== -->
+	<xsl:template match="*[local-name() = 'eref']">
 		<xsl:variable name="current_bibitemid" select="@bibitemid"/>
 		<!-- <xsl:variable name="external-destination" select="normalize-space(key('bibitems', $current_bibitemid)/*[local-name() = 'uri'][@type = 'citation'])"/> -->
 		<xsl:variable name="external-destination" select="normalize-space($bibitems/*[local-name() ='bibitem'][@id = $current_bibitemid]/*[local-name() = 'uri'][@type = 'citation'])"/>
@@ -10419,35 +10702,29 @@
 						<xsl:attribute name="keep-with-previous.within-line">always</xsl:attribute>
 						<xsl:attribute name="vertical-align">super</xsl:attribute>
 						<xsl:attribute name="font-size">80%</xsl:attribute>
-						
-					</xsl:if>	
-					
+
+					</xsl:if>
+
 					<xsl:variable name="citeas" select="java:replaceAll(java:java.lang.String.new(@citeas),'^\[?(.+?)\]?$','$1')"/> <!-- remove leading and trailing brackets -->
 					<xsl:variable name="text" select="normalize-space()"/>
-					
-					
-					
-					
-					
+
 					<fo:basic-link fox:alt-text="{@citeas}">
 						<xsl:if test="normalize-space(@citeas) = ''">
 							<xsl:attribute name="fox:alt-text"><xsl:value-of select="."/></xsl:attribute>
 						</xsl:if>
 						<xsl:if test="@type = 'inline'">
-							
+
 								<xsl:attribute name="color">blue</xsl:attribute>
 								<xsl:attribute name="text-decoration">underline</xsl:attribute>
-							
-							
+
 								<xsl:if test="parent::*[local-name() = 'title']">
 									<xsl:attribute name="color">inherit</xsl:attribute>
 									<xsl:attribute name="text-decoration">inherit</xsl:attribute>
 									<xsl:attribute name="font-weight">normal</xsl:attribute>
 								</xsl:if>
-							
-							
+
 						</xsl:if>
-						
+
 						<xsl:choose>
 							<xsl:when test="$external-destination != ''"> <!-- external hyperlink -->
 								<xsl:attribute name="external-destination"><xsl:value-of select="$external-destination"/></xsl:attribute>
@@ -10456,14 +10733,14 @@
 								<xsl:attribute name="internal-destination"><xsl:value-of select="@bibitemid"/></xsl:attribute>
 							</xsl:otherwise>
 						</xsl:choose>
-						
+
 						<xsl:apply-templates/>
 					</fo:basic-link>
-					
+
 				</fo:inline>
 			</xsl:when>
 			<xsl:otherwise> <!-- if there is key('bibitems_hidden', $current_bibitemid) -->
-			
+
 				<!-- if in bibitem[@hidden='true'] there is url[@type='src'], then create hyperlink  -->
 				<xsl:variable name="uri_src" select="normalize-space($bibitems_hidden/*[local-name() ='bibitem'][@id = $current_bibitemid]/*[local-name() = 'uri'][@type = 'src'])"/>
 				<xsl:choose>
@@ -10472,45 +10749,32 @@
 					</xsl:when>
 					<xsl:otherwise><fo:inline><xsl:apply-templates/></fo:inline></xsl:otherwise>
 				</xsl:choose>
-				
+
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name() = 'tab']">
+	</xsl:template>
+	<!-- ====== -->
+	<!-- END eref -->
+	<!-- ====== -->
+
+	<!-- Tabulation processing -->
+	<xsl:template match="*[local-name() = 'tab']">
 		<!-- zero-space char -->
 		<xsl:variable name="depth">
 			<xsl:call-template name="getLevel">
 				<xsl:with-param name="depth" select="../@depth"/>
 			</xsl:call-template>
 		</xsl:variable>
-		
+
 		<xsl:variable name="padding">
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+
 				<xsl:choose>
 					<xsl:when test="ancestor::bipm:annex">2</xsl:when>
 					<xsl:otherwise>8</xsl:otherwise>
 				</xsl:choose>
-			
+
 		</xsl:variable>
-		
+
 		<xsl:variable name="padding-right">
 			<xsl:choose>
 				<xsl:when test="normalize-space($padding) = ''">0</xsl:when>
@@ -10519,7 +10783,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:choose>
 			<xsl:when test="$lang = 'zh'">
 				<fo:inline><xsl:value-of select="$tab_zh"/></fo:inline>
@@ -10536,8 +10800,10 @@
 				<fo:inline padding-right="{$padding-right}mm"><xsl:value-of select="$direction"/>​</fo:inline>
 			</xsl:otherwise>
 		</xsl:choose>
-		
-	</xsl:template><xsl:template name="insertNonBreakSpaces">
+
+	</xsl:template> <!-- tab -->
+
+	<xsl:template name="insertNonBreakSpaces">
 		<xsl:param name="count"/>
 		<xsl:if test="$count &gt; 0">
 			<xsl:text> </xsl:text>
@@ -10545,7 +10811,10 @@
 				<xsl:with-param name="count" select="$count - 1"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'preferred']">
+	</xsl:template>
+
+	<!-- Preferred, admitted, deprecated -->
+	<xsl:template match="*[local-name() = 'preferred']">
 		<xsl:variable name="level">
 			<xsl:call-template name="getLevel"/>
 		</xsl:variable>
@@ -10556,28 +10825,32 @@
 			<xsl:call-template name="getLevelTermName"/>
 		</xsl:variable>
 		<fo:block font-size="{normalize-space($font-size)}" role="H{$levelTerm}" xsl:use-attribute-sets="preferred-block-style">
-		
-			
-			
+
 			<xsl:if test="parent::*[local-name() = 'term'] and not(preceding-sibling::*[local-name() = 'preferred'])"> <!-- if first preffered in term, then display term's name -->
 				<fo:block xsl:use-attribute-sets="term-name-style">
 					<xsl:apply-templates select="ancestor::*[local-name() = 'term'][1]/*[local-name() = 'name']"/>
 				</fo:block>
 			</xsl:if>
-			
+
 			<fo:block xsl:use-attribute-sets="preferred-term-style">
 				<xsl:call-template name="setStyle_preferred"/>
 				<xsl:apply-templates/>
 			</fo:block>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'domain']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'domain']">
 		<fo:inline xsl:use-attribute-sets="domain-style">&lt;<xsl:apply-templates/>&gt;</fo:inline>
 		<xsl:text> </xsl:text>
-	</xsl:template><xsl:template match="*[local-name() = 'admitted']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'admitted']">
 		<fo:block xsl:use-attribute-sets="admitted-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'deprecates']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'deprecates']">
 		<xsl:variable name="title-deprecated">
 			<xsl:call-template name="getLocalizedString">
 				<xsl:with-param name="key">deprecated</xsl:with-param>
@@ -10586,71 +10859,89 @@
 		<fo:block xsl:use-attribute-sets="deprecates-style">
 			<xsl:value-of select="$title-deprecated"/>: <xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template name="setStyle_preferred">
+	</xsl:template>
+
+	<xsl:template name="setStyle_preferred">
 		<xsl:if test="*[local-name() = 'strong']">
 			<xsl:attribute name="font-weight">normal</xsl:attribute>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'preferred']/text()[contains(., ';')] | *[local-name() = 'preferred']/*[local-name() = 'strong']/text()[contains(., ';')]">
+	</xsl:template>
+
+	<!-- regarding ISO 10241-1:2011,  If there is more than one preferred term, each preferred term follows the previous one on a new line. -->
+	<!-- in metanorma xml preferred terms delimited by semicolons -->
+	<xsl:template match="*[local-name() = 'preferred']/text()[contains(., ';')] | *[local-name() = 'preferred']/*[local-name() = 'strong']/text()[contains(., ';')]">
 		<xsl:value-of select="java:replaceAll(java:java.lang.String.new(.), ';', $linebreak)"/>
-	</xsl:template><xsl:template match="*[local-name() = 'definition']">
+	</xsl:template>
+	<!--  End Preferred, admitted, deprecated -->
+
+	<!-- ========== -->
+	<!-- definition -->
+	<!-- ========== -->
+	<xsl:template match="*[local-name() = 'definition']">
 		<fo:block xsl:use-attribute-sets="definition-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'definition'][preceding-sibling::*[local-name() = 'domain']]">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'definition'][preceding-sibling::*[local-name() = 'domain']]">
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name() = 'definition'][preceding-sibling::*[local-name() = 'domain']]/*[local-name() = 'p'][1]">
+	</xsl:template>
+	<xsl:template match="*[local-name() = 'definition'][preceding-sibling::*[local-name() = 'domain']]/*[local-name() = 'p'][1]">
 		<fo:inline> <xsl:apply-templates/></fo:inline>
 		<fo:block/>
-	</xsl:template><xsl:template match="/*/*[local-name() = 'sections']/*" priority="2">
-		
+	</xsl:template>
+	<!-- ========== -->
+	<!-- END definition -->
+	<!-- ========== -->
+
+	<!-- main sections -->
+	<xsl:template match="/*/*[local-name() = 'sections']/*" priority="2">
+
 		<fo:block>
 			<xsl:call-template name="setId"/>
-			
-			
-			
-			
-			
-						
-			
-						
-			
-			
+
 			<xsl:apply-templates/>
 		</fo:block>
-		
-		
-		
-	</xsl:template><xsl:template match="//*[contains(local-name(), '-standard')]/*[local-name() = 'preface']/*" priority="2"> <!-- /*/*[local-name() = 'preface']/* -->
+
+	</xsl:template>
+
+	<xsl:template match="//*[contains(local-name(), '-standard')]/*[local-name() = 'preface']/*" priority="2"> <!-- /*/*[local-name() = 'preface']/* -->
 		<fo:block break-after="page"/>
 		<fo:block>
 			<xsl:call-template name="setId"/>
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'clause']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'clause']">
 		<fo:block>
 			<xsl:call-template name="setId"/>
-			
+
 				<xsl:attribute name="keep-with-next">always</xsl:attribute>
-			
-			
-			
+
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'definitions']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'definitions']">
 		<fo:block id="{@id}">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'annex']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'annex']">
 		<fo:block break-after="page"/>
 		<fo:block id="{@id}">
-			
+
 		</fo:block>
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name() = 'review']"> <!-- 'review' will be processed in mn2pdf/review.xsl -->
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'review']"> <!-- 'review' will be processed in mn2pdf/review.xsl -->
 		<!-- comment 2019-11-29 -->
 		<!-- <fo:block font-weight="bold">Review:</fo:block>
 		<xsl:apply-templates /> -->
-		
+
 		<xsl:variable name="id_from" select="normalize-space(current()/@from)"/>
 
 		<xsl:choose>
@@ -10663,17 +10954,27 @@
 				<fo:block id="{@from}" font-size="1pt"><xsl:value-of select="$hair_space"/></fo:block>
 			</xsl:when>
 		</xsl:choose>
-		
-	</xsl:template><xsl:template match="*[local-name() = 'name']/text()">
+
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'name']/text()">
 		<!-- 0xA0 to space replacement -->
 		<xsl:value-of select="java:replaceAll(java:java.lang.String.new(.),' ',' ')"/>
-	</xsl:template><xsl:variable name="ul_labels_">
-		
+	</xsl:template>
+
+	<!-- ===================================== -->
+	<!-- Lists processing -->
+	<!-- ===================================== -->
+	<xsl:variable name="ul_labels_">
+
 				<label level="1" font-size="15pt">•</label>
 				<label level="2">−</label><!-- &#x2212; - minus sign.  &#x2014; - en dash -->
 				<label level="3" font-size="75%">o</label> <!-- white circle -->
-			
-	</xsl:variable><xsl:variable name="ul_labels" select="xalan:nodeset($ul_labels_)"/><xsl:template name="setULLabel">
+
+	</xsl:variable>
+	<xsl:variable name="ul_labels" select="xalan:nodeset($ul_labels_)"/>
+
+	<xsl:template name="setULLabel">
 		<xsl:variable name="list_level_" select="count(ancestor::*[local-name() = 'ul']) + count(ancestor::*[local-name() = 'ol'])"/>
 		<xsl:variable name="list_level">
 			<xsl:choose>
@@ -10695,10 +10996,13 @@
 				<xsl:apply-templates select="$ul_labels/label[@level = 1]" mode="ul_labels"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="label" mode="ul_labels">
+	</xsl:template>
+	<xsl:template match="label" mode="ul_labels">
 		<xsl:copy-of select="@*[not(local-name() = 'level')]"/>
 		<xsl:value-of select="."/>
-	</xsl:template><xsl:template name="getListItemFormat">
+	</xsl:template>
+
+	<xsl:template name="getListItemFormat">
 		<!-- Example: for BSI <?list-type loweralpha?> -->
 		<xsl:variable name="processing_instruction_type" select="normalize-space(../preceding-sibling::*[1]/processing-instruction('list-type'))"/>
 		<xsl:choose>
@@ -10709,7 +11013,7 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise> <!-- for ordered lists 'ol' -->
-			
+
 				<!-- Example: for BSI <?list-start 2?> -->
 				<xsl:variable name="processing_instruction_start" select="normalize-space(../preceding-sibling::*[1]/processing-instruction('list-start'))"/>
 
@@ -10724,16 +11028,16 @@
 						<xsl:otherwise>0</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				
+
 				<xsl:variable name="curr_value"><xsl:number/></xsl:variable>
-				
+
 				<xsl:variable name="type">
 					<xsl:choose>
 						<xsl:when test="normalize-space($processing_instruction_type) != ''"><xsl:value-of select="$processing_instruction_type"/></xsl:when>
 						<xsl:when test="normalize-space(../@type) != ''"><xsl:value-of select="../@type"/></xsl:when>
-						
+
 						<xsl:otherwise> <!-- if no @type or @class = 'steps' -->
-							
+
 							<xsl:variable name="list_level_" select="count(ancestor::*[local-name() = 'ul']) + count(ancestor::*[local-name() = 'ol'])"/>
 							<xsl:variable name="list_level">
 								<xsl:choose>
@@ -10741,7 +11045,7 @@
 									<xsl:otherwise><xsl:value-of select="$list_level_ mod 5"/></xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>
-							
+
 							<xsl:choose>
 								<xsl:when test="$list_level mod 5 = 0">roman_upper</xsl:when> <!-- level 5 -->
 								<xsl:when test="$list_level mod 4 = 0">alphabet_upper</xsl:when> <!-- level 4 -->
@@ -10755,11 +11059,11 @@
 									</xsl:choose>
 								</xsl:otherwise>
 							</xsl:choose>
-							
+
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				
+
 				<xsl:variable name="format">
 					<xsl:choose>
 						<xsl:when test="$type = 'arabic'">
@@ -10778,12 +11082,14 @@
 						<xsl:otherwise>1.</xsl:otherwise> <!-- for any case, if $type has non-determined value, not using -->
 					</xsl:choose>
 				</xsl:variable>
-				
+
 				<xsl:number value="$start_value + $curr_value" format="{normalize-space($format)}" lang="en"/>
-				
+
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name() = 'ul'] | *[local-name() = 'ol']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'ul'] | *[local-name() = 'ol']">
 		<xsl:choose>
 			<xsl:when test="parent::*[local-name() = 'note'] or parent::*[local-name() = 'termnote']">
 				<fo:block-container>
@@ -10793,11 +11099,9 @@
 							<xsl:otherwise><xsl:value-of select="$note-body-indent-table"/></xsl:otherwise>
 						</xsl:choose>
 					</xsl:attribute>
-					
-					
+
 						<xsl:attribute name="margin-left">0mm</xsl:attribute>
-					
-					
+
 					<fo:block-container margin-left="0mm">
 						<fo:block>
 							<xsl:apply-templates select="." mode="list"/>
@@ -10811,69 +11115,57 @@
 				</fo:block>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name()='ul'] | *[local-name()='ol']" mode="list" name="list">
-	
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='ul'] | *[local-name()='ol']" mode="list" name="list">
+
 		<xsl:apply-templates select="*[local-name() = 'name']">
 			<xsl:with-param name="process">true</xsl:with-param>
 		</xsl:apply-templates>
-	
-		<fo:list-block xsl:use-attribute-sets="list-style">
-		
-			
-			
-			
-			
-			
 
-			
-			
+		<fo:list-block xsl:use-attribute-sets="list-style">
+
 			<xsl:if test="*[local-name() = 'name']">
 				<xsl:attribute name="margin-top">0pt</xsl:attribute>
 			</xsl:if>
-			
+
 			<xsl:apply-templates select="node()[not(local-name() = 'note')]"/>
 		</fo:list-block>
 		<!-- <xsl:for-each select="./iho:note">
 			<xsl:call-template name="note"/>
 		</xsl:for-each> -->
 		<xsl:apply-templates select="./*[local-name() = 'note']"/>
-	</xsl:template><xsl:template match="*[local-name() = 'ol' or local-name() = 'ul']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'ol' or local-name() = 'ul']/*[local-name() = 'name']">
 		<xsl:param name="process">false</xsl:param>
 		<xsl:if test="$process = 'true'">
 			<fo:block xsl:use-attribute-sets="list-name-style">
 				<xsl:apply-templates/>
 			</fo:block>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name()='li']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name()='li']">
 		<fo:list-item xsl:use-attribute-sets="list-item-style">
 			<xsl:copy-of select="@id"/>
-			
-			
-			
+
 			<fo:list-item-label end-indent="label-end()">
 				<fo:block xsl:use-attribute-sets="list-item-label-style">
-				
-					
-				
-					
-				
+
 					<!-- if 'p' contains all text in 'add' first and last elements in first p are 'add' -->
 					<xsl:if test="*[1][count(node()[normalize-space() != '']) = 1 and *[local-name() = 'add']]">
 						<xsl:call-template name="append_add-style"/>
 					</xsl:if>
-					
+
 					<xsl:call-template name="getListItemFormat"/>
 				</fo:block>
 			</fo:list-item-label>
 			<fo:list-item-body start-indent="body-start()" xsl:use-attribute-sets="list-item-body-style">
 				<fo:block>
-				
-					
-				
-					
-				
+
 					<xsl:apply-templates/>
-				
+
 					<!-- <xsl:apply-templates select="node()[not(local-name() = 'note')]" />
 					
 					<xsl:for-each select="./bsi:note">
@@ -10882,15 +11174,31 @@
 				</fo:block>
 			</fo:list-item-body>
 		</fo:list-item>
-	</xsl:template><xsl:variable name="index" select="document($external_index)"/><xsl:variable name="bookmark_in_fn">
+	</xsl:template>
+
+	<!-- ===================================== -->
+	<!-- END Lists processing -->
+	<!-- ===================================== -->
+
+	<!-- =================== -->
+	<!-- Index section processing -->
+	<!-- =================== -->
+
+	<xsl:variable name="index" select="document($external_index)"/>
+
+	<xsl:variable name="bookmark_in_fn">
 		<xsl:for-each select="//*[local-name() = 'bookmark'][ancestor::*[local-name() = 'fn']]">
 			<bookmark><xsl:value-of select="@id"/></bookmark>
 		</xsl:for-each>
-	</xsl:variable><xsl:template match="@*|node()" mode="index_add_id">
+	</xsl:variable>
+
+	<xsl:template match="@*|node()" mode="index_add_id">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="index_add_id"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'xref']" mode="index_add_id">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'xref']" mode="index_add_id">
 		<xsl:variable name="id">
 			<xsl:call-template name="generateIndexXrefId"/>
 		</xsl:variable>
@@ -10914,16 +11222,22 @@
 				<xsl:apply-templates mode="index_add_id"/>
 			</xsl:copy>
 		</xsl:if>
-	</xsl:template><xsl:template match="@*|node()" mode="index_update">
+	</xsl:template>
+
+	<xsl:template match="@*|node()" mode="index_update">
 		<xsl:copy>
 				<xsl:apply-templates select="@*|node()" mode="index_update"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'li']" mode="index_update">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'li']" mode="index_update">
 		<xsl:copy>
 			<xsl:apply-templates select="@*" mode="index_update"/>
 		<xsl:apply-templates select="node()[1]" mode="process_li_element"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'li']/node()" mode="process_li_element" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'li']/node()" mode="process_li_element" priority="2">
 		<xsl:param name="element"/>
 		<xsl:param name="remove" select="'false'"/>
 		<xsl:param name="target"/>
@@ -10945,17 +11259,17 @@
 				<xsl:variable name="page" select="$index//item[@id = $id]"/>
 				<xsl:variable name="id_next" select="following-sibling::*[local-name() = 'xref'][1]/@id"/>
 				<xsl:variable name="page_next" select="$index//item[@id = $id_next]"/>
-				
+
 				<xsl:variable name="id_prev" select="preceding-sibling::*[local-name() = 'xref'][1]/@id"/>
 				<xsl:variable name="page_prev" select="$index//item[@id = $id_prev]"/>
-				
+
 				<xsl:choose>
 					<!-- 2nd pass -->
 					<!-- if page is equal to page for next and page is not the end of range -->
 					<xsl:when test="$page != '' and $page_next != '' and $page = $page_next and not(contains($page, '_to'))">  <!-- case: 12, 12-14 -->
 						<!-- skip element (i.e. remove it) and remove next text ',' -->
 						<!-- [removed_xref] -->
-						
+
 						<xsl:apply-templates select="following-sibling::node()[1]" mode="process_li_element">
 							<xsl:with-param name="remove">true</xsl:with-param>
 							<xsl:with-param name="target">
@@ -10966,7 +11280,7 @@
 							</xsl:with-param>
 						</xsl:apply-templates>
 					</xsl:when>
-					
+
 					<xsl:when test="$page != '' and $page_prev != '' and $page = $page_prev and contains($page_prev, '_to')"> <!-- case: 12-14, 14, ... -->
 						<!-- remove xref -->
 						<xsl:apply-templates select="following-sibling::node()[1]" mode="process_li_element">
@@ -10993,7 +11307,9 @@
 				<xsl:apply-templates select="following-sibling::node()[1]" mode="process_li_element"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="@*|node()" mode="xref_copy">
+	</xsl:template>
+
+	<xsl:template match="@*|node()" mode="xref_copy">
 		<xsl:param name="target"/>
 		<xsl:copy>
 			<xsl:apply-templates select="@*" mode="xref_copy"/>
@@ -11002,9 +11318,11 @@
 			</xsl:if>
 			<xsl:apply-templates select="node()" mode="xref_copy"/>
 		</xsl:copy>
-	</xsl:template><xsl:template name="generateIndexXrefId">
+	</xsl:template>
+
+	<xsl:template name="generateIndexXrefId">
 		<xsl:variable name="level" select="count(ancestor::*[local-name() = 'ul'])"/>
-		
+
 		<xsl:variable name="docid">
 			<xsl:call-template name="getDocumentId"/>
 		</xsl:variable>
@@ -11013,40 +11331,64 @@
 		</xsl:variable>
 		<xsl:variable name="xref_number"><xsl:number count="*[local-name() = 'xref']"/></xsl:variable>
 		<xsl:value-of select="concat($docid, '_', $item_number, '_', $xref_number)"/> <!-- $level, '_',  -->
-	</xsl:template><xsl:template match="*[local-name() = 'indexsect']/*[local-name() = 'title']" priority="4">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'indexsect']/*[local-name() = 'title']" priority="4">
 		<fo:block xsl:use-attribute-sets="indexsect-title-style">
 			<!-- Index -->
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'indexsect']/*[local-name() = 'clause']/*[local-name() = 'title']" priority="4">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'indexsect']/*[local-name() = 'clause']/*[local-name() = 'title']" priority="4">
 		<!-- Letter A, B, C, ... -->
 		<fo:block xsl:use-attribute-sets="indexsect-clause-title-style">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'indexsect']/*[local-name() = 'clause']" priority="4">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'indexsect']/*[local-name() = 'clause']" priority="4">
 		<xsl:apply-templates/>
 		<fo:block>
 			<xsl:if test="following-sibling::*[local-name() = 'clause']">
 				<fo:block> </fo:block>
 			</xsl:if>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'ul']" priority="4">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'ul']" priority="4">
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'li']" priority="4">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'li']" priority="4">
 		<xsl:variable name="level" select="count(ancestor::*[local-name() = 'ul'])"/>
 		<fo:block start-indent="{5 * $level}mm" text-indent="-5mm">
-			
+
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'li']/text()">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'indexsect']//*[local-name() = 'li']/text()">
 		<!-- to split by '_' and other chars -->
 		<xsl:call-template name="add-zero-spaces-java"/>
-	</xsl:template><xsl:template match="*[local-name() = 'table']/*[local-name() = 'bookmark']" priority="2"/><xsl:template match="*[local-name() = 'bookmark']" name="bookmark">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'table']/*[local-name() = 'bookmark']" priority="2"/>
+
+	<xsl:template match="*[local-name() = 'bookmark']" name="bookmark">
 		<!-- <fo:inline id="{@id}" font-size="1pt"/> -->
 		<fo:inline id="{@id}" font-size="1pt"><xsl:value-of select="$hair_space"/></fo:inline>
 		<!-- we need to add zero-width space, otherwise this fo:inline is missing in IF xml -->
 		<xsl:if test="not(following-sibling::node()[normalize-space() != ''])"><fo:inline font-size="1pt"> </fo:inline></xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'errata']">
+	</xsl:template>
+	<!-- =================== -->
+	<!-- End of Index processing -->
+	<!-- =================== -->
+
+	<!-- ============ -->
+	<!-- errata -->
+	<!-- ============ -->
+	<xsl:template match="*[local-name() = 'errata']">
 		<!-- <row>
 					<date>05-07-2013</date>
 					<type>Editorial</type>
@@ -11061,7 +11403,7 @@
 			<fo:table-column column-width="15mm"/>
 			<fo:table-body>
 				<fo:table-row text-align="center" font-weight="bold" background-color="black" color="white">
-					
+
 					<fo:table-cell border="1pt solid black"><fo:block>Date</fo:block></fo:table-cell>
 					<fo:table-cell border="1pt solid black"><fo:block>Type</fo:block></fo:table-cell>
 					<fo:table-cell border="1pt solid black"><fo:block>Change</fo:block></fo:table-cell>
@@ -11070,53 +11412,79 @@
 				<xsl:apply-templates/>
 			</fo:table-body>
 		</fo:table>
-	</xsl:template><xsl:template match="*[local-name() = 'errata']/*[local-name() = 'row']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'errata']/*[local-name() = 'row']">
 		<fo:table-row>
 			<xsl:apply-templates/>
 		</fo:table-row>
-	</xsl:template><xsl:template match="*[local-name() = 'errata']/*[local-name() = 'row']/*">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'errata']/*[local-name() = 'row']/*">
 		<fo:table-cell border="1pt solid black" padding-left="1mm" padding-top="0.5mm">
 			<fo:block><xsl:apply-templates/></fo:block>
 		</fo:table-cell>
-	</xsl:template><xsl:template match="*[local-name() = 'references'][@hidden='true']" priority="3"/><xsl:template match="*[local-name() = 'bibitem'][@hidden='true']" priority="3"/><xsl:template match="*[local-name() = 'bibitem'][starts-with(@id, 'hidden_bibitem_')]" priority="3"/><xsl:template match="*[local-name() = 'references'][@normative='true']" priority="2">
-		
-		
-		
+	</xsl:template>
+	<!-- ============ -->
+	<!-- END errata -->
+	<!-- ============ -->
+
+	<!-- ======================= -->
+	<!-- Bibliography rendering -->
+	<!-- ======================= -->
+
+	<!-- ========================================================== -->
+	<!-- Reference sections (Normative References and Bibliography) -->
+	<!-- ========================================================== -->
+	<xsl:template match="*[local-name() = 'references'][@hidden='true']" priority="3"/>
+	<xsl:template match="*[local-name() = 'bibitem'][@hidden='true']" priority="3"/>
+	<!-- don't display bibitem with @id starts with '_hidden', that was introduced for references integrity -->
+	<xsl:template match="*[local-name() = 'bibitem'][starts-with(@id, 'hidden_bibitem_')]" priority="3"/>
+
+	<!-- Normative references -->
+	<xsl:template match="*[local-name() = 'references'][@normative='true']" priority="2">
+
 		<fo:block id="{@id}">
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'references']">
+	</xsl:template>
+
+	<!-- Bibliography (non-normative references) -->
+	<xsl:template match="*[local-name() = 'references']">
 		<xsl:if test="not(ancestor::*[local-name() = 'annex'])">
-			
+
 					<fo:block break-after="page"/>
-				
+
 		</xsl:if>
-		
+
 		<!-- <xsl:if test="ancestor::*[local-name() = 'annex']">
 			<xsl:if test="$namespace = 'csa' or $namespace = 'csd' or $namespace = 'gb' or $namespace = 'iec' or $namespace = 'iso' or $namespace = 'itu'">
 				<fo:block break-after="page"/>
 			</xsl:if>
 		</xsl:if> -->
-		
+
 		<fo:block id="{@id}" xsl:use-attribute-sets="references-non-normative-style">
 			<xsl:apply-templates/>
 		</fo:block>
-		
-		
-		
-		
-	</xsl:template><xsl:template match="*[local-name() = 'bibitem']">
+
+	</xsl:template> <!-- references -->
+
+	<xsl:template match="*[local-name() = 'bibitem']">
 		<xsl:call-template name="bibitem"/>
-	</xsl:template><xsl:template match="*[local-name() = 'references'][@normative='true']/*[local-name() = 'bibitem']" name="bibitem" priority="2">
-		
+	</xsl:template>
+
+	<!-- Normative references -->
+	<xsl:template match="*[local-name() = 'references'][@normative='true']/*[local-name() = 'bibitem']" name="bibitem" priority="2">
+
 				<fo:block id="{@id}" xsl:use-attribute-sets="bibitem-normative-style">
 					<xsl:call-template name="processBibitem"/>
 				</fo:block>
-			
 
-	</xsl:template><xsl:template match="*[local-name() = 'references'][not(@normative='true')]/*[local-name() = 'bibitem']" name="bibitem_non_normative" priority="2">
-		
-		
+	</xsl:template> <!-- bibitem -->
+
+	<!-- Bibliography (non-normative references) -->
+	<xsl:template match="*[local-name() = 'references'][not(@normative='true')]/*[local-name() = 'bibitem']" name="bibitem_non_normative" priority="2">
+
 				<!-- start BIPM bibitem processing -->
 				<fo:list-block id="{@id}" xsl:use-attribute-sets="bibitem-non-normative-list-style">
 					<fo:list-item>
@@ -11145,16 +11513,16 @@
 					</fo:list-item>
 				</fo:list-block>
 				<!-- END BIPM bibitem processing -->
-			
-		
-	</xsl:template><xsl:template name="processBibitem">
-		
-		
+
+	</xsl:template> <!-- references[not(@normative='true')]/bibitem -->
+
+	<xsl:template name="processBibitem">
+
 				<!-- start BIPM bibitem processing -->
 				<xsl:if test=".//bipm:fn">
 					<xsl:attribute name="line-height-shift-adjustment">disregard-shifts</xsl:attribute>
-				</xsl:if>			
-				
+				</xsl:if>
+
 				<xsl:variable name="docidentifier_" select="*[local-name() = 'docidentifier'][not(@type = 'URN' or @type = 'metanorma' or @type = 'metanorma-ordinal' or @type = 'BIPM' or @type = 'ISBN' or @type = 'ISSN')]"/>
 				<xsl:variable name="docidentifier_main" select="*[local-name() = 'docidentifier'][not(@type)]"/>
 				<xsl:variable name="docidentifier">
@@ -11164,12 +11532,14 @@
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:value-of select="normalize-space($docidentifier)"/>
-				
+
 				<xsl:if test="normalize-space($docidentifier) != '' and *[local-name() = 'formattedref']">, </xsl:if>
 				<xsl:apply-templates select="*[local-name() = 'formattedref']"/>
 				<!-- end BIPM bibitem processing-->
-			
-	</xsl:template><xsl:template name="processBibitemDocId">
+
+	</xsl:template> <!-- processBibitem (bibitem) -->
+
+	<xsl:template name="processBibitemDocId">
 		<xsl:variable name="_doc_ident" select="*[local-name() = 'docidentifier'][not(@type = 'DOI' or @type = 'metanorma' or @type = 'metanorma-ordinal' or @type = 'ISSN' or @type = 'ISBN' or @type = 'rfc-anchor')]"/>
 		<xsl:choose>
 			<xsl:when test="normalize-space($_doc_ident) != ''">
@@ -11187,7 +11557,9 @@
 				<xsl:value-of select="*[local-name() = 'docidentifier'][not(@type = 'metanorma') and not(@type = 'metanorma-ordinal')]"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="processPersonalAuthor">
+	</xsl:template> <!-- processBibitemDocId -->
+
+	<xsl:template name="processPersonalAuthor">
 		<xsl:choose>
 			<xsl:when test="*[local-name() = 'name']/*[local-name() = 'completename']">
 				<author>
@@ -11212,26 +11584,39 @@
 				<xsl:apply-templates/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="renderDate">		
+	</xsl:template> <!-- processPersonalAuthor -->
+
+	<xsl:template name="renderDate">
 			<xsl:if test="normalize-space(*[local-name() = 'on']) != ''">
 				<xsl:value-of select="*[local-name() = 'on']"/>
 			</xsl:if>
 			<xsl:if test="normalize-space(*[local-name() = 'from']) != ''">
 				<xsl:value-of select="concat(*[local-name() = 'from'], '–', *[local-name() = 'to'])"/>
 			</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'name']/*[local-name() = 'initial']/text()" mode="strip">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'name']/*[local-name() = 'initial']/text()" mode="strip">
 		<xsl:value-of select="translate(.,'. ','')"/>
-	</xsl:template><xsl:template match="*[local-name() = 'name']/*[local-name() = 'forename']/text()" mode="strip">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'name']/*[local-name() = 'forename']/text()" mode="strip">
 		<xsl:value-of select="substring(.,1,1)"/>
-	</xsl:template><xsl:template match="*[local-name() = 'title']" mode="title">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'title']" mode="title">
 		<fo:inline><xsl:apply-templates/></fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'title']" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'title']" priority="2">
 		<!-- <fo:inline><xsl:apply-templates /></fo:inline> -->
 		<fo:inline font-style="italic"> <!-- BIPM BSI CSD CSA GB IEC IHO ISO ITU JCGM -->
 			<xsl:apply-templates/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'note']" priority="2">
-	
+	</xsl:template>
+
+	<!-- bibitem/note renders as footnote -->
+	<xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'note']" priority="2">
+
 		<!-- list of footnotes to calculate actual footnotes number -->
 		<xsl:variable name="p_fn_">
 			<xsl:call-template name="get_fn_list"/>
@@ -11251,7 +11636,7 @@
 		</xsl:variable>
 		<fo:footnote>
 			<xsl:variable name="number">
-				
+
 						<xsl:choose>
 							<xsl:when test="ancestor::*[local-name() = 'references'][preceding-sibling::*[local-name() = 'references']]">
 								<xsl:number level="any" count="*[local-name() = 'references'][preceding-sibling::*[local-name() = 'references']]//*[local-name() = 'bibitem']/*[local-name() = 'note']"/>
@@ -11260,14 +11645,14 @@
 								<xsl:value-of select="$current_fn_number"/>
 							</xsl:otherwise>
 						</xsl:choose>
-					
+
 			</xsl:variable>
-			
+
 			<xsl:variable name="current_fn_number_text">
 				<xsl:value-of select="$number"/>
-				
+
 			</xsl:variable>
-			
+
 			<fo:inline xsl:use-attribute-sets="bibitem-note-fn-style">
 				<fo:basic-link internal-destination="{$gen_id}" fox:alt-text="footnote {$number}">
 					<xsl:value-of select="$current_fn_number_text"/>
@@ -11282,31 +11667,58 @@
 				</fo:block>
 			</fo:footnote-body>
 		</fo:footnote>
-	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'edition']"> <!-- for iho -->
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'edition']"> <!-- for iho -->
 		<xsl:text> edition </xsl:text>
 		<xsl:value-of select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'uri']"> <!-- for iho -->
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'uri']"> <!-- for iho -->
 		<xsl:text> (</xsl:text>
 		<fo:inline xsl:use-attribute-sets="link-style">
 			<fo:basic-link external-destination="." fox:alt-text=".">
-				<xsl:value-of select="."/>							
+				<xsl:value-of select="."/>
 			</fo:basic-link>
 		</fo:inline>
 		<xsl:text>)</xsl:text>
-	</xsl:template><xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'docidentifier']"/><xsl:template match="*[local-name() = 'formattedref']">
-		
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'bibitem']/*[local-name() = 'docidentifier']"/>
+
+	<xsl:template match="*[local-name() = 'formattedref']">
+
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name() = 'form']">
+	</xsl:template>
+
+	<!-- ======================= -->
+	<!-- END Bibliography rendering -->
+	<!-- ======================= -->
+
+	<!-- ========================================================== -->
+	<!-- END Reference sections (Normative References and Bibliography) -->
+	<!-- ========================================================== -->
+
+	<!-- =================== -->
+	<!-- Form's elements processing -->
+	<!-- =================== -->
+	<xsl:template match="*[local-name() = 'form']">
 		<fo:block>
 			<xsl:apply-templates/>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'form']//*[local-name() = 'label']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'form']//*[local-name() = 'label']">
 		<fo:inline><xsl:apply-templates/></fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'form']//*[local-name() = 'input'][@type = 'text' or @type = 'date' or @type = 'file' or @type = 'password']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'form']//*[local-name() = 'input'][@type = 'text' or @type = 'date' or @type = 'file' or @type = 'password']">
 		<fo:inline>
 			<xsl:call-template name="text_input"/>
 		</fo:inline>
-	</xsl:template><xsl:template name="text_input">
+	</xsl:template>
+
+	<xsl:template name="text_input">
 		<xsl:variable name="count">
 			<xsl:choose>
 				<xsl:when test="normalize-space(@maxlength) != ''"><xsl:value-of select="@maxlength"/></xsl:when>
@@ -11319,7 +11731,9 @@
 			<xsl:with-param name="count" select="$count"/>
 		</xsl:call-template>
 		<xsl:text> </xsl:text>
-	</xsl:template><xsl:template match="*[local-name() = 'form']//*[local-name() = 'input'][@type = 'button']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'form']//*[local-name() = 'input'][@type = 'button']">
 		<xsl:variable name="caption">
 			<xsl:choose>
 				<xsl:when test="normalize-space(@value) != ''"><xsl:value-of select="@value"/></xsl:when>
@@ -11327,7 +11741,9 @@
 			</xsl:choose>
 		</xsl:variable>
 		<fo:inline>[<xsl:value-of select="$caption"/>]</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'form']//*[local-name() = 'input'][@type = 'checkbox']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'form']//*[local-name() = 'input'][@type = 'checkbox']">
 		<fo:inline padding-right="1mm">
 			<fo:instream-foreign-object fox:alt-text="Box" baseline-shift="-10%">
 				<xsl:attribute name="height">3.5mm</xsl:attribute>
@@ -11339,7 +11755,9 @@
 				</svg>
 			</fo:instream-foreign-object>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'form']//*[local-name() = 'input'][@type = 'radio']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'form']//*[local-name() = 'input'][@type = 'radio']">
 		<fo:inline padding-right="1mm">
 			<fo:instream-foreign-object fox:alt-text="Box" baseline-shift="-10%">
 				<xsl:attribute name="height">3.5mm</xsl:attribute>
@@ -11352,15 +11770,29 @@
 				</svg>
 			</fo:instream-foreign-object>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'form']//*[local-name() = 'select']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'form']//*[local-name() = 'select']">
 		<fo:inline>
 			<xsl:call-template name="text_input"/>
 		</fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'form']//*[local-name() = 'textarea']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'form']//*[local-name() = 'textarea']">
 		<fo:block-container border="1pt solid black" width="50%">
 			<fo:block> </fo:block>
 		</fo:block-container>
-	</xsl:template><xsl:variable name="toc_level">
+	</xsl:template>
+
+	<!-- =================== -->
+	<!-- End Form's elements processing -->
+	<!-- =================== -->
+
+	<!-- =================== -->
+	<!-- Table of Contents (ToC) processing -->
+	<!-- =================== -->
+
+	<xsl:variable name="toc_level">
 		<!-- https://www.metanorma.org/author/ref/document-attributes/ -->
 		<xsl:variable name="htmltoclevels" select="normalize-space(//*[local-name() = 'misc-container']/*[local-name() = 'presentation-metadata'][*[local-name() = 'name']/text() = 'HTML TOC Heading Levels']/*[local-name() = 'value'])"/> <!-- :htmltoclevels  Number of table of contents levels to render in HTML/PDF output; used to override :toclevels:-->
 		<xsl:variable name="toclevels" select="normalize-space(//*[local-name() = 'misc-container']/*[local-name() = 'presentation-metadata'][*[local-name() = 'name']/text() = 'TOC Heading Levels']/*[local-name() = 'value'])"/> <!-- Number of table of contents levels to render -->
@@ -11371,7 +11803,9 @@
 				3
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:variable><xsl:template match="*[local-name() = 'toc']">
+	</xsl:variable>
+
+	<xsl:template match="*[local-name() = 'toc']">
 		<xsl:param name="colwidths"/>
 		<xsl:variable name="colwidths_">
 			<xsl:choose>
@@ -11402,13 +11836,19 @@
 				</fo:table-body>
 			</fo:table>
 		</fo:block>
-	</xsl:template><xsl:template match="*[local-name() = 'toc']//*[local-name() = 'li']" priority="2">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'toc']//*[local-name() = 'li']" priority="2">
 		<fo:table-row min-height="5mm">
 			<xsl:apply-templates/>
 		</fo:table-row>
-	</xsl:template><xsl:template match="*[local-name() = 'toc']//*[local-name() = 'li']/*[local-name() = 'p']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'toc']//*[local-name() = 'li']/*[local-name() = 'p']">
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name() = 'toc']//*[local-name() = 'xref']" priority="3">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'toc']//*[local-name() = 'xref']" priority="3">
 		<!-- <xref target="cgpm9th1948r6">1.6.3<tab/>&#8220;9th CGPM, 1948:<tab/>decision to establish the SI&#8221;</xref> -->
 		<xsl:variable name="target" select="@target"/>
 		<xsl:for-each select="*[local-name() = 'tab']">
@@ -11434,13 +11874,25 @@
 				</fo:basic-link>
 			</fo:block>
 		</fo:table-cell>
-	</xsl:template><xsl:template match="*" mode="toc_table_width">
+	</xsl:template>
+
+	<!-- ================================== -->
+	<!-- calculate ToC table columns widths -->
+	<!-- ================================== -->
+	<xsl:template match="*" mode="toc_table_width">
 		<xsl:apply-templates mode="toc_table_width"/>
-	</xsl:template><xsl:template match="*[local-name() = 'clause'][@type = 'toc']/*[local-name() = 'title']" mode="toc_table_width"/><xsl:template match="*[local-name() = 'clause'][not(@type = 'toc')]/*[local-name() = 'title']" mode="toc_table_width"/><xsl:template match="*[local-name() = 'li']" mode="toc_table_width">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'clause'][@type = 'toc']/*[local-name() = 'title']" mode="toc_table_width"/>
+	<xsl:template match="*[local-name() = 'clause'][not(@type = 'toc')]/*[local-name() = 'title']" mode="toc_table_width"/>
+
+	<xsl:template match="*[local-name() = 'li']" mode="toc_table_width">
 		<tr>
 			<xsl:apply-templates mode="toc_table_width"/>
 		</tr>
-	</xsl:template><xsl:template match="*[local-name() = 'xref']" mode="toc_table_width">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'xref']" mode="toc_table_width">
 		<!-- <xref target="cgpm9th1948r6">1.6.3<tab/>&#8220;9th CGPM, 1948:<tab/>decision to establish the SI&#8221;</xref> -->
 		<xsl:for-each select="*[local-name() = 'tab']">
 			<xsl:variable name="current_id" select="generate-id()"/>
@@ -11451,53 +11903,64 @@
 			</td>
 		</xsl:for-each>
 		<td>333</td> <!-- page number, just for fill -->
-	</xsl:template><xsl:template match="*[local-name() = 'variant-title']"/><xsl:template match="*[local-name() = 'variant-title'][@type = 'sub']" mode="subtitle">
+	</xsl:template>
+
+	<!-- ================================== -->
+	<!-- END: calculate ToC table columns widths -->
+	<!-- ================================== -->
+
+	<!-- =================== -->
+	<!-- End Table of Contents (ToC) processing -->
+	<!-- =================== -->
+
+	<xsl:template match="*[local-name() = 'variant-title']"/> <!-- [@type = 'sub'] -->
+	<xsl:template match="*[local-name() = 'variant-title'][@type = 'sub']" mode="subtitle">
 		<fo:inline padding-right="5mm"> </fo:inline>
 		<fo:inline><xsl:apply-templates/></fo:inline>
-	</xsl:template><xsl:template match="*[local-name() = 'blacksquare']" name="blacksquare">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'blacksquare']" name="blacksquare">
 		<fo:inline padding-right="2.5mm" baseline-shift="5%">
 			<fo:instream-foreign-object content-height="2mm" content-width="2mm" fox:alt-text="Quad">
 					<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" viewBox="0 0 2 2">
 						<rect x="0" y="0" width="2" height="2" fill="black"/>
 					</svg>
-				</fo:instream-foreign-object>	
+				</fo:instream-foreign-object>
 		</fo:inline>
-	</xsl:template><xsl:template match="@language">
+	</xsl:template>
+
+	<xsl:template match="@language">
 		<xsl:copy-of select="."/>
-	</xsl:template><xsl:template match="*[local-name() = 'p'][@type = 'floating-title' or @type = 'section-title']" priority="4">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'p'][@type = 'floating-title' or @type = 'section-title']" priority="4">
 		<xsl:call-template name="title"/>
-	</xsl:template><xsl:template match="*[local-name() = 'admonition']">
-		
-		
-		
-		
-		
+	</xsl:template>
+
+	<!-- ================ -->
+	<!-- Admonition -->
+	<!-- ================ -->
+	<xsl:template match="*[local-name() = 'admonition']">
+
 		 <!-- text in the box -->
 				<fo:block-container id="{@id}" xsl:use-attribute-sets="admonition-style">
-					
-					
-					
-					
-				
-					
-					
+
 							<fo:block-container xsl:use-attribute-sets="admonition-container-style">
-							
-								
-							
-								
+
 										<fo:block xsl:use-attribute-sets="admonition-name-style">
 											<xsl:call-template name="displayAdmonitionName"/>
 										</fo:block>
 										<fo:block xsl:use-attribute-sets="admonition-p-style">
 											<xsl:apply-templates select="node()[not(local-name() = 'name')]"/>
 										</fo:block>
-									
+
 							</fo:block-container>
-						
+
 				</fo:block-container>
-			
-	</xsl:template><xsl:template name="displayAdmonitionName">
+
+	</xsl:template>
+
+	<xsl:template name="displayAdmonitionName">
 		<xsl:param name="sep"/> <!-- Example: ' - ' -->
 		<!-- <xsl:choose>
 			<xsl:when test="$namespace = 'nist-cswp' or $namespace = 'nist-sp'">
@@ -11522,81 +11985,113 @@
 		<xsl:if test="normalize-space($name) != ''">
 			<xsl:value-of select="$sep"/>
 		</xsl:if>
-	</xsl:template><xsl:template match="*[local-name() = 'admonition']/*[local-name() = 'name']">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'admonition']/*[local-name() = 'name']">
 		<xsl:apply-templates/>
-	</xsl:template><xsl:template match="*[local-name() = 'admonition']/*[local-name() = 'p']">
-		
+	</xsl:template>
+
+	<!-- <xsl:template match="*[local-name() = 'admonition']/@type">
+		<xsl:variable name="admonition_type_">
+			<xsl:call-template name="getLocalizedString">
+				<xsl:with-param name="key">admonition.<xsl:value-of select="."/></xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="admonition_type" select="normalize-space(java:toUpperCase(java:java.lang.String.new($admonition_type_)))"/>
+		<xsl:value-of select="$admonition_type"/>
+		<xsl:if test="$admonition_type = ''">
+			<xsl:value-of select="java:toUpperCase(java:java.lang.String.new(.))"/>
+		</xsl:if>
+	</xsl:template> -->
+
+	<xsl:template match="*[local-name() = 'admonition']/*[local-name() = 'p']">
+
 				<fo:block xsl:use-attribute-sets="admonition-p-style">
-				
-					
-					
+
 					<xsl:apply-templates/>
 				</fo:block>
-			
-	</xsl:template><xsl:template match="@*|node()" mode="update_xml_step1">
+
+	</xsl:template>
+
+	<!-- ================ -->
+	<!-- END Admonition -->
+	<!-- ================ -->
+
+	<!-- ===================================== -->
+	<!-- Update xml -->
+	<!-- ===================================== -->
+	<!-- STEP1: Re-order elements in 'preface', 'sections' based on @displayorder -->
+	<xsl:template match="@*|node()" mode="update_xml_step1">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="update_xml_step1"/>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'preface']" mode="update_xml_step1">
+	</xsl:template>
+
+	<!-- change section's order based on @displayorder value -->
+	<xsl:template match="*[local-name() = 'preface']" mode="update_xml_step1">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
-			
+
 			<xsl:variable name="nodes_preface_">
 				<xsl:for-each select="*">
 					<node id="{@id}"/>
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:variable name="nodes_preface" select="xalan:nodeset($nodes_preface_)"/>
-			
+
 			<xsl:for-each select="*">
 				<xsl:sort select="@displayorder" data-type="number"/>
-				
+
 				<!-- process Section's title -->
 				<xsl:variable name="preceding-sibling_id" select="$nodes_preface/node[@id = current()/@id]/preceding-sibling::node[1]/@id"/>
 				<xsl:if test="$preceding-sibling_id != ''">
 					<xsl:apply-templates select="parent::*/*[@type = 'section-title' and @id = $preceding-sibling_id and not(@displayorder)]" mode="update_xml_step1"/>
 				</xsl:if>
-				
+
 				<xsl:choose>
 					<xsl:when test="@type = 'section-title' and not(@displayorder)"><!-- skip, don't copy, because copied in above 'apply-templates' --></xsl:when>
 					<xsl:otherwise>
 						<xsl:apply-templates select="." mode="update_xml_step1"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				
+
 			</xsl:for-each>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'sections']" mode="update_xml_step1">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'sections']" mode="update_xml_step1">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
-			
+
 			<xsl:variable name="nodes_sections_">
 				<xsl:for-each select="*">
 					<node id="{@id}"/>
 				</xsl:for-each>
 			</xsl:variable>
 			<xsl:variable name="nodes_sections" select="xalan:nodeset($nodes_sections_)"/>
-			
+
 			<!-- move section 'Normative references' inside 'sections' -->
 			<xsl:for-each select="* |      ancestor::*[contains(local-name(), '-standard')]/*[local-name()='bibliography']/*[local-name()='references'][@normative='true'] |     ancestor::*[contains(local-name(), '-standard')]/*[local-name()='bibliography']/*[local-name()='clause'][*[local-name()='references'][@normative='true']]">
 				<xsl:sort select="@displayorder" data-type="number"/>
-				
+
 				<!-- process Section's title -->
 				<xsl:variable name="preceding-sibling_id" select="$nodes_sections/node[@id = current()/@id]/preceding-sibling::node[1]/@id"/>
 				<xsl:if test="$preceding-sibling_id != ''">
 					<xsl:apply-templates select="parent::*/*[@type = 'section-title' and @id = $preceding-sibling_id and not(@displayorder)]" mode="update_xml_step1"/>
 				</xsl:if>
-				
+
 				<xsl:choose>
 					<xsl:when test="@type = 'section-title' and not(@displayorder)"><!-- skip, don't copy, because copied in above 'apply-templates' --></xsl:when>
 					<xsl:otherwise>
 						<xsl:apply-templates select="." mode="update_xml_step1"/>
 					</xsl:otherwise>
 				</xsl:choose>
-				
+
 			</xsl:for-each>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'bibliography']" mode="update_xml_step1">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'bibliography']" mode="update_xml_step1">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<!-- copy all elements from bibliography except 'Normative references' (moved to 'sections') -->
@@ -11605,14 +12100,36 @@
 				<xsl:apply-templates select="." mode="update_xml_step1"/>
 			</xsl:for-each>
 		</xsl:copy>
-	</xsl:template><xsl:template match="*[local-name() = 'span']" mode="update_xml_step1">
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'span'][@style]" mode="update_xml_step1" priority="2">
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates mode="update_xml_step1"/>
+		</xsl:copy>
+	</xsl:template>
+	<!-- Note: to enable the addition of character span markup with semantic styling for DIS Word output -->
+	<xsl:template match="*[local-name() = 'span']" mode="update_xml_step1">
 		<xsl:apply-templates mode="update_xml_step1"/>
-	</xsl:template><xsl:template match="@*|node()" mode="update_xml_enclose_keep-together_within-line">
+	</xsl:template>
+
+	<!-- END STEP1: Re-order elements in 'preface', 'sections' based on @displayorder -->
+
+	<!-- XML UPDATE STEP: enclose standard's name into tag 'keep-together_within-line'  -->
+	<!-- Example: <keep-together_within-line>ISO 10303-51</keep-together_within-line> -->
+	<xsl:template match="@*|node()" mode="update_xml_enclose_keep-together_within-line">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="update_xml_enclose_keep-together_within-line"/>
 		</xsl:copy>
-	</xsl:template><xsl:variable name="express_reference_separators">_.\</xsl:variable><xsl:variable name="express_reference_characters" select="concat($upper,$lower,'1234567890',$express_reference_separators)"/><xsl:variable name="element_name_keep-together_within-line">keep-together_within-line</xsl:variable><xsl:template match="text()[not(ancestor::*[local-name() = 'bibdata'] or ancestor::*[local-name() = 'sourcecode'] or ancestor::*[local-name() = 'math'])]" name="keep_together_standard_number" mode="update_xml_enclose_keep-together_within-line">
-	
+	</xsl:template>
+
+	<xsl:variable name="express_reference_separators">_.\</xsl:variable>
+	<xsl:variable name="express_reference_characters" select="concat($upper,$lower,'1234567890',$express_reference_separators)"/>
+
+	<xsl:variable name="element_name_keep-together_within-line">keep-together_within-line</xsl:variable>
+
+	<xsl:template match="text()[not(ancestor::*[local-name() = 'bibdata'] or ancestor::*[local-name() = 'sourcecode'] or ancestor::*[local-name() = 'math'])]" name="keep_together_standard_number" mode="update_xml_enclose_keep-together_within-line">
+
 		<!-- enclose standard's number into tag 'keep-together_within-line' -->
 		<xsl:variable name="regex_standard_reference">([A-Z]{2,}(/[A-Z]{2,})* \d+(-\d+)*(:\d{4})?)</xsl:variable>
 		<xsl:variable name="tag_keep-together_within-line_open">###<xsl:value-of select="$element_name_keep-together_within-line"/>###</xsl:variable>
@@ -11623,15 +12140,15 @@
 				<xsl:with-param name="tag_close" select="$tag_keep-together_within-line_close"/>
 				<xsl:with-param name="text" select="$text_"/>
 			</xsl:call-template></text></xsl:variable>
-		
+
 		<xsl:variable name="parent" select="local-name(..)"/>
-		
+
 		<xsl:variable name="text2">
 			<text><xsl:for-each select="xalan:nodeset($text)/text/node()">
 					<xsl:copy-of select="."/>
 				</xsl:for-each></text>
 		</xsl:variable>
-		
+
 		<!-- keep-together_within-line for: a/b, aaa/b, a/bbb, /b -->
 		<xsl:variable name="regex_solidus_units">((\b((\S{1,3}\/\S+)|(\S+\/\S{1,3}))\b)|(\/\S{1,3})\b)</xsl:variable>
 		<xsl:variable name="text3">
@@ -11650,7 +12167,7 @@
 				</xsl:choose>
 			</xsl:for-each></text>
 		</xsl:variable>
-		
+
 		<xsl:choose>
 			<xsl:when test="ancestor::*[local-name() = 'td' or local-name() = 'th']">
 				<!-- keep-together_within-line for: a.b, aaa.b, a.bbb, .b  in table's cell ONLY -->
@@ -11672,8 +12189,10 @@
 			</xsl:when>
 			<xsl:otherwise><xsl:copy-of select="xalan:nodeset($text3)/text/node()"/></xsl:otherwise>
 		</xsl:choose>
-		
-	</xsl:template><xsl:template name="replace_text_tags">
+
+	</xsl:template>
+
+	<xsl:template name="replace_text_tags">
 		<xsl:param name="tag_open"/>
 		<xsl:param name="tag_close"/>
 		<xsl:param name="text"/>
@@ -11681,11 +12200,11 @@
 			<xsl:when test="contains($text, $tag_open)">
 				<xsl:value-of select="substring-before($text, $tag_open)"/>
 				<xsl:variable name="text_after" select="substring-after($text, $tag_open)"/>
-				
+
 				<xsl:element name="{substring-before(substring-after($tag_open, '###'),'###')}">
 					<xsl:value-of select="substring-before($text_after, $tag_close)"/>
 				</xsl:element>
-				
+
 				<xsl:call-template name="replace_text_tags">
 					<xsl:with-param name="tag_open" select="$tag_open"/>
 					<xsl:with-param name="tag_close" select="$tag_close"/>
@@ -11694,9 +12213,18 @@
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$text"/></xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*[local-name() = 'lang_none']">
+	</xsl:template>
+
+	<!-- ===================================== -->
+	<!-- End Update xml -->
+	<!-- ===================================== -->
+
+	<!-- for correct rendering combining chars -->
+	<xsl:template match="*[local-name() = 'lang_none']">
 		<fo:inline xml:lang="none"><xsl:value-of select="."/></fo:inline>
-	</xsl:template><xsl:template name="printEdition">
+	</xsl:template>
+
+	<xsl:template name="printEdition">
 		<xsl:variable name="edition_i18n" select="normalize-space((//*[contains(local-name(), '-standard')])[1]/*[local-name() = 'bibdata']/*[local-name() = 'edition'][normalize-space(@language) != ''])"/>
 		<xsl:text> </xsl:text>
 		<xsl:choose>
@@ -11721,7 +12249,10 @@
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="convertDate">
+	</xsl:template>
+
+	<!-- convert YYYY-MM-DD to 'Month YYYY' or 'Month DD, YYYY' or DD Month YYYY -->
+	<xsl:template name="convertDate">
 		<xsl:param name="date"/>
 		<xsl:param name="format" select="'short'"/>
 		<xsl:variable name="year" select="substring($date, 1, 4)"/>
@@ -11756,7 +12287,10 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:value-of select="$result"/>
-	</xsl:template><xsl:template name="getMonthByNum">
+	</xsl:template> <!-- convertDate -->
+
+	<!-- return Month's name by number -->
+	<xsl:template name="getMonthByNum">
 		<xsl:param name="num"/>
 		<xsl:param name="lang">en</xsl:param>
 		<xsl:param name="lowercase">false</xsl:param> <!-- return 'january' instead of 'January' -->
@@ -11802,7 +12336,10 @@
 			</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$monthStr_"/></xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="getMonthLocalizedByNum">
+	</xsl:template> <!-- getMonthByNum -->
+
+	<!-- return Month's name by number from localized strings -->
+	<xsl:template name="getMonthLocalizedByNum">
 		<xsl:param name="num"/>
 		<xsl:variable name="monthStr">
 			<xsl:choose>
@@ -11823,7 +12360,9 @@
 		<xsl:call-template name="getLocalizedString">
 			<xsl:with-param name="key">month_<xsl:value-of select="$monthStr"/></xsl:with-param>
 		</xsl:call-template>
-	</xsl:template><xsl:template name="insertKeywords">
+	</xsl:template> <!-- getMonthLocalizedByNum -->
+
+	<xsl:template name="insertKeywords">
 		<xsl:param name="sorting" select="'true'"/>
 		<xsl:param name="meta" select="'false'"/>
 		<xsl:param name="charAtEnd" select="'.'"/>
@@ -11849,7 +12388,9 @@
 				</xsl:for-each>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="insertKeyword">
+	</xsl:template>
+
+	<xsl:template name="insertKeyword">
 		<xsl:param name="charAtEnd"/>
 		<xsl:param name="charDelim"/>
 		<xsl:param name="meta"/>
@@ -11865,7 +12406,9 @@
 			<xsl:when test="position() != last()"><xsl:value-of select="$charDelim"/></xsl:when>
 			<xsl:otherwise><xsl:value-of select="$charAtEnd"/></xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="addPDFUAmeta">
+	</xsl:template>
+
+	<xsl:template name="addPDFUAmeta">
 		<pdf:catalog>
 				<pdf:dictionary type="normal" key="ViewerPreferences">
 					<pdf:boolean key="DisplayDocTitle">true</pdf:boolean>
@@ -11873,14 +12416,14 @@
 			</pdf:catalog>
 		<x:xmpmeta xmlns:x="adobe:ns:meta/">
 			<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-				<rdf:Description xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:pdf="http://ns.adobe.com/pdf/1.3/" rdf:about="">
+				<rdf:Description xmlns:pdf="http://ns.adobe.com/pdf/1.3/" xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:about="">
 				<!-- Dublin Core properties go here -->
 					<dc:title>
 						<xsl:variable name="title">
 							<xsl:for-each select="(//*[contains(local-name(), '-standard')])[1]/*[local-name() = 'bibdata']">
-								
+
 										<xsl:value-of select="*[local-name() = 'title'][@language = $lang and @type = 'main']"/>
-									
+
 							</xsl:for-each>
 						</xsl:variable>
 						<xsl:choose>
@@ -11890,23 +12433,23 @@
 							<xsl:otherwise>
 								<xsl:text> </xsl:text>
 							</xsl:otherwise>
-						</xsl:choose>							
+						</xsl:choose>
 					</dc:title>
 					<dc:creator>
 						<xsl:for-each select="(//*[contains(local-name(), '-standard')])[1]/*[local-name() = 'bibdata']">
-							
+
 									<xsl:for-each select="*[local-name() = 'contributor'][*[local-name() = 'role']/@type='author']">
 										<xsl:value-of select="*[local-name() = 'organization']/*[local-name() = 'name']"/>
 										<xsl:if test="position() != last()">; </xsl:if>
 									</xsl:for-each>
-								
+
 						</xsl:for-each>
 					</dc:creator>
 					<dc:description>
 						<xsl:variable name="abstract">
-							
-									<xsl:copy-of select="//*[contains(local-name(), '-standard')]/*[local-name() = 'preface']/*[local-name() = 'abstract']//text()[not(ancestor::*[local-name() = 'title'])]"/>									
-								
+
+									<xsl:copy-of select="//*[contains(local-name(), '-standard')]/*[local-name() = 'preface']/*[local-name() = 'abstract']//text()[not(ancestor::*[local-name() = 'title'])]"/>
+
 						</xsl:variable>
 						<xsl:value-of select="normalize-space($abstract)"/>
 					</dc:description>
@@ -11922,7 +12465,9 @@
 				</rdf:Description>
 			</rdf:RDF>
 		</x:xmpmeta>
-	</xsl:template><xsl:template name="getId">
+	</xsl:template> <!-- addPDFUAmeta -->
+
+	<xsl:template name="getId">
 		<xsl:choose>
 			<xsl:when test="../@id">
 				<xsl:value-of select="../@id"/>
@@ -11931,7 +12476,10 @@
 				<xsl:value-of select="concat(generate-id(..), '_', text())"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="getLevel">
+	</xsl:template>
+
+	<!-- Get or calculate depth of the element -->
+	<xsl:template name="getLevel">
 		<xsl:param name="depth"/>
 		<xsl:choose>
 			<xsl:when test="normalize-space(@depth) != ''">
@@ -11975,7 +12523,10 @@
 				<xsl:value-of select="$level"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="getLevelTermName">
+	</xsl:template> <!-- getLevel -->
+
+	<!-- Get or calculate depth of term's name -->
+	<xsl:template name="getLevelTermName">
 		<xsl:choose>
 			<xsl:when test="normalize-space(../@depth) != ''">
 				<xsl:value-of select="../@depth"/>
@@ -11995,7 +12546,10 @@
 				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="split">
+	</xsl:template> <!-- getLevelTermName -->
+
+	<!-- split string by separator -->
+	<xsl:template name="split">
 		<xsl:param name="pText" select="."/>
 		<xsl:param name="sep" select="','"/>
 		<xsl:param name="normalize-space" select="'true'"/>
@@ -12019,36 +12573,26 @@
 				<xsl:with-param name="keep_sep" select="$keep_sep"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:template><xsl:template name="getDocumentId">		
+	</xsl:template> <!-- split -->
+
+	<xsl:template name="getDocumentId">
 		<xsl:call-template name="getLang"/><xsl:value-of select="//*[local-name() = 'p'][1]/@id"/>
-	</xsl:template><xsl:template name="namespaceCheck">
+	</xsl:template>
+
+	<xsl:template name="namespaceCheck">
 		<xsl:variable name="documentNS" select="namespace-uri(/*)"/>
-		<xsl:variable name="XSLNS">			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-						
-			
-			
-			
+		<xsl:variable name="XSLNS">
+
 				<xsl:value-of select="document('')//*/namespace::bipm"/>
-			
-			
+
 		</xsl:variable>
 		<xsl:if test="$documentNS != $XSLNS">
 			<xsl:message>[WARNING]: Document namespace: '<xsl:value-of select="$documentNS"/>' doesn't equal to xslt namespace '<xsl:value-of select="$XSLNS"/>'</xsl:message>
 		</xsl:if>
-	</xsl:template><xsl:template name="getLanguage">
-		<xsl:param name="lang"/>		
+	</xsl:template> <!-- namespaceCheck -->
+
+	<xsl:template name="getLanguage">
+		<xsl:param name="lang"/>
 		<xsl:variable name="language" select="java:toLowerCase(java:java.lang.String.new($lang))"/>
 		<xsl:choose>
 			<xsl:when test="$language = 'en'">English</xsl:when>
@@ -12057,7 +12601,9 @@
 			<xsl:when test="$language = 'cn'">Chinese</xsl:when>
 			<xsl:otherwise><xsl:value-of select="$language"/></xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="setId">
+	</xsl:template>
+
+	<xsl:template name="setId">
 		<xsl:attribute name="id">
 			<xsl:choose>
 				<xsl:when test="@id">
@@ -12066,9 +12612,11 @@
 				<xsl:otherwise>
 					<xsl:value-of select="generate-id()"/>
 				</xsl:otherwise>
-			</xsl:choose>					
+			</xsl:choose>
 		</xsl:attribute>
-	</xsl:template><xsl:template name="add-letter-spacing">
+	</xsl:template>
+
+	<xsl:template name="add-letter-spacing">
 		<xsl:param name="text"/>
 		<xsl:param name="letter-spacing" select="'0.15'"/>
 		<xsl:if test="string-length($text) &gt; 0">
@@ -12077,7 +12625,7 @@
 				<xsl:if test="$char = '®'">
 					<xsl:attribute name="font-size">58%</xsl:attribute>
 					<xsl:attribute name="baseline-shift">30%</xsl:attribute>
-				</xsl:if>				
+				</xsl:if>
 				<xsl:value-of select="$char"/>
 			</fo:inline>
 			<xsl:call-template name="add-letter-spacing">
@@ -12085,7 +12633,9 @@
 				<xsl:with-param name="letter-spacing" select="$letter-spacing"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:template><xsl:template name="repeat">
+	</xsl:template>
+
+	<xsl:template name="repeat">
 		<xsl:param name="char" select="'*'"/>
 		<xsl:param name="count"/>
 		<xsl:if test="$count &gt; 0">
@@ -12095,12 +12645,14 @@
 				<xsl:with-param name="count" select="$count - 1"/>
 			</xsl:call-template>
 		</xsl:if>
-	</xsl:template><xsl:template name="getLocalizedString">
+	</xsl:template>
+
+	<xsl:template name="getLocalizedString">
 		<xsl:param name="key"/>
 		<xsl:param name="formatted">false</xsl:param>
 		<xsl:param name="lang"/>
 		<xsl:param name="returnEmptyIfNotFound">false</xsl:param>
-		
+
 		<xsl:variable name="curr_lang">
 			<xsl:choose>
 				<xsl:when test="$lang != ''"><xsl:value-of select="$lang"/></xsl:when>
@@ -12110,7 +12662,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:variable name="data_value">
 			<xsl:choose>
 				<xsl:when test="$formatted = 'true'">
@@ -12121,7 +12673,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		
+
 		<xsl:choose>
 			<xsl:when test="normalize-space($data_value) != ''">
 				<xsl:choose>
@@ -12149,7 +12701,9 @@
 				<xsl:value-of select="$key_"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="setTrackChangesStyles">
+	</xsl:template> <!-- getLocalizedString -->
+
+	<xsl:template name="setTrackChangesStyles">
 		<xsl:param name="isAdded"/>
 		<xsl:param name="isDeleted"/>
 		<xsl:choose>
@@ -12175,11 +12729,18 @@
 				</xsl:if>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:variable name="LRM" select="'‎'"/><xsl:variable name="RLM" select="'‏'"/><xsl:template name="setWritingMode">
+	</xsl:template> <!-- setTrackChangesStyles -->
+
+	<!--  see https://xmlgraphics.apache.org/fop/2.5/complexscripts.html#bidi_controls-->
+	<xsl:variable name="LRM" select="'‎'"/> <!-- U+200E - LEFT-TO-RIGHT MARK (LRM) -->
+	<xsl:variable name="RLM" select="'‏'"/> <!-- U+200F - RIGHT-TO-LEFT MARK (RLM) -->
+	<xsl:template name="setWritingMode">
 		<xsl:if test="$lang = 'ar'">
 			<xsl:attribute name="writing-mode">rl-tb</xsl:attribute>
 		</xsl:if>
-	</xsl:template><xsl:template name="setAlignment">
+	</xsl:template>
+
+	<xsl:template name="setAlignment">
 		<xsl:param name="align" select="normalize-space(@align)"/>
 		<xsl:choose>
 			<xsl:when test="$lang = 'ar' and $align = 'left'">start</xsl:when>
@@ -12188,7 +12749,9 @@
 				<xsl:value-of select="$align"/>
 			</xsl:when>
 		</xsl:choose>
-	</xsl:template><xsl:template name="setTextAlignment">
+	</xsl:template>
+
+	<xsl:template name="setTextAlignment">
 		<xsl:param name="default">left</xsl:param>
 		<xsl:variable name="align" select="normalize-space(@align)"/>
 		<xsl:attribute name="text-align">
@@ -12204,7 +12767,9 @@
 		<xsl:if test="$align = 'indent'">
 			<xsl:attribute name="margin-left">7mm</xsl:attribute>
 		</xsl:if>
-	</xsl:template><xsl:template name="number-to-words">
+	</xsl:template>
+
+	<xsl:template name="number-to-words">
 		<xsl:param name="number"/>
 		<xsl:param name="first"/>
 		<xsl:if test="$number != ''">
@@ -12360,7 +12925,7 @@
 			</xsl:variable>
 
 			<xsl:variable name="ordinal" select="xalan:nodeset($words)//word[@ordinal = $number]/text()"/>
-			
+
 			<xsl:variable name="value">
 				<xsl:choose>
 					<xsl:when test="$ordinal != ''">
@@ -12400,12 +12965,15 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
-	</xsl:template><xsl:template name="number-to-ordinal">
+	</xsl:template> <!-- number-to-words -->
+
+	<!-- st for 1, nd for 2, rd for 3, th for 4, 5, 6, ... -->
+	<xsl:template name="number-to-ordinal">
 		<xsl:param name="number"/>
 		<xsl:param name="curr_lang"/>
 		<xsl:choose>
 			<xsl:when test="$curr_lang = 'fr'">
-				<xsl:choose>					
+				<xsl:choose>
 					<xsl:when test="$number = '1'">re</xsl:when>
 					<xsl:otherwise>e</xsl:otherwise>
 				</xsl:choose>
@@ -12419,7 +12987,10 @@
 				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template name="setAltText">
+	</xsl:template> <!-- number-to-ordinal -->
+
+	<!-- add the attribute fox:alt-text, required for PDF/UA -->
+	<xsl:template name="setAltText">
 		<xsl:param name="value"/>
 		<xsl:attribute name="fox:alt-text">
 			<xsl:choose>
@@ -12429,7 +13000,9 @@
 				<xsl:otherwise>_</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
-	</xsl:template><xsl:template name="substring-after-last">	
+	</xsl:template>
+
+	<xsl:template name="substring-after-last">
 		<xsl:param name="value"/>
 		<xsl:param name="delimiter"/>
 		<xsl:choose>
@@ -12443,7 +13016,9 @@
 				<xsl:value-of select="$value"/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template><xsl:template match="*" mode="print_as_xml">
+	</xsl:template>
+
+	<xsl:template match="*" mode="print_as_xml">
 		<xsl:param name="level">0</xsl:param>
 
 		<fo:block margin-left="{2*$level}mm">
@@ -12458,7 +13033,7 @@
 				<xsl:text>"</xsl:text>
 			</xsl:for-each>
 			<xsl:text>&gt;</xsl:text>
-			
+
 			<xsl:if test="not(*)">
 				<fo:inline font-weight="bold"><xsl:value-of select="."/></fo:inline>
 				<xsl:text>&lt;/</xsl:text>
@@ -12466,7 +13041,7 @@
 					<xsl:text>&gt;</xsl:text>
 			</xsl:if>
 		</fo:block>
-		
+
 		<xsl:if test="*">
 			<fo:block>
 				<xsl:apply-templates mode="print_as_xml">
@@ -12479,4 +13054,6 @@
 				<xsl:text>&gt;</xsl:text>
 			</fo:block>
 		</xsl:if>
-	</xsl:template></xsl:stylesheet>
+	</xsl:template>
+
+</xsl:stylesheet>
