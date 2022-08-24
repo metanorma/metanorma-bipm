@@ -751,14 +751,12 @@ RSpec.describe Metanorma::BIPM do
 
       Text
 
-      == Introduction
-
-      === Introduction Subsection
-
       == Acknowledgements
 
       [.preface]
       == Dedication
+
+      == Introduction
 
       == Scope
 
@@ -841,9 +839,6 @@ RSpec.describe Metanorma::BIPM do
         <sections>
           <clause id='_' obligation='normative'>
             <title>Introduction</title>
-            <clause id='_' obligation='normative'>
-              <title>Introduction Subsection</title>
-            </clause>
           </clause>
           <clause id='_' type='scope' obligation='normative'>
             <title>Scope</title>

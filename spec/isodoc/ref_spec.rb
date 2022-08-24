@@ -231,7 +231,7 @@ RSpec.describe IsoDoc do
             <bibitem id='ISBN' type='book'>
               <formattedref>
                 <em>Chemicals for analytical laboratory use</em>
-                . ISBN.
+                . n.p.: n.d. ISBN.
               </formattedref>
               <docidentifier type='ISBN'>ISBN</docidentifier>
               <docidentifier type='metanorma'>[1]</docidentifier>
@@ -239,7 +239,7 @@ RSpec.describe IsoDoc do
             <bibitem id='ISSN' type='journal'>
               <formattedref>
                 <em>Instruments for analytical laboratory use</em>
-                . ISSN.
+                . n.d. ISSN.
               </formattedref>
               <docidentifier type='ISSN'>ISSN</docidentifier>
               <docidentifier type='metanorma'>[2]</docidentifier>
@@ -366,12 +366,12 @@ RSpec.describe IsoDoc do
              <p id='ISBN' class='Biblio'>
                [1]&#160;
                <i>Chemicals for analytical laboratory use</i>
-                . ISBN.
+                . n.p.: n.d. ISBN.
              </p>
              <p id='ISSN' class='Biblio'>
                [2]&#160;
                <i>Instruments for analytical laboratory use</i>
-                . ISSN.
+                . n.d. ISSN.
              </p>
              <div class='Note'>
                <p>
@@ -616,7 +616,7 @@ RSpec.describe IsoDoc do
              <formattedref>
                Bureau International des Poids et Mesures.
                <em>1st meeting of the CGPM</em>
-               . September 28, 1889.
+               . September 28, 1889. <link target='https://www.bipm.org/en/committees/cg/cgpm/1-1889'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>.
              </formattedref>
              <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
              <docidentifier type='BIPM' primary='true'>CGPM Resolution 1</docidentifier>
@@ -625,7 +625,7 @@ RSpec.describe IsoDoc do
              <formattedref>
                Bureau International des Poids et Mesures.
                <em>105th meeting of the CIPM</em>
-               . October 28, 2016.
+               . October 28, 2016. <link target='https://www.bipm.org/en/committees/ci/cipm/105-2016'>https://www.bipm.org/en/committees/ci/cipm/105-2016</link>.
              </formattedref>
              <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
              <docidentifier type='BIPM' primary='true'>CIPM Decision 105</docidentifier>

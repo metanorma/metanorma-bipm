@@ -10,7 +10,7 @@ module Metanorma
       def output_formats
         super.merge(
           html: "html",
-          pdf: "pdf"
+          pdf: "pdf",
         ).tap { |hs| hs.delete(:doc) }
       end
 
@@ -37,14 +37,17 @@ module Metanorma
         "Metanorma::BIPM #{Metanorma::BIPM::VERSION}"
       end
 
-      def output(isodoc_node, inname, outname, format, options={})
+      def output(isodoc_node, inname, outname, format, options = {})
         case format
         when :html
-          IsoDoc::BIPM::HtmlConvert.new(options).convert(inname, isodoc_node, nil, outname)
+          IsoDoc::BIPM::HtmlConvert.new(options)
+            .convert(inname, isodoc_node, nil, outname)
         when :presentation
-          IsoDoc::BIPM::PresentationXMLConvert.new(options).convert(inname, isodoc_node, nil, outname)
+          IsoDoc::BIPM::PresentationXMLConvert.new(options)
+            .convert(inname, isodoc_node, nil, outname)
         when :pdf
-          IsoDoc::BIPM::PdfConvert.new(options).convert(inname, isodoc_node, nil, outname)
+          IsoDoc::BIPM::PdfConvert.new(options)
+            .convert(inname, isodoc_node, nil, outname)
         else
           super
         end
