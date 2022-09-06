@@ -156,12 +156,12 @@ RSpec.describe IsoDoc do
         <preface>
           <foreword displayorder='1'>
             <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-              <eref bibitemid='ISO712'>[110]</eref>
-              <eref bibitemid='ISBN'>[1]</eref>
-              <eref bibitemid='ISSN'>[2]</eref>
+              <eref bibitemid='ISO712'>ISO 712</eref>
+              <eref bibitemid='ISBN'>[6]</eref>
+              <eref bibitemid='ISSN'>[7]</eref>
               <eref bibitemid='ISO16634'>ISO 16634:-- (all parts)</eref>
               <eref bibitemid='ref1'>ICC/167</eref>
-              <eref bibitemid='ref10'>[10]</eref>
+              <eref bibitemid='ref10'>[9]</eref>
               <eref bibitemid='ref12'>Citn</eref>
               <eref bibitemid='zip_ffs'>[5]</eref>
             </p>
@@ -183,15 +183,15 @@ RSpec.describe IsoDoc do
                 <em>Cereals and cereal products</em>
                 .
               </formattedref>
+              <docidentifier type='metanorma-ordinal'>[1]</docidentifier>
               <docidentifier type='ISO'>ISO 712</docidentifier>
-              <docidentifier type='metanorma'>[110]</docidentifier>
             </bibitem>
             <bibitem id='ISO16634' type='standard'>
               <formattedref>
                 <em>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</em>
                 .
               </formattedref>
-              <docidentifier type='metanorma-ordinal'>[1]</docidentifier>
+              <docidentifier type='metanorma-ordinal'>[2]</docidentifier>
               <docidentifier type='ISO'>ISO 16634:-- (all parts)</docidentifier>
               <note format='text/plain' reference='1' type='Unpublished-Status'>Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
             </bibitem>
@@ -201,7 +201,7 @@ RSpec.describe IsoDoc do
                 <em>Cereals and pulses</em>
                 . 2013&#x2013;2014.
               </formattedref>
-              <docidentifier type='metanorma-ordinal'>[2]</docidentifier>
+              <docidentifier type='metanorma-ordinal'>[3]</docidentifier>
               <docidentifier type='ISO'>ISO 20483:2013-2014</docidentifier>
             </bibitem>
             <bibitem id='ref1'>
@@ -217,7 +217,7 @@ RSpec.describe IsoDoc do
                 <link target='http://www.icc.or.at'/>
                  ) [ICC/167]
               </formattedref>
-              <docidentifier type='metanorma-ordinal'>[3]</docidentifier>
+              <docidentifier type='metanorma-ordinal'>[4]</docidentifier>
               <docidentifier type='ICC'>ICC/167</docidentifier>
             </bibitem>
             <note>
@@ -226,23 +226,23 @@ RSpec.describe IsoDoc do
             </note>
             <bibitem id='zip_ffs'>
               <formattedref format='application/x-isodoc+xml'>Title 5</formattedref>
-              <docidentifier type='metanorma'>[5]</docidentifier>
+              <docidentifier type='metanorma-ordinal'>[5]</docidentifier>
             </bibitem>
             <bibitem id='ISBN' type='book'>
               <formattedref>
                 <em>Chemicals for analytical laboratory use</em>
                 . n.p.: n.d. ISBN.
               </formattedref>
+              <docidentifier type='metanorma-ordinal'>[6]</docidentifier>
               <docidentifier type='ISBN'>ISBN</docidentifier>
-              <docidentifier type='metanorma'>[1]</docidentifier>
             </bibitem>
             <bibitem id='ISSN' type='journal'>
               <formattedref>
                 <em>Instruments for analytical laboratory use</em>
                 . n.d. ISSN.
               </formattedref>
+              <docidentifier type='metanorma-ordinal'>[7]</docidentifier>
               <docidentifier type='ISSN'>ISSN</docidentifier>
-              <docidentifier type='metanorma'>[2]</docidentifier>
             </bibitem>
             <note>
               <name>NOTE</name>
@@ -257,7 +257,7 @@ RSpec.describe IsoDoc do
                 <em>Water for analytical laboratory use</em>
                 .
               </formattedref>
-              <docidentifier type='metanorma-ordinal'>[3]</docidentifier>
+              <docidentifier type='metanorma-ordinal'>[8]</docidentifier>
               <docidentifier type='BIPM'>BIPM 3696</docidentifier>
             </bibitem>
             <bibitem id='ref10'>
@@ -273,14 +273,14 @@ RSpec.describe IsoDoc do
                 <link target='http://www.icc.or.at'/>
                  )
               </formattedref>
-              <docidentifier type='metanorma'>[10]</docidentifier>
+              <docidentifier type='metanorma-ordinal'>[9]</docidentifier>
             </bibitem>
             <bibitem id='ref11'>
               <formattedref>
                 <em>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</em>
                 .
               </formattedref>
-              <docidentifier type='metanorma-ordinal'>[4]</docidentifier>
+              <docidentifier type='metanorma-ordinal'>[10]</docidentifier>
               <docidentifier type='IETF'>IETF RFC 10</docidentifier>
             </bibitem>
             <bibitem id='ref12'>
@@ -303,12 +303,12 @@ RSpec.describe IsoDoc do
            <div>
              <h1 class='ForewordTitle'>Foreword</h1>
              <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-               <a href='#ISO712'>[110]</a>
-               <a href='#ISBN'>[1]</a>
-               <a href='#ISSN'>[2]</a>
+               <a href='#ISO712'>ISO 712</a>
+               <a href='#ISBN'>[6]</a>
+               <a href='#ISSN'>[7]</a>
                <a href='#ISO16634'>ISO 16634:-- (all parts)</a>
                <a href='#ref1'>ICC/167</a>
-               <a href='#ref10'>[10]</a>
+               <a href='#ref10'>[9]</a>
                <a href='#ref12'>Citn</a>
                <a href='#zip_ffs'>[5]</a>
              </p>
@@ -325,12 +325,12 @@ RSpec.describe IsoDoc do
                amendments) applies.
              </p>
              <p id='ISO712' class='Biblio'>
-               [110]&#160; ISO 712 International Organization for Standardization.
+               [1]&#160; ISO 712 International Organization for Standardization.
                <i>Cereals and cereal products</i>
                 .
              </p>
              <p id='ISO16634' class='Biblio'>
-               [1]&#160; ISO 16634:-- (all parts)
+               [2]&#160; ISO 16634:-- (all parts)
                <a class='FootnoteRef' href='#fn:1'>
                  <sup>1</sup>
                </a>
@@ -338,13 +338,13 @@ RSpec.describe IsoDoc do
                 .
              </p>
              <p id='ISO20483' class='Biblio'>
-               [2]&#160; ISO 20483:2013-2014 International Organization for
+               [3]&#160; ISO 20483:2013-2014 International Organization for
                Standardization.
                <i>Cereals and pulses</i>
                 . 2013&#8211;2014.
              </p>
              <p id='ref1' class='Biblio'>
-               [3]&#160; ICC/167
+               [4]&#160; ICC/167
                <span style='font-variant:small-caps;'>Standard No I.C.C 167</span>
                 .
                <i>
@@ -364,12 +364,12 @@ RSpec.describe IsoDoc do
              </div>
              <p id='zip_ffs' class='Biblio'>[5]&#160; Title 5</p>
              <p id='ISBN' class='Biblio'>
-               [1]&#160;
+               [6]&#160;
                <i>Chemicals for analytical laboratory use</i>
                 . n.p.: n.d. ISBN.
              </p>
              <p id='ISSN' class='Biblio'>
-               [2]&#160;
+               [7]&#160;
                <i>Instruments for analytical laboratory use</i>
                 . n.d. ISSN.
              </p>
@@ -386,12 +386,12 @@ RSpec.describe IsoDoc do
                </p>
              </div>
              <p id='ISO3696' class='Biblio'>
-               [3]&#160; BIPM 3696
+               [8]&#160; BIPM 3696
                <i>Water for analytical laboratory use</i>
                 .
              </p>
              <p id='ref10' class='Biblio'>
-               [10]&#160;
+               [9]&#160;
                <span style='font-variant:small-caps;'>Standard No I.C.C 167</span>
                 .
                <i>
@@ -404,7 +404,7 @@ RSpec.describe IsoDoc do
                 )
              </p>
              <p id='ref11' class='Biblio'>
-               [4]&#160; IETF RFC 10
+               [10]&#160; IETF RFC 10
                <i>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</i>
                 .
              </p>
