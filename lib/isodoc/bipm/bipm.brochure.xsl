@@ -1065,16 +1065,18 @@
 											<xsl:for-each select="$contents/doc[@id = $docid]//item[@display='true' and not(@type = 'annex') and not(@type = 'index') and not(@parent = 'annex')]">
 												<xsl:call-template name="insertContentItem"/>
 											</xsl:for-each>
-											<xsl:if test="$doctype ='brochure'">
-												<!-- insert page break between main sections and appendixes in ToC -->
+											<!-- insert page break between main sections and appendixes in ToC -->
+											<!-- <xsl:if test="$doctype ='brochure'">
 												<fo:table-row>
 													<fo:table-cell number-columns-spanned="2">
 														<fo:block break-after="page"/>
 													</fo:table-cell>
 												</fo:table-row>
-											</xsl:if>
+											</xsl:if> -->
 											<xsl:for-each select="$contents/doc[@id = $docid]//item[@display='true' and (@type = 'annex')]"> <!--  or (@level = 2 and @parent = 'annex') -->
-												<xsl:call-template name="insertContentItem"/>
+												<xsl:call-template name="insertContentItem">
+													<xsl:with-param name="keep-with-next">true</xsl:with-param>
+												</xsl:call-template>
 											</xsl:for-each>
 											<xsl:for-each select="$contents/doc[@id = $docid]//item[@display='true' and (@type = 'index')]">
 												<xsl:call-template name="insertContentItem"/>
@@ -1733,7 +1735,11 @@
 	</xsl:template>
 
 	<xsl:template name="insertContentItem">
+		<xsl:param name="keep-with-next"/>
 		<fo:table-row>
+			<xsl:if test="$keep-with-next = 'true'">
+				<xsl:attribute name="keep-with-next">always</xsl:attribute>
+			</xsl:if>
 			<xsl:variable name="space-before">
 				<xsl:if test="@level = 1">
 					<xsl:if test="@type = 'annex'">14pt</xsl:if>
@@ -2222,6 +2228,14 @@
 
 	<xsl:template match="*[local-name() = 'br']" mode="header">
 		<xsl:text> </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'sub']" mode="header">
+		<xsl:apply-templates select="."/>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'sup']" mode="header">
+		<xsl:apply-templates select="."/>
 	</xsl:template>
 
 	<!-- ====== -->
@@ -2747,6 +2761,10 @@
 				<xsl:attribute name="role">BlockQuote</xsl:attribute>
 			</xsl:if>
 
+			<xsl:if test="ancestor::bipm:preface">
+				<xsl:attribute name="space-after">6pt</xsl:attribute>
+			</xsl:if>
+
 			<!-- last item -->
 			<xsl:if test="not(following-sibling::*[1][local-name() = 'li'])">
 				<xsl:attribute name="space-after">6pt</xsl:attribute>
@@ -2913,8 +2931,8 @@
 				<xsl:choose>
 					<xsl:when test="$curr_lang = 'fr'">
 						<xsl:choose>
-							<xsl:when test="ancestor::bipm:li">Remarque: </xsl:when>
-							<xsl:otherwise>Note: </xsl:otherwise>
+							<xsl:when test="ancestor::bipm:li">Remarque : </xsl:when>
+							<xsl:otherwise>Note : </xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
 					<xsl:otherwise>Note: </xsl:otherwise>
@@ -2928,11 +2946,26 @@
 	</xsl:template>
 
 	<xsl:template match="*[local-name() = 'note']/*[local-name() = 'p']" priority="3">
-		<fo:inline xsl:use-attribute-sets="note-p-style">
-			<xsl:apply-templates/>
-		</fo:inline>
-		<fo:inline><xsl:value-of select="$linebreak"/></fo:inline>
-
+		<xsl:variable name="num"><xsl:number/></xsl:variable>
+		<xsl:choose>
+			<xsl:when test="$num = 1"> <!-- display first NOTE's paragraph in the same line with label NOTE -->
+				<fo:inline xsl:use-attribute-sets="note-p-style">
+					<xsl:apply-templates/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:when test="ancestor::*[local-name() = 'preface']">
+				<fo:block xsl:use-attribute-sets="note-p-style">
+					<xsl:attribute name="space-before">6pt</xsl:attribute>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:inline xsl:use-attribute-sets="note-p-style">
+					<xsl:apply-templates/>
+				</fo:inline>
+				<fo:inline><xsl:value-of select="$linebreak"/></fo:inline>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="*[local-name() = 'sup_fn']">
@@ -4462,6 +4495,7 @@
 	<xsl:attribute-set name="note-style">
 
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
+			<xsl:attribute name="text-align">justify</xsl:attribute>
 
 	</xsl:attribute-set>
 
@@ -8680,7 +8714,11 @@
 				</xsl:when>
 				<xsl:otherwise>
 
-						<xsl:text>:</xsl:text>
+						<xsl:variable name="curr_lang" select="ancestor::bipm:bipm-standard/bipm:bibdata/bipm:language[@current = 'true']"/>
+						<xsl:choose>
+							<xsl:when test="$curr_lang = 'fr'"><xsl:text> : </xsl:text></xsl:when>
+							<xsl:otherwise><xsl:text>: </xsl:text></xsl:otherwise>
+						</xsl:choose>
 
 				</xsl:otherwise>
 			</xsl:choose>
@@ -8700,7 +8738,11 @@
 				</xsl:when>
 				<xsl:otherwise>
 
-						<xsl:text>:</xsl:text>
+						<xsl:variable name="curr_lang" select="ancestor::bipm:bipm-standard/bipm:bibdata/bipm:language[@current = 'true']"/>
+						<xsl:choose>
+							<xsl:when test="$curr_lang = 'fr'"><xsl:text> : </xsl:text></xsl:when>
+							<xsl:otherwise><xsl:text>: </xsl:text></xsl:otherwise>
+						</xsl:choose>
 
 				</xsl:otherwise>
 			</xsl:choose>
@@ -9704,6 +9746,18 @@
 	</xsl:template>
 
 	<xsl:template match="*[local-name() = 'em']" mode="contents_item">
+		<xsl:copy>
+			<xsl:apply-templates mode="contents_item"/>
+		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'sub']" mode="contents_item">
+		<xsl:copy>
+			<xsl:apply-templates mode="contents_item"/>
+		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'sup']" mode="contents_item">
 		<xsl:copy>
 			<xsl:apply-templates mode="contents_item"/>
 		</xsl:copy>
