@@ -158,31 +158,31 @@ module IsoDoc
         end
       end
 
+      # notes and remarques (list notes) are not numbered
+      def note1(elem)
+        return if elem.parent.name == "bibitem" || elem["notag"] == "true"
+
+        #n = @xrefs.get[elem["id"]]
+        lbl = note_label(elem)
+        #(n.nil? || n[:label].nil? || n[:label].empty?) or
+        #  lbl = l10n("#{lbl} #{n[:label]}")
+        prefix_name(elem, "", lbl, "name")
+      end
+
+      def note_label(elem)
+        label = @i18n.note
+        elem.ancestors("preface").empty? &&
+          !elem.ancestors("ul, ol, dl").empty? and
+          label = @i18n.listnote
+        label
+      end
+
       def termsource1(elem)
         while elem&.next_element&.name == "termsource"
           elem << "; #{elem.next_element.remove.children.to_xml}"
         end
         elem.children = l10n("[#{@i18n.source} #{elem.children.to_xml.strip}]")
       end
-=begin
-      def expand_citeas(text)
-        ret = super
-        if @lang == "fr" && /^(CGPM|CIPM) /.match?(ret)
-          ret.sub!(/^(CGPM|CIPM) (\S+)/) do |_m|
-            "#{$1} &#x2013; #{FR_OUTCOME_TYPE[$2.to_sym] || $2}"
-          end
-        end
-        ret
-      end
-
-      FR_OUTCOME_TYPE = {
-        Resolution: "Résolution",
-        Decision: "Décision",
-        Recommendation: "Recommandation",
-        Declaration: "Déclaration",
-        Meeting: "Réunion",
-      }.freeze
-=end
 
       include Init
     end

@@ -42,3 +42,6 @@ norm_with_refs_pref:
 all_rights_reserved: Tous droits réservés
 table_of_contents: Table des matières
 source: Adapté de
+note: "Note:"
+listnote: "Remarque:"
+termnote: "Note % à l’article:"

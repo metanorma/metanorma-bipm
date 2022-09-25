@@ -221,7 +221,7 @@ RSpec.describe IsoDoc do
               <docidentifier type='ICC'>ICC/167</docidentifier>
             </bibitem>
             <note>
-              <name>NOTE</name>
+              <name>Note:</name>
               <p>This is an annotation of ISO 20483:2013-2014</p>
             </note>
             <bibitem id='zip_ffs'>
@@ -245,11 +245,11 @@ RSpec.describe IsoDoc do
               <docidentifier type='ISSN'>ISSN</docidentifier>
             </bibitem>
             <note>
-              <name>NOTE</name>
+              <name>Note:</name>
               <p>This is an annotation of document ISSN.</p>
             </note>
             <note>
-              <name>NOTE</name>
+              <name>Note:</name>
               <p>This is another annotation of document ISSN.</p>
             </note>
             <bibitem id='ISO3696' type='standard'>
@@ -358,7 +358,7 @@ RSpec.describe IsoDoc do
              </p>
              <div class='Note'>
                <p>
-                 <span class='note_label'>NOTE</span>
+                 <span class='note_label'>Note:</span>
                  &#160; This is an annotation of ISO 20483:2013-2014
                </p>
              </div>
@@ -375,13 +375,13 @@ RSpec.describe IsoDoc do
              </p>
              <div class='Note'>
                <p>
-                 <span class='note_label'>NOTE</span>
+                 <span class='note_label'>Note:</span>
                  &#160; This is an annotation of document ISSN.
                </p>
              </div>
              <div class='Note'>
                <p>
-                 <span class='note_label'>NOTE</span>
+                 <span class='note_label'>Note:</span>
                  &#160; This is another annotation of document ISSN.
                </p>
              </div>
