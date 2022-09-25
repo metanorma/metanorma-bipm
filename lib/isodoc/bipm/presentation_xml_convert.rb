@@ -90,6 +90,12 @@ module IsoDoc
         { group: "&#xA0;", fraction_group: "&#xA0;", fraction_group_digits: 3 }
       end
 
+      def localized_number(num, locale, precision)
+        g = Regexp.quote(twitter_cldr_localiser_symbols[:group])
+        f = Regexp.quote(twitter_cldr_localiser_symbols[:fraction_group])
+        super.sub(/^(\d)#{g}(\d)/, "\\1\\2").sub(/(\d)#{f}(\d)$/, "\\1\\2")
+      end
+
       def mathml1(elem, locale)
         asciimath_dup(elem)
         localize_maths(elem, locale)
@@ -132,8 +138,8 @@ module IsoDoc
         # merge adjacent text nodes
         docxml.root.replace(Nokogiri::XML(docxml.root.to_xml).root)
         docxml.xpath(ns(xpath)).each do |x| # rubocop: disable Style/CombinableLoops
-          if x&.next&.text? && /^\],\s+\[$/.match?(x&.next&.text) &&
-              %w(eref origin source).include?(x&.next&.next&.name)
+          if x.next&.text? && /^\],\s+\[$/.match?(x.next.text) &&
+              %w(eref origin source).include?(x.next.next&.name)
             x.next.replace(", ")
           end
         end
@@ -164,25 +170,6 @@ module IsoDoc
         end
         elem.children = l10n("[#{@i18n.source} #{elem.children.to_xml.strip}]")
       end
-=begin
-      def expand_citeas(text)
-        ret = super
-        if @lang == "fr" && /^(CGPM|CIPM) /.match?(ret)
-          ret.sub!(/^(CGPM|CIPM) (\S+)/) do |_m|
-            "#{$1} &#x2013; #{FR_OUTCOME_TYPE[$2.to_sym] || $2}"
-          end
-        end
-        ret
-      end
-
-      FR_OUTCOME_TYPE = {
-        Resolution: "Résolution",
-        Decision: "Décision",
-        Recommendation: "Recommandation",
-        Declaration: "Déclaration",
-        Meeting: "Réunion",
-      }.freeze
-=end
 
       include Init
     end
