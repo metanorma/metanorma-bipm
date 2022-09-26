@@ -13,8 +13,8 @@ module IsoDoc
                               "@acronym"))&.value == "JCGM"
         @iso = IsoDoc::Iso::PresentationXMLConvert
           .new({ language: @lang, script: @script })
-        i18n = @iso.i18n_init(@lang, @script, nil)
-        @iso.metadata_init(@lang, @script, i18n)
+        i18n = @iso.i18n_init(@lang, @script, @locale, nil)
+        @iso.metadata_init(@lang, @script, @locale, i18n)
         super
       end
 
@@ -104,7 +104,7 @@ module IsoDoc
         pubdate = bibdata.at(ns("./date[not(@format)][@type = 'published']"))
         return unless pubdate
 
-        meta = metadata_init(@lang, @script, @i18n)
+        meta = metadata_init(@lang, @script, @locale, @i18n)
         pubdate.next = pubdate.dup
         pubdate.next["format"] = "ddMMMyyyy"
         pubdate.next.children = meta.monthyr(pubdate.text)
