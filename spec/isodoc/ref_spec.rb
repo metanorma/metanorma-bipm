@@ -231,7 +231,7 @@ RSpec.describe IsoDoc do
             <bibitem id='ISBN' type='book'>
               <formattedref>
                 <em>Chemicals for analytical laboratory use</em>
-                . n.p.: n.d. ISBN.
+                . n.p.: n.d. ISBN: ISBN.
               </formattedref>
               <docidentifier type='metanorma-ordinal'>[6]</docidentifier>
               <docidentifier type='ISBN'>ISBN</docidentifier>
@@ -239,7 +239,7 @@ RSpec.describe IsoDoc do
             <bibitem id='ISSN' type='journal'>
               <formattedref>
                 <em>Instruments for analytical laboratory use</em>
-                . n.d. ISSN.
+                . n.d. ISSN: ISSN.
               </formattedref>
               <docidentifier type='metanorma-ordinal'>[7]</docidentifier>
               <docidentifier type='ISSN'>ISSN</docidentifier>
@@ -366,12 +366,12 @@ RSpec.describe IsoDoc do
              <p id='ISBN' class='Biblio'>
                [6]&#160;
                <i>Chemicals for analytical laboratory use</i>
-                . n.p.: n.d. ISBN.
+                . n.p.: n.d. ISBN: ISBN.
              </p>
              <p id='ISSN' class='Biblio'>
                [7]&#160;
                <i>Instruments for analytical laboratory use</i>
-                . n.d. ISSN.
+                . n.d. ISSN: ISSN.
              </p>
              <div class='Note'>
                <p>
