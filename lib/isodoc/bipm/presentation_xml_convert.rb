@@ -162,19 +162,23 @@ module IsoDoc
       def note1(elem)
         return if elem.parent.name == "bibitem" || elem["notag"] == "true"
 
-        #n = @xrefs.get[elem["id"]]
+        # n = @xrefs.get[elem["id"]]
         lbl = note_label(elem)
-        #(n.nil? || n[:label].nil? || n[:label].empty?) or
+        # (n.nil? || n[:label].nil? || n[:label].empty?) or
         #  lbl = l10n("#{lbl} #{n[:label]}")
         prefix_name(elem, "", lbl, "name")
       end
 
       def note_label(elem)
-        label = @i18n.note
-        elem.ancestors("preface").empty? &&
-          !elem.ancestors("ul, ol, dl").empty? and
-          label = @i18n.listnote
-        label
+        if elem.ancestors("preface").empty?
+          if elem.ancestors("ul, ol, dl").empty?
+            @i18n.note
+          else
+            @i18n.listnote
+          end
+        else
+          @i18n.prefacenote
+        end
       end
 
       def termsource1(elem)

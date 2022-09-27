@@ -20,5 +20,6 @@ all_rights_reserved: All rights reserved
 table_of_contents: Contents
 source: Adapted from
 note: "Note:"
+prefacenote: "NOTE:"
 listnote: "Note:"
 termnote: "Note % to entry"
