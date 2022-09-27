@@ -156,14 +156,14 @@ RSpec.describe IsoDoc::BIPM do
                       </mrow>
                     </mrow>
                     <mrow>
-                      <mn>1&#xA0;000</mn>
+                      <mn>1000</mn>
                     </mrow>
                   </munderover>
                   <mfenced open='(' close=')'>
                     <mtable>
                       <mtr>
                         <mtd>
-                          <mn>0.000&#xA0;1</mn>
+                          <mn>0.0001</mn>
                         </mtd>
                       </mtr>
                       <mtr>
@@ -185,7 +185,7 @@ RSpec.describe IsoDoc::BIPM do
                     <mrow>
                       <mfenced open='(' close=')'>
                         <mrow>
-                          <mn>1&#xA0;000.000&#xA0;01</mn>
+                          <mn>1000.000&#xA0;01</mn>
                           <mo>&#x2212;</mo>
                           <mi>p</mi>
                         </mrow>
@@ -411,14 +411,14 @@ RSpec.describe IsoDoc::BIPM do
                       </mrow>
                     </mrow>
                     <mrow>
-                      <mn>1&#xA0;000</mn>
+                      <mn>1000</mn>
                     </mrow>
                   </munderover>
                   <mfenced open='(' close=')'>
                     <mtable>
                       <mtr>
                         <mtd>
-                          <mn>0,000&#xA0;1</mn>
+                          <mn>0,0001</mn>
                         </mtd>
                       </mtr>
                       <mtr>
@@ -440,7 +440,7 @@ RSpec.describe IsoDoc::BIPM do
                     <mrow>
                       <mfenced open='(' close=')'>
                         <mrow>
-                          <mn>1&#xA0;000,000&#xA0;01</mn>
+                          <mn>1000,000&#xA0;01</mn>
                           <mo>&#x2212;</mo>
                           <mi>p</mi>
                         </mrow>
