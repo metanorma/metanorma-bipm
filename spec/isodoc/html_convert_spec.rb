@@ -1,6 +1,74 @@
 require "spec_helper"
 
 RSpec.describe IsoDoc::BIPM do
+  it "inserts part in appendix title" do
+    input = <<~"INPUT"
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+      <bibdata>
+      <title type="main" language="en">Maintitle</title>
+      <title type="part" language="en">Parttitle</title>
+      <title type="main" language="fr">Titrechef</title>
+      <title type="part" language="fr">Titrepartie</title>
+      <ext>
+      <structuredidentifier>
+      <appendix>3</appendix>
+      </structuredidentifier>
+      </ext>
+      </bibdata>
+      </bipm-standard>
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+      <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
+        <bibdata>
+           <title type='main' language='en'>Maintitle</title>
+           <title type='part' language='en'>Parttitle</title>
+           <title type='part-with-numbering' language='en'>Part 3: Parttitle</title>
+           <title type='main' language='fr'>Titrechef</title>
+           <title type='part' language='fr'>Titrepartie</title>
+           <title type='part-with-numbering' language='fr'>Partie 3&#xA0;: Titrepartie</title>
+          <ext>
+            <structuredidentifier>
+              <appendix>3</appendix>
+            </structuredidentifier>
+          </ext>
+        </bibdata>
+      </bipm-standard>
+    OUTPUT
+
+    expect(strip_guid(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to be_equivalent_to output
+
+    input = <<~"INPUT"
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+      <bibdata>
+      <title type="main" language="en">Maintitle</title>
+      <title type="part" language="en">Parttitle</title>
+      <title type="main" language="fr">Titrechef</title>
+      <title type="part" language="fr">Titrepartie</title>
+      </bibdata>
+      </bipm-standard>
+    INPUT
+
+    output = xmlpp(<<~"OUTPUT")
+      <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
+        <bibdata>
+          <title type='main' language='en'>Maintitle</title>
+          <title type='part' language='en'>Parttitle</title>
+          <title type='main' language='fr'>Titrechef</title>
+          <title type='part' language='fr'>Titrepartie</title>
+        </bibdata>
+      </bipm-standard>
+    OUTPUT
+
+    expect(strip_guid(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to be_equivalent_to output
+  end
+
   it "processes pre" do
     input = <<~"INPUT"
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">

@@ -104,6 +104,7 @@ module IsoDoc
       def bibdata_i18n(bibdata)
         super
         bibdata_dates(bibdata)
+        bibdata_titles(bibdata)
       end
 
       def bibdata_dates(bibdata)
@@ -114,6 +115,20 @@ module IsoDoc
         pubdate.next = pubdate.dup
         pubdate.next["format"] = "ddMMMyyyy"
         pubdate.next.children = meta.monthyr(pubdate.text)
+      end
+
+      def bibdata_titles(bibdata)
+        return unless app = bibdata.at(ns("//bibdata/ext/"\
+                                          "structuredidentifier/appendix"))
+
+        bibdata.xpath(ns("//bibdata/title[@type = 'part']")).each do |t|
+          t.previous = t.dup
+          t["type"] = "part-with-numbering"
+          part = t["language"] == "en" ? "Part" : "Partie"
+          # not looking up in YAML
+          t.children = l10n("#{part} #{app.text}: #{t.children.to_xml}",
+                            t["language"])
+        end
       end
 
       def eref(docxml)
@@ -148,13 +163,13 @@ module IsoDoc
       def extract_brackets(node)
         start = node.at("./text()[1]")
         finish = node.at("./text()[last()]")
-        if /^\[/.match?(start.text) && /\]$/.match?(finish.text)
-          start.replace(start.text[1..-1])
-          node.previous = "["
-          finish = node.at("./text()[last()]")
-          finish.replace(finish.text[0..-2])
-          node.next = "]"
-        end
+        (/^\[/.match?(start.text) && /\]$/.match?(finish.text)) or return
+
+        start.replace(start.text[1..-1])
+        node.previous = "["
+        finish = node.at("./text()[last()]")
+        finish.replace(finish.text[0..-2])
+        node.next = "]"
       end
 
       def quotedtitles(docxml)
