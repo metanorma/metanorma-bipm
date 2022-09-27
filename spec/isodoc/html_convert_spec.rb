@@ -1535,14 +1535,14 @@ RSpec.describe IsoDoc::BIPM do
            <foreword id='A' displayorder='1'>
              <p id='B'>abc</p>
              <note id='C'>
-               <name>Note:</name>
+               <name>NOTE:</name>
                Hello
              </note>
              <ul id='D'>
                <li>
                  <p id='E'>List item</p>
                  <note id='F'>
-                   <name>Note:</name>
+                   <name>NOTE:</name>
                    List note
                  </note>
                </li>
