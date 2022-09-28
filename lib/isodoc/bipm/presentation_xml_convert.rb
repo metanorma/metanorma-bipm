@@ -184,7 +184,7 @@ module IsoDoc
         return if elem.parent.name == "bibitem" || elem["notag"] == "true"
 
         # n = @xrefs.get[elem["id"]]
-        lbl = note_label(elem)
+        lbl = l10n(note_label(elem))
         # (n.nil? || n[:label].nil? || n[:label].empty?) or
         #  lbl = l10n("#{lbl} #{n[:label]}")
         prefix_name(elem, "", lbl, "name")
