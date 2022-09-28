@@ -119,7 +119,7 @@ module IsoDoc
 
       def bibdata_titles(bibdata)
         return unless app = bibdata.at(ns("//bibdata/ext/"\
-                                          "structuredidentifier/appendix"))
+                                          "structuredidentifier/part"))
 
         bibdata.xpath(ns("//bibdata/title[@type = 'part']")).each do |t|
           t.previous = t.dup

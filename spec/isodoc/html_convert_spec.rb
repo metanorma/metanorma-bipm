@@ -11,7 +11,7 @@ RSpec.describe IsoDoc::BIPM do
       <title type="part" language="fr">Titrepartie</title>
       <ext>
       <structuredidentifier>
-      <appendix>3</appendix>
+      <part>3</part>
       </structuredidentifier>
       </ext>
       </bibdata>
@@ -29,7 +29,7 @@ RSpec.describe IsoDoc::BIPM do
            <title type='part-with-numbering' language='fr'>Partie 3&#xA0;: Titrepartie</title>
           <ext>
             <structuredidentifier>
-              <appendix>3</appendix>
+              <part>3</part>
             </structuredidentifier>
           </ext>
         </bibdata>
