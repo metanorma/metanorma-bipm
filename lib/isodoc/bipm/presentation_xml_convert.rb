@@ -104,6 +104,7 @@ module IsoDoc
       def bibdata_i18n(bibdata)
         super
         bibdata_dates(bibdata)
+        bibdata_titles(bibdata)
       end
 
       def bibdata_dates(bibdata)
@@ -114,6 +115,20 @@ module IsoDoc
         pubdate.next = pubdate.dup
         pubdate.next["format"] = "ddMMMyyyy"
         pubdate.next.children = meta.monthyr(pubdate.text)
+      end
+
+      def bibdata_titles(bibdata)
+        return unless app = bibdata.at(ns("//bibdata/ext/"\
+                                          "structuredidentifier/part"))
+
+        bibdata.xpath(ns("//bibdata/title[@type = 'part']")).each do |t|
+          t.previous = t.dup
+          t["type"] = "part-with-numbering"
+          part = t["language"] == "en" ? "Part" : "Partie"
+          # not looking up in YAML
+          t.children = l10n("#{part} #{app.text}: #{t.children.to_xml}",
+                            t["language"])
+        end
       end
 
       def eref(docxml)
@@ -148,19 +163,42 @@ module IsoDoc
       def extract_brackets(node)
         start = node.at("./text()[1]")
         finish = node.at("./text()[last()]")
-        if /^\[/.match?(start.text) && /\]$/.match?(finish.text)
-          start.replace(start.text[1..-1])
-          node.previous = "["
-          finish = node.at("./text()[last()]")
-          finish.replace(finish.text[0..-2])
-          node.next = "]"
-        end
+        (/^\[/.match?(start.text) && /\]$/.match?(finish.text)) or return
+
+        start.replace(start.text[1..-1])
+        node.previous = "["
+        finish = node.at("./text()[last()]")
+        finish.replace(finish.text[0..-2])
+        node.next = "]"
       end
 
       def quotedtitles(docxml)
         docxml.xpath(ns("//variant-title[@type = 'quoted']")).each do |t|
           t.name = "title"
           t.children.first.previous = "<blacksquare/>"
+        end
+      end
+
+      # notes and remarques (list notes) are not numbered
+      def note1(elem)
+        return if elem.parent.name == "bibitem" || elem["notag"] == "true"
+
+        # n = @xrefs.get[elem["id"]]
+        lbl = l10n(note_label(elem))
+        # (n.nil? || n[:label].nil? || n[:label].empty?) or
+        #  lbl = l10n("#{lbl} #{n[:label]}")
+        prefix_name(elem, "", lbl, "name")
+      end
+
+      def note_label(elem)
+        if elem.ancestors("preface").empty?
+          if elem.ancestors("ul, ol, dl").empty?
+            @i18n.note
+          else
+            @i18n.listnote
+          end
+        else
+          @i18n.prefacenote
         end
       end
 
