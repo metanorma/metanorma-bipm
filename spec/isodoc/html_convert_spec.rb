@@ -1295,17 +1295,17 @@ RSpec.describe IsoDoc::BIPM do
               <ul>
                 <li>
                   &#xE9;long&#xE9;,
-                  <xref target='_' to='End' pagenumber='true'>chap&#xEE;tre 1</xref>
+                  <xref target='_' to='End' pagenumber='true'>chapitre 1</xref>
                 </li>
                 <li>
                   Emancipation,
-                  <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+                  <xref target='_' pagenumber='true'>chapitre 1</xref>
                   ,
                   <xref target='_' pagenumber='true'>section 1.1</xref>
                   <ul>
                     <li>
                       dans la France,
-                      <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+                      <xref target='_' pagenumber='true'>chapitre 1</xref>
                       <ul>
                         <li>
                           &#xE0; Paris,
@@ -1313,7 +1313,7 @@ RSpec.describe IsoDoc::BIPM do
                         </li>
                         <li>
                           en Bretagne,
-                          <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+                          <xref target='_' pagenumber='true'>chapitre 1</xref>
                         </li>
                       </ul>
                     </li>
@@ -1335,7 +1335,7 @@ RSpec.describe IsoDoc::BIPM do
                       <ul>
                         <li>
                           en allemand,
-                          <xref target='_' pagenumber='true'>chap&#xEE;tre 1</xref>
+                          <xref target='_' pagenumber='true'>chapitre 1</xref>
                         </li>
                       </ul>
                     </li>
