@@ -8,7 +8,7 @@ module IsoDoc
       end
 
       def convert1(docxml, filename, dir)
-        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
+        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
                               "@acronym"))&.value == "JCGM"
         super
       end
@@ -42,7 +42,8 @@ module IsoDoc
 
       def implicit_reference(bib)
         b = bib.at(ns("./docidentifier[@primary = 'true'][@type = 'BIPM']"))
-        return true if /^(CGPM|CIPM|CCDS|CCTF)\s
+        doctype = bib.at(ns("//bibdata/ext/doctype"))&.text
+        return true if doctype == "brochure" && /^(CGPM|CIPM|CCDS|CCTF)\s
         (Resolution|Recommendation|Declaration|Decision|Recommendation|Meeting)/x
           .match?(b&.text)
 
