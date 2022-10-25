@@ -50,29 +50,6 @@ module Metanorma
         ret
       end
 
-=begin
-      def reference_names(xmldoc)
-        xmldoc.xpath("//bibitem[not(ancestor::bibitem)]").each do |ref|
-          docid = ref.at("./docidentifier[@type = 'metanorma']") ||
-            ref.at("./docidentifier[not(@type = 'DOI')]") or next
-          #date = ref.at("./date[@type = 'published']")
-          #reference = format_ref(reference_names1(docid, date, docid["type"]),
-                                 #docid["type"])
-          reference = format_ref(docid.children.to_xml, docid["type"])
-          @anchors[ref["id"]] = { xref: reference }
-        end
-      end
-
-      def reference_names1(docid, date, type)
-        ret = docid.children.to_xml
-        if type == "BIPM" && date &&
-            /(CIPM|CGPM) (Decision|Resolution)/.match?(docid)
-          ret += " (#{date_range(date)})"
-        end
-        ret
-      end
-=end
-
       def date_range(date)
         from = date.at(("./from"))
         to = date.at(("./to"))
