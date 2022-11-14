@@ -87,9 +87,9 @@ module IsoDoc
       def list_people(xml, xpath)
         ret = []
         xml.xpath(ns(xpath)).each do |p|
-          name = p&.at(ns("./name/completename"))&.text
-          aff = p&.at(ns("./affiliation/organization/abbreviation"))&.text ||
-            p&.at(ns("./affiliation/organization/name"))&.text
+          name = p.at(ns("./name/completename"))&.text
+          aff = p.at(ns("./affiliation/organization/abbreviation"))&.text ||
+            p.at(ns("./affiliation/organization/name"))&.text
           c = name || ""
           aff and c += " (#{aff})"
           ret << c
