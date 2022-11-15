@@ -945,7 +945,7 @@ RSpec.describe IsoDoc::BIPM do
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))
-    expect(stripped_html).to(be_equivalent_to(output))
+    expect(stripped_html).to(be_equivalent_to(xmlpp(output)))
   end
 
   it "processes nested roman and alphabetic lists" do
@@ -1009,78 +1009,78 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
+    output = <<~"OUTPUT"
+      <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
+        <div class='title-section'>
+          <p>&#160;</p>
+        </div>
+        <br/>
+        <div class='prefatory-section'>
+          <p>&#160;</p>
+        </div>
+        <br/>
+        <div class='main-section'>
+          <ol type='A' id='_'>
+            <li>
+              <p id='_'>a</p>
+              <ol type='a' id='_' class='alphabet'>
+                <li>
+                  <p id='_'>a1</p>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <p id='_'>a2</p>
+              <ol type='a' id='_' style='counter-reset: alphabet 4;' start='5' class='alphabet'>
+                <li>
+                  <p id='_'>b</p>
+                  <ol type='a' id='_' start='10'>
+                    <li>
+                      <p id='_'>c</p>
+                    </li>
+                  </ol>
+                </li>
+                <li>
+                  <ol type='i' id='_' style='counter-reset: roman 1;' start='2' class='roman'>
+                    <li>
+                      <p>c1</p>
+                    </li>
+                  </ol>
+                  <p id='_'>d</p>
+                  <ol type='i' id='_' class='roman'>
+                    <li>
+                      <p id='_'>e</p>
+                      <ol type='i' id='_' start='12'>
+                        <li>
+                          <p id='_'>f</p>
+                        </li>
+                        <li>
+                          <p id='_'>g</p>
+                        </li>
+                      </ol>
+                    </li>
+                    <li>
+                      <p id='_'>h</p>
+                    </li>
+                  </ol>
+                </li>
+                <li>
+                  <p id='_'>i</p>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <p id='_'>j</p>
+            </li>
+          </ol>
+          <p class='zzSTDTitle1'/>
+        </div>
+      </body>
+    OUTPUT
     expect(xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", input, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))).to be_equivalent_to <<~"OUTPUT"
-
-        <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
-          <div class='title-section'>
-            <p>&#160;</p>
-          </div>
-          <br/>
-          <div class='prefatory-section'>
-            <p>&#160;</p>
-          </div>
-          <br/>
-          <div class='main-section'>
-            <ol type='A' id='_'>
-              <li>
-                <p id='_'>a</p>
-                <ol type='a' id='_' class='alphabet'>
-                  <li>
-                    <p id='_'>a1</p>
-                  </li>
-                </ol>
-              </li>
-              <li>
-                <p id='_'>a2</p>
-                <ol type='a' id='_' style='counter-reset: alphabet 4;' start='5' class='alphabet'>
-                  <li>
-                    <p id='_'>b</p>
-                    <ol type='a' id='_' start='10'>
-                      <li>
-                        <p id='_'>c</p>
-                      </li>
-                    </ol>
-                  </li>
-                  <li>
-                    <ol type='i' id='_' style='counter-reset: roman 1;' start='2' class='roman'>
-                      <li>
-                        <p>c1</p>
-                      </li>
-                    </ol>
-                    <p id='_'>d</p>
-                    <ol type='i' id='_' class='roman'>
-                      <li>
-                        <p id='_'>e</p>
-                        <ol type='i' id='_' start='12'>
-                          <li>
-                            <p id='_'>f</p>
-                          </li>
-                          <li>
-                            <p id='_'>g</p>
-                          </li>
-                        </ol>
-                      </li>
-                      <li>
-                        <p id='_'>h</p>
-                      </li>
-                    </ol>
-                  </li>
-                  <li>
-                    <p id='_'>i</p>
-                  </li>
-                </ol>
-              </li>
-              <li>
-                <p id='_'>j</p>
-              </li>
-            </ol>
-            <p class='zzSTDTitle1'/>
-          </div>
-        </body>
-    OUTPUT
+      .gsub(%r{</body>.*}m, "</body>")))).to be_equivalent_to xmlpp(output)
   end
 
   it "generates an index in English" do

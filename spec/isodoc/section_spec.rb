@@ -242,10 +242,10 @@ RSpec.describe IsoDoc::BIPM do
       xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
-    expect(stripped_html).to(be_equivalent_to(presxml))
+    expect(stripped_html).to(be_equivalent_to(xmlpp(presxml)))
     stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)))
-    expect(stripped_html).to(be_equivalent_to(html))
+    expect(stripped_html).to(be_equivalent_to(xmlpp(html)))
   end
 
   it "processes section names, JCGM" do
@@ -521,11 +521,11 @@ RSpec.describe IsoDoc::BIPM do
       xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
-    expect(stripped_html).to(be_equivalent_to(presxml))
+    expect(stripped_html).to(be_equivalent_to(xmlpp(presxml)))
     stripped_html =
       xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)))
-    expect(stripped_html).to(be_equivalent_to(html))
+    expect(stripped_html).to(be_equivalent_to(xmlpp(html)))
   end
 
   it "processes appendix names in appendix document" do
@@ -626,7 +626,7 @@ RSpec.describe IsoDoc::BIPM do
       xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    expect(stripped_html).to(be_equivalent_to(output))
+    expect(stripped_html).to(be_equivalent_to(xmlpp(output)))
   end
 
   it "processes unnumbered sections" do
@@ -754,7 +754,7 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     OUTPUT
     expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
-      .convert("test", input, true)))).to be_equivalent_to output
+      .convert("test", input, true)))).to be_equivalent_to xmlpp(output)
   end
 
   it "handles quoted variant titles" do
