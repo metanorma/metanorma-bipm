@@ -8803,6 +8803,12 @@
 
 			<fo:block-container margin-left="0mm">
 
+				<!-- <xsl:if test="$namespace = 'iho'">
+					<xsl:if test="ancestor::iho:td">
+						<xsl:attribute name="font-size">12pt</xsl:attribute>
+					</xsl:if>
+				</xsl:if> -->
+
 						<fo:block>
 
 								<xsl:if test="@parent-type = 'quote'">
