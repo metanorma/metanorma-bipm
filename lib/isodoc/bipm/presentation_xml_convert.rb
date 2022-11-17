@@ -4,12 +4,13 @@ require "metanorma-iso"
 require_relative "init"
 require_relative "index"
 require_relative "doccontrol"
+require_relative "../../relaton/render/general"
 
 module IsoDoc
   module BIPM
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def convert1(docxml, filename, dir)
-        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
+        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
                               "@acronym"))&.value == "JCGM"
         @iso = IsoDoc::Iso::PresentationXMLConvert
           .new({ language: @lang, script: @script })
@@ -118,7 +119,7 @@ module IsoDoc
       end
 
       def bibdata_titles(bibdata)
-        return unless app = bibdata.at(ns("//bibdata/ext/"\
+        return unless app = bibdata.at(ns("//bibdata/ext/" \
                                           "structuredidentifier/part"))
 
         bibdata.xpath(ns("//bibdata/title[@type = 'part']")).each do |t|
@@ -183,10 +184,7 @@ module IsoDoc
       def note1(elem)
         return if elem.parent.name == "bibitem" || elem["notag"] == "true"
 
-        # n = @xrefs.get[elem["id"]]
         lbl = l10n(note_label(elem))
-        # (n.nil? || n[:label].nil? || n[:label].empty?) or
-        #  lbl = l10n("#{lbl} #{n[:label]}")
         prefix_name(elem, "", lbl, "name")
       end
 
@@ -207,6 +205,10 @@ module IsoDoc
           elem << "; #{elem.next_element.remove.children.to_xml}"
         end
         elem.children = l10n("[#{@i18n.source} #{elem.children.to_xml.strip}]")
+      end
+
+      def bibrenderer
+        ::Relaton::Render::BIPM::General.new(language: @lang)
       end
 
       include Init

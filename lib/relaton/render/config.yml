@@ -1,0 +1,47 @@
+nametemplate:
+  one: "{% if nonpersonal[0] %}{{ nonpersonal[0] }}{% else %}{{surname[0] }} {{initials[0] | join: ' ' | remove: '.' | remove: '_' }}{% endif %}"
+  two: "{% if nonpersonal[0] %}{{ nonpersonal[0] }}{% else %}{{surname[0] }} {{initials[0] | join: ' ' | remove: '.' | remove: '_' }}{% endif %}  {{ labels['and'] }} {% if nonpersonal[1] %}{{ nonpersonal[1] }}{% else %}{{surname[1]}} {{ initials[1] | join: ' ' | remove: '.' | remove: '_' }}{% endif %}"
+  more: "{% if nonpersonal[0] %}{{ nonpersonal[0] }}{% else %}{{surname[0] }} {{initials[0] | join: ' ' | remove: '.' | remove: '_' }} {% endif %} , {% if nonpersonal[1] %}{{ nonpersonal[1] }}{% else %}{{surname[1]}} {{ initials[1] | join: ' ' | remove: '.' | remove: '_' }} {% endif %}  {{ labels['and'] }} {% if nonpersonal[2] %}{{ nonpersonal[2] }}{% else %}{{surname[2]}} {{initials[2] | join: ' ' | remove: '.' | remove: '_' }}{% endif %}"
+seriestemplate: "{% if series_formatted %}{{ series_formatted }}{% else %}{% if series_abbr %}{{series_abbr}}{% else %}{{series_title}}{% endif %} ({{series_run}}) {{series_num}}|.{{series_partnumber}}{% endif %}"
+extenttemplate:
+  book: "<strong>{{ volume }}</strong> ({{issue}}) {{ page }}"
+  booklet: book
+  proceedings: book
+  journal: "<strong>{{ volume_raw }}</strong> ({{issue_raw}}) {{ page_raw }}"
+  article: journal
+  standard: book
+  techreport: "<strong>{{ volume }}</strong> ({{issue}}) {{ page }}"
+  inbook: "{{ volume }}: {{ page }}"
+  misc: "<strong>{{ volume }}</strong> ({{issue}}) {{ page }}, {{ duration }}"
+template:
+  book: "{{ creatornames }} ({{role | capitalize}}) ({{date}} ({{ labels['updated'] }}_{{date_updated}}) {% if date %}){% endif %} <em>{{ title }}</em> ,_{{ edition | capitalize_first }}. [{{medium}}] ({% if place %}{{place}}{%else%}{{ labels['no_place']}}{%endif%}:_{{publisher}}) {{draft}} ({{ series }}) {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}. {{ uri }}. {{ labels['at'] | capitalize}}:_{{ access_location }}. [{{ labels['viewed'] }}:_{{date_accessed}}]. {{size}}. {{extent}}." 
+    # TODO: omitted: author ids, subsidiary titles, subsidiary creators, rights metadata, distributor, item attributes, relationships
+  booklet: book
+  manual: book
+  proceedings: book
+  inbook: "{{ creatornames }} ({{role | capitalize}}) ({{date}} ({{ labels['updated'] }}_{{date_updated}}) {% if date %}){% endif %} {{ title }} . {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}. {{ labels['in'] | capitalize }}: {{ host_creatornames}} ({{ host_role | capitalize}}) <em>{{host_title}}</em> [{{medium}}] ({% if place %}{{place}}{%else%}{{ labels['no_place']}}{%endif%}:_{{publisher}}) {{draft}} ({{ series }}) . {{size}}. {{extent}}. {{ uri }}. {{ labels['at'] | capitalize}}:_{{ access_location }}. [{{ labels['viewed'] }}:_{{date_accessed}}]."
+  inproceedings: inbook
+  incollection: inbook
+    # TODO: omitted: author ids, additional info for component part, subsidiary titles of host resource, rights metadata, distributor, relationships
+  journal: "<em>{{ title}}</em> [{{medium}}] . ({% if place %}{{place}}{%else%}{{ labels['no_place']}}{%endif%}:_{{publisher}}). ({{date}}). {{size}}. {{extent}}. {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}. {{ uri }}. {{ labels['at'] | capitalize}}:_{{ access_location }}. [{{ labels['viewed'] }}:_{{date_accessed}}]."
+    # TODO subsidiary titles, rights metadata, item attributes, relationships
+  article: "{{ creatornames }} ({{role | capitalize}}) ({{date}} ({{ labels['updated'] }}_{{date_updated}}) {% if date %}){% endif %} {{ series }}. [{{medium}}] {{draft}} . {{size}}. {{ extent }}. {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}. {{ uri }}. {{ labels['at'] | capitalize}}:_{{ access_location }}. [{{ labels['viewed'] }}:_{{date_accessed}}]."
+    # TODO: omitted: author ids, subsidiary titles, rights metadata, distributor, item attributes, relationships; newspapers
+  software: "{{ creatornames }} ({{ role | capitalize}}) ({{date}} ({{ labels['updated'] }}_{{date_updated}}) {% if date %}){% endif %} <em>{{ title }}</em> . {{ labels['version'] | capitalize }}_{{ edition_raw }} {{draft}} . [{{medium | capitalize}}]. ({% if place %}{{place}}{%else%}{{ labels['no_place']}}{%endif%}:_{{publisher}}). {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}. {{ uri }}. {{size}}. {{ extent}}. [{{ labels['viewed'] }}:_{{date_accessed}}]. "
+    # TODO: omitted: author ids, subsidiary titles, subsidiary creators, copyright, license, distributor, system requirements, relationships
+  electronic resource:  software
+  standard: "{% if creatornames %}{{ creatornames }} ({{ role | capitalize}}){%else%}{{ publisher}}{%endif%} ({{date}} ({{ labels['updated'] }}_{{date_updated}}) {% if date %}){% endif %} <em>{{ title }}</em> ({{nistpublisher}}), {{draft }} {{ series }} . [{{ medium | capitalize }}]. {{size}}. {{ extent }}. {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}. {{ uri }}. {{ labels['at'] | capitalize}}:_{{ access_location }}. [{{ labels['viewed'] }}:_{{date_accessed}}]. [{{docidentifier}}]"
+    # TODO: omitted: author ids, subsidiary titles, rights metadata, distributor, persistent identifier, item attributes, relationships
+  techreport: standard
+  dataset: "{{ creatornames }} ({{ role | capitalize }}) ({{date}} ({{ labels['updated'] }}_{{date_updated}}) {% if date %}){% endif %} <em>{{ title }}</em> . {{ labels['version'] | capitalize }}_{{ edition_raw }} [{{medium }}]. {{ labels['in'] | capitalize }}:_{{series}}. {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}. {{ uri }}. {{ size }}. {{ extent}}. [{{ labels['viewed'] }}:_{{date_accessed}}]. "
+    # TODO: omitted: author ids, system requirements, host archive, copyright, license, data source, distributor, usage instructions, relationships, provenance
+  website: "{{ creatornames }} ({{ role | capitalize }}) ({{date}} ({{ labels['updated'] }}_{{date_updated}}) {% if date %}){% endif %} <em>{{ title }}</em> . {{ labels['version'] | capitalize }}_{{ edition_raw }} [{{medium }}] ({% if place %}{{place}}{%else%}{{ labels['no_place']}}{%endif%}:_{{publisher}}) {{ draft }} . {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}. {{ uri }}. [{{ labels['viewed'] }}:_{{date_accessed}}]. "
+    # TODO: omitted: author ids, page title, system requirements, subsidiary creator, rights metadata, distributor, persistent identifier, archive location, archive date and time, relationships
+  webresource: website
+    # TODO: component part
+  unpublished: "{{ creatornames }} ({{ role | capitalize }}) ({{date}} ({{ labels['updated'] }}_{{date_updated}}) {% if date %}){% endif %} <em>{{ title }}</em> [{{ medium }}] {{ draft }} . {{ labels['at'] | capitalize}}:_{{ access_location }}.  {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}.{{ uri }}. [{{ labels['viewed'] }}:_{{date_accessed}}]."
+  misc: unpublished
+    # TODO: omitted: author ids, subsidiary titles, subsidiary creators, host archive, item attributes, relationships
+  presentation: unpublished
+  thesis: "{{ creatornames }} ({{ role | capitalize }}) ({{date}} ({{ labels['updated'] }}_{{date_updated}}) {% if date %}){% endif %} <em>{{ title }}</em> [{{ medium }}] ({% if place %}{{place}}{%else%}{{ labels['no_place']}}{%endif%}:_{{publisher}}). {{ labels['at'] | capitalize}}:_{{ access_location }}.  {{ authoritative_identifier | join: '. ' }}. {{ other_identifier | join: '. ' }}. {{ uri }}. [{{ labels['viewed'] }}:_{{date_accessed}}]."
+
