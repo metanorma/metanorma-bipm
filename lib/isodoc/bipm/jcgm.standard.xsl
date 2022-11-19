@@ -3533,7 +3533,7 @@
 
 						<xsl:choose>
 							<xsl:when test="$continued = 'true'">
-
+								 <!-- $namespace = 'iso' or  -->
 									<xsl:apply-templates/>
 
 							</xsl:when>
