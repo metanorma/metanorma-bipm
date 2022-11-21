@@ -18,9 +18,8 @@ module IsoDoc
         super
       end
 
-      def eref_localities1(target, type, from, upto, node, lang = "en")
-        @jcgm and return @iso.eref_localities1(target, type, from, upto,
-                                               node, lang)
+      def eref_localities1(opt)
+        @jcgm and return @iso.eref_localities1(opt)
         super
       end
 
