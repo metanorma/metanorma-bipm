@@ -14,12 +14,12 @@ module IsoDoc
           return
         end
         i = docxml.at(ns("//indexsect")) ||
-          docxml.root.add_child("<indexsect #{add_id}><title>#{@i18n.index}"\
+          docxml.root.add_child("<indexsect #{add_id}><title>#{@i18n.index}" \
                                 "</title></indexsect>").first
         index = sort_indexterms(
           docxml.xpath(ns("//index")),
           docxml.xpath(ns("//index-xref[@also = 'false']")),
-          docxml.xpath(ns("//index-xref[@also = 'true']"))
+          docxml.xpath(ns("//index-xref[@also = 'true']")),
         )
         index1(docxml, i, index)
       end
@@ -27,7 +27,9 @@ module IsoDoc
       def index1(docxml, i, index)
         index.keys.sort.each do |k|
           c = i.add_child "<clause #{add_id}><title>#{k}</title><ul></ul></clause>"
-          words = index[k].keys.each_with_object({}) { |w, v| v[sortable(w).downcase] = w }
+          words = index[k].keys.each_with_object({}) do |w, v|
+            v[sortable(w).downcase] = w
+          end
           words.keys.localize(@lang.to_sym).sort.to_a.each do |w|
             c.first.at(ns("./ul")).add_child index_entries(words, index[k], w)
           end
@@ -64,12 +66,13 @@ module IsoDoc
         ret = index_entries_head(words[secondary],
                                  index.dig(words[secondary], nil),
                                  index_entries_opt)
-        words3 = index[words[secondary]]&.keys&.reject { |k| k.nil? }
+        words3 = index[words[secondary]]&.keys&.reject(&:nil?)
           &.each_with_object({}) { |w, v| v[w.downcase] = w }
         unless words3.empty?
           ret += "<ul>"
           words3.keys.localize(@lang.to_sym).sort.to_a.each do |w|
-            ret += (index_entries_head(words3[w], index[words[secondary]][words3[w]], index_entries_opt) + "</li>")
+            ret += (index_entries_head(words3[w],
+                                       index[words[secondary]][words3[w]], index_entries_opt) + "</li>")
           end
           ret += "</ul>"
         end
@@ -79,10 +82,18 @@ module IsoDoc
       def index_entries_head(head, entries, opt)
         ret = "<li>#{head}"
         xref = entries&.dig(:xref)&.join(", ")
-        see_sort = entries&.dig(:see)&.each_with_object({}) { |w, v| v[sortable(w).downcase] = w }
-        see = see_sort&.keys&.localize(@lang.to_sym)&.sort&.to_a&.map { |k| see_sort[k] }&.join(", ")
-        also_sort = entries&.dig(:also)&.each_with_object({}) { |w, v| v[sortable(w).downcase] = w }
-        also = also_sort&.keys&.localize(@lang.to_sym)&.sort&.to_a&.map { |k| also_sort[k] }&.join(", ")
+        see_sort = entries&.dig(:see)&.each_with_object({}) do |w, v|
+          v[sortable(w).downcase] = w
+        end
+        see = see_sort&.keys&.localize(@lang.to_sym)&.sort&.to_a&.map do |k|
+                see_sort[k]
+              end&.join(", ")
+        also_sort = entries&.dig(:also)&.each_with_object({}) do |w, v|
+          v[sortable(w).downcase] = w
+        end
+        also = also_sort&.keys&.localize(@lang.to_sym)&.sort&.to_a&.map do |k|
+                 also_sort[k]
+               end&.join(", ")
         ret += "#{opt[:xref_lbl]} #{xref}" if xref
         ret += "#{opt[:see_lbl]} #{see}" if see
         ret += "#{opt[:also_lbl]} #{also}" if also
@@ -107,16 +118,16 @@ module IsoDoc
         end
       end
 
-      def extract_indexsee(v, terms, label)
-        terms.each_with_object(v) do |t, v|
-          term = t&.at(ns("./primary"))&.children&.to_xml
-          term2 = t&.at(ns("./secondary"))&.children&.to_xml
-          term3 = t&.at(ns("./tertiary"))&.children&.to_xml
+      def extract_indexsee(idx, terms, label)
+        terms.each_with_object(idx) do |t, v|
+          term = to_xml(t.at(ns("./primary"))&.children)
+          term2 = to_xml(t.at(ns("./secondary"))&.children)
+          term3 = to_xml(t.at(ns("./tertiary"))&.children)
           v[term] ||= {}
           v[term][term2] ||= {}
           v[term][term2][term3] ||= {}
           v[term][term2][term3][label] ||= []
-          v[term][term2][term3][label] << t&.at(ns("./target"))&.children&.to_xml
+          v[term][term2][term3][label] << to_xml(t.at(ns("./target"))&.children)
           t.remove
         end
       end
@@ -129,9 +140,9 @@ module IsoDoc
       # attributes are decoded into UTF-8, elements in extract_indexsee are still in entities
       def extract_indexterms(terms)
         terms.each_with_object({}) do |t, v|
-          term = t&.at(ns("./primary"))&.children&.to_xml
-          term2 = t&.at(ns("./secondary"))&.children&.to_xml
-          term3 = t&.at(ns("./tertiary"))&.children&.to_xml
+          term = to_xml(t.at(ns("./primary"))&.children)
+          term2 = to_xml(t.at(ns("./secondary"))&.children)
+          term3 = to_xml(t.at(ns("./tertiary"))&.children)
           index2bookmark(t)
           v[term] ||= {}
           v[term][term2] ||= {}
