@@ -9,7 +9,7 @@ module IsoDoc
   module BIPM
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def convert1(docxml, filename, dir)
-        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
+        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
                               "@acronym"))&.value == "JCGM"
         @iso = IsoDoc::Iso::PresentationXMLConvert
           .new({ language: @lang, script: @script })
@@ -45,7 +45,7 @@ module IsoDoc
 
         lbl = @xrefs.anchor(elem["id"], :label)
         t = elem.at(ns("./title")) and
-          t.children = "<strong>#{t.children.to_xml}</strong>"
+          t.children = "<strong>#{to_xml(t.children)}</strong>"
         prefix_name(elem, ".<tab/>", lbl, "title")
       end
 
@@ -117,7 +117,7 @@ module IsoDoc
       end
 
       def bibdata_titles(bibdata)
-        return unless app = bibdata.at(ns("//bibdata/ext/"\
+        return unless app = bibdata.at(ns("//bibdata/ext/" \
                                           "structuredidentifier/part"))
 
         bibdata.xpath(ns("//bibdata/title[@type = 'part']")).each do |t|
@@ -125,7 +125,7 @@ module IsoDoc
           t["type"] = "part-with-numbering"
           part = t["language"] == "en" ? "Part" : "Partie"
           # not looking up in YAML
-          t.children = l10n("#{part} #{app.text}: #{t.children.to_xml}",
+          t.children = l10n("#{part} #{app.text}: #{to_xml(t.children)}",
                             t["language"])
         end
       end
@@ -203,9 +203,9 @@ module IsoDoc
 
       def termsource1(elem)
         while elem&.next_element&.name == "termsource"
-          elem << "; #{elem.next_element.remove.children.to_xml}"
+          elem << "; #{to_xml(elem.next_element.remove.children)}"
         end
-        elem.children = l10n("[#{@i18n.source} #{elem.children.to_xml.strip}]")
+        elem.children = l10n("[#{@i18n.source} #{to_xml(elem.children).strip}]")
       end
 
       include Init
