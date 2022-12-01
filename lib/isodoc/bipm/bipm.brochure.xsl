@@ -7649,6 +7649,26 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
+	<!-- Don't break standard's numbers -->
+	<!-- Example : <span class="stdpublisher">ISO</span> <span class="stddocNumber">10303</span>-<span class="stddocPartNumber">1</span>:<span class="stdyear">1994</span> -->
+	<xsl:template match="*[local-name() = 'span'][@class = 'stdpublisher' or @class = 'stddocNumber' or @class = 'stddocPartNumber' or @class = 'stdyear']" priority="2">
+		<xsl:choose>
+			<xsl:when test="ancestor::*[local-name() = 'table']"><xsl:apply-templates/></xsl:when>
+			<xsl:when test="following-sibling::*[2][local-name() = 'span'][@class = 'stdpublisher' or @class = 'stddocNumber' or @class = 'stddocPartNumber' or @class = 'stdyear']">
+				<fo:inline keep-with-next.within-line="always"><xsl:apply-templates/></fo:inline>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template match="text()[preceding-sibling::*[1][local-name() = 'span'][@class = 'stdpublisher' or @class = 'stddocNumber' or @class = 'stddocPartNumber' or @class = 'stdyear'] and   following-sibling::*[1][local-name() = 'span'][@class = 'stdpublisher' or @class = 'stddocNumber' or @class = 'stddocPartNumber' or @class = 'stdyear']]" priority="2">
+		<xsl:choose>
+			<xsl:when test="ancestor::*[local-name() = 'table']"><xsl:value-of select="."/></xsl:when>
+			<xsl:otherwise><fo:inline keep-with-next.within-line="always"><xsl:value-of select="."/></fo:inline></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<!-- ========================= -->
 	<!-- END Rich text formatting -->
 	<!-- ========================= -->
@@ -9385,6 +9405,31 @@
 			<xsl:apply-templates mode="svg_update"/>
 		</xsl:copy>
 	</xsl:template>
+
+	<!-- regex for 'display: inline-block;' -->
+	<xsl:variable name="regex_svg_style_notsupported">display(\s|\h)*:(\s|\h)*inline-block(\s|\h)*;</xsl:variable>
+	<xsl:template match="*[local-name() = 'svg']//*[local-name() = 'style']/text()" mode="svg_update">
+		<xsl:value-of select="java:replaceAll(java:java.lang.String.new(.), $regex_svg_style_notsupported, '')"/>
+	</xsl:template>
+
+	<!-- replace
+			stroke="rgba(r, g, b, alpha)" to 
+			stroke="rgb(r,g,b)" stroke-opacity="alpha", and
+			fill="rgba(r, g, b, alpha)" to 
+			fill="rgb(r,g,b)" fill-opacity="alpha" -->
+	<xsl:template match="@*[local-name() = 'stroke' or local-name() = 'fill'][starts-with(normalize-space(.), 'rgba')]" mode="svg_update">
+		<xsl:variable name="components_">
+			<xsl:call-template name="split">
+				<xsl:with-param name="pText" select="substring-before(substring-after(., '('), ')')"/>
+				<xsl:with-param name="sep" select="','"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="components" select="xalan:nodeset($components_)"/>
+		<xsl:variable name="att_name" select="local-name()"/>
+		<xsl:attribute name="{$att_name}"><xsl:value-of select="concat('rgb(', $components/item[1], ',', $components/item[2], ',', $components/item[3], ')')"/></xsl:attribute>
+		<xsl:attribute name="{$att_name}-opacity"><xsl:value-of select="$components/item[4]"/></xsl:attribute>
+	</xsl:template>
+
 	<!-- ============== -->
 	<!-- END: svg_update -->
 	<!-- ============== -->
@@ -12343,7 +12388,9 @@
 	<!-- Update xml -->
 	<!-- ===================================== -->
 	<!-- =========================================================================== -->
-	<!-- STEP1: Re-order elements in 'preface', 'sections' based on @displayorder -->
+	<!-- STEP1:  -->
+	<!--   - Re-order elements in 'preface', 'sections' based on @displayorder -->
+	<!--   - Ignore 'span' without style -->
 	<!-- =========================================================================== -->
 	<xsl:template match="@*|node()" mode="update_xml_step1">
 		<xsl:copy>
@@ -12426,7 +12473,8 @@
 		</xsl:copy>
 	</xsl:template>
 
-	<xsl:template match="*[local-name() = 'span'][@style]" mode="update_xml_step1" priority="2">
+	<!-- Example with 'class': <span class="stdpublisher">ISO</span> <span class="stddocNumber">10303</span>-<span class="stddocPartNumber">1</span>:<span class="stdyear">1994</span> -->
+	<xsl:template match="*[local-name() = 'span'][@style or @class = 'stdpublisher' or @class = 'stddocNumber' or @class = 'stddocPartNumber' or @class = 'stdyear']" mode="update_xml_step1" priority="2">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<xsl:apply-templates mode="update_xml_step1"/>
