@@ -1231,7 +1231,7 @@ RSpec.describe Metanorma::BIPM do
 
         [bibliography]
         == Bibliography
-        * [[[a1,CGPM -- Resolution (1889)]]]
+        * [[[a1,CGPM -- Meeting 1 (1889)]]]
         * [[[a2,BIPM DECN CIPM/101-1 (2012, EN)]]]
       INPUT
 
@@ -1240,8 +1240,8 @@ RSpec.describe Metanorma::BIPM do
           <clause id='_' obligation='normative'>
             <title>Clause</title>
             <p id='_'>
-              <eref type='inline' bibitemid='a1' citeas='CGPM Resolution (1889)'/>
-              <eref type='inline' bibitemid='a2' citeas='BIPM DECN CIPM/101-1 (2012, EN)'/>
+            <eref type="inline" bibitemid="a1" citeas="CGPM — Meeting 1 (1889)"/>
+            <eref type="inline" bibitemid="a2" citeas="Decision CIPM/101-1 (2012)"/>
             </p>
           </clause>
         </sections>
@@ -1262,6 +1262,7 @@ RSpec.describe Metanorma::BIPM do
         = Document title
         Author
         :no-isobib-cache:
+        :language: fr
 
         == Clause
 
@@ -1270,8 +1271,8 @@ RSpec.describe Metanorma::BIPM do
 
         [bibliography]
         == Bibliography
-        * [[[a2,BIPM DECN CIPM/101-1 (2012, EN)]]]
-        * [[[a1,CGPM -- Resolution (1889, FR)]]]
+        * [[[a2,BIPM DECN CIPM/101-1 (2012, FR)]]]
+        * [[[a1,CGPM -- Meeting 1 (1889)]]]
       INPUT
 
       output = <<~OUTPUT
@@ -1279,8 +1280,8 @@ RSpec.describe Metanorma::BIPM do
           <clause id='_' obligation='normative'>
             <title>Clause</title>
             <p id='_'>
-              <eref type='inline' bibitemid='a1' citeas='CGPM Resolution (1889)'/>
-              <eref type='inline' bibitemid='a2' citeas='BIPM DECN CIPM/101-1 (2012, EN)'/>
+            <eref type="inline" bibitemid="a1" citeas="CGPM — Réunion 1 (1889)"/>
+            <eref type="inline" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>
             </p>
           </clause>
         </sections>
