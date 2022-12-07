@@ -208,7 +208,7 @@ module IsoDoc
         elem.children = l10n("[#{@i18n.source} #{to_xml(elem.children).strip}]")
       end
 
-      def norm_ref_entry_code(_ordinal, _idents, _ids, _standard, datefn)
+      def norm_ref_entry_code(_ordinal, identifiers, _ids, _standard, datefn)
         ret = (identifiers[0] || identifiers[1])
         ret += " #{identifiers[1]}" if identifiers[0] && identifiers[1]
         "#{ret}#{datefn} "
