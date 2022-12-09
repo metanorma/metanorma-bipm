@@ -5305,7 +5305,7 @@
 
 			<xsl:variable name="_font-size">
 
-				 <!-- 10 -->
+				 <!-- inherit -->
 
 				10
 
@@ -7908,7 +7908,7 @@
 			<xsl:element name="sourcecode_attributes" use-attribute-sets="sourcecode-style">
 				<xsl:variable name="_font-size">
 
-					<!-- 9 -->
+					<!-- inherit -->
 
 					9
 					<!-- <xsl:if test="$namespace = 'ieee'">							
