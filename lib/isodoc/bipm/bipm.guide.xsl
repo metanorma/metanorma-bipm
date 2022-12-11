@@ -6,6 +6,7 @@
 	<xsl:param name="doc_split_by_language"/>
 
 	<xsl:param name="add_math_as_attachment">true</xsl:param>
+	<xsl:param name="final_transform">true</xsl:param>
 
 	<xsl:key name="kfn" match="*[local-name() = 'fn'][not(ancestor::*[(local-name() = 'table' or local-name() = 'figure') and not(ancestor::*[local-name() = 'name'])])]" use="@reference"/>
 
@@ -82,63 +83,77 @@
 			<xsl:when test="$doc_split_by_language = ''"><!-- all documents -->
 				<xsl:for-each select="//bipm:bipm-standard">
 
-					<xsl:variable name="current_document">
+					<!-- <xsl:variable name="current_document">
 						<xsl:copy-of select="."/>
 					</xsl:variable>
-
-					<xsl:for-each select="xalan:nodeset($current_document)">
+					
+					<xsl:for-each select="xalan:nodeset($current_document)"> -->
 
 						<xsl:variable name="docid">
-							<xsl:call-template name="getDocumentId"/>
+							<xsl:call-template name="getDocumentId_fromCurrentNode"/>
+							<!-- <xsl:call-template name="getDocumentId"/> -->
 						</xsl:variable>
 
 						<!-- add id to xref and split xref with @to into two xref -->
 						<xsl:variable name="current_document_index_id">
-							<xsl:apply-templates select=".//bipm:indexsect" mode="index_add_id"/>
+							<xsl:apply-templates select=".//bipm:indexsect" mode="index_add_id">
+								<xsl:with-param name="docid" select="$docid"/>
+							</xsl:apply-templates>
 						</xsl:variable>
 
-						<xsl:variable name="current_document_index">
+						<!-- <xsl:variable name="current_document_index">
 							<xsl:apply-templates select="xalan:nodeset($current_document_index_id)" mode="index_update"/>
 						</xsl:variable>
-
+						
 						<xsl:for-each select="xalan:nodeset($current_document_index)">
 							<doc id="{$docid}">
 								<xsl:copy-of select="."/>
 							</doc>
-						</xsl:for-each>
+						</xsl:for-each> -->
 
-					</xsl:for-each>
+						<doc id="{$docid}">
+							<xsl:apply-templates select="xalan:nodeset($current_document_index_id)" mode="index_update"/>
+						</doc>
+
+					<!-- </xsl:for-each> -->
 
 				</xsl:for-each>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:for-each select="(//bipm:bipm-standard)[*[local-name()='bibdata']/*[local-name()='language'][@current = 'true'] = $doc_split_by_language]">
 
-					<xsl:variable name="current_document">
+					<!-- <xsl:variable name="current_document">
 						<xsl:copy-of select="."/>
 					</xsl:variable>
-
-					<xsl:for-each select="xalan:nodeset($current_document)">
+				
+					<xsl:for-each select="xalan:nodeset($current_document)"> -->
 
 						<xsl:variable name="docid">
-							<xsl:call-template name="getDocumentId"/>
+							<!-- <xsl:call-template name="getDocumentId"/> -->
+							<xsl:call-template name="getDocumentId_fromCurrentNode"/>
 						</xsl:variable>
 
 						<xsl:variable name="current_document_index_id">
-							<xsl:apply-templates select=".//bipm:indexsect" mode="index_add_id"/>
+							<xsl:apply-templates select=".//bipm:indexsect" mode="index_add_id">
+								<xsl:with-param name="docid" select="$docid"/>
+							</xsl:apply-templates>
 						</xsl:variable>
 
-						<xsl:variable name="current_document_index">
+						<!-- <xsl:variable name="current_document_index">
 							<xsl:apply-templates select="xalan:nodeset($current_document_index_id)" mode="index_update"/>
 						</xsl:variable>
-
+						
 						<xsl:for-each select="xalan:nodeset($current_document_index)">
 							<doc id="{$docid}">
 								<xsl:copy-of select="."/>
 							</doc>
-						</xsl:for-each>
+						</xsl:for-each> -->
 
-					</xsl:for-each>
+						<doc id="{$docid}">
+							<xsl:apply-templates select="xalan:nodeset($current_document_index_id)" mode="index_update"/>
+						</doc>
+
+					<!-- </xsl:for-each> -->
 
 				</xsl:for-each>
 			</xsl:otherwise>
@@ -179,7 +194,7 @@
 	</xsl:template>
 
 	<xsl:variable name="mathml_attachments">
-		<xsl:if test="$add_math_as_attachment = 'true'">
+		<xsl:if test="$add_math_as_attachment = 'true' and $final_transform = 'true'">
 			<xsl:for-each select="//mathml:math">
 
 				<xsl:variable name="sequence_number"><xsl:number level="any" format="00001"/></xsl:variable>
@@ -353,18 +368,23 @@
 			<fo:declarations>
 				<xsl:call-template name="addPDFUAmeta"/>
 
-				<xsl:if test="$add_math_as_attachment = 'true'">
+				<xsl:if test="$add_math_as_attachment = 'true' and $final_transform = 'true'">
 					<!-- DEBUG: mathml_attachments=<xsl:copy-of select="$mathml_attachments"/> -->
 					<xsl:for-each select="xalan:nodeset($mathml_attachments)//attachment">
 
 						<xsl:variable name="mathml_filename" select="@filename"/>
 						<xsl:variable name="mathml_content" select="."/>
 
-						<xsl:variable name="basepath" select="java:org.metanorma.fop.Util.saveFileToDisk($mathml_filename,$mathml_content)"/>
+						<!-- <xsl:variable name="basepath" select="java:org.metanorma.fop.Util.saveFileToDisk($mathml_filename,$mathml_content)"/> -->
 
-						<xsl:variable name="url" select="concat('url(file:',$basepath, ')')"/>
+						<!-- <xsl:variable name="url" select="concat('url(file:',$basepath, ')')"/> -->
 
-						<xsl:if test="normalize-space($url) != ''">
+						<xsl:variable name="base64" select="java:org.metanorma.fop.Util.encodeBase64($mathml_content)"/>
+
+						<xsl:variable name="url" select="concat('data:application/xml;base64,',$base64)"/>
+
+						<!-- <xsl:if test="normalize-space($url) != ''"> -->
+						<xsl:if test="normalize-space($base64) != ''">
 							<pdf:embedded-file src="{$url}" filename="{$mathml_filename}"/>
 						</xsl:if>
 					</xsl:for-each>
@@ -405,12 +425,13 @@
 								<xsl:variable name="lang" select="*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>
 								<xsl:variable name="num"><xsl:number level="any" count="bipm:bipm-standard"/></xsl:variable>
 
-								<xsl:variable name="title_eref">
+								<!-- <xsl:variable name="title_eref">
 									<xsl:apply-templates select="." mode="title_eref"/>
-								</xsl:variable>
+								</xsl:variable> -->
 
 								<xsl:variable name="flatxml_">
-									<xsl:apply-templates select="xalan:nodeset($title_eref)" mode="flatxml"/>
+									<!-- <xsl:apply-templates select="xalan:nodeset($title_eref)" mode="flatxml"/> -->
+									<xsl:apply-templates select="." mode="flatxml"/>
 								</xsl:variable>
 
 								<xsl:variable name="flatxml">
@@ -430,12 +451,13 @@
 								<xsl:variable name="lang" select="*[local-name()='bibdata']//*[local-name()='language'][@current = 'true']"/>
 								<xsl:variable name="num"><xsl:number level="any" count="bipm:bipm-standard"/></xsl:variable>
 
-								<xsl:variable name="title_eref">
+								<!-- <xsl:variable name="title_eref">
 									<xsl:apply-templates select="." mode="title_eref"/>
-								</xsl:variable>
+								</xsl:variable> -->
 
 								<xsl:variable name="flatxml_">
-									<xsl:apply-templates select="xalan:nodeset($title_eref)" mode="flatxml"/>
+									<!-- <xsl:apply-templates select="xalan:nodeset($title_eref)" mode="flatxml"/> -->
+									<xsl:apply-templates select="." mode="flatxml"/>
 								</xsl:variable>
 
 								<xsl:variable name="flatxml">
@@ -453,12 +475,13 @@
 				</xsl:when>
 				<xsl:otherwise>
 
-					<xsl:variable name="title_eref">
+					<!-- <xsl:variable name="title_eref">
 						<xsl:apply-templates mode="title_eref"/>
-					</xsl:variable>
+					</xsl:variable> -->
 
 					<xsl:variable name="flatxml_">
-						<xsl:apply-templates select="xalan:nodeset($title_eref)" mode="flatxml"/>
+						<!-- <xsl:apply-templates select="xalan:nodeset($title_eref)" mode="flatxml"/> -->
+						<xsl:apply-templates select="." mode="flatxml"/>
 					</xsl:variable>
 
 					<xsl:variable name="flatxml">
@@ -3249,7 +3272,8 @@
 			</xsl:call-template>
 			<fo:block-container font-family="Arial" font-size="8pt" padding-top="12.5mm">
 				<fo:block text-align="right">
-					<xsl:copy-of select="$header-title"/>
+					<!-- <xsl:copy-of select="$header-title"/> -->
+					<xsl:apply-templates select="xalan:nodeset($header-title)" mode="header_title_remove_link_embedded"/>
 					<xsl:text>  </xsl:text>
 					<fo:inline font-size="13pt" baseline-shift="-15%">•</fo:inline>
 					<xsl:text>  </xsl:text>
@@ -3274,7 +3298,8 @@
 					<xsl:text>  </xsl:text>
 					<fo:inline font-size="13pt" baseline-shift="-15%">•</fo:inline>
 					<xsl:text>  </xsl:text>
-					<xsl:copy-of select="$header-title"/>
+					<!-- <xsl:copy-of select="$header-title"/> -->
+					<xsl:apply-templates select="xalan:nodeset($header-title)" mode="header_title_remove_link_embedded"/>
 				</fo:block>
 				<fo:block-container font-size="1pt" border-top="0.5pt solid black" width="86.6mm">
 					<fo:block> </fo:block>
@@ -3288,6 +3313,16 @@
 			</xsl:call-template>
 			<fo:block/>
 		</fo:static-content>
+	</xsl:template>
+
+	<xsl:template match="@*|node()" mode="header_title_remove_link_embedded">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()" mode="header_title_remove_link_embedded"/>
+		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="fo:basic-link[contains(@external-destination,'embedded-file')]" mode="header_title_remove_link_embedded">
+		<xsl:apply-templates mode="header_title_remove_link_embedded"/>
 	</xsl:template>
 
 	<xsl:template name="insertDraftWatermark">
@@ -8384,6 +8419,33 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template name="getLang_fromCurrentNode">
+		<xsl:variable name="language_current" select="normalize-space(.//*[local-name()='bibdata']//*[local-name()='language'][@current = 'true'])"/>
+		<xsl:variable name="language">
+			<xsl:choose>
+				<xsl:when test="$language_current != ''">
+					<xsl:value-of select="$language_current"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:variable name="language_current_2" select="normalize-space(xalan:nodeset($bibdata)//*[local-name()='bibdata']//*[local-name()='language'][@current = 'true'])"/>
+					<xsl:choose>
+						<xsl:when test="$language_current_2 != ''">
+							<xsl:value-of select="$language_current_2"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select=".//*[local-name()='bibdata']//*[local-name()='language']"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:choose>
+			<xsl:when test="$language = 'English'">en</xsl:when>
+			<xsl:otherwise><xsl:value-of select="$language"/></xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
 	<xsl:template name="capitalizeWords">
 		<xsl:param name="str"/>
 		<xsl:variable name="str2" select="translate($str, '-', ' ')"/>
@@ -12967,6 +13029,10 @@
 
 	<xsl:template name="getDocumentId">
 		<xsl:call-template name="getLang"/><xsl:value-of select="//*[local-name() = 'p'][1]/@id"/>
+	</xsl:template>
+
+	<xsl:template name="getDocumentId_fromCurrentNode">
+		<xsl:call-template name="getLang_fromCurrentNode"/><xsl:value-of select=".//*[local-name() = 'p'][1]/@id"/>
 	</xsl:template>
 
 	<xsl:template name="namespaceCheck">
