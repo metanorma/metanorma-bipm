@@ -208,11 +208,8 @@ RSpec.describe IsoDoc::BIPM do
             <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
             <p class='TermNum' id='J'>1.1.</p>
             <p class='Terms' style='text-align:left;'>Term2</p>
-            <p>
-              [Adapted from
-              ISO 7301:2011, Clause 3.1, modified &#8211; The term "cargo rice" is shown as deprecated, and
-              Note 1 to entry is not included here]
-            </p>
+            <p>[Adapted from ISO 7301:2011, Clause 3.1, modified &#8211; The term "cargo rice" is shown as deprecated, and
+              Note 1 to entry is not included here]</p>
           </div>
         </div>
       </body>
@@ -305,7 +302,7 @@ RSpec.describe IsoDoc::BIPM do
             <p class='TermNum' id='J'>1.1.</p>
             <p class='Terms' style='text-align:left;'>Term2</p>
             <p>
-              [Adapted from ISO 7301:2011, 3.1, modified &#8211; The term "cargo rice" is shown as deprecated, and
+            [Adapted from              ISO 7301:2011, <span class="citesec">3.1</span>, modified &#8211; The term "cargo rice" is shown as deprecated, and
               Note 1 to entry is not included here]
             </p>
           </div>
