@@ -36,7 +36,8 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(strip_guid(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(strip_guid(xmlpp(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to output
@@ -63,7 +64,8 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(strip_guid(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(strip_guid(xmlpp(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to output
@@ -144,7 +146,7 @@ RSpec.describe IsoDoc::BIPM do
       </body>
     OUTPUT
     stripped_presxml =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)))
     stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)
@@ -183,7 +185,7 @@ RSpec.describe IsoDoc::BIPM do
               <name>1.1.</name>
               <preferred>Term2</preferred>
               <termsource status="modified">[Adapted from
-        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, Clause 3.1</origin>, modified &#x2013;
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO&#xa0;7301:2011, Clause 3.1</origin>, modified &#x2013;
           The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]
       </termsource>
             </term>
@@ -208,7 +210,7 @@ RSpec.describe IsoDoc::BIPM do
             <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
             <p class='TermNum' id='J'>1.1.</p>
             <p class='Terms' style='text-align:left;'>Term2</p>
-            <p>[Adapted from ISO 7301:2011, Clause 3.1, modified &#8211; The term "cargo rice" is shown as deprecated, and
+            <p>[Adapted from ISO&#xa0;7301:2011, Clause 3.1, modified &#8211; The term "cargo rice" is shown as deprecated, and
               Note 1 to entry is not included here]</p>
           </div>
         </div>
@@ -216,7 +218,7 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_presxml =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
@@ -276,7 +278,7 @@ RSpec.describe IsoDoc::BIPM do
               <name>1.1.</name>
               <preferred>Term2</preferred>
               <termsource status="modified">[Adapted from
-        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, <span class='citesec'>3.1</span></origin>, modified &#x2013;
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO&#xa0;7301:2011, <span class='citesec'>3.1</span></origin>, modified &#x2013;
           The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]
       </termsource>
             </term>
@@ -302,7 +304,7 @@ RSpec.describe IsoDoc::BIPM do
             <p class='TermNum' id='J'>1.1.</p>
             <p class='Terms' style='text-align:left;'>Term2</p>
             <p>
-            [Adapted from              ISO 7301:2011, <span class="citesec">3.1</span>, modified &#8211; The term "cargo rice" is shown as deprecated, and
+            [Adapted from              ISO&#xa0;7301:2011, <span class="citesec">3.1</span>, modified &#8211; The term "cargo rice" is shown as deprecated, and
               Note 1 to entry is not included here]
             </p>
           </div>
@@ -311,7 +313,7 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_presxml =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
@@ -729,7 +731,7 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_html =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(presxml))
@@ -934,7 +936,7 @@ RSpec.describe IsoDoc::BIPM do
     HTML
 
     stripped_html =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(xmlpp(presxml)))
@@ -1109,7 +1111,7 @@ RSpec.describe IsoDoc::BIPM do
         </sections>
       </bipm-standard>
     INPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to xmlpp(<<~"OUTPUT")
@@ -1245,7 +1247,7 @@ RSpec.describe IsoDoc::BIPM do
         </indexsect>
       </bipm-standard>
     INPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to xmlpp(<<~"OUTPUT")
@@ -1392,25 +1394,26 @@ RSpec.describe IsoDoc::BIPM do
             <locality type='clause'>
               <referenceFrom>3</referenceFrom>
             </locality>
-            ISO 712, Clause 3
+            ISO&#xa0;712, Clause 3
           </eref>
           <eref bibitemid='ISO712'>
             <locality type='clause'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            ISO 712, Clause 3.1
+            ISO&#xa0;712, Clause 3.1
           </eref>
           <eref bibitemid='ISO712'>
             <locality type='table'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            ISO 712, Table 3.1
+            ISO&#xa0;712, Table 3.1
           </eref>
         </p>
       </foreword>
     PRESXML
 
-    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+        .new(presxml_options)
     .convert("test", input, true))
     .at(".//xmlns:foreword").to_xml))
       .to be_equivalent_to xmlpp(presxml)
@@ -1463,25 +1466,26 @@ RSpec.describe IsoDoc::BIPM do
             <locality type='clause'>
               <referenceFrom>3</referenceFrom>
             </locality>
-            [ISO 712], <span class='citesec'>Clause 3</span>
+            [ISO&#xa0;712], <span class='citesec'>Clause 3</span>
           </eref>
           <eref bibitemid='ISO712'>
             <locality type='clause'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            [ISO 712], <span class='citesec'>3.1</span>
+            [ISO&#xa0;712], <span class='citesec'>3.1</span>
           </eref>
           <eref bibitemid='ISO712'>
             <locality type='table'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            [ISO 712], <span class='citetbl'>Table 3.1</span>
+            [ISO&#xa0;712], <span class='citetbl'>Table 3.1</span>
           </eref>
         </p>
       </foreword>
     PRESXML
 
-    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true))
       .at(".//xmlns:foreword").to_xml))
       .to be_equivalent_to xmlpp(presxml)
@@ -1533,30 +1537,31 @@ RSpec.describe IsoDoc::BIPM do
       <foreword displayorder="1">
         <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
            [
-          <eref bibitemid='ISO712'>ISO 712</eref>
+          <eref bibitemid='ISO712'>ISO&#xa0;712</eref>
           ] [
-          <eref bibitemid='ISO712'>ISO 712</eref>
+          <eref bibitemid='ISO712'>ISO&#xa0;712</eref>
           ] and [
-          <eref bibitemid='ISO712'>ISO 712</eref>
+          <eref bibitemid='ISO712'>ISO&#xa0;712</eref>
           ,
-          <eref bibitemid='ISO712'>ISO 712</eref>
+          <eref bibitemid='ISO712'>ISO&#xa0;712</eref>
           ] and
           <eref bibitemid='ISO712'>
             <locality type='clause'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            [ISO 712], <span class='citesec'>3.1</span>
+            [ISO&#xa0;712], <span class='citesec'>3.1</span>
           </eref>
           <eref bibitemid='ISO712'>
             <locality type='table'>
               <referenceFrom>3.1</referenceFrom>
             </locality>
-            [ISO 712], <span class='citetbl'>Table 3.1</span>
+            [ISO&#xa0;712], <span class='citetbl'>Table 3.1</span>
           </eref>
         </p>
       </foreword>
     OUTPUT
-    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true))
       .at(".//xmlns:foreword").to_xml))
       .to be_equivalent_to xmlpp(presxml)
@@ -1636,7 +1641,8 @@ RSpec.describe IsoDoc::BIPM do
        </iso-standard>
     PRESXML
 
-    xml = Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    xml = Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
     .convert("test", input, true))
     xml.at("//xmlns:localized-strings").remove
     expect(xmlpp(xml.to_xml))

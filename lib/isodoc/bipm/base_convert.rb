@@ -35,15 +35,15 @@ module IsoDoc
 
       def render_identifier(ident)
         ret = super
-        ret[:sdo] = ret[:sdo]&.sub(/^(BIPM) (PV|CR) (\d.*)$/,
-                                   "\\1 <strong>\\2</strong>, \\3")
+        ret[:sdo] = ret[:sdo]&.sub(/^(BIPM)([  ])(PV|CR)([  ])(\d.*)$/,
+                                   "\\1\\2<strong>\\3</strong>,\\4\\5")
         ret
       end
 
       def implicit_reference(bib)
         b = bib.at(ns("./docidentifier[@primary = 'true'][@type = 'BIPM']"))
         doctype = bib.at(ns("//bibdata/ext/doctype"))&.text
-        return true if doctype == "brochure" && /^(CGPM|CIPM|CCDS|CCTF)\s
+        return true if doctype == "brochure" && /^(CGPM|CIPM|CCDS|CCTF)[  ]
         (Resolution|Recommendation|Declaration|Decision|Recommendation|Meeting)/x
           .match?(b&.text)
 

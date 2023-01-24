@@ -156,7 +156,7 @@ RSpec.describe IsoDoc::BIPM do
         </annex>
       </iso-standard>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))).to be_equivalent_to xmlpp(output)
   end
 
@@ -280,7 +280,7 @@ RSpec.describe IsoDoc::BIPM do
           <xref target="R">Chapter 2</xref></p>
       </foreword>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
 .sub(%r{^.*<foreword}m, "<foreword")
 .sub(%r{</foreword>.*$}m, "</foreword>"))).to be_equivalent_to xmlpp(output)
@@ -419,7 +419,7 @@ RSpec.describe IsoDoc::BIPM do
         </p>
       </foreword>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .sub(%r{^.*<foreword}m, "<foreword")
       .sub(%r{</foreword>.*$}m, "</foreword>")))
@@ -559,7 +559,7 @@ RSpec.describe IsoDoc::BIPM do
          </annex>
        </iso-standard>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
       .to be_equivalent_to xmlpp(output)
@@ -716,7 +716,7 @@ RSpec.describe IsoDoc::BIPM do
          </annex>
        </iso-standard>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
       .to be_equivalent_to xmlpp(output)

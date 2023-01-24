@@ -235,7 +235,7 @@ RSpec.describe IsoDoc::BIPM do
        </html>
     OUTPUT
     stripped_html =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
     expect(stripped_html).to(be_equivalent_to(xmlpp(presxml)))
@@ -514,7 +514,7 @@ RSpec.describe IsoDoc::BIPM do
        </html>
     OUTPUT
     stripped_html =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
     expect(stripped_html).to(be_equivalent_to(xmlpp(presxml)))
@@ -619,7 +619,7 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_html =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(xmlpp(output)))
@@ -749,7 +749,7 @@ RSpec.describe IsoDoc::BIPM do
         </preface>
       </bipm-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)))).to be_equivalent_to xmlpp(output)
   end
 
@@ -808,7 +808,7 @@ RSpec.describe IsoDoc::BIPM do
         </div>
       </body>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
       .to be_equivalent_to xmlpp(presxml)

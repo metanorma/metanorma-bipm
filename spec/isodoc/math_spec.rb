@@ -102,7 +102,7 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
 
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))
       .to be_equivalent_to xmlpp(<<~OUTPUT)
@@ -248,7 +248,7 @@ RSpec.describe IsoDoc::BIPM do
         <sections> </sections>
       </iso-standard>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub("<!--", "<comment>")
       .gsub("-->", "</comment>")))
@@ -356,7 +356,7 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
 
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))
       .to be_equivalent_to xmlpp(<<~OUTPUT)

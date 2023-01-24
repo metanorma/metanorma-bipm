@@ -46,6 +46,10 @@ end
 
 OPTIONS = [backend: :bipm, header_footer: true].freeze
 
+def presxml_options
+  { semanticxmlinsert: "false" }
+end
+
 def metadata(hash)
   hash.sort.to_h.delete_if do |_, v|
     v.nil? || (v.respond_to?(:empty?) && v.empty?)
