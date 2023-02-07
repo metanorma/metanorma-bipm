@@ -2855,11 +2855,11 @@
 
 	</xsl:template>
 
-	<xsl:template match="bipm:example" priority="2">
-		<fo:block margin-top="6pt" margin-bottom="6pt" keep-together.within-column="1">
+	<xsl:template match="bipm:example | bipm:termexample" priority="2">
+		<fo:block keep-together.within-column="1" xsl:use-attribute-sets="example-style">
 			<fo:table table-layout="fixed" width="100%">
-				<fo:table-column column-width="27.5mm"/>
-				<fo:table-column column-width="108mm"/>
+				<fo:table-column column-width="proportional-column-width(27)"/>
+				<fo:table-column column-width="proportional-column-width(108)"/>
 				<fo:table-body>
 					<fo:table-row>
 						<fo:table-cell>
@@ -4356,6 +4356,8 @@
 
 	<xsl:attribute-set name="termexample-name-style">
 
+			<xsl:attribute name="font-style">italic</xsl:attribute>
+
 	</xsl:attribute-set> <!-- termexample-name-style -->
 
 	<!-- ========================== -->
@@ -4583,6 +4585,9 @@
 
 	<xsl:attribute-set name="termnote-style">
 
+			<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
+			<xsl:attribute name="text-align">justify</xsl:attribute>
+
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="termnote-name-style">
@@ -4592,6 +4597,8 @@
 	</xsl:attribute-set>
 
 	<xsl:attribute-set name="termnote-p-style">
+
+			<xsl:attribute name="text-align">justify</xsl:attribute>
 
 	</xsl:attribute-set>
 
