@@ -208,14 +208,14 @@ module IsoDoc
         elem.children = l10n("[#{@i18n.source} #{to_xml(elem.children).strip}]")
       end
 
-      def norm_ref_entry_code(_ordinal, identifiers, _ids, _standard, datefn)
+      def norm_ref_entry_code(_ordinal, identifiers, _ids, _standard, datefn, _bib)
         ret = (identifiers[0] || identifiers[1])
         ret += " #{identifiers[1]}" if identifiers[0] && identifiers[1]
         "#{ret}#{datefn} "
       end
 
-      def biblio_ref_entry_code(ordinal, ids, _id, standard, datefn)
-        standard and id = nil
+      def biblio_ref_entry_code(ordinal, ids, _id, standard, datefn, _bib)
+        #standard and id = nil
         ret = (ids[:ordinal] || ids[:metanorma] || "[#{ordinal}]")
         if ids[:sdo]
           ret = prefix_bracketed_ref(ret)
