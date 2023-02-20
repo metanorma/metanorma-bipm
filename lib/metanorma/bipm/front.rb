@@ -67,10 +67,10 @@ module Metanorma
       end
 
       def relation_supersedes_self1(xml, date, edition, draft)
-        xml.relation **{ type: "supersedes" } do |r|
+        xml.relation type: "supersedes" do |r|
           r.bibitem do |b|
             date and b.date(date,
-                            **{ type: edition ? "published" : "circulated" })
+                            type: edition ? "published" : "circulated")
             edition and b.edition edition
             draft and b.version do |v|
               v.draft draft
@@ -85,7 +85,7 @@ module Metanorma
           desc = role
           role = "editor"
         end
-        xml.role desc, **{ type: role.downcase }
+        xml.role desc, type: role.downcase
       end
 
       def title(node, xml)
