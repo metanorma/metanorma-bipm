@@ -6332,7 +6332,7 @@
 	<!-- ===================== -->
 	<!-- Table's row processing -->
 	<!-- ===================== -->
-	<!-- row in table header (thead) -->
+	<!-- row in table header (thead) thead/tr -->
 	<xsl:template match="*[local-name()='thead']/*[local-name()='tr']" priority="2">
 		<fo:table-row xsl:use-attribute-sets="table-header-row-style">
 
@@ -6366,7 +6366,7 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- row in table footer (tfoot) -->
+	<!-- row in table footer (tfoot), tfoot/tr -->
 	<xsl:template match="*[local-name()='tfoot']/*[local-name()='tr']" priority="2">
 		<fo:table-row xsl:use-attribute-sets="table-footer-row-style">
 
