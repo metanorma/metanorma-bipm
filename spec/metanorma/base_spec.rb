@@ -1296,7 +1296,7 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "references BIPM French citations" do
-    expect(File).to receive(:exist?).with(/index\.yaml/).and_return false
+    allow(File).to receive(:exist?).with(/index\.yaml/).and_return false
     allow(File).to receive(:exist?).and_call_original
     VCR.use_cassette "bipm-fr", match_requests_on: %i[method uri body] do
       input = <<~INPUT
