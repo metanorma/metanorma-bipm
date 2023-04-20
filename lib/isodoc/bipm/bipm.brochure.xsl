@@ -3117,7 +3117,7 @@
 
 	<!-- Decrease height of / and | -->
 	<!-- Decrease space before and after / -->
-	<xsl:template match="mathml:mo[normalize-space(text()) = '/' or normalize-space(text()) = '|']" mode="mathml">
+	<xsl:template match="mathml:mo[normalize-space(text()) = '/' or normalize-space(text()) = '|']" mode="mathml" priority="2">
 		<xsl:copy>
 			<xsl:apply-templates select="@*" mode="mathml"/>
 			<xsl:if test="not(@stretchy) and not(preceding-sibling::*[1][local-name() = 'mfrac'] and following-sibling::*[1][local-name() = 'mfrac'])">
@@ -9021,6 +9021,31 @@
 			<xsl:copy-of select="."/>
 			<mathml:mspace height="1.47ex"/>
 		</mathml:mrow>
+	</xsl:template>
+
+	<!-- add space around vertical line -->
+	<xsl:template match="mathml:mo[normalize-space(text()) = '|']" mode="mathml">
+		<xsl:copy>
+			<xsl:apply-templates select="@*" mode="mathml"/>
+			<xsl:if test="not(@lspace)">
+				<xsl:attribute name="lspace">0.4em</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="not(@rspace)">
+				<xsl:attribute name="rspace">0.4em</xsl:attribute>
+			</xsl:if>
+			<xsl:apply-templates mode="mathml"/>
+		</xsl:copy>
+	</xsl:template>
+
+	<!-- decrease fontsize for 'Circled Times' char -->
+	<xsl:template match="mathml:mo[normalize-space(text()) = '⊗']" mode="mathml">
+		<xsl:copy>
+			<xsl:apply-templates select="@*" mode="mathml"/>
+			<xsl:if test="not(@fontsize)">
+				<xsl:attribute name="fontsize">55%</xsl:attribute>
+			</xsl:if>
+			<xsl:apply-templates mode="mathml"/>
+		</xsl:copy>
 	</xsl:template>
 
 	<!-- Examples: 
