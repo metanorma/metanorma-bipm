@@ -154,8 +154,11 @@ RSpec.describe IsoDoc do
           <language current='true'>en</language>
         </bibdata>
         <preface>
-          <foreword displayorder='1'>
-            <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
+            <clause type="toc" id="_" displayorder="1">
+              <title depth="1">Contents</title>
+            </clause>
+          <foreword displayorder='2'>
+            <p id='_'>
               <eref bibitemid='ISO712'>ISO&#xa0;712</eref>
               <eref bibitemid='ISBN'>[6]</eref>
               <eref bibitemid='ISSN'>[7]</eref>
@@ -168,7 +171,7 @@ RSpec.describe IsoDoc do
           </foreword>
         </preface>
                  <bibliography>
-           <references id="_bibliography" normative="false" obligation="informative" displayorder="2">
+           <references id="_" normative="false" obligation="informative" displayorder="3">
              <title depth="1">Bibliography</title>
              <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
              <bibitem id="ISO712" type="standard">
@@ -265,10 +268,14 @@ RSpec.describe IsoDoc do
 
     html = <<~OUTPUT
       #{HTML_HDR}
-           <br/>
+      <br/>
+          <div id="_" class="TOC">
+            <h1 class="IntroTitle">Contents</h1>
+          </div>
+          <br/>
            <div>
              <h1 class='ForewordTitle'>Foreword</h1>
-             <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
+             <p id='_'>
                <a href='#ISO712'>ISO&#xa0;712</a>
                <a href='#ISBN'>[6]</a>
                <a href='#ISSN'>[7]</a>
@@ -386,10 +393,10 @@ RSpec.describe IsoDoc do
          </div>
        </body>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, "")
-      .gsub(%r{reference="[^"]+"}, 'reference="1"')))
+      .gsub(%r{reference="[^"]+"}, 'reference="1"'))))
       .to be_equivalent_to xmlpp(presxml)
     expect(xmlpp(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)
@@ -458,7 +465,7 @@ RSpec.describe IsoDoc do
     INPUT
     output = <<~OUTPUT
       <sections>
-        <clause id='_' obligation='normative' displayorder='1'>
+        <clause id='_' obligation='normative' displayorder='2'>
           <title depth='1'>Clause</title>
           <p id='_'>
             <eref type='inline' bibitemid='a1' citeas='CR 03'>CR&#xa0;03</eref>
@@ -498,7 +505,7 @@ RSpec.describe IsoDoc do
     INPUT
     presxml = <<~PRESXML
       <bibliography>
-        <references id='_normative_references' obligation='informative' normative='false' displayorder='1'>
+        <references id='_normative_references' obligation='informative' normative='false' displayorder='2'>
           <title depth='1'>Bibliography</title>
           <bibitem id='ref1' type='standard'>
             <formattedref><em>Cereals or cereal products</em>.</formattedref>
@@ -580,7 +587,7 @@ RSpec.describe IsoDoc do
     INPUT
     presxml = <<~PRESXML
       <bibliography>
-         <references id='_normative_references' obligation='informative' normative='false' displayorder='1'>
+         <references id='_normative_references' obligation='informative' normative='false' displayorder='2'>
            <title depth='1'>Bibliography</title>
            <bibitem id='a1' hidden='true'>
              <formattedref>
@@ -664,7 +671,7 @@ RSpec.describe IsoDoc do
     INPUT
     presxml = <<~PRESXML
       <bibliography>
-         <references id='_normative_references' obligation='informative' normative='false' displayorder='1'>
+         <references id='_normative_references' obligation='informative' normative='false' displayorder='2'>
            <title depth='1'>Bibliography</title>
            <bibitem id='a1'>
              <formattedref>

@@ -2,91 +2,6 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cipm/meeting/decision/2012-101-1.yaml
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip, deflate, br
-      Accept:
-      - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-      User-Agent:
-      - Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)
-      Accept-Charset:
-      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
-      Accept-Language:
-      - en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7
-      Host:
-      - raw.githubusercontent.com
-      Cache-Control:
-      - max-age=0
-      Upgrade-Insecure-Requests:
-      - '1'
-      Connection:
-      - keep-alive
-      Keep-Alive:
-      - '300'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '607'
-      Cache-Control:
-      - max-age=300
-      Content-Security-Policy:
-      - default-src 'none'; style-src 'unsafe-inline'; sandbox
-      Content-Type:
-      - text/plain; charset=utf-8
-      Etag:
-      - W/"9a56792ee1194a5fb943912c7d1ddf3187cc72ef6da5ecf25354239703153e92"
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - deny
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Github-Request-Id:
-      - 1646:2743:7BE28:92B19:6421801E
-      Content-Encoding:
-      - gzip
-      Accept-Ranges:
-      - bytes
-      Date:
-      - Mon, 27 Mar 2023 11:38:09 GMT
-      Via:
-      - 1.1 varnish
-      X-Served-By:
-      - cache-mel11275-MEL
-      X-Cache:
-      - HIT
-      X-Cache-Hits:
-      - '1'
-      X-Timer:
-      - S1679917089.010433,VS0,VE1
-      Vary:
-      - Authorization,Accept-Encoding,Origin
-      Access-Control-Allow-Origin:
-      - "*"
-      X-Fastly-Request-Id:
-      - 2f5816cfb4e008db22ffd986648057fc705dc8ca
-      Expires:
-      - Mon, 27 Mar 2023 11:43:09 GMT
-      Source-Age:
-      - '2'
-    body:
-      encoding: ASCII-8BIT
-      string: !binary |-
-        H4sIAAAAAAAAA61VwY6bMBC98xW+bXswhByqiuOml5W6Um49VgYmZFRskD1Omv7Rfsf+WAebNNDdTai2EVLAHr/3/DwzllImrtqDVvIA1mFnCnHI03WaJ1gX4gtUOAzKzcP2Ua5X+Vrmq1zmCSG1UCRSVJ0hMHQJFUNoFqLEh2HFx0SIVpnGq4ZXCCEFGP5zlcWe4sBXRcPQrrNaMRTBT8r6VqGZETw/LWbY2cUMLZofs43siXpXZNnxeExL7HXa2SYDk1Wd1kgE4LIK+el10PA9D74wOJ16KESFpIhVTjXNdhy13CLc2XcRTg14k9CqY9og7X3pHdhxOmXaTAMpM3iVDYJkrUjJzhNPsRjNtkU5GoDQNE6yPeN7zI/0pNs/Ap2t/t2M/6eNnVyu7aVvMa63XQVQD4BJ3VVcGyx6WiGvJmVce88z/NFb1MqeOPmsh3euvmVnwL5aLwvBX/rBuzdel2CvqudTCe1hdM+XLbo91Ax2UK3nobvQTFaf5OrzXTIcr8XSU2eHRZz/yuCvkNVD+QphlIb4NkmVe29BefHAn9aEYNWKGpzYdlg7ASQewXGMCwtVWVo44ARUTKCiD0J42xZiWog8art2bCvz3djlUucaN+fCHvqR+AbY7MkJZWoWrC6K500tIobDHn6X5hYnxgY3Y2UepOenpQ69xhfO/yrfVV83Z1+v7uU2zd9HoDztO5swcUi0eTZdmAJHQD/jjojc+qt4fSFx2m+VxVDXEb0e8zpxXA8VsUE11rwf3CGnPcuY1EC8Dvk6KUKhvLhJV+kq+Q1Y1FFwZQcAAA==
-  recorded_at: Mon, 27 Mar 2023 11:38:08 GMT
-- request:
-    method: get
     uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cgpm/meeting/1.yaml
     body:
       encoding: US-ASCII
@@ -97,7 +12,8 @@ http_interactions:
       Accept:
       - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
       User-Agent:
-      - Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; WOW64; Trident/6.0)
+      - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like
+        Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586
       Accept-Charset:
       - ISO-8859-1,utf-8;q=0.7,*;q=0.7
       Accept-Language:
@@ -128,7 +44,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"b55226a62cb29a2caa438ac9fc07c2467eabb577c5c59601c8d295a3c3283a95"
+      - W/"69c63457a6f93e3666c1d8d296cb84a0c23797406c853c6b792a9e8a671d8290"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -138,36 +54,122 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - FF58:69E5:35D4B2:449FCB:6421801F
+      - 40EE:F28E:29B9901:2B535C5:6447A493
       Content-Encoding:
       - gzip
       Accept-Ranges:
       - bytes
       Date:
-      - Mon, 27 Mar 2023 11:38:09 GMT
+      - Tue, 25 Apr 2023 09:59:49 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11256-MEL
+      - cache-fra-eddf8230099-FRA
       X-Cache:
       - HIT
       X-Cache-Hits:
       - '1'
       X-Timer:
-      - S1679917089.022541,VS0,VE1
+      - S1682416789.388861,VS0,VE1
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
       - "*"
       X-Fastly-Request-Id:
-      - 3939b9104450c0bfd1b89140a712bbb5c618f487
+      - a7edb773ddbe2e42d049241852d7ac63f9c28e9f
       Expires:
-      - Mon, 27 Mar 2023 11:43:09 GMT
+      - Tue, 25 Apr 2023 10:04:49 GMT
       Source-Age:
       - '1'
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAAAAAAAAA61VS27bMBDd6xSzc7ugPk7iyFomiyBAAwTddE1JI4moRAr82E1vlHPkYh1RSiLVaey0NQyYJjnvvfmSMRaYosGOsx1qI5TMYJeE6zAJRJnB9c39HbtDtELWLEnTLUsCK2yLWcCgUNKitBkkxkI3XgJVgW3QGwYALZe14zVdB2CAkn5MoUVvx40v3A5bldIdJxyLP2zUt1zIBTqCfnp0krRBiQT5NnilTwZvhfy+cKCxtjdZFO33+zAXfRcqXUcoo0J1nbAW0URFTd++ixIfBsK1Dz1mUAjLLSmby1n4Oco4xlXpv+Wau30aV6kK19GxidZxst5EZ2m8vUy2m2gIaxL2ZRXFVXWeXJQbll7yNbvA9Rm74EnBCl5WaZ7G55d88yKLDN7i1Hwf1sI2LncG9XQckpdRh5bLISvRoImV3HKmnKUj8r2jBI3eTxVlGCViWrM4CR+69oXa6OLjgf9/wihrJwo7zNIUO60KxHJACygv1HKk+LnxgDGYeg8S+DTUwucXhqtb3wO9Fh3XD1Te2uE/2R6L4xz563M/fhz6MBLkt3Rdjvod5ZQKP3KmqLm8FabBkqB2vHW0tfLDKd6ydboKhpxqkTur9GBERc+l+Ol7ZxgNAJJ3OK5m9XHlNHIHt/RXS3+ZtzRwDNwrURpAS7IM3THekOe5xp2YgcIMaowCgNNtBvPuo12t2mlkLb3Rp0u9QYma1F0rWaFGWSBQMr6hqBtrgMuSpPJXrctROWL5FA+f15E5Hkxjc8E38Dw9jkQ3T4+S1rzFPwfnLUKf+HcJ3w3pNPOPOHOc5vfoc2cbpQMi9jW2LKRXJs/h0Z9xJ0R6UYrxNRSW6v2ea+FbeUSfxkNgqA8KS/EpRUnuiEpQuZOKWe2vklVAT1Tm2+PgQY7DOPgFe1fB4awHAAA=
-  recorded_at: Mon, 27 Mar 2023 11:38:08 GMT
+        H4sIAAAAAAAAA61VS27bMBDd6xSzc7ugPk7iyFomiyBAAwTddE1JI4moRAr82E1vlHPkYh1RSiLVaey0NQyYJjnvvfmSMRaYosGOsx1qI5TMYJeE6/AsEGUG1zf3d+wO0QpZsyRNtywJrLAtZgGDQkmL0maQGAvdeAlUBbZBbxgAtFzWjtd0HYABSvoxhRa9HTe+cDtsVUp3nHAs/rBR33IhF+gI+unRSdIGJRLk2+CVPhm8FfL7woHG2t5kUbTf78Nc9F2odB2hjArVdcJaRBMVNX37Lkp8GAjXPvSYQSEst6RsLmfh5yjjGFel/5Zr7vZpXKUqXEfHJlrHyXoTnaXx9jLZbqIhrEnYl1UUV9V5clFuWHrJ1+wC12fsgicFK3hZpXkan1/yzYssMniLU/N9WAvbuNwZ1NNxSF5GHVouh6xEgyZWcsuZcpaOyPeOEjR6P1WUYZSIac3iJHzo2hdqo4uPB/7/CaOsnSjsMEtT7LQqEMsBLaC8UMuR4ufGA8Zg6j1I4NNQC59fGK5ufQ/0WnRcP1B5a4f/ZHssjnPkr8/9+HHow0iQ39J1Oep3lFMq/MiZoubyVpgGS4La8dbR1soPp3jL1ukqGHKqRe6s0oMRFT2X4qfvnWE0AEje4bia1ceV08gd3NJfLf1l3tLAMXCvRGkALckydMd4Q57nGndiBgozqDEKAE63Gcy7j3a1aqeRtfRGny71BiVqUnetZIUaZYFAyfiGom6sAS5LkspftS5H5YjlUzx8XkfmeDCNzQXfwPP0OBLdPD1KWvMW/xyctwh94t8lfDek08w/4sxxmt+jz51tlA6I2NfYspBemTyHR3/GnRDpRSnG11BYqvd7roVv5RF9Gg+BoT4oLMWnFCW5IypB5U4qZrW/SlYBPVGZb4+DBzkO4+AXJxrJEawHAAA=
+  recorded_at: Tue, 25 Apr 2023 09:59:49 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cipm/meeting/decision/2012-101-1.yaml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept:
+      - text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+      User-Agent:
+      - Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46
+        (KHTML, like Gecko) Version/9.0 Mobile/13B5110e Safari/601.1
+      Accept-Charset:
+      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
+      Accept-Language:
+      - en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7
+      Host:
+      - raw.githubusercontent.com
+      Cache-Control:
+      - max-age=0
+      Upgrade-Insecure-Requests:
+      - '1'
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '300'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '608'
+      Cache-Control:
+      - max-age=300
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Etag:
+      - W/"ce48a5ca32c5226ea96d15494787b726effba0a4ee7987d14e1381ef5e0f6d80"
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - E7E6:F0A5:2A7D50E:2C21FE3:6447A493
+      Content-Encoding:
+      - gzip
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Tue, 25 Apr 2023 09:59:49 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-fra-eddf8230097-FRA
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Timer:
+      - S1682416789.392826,VS0,VE1
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Fastly-Request-Id:
+      - efea142cf27fdae203f7884ed71e6cb00bee3e03
+      Expires:
+      - Tue, 25 Apr 2023 10:04:49 GMT
+      Source-Age:
+      - '1'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA61VwY6bMBC98xW+bXswJKlUVRw3vazUlXLrsTIwgVGxQfY4afpH+x37Yx1s0kB3m1BtI6SAPX7v+XlmLKVMXNmAVvIA1mFncnFYp5v0Q4JVLj5DicOg3D7sHuVmtd7I9Wot1wkhtZAnUpSdITB0CRVDaBaixLthxftEiFaZ2quaVwghBRj+c6XFnuLAF0XD0L6zWjEUwQ/K+lahmRE8Py1m2NvFDC2a77ONNES9y7PseDymBfY67WydgcnKTmskAnBZifz0Omj4tg6+MDideshFiaSIVU41zXYctdwi3Ns3EU4N+CuhVce0Rmp84R3YcTpl2kwDKTN4lQ2CZKVIyc4TT7EYzbZFORqA0NROsj3je8yP9KTb3wKdLf/djP+njZ1cru2lbzGut10JUA2ASdWVXBsselohryZlXHvPM/zRW9TKnjj5rIc3rr5lZ8C+Wi8LwV/6wbs3Xhdgr6rnUwntYXTPFy26BioGO6jW89BdaCarj3L16S4Zjtdi4amzwyLOf2XwZ8jqoXyFMEpDfJukyr23oLx44E9rQrBqRQVO7DqsnAASj+A4xoWFqigsHHACKiZQ0QchvG1zMS1EHrVdO7aV+W7scqlzjdtzYQ/9SHwFrBtyQpmKBauL4nlTi4jhsIffpbnFibHBzViZB+n5aalDr/GF87/Kd9XX7dnXq3u5TfPnEShPTWcTJg6JNs+mC1PgCOhn3BGRW38Zry8kTvudshjqOqJXY14njuuhJDaowor3g3vktGcZkxqI1yFfJ3kolBc36SpdJb8AXN5DOmUHAAA=
+  recorded_at: Tue, 25 Apr 2023 09:59:49 GMT
 recorded_with: VCR 6.1.0

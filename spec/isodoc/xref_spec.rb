@@ -69,7 +69,10 @@ RSpec.describe IsoDoc::BIPM do
       <?xml version='1.0'?>
       <iso-standard xmlns='http://riboseinc.com/isoxml' type="presentation">
         <preface>
-          <foreword displayorder="1">
+           <clause type="toc" id="_" displayorder="1">
+        <title depth="1">Contents</title>
+      </clause>
+          <foreword displayorder="2">
             <p>
               <xref target='N1'>Equation (1)</xref>
       <xref target='N2'>Equation ((??))</xref>
@@ -81,7 +84,7 @@ RSpec.describe IsoDoc::BIPM do
       <xref target='Anote2'>Equation (1.2)</xref>
             </p>
           </foreword>
-          <introduction id='intro' displayorder='2'>
+          <introduction id='intro' displayorder='3'>
             <formula id='N1'>
               <name>1</name>
               <stem type='AsciiMath'>r = 1 %</stem>
@@ -95,7 +98,7 @@ RSpec.describe IsoDoc::BIPM do
           </introduction>
         </preface>
         <sections>
-          <clause id='scope' type="scope" displayorder='5'>
+          <clause id='scope' type="scope" displayorder='6'>
           <title depth='1'>
         1.
         <tab/>
@@ -109,10 +112,10 @@ RSpec.describe IsoDoc::BIPM do
             <xref target='N'>Equation (2)</xref>
             </p>
           </clause>
-          <terms id='terms' displayorder='6'>
+          <terms id='terms' displayorder='7'>
         <title>2.</title>
       </terms>
-          <clause id='widgets' displayorder='7'>
+          <clause id='widgets' displayorder='8'>
             <title depth='1'>
         3.
         <tab/>
@@ -134,7 +137,7 @@ RSpec.describe IsoDoc::BIPM do
             </clause>
           </clause>
         </sections>
-        <annex id='annex1' displayorder='8'>
+        <annex id='annex1' displayorder='9'>
         <title>
         <strong>Appendix 1</strong>
       </title>
@@ -156,8 +159,8 @@ RSpec.describe IsoDoc::BIPM do
         </annex>
       </iso-standard>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true))).to be_equivalent_to xmlpp(output)
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      .convert("test", input, true)))).to be_equivalent_to xmlpp(output)
   end
 
   it "cross-references sections" do
@@ -258,7 +261,7 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
     output = <<~OUTPUT
-            <foreword obligation="informative" displayorder="1">
+            <foreword obligation="informative" displayorder="2">
         <title>Foreword</title>
         <p id="A">This is a preamble
           <xref target="C">Introduction Subsection</xref>
@@ -395,7 +398,7 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
     output = <<~OUTPUT
-      <foreword obligation='informative' displayorder="1">
+      <foreword obligation='informative' displayorder="2">
         <title>Foreword</title>
         <p id='A'>
           This is a preamble
@@ -489,7 +492,10 @@ RSpec.describe IsoDoc::BIPM do
       <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
          <bibdata> </bibdata>
          <preface>
-           <foreword id='fwd' displayorder="1">
+             <clause type="toc" id="_" displayorder="1">
+            <title depth="1">Contents</title>
+          </clause>
+           <foreword id='fwd' displayorder="2">
              <p>
                <xref target='N'>Figure 1</xref>
                <xref target='note1'>Figure 1-1</xref>
@@ -501,17 +507,17 @@ RSpec.describe IsoDoc::BIPM do
            </foreword>
          </preface>
          <sections>
-           <clause id='scope' type='scope' displayorder='4'>
+           <clause id='scope' type='scope' displayorder='5'>
              <title depth='1'>
                1.
                <tab/>
                Scope
              </title>
            </clause>
-           <terms id='terms' displayorder='5'>
+           <terms id='terms' displayorder='6'>
              <title>2.</title>
            </terms>
-           <clause id='widgets' displayorder='6'>
+           <clause id='widgets' displayorder='7'>
              <title depth='1'>
                3.
                <tab/>
@@ -522,11 +528,11 @@ RSpec.describe IsoDoc::BIPM do
                <figure id='N'>
                  <figure id='note1'>
                    <name>Figure 1-1&#xA0;&#x2014; Split-it-right sample divider</name>
-                   <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                   <image id='_' mimetype='image/png' src='rice_images/rice_image1.png'/>
                  </figure>
                  <figure id='note2'>
                    <name>Figure 1-2&#xA0;&#x2014; Split-it-right sample divider</name>
-                   <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                   <image id='_' mimetype='image/png' src='rice_images/rice_image1.png'/>
                  </figure>
                </figure>
                <p>
@@ -536,7 +542,7 @@ RSpec.describe IsoDoc::BIPM do
              </clause>
            </clause>
          </sections>
-         <annex id='annex1' displayorder='7'>
+         <annex id='annex1' displayorder='8'>
            <title>
              <strong>Appendix 1</strong>
            </title>
@@ -548,20 +554,20 @@ RSpec.describe IsoDoc::BIPM do
              <figure id='AN'>
                <figure id='Anote1'>
                  <name>Figure 1.1-1&#xA0;&#x2014; Split-it-right sample divider</name>
-                 <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                 <image id='_' mimetype='image/png' src='rice_images/rice_image1.png'/>
                </figure>
                <figure id='Anote2'>
                  <name>Figure 1.1-2&#xA0;&#x2014; Split-it-right sample divider</name>
-                 <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                 <image id='_' mimetype='image/png' src='rice_images/rice_image1.png'/>
                </figure>
              </figure>
            </clause>
          </annex>
        </iso-standard>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
-      .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
+      .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to xmlpp(output)
   end
 
@@ -644,7 +650,10 @@ RSpec.describe IsoDoc::BIPM do
            </ext>
          </bibdata>
          <preface>
-           <foreword id='fwd' displayorder="1">
+             <clause type="toc" id="_" displayorder="1">
+            <title depth="1">Contents</title>
+          </clause>
+           <foreword id='fwd' displayorder="2">
              <p>
                <xref target='N'>Figure 1</xref>
                <xref target='note1'>Figure 1 a)</xref>
@@ -656,17 +665,17 @@ RSpec.describe IsoDoc::BIPM do
            </foreword>
          </preface>
          <sections>
-           <clause id='scope' type='scope' displayorder="4">
+           <clause id='scope' type='scope' displayorder="5">
              <title depth='1'>
                1.
                <tab/>
                Scope
              </title>
            </clause>
-           <terms id='terms' displayorder="5">
+           <terms id='terms' displayorder="6">
              <title>2.</title>
            </terms>
-           <clause id='widgets' displayorder="6">
+           <clause id='widgets' displayorder="7">
              <title depth='1'>
                3.
                <tab/>
@@ -678,11 +687,11 @@ RSpec.describe IsoDoc::BIPM do
                  <name>Figure 1</name>
                  <figure id='note1'>
                    <name>a)&#xA0; Split-it-right sample divider</name>
-                   <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                   <image id='_' mimetype='image/png' src='rice_images/rice_image1.png'/>
                  </figure>
                  <figure id='note2'>
                    <name>b)&#xA0; Split-it-right sample divider</name>
-                   <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                   <image id='_' mimetype='image/png' src='rice_images/rice_image1.png'/>
                  </figure>
                </figure>
                <p>
@@ -692,7 +701,7 @@ RSpec.describe IsoDoc::BIPM do
              </clause>
            </clause>
          </sections>
-         <annex id='annex1' displayorder="7">
+         <annex id='annex1' displayorder="8">
            <title>
              <strong>Annex A</strong>
            </title>
@@ -705,20 +714,20 @@ RSpec.describe IsoDoc::BIPM do
                <name>Figure A.1</name>
                <figure id='Anote1'>
                  <name>a)&#xA0; Split-it-right sample divider</name>
-                 <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                 <image id='_' mimetype='image/png' src='rice_images/rice_image1.png'/>
                </figure>
                <figure id='Anote2'>
                  <name>b)&#xA0; Split-it-right sample divider</name>
-                 <image id='_8357ede4-6d44-4672-bac4-9a85e82ab7f0' mimetype='image/png' src='rice_images/rice_image1.png'/>
+                 <image id='_' mimetype='image/png' src='rice_images/rice_image1.png'/>
                </figure>
              </figure>
            </clause>
          </annex>
        </iso-standard>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
-      .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
+      .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to xmlpp(output)
   end
 end

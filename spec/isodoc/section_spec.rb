@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::BIPM do
   it "processes section names" do
-    input = <<~"INPUT"
+    input = <<~INPUT
       <bipm-standard xmlns="http://riboseinc.com/isoxml">
         <preface>
           <foreword obligation="informative">
@@ -75,14 +75,17 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
-    presxml = xmlpp(<<~"OUTPUT")
+    presxml = xmlpp(<<~OUTPUT)
       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
         <preface>
-          <foreword obligation="informative" displayorder="1">
+            <clause type="toc" id="_" displayorder="1">
+          <title depth="1">Contents</title>
+        </clause>
+          <foreword obligation="informative" displayorder="2">
             <title>Foreword</title>
             <p id="A">This is a preamble</p>
           </foreword>
-          <introduction id="B" obligation="informative" displayorder="2">
+          <introduction id="B" obligation="informative" displayorder="3">
             <title>Introduction</title>
             <clause id="C" inline-header="false" obligation="informative">
               <title depth="2">Introduction Subsection</title>
@@ -90,7 +93,7 @@ RSpec.describe IsoDoc::BIPM do
           </introduction>
         </preface>
         <sections>
-          <clause id="H" obligation="normative" displayorder="6">
+          <clause id="H" obligation="normative" displayorder="7">
             <title depth="1">1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <terms id="I" obligation="normative">
               <title depth="2">1.1.<tab/>Normal Terms</title>
@@ -109,13 +112,13 @@ RSpec.describe IsoDoc::BIPM do
               </dl>
             </definitions>
           </clause>
-          <definitions id="L" displayorder="7"><title>2.</title>
+          <definitions id="L" displayorder="8"><title>2.</title>
             <dl>
               <dt>Symbol</dt>
               <dd>Definition</dd>
             </dl>
           </definitions>
-          <clause id="M" inline-header="false" obligation="normative" displayorder="8">
+          <clause id="M" inline-header="false" obligation="normative" displayorder="9">
             <title depth="1">3.<tab/>Clause 4</title>
             <clause id="N" inline-header="false" obligation="normative">
               <title depth="2">3.1.<tab/>Introduction</title>
@@ -125,7 +128,7 @@ RSpec.describe IsoDoc::BIPM do
             </clause>
           </clause>
         </sections>
-        <annex id="P" inline-header="false" obligation="normative" displayorder="9">
+        <annex id="P" inline-header="false" obligation="normative" displayorder="10">
           <title><strong>Appendix 1</strong>.<tab/><strong>Annex</strong></title>
           <clause id="Q" inline-header="false" obligation="normative">
             <title depth="2">A1.1.<tab/>Annex A.1</title>
@@ -135,10 +138,10 @@ RSpec.describe IsoDoc::BIPM do
           </clause>
         </annex>
         <bibliography>
-          <references id="R" normative="true" obligation="informative" displayorder="3">
+          <references id="R" normative="true" obligation="informative" displayorder="4">
             <title depth="1">1.<tab/>Normative References</title>
           </references>
-          <clause id="S" obligation="informative" displayorder="10">
+          <clause id="S" obligation="informative" displayorder="11">
             <title depth="1">Bibliography</title>
             <references id="T" normative="false" obligation="informative">
               <title depth="2">Bibliography Subsection</title>
@@ -161,6 +164,10 @@ RSpec.describe IsoDoc::BIPM do
           </div>
           <br/>
           <div class='main-section'>
+                <br/>
+      <div id="_" class="TOC">
+        <h1 class="IntroTitle">Contents</h1>
+      </div>
             <br/>
             <div>
                            <h1 class="ForewordTitle">Foreword</h1>
@@ -245,7 +252,7 @@ RSpec.describe IsoDoc::BIPM do
   end
 
   it "processes section names, JCGM" do
-    input = <<~"INPUT"
+    input = <<~INPUT
       <bipm-standard xmlns="http://riboseinc.com/isoxml">
         <bibdata>
           <ext>
@@ -331,7 +338,7 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
-    presxml = xmlpp(<<~"OUTPUT")
+    presxml = xmlpp(<<~OUTPUT)
       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
         <bibdata>
           <ext>
@@ -344,11 +351,12 @@ RSpec.describe IsoDoc::BIPM do
           </ext>
         </bibdata>
         <preface>
-          <foreword obligation="informative" displayorder="1">
+          <clause type="toc" id="_" displayorder="1"> <title depth="1">Contents</title> </clause>
+          <foreword obligation="informative" displayorder="2">
             <title>Foreword</title>
             <p id="A">This is a preamble</p>
           </foreword>
-          <introduction id="B" obligation="informative" displayorder="2">
+          <introduction id="B" obligation="informative" displayorder="3">
             <title depth="1">Introduction</title>
             <clause id="C" inline-header="false" obligation="informative">
               <title depth="2">0.1.<tab/>Introduction Subsection</title>
@@ -356,10 +364,10 @@ RSpec.describe IsoDoc::BIPM do
           </introduction>
         </preface>
         <sections>
-          <clause id="G" type="scope" displayorder="7">
+          <clause id="G" type="scope" displayorder="8">
             <title depth="1">1.<tab/>Scope</title>
           </clause>
-          <clause id="H" obligation="normative" displayorder="8">
+          <clause id="H" obligation="normative" displayorder="9">
             <title depth="1">3.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <terms id="I" obligation="normative">
               <title depth="2">3.1.<tab/>Normal Terms</title>
@@ -378,13 +386,13 @@ RSpec.describe IsoDoc::BIPM do
               </dl>
             </definitions>
           </clause>
-          <definitions id="L" displayorder="9"><title>4.</title>
+          <definitions id="L" displayorder="10"><title>4.</title>
             <dl>
               <dt>Symbol</dt>
               <dd>Definition</dd>
             </dl>
           </definitions>
-          <clause id="M" inline-header="false" obligation="normative" displayorder="10">
+          <clause id="M" inline-header="false" obligation="normative" displayorder="11">
             <title depth="1">5.<tab/>Clause 4</title>
             <clause id="N" inline-header="false" obligation="normative">
               <title depth="2">5.1.<tab/>Introduction</title>
@@ -394,7 +402,7 @@ RSpec.describe IsoDoc::BIPM do
             </clause>
           </clause>
         </sections>
-        <annex id="P" inline-header="false" obligation="normative" displayorder="11">
+        <annex id="P" inline-header="false" obligation="normative" displayorder="12">
           <title><strong>Annex A</strong><br/><strong>Annex</strong></title>
           <clause id="Q" inline-header="false" obligation="normative">
             <title depth="2">A.1.<tab/>Annex A.1</title>
@@ -404,10 +412,10 @@ RSpec.describe IsoDoc::BIPM do
           </clause>
         </annex>
         <bibliography>
-          <references id="R" normative="true" obligation="informative" displayorder="4">
+          <references id="R" normative="true" obligation="informative" displayorder="5">
             <title depth="1">2.<tab/>Normative References</title>
           </references>
-          <clause id="S" obligation="informative" displayorder="12">
+          <clause id="S" obligation="informative" displayorder="13">
             <title depth="1">Bibliography</title>
             <references id="T" normative="false" obligation="informative">
               <title depth="2">Bibliography Subsection</title>
@@ -430,6 +438,10 @@ RSpec.describe IsoDoc::BIPM do
           </div>
           <br/>
           <div class='main-section'>
+                <br/>
+        <div id="_" class="TOC">
+          <h1 class="IntroTitle">Contents</h1>
+        </div>
             <br/>
             <div>
                            <h1 class="ForewordTitle">Foreword</h1>
@@ -525,7 +537,7 @@ RSpec.describe IsoDoc::BIPM do
   end
 
   it "processes appendix names in appendix document" do
-    input = <<~"INPUT"
+    input = <<~INPUT
       <bipm-standard xmlns="http://riboseinc.com/isoxml">
         <bibdata>
           <ext>
@@ -563,7 +575,7 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
-    output = <<~"OUTPUT"
+    output = <<~OUTPUT
       <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
         <bibdata>
           <ext>
@@ -572,8 +584,13 @@ RSpec.describe IsoDoc::BIPM do
             </structuredidentifier>
           </ext>
         </bibdata>
+          <preface>
+          <clause type="toc" id="_" displayorder="1">
+            <title depth="1">Contents</title>
+          </clause>
+        </preface>
         <sections>
-          <clause obligation='informative' id='A0' displayorder="1">
+          <clause obligation='informative' id='A0' displayorder="2">
             <title depth='1'>
               1.
               <tab/>
@@ -584,7 +601,7 @@ RSpec.describe IsoDoc::BIPM do
             </p>
           </clause>
         </sections>
-        <annex id='P' inline-header='false' obligation='normative' displayorder="2">
+        <annex id='P' inline-header='false' obligation='normative' displayorder="3">
           <title>
             <strong>Annex 1</strong>
             .
@@ -644,6 +661,7 @@ RSpec.describe IsoDoc::BIPM do
               <xref target="C2"/>
             </p>
           </foreword>
+          </preface>
         <sections>
           <clause id="B" obligation="normative" unnumbered="true">
             <title>Beta</title>
@@ -681,7 +699,10 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~OUTPUT
       <bipm-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
         <preface>
-          <foreword obligation='informative' displayorder="1">
+          <clause type="toc" id="_" displayorder="1">
+            <title depth="1">Contents</title>
+          </clause>
+          <foreword obligation='informative' displayorder="2">
             <title>Foreword</title>
             <p id='A'>
               This is a preamble:
@@ -697,14 +718,15 @@ RSpec.describe IsoDoc::BIPM do
               <xref target='C2'>Appendix A1.1</xref>
             </p>
           </foreword>
-          <sections displayorder='2'>
-            <clause id='B' unnumbered='true' obligation='normative' displayorder='5'>
+          </preface>
+          <sections>
+            <clause id='B' unnumbered='true' obligation='normative' displayorder='3'>
               <title depth="1">Beta</title>
               <clause id='C' unnumbered="true">
                 <title depth="2">Charlie</title>
               </clause>
             </clause>
-            <clause id='D' obligation='normative' displayorder='6'>
+            <clause id='D' obligation='normative' displayorder='4'>
               <title depth='1'>
                 1.
                 <tab/>
@@ -722,13 +744,13 @@ RSpec.describe IsoDoc::BIPM do
               </clause>
             </clause>
           </sections>
-          <annex id='A1' obligation='normative' unnumbered='true' displayorder='7'>
+          <annex id='A1' obligation='normative' unnumbered='true' displayorder='5'>
             <title>Alpha</title>
             <clause id='B1' unnumbered="true">
               <title depth="2">Beta</title>
             </clause>
           </annex>
-          <annex id='A2' obligation='normative' displayorder='8'>
+          <annex id='A2' obligation='normative' displayorder='6'>
             <title>
               <strong>Appendix 1</strong>
               .
@@ -746,7 +768,6 @@ RSpec.describe IsoDoc::BIPM do
               </title>
             </clause>
           </annex>
-        </preface>
       </bipm-standard>
     OUTPUT
     expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
@@ -773,8 +794,13 @@ RSpec.describe IsoDoc::BIPM do
     presxml = <<~OUTPUT
       <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
          <bibdata/>
+           <preface>
+          <clause type="toc" id="_" displayorder="1">
+            <title depth="1">Contents</title>
+          </clause>
+        </preface>
           <sections>
-             <clause id='A' obligation='normative' displayorder='1'>
+             <clause id='A' obligation='normative' displayorder='2'>
                <title depth='1'>1.<tab/>Clause</title>
                <clause id='B' obligation='normative'>
                <title type='quoted' depth='2'><blacksquare/><strong>Definition of the metre</strong> (CR, 85)</title>
@@ -794,6 +820,10 @@ RSpec.describe IsoDoc::BIPM do
         </div>
         <br/>
         <div class='main-section'>
+            <br/>
+        <div id="_" class="TOC">
+          <h1 class="IntroTitle">Contents</h1>
+        </div>
           <p class='zzSTDTitle1'/>
           <div id='A'>
             <h1>1.&#160; Clause</h1>
@@ -808,8 +838,8 @@ RSpec.describe IsoDoc::BIPM do
         </div>
       </body>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true))
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      .convert("test", input, true)))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
       .to be_equivalent_to xmlpp(presxml)
     expect(strip_guid(xmlpp(IsoDoc::BIPM::HtmlConvert.new({})
