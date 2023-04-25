@@ -771,20 +771,20 @@
 			<!-- if current li is first -->
 			<xsl:if test="not(preceding-sibling::*[local-name() = 'li'])">
 
-				<!-- move note for list (list level note) into first 'li' -->
-				<xsl:for-each select="following-sibling::bipm:li[last()]/following-sibling::*">
-					<xsl:choose>
-						<xsl:when test="local-name() = 'note'">
-							<xsl:call-template name="change_note_kind"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:copy-of select="."/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:for-each>
-
-				<!-- move note(s) after ul/ol into first 'li' -->
 				<xsl:if test="not(ancestor::bipm:quote)">
+					<!-- move note for list (list level note) into first 'li' -->
+					<xsl:for-each select="following-sibling::bipm:li[last()]/following-sibling::*">
+						<xsl:choose>
+							<xsl:when test="local-name() = 'note'">
+								<xsl:call-template name="change_note_kind"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:copy-of select="."/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
+
+					<!-- move note(s) after ul/ol into first 'li' -->
 					<xsl:variable name="list_id" select="generate-id(..)"/>
 					<xsl:for-each select="../following-sibling::bipm:note[generate-id(preceding-sibling::*[not(local-name()='note') and not(local-name()='quote')][1]) = $list_id]">
 						<xsl:call-template name="change_note_kind"/>
@@ -813,6 +813,13 @@
 
 			</xsl:if>
 
+		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="bipm:note[ancestor::bipm:quote]" mode="flatxml_list">
+		<xsl:copy>
+			<xsl:attribute name="parent-type">quote</xsl:attribute>
+			<xsl:apply-templates select="@*|node()" mode="flatxml_list"/>
 		</xsl:copy>
 	</xsl:template>
 
@@ -847,8 +854,8 @@
 	</xsl:template>
 
 	<!-- remove latest elements (after li), because they moved into latest 'li' -->
-	<xsl:template match="bipm:ul/*[not(local-name() = 'li') and not(following-sibling::*[local-name() = 'li'])]" mode="flatxml_list"/>
-	<xsl:template match="bipm:ol/*[not(local-name() = 'li') and not(following-sibling::*[local-name() = 'li'])]" mode="flatxml_list"/>
+	<xsl:template match="bipm:ul/*[not(local-name() = 'li') and not(following-sibling::*[local-name() = 'li']) and not(ancestor::bipm:quote)]" mode="flatxml_list"/>
+	<xsl:template match="bipm:ol/*[not(local-name() = 'li') and not(following-sibling::*[local-name() = 'li']) and not(ancestor::bipm:quote)]" mode="flatxml_list"/>
 
 	<xsl:template name="setListItemLabel">
 		<xsl:attribute name="label">
@@ -11997,7 +12004,7 @@
 
 	<xsl:template name="setULLabel">
 		<xsl:variable name="list_level__">
-			<xsl:value-of select="count(ancestor::*[local-name() = 'ul']) + count(ancestor::*[local-name() = 'ol'])"/>/&gt;
+			<xsl:value-of select="count(ancestor::*[local-name() = 'ul']) + count(ancestor::*[local-name() = 'ol'])"/>
 		</xsl:variable>
 		<xsl:variable name="list_level_" select="number($list_level__)"/>
 		<xsl:variable name="list_level">
