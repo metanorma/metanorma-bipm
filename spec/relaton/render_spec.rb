@@ -244,7 +244,7 @@ RSpec.describe Relaton::Render::BIPM do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Ribose Inc. (September 4, 2019) <em>metanorma-standoc</em>. Version 1.3.1. <link target='https://github.com/metanorma/metanorma-standoc'>https://github.com/metanorma/metanorma-standoc</link>.</formattedref>
+      <formattedref>Ribose Inc. (2019) <em>metanorma-standoc</em>. Version 1.3.1. <link target='https://github.com/metanorma/metanorma-standoc'>https://github.com/metanorma/metanorma-standoc</link>.</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
@@ -277,7 +277,7 @@ RSpec.describe Relaton::Render::BIPM do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Internet Engineering Task Force (2005) <em>Intellectual Property Rights in IETF technology</em>. [Online]. RFC 3979. <link target='https://www.ietf.org/rfc/rfc3979.txt'>https://www.ietf.org/rfc/rfc3979.txt</link>. [viewed: June 18, 2012].</formattedref>
+      <formattedref>Internet Engineering Task Force (2005) <em>Intellectual Property Rights in IETF technology</em>. [Online]. <link target='https://www.ietf.org/rfc/rfc3979.txt'>https://www.ietf.org/rfc/rfc3979.txt</link>. [viewed: June 18, 2012].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
@@ -318,7 +318,7 @@ RSpec.describe Relaton::Render::BIPM do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Portes A and Rumbaut R G (January 23, 2012) <em>Children of Immigrants. Longitudinal Sudy (CILS) 1991–2006 ICPSR20520</em>. Version 2 [dataset]. <link target='https://doi.org/10.3886/ICPSR20520.v2'>https://doi.org/10.3886/ICPSR20520.v2</link>. 501 GB. [viewed: May 6, 2018].</formattedref>
+      <formattedref>Portes A and Rumbaut R G (2012) <em>Children of Immigrants. Longitudinal Sudy (CILS) 1991–2006 ICPSR20520</em>. Version 2 [dataset]. <link target='https://doi.org/10.3886/ICPSR20520.v2'>https://doi.org/10.3886/ICPSR20520.v2</link>. 501 GB. [viewed: May 6, 2018].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
