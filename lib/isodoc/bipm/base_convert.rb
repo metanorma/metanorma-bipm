@@ -35,47 +35,19 @@ module IsoDoc
 
       def render_identifier(ident)
         ret = super
-        ret[:sdo] = ret[:sdo]&.sub(/^(BIPM) (PV|CR) (\d.*)$/,
-                                   "\\1 <strong>\\2</strong>, \\3")
+        ret[:sdo] = ret[:sdo]&.sub(/^(BIPM)([  ])(PV|CR)([  ])(\d.*)$/,
+                                   "\\1\\2<strong>\\3</strong>,\\4\\5")
         ret
       end
 
       def implicit_reference(bib)
         b = bib.at(ns("./docidentifier[@primary = 'true'][@type = 'BIPM']"))
         doctype = bib.at(ns("//bibdata/ext/doctype"))&.text
-        return true if doctype == "brochure" && /^(CGPM|CIPM|CCDS|CCTF)\s
+        return true if doctype == "brochure" && /^(CGPM|CIPM|CCDS|CCTF)[  ]
         (Resolution|Recommendation|Declaration|Decision|Recommendation|Meeting)/x
           .match?(b&.text)
 
         super
-      end
-
-      def nonstd_bibitem(list, bibitem, ordinal, biblio)
-        list.p **attr_code(iso_bibitem_entry_attrs(bibitem, biblio)) do |ref|
-          ids = bibitem_ref_code(bibitem)
-          identifiers = render_identifier(ids)
-          if biblio then ref_entry_code(ref, ordinal, identifiers, ids)
-          else
-            ref << (identifiers[0] || identifiers[1])
-            ref << " #{identifiers[1]}" if identifiers[0] && identifiers[1]
-          end
-          ref << " "
-          reference_format(bibitem, ref)
-        end
-      end
-
-      def std_bibitem_entry(list, bibitem, ordinal, biblio)
-        list.p **attr_code(iso_bibitem_entry_attrs(bibitem, biblio)) do |ref|
-          identifiers = render_identifier(bibitem_ref_code(bibitem))
-          if biblio then ref_entry_code(ref, ordinal, identifiers, nil)
-          else
-            ref << (identifiers[0] || identifiers[1])
-            ref << " #{identifiers[1]}" if identifiers[0] && identifiers[1]
-          end
-          date_note_process(bibitem, ref)
-          ref << " "
-          reference_format(bibitem, ref)
-        end
       end
 
       def term_cleanup(docxml)

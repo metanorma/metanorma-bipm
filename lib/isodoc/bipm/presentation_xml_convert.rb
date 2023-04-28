@@ -19,9 +19,8 @@ module IsoDoc
         super
       end
 
-      def eref_localities1(target, type, from, upto, node, lang = "en")
-        @jcgm and return @iso.eref_localities1(target, type, from, upto,
-                                               node, lang)
+      def eref_localities1(opt)
+        @jcgm and return @iso.eref_localities1(opt)
         super
       end
 
@@ -47,7 +46,7 @@ module IsoDoc
 
         lbl = @xrefs.anchor(elem["id"], :label)
         t = elem.at(ns("./title")) and
-          t.children = "<strong>#{t.children.to_xml}</strong>"
+          t.children = "<strong>#{to_xml(t.children)}</strong>"
         prefix_name(elem, ".<tab/>", lbl, "title")
       end
 
@@ -127,7 +126,7 @@ module IsoDoc
           t["type"] = "part-with-numbering"
           part = t["language"] == "en" ? "Part" : "Partie"
           # not looking up in YAML
-          t.children = l10n("#{part} #{app.text}: #{t.children.to_xml}",
+          t.children = l10n("#{part} #{app.text}: #{to_xml(t.children)}",
                             t["language"])
         end
       end
@@ -202,9 +201,27 @@ module IsoDoc
 
       def termsource1(elem)
         while elem&.next_element&.name == "termsource"
-          elem << "; #{elem.next_element.remove.children.to_xml}"
+          elem << "; #{to_xml(elem.next_element.remove.children)}"
         end
-        elem.children = l10n("[#{@i18n.source} #{elem.children.to_xml.strip}]")
+        elem.children = l10n("[#{@i18n.source} #{to_xml(elem.children).strip}]")
+      end
+
+      def norm_ref_entry_code(_ordinal, identifiers, _ids, _standard, datefn, _bib)
+        ret = (identifiers[0] || identifiers[1])
+        ret += " #{identifiers[1]}" if identifiers[0] && identifiers[1]
+        "#{ret}#{datefn} "
+      end
+
+      def biblio_ref_entry_code(ordinal, ids, _id, standard, datefn, _bib)
+        #standard and id = nil
+        ret = (ids[:ordinal] || ids[:metanorma] || "[#{ordinal}]")
+        if ids[:sdo]
+          ret = prefix_bracketed_ref(ret)
+          ret += "#{ids[:sdo]}#{datefn} "
+        else
+          ret = prefix_bracketed_ref("#{ret}#{datefn}")
+        end
+        ret
       end
 
       def bibrenderer

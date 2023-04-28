@@ -280,8 +280,21 @@ RSpec.describe Metanorma::BIPM do
             </structuredidentifier>
           </ext>
         </bibdata>
+                 <metanorma-extension>
+           <presentation-metadata>
+             <name>TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>HTML TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>DOC TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+         </metanorma-extension>
         #{boilerplate('en').gsub(/#{Time.now.year}/, '2001')}
-
         <sections/>
       </bipm-standard>
     OUTPUT
@@ -415,6 +428,20 @@ RSpec.describe Metanorma::BIPM do
             </structuredidentifier>
           </ext>
         </bibdata>
+                 <metanorma-extension>
+           <presentation-metadata>
+             <name>TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>HTML TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>DOC TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+         </metanorma-extension>
         #{boilerplate('fr').gsub(/#{Time.now.year}/, '2001')}
         <sections/>
       </bipm-standard>
@@ -549,6 +576,20 @@ RSpec.describe Metanorma::BIPM do
             </structuredidentifier>
           </ext>
         </bibdata>
+                 <metanorma-extension>
+           <presentation-metadata>
+             <name>TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>HTML TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>DOC TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+         </metanorma-extension>
         #{boilerplate('jcgm').gsub(/#{Time.now.year}/, '2001')}
         <sections/>
       </bipm-standard>
@@ -1216,7 +1257,7 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "references BIPM English citations" do
-    expect(File).to receive(:exist?).with(/index\.yaml/).and_return false
+    #expect(File).to receive(:exist?).with(/index\.yaml/).and_return false
     allow(File).to receive(:exist?).and_call_original
     VCR.use_cassette "bipm", match_requests_on: %i[method uri body] do
       input = <<~INPUT
@@ -1231,8 +1272,8 @@ RSpec.describe Metanorma::BIPM do
 
         [bibliography]
         == Bibliography
-        * [[[a1,CGPM Resolution 1889-00]]]
-        * [[[a2,CIPM Decision 2016-01]]]
+        * [[[a1,CGPM -- Meeting 1 (1889)]]]
+        * [[[a2,BIPM DECN CIPM/101-1 (2012, EN)]]]
       INPUT
 
       output = <<~OUTPUT
@@ -1240,8 +1281,8 @@ RSpec.describe Metanorma::BIPM do
           <clause id='_' obligation='normative'>
             <title>Clause</title>
             <p id='_'>
-              <eref type='inline' bibitemid='a1' citeas='CGPM Resolution (1889)'/>
-              <eref type='inline' bibitemid='a2' citeas='CIPM Decision 1 (2016)'/>
+            <eref type="inline" bibitemid="a1" citeas="CGPM — Meeting 1 (1889)"/>
+            <eref type="inline" bibitemid="a2" citeas="Decision CIPM/101-1 (2012)"/>
             </p>
           </clause>
         </sections>
@@ -1255,13 +1296,14 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "references BIPM French citations" do
-    expect(File).to receive(:exist?).with(/index\.yaml/).and_return false
+    allow(File).to receive(:exist?).with(/index\.yaml/).and_return false
     allow(File).to receive(:exist?).and_call_original
     VCR.use_cassette "bipm-fr", match_requests_on: %i[method uri body] do
       input = <<~INPUT
         = Document title
         Author
         :no-isobib-cache:
+        :language: fr
 
         == Clause
 
@@ -1270,8 +1312,8 @@ RSpec.describe Metanorma::BIPM do
 
         [bibliography]
         == Bibliography
-        * [[[a2,CIPM Décision 2016-01]]]
-        * [[[a1,CGPM Résolution 1889-00]]]
+        * [[[a2,BIPM DECN CIPM/101-1 (2012, FR)]]]
+        * [[[a1,CGPM -- Meeting 1 (1889)]]]
       INPUT
 
       output = <<~OUTPUT
@@ -1279,8 +1321,8 @@ RSpec.describe Metanorma::BIPM do
           <clause id='_' obligation='normative'>
             <title>Clause</title>
             <p id='_'>
-              <eref type='inline' bibitemid='a1' citeas='CGPM Resolution (1889)'/>
-              <eref type='inline' bibitemid='a2' citeas='CIPM Decision 1 (2016)'/>
+            <eref type="inline" bibitemid="a1" citeas="CGPM — Réunion 1 (1889)"/>
+            <eref type="inline" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>
             </p>
           </clause>
         </sections>

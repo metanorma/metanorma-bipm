@@ -522,7 +522,6 @@
       <value>tip</value>
       <value>important</value>
       <value>caution</value>
-      <value>statement</value>
     </choice>
   </define>
   <define name="figure">
@@ -683,6 +682,9 @@
   </define>
   <define name="underline">
     <element name="underline">
+      <optional>
+        <attribute name="style"/>
+      </optional>
       <zeroOrMore>
         <ref name="PureTextElement"/>
       </zeroOrMore>

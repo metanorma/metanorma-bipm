@@ -3,14 +3,14 @@ require "vcr"
 VCR.configure do |config|
   config.cassette_library_dir = "spec/vcr_cassettes"
   config.hook_into :webmock
-  config.debug_logger = File.open("vcr.log", 'w')
+  config.debug_logger = File.open("vcr.log", "w")
   config.default_cassette_options = {
     clean_outdated_http_interactions: true,
     re_record_interval: 1512000,
     record: :once,
     allow_playback_repeats: true,
     # unicode characters in URL
-    #serialize_with: :json,
+    # serialize_with: :json,
   }
 end
 
@@ -46,8 +46,12 @@ end
 
 OPTIONS = [backend: :bipm, header_footer: true].freeze
 
+def presxml_options
+  { semanticxmlinsert: "false" }
+end
+
 def metadata(hash)
-  Hash[hash.sort].delete_if do |_, v|
+  hash.sort.to_h.delete_if do |_, v|
     v.nil? || (v.respond_to?(:empty?) && v.empty?)
   end
 end
@@ -70,17 +74,19 @@ def htmlencode(html)
 end
 
 def xmlpp(xml)
-   xsl = <<~XSL
+  xsl = <<~XSL
     <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
       <xsl:strip-space elements="*"/>
       <xsl:template match="/">
-        <xsml:copy-of select="."/>
+        <xsl:copy-of select="."/>
       </xsl:template>
     </xsl:stylesheet>
   XSL
-  Nokogiri::XSLT(xsl).transform(Nokogiri::XML(xml))
+  Nokogiri::XSLT(xsl).transform(Nokogiri::XML(xml, &:noblanks))
     .to_xml(indent: 2, encoding: "UTF-8")
+    .gsub(%r{<fetched>[^<]+</fetched>}, "<fetched/>")
+    .gsub(%r{ schema-version="[^"]+"}, "")
 end
 
 ASCIIDOC_BLANK_HDR = <<~"HDR".freeze
@@ -111,7 +117,7 @@ def boilerplate(lang)
     .gsub(/<p>/, "<p id='_'>")
     .gsub(/<quote /, "<quote id='_' ")
     .gsub(/<quote>/, "<quote id='_'>"),
-  ).gsub(/’/, "\&#8217;").gsub(/©/, "&#169;")
+  ).gsub(/’/, "&#8217;").gsub(/©/, "&#169;")
 end
 
 def boilerplate_filepath(lang)
@@ -162,6 +168,20 @@ BLANK_HDR = <<~"HDR".freeze
         <doctype>brochure</doctype>
       </ext>
     </bibdata>
+    <metanorma-extension>
+     <presentation-metadata>
+              <name>TOC Heading Levels</name>
+              <value>2</value>
+            </presentation-metadata>
+            <presentation-metadata>
+              <name>HTML TOC Heading Levels</name>
+              <value>2</value>
+            </presentation-metadata>
+            <presentation-metadata>
+              <name>DOC TOC Heading Levels</name>
+              <value>2</value>
+            </presentation-metadata>
+          </metanorma-extension>
   #{boilerplate('en')}
 HDR
 

@@ -102,22 +102,25 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
 
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
-      .sub(%r{<localized-strings>.*</localized-strings>}m, ""))
+      .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
       .to be_equivalent_to xmlpp(<<~OUTPUT)
         <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
           <bibdata>
             <title language="en">test</title>
             <language current="true">en</language>
           </bibdata>
-
           <preface>
-            <p displayorder="1">
+              <clause type="toc" id="_" displayorder="1">
+                <title depth="1">Contents</title>
+              </clause>
+            <p displayorder="2">
               <stem type='MathML'>
                 <math xmlns='http://www.w3.org/1998/Math/MathML'>
                   <mn>30&#xA0;000</mn>
                 </math>
+                <asciimath>30000</asciimath>
               </stem>
               <stem type='MathML'>
                 <math xmlns='http://www.w3.org/1998/Math/MathML'>
@@ -200,6 +203,7 @@ RSpec.describe IsoDoc::BIPM do
                     </mrow>
                   </msup>
                 </math>
+                <asciimath>P (X ge X_(max)) = sum_(j = X_(max))^(1000) ([[0.0001], [j]]) p^(j) (1000.00001 - p)^(1.003 - j)</asciimath>
               </stem>
             </p>
           </preface>
@@ -223,7 +227,10 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~OUTPUT
       <iso-standard xmlns='http://riboseinc.com/isoxml' xmlns:m='http://www.w3.org/1998/Math/MathML' type='presentation'>
         <preface>
-          <foreword displayorder='1'>
+              <clause type="toc" id="_" displayorder="1">
+                <title depth="1">Contents</title>
+              </clause>
+          <foreword displayorder='2'>
             <p>
               <stem type='MathML'>
                  <m:math>
@@ -240,7 +247,7 @@ RSpec.describe IsoDoc::BIPM do
                      <m:mn>2</m:mn>
                    </m:msup>
                  </m:math>
-                 <comment> ( x + y )^2 </comment>
+                 <asciimath>( x + y )^(2)</asciimath>
               </stem>
             </p>
           </foreword>
@@ -248,10 +255,8 @@ RSpec.describe IsoDoc::BIPM do
         <sections> </sections>
       </iso-standard>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
-      .convert("test", input, true)
-      .gsub("<!--", "<comment>")
-      .gsub("-->", "</comment>")))
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      .convert("test", input, true))))
       .to be_equivalent_to xmlpp(output)
   end
 
@@ -356,9 +361,9 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
 
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new({})
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
-      .sub(%r{<localized-strings>.*</localized-strings>}m, ""))
+      .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
       .to be_equivalent_to xmlpp(<<~OUTPUT)
 
         <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
@@ -368,11 +373,15 @@ RSpec.describe IsoDoc::BIPM do
           </bibdata>
 
           <preface>
-            <p displayorder="1">
+              <clause type="toc" id="_" displayorder="1">
+                <title depth="1">Table des matières</title>
+              </clause>
+            <p displayorder="2">
               <stem type='MathML'>
                <math xmlns='http://www.w3.org/1998/Math/MathML'>
                 <mn>30&#xA0;000</mn>
                </math>
+               <asciimath>30000</asciimath>
               </stem>
               <stem type='MathML'>
                 <math xmlns='http://www.w3.org/1998/Math/MathML'>
@@ -455,6 +464,7 @@ RSpec.describe IsoDoc::BIPM do
                     </mrow>
                   </msup>
                 </math>
+                <asciimath>P (X ge X_(max)) = sum_(j = X_(max))^(1000) ([[0.0001], [j]]) p^(j) (1000.00001 - p)^(1.003 - j)</asciimath>
               </stem>
             </p>
           </preface>
