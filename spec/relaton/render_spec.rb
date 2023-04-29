@@ -277,7 +277,7 @@ RSpec.describe Relaton::Render::BIPM do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Internet Engineering Task Force (2005) <em>Intellectual Property Rights in IETF technology</em>. [Online]. <link target='https://www.ietf.org/rfc/rfc3979.txt'>https://www.ietf.org/rfc/rfc3979.txt</link>. [viewed: June 18, 2012].</formattedref>
+      <formattedref>Internet Engineering Task Force. (2005) <em>Intellectual Property Rights in IETF technology</em>. [Online]. RFC 3979. <link target='https://www.ietf.org/rfc/rfc3979.txt'>https://www.ietf.org/rfc/rfc3979.txt</link>. [viewed: June 18, 2012].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output

@@ -1,6 +1,6 @@
 nametemplate:
   one: "{% if nonpersonal[0] %}{{ nonpersonal[0] }}{% else %}{{surname[0] }} {{initials[0] | join: ' ' | remove: '.' | remove: '_' }}{% endif %}"
-  two: "{% if nonpersonal[0] %}{{ nonpersonal[0] }}{% else %}{{surname[0] }} {{initials[0] | join: ' ' | remove: '.' | remove: '_' }}{% endif %}  {{ labels['and'] }} {% if nonpersonal[1] %}{{ nonpersonal[1] }}{% else %}{{surname[1]}} {{ initials[1] | join: ' ' | remove: '.' | remove: '_ }}{% endif %}"
+  two: "{% if nonpersonal[0] %}{{ nonpersonal[0] }}{% else %}{{surname[0] }} {{initials[0] | join: ' ' | remove: '.' | remove: '_' }}{% endif %}  {{ labels['and'] }} {% if nonpersonal[1] %}{{ nonpersonal[1] }}{% else %}{{surname[1]}} {{ initials[1] | join: ' ' | remove: '.' | remove: '_' }}{% endif %}"
   more: "{% if nonpersonal[0] %}{{ nonpersonal[0] }}{% else %}{{surname[0] }} {{initials[0] | join: ' ' | remove: '.' | remove: '_' }} {% endif %} , {% if nonpersonal[1] %}{{ nonpersonal[1] }}{% else %}{{surname[1]}} {{ initials[1] | join: ' ' | remove: '.' | remove: '_' }} {% endif %}  {{ labels['and'] }} {% if nonpersonal[2] %}{{ nonpersonal[2] }}{% else %}{{surname[2]}} {{initials[2] | join: ' ' | remove: '.' | remove: '_' }}{% endif %}"
 seriestemplate: "{% if series_formatted %}{{ series_formatted }}{% else %}{% if series_abbr %}{{series_abbr}}{% else %}{{series_title}}{% endif %} ({{series_run}}) {{series_num}}|.{{series_partnumber}}{% endif %}"
 extenttemplate:
