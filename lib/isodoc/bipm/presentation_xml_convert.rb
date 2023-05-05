@@ -4,6 +4,7 @@ require "metanorma-iso"
 require_relative "init"
 require_relative "index"
 require_relative "doccontrol"
+require_relative "../../relaton/render/general"
 
 module IsoDoc
   module BIPM
@@ -182,10 +183,7 @@ module IsoDoc
       def note1(elem)
         return if elem.parent.name == "bibitem" || elem["notag"] == "true"
 
-        # n = @xrefs.get[elem["id"]]
         lbl = l10n(note_label(elem))
-        # (n.nil? || n[:label].nil? || n[:label].empty?) or
-        #  lbl = l10n("#{lbl} #{n[:label]}")
         prefix_name(elem, "", lbl, "name")
       end
 
@@ -224,6 +222,10 @@ module IsoDoc
           ret = prefix_bracketed_ref("#{ret}#{datefn}")
         end
         ret
+      end
+
+      def bibrenderer
+        ::Relaton::Render::BIPM::General.new(language: @lang)
       end
 
       include Init
