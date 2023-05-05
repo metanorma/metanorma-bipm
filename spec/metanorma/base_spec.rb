@@ -1281,8 +1281,8 @@ RSpec.describe Metanorma::BIPM do
           <clause id='_' obligation='normative'>
             <title>Clause</title>
             <p id='_'>
-            <eref type="inline" bibitemid="a1" citeas="CGPM — Meeting 1 (1889)"/>
-            <eref type="inline" bibitemid="a2" citeas="Decision CIPM/101-1 (2012)"/>
+            <eref type="inline" bibitemid="a1" citeas="CGPM 1th Meeting (1889)"/>
+            <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="CIPM Decision 101-1 (2012)"/>
             </p>
           </clause>
         </sections>
@@ -1321,8 +1321,8 @@ RSpec.describe Metanorma::BIPM do
           <clause id='_' obligation='normative'>
             <title>Clause</title>
             <p id='_'>
-            <eref type="inline" bibitemid="a1" citeas="CGPM — Réunion 1 (1889)"/>
-            <eref type="inline" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>
+            <eref type="inline" bibitemid="a1" citeas="CGPM 1e Meeting (1889)"/>
+            <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>
             </p>
           </clause>
         </sections>

@@ -213,13 +213,13 @@ RSpec.describe IsoDoc do
                <biblio-tag>[5]<tab/></biblio-tag>
              </bibitem>
              <bibitem id="ISBN" type="book">
-               <formattedref>(n.d.) <em>Chemicals for analytical laboratory use</em> ISBN: ISBN.</formattedref>
+               <formattedref>(n.d.) <em>Chemicals for analytical laboratory use</em></formattedref>
                <docidentifier type="metanorma-ordinal">[6]</docidentifier>
                <docidentifier type="ISBN">ISBN</docidentifier>
                <biblio-tag>[6]<tab/></biblio-tag>
              </bibitem>
              <bibitem id="ISSN" type="journal">
-               <formattedref><em>Instruments for analytical laboratory use</em>. (n.d.). ISSN: ISSN.</formattedref>
+               <formattedref><em>Instruments for analytical laboratory use</em>. (n.d.).</formattedref>
                <docidentifier type="metanorma-ordinal">[7]</docidentifier>
                <docidentifier type="ISSN">ISSN</docidentifier>
                <biblio-tag>[7]<tab/></biblio-tag>
@@ -303,8 +303,8 @@ RSpec.describe IsoDoc do
                <p><span class="note_label">Note:</span>  This is an annotation of ISO 20483:2013-2014</p>
              </div>
              <p id="zip_ffs" class="Biblio">[5]  Title 5</p>
-             <p id="ISBN" class="Biblio">[6]  (n.d.) <i>Chemicals for analytical laboratory use</i> ISBN: ISBN.</p>
-             <p id="ISSN" class="Biblio">[7]  <i>Instruments for analytical laboratory use</i>. (n.d.). ISSN: ISSN.</p>
+             <p id="ISBN" class="Biblio">[6]  (n.d.) <i>Chemicals for analytical laboratory use</i></p>
+             <p id="ISSN" class="Biblio">[7]  <i>Instruments for analytical laboratory use</i>. (n.d.).</p>
              <div class="Note">
                <p><span class="note_label">Note:</span>  This is an annotation of document ISSN.</p>
              </div>

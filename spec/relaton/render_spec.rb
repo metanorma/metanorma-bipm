@@ -56,7 +56,7 @@ RSpec.describe Relaton::Render::BIPM do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Aluffi P, Anderson D, Hering M, Mustaţă M and Payne S (Eds.) (2022) <em>Facets of Algebraic Geometry: A Collection in Honor of William Fulton's 80th Birthday</em>, First edition. (Cambridge, UK: Cambridge University Press) (London Mathematical Society Lecture Note Series 472) DOI: https://doi.org/10.1017/9781108877831. ISBN: 9781108877831. 1 vol.</formattedref>
+      <formattedref>Aluffi P, Anderson D, Hering M, Mustaţă M and Payne S (Eds.) (2022) <em>Facets of Algebraic Geometry: A Collection in Honor of William Fulton's 80th Birthday</em>, First edition. (Cambridge, UK: Cambridge University Press) (London Mathematical Society Lecture Note Series 472) 1 vol.</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
@@ -216,7 +216,7 @@ RSpec.describe Relaton::Render::BIPM do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Aluffi P, Anderson D, Hering M, Mustaţă M and Payne S (Eds.) (2022) <em>London Mathematical Society Lecture Note Series</em> (N.S.). <strong>1</strong> (7) 89–112. DOI: https://doi.org/10.1017/9781108877831. ISBN: 9781108877831.</formattedref>
+      <formattedref>Aluffi P, Anderson D, Hering M, Mustaţă M and Payne S (Eds.) (2022) <em>London Mathematical Society Lecture Note Series</em> (N.S.). <strong>1</strong> (7) 89–112.</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
@@ -383,7 +383,7 @@ RSpec.describe Relaton::Render::BIPM do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. [viewed: June 24, 2020].</formattedref>
+      <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. <link target='https://eprints.soton.ac.uk/338797/'>https://eprints.soton.ac.uk/338797/</link>.  [viewed: June 24, 2020].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
@@ -414,7 +414,7 @@ RSpec.describe Relaton::Render::BIPM do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. [viewed: June 24, 2020].</formattedref>
+      <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. <link target='https://eprints.soton.ac.uk/338797/'>https://eprints.soton.ac.uk/338797/</link>.  [viewed: June 24, 2020].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
