@@ -21,7 +21,7 @@ module IsoDoc
       end
 
       def omit_docid_prefix(prefix)
-        return true if %w(BIPM).include? prefix
+        return true if %w(BIPM BIPM-long).include? prefix
 
         super
       end

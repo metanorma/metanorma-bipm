@@ -51,9 +51,9 @@ module Metanorma
       end
 
       def date_range(date)
-        from = date.at(("./from"))
-        to = date.at(("./to"))
-        on = date.at(("./on"))
+        from = date.at("./from")
+        to = date.at("./to")
+        on = date.at("./on")
         return date.text unless from || on || to
         return on.text.sub(/-.*$/, "") if on
 
@@ -123,6 +123,14 @@ module Metanorma
       def mathml_mi_italics
         { uppergreek: false, upperroman: false,
           lowergreek: false, lowerroman: true }
+      end
+
+      def xref_to_eref(elem, name)
+        if elem.at("//bibitem[@id = '#{elem['target']}']/" \
+                   "docidentifier[@type = 'BIPM-long']")
+          elem["style"] = "BIPM-long"
+        end
+        super
       end
 
       def document(node)
