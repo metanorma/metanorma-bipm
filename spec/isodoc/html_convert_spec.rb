@@ -1443,28 +1443,13 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = <<~PRESXML
-      <foreword displayorder="2">
-        <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-          <eref bibitemid='ISO712'>
-            <locality type='clause'>
-              <referenceFrom>3</referenceFrom>
-            </locality>
-            ISO&#xa0;712, Clause 3
-          </eref>
-          <eref bibitemid='ISO712'>
-            <locality type='clause'>
-              <referenceFrom>3.1</referenceFrom>
-            </locality>
-            ISO&#xa0;712, Clause 3.1
-          </eref>
-          <eref bibitemid='ISO712'>
-            <locality type='table'>
-              <referenceFrom>3.1</referenceFrom>
-            </locality>
-            ISO&#xa0;712, Table 3.1
-          </eref>
-        </p>
-      </foreword>
+           <foreword displayorder="2">
+         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+           <xref target="ISO712">ISO 712, Clause 3</xref>
+           <xref target="ISO712">ISO 712, Clause 3.1</xref>
+           <xref target="ISO712">ISO 712, Table 3.1</xref>
+         </p>
+       </foreword>
     PRESXML
 
     expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
@@ -1515,28 +1500,13 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = <<~PRESXML
-      <foreword displayorder="2">
-        <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-          <eref bibitemid='ISO712'>
-            <locality type='clause'>
-              <referenceFrom>3</referenceFrom>
-            </locality>
-            [ISO&#xa0;712], <span class='citesec'>Clause 3</span>
-          </eref>
-          <eref bibitemid='ISO712'>
-            <locality type='clause'>
-              <referenceFrom>3.1</referenceFrom>
-            </locality>
-            [ISO&#xa0;712], <span class='citesec'>3.1</span>
-          </eref>
-          <eref bibitemid='ISO712'>
-            <locality type='table'>
-              <referenceFrom>3.1</referenceFrom>
-            </locality>
-            [ISO&#xa0;712], <span class='citetbl'>Table 3.1</span>
-          </eref>
-        </p>
-      </foreword>
+           <foreword displayorder="2">
+         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+           <xref target="ISO712">[ISO 712], <span class="citesec">Clause 3</span></xref>
+           <xref target="ISO712">[ISO 712], <span class="citesec">3.1</span></xref>
+           <xref target="ISO712">[ISO 712], <span class="citetbl">Table 3.1</span></xref>
+         </p>
+       </foreword>
     PRESXML
 
     expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
@@ -1589,31 +1559,14 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
     presxml = <<~OUTPUT
-      <foreword displayorder="2">
-        <p id='_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f'>
-           [
-          <eref bibitemid='ISO712'>ISO&#xa0;712</eref>
-          ] [
-          <eref bibitemid='ISO712'>ISO&#xa0;712</eref>
-          ] and [
-          <eref bibitemid='ISO712'>ISO&#xa0;712</eref>
-          ,
-          <eref bibitemid='ISO712'>ISO&#xa0;712</eref>
-          ] and
-          <eref bibitemid='ISO712'>
-            <locality type='clause'>
-              <referenceFrom>3.1</referenceFrom>
-            </locality>
-            [ISO&#xa0;712], <span class='citesec'>3.1</span>
-          </eref>
-          <eref bibitemid='ISO712'>
-            <locality type='table'>
-              <referenceFrom>3.1</referenceFrom>
-            </locality>
-            [ISO&#xa0;712], <span class='citetbl'>Table 3.1</span>
-          </eref>
-        </p>
-      </foreword>
+           <foreword displayorder="2">
+         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+         [<xref target="ISO712">ISO 712</xref>] [<xref target="ISO712">ISO 712</xref>]
+         and
+         [<xref target="ISO712">ISO 712</xref>, <xref target="ISO712">ISO 712</xref>]
+         and
+         <xref target="ISO712">[ISO 712], <span class="citesec">3.1</span></xref><xref target="ISO712">[ISO 712], <span class="citetbl">Table 3.1</span></xref></p>
+       </foreword>
     OUTPUT
     expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
       .new(presxml_options)

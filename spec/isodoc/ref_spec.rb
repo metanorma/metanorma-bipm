@@ -159,14 +159,14 @@ RSpec.describe IsoDoc do
            </clause>
            <foreword displayorder="2">
              <p id="_">
-               <eref bibitemid="ISO712">ISO 712</eref>
-               <eref bibitemid="ISBN">[6]</eref>
-               <eref bibitemid="ISSN">[7]</eref>
-               <eref bibitemid="ISO16634">ISO 16634:-- (all parts)</eref>
-               <eref bibitemid="ref1">ICC/167</eref>
-               <eref bibitemid="ref10">[9]</eref>
-               <eref bibitemid="ref12">Citn</eref>
-               <eref bibitemid="zip_ffs">[5]</eref>
+        <xref target="ISO712">ISO 712</xref>
+        <xref target="ISBN">[6]</xref>
+        <xref target="ISSN">[7]</xref>
+        <xref target="ISO16634">ISO 16634:-- (all parts)</xref>
+        <xref target="ref1">ICC/167</xref>
+        <xref target="ref10">[9]</xref>
+        <xref target="ref12">Citn</xref>
+        <xref target="zip_ffs">[5]</xref>
              </p>
            </foreword>
          </preface>
@@ -403,8 +403,8 @@ RSpec.describe IsoDoc do
         <clause id='_' obligation='normative' displayorder='2'>
           <title depth='1'>Clause</title>
           <p id='_'>
-            <eref type='inline' bibitemid='a1' citeas='CR 03'>CR&#xa0;03</eref>
-            <eref type='inline' bibitemid='a2' citeas='PV 105'>PV&#xa0;105</eref>
+            <xref type='inline' target='a1'>CR&#xa0;03</eref>
+            <xref type='inline' target='a2'>PV&#xa0;105</eref>
           </p>
         </clause>
       </sections>
