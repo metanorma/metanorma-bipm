@@ -25,8 +25,7 @@ module IsoDoc
       end
 
       def table1(elem)
-        return if labelled_ancestor(elem) || elem["unnumbered"]
-
+        labelled_ancestor(elem) || elem["unnumbered"] and return
         n = @xrefs.anchor(elem["id"], :label, false)
         prefix_name(elem, ".<tab/>",
                     l10n("#{@i18n.table.capitalize} #{n}"), "name")
@@ -41,9 +40,8 @@ module IsoDoc
       end
 
       def annex1(elem)
-        return super if @jcgm
-        return if elem["unnumbered"] == "true"
-
+        @jcgm and return super
+        elem["unnumbered"] == "true" and return
         lbl = @xrefs.anchor(elem["id"], :label)
         t = elem.at(ns("./title")) and
           t.children = "<strong>#{to_xml(t.children)}</strong>"
@@ -60,18 +58,15 @@ module IsoDoc
       end
 
       def clause1(elem)
-        elem.at(("./ancestor::*[@unnumbered = 'true']")) and
+        elem.at("./ancestor::*[@unnumbered = 'true']") and
           elem["unnumbered"] = "true"
-
         super
       end
 
       def prefix_name(node, delim, number, elem)
-        return if number.nil? || number.empty?
-
+        number.nil? || number.empty? and return
         unless name = node.at(ns("./#{elem}[not(@type = 'quoted')]"))
-          return if node.at(ns("./#{elem}[@type = 'quoted']"))
-
+          node.at(ns("./#{elem}[@type = 'quoted']")) and return
           (node.children.empty? and node.add_child("<#{elem}></#{elem}>")) or
             node.children.first.previous = "<#{elem}></#{elem}>"
           name = node.children.first
@@ -118,14 +113,12 @@ module IsoDoc
       end
 
       def bibdata_titles(bibdata)
-        return unless app = bibdata.at(ns("//bibdata/ext/" \
-                                          "structuredidentifier/part"))
-
+        app = bibdata.at(ns("//bibdata/ext/" \
+                            "structuredidentifier/part")) or return
         bibdata.xpath(ns("//bibdata/title[@type = 'part']")).each do |t|
           t.previous = t.dup
           t["type"] = "part-with-numbering"
-          part = t["language"] == "en" ? "Part" : "Partie"
-          # not looking up in YAML
+          part = t["language"] == "en" ? "Part" : "Partie" # not looking up in YAML
           t.children = l10n("#{part} #{app.text}: #{to_xml(t.children)}",
                             t["language"])
         end
@@ -147,8 +140,7 @@ module IsoDoc
       end
 
       def jcgm_eref(docxml, xpath)
-        return unless @jcgm
-
+        @jcgm or return
         docxml.xpath(ns(xpath)).each { |x| extract_brackets(x) }
         # merge adjacent text nodes
         docxml.root.replace(Nokogiri::XML(docxml.root.to_xml).root)
@@ -164,7 +156,6 @@ module IsoDoc
         start = node.at("./text()[1]")
         finish = node.at("./text()[last()]")
         (/^\[/.match?(start.text) && /\]$/.match?(finish.text)) or return
-
         start.replace(start.text[1..-1])
         node.previous = "["
         finish = node.at("./text()[last()]")
@@ -181,8 +172,7 @@ module IsoDoc
 
       # notes and remarques (list notes) are not numbered
       def note1(elem)
-        return if elem.parent.name == "bibitem" || elem["notag"] == "true"
-
+        elem.parent.name == "bibitem" || elem["notag"] == "true" and return
         lbl = l10n(note_label(elem))
         prefix_name(elem, "", lbl, "name")
       end
@@ -191,29 +181,57 @@ module IsoDoc
         if elem.ancestors("preface").empty?
           if elem.ancestors("ul, ol, dl").empty?
             @i18n.note
-          else
-            @i18n.listnote
-          end
-        else
-          @i18n.prefacenote
+          else @i18n.listnote end
+        else @i18n.prefacenote
         end
       end
 
       def termsource1(elem)
+        # elem["status"] == "modified" and return super
         while elem&.next_element&.name == "termsource"
           elem << "; #{to_xml(elem.next_element.remove.children)}"
         end
-        elem.children = l10n("[#{@i18n.source} #{to_xml(elem.children).strip}]")
+        elem.children = l10n("[#{termsource_adapt(elem['status'])}" \
+                             "#{to_xml(elem.children).strip}]")
       end
 
-      def norm_ref_entry_code(_ordinal, identifiers, _ids, _standard, datefn, _bib)
+      def termsource_adapt(status)
+        case status
+        when "adapted" then @i18n.adapted_from
+        when "modified" then @i18n.modified_from
+        else ""
+        end
+      end
+
+      def termsource(docxml)
+        termsource_insert_empty_modification(docxml)
+        super
+      end
+
+      def termsource_insert_empty_modification(docxml)
+        docxml.xpath("//xmlns:termsource[@status = 'modified']" \
+                     "[not(xmlns:modification)]").each do |f|
+          f << "<modification/>"
+        end
+      end
+
+      def termsource_modification(elem)
+        if elem["status"] == "modified"
+          origin = elem.at(ns("./origin"))
+          # s = termsource_status(elem["status"]) and origin.next = l10n(", #{s}")
+        end
+        termsource_add_modification_text(elem.at(ns("./modification")))
+      end
+
+      def norm_ref_entry_code(_ordinal, identifiers, _ids, _standard, datefn,
+_bib)
         ret = (identifiers[0] || identifiers[1])
         ret += " #{identifiers[1]}" if identifiers[0] && identifiers[1]
         "#{ret}#{datefn} "
       end
 
-      def biblio_ref_entry_code(ordinal, ids, _id, standard, datefn, _bib)
-        #standard and id = nil
+      def biblio_ref_entry_code(ordinal, ids, _id, _standard, datefn, _bib)
+        # standard and id = nil
         ret = (ids[:ordinal] || ids[:metanorma] || "[#{ordinal}]")
         if ids[:sdo]
           ret = prefix_bracketed_ref(ret)

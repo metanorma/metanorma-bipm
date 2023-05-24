@@ -180,27 +180,10 @@ RSpec.describe IsoDoc::BIPM do
         </modification>
       </termsource>
             </term>
-          </terms>
-        </sections>
-      </bipm-standard>
-    INPUT
-
-    presxml = <<~INPUT
-      <bipm-standard xmlns="http://riboseinc.com/isoxml"  type='presentation'>
-             <preface>
-              <clause type="toc" id="_" displayorder="1">
-                <title depth="1">Contents</title>
-              </clause>
-            </preface>
-        <sections>
-          <terms id="H" obligation="normative" displayorder="3">
-            <title depth='1'>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
-            <term id="J">
-              <name>1.1.</name>
-              <preferred>Term2</preferred>
-              <termsource status="modified">[Adapted from
-        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO&#xa0;7301:2011, Clause 3.1</origin>, modified &#x2013;
-          The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]
+            <term id="K">
+              <preferred>Term3</preferred>
+              <termsource status="identical">
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.2</referenceFrom></locality></origin>
       </termsource>
             </term>
           </terms>
@@ -208,31 +191,62 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
+    presxml = <<~INPUT
+           <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+         <preface>
+           <clause type="toc" id="_" displayorder="1">
+             <title depth="1">Contents</title>
+           </clause>
+         </preface>
+         <sections>
+           <terms id="H" obligation="normative" displayorder="3">
+             <title depth="1">1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+             <term id="J">
+               <name>1.1.</name>
+               <preferred>Term2</preferred>
+               <termsource status="modified">[Modified from: <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, Clause 3.1</origin>
+            –
+           The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</termsource>
+             </term>
+             <term id="K">
+               <name>1.2.</name>
+               <preferred>Term3</preferred>
+               <termsource status="identical">[<origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.2</referenceFrom></locality>ISO 7301:2011, Clause 3.2</origin>]</termsource>
+             </term>
+           </terms>
+         </sections>
+       </bipm-standard>
+    INPUT
+
     output = xmlpp(<<~OUTPUT)
-      <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
-        <div class='title-section'>
-          <p>&#160;</p>
-        </div>
-        <br/>
-        <div class='prefatory-section'>
-          <p>&#160;</p>
-        </div>
-        <br/>
-        <div class='main-section'>
-            <br/>
-          <div id="_" class="TOC">
-            <h1 class="IntroTitle">Contents</h1>
-          </div>
-          <p class='zzSTDTitle1'/>
-          <div id='H'>
-            <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-            <p class='TermNum' id='J'>1.1.</p>
-            <p class='Terms' style='text-align:left;'>Term2</p>
-            <p>[Adapted from ISO&#xa0;7301:2011, Clause 3.1, modified &#8211; The term "cargo rice" is shown as deprecated, and
-              Note 1 to entry is not included here]</p>
-          </div>
-        </div>
-      </body>
+             <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+         <div class="title-section">
+           <p> </p>
+         </div>
+         <br/>
+         <div class="prefatory-section">
+           <p> </p>
+         </div>
+         <br/>
+         <div class="main-section">
+           <br/>
+           <div id="_" class="TOC">
+             <h1 class="IntroTitle">Contents</h1>
+           </div>
+           <p class="zzSTDTitle1"/>
+           <div id="H">
+             <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
+             <p class="TermNum" id="J">1.1.</p>
+             <p class="Terms" style="text-align:left;">Term2</p>
+             <p>[Modified from: ISO 7301:2011, Clause 3.1
+            –
+           The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</p>
+             <p class="TermNum" id="K">1.2.</p>
+             <p class="Terms" style="text-align:left;">Term3</p>
+             <p>[ISO 7301:2011, Clause 3.2]</p>
+           </div>
+         </div>
+       </body>
     OUTPUT
 
     stripped_presxml =
@@ -272,37 +286,10 @@ RSpec.describe IsoDoc::BIPM do
         </modification>
       </termsource>
             </term>
-          </terms>
-        </sections>
-      </bipm-standard>
-    INPUT
-
-    presxml = <<~INPUT
-      <bipm-standard xmlns="http://riboseinc.com/isoxml"  type='presentation'>
-      <bibdata>
-          <ext>
-            <editorialgroup>
-              <committee acronym="JCGM">
-                Joint Committee for Guides in Metrology
-                Comité commun pour les guides en métrologie
-              </committee>
-            </editorialgroup>
-          </ext>
-        </bibdata>
-             <preface>
-              <clause type="toc" id="_" displayorder="1">
-                <title depth="1">Contents</title>
-              </clause>
-            </preface>
-        <sections>
-          <terms id="H" obligation="normative" displayorder="3">
-            <title depth="1">1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
-            <term id="J">
-              <name>1.1.</name>
-              <preferred>Term2</preferred>
-              <termsource status="modified">[Adapted from
-        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO&#xa0;7301:2011, <span class='citesec'>3.1</span></origin>, modified &#x2013;
-          The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]
+            <term id="K">
+              <preferred>Term3</preferred>
+              <termsource status="identical">
+        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.2</referenceFrom></locality></origin>
       </termsource>
             </term>
           </terms>
@@ -310,33 +297,72 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
+    presxml = <<~INPUT
+           <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+         <bibdata>
+           <ext>
+             <editorialgroup>
+               <committee acronym="JCGM">
+                 Joint Committee for Guides in Metrology
+                 Comité commun pour les guides en métrologie
+               </committee>
+             </editorialgroup>
+           </ext>
+         </bibdata>
+         <preface>
+           <clause type="toc" id="_" displayorder="1">
+             <title depth="1">Contents</title>
+           </clause>
+         </preface>
+         <sections>
+           <terms id="H" obligation="normative" displayorder="3">
+             <title depth="1">1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+             <term id="J">
+               <name>1.1.</name>
+               <preferred>Term2</preferred>
+               <termsource status="modified">[Modified from: <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, <span class="citesec">3.1</span></origin>
+            –
+           The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</termsource>
+             </term>
+             <term id="K">
+               <name>1.2.</name>
+               <preferred>Term3</preferred>
+               <termsource status="identical">[<origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.2</referenceFrom></locality>ISO 7301:2011, <span class="citesec">3.2</span></origin>]</termsource>
+             </term>
+           </terms>
+         </sections>
+       </bipm-standard>
+    INPUT
+
     output = xmlpp(<<~OUTPUT)
-      <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
-        <div class='title-section'>
-          <p>&#160;</p>
-        </div>
-        <br/>
-        <div class='prefatory-section'>
-          <p>&#160;</p>
-        </div>
-        <br/>
-        <div class='main-section'>
-            <br/>
-          <div id="_" class="TOC">
-            <h1 class="IntroTitle">Contents</h1>
-          </div>
-          <p class='zzSTDTitle1'/>
-          <div id='H'>
-            <h1>1.&#160; Terms, Definitions, Symbols and Abbreviated Terms</h1>
-            <p class='TermNum' id='J'>1.1.</p>
-            <p class='Terms' style='text-align:left;'>Term2</p>
-            <p>
-            [Adapted from              ISO&#xa0;7301:2011, <span class="citesec">3.1</span>, modified &#8211; The term "cargo rice" is shown as deprecated, and
-              Note 1 to entry is not included here]
-            </p>
-          </div>
-        </div>
-      </body>
+           <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+         <div class="title-section">
+           <p> </p>
+         </div>
+         <br/>
+         <div class="prefatory-section">
+           <p> </p>
+         </div>
+         <br/>
+         <div class="main-section">
+           <br/>
+           <div id="_" class="TOC">
+             <h1 class="IntroTitle">Contents</h1>
+           </div>
+           <p class="zzSTDTitle1"/>
+           <div id="H">
+             <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
+             <p class="TermNum" id="J">1.1.</p>
+             <p class="Terms" style="text-align:left;">Term2</p>
+             <p>[Modified from: ISO 7301:2011, <span class="citesec">3.1</span>
+            –
+           The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</p>
+             <p class="TermNum" id="K">1.2.</p>
+             <p class="Terms" style="text-align:left;">Term3</p>
+             <p>[ISO 7301:2011, <span class="citesec">3.2</span>]</p>
+           </div>
+         </div>
+       </body>
     OUTPUT
 
     stripped_presxml =
