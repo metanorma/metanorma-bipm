@@ -5829,7 +5829,7 @@
 						</xsl:attribute>
 					</xsl:for-each>
 
-					<xsl:variable name="isNoteOrFnExist" select="./*[local-name()='note'] or .//*[local-name()='fn'][local-name(..) != 'name'] or ./*[local-name()='source']"/>
+					<xsl:variable name="isNoteOrFnExist" select="./*[local-name()='note'] or ./*[local-name()='example'] or .//*[local-name()='fn'][local-name(..) != 'name'] or ./*[local-name()='source']"/>
 					<xsl:if test="$isNoteOrFnExist = 'true'">
 						<xsl:attribute name="border-bottom">0pt solid black</xsl:attribute> <!-- set 0pt border, because there is a separete table below for footer  -->
 					</xsl:if>
@@ -5873,7 +5873,7 @@
 									<xsl:apply-templates select="*[local-name()='thead']" mode="process_tbody"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:apply-templates select="node()[not(local-name() = 'name') and not(local-name() = 'note') and not(local-name() = 'dl') and not(local-name() = 'source') and not(local-name() = 'p')          and not(local-name() = 'thead') and not(local-name() = 'tfoot')]"/> <!-- process all table' elements, except name, header, footer, note, source and dl which render separaterely -->
+									<xsl:apply-templates select="node()[not(local-name() = 'name') and not(local-name() = 'note') and not(local-name() = 'example') and not(local-name() = 'dl') and not(local-name() = 'source') and not(local-name() = 'p')          and not(local-name() = 'thead') and not(local-name() = 'tfoot')]"/> <!-- process all table' elements, except name, header, footer, note, source and dl which render separaterely -->
 								</xsl:otherwise>
 							</xsl:choose>
 
@@ -6404,7 +6404,7 @@
 		<xsl:param name="colwidths"/>
 		<xsl:param name="colgroup"/>
 
-		<xsl:variable name="isNoteOrFnExist" select="../*[local-name()='note'] or ../*[local-name()='dl'] or ..//*[local-name()='fn'][local-name(..) != 'name'] or ../*[local-name()='source'] or ../*[local-name()='p']"/>
+		<xsl:variable name="isNoteOrFnExist" select="../*[local-name()='note'] or ../*[local-name()='example'] or ../*[local-name()='dl'] or ..//*[local-name()='fn'][local-name(..) != 'name'] or ../*[local-name()='source'] or ../*[local-name()='p']"/>
 
 		<xsl:variable name="isNoteOrFnExistShowAfterTable">
 
@@ -6487,6 +6487,7 @@
 										<xsl:apply-templates select="../*[local-name()='p']"/>
 										<xsl:apply-templates select="../*[local-name()='dl']"/>
 										<xsl:apply-templates select="../*[local-name()='note']"/>
+										<xsl:apply-templates select="../*[local-name()='example']"/>
 										<xsl:apply-templates select="../*[local-name()='source']"/>
 
 								<xsl:variable name="isDisplayRowSeparator">
@@ -6495,7 +6496,7 @@
 
 								<!-- horizontal row separator -->
 								<xsl:if test="normalize-space($isDisplayRowSeparator) = 'true'">
-									<xsl:if test="../*[local-name()='note'] and normalize-space($table_fn_block) != ''">
+									<xsl:if test="(../*[local-name()='note'] or ../*[local-name()='example']) and normalize-space($table_fn_block) != ''">
 										<fo:block-container border-top="0.5pt solid black" padding-left="1mm" padding-right="1mm">
 
 											<xsl:call-template name="setBordersTableArray"/>
@@ -6772,13 +6773,13 @@
 		</fo:table-cell>
 	</xsl:template> <!-- td -->
 
-	<xsl:template match="*[local-name()='table']/*[local-name()='note']" priority="2">
+	<xsl:template match="*[local-name()='table']/*[local-name()='note' or local-name() = 'example']" priority="2">
 
 		<fo:block xsl:use-attribute-sets="table-note-style">
 
 			<xsl:call-template name="refine_table-note-style"/>
 
-			<!-- Table's note name (NOTE, for example) -->
+			<!-- Table's note/example name (NOTE, for example) -->
 			<fo:inline xsl:use-attribute-sets="table-note-name-style">
 
 				<xsl:call-template name="refine_table-note-name-style"/>
@@ -6796,7 +6797,7 @@
 
 	</xsl:template> <!-- table/note -->
 
-	<xsl:template match="*[local-name()='table']/*[local-name()='note']/*[local-name()='p']" priority="2">
+	<xsl:template match="*[local-name()='table']/*[local-name()='note' or local-name()='example']/*[local-name()='p']" priority="2">
 		<xsl:apply-templates/>
 	</xsl:template>
 
@@ -11802,6 +11803,12 @@
 
 	</xsl:template>
 
+	<xsl:template match="*[local-name() = 'table']/*[local-name() = 'example']/*[local-name() = 'name']">
+		<fo:inline xsl:use-attribute-sets="example-name-style">
+			<xsl:apply-templates/>
+		</fo:inline>
+	</xsl:template>
+
 	<xsl:template match="*[local-name() = 'example']/*[local-name() = 'p']">
 		<xsl:param name="fo_element">block</xsl:param>
 
@@ -12379,6 +12386,9 @@
 					<xsl:otherwise><xsl:call-template name="setULLabel"/></xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
+			<xsl:when test="local-name(..) = 'ol' and @label"> <!-- for ordered lists 'ol', and if there is @label, for instance label="1.1.2" -->
+				<xsl:value-of select="@label"/>
+			</xsl:when>
 			<xsl:otherwise> <!-- for ordered lists 'ol' -->
 
 				<!-- Example: for BSI <?list-start 2?> -->
@@ -12436,10 +12446,10 @@
 						<xsl:when test="$type = 'arabic'">
 							1.
 						</xsl:when>
-						<xsl:when test="$type = 'alphabet'">
+						<xsl:when test="$type = 'alphabet' or $type = 'alphabetic'">
 							a)
 						</xsl:when>
-						<xsl:when test="$type = 'alphabet_upper'">
+						<xsl:when test="$type = 'alphabet_upper' or $type = 'alphabetic_upper'">
 							A.
 						</xsl:when>
 						<xsl:when test="$type = 'roman'">
