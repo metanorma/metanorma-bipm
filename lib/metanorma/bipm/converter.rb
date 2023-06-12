@@ -96,10 +96,12 @@ module Metanorma
         end
       end
 
-      def boilerplate_file(xmldoc)
-        return super unless @jcgm
-
-        File.join(File.dirname(__FILE__), "boilerplate-jcgm-en.xml")
+      def boilerplate_file(_xmldoc)
+        if @jcgm
+          File.join(File.dirname(__FILE__), "boilerplate-jcgm-en.adoc")
+        else
+          File.join(File.dirname(__FILE__), "boilerplate-#{@lang}.adoc")
+        end
       end
 
       def sections_cleanup(xml)
