@@ -1,0 +1,32 @@
+== copyright-statement
+=== {blank}
+© JCGM {{ docyear }}
+
+Copyright of this JCGM guidance document is shared jointly by the JCGM member organizations (BIPM, IEC, 
+IFCC, ILAC, ISO, IUPAC, IUPAP and OIML).
+
+== license-statement
+=== Copyright
+Even if electronic versions are available free of charge on the website of one or more of the JCGM member organizations, economic and moral copyrights related to all JCGM publications are internationally protected. The JCGM does not, without its written authorisation, permit third parties to rewrite or re-brand issues, to sell copies to the public, or to broadcast or use on-line its publications. Equally, the JCGM also objects to distortion, augmentation or mutilation of its publications, including its titles, slogans and logos, and those of its member organizations.
+
+=== Official versions and translations
+The only official versions of documents are those published by the JCGM, in their original languages.
+
+The JCGM’s publications may be translated into languages other than those in which the documents were originally published by the JCGM. Permission must be obtained from the JCGM before a translation can be made. All translations should respect the original and official format of the formulae and units (without any conversion to other formulae or units), and contain the following statement (to be translated into the chosen language):
+
+____
+All JCGM’s products are internationally protected by copyright. This translation of the original JCGM document has been produced with the permission of the JCGM. The JCGM retains full internationally protected copyright on the design and content of this document and on the JCGM’s titles, slogan and logos. The member organizations of the JCGM also retain full internationally protected right on their titles, slogans and logos included in the JCGM’s publications. The only official version is the document published by the JCGM, in the original languages.
+____
+
+The JCGM does not accept any liability for the relevance, accuracy, completeness or quality of the information and materials offered in any translation. A copy of the translation shall be provided to the JCGM at the time of publication.
+
+=== Reproduction
+The JCGM’s publications may be reproduced, provided written permission has been granted by the JCGM. A sample of any reproduced document shall be provided to the JCGM at the time of reproduction and contain the following statement:A
+
+____
+This document is reproduced with the permission of the JCGM, which retains full internationally protected copyright on the design and content of this document and on the JCGM’s titles, slogans and logos. The member organizations of the JCGM also retain full internationally protected right on their titles, slogans and logos included in the JCGM’s publications. The only official versions are the original versions of the documents published by the JCGM.
+____
+
+== legal-statement
+=== Disclaimer
+The JCGM and its member organizations have published this document to enhance access to information about metrology. They endeavor to update it on a regular basis, but cannot guarantee the accuracy at all times and shall not be responsible for any direct or indirect damage that may result from its use. Any reference to commercial products of any kind (including but not restricted to any software, data or hardware) or links to websites, over which the JCGM and its member organizations have no control and for which they assume no responsibility, does not imply any approval, endorsement or recommendation by the JCGM and its member organizations.
