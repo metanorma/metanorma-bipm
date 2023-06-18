@@ -1259,7 +1259,7 @@ RSpec.describe Metanorma::BIPM do
   it "references BIPM English citations" do
     #expect(File).to receive(:exist?).with(/index\.yaml/).and_return false
     allow(File).to receive(:exist?).and_call_original
-    VCR.use_cassette "bipm", match_requests_on: %i[method uri body] do
+    VCR.use_cassette "bipm" do
       input = <<~INPUT
         = Document title
         Author
@@ -1298,7 +1298,7 @@ RSpec.describe Metanorma::BIPM do
   it "references BIPM French citations" do
     allow(File).to receive(:exist?).with(/index\.yaml/).and_return false
     allow(File).to receive(:exist?).and_call_original
-    VCR.use_cassette "bipm-fr", match_requests_on: %i[method uri body] do
+    VCR.use_cassette "bipm-fr" do
       input = <<~INPUT
         = Document title
         Author

@@ -1,0 +1,14 @@
+== copyright-statement
+=== {blank}
+[align="center"]
+© Bureau international des poids et mesures {{ docyear }} tous droits réservés
+
+== license-statement
+=== Note concernant les droits d’auteur
+Ce document est distribué selon les termes et conditions de la licence Creative Commons Attribution 4.0 International (http://creativecommons.org/licenses/by/4.0/:[]), qui permet l’utilisation sans restriction, la distribution et la reproduction sur quelque support que soit, sous réserve de mentionner dûment l’auteur ou les auteurs originaux ainsi que la source de l’œuvre, d’intégrer un lien vers la licence Creative Commons et d’indiquer si des modifications ont été effectuées.
+
+== feedback-statement
+BIPM +
+Pavillon de Breteuil +
+F-92312 Sèvres Cedex +
+FRANCE

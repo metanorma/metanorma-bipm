@@ -89,7 +89,7 @@ def xmlpp(xml)
     .gsub(%r{ schema-version="[^"]+"}, "")
 end
 
-ASCIIDOC_BLANK_HDR = <<~"HDR".freeze
+ASCIIDOC_BLANK_HDR = <<~HDR.freeze
   = Document title
   Author
   :docfile: test.adoc
@@ -98,7 +98,7 @@ ASCIIDOC_BLANK_HDR = <<~"HDR".freeze
 
 HDR
 
-VALIDATING_BLANK_HDR = <<~"HDR".freeze
+VALIDATING_BLANK_HDR = <<~HDR.freeze
   = Document title
   Author
   :docfile: test.adoc
@@ -106,8 +106,16 @@ VALIDATING_BLANK_HDR = <<~"HDR".freeze
 
 HDR
 
-def boilerplate(lang)
+def boilerplate_read(file)
   HTMLEntities.new.decode(
+    Metanorma::BIPM::Converter.new(:bipm, {}).boilerplate_file_restructure(file)
+    .to_xml.gsub(/<(\/)?sections>/, "<\\1boilerplate>")
+      .gsub(/ id="_[^"]+"/, " id='_'"),
+  )
+end
+
+def boilerplate(lang)
+  boilerplate_read(
     File.read(boilerplate_filepath(lang), encoding: "utf-8")
     .gsub(/\{\{ agency \}\}/, "BIPM")
     .gsub(/\{\{ docyear \}\}/, Date.today.year.to_s)
@@ -123,9 +131,9 @@ end
 def boilerplate_filepath(lang)
   file = case lang
          when "jcgm"
-           "boilerplate-jcgm-en.xml"
+           "boilerplate-jcgm-en.adoc"
          when "en", "fr"
-           "boilerplate-#{lang}.xml"
+           "boilerplate-#{lang}.adoc"
          end
 
   File.join(File.dirname(__FILE__), "..", "lib", "metanorma", "bipm", file)
@@ -185,7 +193,7 @@ BLANK_HDR = <<~"HDR".freeze
   #{boilerplate('en')}
 HDR
 
-HTML_HDR = <<~"HDR".freeze
+HTML_HDR = <<~HDR.freeze
   <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
     <div class="title-section">
       <p>&#160;</p>
@@ -199,7 +207,7 @@ HTML_HDR = <<~"HDR".freeze
 HDR
 
 def mock_pdf
-  allow(::Mn2pdf).to receive(:convert) do |url, output,|
+  allow(Mn2pdf).to receive(:convert) do |url, output,|
     FileUtils.cp(url.gsub(/"/, ""), output.gsub(/"/, ""))
   end
 end
