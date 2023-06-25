@@ -5778,7 +5778,7 @@
 				</xsl:choose>
 			</xsl:variable>
 
-			<fo:block-container xsl:use-attribute-sets="table-container-style">
+			<fo:block-container xsl:use-attribute-sets="table-container-style" role="SKIP">
 
 				<xsl:call-template name="refine_table-container-style">
 					<xsl:with-param name="margin-side" select="$margin-side"/>
@@ -7195,7 +7195,7 @@
 		<xsl:variable name="isAdded" select="@added"/>
 		<xsl:variable name="isDeleted" select="@deleted"/>
 		<!-- <dl><xsl:copy-of select="."/></dl> -->
-		<fo:block-container xsl:use-attribute-sets="dl-block-style">
+		<fo:block-container xsl:use-attribute-sets="dl-block-style" role="SKIP">
 
 			<xsl:call-template name="setBlockSpanAll"/>
 
@@ -7233,7 +7233,7 @@
 				<xsl:with-param name="isDeleted" select="$isDeleted"/>
 			</xsl:call-template>
 
-			<fo:block-container margin-left="0mm">
+			<fo:block-container margin-left="0mm" role="SKIP">
 
 				<xsl:variable name="parent" select="local-name(..)"/>
 
@@ -7296,7 +7296,7 @@
 
 				<!-- a few components -->
 				<xsl:if test="$onlyOneComponent = 'false'">
-					<fo:block>
+					<fo:block role="SKIP">
 
 						<xsl:call-template name="refine_multicomponent_style"/>
 
@@ -7304,7 +7304,7 @@
 							<xsl:attribute name="margin-top">0</xsl:attribute>
 						</xsl:if>
 
-						<fo:block>
+						<fo:block role="SKIP">
 
 							<xsl:call-template name="refine_multicomponent_block_style"/>
 
@@ -9591,7 +9591,7 @@
 	<!-- formula  -->
 	<!-- ====== -->
 	<xsl:template match="*[local-name() = 'formula']" name="formula">
-		<fo:block-container margin-left="0mm">
+		<fo:block-container margin-left="0mm" role="SKIP">
 			<xsl:if test="parent::*[local-name() = 'note']">
 				<xsl:attribute name="margin-left">
 					<xsl:choose>
@@ -9601,7 +9601,7 @@
 				</xsl:attribute>
 
 			</xsl:if>
-			<fo:block-container margin-left="0mm">
+			<fo:block-container margin-left="0mm" role="SKIP">
 				<fo:block id="{@id}">
 					<xsl:apply-templates select="node()[not(local-name() = 'name')]"/> <!-- formula's number will be process in 'stem' template -->
 				</fo:block>
@@ -9681,13 +9681,13 @@
 
 	<xsl:template match="*[local-name() = 'note']" name="note">
 
-		<fo:block-container id="{@id}" xsl:use-attribute-sets="note-style">
+		<fo:block-container id="{@id}" xsl:use-attribute-sets="note-style" role="SKIP">
 
 			<xsl:call-template name="setBlockSpanAll"/>
 
 			<xsl:call-template name="refine_note-style"/>
 
-			<fo:block-container margin-left="0mm" margin-right="0mm">
+			<fo:block-container margin-left="0mm" margin-right="0mm" role="SKIP">
 
 						<fo:block>
 
@@ -11050,7 +11050,7 @@
 			</xsl:when>
 
 			<xsl:otherwise>
-				<fo:block-container xsl:use-attribute-sets="sourcecode-container-style">
+				<fo:block-container xsl:use-attribute-sets="sourcecode-container-style" role="SKIP">
 
 					<xsl:if test="not(ancestor::*[local-name() = 'li']) or ancestor::*[local-name() = 'example']">
 						<xsl:attribute name="margin-left">0mm</xsl:attribute>
@@ -11071,7 +11071,7 @@
 						</xsl:attribute>
 
 					</xsl:if>
-					<fo:block-container margin-left="0mm">
+					<fo:block-container margin-left="0mm" role="SKIP">
 
 						<fo:block xsl:use-attribute-sets="sourcecode-style">
 
@@ -11617,11 +11617,11 @@
 	<!-- requirement, recommendation, permission table -->
 	<!-- ========== -->
 	<xsl:template match="*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']">
-		<fo:block-container margin-left="0mm" margin-right="0mm" margin-bottom="12pt">
+		<fo:block-container margin-left="0mm" margin-right="0mm" margin-bottom="12pt" role="SKIP">
 			<xsl:if test="ancestor::*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']">
 				<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
 			</xsl:if>
-			<fo:block-container margin-left="0mm" margin-right="0mm">
+			<fo:block-container margin-left="0mm" margin-right="0mm" role="SKIP">
 				<fo:table id="{@id}" table-layout="fixed" width="100%"> <!-- border="1pt solid black" -->
 					<xsl:if test="ancestor::*[local-name() = 'table'][@class = 'recommendation' or @class='requirement' or @class='permission']">
 						<!-- <xsl:attribute name="border">0.5pt solid black</xsl:attribute> -->
@@ -11783,7 +11783,7 @@
 	-->
 	<xsl:template match="*[local-name() = 'example']">
 
-		<fo:block-container id="{@id}" xsl:use-attribute-sets="example-style">
+		<fo:block-container id="{@id}" xsl:use-attribute-sets="example-style" role="SKIP">
 
 			<xsl:call-template name="setBlockSpanAll"/>
 
@@ -11794,7 +11794,7 @@
 				block
 			</xsl:variable>
 
-			<fo:block-container margin-left="0mm">
+			<fo:block-container margin-left="0mm" role="SKIP">
 
 				<xsl:choose>
 
@@ -11807,8 +11807,8 @@
 							</xsl:apply-templates>
 						</fo:block>
 
-						<fo:block-container xsl:use-attribute-sets="example-body-style">
-							<fo:block-container margin-left="0mm" margin-right="0mm">
+						<fo:block-container xsl:use-attribute-sets="example-body-style" role="SKIP">
+							<fo:block-container margin-left="0mm" margin-right="0mm" role="SKIP">
 								<xsl:apply-templates select="node()[not(local-name() = 'name')]">
 									<xsl:with-param name="fo_element" select="$fo_element"/>
 								</xsl:apply-templates>
@@ -11861,8 +11861,8 @@
 
 						<xsl:if test="*[not(local-name() = 'name')][position() &gt; 1]">
 							<!-- display further elements in blocks -->
-							<fo:block-container xsl:use-attribute-sets="example-body-style">
-								<fo:block-container margin-left="0mm" margin-right="0mm">
+							<fo:block-container xsl:use-attribute-sets="example-body-style" role="SKIP">
+								<fo:block-container margin-left="0mm" margin-right="0mm" role="SKIP">
 									<xsl:apply-templates select="*[not(local-name() = 'name')][position() &gt; 1]">
 										<xsl:with-param name="fo_element" select="'block'"/>
 									</xsl:apply-templates>
@@ -11915,7 +11915,7 @@
 		</xsl:variable>
 		<xsl:choose>
 			<xsl:when test="starts-with(normalize-space($element), 'block')">
-				<fo:block-container>
+				<fo:block-container role="SKIP">
 					<xsl:if test="ancestor::*[local-name() = 'li'] and contains(normalize-space($fo_element), 'block')">
 						<xsl:attribute name="margin-left">0mm</xsl:attribute>
 						<xsl:attribute name="margin-right">0mm</xsl:attribute>
@@ -12056,7 +12056,7 @@
 	<!-- author  -->
 	<!-- ====== -->
 	<xsl:template match="*[local-name() = 'quote']">
-		<fo:block-container margin-left="0mm">
+		<fo:block-container margin-left="0mm" role="SKIP">
 
 			<xsl:call-template name="setBlockSpanAll"/>
 
@@ -12066,12 +12066,12 @@
 				</xsl:if>
 			</xsl:if>
 
-			<fo:block-container margin-left="0mm">
-				<fo:block-container xsl:use-attribute-sets="quote-style">
+			<fo:block-container margin-left="0mm" role="SKIP">
+				<fo:block-container xsl:use-attribute-sets="quote-style" role="SKIP">
 
 					<xsl:call-template name="refine_quote-style"/>
 
-					<fo:block-container margin-left="0mm" margin-right="0mm">
+					<fo:block-container margin-left="0mm" margin-right="0mm" role="SKIP">
 						<fo:block role="BlockQuote">
 							<xsl:apply-templates select="./node()[not(local-name() = 'author') and not(local-name() = 'source')]"/> <!-- process all nested nodes, except author and source -->
 						</fo:block>
@@ -12606,7 +12606,7 @@
 	<xsl:template match="*[local-name() = 'ul'] | *[local-name() = 'ol']">
 		<xsl:choose>
 			<xsl:when test="parent::*[local-name() = 'note'] or parent::*[local-name() = 'termnote']">
-				<fo:block-container>
+				<fo:block-container role="SKIP">
 					<xsl:attribute name="margin-left">
 						<xsl:choose>
 							<xsl:when test="not(ancestor::*[local-name() = 'table'])"><xsl:value-of select="$note-body-indent"/></xsl:when>
@@ -12616,7 +12616,7 @@
 
 					<xsl:call-template name="refine_list_container_style"/>
 
-					<fo:block-container margin-left="0mm">
+					<fo:block-container margin-left="0mm" role="SKIP">
 						<fo:block>
 							<xsl:apply-templates select="." mode="list"/>
 						</fo:block>
@@ -13453,7 +13453,7 @@
 
 					<xsl:call-template name="setBlockSpanAll"/>
 
-							<fo:block-container xsl:use-attribute-sets="admonition-container-style">
+							<fo:block-container xsl:use-attribute-sets="admonition-container-style" role="SKIP">
 
 										<fo:block xsl:use-attribute-sets="admonition-name-style">
 											<xsl:call-template name="displayAdmonitionName"/>
