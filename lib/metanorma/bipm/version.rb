@@ -1,5 +1,5 @@
 module Metanorma
   module BIPM
-    VERSION = "2.2.12".freeze
+    VERSION = "2.2.13".freeze
   end
 end
