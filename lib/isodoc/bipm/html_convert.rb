@@ -6,11 +6,6 @@ require_relative "base_convert"
 module IsoDoc
   module BIPM
     class HtmlConvert < IsoDoc::Generic::HtmlConvert
-      def middle(isoxml, out)
-        super
-        doccontrol isoxml, out
-      end
-
       def doccontrol(isoxml, out)
         c = isoxml.at(ns("//doccontrol")) or return
         out.div **attr_code(class: "doccontrol") do |div|

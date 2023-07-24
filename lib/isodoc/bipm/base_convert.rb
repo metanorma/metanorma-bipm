@@ -7,22 +7,13 @@ module IsoDoc
         Metanorma::BIPM.configuration
       end
 
+      TOP_ELEMENTS = IsoDoc::Function::ToWordHtml::TOP_ELEMENTS +
+        "//doccontrol[@displayorder]".freeze
+
       def convert1(docxml, filename, dir)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
                               "@acronym"))&.value == "JCGM"
         super
-      end
-
-      def middle(isoxml, out)
-        if @jcgm
-          super
-        else
-          middle_title(isoxml, out)
-          middle_admonitions(isoxml, out)
-          clause isoxml, out
-          annex isoxml, out
-          bibliography isoxml, out
-        end
       end
 
       def middle_clause(docxml)

@@ -19,6 +19,11 @@ module IsoDoc
         super
       end
 
+      def middle_title(docxml)
+        @jcgm and return nil
+        super
+      end
+
       def eref_localities1(opt)
         @jcgm and return @iso.eref_localities1(opt)
         super
@@ -77,8 +82,8 @@ module IsoDoc
       end
 
       def conversions(docxml)
-        super
         doccontrol docxml
+        super
       end
 
       def twitter_cldr_localiser_symbols

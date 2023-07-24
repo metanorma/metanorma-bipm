@@ -244,7 +244,7 @@ ul  li {
   list-style: none;
 }
 
-ul li:before {
+ul li::before {
   content: "—";
   display: inline-block; width: 1em;
   margin-left: -1.2em;
@@ -273,7 +273,7 @@ ol ul > li:first-child {
   list-style-type: none;
 }
 
-#toc li:before {
+#toc li::before {
   content: " ";
   display: none;
 }
@@ -296,13 +296,13 @@ ol[class="alphabet"] > li {
 ol[class="alphabet"] ol[class="alphabet"] > li {
   list-style: inherit;
 }
-ol[class="alphabet"] > li:before {
+ol[class="alphabet"] > li::before {
   counter-increment: alphabet;
   content: counter(alphabet, lower-alpha)") ";
   position: absolute;
   left: -1.4em;
 }
-ol[class="alphabet"] ol[class="alphabet"] > li:before {
+ol[class="alphabet"] ol[class="alphabet"] > li::before {
   counter-increment: none;
   content: initial;
 }
@@ -316,13 +316,13 @@ ol[class="roman"] > li {
 ol[class="roman"] ol[class="roman"] > li {
   list-style: inherit;
 }
-ol[class="roman"] > li:before {
+ol[class="roman"] > li::before {
   counter-increment: roman;
   content: "("counter(roman, lower-roman)") ";
   position: absolute;
   left: -2.0em;
 }
-ol[class="roman"] ol[class="roman"] > li:before {
+ol[class="roman"] ol[class="roman"] > li::before {
   counter-increment: none;
   content: initial;
 }
