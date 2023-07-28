@@ -8,7 +8,7 @@ module IsoDoc
       end
 
       TOP_ELEMENTS = IsoDoc::Function::ToWordHtml::TOP_ELEMENTS +
-        "//doccontrol[@displayorder]".freeze
+        " | //doccontrol[@displayorder]".freeze
 
       def convert1(docxml, filename, dir)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
@@ -20,7 +20,7 @@ module IsoDoc
         if @jcgm
           super
         else
-          "//sections/*"
+          "//sections/*[not(local-name() = 'references')][not(.//references)]"
         end
       end
 
@@ -54,6 +54,13 @@ module IsoDoc
 
       def blacksquare_parse(_node, out)
         out << "&#x25a0;"
+      end
+
+      def top_element_render(elem, out)
+        case elem.name
+        when "doccontrol" then doccontrol elem, out
+        else super
+        end
       end
     end
   end

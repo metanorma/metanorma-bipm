@@ -11,7 +11,7 @@ RSpec.describe Metanorma::BIPM::Processor do
   end
 
   it "registers output formats against metanorma" do
-    expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~"OUTPUT"
+    expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~OUTPUT
       [[:html, "html"], [:pdf, "pdf"], [:presentation, "presentation.xml"], [:rxl, "rxl"], [:xml, "xml"]]
     OUTPUT
   end
@@ -37,10 +37,11 @@ RSpec.describe Metanorma::BIPM::Processor do
   end
 
   it "generates HTML from IsoDoc XML" do
-    input = <<~"INPUT"
+    input = <<~INPUT
       <bipm-standard xmlns="https://metanorma.org/ns/bipm">
         <sections>
-          <terms id="H" obligation="normative"><title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+          <terms id="H" obligation="normative" displayorder="1">
+          <title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <term id="J">
             <name>1.1.</name>
               <preferred>Term2</preferred>
@@ -50,9 +51,8 @@ RSpec.describe Metanorma::BIPM::Processor do
       </bipm-standard>
     INPUT
 
-    output = xmlpp(<<~"OUTPUT")
+    output = xmlpp(<<~OUTPUT)
       <main class="main-section"><button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
-        <p class="zzSTDTitle1"></p>
         <div id="H"><h1 id="_">1.&#xA0; Terms, Definitions, Symbols and Abbreviated Terms</h1>
            <p class='Terms' style='text-align:left;' id='J'>
             <strong>1.1.</strong>&#xA0;Term2</p>

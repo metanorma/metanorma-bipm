@@ -127,6 +127,9 @@ RSpec.describe IsoDoc::BIPM do
               <title depth="2">3.2.<tab/>Clause 4.2</title>
             </clause>
           </clause>
+          <references id="R" normative="true" obligation="informative" displayorder="4">
+            <title depth="1">1.<tab/>Normative References</title>
+          </references>
         </sections>
         <annex id="P" inline-header="false" obligation="normative" displayorder="10">
           <title><strong>Appendix 1</strong>.<tab/><strong>Annex</strong></title>
@@ -138,9 +141,6 @@ RSpec.describe IsoDoc::BIPM do
           </clause>
         </annex>
         <bibliography>
-          <references id="R" normative="true" obligation="informative" displayorder="4">
-            <title depth="1">1.<tab/>Normative References</title>
-          </references>
           <clause id="S" obligation="informative" displayorder="11">
             <title depth="1">Bibliography</title>
             <references id="T" normative="false" obligation="informative">
@@ -180,7 +180,9 @@ RSpec.describe IsoDoc::BIPM do
                  <h2>Introduction Subsection</h2>
                </div>
              </div>
-             <p class="zzSTDTitle1"/>
+             <div>
+              <h1>1.  Normative References</h1>
+            </div>
              <div id="H">
                <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
                <div id="I">
@@ -202,7 +204,7 @@ RSpec.describe IsoDoc::BIPM do
                  </dl>
                </div>
              </div>
-             <div id="L">
+             <div id="L" class="Symbols">
                <h1>2.</h1>
                <dl>
                  <dt>
@@ -401,6 +403,9 @@ RSpec.describe IsoDoc::BIPM do
               <title depth="2">5.2.<tab/>Clause 4.2</title>
             </clause>
           </clause>
+          <references id="R" normative="true" obligation="informative" displayorder="5">
+            <title depth="1">2.<tab/>Normative References</title>
+          </references>
         </sections>
         <annex id="P" inline-header="false" obligation="normative" displayorder="12">
           <title><strong>Annex A</strong><br/><strong>Annex</strong></title>
@@ -412,9 +417,6 @@ RSpec.describe IsoDoc::BIPM do
           </clause>
         </annex>
         <bibliography>
-          <references id="R" normative="true" obligation="informative" displayorder="5">
-            <title depth="1">2.<tab/>Normative References</title>
-          </references>
           <clause id="S" obligation="informative" displayorder="13">
             <title depth="1">Bibliography</title>
             <references id="T" normative="false" obligation="informative">
@@ -454,7 +456,6 @@ RSpec.describe IsoDoc::BIPM do
                  <h2>0.1.  Introduction Subsection</h2>
                </div>
              </div>
-             <p class="zzSTDTitle1"/>
              <div id="G">
                <h1>1.  Scope</h1>
              </div>
@@ -824,7 +825,6 @@ RSpec.describe IsoDoc::BIPM do
         <div id="_" class="TOC">
           <h1 class="IntroTitle">Contents</h1>
         </div>
-          <p class='zzSTDTitle1'/>
           <div id='A'>
             <h1>1.&#160; Clause</h1>
             <div id='B'>

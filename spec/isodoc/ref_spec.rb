@@ -286,7 +286,6 @@ RSpec.describe IsoDoc do
                <a href="#zip_ffs">[5]</a>
              </p>
            </div>
-           <p class="zzSTDTitle1"/>
            <br/>
            <div>
              <h1 class="Section3">Bibliography</h1>

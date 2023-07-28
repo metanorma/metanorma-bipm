@@ -75,7 +75,7 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~INPUT
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
         <preface>
-          <foreword>
+          <foreword displayorder="1">
             <pre>ABC</pre>
           </foreword>
         </preface>
@@ -89,7 +89,6 @@ RSpec.describe IsoDoc::BIPM do
             <h1 class="ForewordTitle">Foreword</h1>
             <pre>ABC</pre>
           </div>
-          <p class="zzSTDTitle1"/>
         </div>
       </body>
     OUTPUT
@@ -143,7 +142,6 @@ RSpec.describe IsoDoc::BIPM do
           <div id="_" class="TOC">
             <h1 class="IntroTitle">Contents</h1>
           </div>
-          <p class='zzSTDTitle1'/>
           <div id='A'>
             <h1>1.</h1>
             <p class='TableTitle' style='text-align:center;'>Table 1.&#160; First Table</p>
@@ -233,7 +231,6 @@ RSpec.describe IsoDoc::BIPM do
            <div id="_" class="TOC">
              <h1 class="IntroTitle">Contents</h1>
            </div>
-           <p class="zzSTDTitle1"/>
            <div id="H">
              <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
              <p class="TermNum" id="J">1.1.</p>
@@ -349,7 +346,6 @@ RSpec.describe IsoDoc::BIPM do
            <div id="_" class="TOC">
              <h1 class="IntroTitle">Contents</h1>
            </div>
-           <p class="zzSTDTitle1"/>
            <div id="H">
              <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
              <p class="TermNum" id="J">1.1.</p>
@@ -404,7 +400,7 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~INPUT
       <bipm-standard xmlns="http://riboseinc.com/isoxml">
         <sections>
-          <clause id="A">
+          <clause id="A" displayorder="1">
             <title>Clause</title>
             <ol start="4" type="arabic">
               <li>
@@ -420,7 +416,6 @@ RSpec.describe IsoDoc::BIPM do
 
     output = xmlpp(<<~"OUTPUT")
       #{HTML_HDR}
-          <p class="zzSTDTitle1"/>
           <div id='A'>
             <h1>Clause</h1>
             <ol type='1' start='4'>
@@ -578,7 +573,9 @@ RSpec.describe IsoDoc::BIPM do
             </bibitem>
           </relation>
         </bibdata>
-        <sections/>
+        <sections>
+        <clause/>
+        </sections>
       </bipm-standard>
     INPUT
 
@@ -723,8 +720,11 @@ RSpec.describe IsoDoc::BIPM do
                 <title depth="1">Contents</title>
               </clause>
             </preface>
-        <sections/>
-        <doccontrol>
+           <sections>
+           <p class="zzSTDTitle1" displayorder="2">Main Title</p>
+           <clause displayorder="3"/>
+         </sections>
+         <doccontrol displayorder="999">
            <title>Document Control</title>
            <table unnumbered='true'>
              <tbody>
@@ -761,6 +761,7 @@ RSpec.describe IsoDoc::BIPM do
               <h1 class="IntroTitle">Contents</h1>
             </div>
             <p class='zzSTDTitle1'>Main Title</p>
+            <div> <h1/> </div>
             <div class='doccontrol'>
               <h1>Document Control</h1>
               <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
@@ -872,7 +873,9 @@ RSpec.describe IsoDoc::BIPM do
             </bibitem>
           </relation>
         </bibdata>
-        <sections/>
+        <sections>
+        <clause/>
+        </sections>
       </bipm-standard>
     INPUT
 
@@ -948,8 +951,11 @@ RSpec.describe IsoDoc::BIPM do
                 <title depth="1">Contents</title>
               </clause>
             </preface>
-           <sections/>
-           <doccontrol>
+            <sections>
+           <p class="zzSTDTitle1" displayorder="2">Main Title</p>
+           <clause displayorder="3"/>
+         </sections>
+         <doccontrol displayorder="999">
              <title>Document Control</title>
              <table unnumbered='true'>
                <tbody>
@@ -985,6 +991,7 @@ RSpec.describe IsoDoc::BIPM do
               <h1 class="IntroTitle">Contents</h1>
             </div>
              <p class='zzSTDTitle1'>Main Title</p>
+            <div> <h1/> </div>
              <div class='doccontrol'>
                <h1>Document Control</h1>
                <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
@@ -1022,6 +1029,7 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~"INPUT"
       <bipm-standard type="semantic" version="#{Metanorma::BIPM::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
         <preface>
+        <foreword displayorder="1">
           <ol id="_a165a98f-d641-4ccc-9c7e-d3268d93130c" type="alphabet_upper">
             <li>
               <p id="_484e82a7-48a3-4d88-a575-34143c9f7813">a</p>
@@ -1075,6 +1083,7 @@ RSpec.describe IsoDoc::BIPM do
               <p id="_0227008e-aaac-4b64-8914-3c1c8a27b587">j</p>
             </li>
           </ol>
+          </foreword>
         </preface>
       </bipm-standard>
     INPUT
@@ -1090,6 +1099,9 @@ RSpec.describe IsoDoc::BIPM do
         </div>
         <br/>
         <div class='main-section'>
+            <br/>
+        <div>
+          <h1 class="ForewordTitle">Foreword</h1>
           <ol type='A' id='_'>
             <li>
               <p id='_'>a</p>
@@ -1143,7 +1155,7 @@ RSpec.describe IsoDoc::BIPM do
               <p id='_'>j</p>
             </li>
           </ol>
-          <p class='zzSTDTitle1'/>
+          </div>
         </div>
       </body>
     OUTPUT
