@@ -366,10 +366,10 @@ RSpec.describe IsoDoc::BIPM do
           </introduction>
         </preface>
         <sections>
-          <clause id="G" type="scope" displayorder="8">
+          <clause id="G" type="scope" displayorder="4">
             <title depth="1">1.<tab/>Scope</title>
           </clause>
-          <clause id="H" obligation="normative" displayorder="9">
+          <clause id="H" obligation="normative" displayorder="6">
             <title depth="1">3.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <terms id="I" obligation="normative">
               <title depth="2">3.1.<tab/>Normal Terms</title>
@@ -388,13 +388,13 @@ RSpec.describe IsoDoc::BIPM do
               </dl>
             </definitions>
           </clause>
-          <definitions id="L" displayorder="10"><title>4.</title>
+          <definitions id="L" displayorder="7"><title>4.</title>
             <dl>
               <dt>Symbol</dt>
               <dd>Definition</dd>
             </dl>
           </definitions>
-          <clause id="M" inline-header="false" obligation="normative" displayorder="11">
+          <clause id="M" inline-header="false" obligation="normative" displayorder="8">
             <title depth="1">5.<tab/>Clause 4</title>
             <clause id="N" inline-header="false" obligation="normative">
               <title depth="2">5.1.<tab/>Introduction</title>
@@ -407,7 +407,7 @@ RSpec.describe IsoDoc::BIPM do
             <title depth="1">2.<tab/>Normative References</title>
           </references>
         </sections>
-        <annex id="P" inline-header="false" obligation="normative" displayorder="12">
+        <annex id="P" inline-header="false" obligation="normative" displayorder="9">
           <title><strong>Annex A</strong><br/><strong>Annex</strong></title>
           <clause id="Q" inline-header="false" obligation="normative">
             <title depth="2">A.1.<tab/>Annex A.1</title>
@@ -417,7 +417,7 @@ RSpec.describe IsoDoc::BIPM do
           </clause>
         </annex>
         <bibliography>
-          <clause id="S" obligation="informative" displayorder="13">
+          <clause id="S" obligation="informative" displayorder="10">
             <title depth="1">Bibliography</title>
             <references id="T" normative="false" obligation="informative">
               <title depth="2">Bibliography Subsection</title>

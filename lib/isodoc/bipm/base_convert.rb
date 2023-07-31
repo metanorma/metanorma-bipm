@@ -3,6 +3,8 @@ require "isodoc"
 module IsoDoc
   module BIPM
     module BaseConvert
+      attr_accessor :jcgm
+
       def configuration
         Metanorma::BIPM.configuration
       end
@@ -16,9 +18,10 @@ module IsoDoc
         super
       end
 
-      def middle_clause(docxml)
+      def middle_clause(_docxml)
         if @jcgm
-          super
+          "//clause[parent::sections][not(@type = 'scope')]" \
+            "[not(descendant::terms)][not(descendant::references)]"
         else
           "//sections/*[not(local-name() = 'references')][not(.//references)]"
         end
