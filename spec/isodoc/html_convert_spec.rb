@@ -295,7 +295,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = <<~INPUT
-           <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+      <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
          <bibdata>
            <ext>
              <editorialgroup>
@@ -312,7 +312,7 @@ RSpec.describe IsoDoc::BIPM do
            </clause>
          </preface>
          <sections>
-           <terms id="H" obligation="normative" displayorder="3">
+           <terms id="H" obligation="normative" displayorder="2">
              <title depth="1">1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
              <term id="J">
                <name>1.1.</name>
@@ -721,8 +721,7 @@ RSpec.describe IsoDoc::BIPM do
               </clause>
             </preface>
            <sections>
-           <p class="zzSTDTitle1" displayorder="2">Main Title</p>
-           <clause displayorder="3"/>
+           <clause displayorder="2"/>
          </sections>
          <doccontrol displayorder="999">
            <title>Document Control</title>
@@ -760,7 +759,6 @@ RSpec.describe IsoDoc::BIPM do
             <div id="_" class="TOC">
               <h1 class="IntroTitle">Contents</h1>
             </div>
-            <p class='zzSTDTitle1'>Main Title</p>
             <div> <h1/> </div>
             <div class='doccontrol'>
               <h1>Document Control</h1>
@@ -952,8 +950,7 @@ RSpec.describe IsoDoc::BIPM do
               </clause>
             </preface>
             <sections>
-           <p class="zzSTDTitle1" displayorder="2">Main Title</p>
-           <clause displayorder="3"/>
+           <clause displayorder="2"/>
          </sections>
          <doccontrol displayorder="999">
              <title>Document Control</title>
@@ -990,7 +987,6 @@ RSpec.describe IsoDoc::BIPM do
             <div id="_" class="TOC">
               <h1 class="IntroTitle">Contents</h1>
             </div>
-             <p class='zzSTDTitle1'>Main Title</p>
             <div> <h1/> </div>
              <div class='doccontrol'>
                <h1>Document Control</h1>

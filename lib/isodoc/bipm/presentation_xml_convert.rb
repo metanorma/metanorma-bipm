@@ -14,11 +14,17 @@ module IsoDoc
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
                               "@acronym"))&.value == "JCGM"
         @xrefs.klass.jcgm = @jcgm
-        @iso = IsoDoc::Iso::PresentationXMLConvert
-          .new({ language: @lang, script: @script })
-        i18n = @iso.i18n_init(@lang, @script, @locale, nil)
-        @iso.metadata_init(@lang, @script, @locale, i18n)
+        @jcgm and @iso = iso_processor(docxml)
         super
+      end
+
+      def iso_processor(docxml)
+        iso = IsoDoc::Iso::PresentationXMLConvert
+          .new({ language: @lang, script: @script })
+        i18n = iso.i18n_init(@lang, @script, @locale, nil)
+        iso.metadata_init(@lang, @script, @locale, i18n)
+        iso.info(docxml, nil)
+        iso
       end
 
       def eref_localities1(opt)

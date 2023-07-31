@@ -665,17 +665,17 @@ RSpec.describe IsoDoc::BIPM do
            </foreword>
          </preface>
          <sections>
-           <clause id='scope' type='scope' displayorder="5">
+           <clause id='scope' type='scope' displayorder="3">
              <title depth='1'>
                1.
                <tab/>
                Scope
              </title>
            </clause>
-           <terms id='terms' displayorder="6">
+           <terms id='terms' displayorder="4">
              <title>2.</title>
            </terms>
-           <clause id='widgets' displayorder="7">
+           <clause id='widgets' displayorder="5">
              <title depth='1'>
                3.
                <tab/>
@@ -701,7 +701,7 @@ RSpec.describe IsoDoc::BIPM do
              </clause>
            </clause>
          </sections>
-         <annex id='annex1' displayorder="8">
+         <annex id='annex1' displayorder="6">
            <title>
              <strong>Annex A</strong>
            </title>
