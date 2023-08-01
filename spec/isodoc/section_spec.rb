@@ -5,9 +5,9 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~INPUT
       <bipm-standard xmlns="http://riboseinc.com/isoxml">
       <bibdata type="standard">
-        <title language="en" format="text/plain" type="main">Main Title</title>
-        <title language="en" format="text/plain" type="cover">Main Title (SI)</title>
-        <title language="en" format="text/plain" type="appendix">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-main">Main Title</title>
+        <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-appendix">Main Title (SI)</title>
       </bibdata>
         <preface>
           <foreword obligation="informative">
@@ -83,9 +83,9 @@ RSpec.describe IsoDoc::BIPM do
     presxml = xmlpp(<<~OUTPUT)
       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
       <bibdata type="standard">
-        <title language="en" format="text/plain" type="main">Main Title</title>
-        <title language="en" format="text/plain" type="cover">Main Title (SI)</title>
-        <title language="en" format="text/plain" type="appendix">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-main">Main Title</title>
+        <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-appendix">Main Title (SI)</title>
       </bibdata>
         <preface>
             <clause type="toc" id="_" displayorder="1">
@@ -267,9 +267,9 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~INPUT
       <bipm-standard xmlns="http://riboseinc.com/isoxml">
       <bibdata type="standard">
-        <title language="en" format="text/plain" type="main">Main Title</title>
-        <title language="en" format="text/plain" type="cover">Main Title (SI)</title>
-        <title language="en" format="text/plain" type="appendix">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-main">Main Title</title>
+        <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-appendix">Main Title (SI)</title>
           <ext>
             <editorialgroup>
               <committee acronym="JCGM">
@@ -356,9 +356,9 @@ RSpec.describe IsoDoc::BIPM do
     presxml = xmlpp(<<~OUTPUT)
       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
         <bibdata type="standard">
-        <title language="en" format="text/plain" type="main">Main Title</title>
-        <title language="en" format="text/plain" type="cover">Main Title (SI)</title>
-        <title language="en" format="text/plain" type="appendix">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-main">Main Title</title>
+        <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-appendix">Main Title (SI)</title>
           <ext>
             <editorialgroup>
               <committee acronym="JCGM">
@@ -382,7 +382,7 @@ RSpec.describe IsoDoc::BIPM do
           </introduction>
         </preface>
         <sections>
-        <p class="zzSTDTitle1" displayorder="4">Main Title</p>
+        <p class="zzSTDTitle1" displayorder="4"><span class="boldtitle">Main Title</span></p>
           <clause id="G" type="scope" displayorder="5">
             <title depth="1">1.<tab/>Scope</title>
           </clause>
@@ -473,7 +473,7 @@ RSpec.describe IsoDoc::BIPM do
                  <h2>0.1.  Introduction Subsection</h2>
                </div>
              </div>
-             <p class="zzSTDTitle1">Main Title</p>
+             <p class="zzSTDTitle1"><span class="boldtitle">Main Title</span></p>
              <div id="G">
                <h1>1.  Scope</h1>
              </div>

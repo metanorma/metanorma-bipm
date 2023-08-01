@@ -5,10 +5,10 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~INPUT
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
       <bibdata>
-      <title type="main" language="en">Maintitle</title>
-      <title type="part" language="en">Parttitle</title>
-      <title type="main" language="fr">Titrechef</title>
-      <title type="part" language="fr">Titrepartie</title>
+      <title type="title-main" language="en">Maintitle</title>
+      <title type="title-part" language="en">Parttitle</title>
+      <title type="title-main" language="fr">Titrechef</title>
+      <title type="title-part" language="fr">Titrepartie</title>
       <ext>
       <structuredidentifier>
       <part>3</part>
@@ -21,12 +21,12 @@ RSpec.describe IsoDoc::BIPM do
     output = xmlpp(<<~OUTPUT)
       <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
         <bibdata>
-           <title type='main' language='en'>Maintitle</title>
-           <title type='part' language='en'>Parttitle</title>
-           <title type='part-with-numbering' language='en'>Part 3: Parttitle</title>
-           <title type='main' language='fr'>Titrechef</title>
-           <title type='part' language='fr'>Titrepartie</title>
-           <title type='part-with-numbering' language='fr'>Partie 3&#xA0;: Titrepartie</title>
+           <title type='title-main' language='en'>Maintitle</title>
+           <title type='title-part' language='en'>Parttitle</title>
+           <title type='title-part-with-numbering' language='en'>Part 3: Parttitle</title>
+           <title type='title-main' language='fr'>Titrechef</title>
+           <title type='title-part' language='fr'>Titrepartie</title>
+           <title type='title-part-with-numbering' language='fr'>Partie 3&#xA0;: Titrepartie</title>
           <ext>
             <structuredidentifier>
               <part>3</part>
@@ -45,10 +45,10 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~INPUT
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
       <bibdata>
-      <title type="main" language="en">Maintitle</title>
-      <title type="part" language="en">Parttitle</title>
-      <title type="main" language="fr">Titrechef</title>
-      <title type="part" language="fr">Titrepartie</title>
+      <title type="title-main" language="en">Maintitle</title>
+      <title type="title-part" language="en">Parttitle</title>
+      <title type="title-main" language="fr">Titrechef</title>
+      <title type="title-part" language="fr">Titrepartie</title>
       </bibdata>
       </bipm-standard>
     INPUT
@@ -56,10 +56,10 @@ RSpec.describe IsoDoc::BIPM do
     output = xmlpp(<<~OUTPUT)
       <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
         <bibdata>
-          <title type='main' language='en'>Maintitle</title>
-          <title type='part' language='en'>Parttitle</title>
-          <title type='main' language='fr'>Titrechef</title>
-          <title type='part' language='fr'>Titrepartie</title>
+          <title type='title-main' language='en'>Maintitle</title>
+          <title type='title-part' language='en'>Parttitle</title>
+          <title type='title-main' language='fr'>Titrechef</title>
+          <title type='title-part' language='fr'>Titrepartie</title>
         </bibdata>
       </bipm-standard>
     OUTPUT
@@ -190,7 +190,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = <<~INPUT
-           <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+      <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
          <preface>
            <clause type="toc" id="_" displayorder="1">
              <title depth="1">Contents</title>
@@ -440,9 +440,9 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~"INPUT"
       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
         <bibdata type="standard">
-          <title language='en' format='text/plain' type='main'>Main Title</title>
-          <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
-          <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+          <title language='en' format='text/plain' type='title-main'>Main Title</title>
+          <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
+          <title language='en' format='text/plain' type='title-appendix'>Main Title (SI)</title>
             <contributor>
               <role type="author"/>
               <organization>
@@ -582,9 +582,9 @@ RSpec.describe IsoDoc::BIPM do
     presxml = xmlpp(<<~"OUTPUT")
       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::BIPM::VERSION}" type="presentation">
         <bibdata type="standard">
-        <title language="en" format="text/plain" type="main">Main Title</title>
-        <title language="en" format="text/plain" type="cover">Main Title (SI)</title>
-        <title language="en" format="text/plain" type="appendix">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-main">Main Title</title>
+        <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
+        <title language="en" format="text/plain" type="title-appendix">Main Title (SI)</title>
           <contributor>
             <role type="author"/>
             <organization>
@@ -807,9 +807,9 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~"INPUT"
       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
         <bibdata type="standard">
-          <title language='en' format='text/plain' type='main'>Main Title</title>
-          <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
-          <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+          <title language='en' format='text/plain' type='title-main'>Main Title</title>
+          <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
+          <title language='en' format='text/plain' type='title-appendix'>Main Title (SI)</title>
             <contributor>
               <role type="author"/>
               <organization>
@@ -880,9 +880,9 @@ RSpec.describe IsoDoc::BIPM do
     presxml = <<~PRESXML
       <bipm-standard xmlns='https://www.metanorma.org/ns/bipm' version="#{Metanorma::BIPM::VERSION}" type='presentation'>
       <bibdata type='standard'>
-             <title language='en' format='text/plain' type='main'>Main Title</title>
-             <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
-             <title language='en' format='text/plain' type='appendix'>Main Title (SI)</title>
+             <title language='en' format='text/plain' type='title-main'>Main Title</title>
+             <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
+             <title language='en' format='text/plain' type='title-appendix'>Main Title (SI)</title>
              <contributor>
                <role type='author'/>
                <organization>

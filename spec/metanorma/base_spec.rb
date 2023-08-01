@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Metanorma::BIPM do
   it "processes default metadata" do
-    input = <<~"INPUT"
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -85,20 +85,20 @@ RSpec.describe Metanorma::BIPM do
       <?xml version="1.0" encoding="UTF-8"?>
       <bipm-standard type="semantic" version="#{Metanorma::BIPM::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
         <bibdata type="standard">
-          <title format="text/plain" language="en" type="main">Main Title</title>
-          <title format="text/plain" language="en" type="cover">Main Title (SI)</title>
-          <title format="text/plain" language="en" type="appendix">Main Title (SI)</title>
-          <title format="text/plain" language="en" type="annex">Main Title (SI) Annex</title>
-          <title format="text/plain" language="en" type="part">Part</title>
-          <title format="text/plain" language="en" type="subpart">Subpart</title>
-          <title format="text/plain" language="en" type="provenance">Provenance-en</title>
-          <title format="text/plain" language="fr" type="main">Chef Title</title>
-          <title format="text/plain" language="fr" type="cover">Chef Title (SI)</title>
-          <title format="text/plain" language="fr" type="appendix">Chef Title (SI)</title>
-          <title format="text/plain" language="fr" type="annex">Chef Title (SI) Annexe</title>
-          <title format="text/plain" language="fr" type="part">Partie</title>
-          <title format="text/plain" language="fr" type="subpart">Subpartie</title>
-          <title format="text/plain" language="fr" type="provenance">Provenance-fr</title>
+          <title format="text/plain" language="en" type="title-main">Main Title</title>
+          <title format="text/plain" language="en" type="title-cover">Main Title (SI)</title>
+          <title format="text/plain" language="en" type="title-appendix">Main Title (SI)</title>
+          <title format="text/plain" language="en" type="title-annex">Main Title (SI) Annex</title>
+          <title format="text/plain" language="en" type="title-part">Part</title>
+          <title format="text/plain" language="en" type="title-subpart">Subpart</title>
+          <title format="text/plain" language="en" type="title-provenance">Provenance-en</title>
+          <title format="text/plain" language="fr" type="title-main">Chef Title</title>
+          <title format="text/plain" language="fr" type="title-cover">Chef Title (SI)</title>
+          <title format="text/plain" language="fr" type="title-appendix">Chef Title (SI)</title>
+          <title format="text/plain" language="fr" type="title-annex">Chef Title (SI) Annexe</title>
+          <title format="text/plain" language="fr" type="title-part">Partie</title>
+          <title format="text/plain" language="fr" type="title-subpart">Subpartie</title>
+          <title format="text/plain" language="fr" type="title-provenance">Provenance-fr</title>
           <docidentifier type="BIPM">#{Metanorma::BIPM.configuration.organization_name_short} 1000</docidentifier>
           <docnumber>1000</docnumber>
           <date type="implemented">
@@ -304,7 +304,7 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "processes default metadata in French" do
-    input = <<~"INPUT"
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -350,10 +350,10 @@ RSpec.describe Metanorma::BIPM do
       <?xml version="1.0" encoding="UTF-8"?>
       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
       <bibdata type="standard">
-        <title language='en' format='text/plain' type='main'>Main Title</title>
-        <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
-        <title language='fr' format='text/plain' type='main'>Chef Title</title>
-        <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
+        <title language='en' format='text/plain' type='title-main'>Main Title</title>
+        <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
+        <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
+        <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
           <docidentifier type="BIPM">BIPM 1000</docidentifier>
           <docnumber>1000</docnumber>
           <date type='implemented'>
@@ -452,7 +452,7 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "processes default metadata for JCGM" do
-    input = <<~"INPUT"
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -498,10 +498,10 @@ RSpec.describe Metanorma::BIPM do
       <?xml version="1.0" encoding="UTF-8"?>
       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
         <bibdata type='standard'>
-          <title language='en' format='text/plain' type='main'>Main Title</title>
-          <title language='en' format='text/plain' type='cover'>Main Title (SI)</title>
-          <title language='fr' format='text/plain' type='main'>Chef Title</title>
-          <title language='fr' format='text/plain' type='cover'>Chef Title (SI)</title>
+          <title language='en' format='text/plain' type='title-main'>Main Title</title>
+          <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
+          <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
+          <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
           <docidentifier type='BIPM'>JCGM 1000</docidentifier>
           <docnumber>1000</docnumber>
           <date type='implemented'>
@@ -690,7 +690,7 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "uses default fonts" do
-    input = <<~"INPUT"
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -707,7 +707,7 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "uses specified fonts" do
-    input = <<~"INPUT"
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -976,7 +976,7 @@ RSpec.describe Metanorma::BIPM do
 
   it "processes sections in JCGM" do
     input = <<~INPUT
-      #{ASCIIDOC_BLANK_HDR.sub(/:novalid:/, ":novalid:\n:committee-acronym: JCGM")}
+      #{ASCIIDOC_BLANK_HDR.sub(':novalid:', ":novalid:\n:committee-acronym: JCGM")}
       .Foreword
 
       Text
@@ -1257,9 +1257,8 @@ RSpec.describe Metanorma::BIPM do
   end
 
   it "references BIPM English citations" do
-    #expect(File).to receive(:exist?).with(/index\.yaml/).and_return false
     allow(File).to receive(:exist?).and_call_original
-    VCR.use_cassette "bipm" do
+    VCR.use_cassette("bipm", match_requests_on: %i[method uri body]) do
       input = <<~INPUT
         = Document title
         Author
@@ -1300,7 +1299,7 @@ RSpec.describe Metanorma::BIPM do
   it "references BIPM French citations" do
     allow(File).to receive(:exist?).with(/index\.yaml/).and_return false
     allow(File).to receive(:exist?).and_call_original
-    VCR.use_cassette "bipm-fr" do
+    VCR.use_cassette("bipm-fr", match_requests_on: %i[method uri body]) do
       input = <<~INPUT
         = Document title
         Author

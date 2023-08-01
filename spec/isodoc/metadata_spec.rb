@@ -30,20 +30,20 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~"INPUT"
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
         <bibdata type="standard">
-          <title type="main" language="en" format="plain">Main Title</title>
-          <title type="main" language="fr" format="plain">Chef Title</title>
-          <title type="cover" language="en" format="plain">Main Title Cover</title>
-          <title type="cover" language="fr" format="plain">Chef Title Cover</title>
-          <title type="appendix" language="en" format="plain">Main Title Appendix</title>
-          <title type="appendix" language="fr" format="plain">Chef Title Appendix</title>
-          <title type="annex" language="en" format="plain">Main Title Annex</title>
-          <title type="annex" language="fr" format="plain">Chef Title Annex</title>
-          <title type="part" language="en" format="plain">Main Title Part</title>
-          <title type="part" language="fr" format="plain">Chef Title Part</title>
-          <title type="subpart" language="en" format="plain">Main Title Subpart</title>
-          <title type="subpart" language="fr" format="plain">Chef Title Subpart</title>
-          <title type="provenance" language="en" format="plain">Main Title Provenance</title>
-          <title type="provenance" language="fr" format="plain">Chef Title Provenance</title>
+          <title type="title-main" language="en" format="plain">Main Title</title>
+          <title type="title-main" language="fr" format="plain">Chef Title</title>
+          <title type="title-cover" language="en" format="plain">Main Title Cover</title>
+          <title type="title-cover" language="fr" format="plain">Chef Title Cover</title>
+          <title type="title-appendix" language="en" format="plain">Main Title Appendix</title>
+          <title type="title-appendix" language="fr" format="plain">Chef Title Appendix</title>
+          <title type="title-annex" language="en" format="plain">Main Title Annex</title>
+          <title type="title-annex" language="fr" format="plain">Chef Title Annex</title>
+          <title type="title-part" language="en" format="plain">Main Title Part</title>
+          <title type="title-part" language="fr" format="plain">Chef Title Part</title>
+          <title type="title-subpart" language="en" format="plain">Main Title Subpart</title>
+          <title type="title-subpart" language="fr" format="plain">Chef Title Subpart</title>
+          <title type="title-provenance" language="en" format="plain">Main Title Provenance</title>
+          <title type="title-provenance" language="fr" format="plain">Chef Title Provenance</title>
           <docidentifier>1000</docidentifier>
           <date type="published">2021-04</date>
           <contributor>
@@ -206,14 +206,14 @@ RSpec.describe IsoDoc::BIPM do
     input = <<~"INPUT"
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
         <bibdata type="standard">
-          <title format="plain" language="en" type="main">Main Title</title>
-          <title format="plain" language="fr" type="main">Chef Title</title>
-          <title format="plain" language="en" type="cover">Main Title Cover</title>
-          <title format="plain" language="fr" type="cover">Chef Title Cover</title>
-          <title format="plain" language="en" type="appendix">Main Title Appendix</title>
-          <title format="plain" language="fr" type="appendix">Chef Title Appendix</title>
-          <title format="plain" language="en" type="annex">Main Title Annex</title>
-          <title format="plain" language="fr" type="annex">Chef Title Annex</title>
+          <title format="plain" language="en" type="title-main">Main Title</title>
+          <title format="plain" language="fr" type="title-main">Chef Title</title>
+          <title format="plain" language="en" type="title-cover">Main Title Cover</title>
+          <title format="plain" language="fr" type="title-cover">Chef Title Cover</title>
+          <title format="plain" language="en" type="title-appendix">Main Title Appendix</title>
+          <title format="plain" language="fr" type="title-appendix">Chef Title Appendix</title>
+          <title format="plain" language="en" type="title-annex">Main Title Annex</title>
+          <title format="plain" language="fr" type="title-annex">Chef Title Annex</title>
           <docidentifier>1000</docidentifier>
           <contributor>
             <role type="author"/>

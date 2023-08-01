@@ -108,9 +108,9 @@ module IsoDoc
       def bibdata_titles(bibdata)
         app = bibdata.at(ns("//bibdata/ext/" \
                             "structuredidentifier/part")) or return
-        bibdata.xpath(ns("//bibdata/title[@type = 'part']")).each do |t|
+        bibdata.xpath(ns("//bibdata/title[@type = 'title-part']")).each do |t|
           t.previous = t.dup
-          t["type"] = "part-with-numbering"
+          t["type"] = "title-part-with-numbering"
           part = t["language"] == "en" ? "Part" : "Partie" # not looking up in YAML
           t.children = l10n("#{part} #{app.text}: #{to_xml(t.children)}",
                             t["language"])

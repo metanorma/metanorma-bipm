@@ -3,7 +3,7 @@ module IsoDoc
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def middle_title(docxml)
         @jcgm or return nil
-        super
+        @iso.middle_title(docxml)
       end
 
       def table1(elem)
