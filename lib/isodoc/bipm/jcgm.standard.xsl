@@ -397,14 +397,16 @@
 
 				<fo:flow flow-name="xsl-region-body" line-height="115%">
 
-					<fo:block-container>
+					<xsl:if test="count(//*[local-name() = 'bipm-standard']) != 1 ">
+						<!-- <fo:block-container> -->
 						<!-- Show title -->
 						<!-- Example: Evaluation of measurement data — An introduction to the `Guide to the expression of uncertainty in measurement' and related documents -->
 
 						<xsl:for-each select="//*[local-name() = 'bipm-standard']">
-							<fo:block font-size="20pt" font-weight="bold" margin-bottom="20pt" space-before="36pt" line-height="1.1">
-								<xsl:variable name="curr_lang" select="*[local-name()='bibdata']/*[local-name()='language'][@current = 'true']"/>
 
+							<!-- <fo:block font-size="20pt" font-weight="bold" margin-bottom="20pt" space-before="36pt" line-height="1.1">
+								<xsl:variable name="curr_lang" select="*[local-name()='bibdata']/*[local-name()='language'][@current = 'true']"/>
+								
 								<xsl:variable name="title-main">
 									<xsl:apply-templates select="./*[local-name() = 'bibdata']/*[local-name() = 'title'][@language = $curr_lang and @type = 'main']" mode="title"/>
 								</xsl:variable>
@@ -412,7 +414,7 @@
 								<xsl:variable name="title-part">
 									<xsl:apply-templates select="./*[local-name() = 'bibdata']/*[local-name() = 'title'][@language = $curr_lang and @type = 'part']" mode="title"/>
 								</xsl:variable>
-
+								
 								<fo:block role="H1">
 									<xsl:copy-of select="$title-main"/>
 									<xsl:if test="normalize-space($title-main) != '' and normalize-space($title-part) != ''">
@@ -420,7 +422,7 @@
 									</xsl:if>
 									<xsl:copy-of select="$title-part"/>
 								</fo:block>
-
+								
 								<xsl:variable name="edition">
 									<xsl:apply-templates select="./*[local-name() = 'bibdata']/*[local-name() = 'edition'][normalize-space(@language) = '']">
 										<xsl:with-param name="curr_lang" select="$curr_lang"/>
@@ -429,11 +431,14 @@
 								<xsl:if test="normalize-space($edition) != ''">
 									<fo:block margin-top="12pt"><xsl:copy-of select="$edition"/></fo:block>
 								</xsl:if>
+								
+							</fo:block> -->
 
-							</fo:block>
+							<xsl:apply-templates select="jcgmsections/jcgm:p[starts-with(@class, 'zzSTDTitle')]"/>
+
 						</xsl:for-each>
-
-					</fo:block-container>
+						<!-- </fo:block-container> -->
+					</xsl:if>
 					<!-- Clause(s) -->
 					<fo:block>
 						<xsl:choose>
@@ -578,6 +583,32 @@
 					<xsl:with-param name="key">Page.sg</xsl:with-param>
 				</xsl:call-template>
 			</fo:inline>
+		</fo:block>
+	</xsl:template>
+
+	<xsl:template match="jcgm:sections/jcgm:p[@class = 'zzSTDTitle1']" priority="4">
+		<fo:block font-size="20pt" font-weight="bold" margin-bottom="20pt" space-before="36pt" line-height="1.1" role="H1">
+			<xsl:if test="following-sibling::*[1][self::jcgm:p][starts-with(@class, 'zzSTDTitle')]">
+				<xsl:attribute name="margin-bottom">0</xsl:attribute>
+			</xsl:if>
+			<xsl:apply-templates/>
+		</fo:block>
+		<xsl:variable name="curr_lang" select="ancestor::jcgm:bipm-standard/*[local-name()='bibdata']/*[local-name()='language'][@current = 'true']"/>
+		<xsl:variable name="edition">
+			<xsl:apply-templates select="ancestor::jcgm:bipm-standard/*[local-name() = 'bibdata']/*[local-name() = 'edition'][normalize-space(@language) = '']">
+				<xsl:with-param name="curr_lang" select="$curr_lang"/>
+			</xsl:apply-templates>
+		</xsl:variable>
+		<xsl:if test="normalize-space($edition) != ''">
+			<fo:block font-size="20pt" font-weight="bold" margin-top="12pt" margin-bottom="20pt" line-height="1.1">
+				<xsl:copy-of select="$edition"/>
+			</fo:block>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="jcgm:sections/jcgm:p[@class = 'zzSTDTitle2']" priority="4">
+		<fo:block font-size="20pt" font-weight="bold" margin-top="12pt" margin-bottom="20pt" line-height="1.1">
+			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template>
 
@@ -5707,6 +5738,9 @@
 	<!-- ===================== -->
 	<!-- END Definition List -->
 	<!-- ===================== -->
+
+	<!-- default: ignore title in sections/p -->
+	<xsl:template match="*[local-name() = 'sections']/*[local-name() = 'p'][starts-with(@class, 'zzSTDTitle')]" priority="3"/>
 
 	<!-- ========================= -->
 	<!-- Rich text formatting -->
@@ -11488,7 +11522,7 @@
 	<xsl:template match="*[local-name() = 'span']" mode="update_xml_step1">
 		<xsl:apply-templates mode="update_xml_step1"/>
 	</xsl:template>
-	<xsl:template match="*[local-name() = 'sourcecode']//*[local-name() = 'span'][@class]" mode="update_xml_step1" priority="2">
+	<xsl:template match="*[local-name() = 'sections']/*[local-name() = 'p'][starts-with(@class, 'zzSTDTitle')]/*[local-name() = 'span'][@class] | *[local-name() = 'sourcecode']//*[local-name() = 'span'][@class]" mode="update_xml_step1" priority="2">
 		<xsl:copy>
 			<xsl:copy-of select="@*"/>
 			<xsl:apply-templates mode="update_xml_step1"/>
