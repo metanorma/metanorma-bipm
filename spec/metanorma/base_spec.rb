@@ -1203,7 +1203,7 @@ RSpec.describe Metanorma::BIPM do
       #{BLANK_HDR}
         <sections>
           <formula id='_'>
-            <stem type='MathML'>
+            <stem type='MathML' block="true">
               <math xmlns='http://www.w3.org/1998/Math/MathML'>
                 <mi mathvariant='normal'>A</mi>
                 <mo>+</mo>
