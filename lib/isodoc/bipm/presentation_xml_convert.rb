@@ -5,6 +5,7 @@ require_relative "init"
 require_relative "index"
 require_relative "doccontrol"
 require_relative "../../relaton/render/general"
+require_relative "presentation_blocks"
 
 module IsoDoc
   module BIPM
@@ -12,31 +13,23 @@ module IsoDoc
       def convert1(docxml, filename, dir)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
                               "@acronym"))&.value == "JCGM"
-        @iso = IsoDoc::Iso::PresentationXMLConvert
-          .new({ language: @lang, script: @script })
-        i18n = @iso.i18n_init(@lang, @script, @locale, nil)
-        @iso.metadata_init(@lang, @script, @locale, i18n)
+        @xrefs.klass.jcgm = @jcgm
+        @jcgm and @iso = iso_processor(docxml)
         super
+      end
+
+      def iso_processor(docxml)
+        iso = IsoDoc::Iso::PresentationXMLConvert
+          .new({ language: @lang, script: @script })
+        i18n = iso.i18n_init(@lang, @script, @locale, nil)
+        iso.metadata_init(@lang, @script, @locale, i18n)
+        iso.info(docxml, nil)
+        iso
       end
 
       def eref_localities1(opt)
         @jcgm and return @iso.eref_localities1(opt)
         super
-      end
-
-      def table1(elem)
-        labelled_ancestor(elem) || elem["unnumbered"] and return
-        n = @xrefs.anchor(elem["id"], :label, false)
-        prefix_name(elem, ".<tab/>",
-                    l10n("#{@i18n.table.capitalize} #{n}"), "name")
-      end
-
-      def figure1(elem)
-        if @jcgm
-          @iso.xrefs = @xrefs
-          @iso.figure1(elem)
-        else super
-        end
       end
 
       def annex1(elem)
@@ -77,8 +70,8 @@ module IsoDoc
       end
 
       def conversions(docxml)
-        super
         doccontrol docxml
+        super
       end
 
       def twitter_cldr_localiser_symbols
@@ -115,9 +108,9 @@ module IsoDoc
       def bibdata_titles(bibdata)
         app = bibdata.at(ns("//bibdata/ext/" \
                             "structuredidentifier/part")) or return
-        bibdata.xpath(ns("//bibdata/title[@type = 'part']")).each do |t|
+        bibdata.xpath(ns("//bibdata/title[@type = 'title-part']")).each do |t|
           t.previous = t.dup
-          t["type"] = "part-with-numbering"
+          t["type"] = "title-part-with-numbering"
           part = t["language"] == "en" ? "Part" : "Partie" # not looking up in YAML
           t.children = l10n("#{part} #{app.text}: #{to_xml(t.children)}",
                             t["language"])
@@ -167,22 +160,6 @@ module IsoDoc
         docxml.xpath(ns("//variant-title[@type = 'quoted']")).each do |t|
           t.name = "title"
           t.children.first.previous = "<blacksquare/>"
-        end
-      end
-
-      # notes and remarques (list notes) are not numbered
-      def note1(elem)
-        elem.parent.name == "bibitem" || elem["notag"] == "true" and return
-        lbl = l10n(note_label(elem))
-        prefix_name(elem, "", lbl, "name")
-      end
-
-      def note_label(elem)
-        if elem.ancestors("preface").empty?
-          if elem.ancestors("ul, ol, dl").empty?
-            @i18n.note
-          else @i18n.listnote end
-        else @i18n.prefacenote
         end
       end
 

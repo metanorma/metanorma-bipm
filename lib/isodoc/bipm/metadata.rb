@@ -27,14 +27,14 @@ module IsoDoc
       def title(isoxml, _out)
         lang1, lang2 = @lang == "fr" ? %w(fr en) : %w(en fr)
         set(:doctitle, @c.encode(isoxml.at(
-          ns("#{TITLE}[@type='main'][@language='#{lang1}']"))&.text || ""))
+          ns("#{TITLE}[@type='title-main'][@language='#{lang1}']"))&.text || ""))
         set(:docsubtitle, @c.encode(isoxml.at(
-          ns("#{TITLE}[@type='main'][@language='#{lang2}']"))&.text || ""))
+          ns("#{TITLE}[@type='title-main'][@language='#{lang2}']"))&.text || ""))
         %w(appendix annex part subtitle provenance).each do |e|
           set("#{e}title".to_sym, @c.encode(isoxml.at(
-            ns("#{TITLE}[@type='#{e}'][@language='#{lang1}']"))&.text || ""))
+            ns("#{TITLE}[@type='title-#{e}'][@language='#{lang1}']"))&.text || ""))
           set("#{e}subtitle".to_sym, @c.encode(isoxml.at(
-            ns("#{TITLE}[@type='#{e}'][@language='#{lang2}']"))&.text || ""))
+            ns("#{TITLE}[@type='title-#{e}'][@language='#{lang2}']"))&.text || ""))
         end
       end
 

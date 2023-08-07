@@ -3,9 +3,14 @@ require "isodoc"
 module IsoDoc
   module BIPM
     module BaseConvert
+      attr_accessor :jcgm
+
       def configuration
         Metanorma::BIPM.configuration
       end
+
+      TOP_ELEMENTS = IsoDoc::Function::ToWordHtml::TOP_ELEMENTS +
+        " | //doccontrol[@displayorder]".freeze
 
       def convert1(docxml, filename, dir)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
@@ -13,23 +18,12 @@ module IsoDoc
         super
       end
 
-      def middle(isoxml, out)
+      def middle_clause(_docxml)
         if @jcgm
-          super
+          "//clause[parent::sections][not(@type = 'scope')]" \
+            "[not(descendant::terms)][not(descendant::references)]"
         else
-          middle_title(isoxml, out)
-          middle_admonitions(isoxml, out)
-          clause isoxml, out
-          annex isoxml, out
-          bibliography isoxml, out
-        end
-      end
-
-      def middle_clause(docxml)
-        if @jcgm
-          super
-        else
-          "//sections/*"
+          "//sections/*[not(local-name() = 'references')][not(.//references)]"
         end
       end
 
@@ -63,6 +57,13 @@ module IsoDoc
 
       def blacksquare_parse(_node, out)
         out << "&#x25a0;"
+      end
+
+      def top_element_render(elem, out)
+        case elem.name
+        when "doccontrol" then doccontrol elem, out
+        else super
+        end
       end
     end
   end

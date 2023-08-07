@@ -4,13 +4,15 @@ module IsoDoc
     end
 
     class Xref < IsoDoc::Xref
+      attr_accessor :jcgm
+
       def initialize(lang, script, klass, i18n, options = {})
         @iso = IsoDoc::Iso::Xref.new(lang, script, klass, i18n, options)
         super
       end
 
       def parse(docxml)
-        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/"\
+        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
                               "@acronym"))&.value == "JCGM"
         @annexlbl =
           if @jcgm then @labels["iso_annex"]
@@ -38,8 +40,9 @@ module IsoDoc
       end
 
       def clause_names_jcgm(docxml, sect_num)
-        docxml.xpath(ns("//clause[parent::sections][not(@type = 'scope')]"\
-                        "[not(descendant::terms)]")).each do |c|
+        docxml.xpath(ns("//clause[parent::sections][not(@type = 'scope')]" \
+                        "[not(descendant::terms)][not(descendant::references)]"))
+          .each do |c|
           section_names(c, sect_num, 1)
         end
       end
@@ -48,24 +51,24 @@ module IsoDoc
 
       def clause_names_bipm(docxml, _sect_num)
         n = Counter.new
-        docxml.xpath(ns("//sections/clause[not(#{UNNUM})] | "\
-                        "//sections/terms[not(#{UNNUM})] | "\
+        docxml.xpath(ns("//sections/clause[not(#{UNNUM})] | " \
+                        "//sections/terms[not(#{UNNUM})] | " \
                         "//sections/definitions[not(#{UNNUM})]"))
           .each { |c| section_names(c, n, 1) }
-        docxml.xpath(ns("//sections/clause[#{UNNUM}] | "\
-                        "//sections/terms[#{UNNUM}] | "\
+        docxml.xpath(ns("//sections/clause[#{UNNUM}] | " \
+                        "//sections/terms[#{UNNUM}] | " \
                         "//sections/definitions[#{UNNUM}]"))
           .each { |c| unnumbered_section_names(c, 1) }
       end
 
       NUMBERED_SUBCLAUSES =
-        "./clause[not(#{UNNUM})] | ./references[not(#{UNNUM})] | "\
-        "./term[not(#{UNNUM})] | ./terms[not(#{UNNUM})] | "\
+        "./clause[not(#{UNNUM})] | ./references[not(#{UNNUM})] | " \
+        "./term[not(#{UNNUM})] | ./terms[not(#{UNNUM})] | " \
         "./definitions[not(#{UNNUM})]".freeze
 
       UNNUMBERED_SUBCLAUSES =
-        "./clause[#{UNNUM}] | ./references[#{UNNUM}] | "\
-        "./term[#{UNNUM}] | ./terms[#{UNNUM}] | "\
+        "./clause[#{UNNUM}] | ./references[#{UNNUM}] | " \
+        "./term[#{UNNUM}] | ./terms[#{UNNUM}] | " \
         "./definitions[#{UNNUM}]".freeze
 
       def section_name_anchors(clause, num, lvl)

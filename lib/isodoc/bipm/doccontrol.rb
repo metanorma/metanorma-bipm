@@ -5,7 +5,7 @@ module IsoDoc
         return unless doc.at(ns("//bibdata/relation[@type = 'supersedes']"))
 
         clause = <<~DOCCONTROL
-          <doccontrol>
+          <doccontrol displayorder="999">
           <title>Document Control</title>
           <table unnumbered="true"><tbody>
           <tr><th>Authors:</th><td/><td>#{list_authors(doc)}</td></tr>
@@ -41,7 +41,7 @@ module IsoDoc
         while list_draft(xml, i) != ["", ""]
           ret += "<tr>#{list_draft(xml, i).map do |x|
                           "<td>#{x}</td>"
-                        end.join} "\
+                        end.join} " \
                  "<td/></tr>"
           i += 1
         end
@@ -49,7 +49,7 @@ module IsoDoc
       end
 
       def list_draft(xml, idx)
-        d = xml.at(ns("//bibdata/relation[@type = 'supersedes'][#{idx}]"\
+        d = xml.at(ns("//bibdata/relation[@type = 'supersedes'][#{idx}]" \
                       "/bibitem")) or return ["", ""]
 
         draft = d&.at(ns("./version/draft"))&.text and draft = "Draft #{draft}"
@@ -65,7 +65,7 @@ module IsoDoc
       end
 
       COCHAIR = "xmlns:role[contains(text(),'co-chair')]".freeze
-      CHAIR = "[xmlns:role[contains(text(),'chair')]"\
+      CHAIR = "[xmlns:role[contains(text(),'chair')]" \
               "[not(contains(text(),'co-chair'))]]".freeze
 
       def list_cochairs(xml)
