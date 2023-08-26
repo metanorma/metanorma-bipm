@@ -21,9 +21,12 @@ module IsoDoc
       end
 
       def omit_docid_prefix(prefix)
-        return true if %w(BIPM BIPM-long).include? prefix
-
+        %w(BIPM BIPM-long).include? prefix and return true
         super
+      end
+
+      def amd?(_text)
+        false
       end
     end
   end

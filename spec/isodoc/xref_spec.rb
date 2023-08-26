@@ -98,7 +98,7 @@ RSpec.describe IsoDoc::BIPM do
           </introduction>
         </preface>
         <sections>
-          <clause id='scope' type="scope" displayorder='6'>
+          <clause id='scope' type="scope" displayorder='4'>
           <title depth='1'>
         1.
         <tab/>
@@ -112,10 +112,10 @@ RSpec.describe IsoDoc::BIPM do
             <xref target='N'>Equation (2)</xref>
             </p>
           </clause>
-          <terms id='terms' displayorder='7'>
+          <terms id='terms' displayorder='5'>
         <title>2.</title>
       </terms>
-          <clause id='widgets' displayorder='8'>
+          <clause id='widgets' displayorder='6'>
             <title depth='1'>
         3.
         <tab/>
@@ -137,7 +137,7 @@ RSpec.describe IsoDoc::BIPM do
             </clause>
           </clause>
         </sections>
-        <annex id='annex1' displayorder='9'>
+        <annex id='annex1' displayorder='7'>
         <title>
         <strong>Appendix 1</strong>
       </title>
@@ -280,7 +280,7 @@ RSpec.describe IsoDoc::BIPM do
           <xref target="Q1">Appendix A1.1.1</xref>
           <xref target="Q2">[Q2]</xref>
           <xref target="Q3">[Q3]</xref>
-          <xref target="R">Chapter 2</xref></p>
+          <xref target="R">Chapter 5</xref></p>
       </foreword>
     OUTPUT
     expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
@@ -507,17 +507,17 @@ RSpec.describe IsoDoc::BIPM do
            </foreword>
          </preface>
          <sections>
-           <clause id='scope' type='scope' displayorder='5'>
+           <clause id='scope' type='scope' displayorder='3'>
              <title depth='1'>
                1.
                <tab/>
                Scope
              </title>
            </clause>
-           <terms id='terms' displayorder='6'>
+           <terms id='terms' displayorder='4'>
              <title>2.</title>
            </terms>
-           <clause id='widgets' displayorder='7'>
+           <clause id='widgets' displayorder='5'>
              <title depth='1'>
                3.
                <tab/>
@@ -542,7 +542,7 @@ RSpec.describe IsoDoc::BIPM do
              </clause>
            </clause>
          </sections>
-         <annex id='annex1' displayorder='8'>
+         <annex id='annex1' displayorder='6'>
            <title>
              <strong>Appendix 1</strong>
            </title>
@@ -565,7 +565,8 @@ RSpec.describe IsoDoc::BIPM do
          </annex>
        </iso-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to xmlpp(output)
@@ -644,7 +645,10 @@ RSpec.describe IsoDoc::BIPM do
          <bibdata>
            <ext>
              <editorialgroup>
-               <committee acronym='JCGM'> TC CT </committee>
+               <committee acronym="JCGM">
+                 <variant language="en" script="Latn">TC</variant>
+                 <variant language="fr" script="Latn">CT</variant>
+               </committee>
                <workgroup acronym='B'>WC</workgroup>
              </editorialgroup>
            </ext>
