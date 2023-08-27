@@ -103,7 +103,7 @@ RSpec.describe IsoDoc::BIPM do
           </introduction>
         </preface>
         <sections>
-          <clause id="H" obligation="normative" displayorder="7">
+          <clause id="H" obligation="normative" displayorder="4">
             <title depth="1">1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <terms id="I" obligation="normative">
               <title depth="2">1.1.<tab/>Normal Terms</title>
@@ -122,13 +122,13 @@ RSpec.describe IsoDoc::BIPM do
               </dl>
             </definitions>
           </clause>
-          <definitions id="L" displayorder="8"><title>2.</title>
+          <definitions id="L" displayorder="5"><title>2.</title>
             <dl>
               <dt>Symbol</dt>
               <dd>Definition</dd>
             </dl>
           </definitions>
-          <clause id="M" inline-header="false" obligation="normative" displayorder="9">
+          <clause id="M" inline-header="false" obligation="normative" displayorder="6">
             <title depth="1">3.<tab/>Clause 4</title>
             <clause id="N" inline-header="false" obligation="normative">
               <title depth="2">3.1.<tab/>Introduction</title>
@@ -137,11 +137,11 @@ RSpec.describe IsoDoc::BIPM do
               <title depth="2">3.2.<tab/>Clause 4.2</title>
             </clause>
           </clause>
-          <references id="R" normative="true" obligation="informative" displayorder="4">
-            <title depth="1">1.<tab/>Normative References</title>
+          <references id="R" normative="true" obligation="informative" displayorder="7">
+            <title depth="1">4.<tab/>Normative References</title>
           </references>
         </sections>
-        <annex id="P" inline-header="false" obligation="normative" displayorder="10">
+        <annex id="P" inline-header="false" obligation="normative" displayorder="8">
           <title><strong>Appendix 1</strong>.<tab/><strong>Annex</strong></title>
           <clause id="Q" inline-header="false" obligation="normative">
             <title depth="2">A1.1.<tab/>Annex A.1</title>
@@ -151,7 +151,7 @@ RSpec.describe IsoDoc::BIPM do
           </clause>
         </annex>
         <bibliography>
-          <clause id="S" obligation="informative" displayorder="11">
+          <clause id="S" obligation="informative" displayorder="9">
             <title depth="1">Bibliography</title>
             <references id="T" normative="false" obligation="informative">
               <title depth="2">Bibliography Subsection</title>
@@ -190,9 +190,6 @@ RSpec.describe IsoDoc::BIPM do
                  <h2>Introduction Subsection</h2>
                </div>
              </div>
-             <div>
-              <h1>1.  Normative References</h1>
-            </div>
              <div id="H">
                <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
                <div id="I">
@@ -231,7 +228,10 @@ RSpec.describe IsoDoc::BIPM do
                <div id="O">
                  <h2>3.2.  Clause 4.2</h2>
                </div>
-             </div>
+               </div>
+                            <div>
+              <h1>4.  Normative References</h1>
+            </div>
              <br/>
              <div id="P" class="Section3">
                <h1 class="Annex"><b>Appendix 1</b>.  <b>Annex</b></h1>
@@ -739,13 +739,13 @@ RSpec.describe IsoDoc::BIPM do
           </foreword>
           </preface>
           <sections>
-            <clause id='B' unnumbered='true' obligation='normative' displayorder='3'>
+            <clause id='B' unnumbered='true' obligation='normative' displayorder='4'>
               <title depth="1">Beta</title>
               <clause id='C' unnumbered="true">
                 <title depth="2">Charlie</title>
               </clause>
             </clause>
-            <clause id='D' obligation='normative' displayorder='4'>
+            <clause id='D' obligation='normative' displayorder='3'>
               <title depth='1'>
                 1.
                 <tab/>
@@ -763,13 +763,13 @@ RSpec.describe IsoDoc::BIPM do
               </clause>
             </clause>
           </sections>
-          <annex id='A1' obligation='normative' unnumbered='true' displayorder='5'>
+          <annex id='A1' obligation='normative' unnumbered='true' displayorder='6'>
             <title>Alpha</title>
             <clause id='B1' unnumbered="true">
               <title depth="2">Beta</title>
             </clause>
           </annex>
-          <annex id='A2' obligation='normative' displayorder='6'>
+          <annex id='A2' obligation='normative' displayorder='5'>
             <title>
               <strong>Appendix 1</strong>
               .

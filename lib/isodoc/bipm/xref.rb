@@ -12,8 +12,8 @@ module IsoDoc
       end
 
       def parse(docxml)
-        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
-                              "@acronym"))&.value == "JCGM"
+        @jcgm = docxml.at(ns("//bibdata/ext/editorialgroup/committee/" \
+                             "@acronym"))&.value == "JCGM"
         @annexlbl =
           if @jcgm then @labels["iso_annex"]
           elsif docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
@@ -33,32 +33,30 @@ module IsoDoc
           @anchors[ref["id"]][:xref] = wrap_brackets(@anchors[ref["id"]][:xref])
       end
 
-      def clause_names(docxml, sect_num)
-        if @jcgm then clause_names_jcgm(docxml, sect_num)
-        else clause_names_bipm(docxml, sect_num)
-        end
-      end
-
-      def clause_names_jcgm(docxml, sect_num)
-        docxml.xpath(ns("//clause[parent::sections][not(@type = 'scope')]" \
-                        "[not(descendant::terms)][not(descendant::references)]"))
-          .each do |c|
-          section_names(c, sect_num, 1)
-        end
-      end
-
       UNNUM = "@unnumbered = 'true'".freeze
 
-      def clause_names_bipm(docxml, _sect_num)
+      def clause_order_main(docxml)
+        @jcgm and return @iso.clause_order_main(docxml)
+        [{ path: "//sections/clause[not(#{UNNUM})] | " \
+                 "//sections/terms[not(#{UNNUM})] | " \
+                 "//sections/definitions[not(#{UNNUM})] | " \
+                 "//sections/references[not(#{UNNUM})]", multi: true },
+         { path: "//sections/clause[#{UNNUM}] | " \
+                 "//sections/terms[#{UNNUM}] | " \
+                 "//sections/definitions[#{UNNUM}] | " \
+                 "//sections/references[#{UNNUM}]", multi: true }]
+      end
+
+      def main_anchor_names(xml)
+        @jcgm and return super
+        t = clause_order_main(xml)
         n = Counter.new
-        docxml.xpath(ns("//sections/clause[not(#{UNNUM})] | " \
-                        "//sections/terms[not(#{UNNUM})] | " \
-                        "//sections/definitions[not(#{UNNUM})]"))
-          .each { |c| section_names(c, n, 1) }
-        docxml.xpath(ns("//sections/clause[#{UNNUM}] | " \
-                        "//sections/terms[#{UNNUM}] | " \
-                        "//sections/definitions[#{UNNUM}]"))
-          .each { |c| unnumbered_section_names(c, 1) }
+        t.each_with_index do |a, i|
+          xml.xpath(ns(a[:path])).each do |c|
+            i.zero? ? section_names(c, n, 1) : unnumbered_section_names(c, 1)
+            a[:multi] or break
+          end
+        end
       end
 
       NUMBERED_SUBCLAUSES =
@@ -79,8 +77,7 @@ module IsoDoc
       end
 
       def section_names(clause, num, lvl)
-        return num if clause.nil?
-
+        clause.nil? and return num
         num.increment(clause)
         @anchors[clause["id"]] = section_name_anchors(clause, num, lvl)
         i = Counter.new
@@ -95,9 +92,8 @@ module IsoDoc
       end
 
       def unnumbered_section_names(clause, lvl)
-        return if clause.nil?
-
-        lbl = clause&.at(ns("./title"))&.text || "[#{clause['id']}]"
+        clause.nil? and return num
+        lbl = clause.at(ns("./title"))&.text || "[#{clause['id']}]"
         @anchors[clause["id"]] = { label: lbl, xref: l10n(%{"#{lbl}"}),
                                    level: lvl, type: "clause" }
         clause.xpath(ns(SUBCLAUSES)).each do |c|
@@ -125,7 +121,7 @@ module IsoDoc
       end
 
       def unnumbered_section_names1(clause, level)
-        lbl = clause&.at(ns("./title"))&.text || "[#{clause['id']}]"
+        lbl = clause.at(ns("./title"))&.text || "[#{clause['id']}]"
         @anchors[clause["id"]] =
           { label: lbl, xref: l10n(%{"#{lbl}"}), level: level, type: "clause" }
         clause.xpath(ns(SUBCLAUSES)).each do |c|
@@ -133,16 +129,22 @@ module IsoDoc
         end
       end
 
-      def back_anchor_names(docxml)
-        super
-        i = @jcgm ? Counter.new("@", skip_i: true) : Counter.new(0)
-        docxml.xpath(ns("//annex[not(#{UNNUM})]")).each do |c|
-          i.increment(c)
-          annex_names(c, i.print)
+      def clause_order_annex(_docxml)
+        [{ path: "//annex[not(#{UNNUM})]", multi: true },
+         { path: "//annex[#{UNNUM}]", multi: true }]
+      end
+
+      def annex_anchor_names(docxml)
+        n = @jcgm ? Counter.new("@", skip_i: true) : Counter.new(0)
+        clause_order_annex(docxml).each_with_index do |a, i|
+          docxml.xpath(ns(a[:path])).each do |c|
+            if i.zero?
+              n.increment(c)
+              annex_names(c, n.print)
+            else unnumbered_annex_names(c) end
+            a[:multi] or break
+          end
         end
-        docxml.xpath(ns("//annex[#{UNNUM}]"))
-          .each { |c| unnumbered_annex_names(c) }
-        docxml.xpath(ns("//indexsect")).each { |b| preface_names(b) }
       end
 
       def annex_name_anchors(clause, num)
@@ -174,7 +176,7 @@ module IsoDoc
       end
 
       def unnumbered_annex_names(clause)
-        lbl = clause&.at(ns("./title"))&.text || "[#{clause['id']}]"
+        lbl = clause.at(ns("./title"))&.text || "[#{clause['id']}]"
         @anchors[clause["id"]] = unnumbered_annex_anchors(lbl)
         if @klass.single_term_clause?(clause)
           annex_names1(clause.at(ns("./references | ./terms | ./definitions")),
@@ -217,9 +219,7 @@ module IsoDoc
 
       def sequential_formula_names(clause)
         c = Counter.new
-        clause.xpath(ns(".//formula")).each do |t|
-          next if t["id"].nil? || t["id"].empty?
-
+        clause.xpath(ns(".//formula")).noblank.each do |t|
           @anchors[t["id"]] = anchor_struct(
             c.increment(t).print, nil,
             t["inequality"] ? @labels["inequality"] : @labels["formula"],
@@ -237,19 +237,15 @@ module IsoDoc
       end
 
       def sequential_figure_names(clause)
-        if @jcgm
-          @iso.sequential_figure_names(clause)
-          @anchors.merge!(@iso.get)
-        else super
-        end
+        @jcgm or return super
+        @iso.sequential_figure_names(clause)
+        @anchors.merge!(@iso.get)
       end
 
       def hierarchical_figure_names(clause, num)
-        if @jcgm
-          @iso.hierarchical_figure_names(clause, num)
-          @anchors.merge!(@iso.get)
-        else super
-        end
+        @jcgm or return super
+        @iso.hierarchical_figure_names(clause, num)
+        @anchors.merge!(@iso.get)
       end
     end
   end

@@ -197,7 +197,7 @@ RSpec.describe IsoDoc::BIPM do
            </clause>
          </preface>
          <sections>
-           <terms id="H" obligation="normative" displayorder="3">
+           <terms id="H" obligation="normative" displayorder="2">
              <title depth="1">1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
              <term id="J">
                <name>1.1.</name>
