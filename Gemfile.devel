@@ -1,3 +1,0 @@
-gem "metanorma-iso", git: "https://github.com/metanorma/metanorma-iso", branch: "features/refactor-display-order"
-gem "isodoc", git: "https://github.com/metanorma/isodoc", branch: "features/refactor-display-order"
-
