@@ -19,7 +19,7 @@ module IsoDoc
         &.value == "JCGM" and
           return "jcgm.standard.xsl"
 
-        doctype = docxml&.at(ns("//bibdata/ext/doctype"))&.text
+        doctype = @doctype
         doctype = "brochure" unless %w(guide mise-en-pratique rapport)
           .include? doctype
         "bipm.#{doctype}.xsl"
