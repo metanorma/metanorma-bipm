@@ -30,6 +30,7 @@ RSpec.describe IsoDoc::BIPM do
               <docidentifier type="BIPM">BIPM PLTS-2000</docidentifier>
               <language current="true">fr</language>
               <script current="true">Latn</script>
+              <ext><doctype>brochure</doctype></ext>
             </bibdata>
             <preface>
               <clause id="_abstract" obligation="informative">
@@ -48,6 +49,7 @@ RSpec.describe IsoDoc::BIPM do
               <docidentifier type="BIPM">BIPM PLTS-2000</docidentifier>
               <language current="true">en</language>
               <script current="true">Latn</script>
+              <ext><doctype>brochure</doctype></ext>
             </bibdata>
             <preface>
               <clause id="_abstract1" obligation="informative">
@@ -92,6 +94,7 @@ RSpec.describe IsoDoc::BIPM do
               <docidentifier type="BIPM">BIPM PLTS-2000</docidentifier>
               <language current="true">fr</language>
               <script current="true">Latn</script>
+              <ext><doctype>brochure</doctype></ext>
             </bibdata>
             <preface>
               <clause id="_abstract" obligation="informative">
@@ -110,6 +113,7 @@ RSpec.describe IsoDoc::BIPM do
               <docidentifier type="BIPM">BIPM PLTS-2000</docidentifier>
               <language current="true">fr</language>
               <script current="true">Latn</script>
+              <ext><doctype>brochure</doctype></ext>
             </bibdata>
             <preface>
               <clause id="_abstract1" obligation="informative">

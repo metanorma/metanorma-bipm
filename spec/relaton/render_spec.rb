@@ -223,31 +223,33 @@ RSpec.describe Relaton::Render::BIPM do
   end
 
   it "renders software" do
-    input = <<~INPUT
-      <bibitem type="software">
-        <title>metanorma-standoc</title>
-        <uri>https://github.com/metanorma/metanorma-standoc</uri>
-        <date type="published"><on>2019-09-04</on></date>
-        <contributor>
-          <role type="author"/>
-          <organization>
-            <name>Ribose Inc.</name>
-          </organization>
-        </contributor>
-        <contributor>
-          <role type="distributor"/>
-          <organization>
-            <name>GitHub</name>
-          </organization>
-        </contributor>
-        <edition>1.3.1</edition>
-      </bibitem>
-    INPUT
-    output = <<~OUTPUT
-      <formattedref>Ribose Inc. (2019) <em>metanorma-standoc</em>. Version 1.3.1. <link target='https://github.com/metanorma/metanorma-standoc'>https://github.com/metanorma/metanorma-standoc</link>.</formattedref>
-    OUTPUT
-    expect(renderer.render(input))
-      .to be_equivalent_to output
+    VCR.use_cassette "standoc" do
+      input = <<~INPUT
+        <bibitem type="software">
+          <title>metanorma-standoc</title>
+          <uri>https://github.com/metanorma/metanorma-standoc</uri>
+          <date type="published"><on>2019-09-04</on></date>
+          <contributor>
+            <role type="author"/>
+            <organization>
+              <name>Ribose Inc.</name>
+            </organization>
+          </contributor>
+          <contributor>
+            <role type="distributor"/>
+            <organization>
+              <name>GitHub</name>
+            </organization>
+          </contributor>
+          <edition>1.3.1</edition>
+        </bibitem>
+      INPUT
+      output = <<~OUTPUT
+        <formattedref>Ribose Inc. (2019) <em>metanorma-standoc</em>. Version 1.3.1. <link target='https://github.com/metanorma/metanorma-standoc'>https://github.com/metanorma/metanorma-standoc</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
+      OUTPUT
+      expect(renderer.render(input))
+        .to be_equivalent_to output
+    end
   end
 
   it "renders standard" do

@@ -36,8 +36,7 @@ module IsoDoc
 
       def implicit_reference(bib)
         b = bib.at(ns("./docidentifier[@primary = 'true'][@type = 'BIPM']"))
-        doctype = bib.at(ns("//bibdata/ext/doctype"))&.text
-        return true if doctype == "brochure" && /^(CGPM|CIPM|CCDS|CCTF)[  ]
+        return true if @doctype == "brochure" && /^(CGPM|CIPM|CCDS|CCTF)[  ]
         (Resolution|Recommendation|Declaration|Decision|Recommendation|Meeting)/x
           .match?(b&.text)
 
