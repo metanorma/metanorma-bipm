@@ -3,8 +3,8 @@ require "spec_helper"
 RSpec.describe Metanorma::BIPM do
   context "when xref_error.adoc compilation" do
     it "generates error file" do
-      FileUtils.rm_rf("xref_error.err")
-      File.write("xref_error.adoc", <<~"CONTENT")
+      FileUtils.rm_rf("xref_error.err.html")
+      File.write("xref_error.adoc", <<~CONTENT)
         = X
         A
 
@@ -18,9 +18,9 @@ RSpec.describe Metanorma::BIPM do
           .new
           .compile("xref_error.adoc", type: "bipm", no_install_fonts: true)
       end.to(
-        change { File.exist?("xref_error.err") }
+        change { File.exist?("xref_error.err.html") }
           .from(false)
-          .to(true)
+          .to(true),
       )
     end
   end
@@ -39,12 +39,12 @@ RSpec.describe Metanorma::BIPM do
       :committee-fr_2: Comité consultatif des unités
 
     INPUT
-    expect(File.exist?("test.err")).to be true
-    expect(File.read("test.err")).to include "TC is not a recognised committee"
-    expect(File.read("test.err")).to include "tech committee is not a recognised committee"
-    expect(File.read("test.err")).to include "committee technologique is not a recognised committee"
-    expect(File.read("test.err")).not_to include "CCU is not a recognised committee"
-    expect(File.read("test.err")).not_to include "Consultative Committee for Units is not a recognised committee"
-    expect(File.read("test.err")).not_to include "Comité consultatif des unités is not a recognised committee"
+    expect(File.exist?("test.err.html")).to be true
+    expect(File.read("test.err.html")).to include "TC is not a recognised committee"
+    expect(File.read("test.err.html")).to include "tech committee is not a recognised committee"
+    expect(File.read("test.err.html")).to include "committee technologique is not a recognised committee"
+    expect(File.read("test.err.html")).not_to include "CCU is not a recognised committee"
+    expect(File.read("test.err.html")).not_to include "Consultative Committee for Units is not a recognised committee"
+    expect(File.read("test.err.html")).not_to include "Comité consultatif des unités is not a recognised committee"
   end
 end
