@@ -21,14 +21,14 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Mon, 25 Sep 2023 08:32:29 GMT
+      - Mon, 23 Oct 2023 11:42:28 GMT
       Content-Type:
       - text/html; charset=utf-8
       Vary:
       - X-PJAX, X-PJAX-Container, Turbo-Visit, Turbo-Frame, Accept-Encoding, Accept,
         X-Requested-With
       Etag:
-      - W/"a8cf147ff235860ba958c675674f9a0c"
+      - W/"c2307378edee400ec79f5d5e075ec254"
       Cache-Control:
       - max-age=0, private, must-revalidate
       Strict-Transport-Security:
@@ -65,24 +65,25 @@ http_interactions:
         opengraph.githubassets.com github-production-user-asset-6210df.s3.amazonaws.com
         customer-stories-feed.github.com spotlights-feed.github.com objects-origin.githubusercontent.com
         *.githubusercontent.com; manifest-src ''self''; media-src github.com user-images.githubusercontent.com/
-        secured-user-images.githubusercontent.com/ private-user-images.githubusercontent.com;
-        script-src github.githubassets.com; style-src ''unsafe-inline'' github.githubassets.com;
-        upgrade-insecure-requests; worker-src github.com/assets-cdn/worker/ gist.github.com/assets-cdn/worker/'
+        secured-user-images.githubusercontent.com/ private-user-images.githubusercontent.com
+        github-production-user-asset-6210df.s3.amazonaws.com; script-src github.githubassets.com;
+        style-src ''unsafe-inline'' github.githubassets.com; upgrade-insecure-requests;
+        worker-src github.com/assets-cdn/worker/ gist.github.com/assets-cdn/worker/'
       Content-Encoding:
       - gzip
       Set-Cookie:
-      - _gh_sess=UkmUUnHzy8DDe3xeev6a02dtIekz1sdN6U3PLPSOud1InNw7H6FeSD4Ue4YH4YmLP%2FZuIDH%2B5FJEKhD%2BZUcHG66JISlPVcooW4lbP5ttRVZFB24tln8KpcjksJrI3zREHc0Y1YgIuBJMbw%2Btj5W3T%2FqYtT0igI%2B4y3MswLLfbdnpmoiy6kuOfAT6mh2iHRr2bMn5DQgxl6znuLx9JcA0otO9be%2FYhLFUhXo2cVNnqvEOh6dlBpZFw9sbxUD3hvsc1fKX0RO7tp49MddKqx87JA%3D%3D--kTX0hMMac5Q7vrVz--SshDijFO%2FIMab0FvxDFrPw%3D%3D;
+      - _gh_sess=TYgj9ypPg4e8894vD6A1wjX5SJU42KUAoCg9%2FWkNWZVHNwWIPgkmXFXg%2BhGaR7%2FZYGbPz9bAbapR%2BL0qY2OHbfwyVE9LS9Ei5uQdr4firv1Vr%2FVCytwb9yC8dMs%2BEcqXsopiMHl%2FigSiFHpyxIJXXoqkowLZGoDFKr4JyzpQvfu5ZCYobOcOVeZypOHPaVDdmnXTIWnwHLzjp6IE5u3WWs8Wwq%2BMGxafOrWQJOEJ1EmHZQHwPk%2FE3AkClydX8APXL4hm6yIwnRTqN92mdEkieA%3D%3D--Cs3dH7r5nMIx87T8--90pJY%2FH4zwR%2B%2FhxccWpkPQ%3D%3D;
         Path=/; HttpOnly; Secure; SameSite=Lax
-      - _octo=GH1.1.1278806378.1695630748; Path=/; Domain=github.com; Expires=Wed,
-        25 Sep 2024 08:32:28 GMT; Secure; SameSite=Lax
-      - logged_in=no; Path=/; Domain=github.com; Expires=Wed, 25 Sep 2024 08:32:28
+      - _octo=GH1.1.1592712883.1698061348; Path=/; Domain=github.com; Expires=Wed,
+        23 Oct 2024 11:42:28 GMT; Secure; SameSite=Lax
+      - logged_in=no; Path=/; Domain=github.com; Expires=Wed, 23 Oct 2024 11:42:28
         GMT; HttpOnly; Secure; SameSite=Lax
       Accept-Ranges:
       - bytes
       X-Github-Request-Id:
-      - 10BF:70AE:2FA19F:336D27:6511459C
+      - 05C6:9B3A4:12C632B:155BF56:65365C24
     body:
       encoding: UTF-8
       string: ''
-  recorded_at: Mon, 25 Sep 2023 08:32:29 GMT
+  recorded_at: Mon, 23 Oct 2023 11:42:28 GMT
 recorded_with: VCR 6.1.0

@@ -38,6 +38,7 @@ module Metanorma
       end
 
       def output(isodoc_node, inname, outname, format, options = {})
+        options_preprocess(options)
         case format
         when :html
           IsoDoc::BIPM::HtmlConvert.new(options)

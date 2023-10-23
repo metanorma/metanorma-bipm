@@ -154,7 +154,9 @@ module Metanorma
       end
 
       def presentation_xml_converter(node)
-        IsoDoc::BIPM::PresentationXMLConvert.new(html_extract_attributes(node))
+        IsoDoc::BIPM::PresentationXMLConvert
+          .new(html_extract_attributes(node)
+          .merge(output_formats: ::Metanorma::BIPM::Processor.new.output_formats))
       end
 
       def pdf_converter(node)
