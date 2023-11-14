@@ -80,10 +80,9 @@ module IsoDoc
         clause.nil? and return num
         num.increment(clause)
         @anchors[clause["id"]] = section_name_anchors(clause, num, lvl)
-        i = Counter.new
+        i = Counter.new(0, prefix: "#{num.print}.")
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
-          i.increment(c)
-          section_names1(c, "#{num.print}.#{i.print}", lvl + 1)
+          section_names1(c, i.increment(c).print, lvl + 1)
         end
         clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each do |c|
           unnumbered_section_names1(c, lvl + 1)
@@ -110,10 +109,9 @@ module IsoDoc
 
       def section_names1(clause, num, level)
         @anchors[clause["id"]] = section_name1_anchors(clause, num, level)
-        i = Counter.new
+        i = Counter.new(0, prefix: "#{num}.")
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
-          i.increment(c)
-          section_names1(c, "#{num}.#{i.print}", level + 1)
+          section_names1(c, i.increment(c).print, level + 1)
         end
         clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each do |c|
           unnumbered_section_names1(c, lvl + 1)
@@ -158,11 +156,10 @@ module IsoDoc
           annex_names1(clause.at(ns("./references | ./terms | ./definitions")),
                        num.to_s, 1)
         else
-          i = Counter.new
           prefix = @jcgm ? "" : "A"
+          i = Counter.new(0, prefix: "#{prefix}#{num}.")
           clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
-            i.increment(c)
-            annex_names1(c, "#{prefix}#{num}.#{i.print}", 2)
+            annex_names1(c, i.increment(c).print, 2)
           end
           clause.xpath(ns(UNNUMBERED_SUBCLAUSES))
             .each { |c| unnumbered_annex_names1(c, 2) }
@@ -196,10 +193,9 @@ module IsoDoc
 
       def annex_names1(clause, num, level)
         @anchors[clause["id"]] = annex_names1_anchors(num, level)
-        i = Counter.new
+        i = Counter.new(0, prefix: "#{num}.")
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
-          i.increment(c)
-          annex_names1(c, "#{num}.#{i.print}", level + 1)
+          annex_names1(c, i.increment(c).print, level + 1)
         end
         clause.xpath(ns(UNNUMBERED_SUBCLAUSES))
           .each { |c| unnumbered_annex_names1(c, level + 1) }

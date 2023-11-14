@@ -21,14 +21,14 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Mon, 23 Oct 2023 11:42:28 GMT
+      - Tue, 14 Nov 2023 11:09:06 GMT
       Content-Type:
       - text/html; charset=utf-8
       Vary:
       - X-PJAX, X-PJAX-Container, Turbo-Visit, Turbo-Frame, Accept-Encoding, Accept,
         X-Requested-With
       Etag:
-      - W/"c2307378edee400ec79f5d5e075ec254"
+      - W/"8458c08241ee2a7c44768930ce0dbaac"
       Cache-Control:
       - max-age=0, private, must-revalidate
       Strict-Transport-Security:
@@ -53,7 +53,10 @@ http_interactions:
         productionresultssa3.blob.core.windows.net/ productionresultssa4.blob.core.windows.net/
         productionresultssa5.blob.core.windows.net/ productionresultssa6.blob.core.windows.net/
         productionresultssa7.blob.core.windows.net/ productionresultssa8.blob.core.windows.net/
-        productionresultssa9.blob.core.windows.net/ wss://*.actions.githubusercontent.com
+        productionresultssa9.blob.core.windows.net/ staffwus201resultssa0.blob.core.windows.net/
+        staffwus201resultssa1.blob.core.windows.net/ prodweu01resultssa0.blob.core.windows.net/
+        prodweu01resultssa1.blob.core.windows.net/ prodweu01resultssa2.blob.core.windows.net/
+        prodweu01resultssa3.blob.core.windows.net/ wss://*.actions.githubusercontent.com
         github-production-repository-image-32fea6.s3.amazonaws.com github-production-release-asset-2e65be.s3.amazonaws.com
         insights.github.com wss://alive.github.com; font-src github.githubassets.com;
         form-action ''self'' github.com gist.github.com objects-origin.githubusercontent.com;
@@ -72,18 +75,18 @@ http_interactions:
       Content-Encoding:
       - gzip
       Set-Cookie:
-      - _gh_sess=TYgj9ypPg4e8894vD6A1wjX5SJU42KUAoCg9%2FWkNWZVHNwWIPgkmXFXg%2BhGaR7%2FZYGbPz9bAbapR%2BL0qY2OHbfwyVE9LS9Ei5uQdr4firv1Vr%2FVCytwb9yC8dMs%2BEcqXsopiMHl%2FigSiFHpyxIJXXoqkowLZGoDFKr4JyzpQvfu5ZCYobOcOVeZypOHPaVDdmnXTIWnwHLzjp6IE5u3WWs8Wwq%2BMGxafOrWQJOEJ1EmHZQHwPk%2FE3AkClydX8APXL4hm6yIwnRTqN92mdEkieA%3D%3D--Cs3dH7r5nMIx87T8--90pJY%2FH4zwR%2B%2FhxccWpkPQ%3D%3D;
+      - _gh_sess=mmPGjGXMAae08ZmGfVT2YknD8WWpbyaHoGK683yksxHHFQqqEOaJDkfaiIhcEdotVx5QgVjSl%2Fmb0DMRwjkY64TdU4S9KAQvjMx%2B0R6txdkRsmbXGsV3eJHBXBiMbMXEapa%2FZ2eNJi%2BAQ4VxzA5RN8jrOv%2Fz4BTwFtDoCS726raUfKmKkhaUl2Gfm%2FKBCbaq5c8U%2F1QMxMxIet%2BbzJXnNxTOlSFsvNPF0aZs57opTKLswxgVqqYx62iNGJvhXwSErHOXfkVBJZ34zXjTxijqFw%3D%3D--RIO20qw7UUbUYA0A--fje3ufc1bu8HNzx1fwbd7A%3D%3D;
         Path=/; HttpOnly; Secure; SameSite=Lax
-      - _octo=GH1.1.1592712883.1698061348; Path=/; Domain=github.com; Expires=Wed,
-        23 Oct 2024 11:42:28 GMT; Secure; SameSite=Lax
-      - logged_in=no; Path=/; Domain=github.com; Expires=Wed, 23 Oct 2024 11:42:28
+      - _octo=GH1.1.464032241.1699960145; Path=/; Domain=github.com; Expires=Thu,
+        14 Nov 2024 11:09:05 GMT; Secure; SameSite=Lax
+      - logged_in=no; Path=/; Domain=github.com; Expires=Thu, 14 Nov 2024 11:09:05
         GMT; HttpOnly; Secure; SameSite=Lax
       Accept-Ranges:
       - bytes
       X-Github-Request-Id:
-      - 05C6:9B3A4:12C632B:155BF56:65365C24
+      - 0E82:62838:BAC3D2:CC2CA0:65535551
     body:
       encoding: UTF-8
       string: ''
-  recorded_at: Mon, 23 Oct 2023 11:42:28 GMT
+  recorded_at: Tue, 14 Nov 2023 11:09:06 GMT
 recorded_with: VCR 6.1.0
