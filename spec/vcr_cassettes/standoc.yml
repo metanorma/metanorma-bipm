@@ -21,14 +21,14 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Tue, 14 Nov 2023 10:34:03 GMT
+      - Tue, 14 Nov 2023 11:09:06 GMT
       Content-Type:
       - text/html; charset=utf-8
       Vary:
       - X-PJAX, X-PJAX-Container, Turbo-Visit, Turbo-Frame, Accept-Encoding, Accept,
         X-Requested-With
       Etag:
-      - W/"c945f566cdcc78f2da155077eefacade"
+      - W/"8458c08241ee2a7c44768930ce0dbaac"
       Cache-Control:
       - max-age=0, private, must-revalidate
       Strict-Transport-Security:
@@ -75,18 +75,18 @@ http_interactions:
       Content-Encoding:
       - gzip
       Set-Cookie:
-      - _gh_sess=%2FpmZkBvyegPpcD91avxGSsQTxxl58nC%2F293z8cuWV8MvZaYWzRLfTF7iCvwwKzGEoj2EAspiQW%2FyqNcjIWwvirDZsWQlXC1ToshMURdmUS5e9fq3SZHQ1U1u%2FNiERwfq2uB%2BcpQxI0WOAhXFbT6hre%2B2%2FbbqFXSRBDuaNg3VES%2FfLAdzC4%2BfntXeK99toqYD4SUoNqH9NIiFYLmEHWU9Mr7Wq%2BEzpLcjHp6XpGC2J%2Bl24sMOnJJ5HNmk182WvP2y0iIiCNsyfQdvWGd3BQdprQ%3D%3D--gVQzAiIeehyjPO4t--Q1oJ4vbIi%2By%2F83kP%2B%2FsQ5g%3D%3D;
+      - _gh_sess=mmPGjGXMAae08ZmGfVT2YknD8WWpbyaHoGK683yksxHHFQqqEOaJDkfaiIhcEdotVx5QgVjSl%2Fmb0DMRwjkY64TdU4S9KAQvjMx%2B0R6txdkRsmbXGsV3eJHBXBiMbMXEapa%2FZ2eNJi%2BAQ4VxzA5RN8jrOv%2Fz4BTwFtDoCS726raUfKmKkhaUl2Gfm%2FKBCbaq5c8U%2F1QMxMxIet%2BbzJXnNxTOlSFsvNPF0aZs57opTKLswxgVqqYx62iNGJvhXwSErHOXfkVBJZ34zXjTxijqFw%3D%3D--RIO20qw7UUbUYA0A--fje3ufc1bu8HNzx1fwbd7A%3D%3D;
         Path=/; HttpOnly; Secure; SameSite=Lax
-      - _octo=GH1.1.1579034019.1699958043; Path=/; Domain=github.com; Expires=Thu,
-        14 Nov 2024 10:34:03 GMT; Secure; SameSite=Lax
-      - logged_in=no; Path=/; Domain=github.com; Expires=Thu, 14 Nov 2024 10:34:03
+      - _octo=GH1.1.464032241.1699960145; Path=/; Domain=github.com; Expires=Thu,
+        14 Nov 2024 11:09:05 GMT; Secure; SameSite=Lax
+      - logged_in=no; Path=/; Domain=github.com; Expires=Thu, 14 Nov 2024 11:09:05
         GMT; HttpOnly; Secure; SameSite=Lax
       Accept-Ranges:
       - bytes
       X-Github-Request-Id:
-      - 0E79:73252:B60692:C7041E:65534D1B
+      - 0E82:62838:BAC3D2:CC2CA0:65535551
     body:
       encoding: UTF-8
       string: ''
-  recorded_at: Tue, 14 Nov 2023 10:34:03 GMT
+  recorded_at: Tue, 14 Nov 2023 11:09:06 GMT
 recorded_with: VCR 6.1.0
