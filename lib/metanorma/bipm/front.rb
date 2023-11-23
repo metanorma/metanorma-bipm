@@ -85,7 +85,9 @@ module Metanorma
           desc = role
           role = "editor"
         end
-        xml.role desc, type: role.downcase
+        xml.role type: role.downcase do |d|
+          d << desc
+        end
       end
 
       def title(node, xml)
