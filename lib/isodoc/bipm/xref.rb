@@ -213,11 +213,11 @@ module IsoDoc
         l10n("<strong>#{@annexlbl} #{num}</strong>")
       end
 
-      def sequential_formula_names(clause)
+      def sequential_formula_names(clause, container: false)
         c = Counter.new
         clause.xpath(ns(".//formula")).noblank.each do |t|
           @anchors[t["id"]] = anchor_struct(
-            c.increment(t).print, nil,
+            c.increment(t).print, container ? t : nil,
             t["inequality"] ? @labels["inequality"] : @labels["formula"],
             "formula", t["unnumbered"]
           )
@@ -232,9 +232,9 @@ module IsoDoc
         end
       end
 
-      def sequential_figure_names(clause)
+      def sequential_figure_names(clause, container: false)
         @jcgm or return super
-        @iso.sequential_figure_names(clause)
+        @iso.sequential_figure_names(clause, container: container)
         @anchors.merge!(@iso.get)
       end
 
