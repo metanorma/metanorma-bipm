@@ -1,0 +1,2 @@
+gem "isodoc", git: "https://github.com/metanorma/isodoc", branch: "fix/recursive-prefix-container"
+gem "metanorma-iso", git: "https://github.com/metanorma/metanorma-iso", branch: "fix/recursive-prefix-container"
