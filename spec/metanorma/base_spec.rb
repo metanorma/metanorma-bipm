@@ -293,6 +293,10 @@ RSpec.describe Metanorma::BIPM do
              <name>DOC TOC Heading Levels</name>
              <value>2</value>
            </presentation-metadata>
+           <presentation-metadata>
+             <name>PDF TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
          </metanorma-extension>
         #{boilerplate('en').gsub(/#{Time.now.year}/, '2001')}
         <sections/>
@@ -441,6 +445,10 @@ RSpec.describe Metanorma::BIPM do
              <name>DOC TOC Heading Levels</name>
              <value>2</value>
            </presentation-metadata>
+           <presentation-metadata>
+             <name>PDF TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
          </metanorma-extension>
         #{boilerplate('fr').gsub(/#{Time.now.year}/, '2001')}
         <sections/>
@@ -587,6 +595,10 @@ RSpec.describe Metanorma::BIPM do
            </presentation-metadata>
            <presentation-metadata>
              <name>DOC TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>PDF TOC Heading Levels</name>
              <value>2</value>
            </presentation-metadata>
          </metanorma-extension>

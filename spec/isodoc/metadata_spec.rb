@@ -141,11 +141,13 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
       {:accesseddate=>"XXX",
+      :adapteddate=>"XXX",
       :agency=>"#{Metanorma::BIPM.configuration.organization_name_long['en']}",
       :annexid=>"Annex DEF",
       :annexid_alt=>"Appendice DEF",
       :annexsubtitle=>"Chef Title Annex",
       :annextitle=>"Main Title Annex",
+      :announceddate=>"XXX",
       :appendixid=>"Appendix ABC",
       :appendixid_alt=>"Annexe ABC",
       :appendixsubtitle=>"Chef Title Appendix",
@@ -185,6 +187,7 @@ RSpec.describe IsoDoc::BIPM do
       :script=>"Latn",
       :si_aspect_index=>#{si_aspect},
       :si_aspect_paths=>#{si_aspect_paths},
+      :stable_untildate=>"XXX",
       :stage=>"Mise en Pratique",
       :stage_display=>"En Vigeur",
       :tc=>"\\n          TC\\n          CT\\n        ",
@@ -273,11 +276,13 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
       {:accesseddate=>"XXX",
+      :adapteddate=>"XXX",
       :agency=>"#{Metanorma::BIPM.configuration.organization_name_long['fr']}",
       :annexid=>"Appendice DEF",
       :annexid_alt=>"Annex DEF",
       :annexsubtitle=>"Main Title Annex",
       :annextitle=>"Chef Title Annex",
+      :announceddate=>"XXX",
       :appendixid=>"Annexe ABC",
       :appendixid_alt=>"Appendix ABC",
       :appendixsubtitle=>"Main Title Appendix",
@@ -312,6 +317,7 @@ RSpec.describe IsoDoc::BIPM do
       :script=>"Latn",
       :si_aspect_index=>#{si_aspect},
       :si_aspect_paths=>#{si_aspect_paths},
+      :stable_untildate=>"XXX",
       :stage=>"Working Draft",
       :stage_display=>"Working Draft",
       :transmitteddate=>"XXX",
@@ -346,6 +352,8 @@ RSpec.describe IsoDoc::BIPM do
 
     output = <<~"OUTPUT"
       {:accesseddate=>"XXX",
+      :adapteddate=>"XXX",
+      :announceddate=>"XXX",
       :circulateddate=>"XXX",
       :confirmeddate=>"XXX",
       :copieddate=>"XXX",
@@ -366,6 +374,7 @@ RSpec.describe IsoDoc::BIPM do
       :script=>"Latn",
       :si_aspect_index=>#{si_aspect},
       :si_aspect_paths=>#{si_aspect_paths},
+      :stable_untildate=>"XXX",
       :stage=>"Standard",
       :stage_display=>"Standard",
       :transmitteddate=>"XXX",
