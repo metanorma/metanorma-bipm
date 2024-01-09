@@ -49,23 +49,23 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 6220:28C4DB:2812D4:3574B8:65859178
+      - 56D8:FBCF9:1035AF:13B7A1:659D1058
       Content-Encoding:
       - gzip
       Accept-Ranges:
       - bytes
       Date:
-      - Fri, 22 Dec 2023 13:39:05 GMT
+      - Tue, 09 Jan 2024 09:22:34 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11247-MEL
+      - cache-mel11224-MEL
       X-Cache:
       - HIT
       X-Cache-Hits:
       - '1'
       X-Timer:
-      - S1703252346.927161,VS0,VE1
+      - S1704792155.609261,VS0,VE1
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -73,16 +73,16 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 0cc5d9593dd3e52f6df25a126029582c62011476
+      - 6af167444b2ce0c9b4e6b1a7c996ce2bd94efe36
       Expires:
-      - Fri, 22 Dec 2023 13:44:05 GMT
+      - Tue, 09 Jan 2024 09:27:34 GMT
       Source-Age:
       - '1'
     body:
       encoding: ASCII-8BIT
       string: !binary |-
         H4sIAAAAAAAAA7VWzW7bMAy++yl46wZMdtLDNvjYtAMKrENvOw6yzTjEbMmQ6GTdG/U5+mKjZae10zU/WxsEsC2J/D6R/CgppSKfr7DWao3OkzUprOfxefwpoiKFxfXtjbq8WnxT57P5uZrP5moeMXGFaaQgt4bRcAqXmFNnG9YnYRW86yzeRwCVNmWrS7EAUIBGHj531HA/8FVzN7S0rtbiivEXJ02lyUwAHu6PRli6oxEqMj8nG1kxNz5Nks1mE2fU1LF1ZYImyW1dEzOiT3KSf1MHDj/mIS7inO8aTCEn1iwsx5wmO+65HAJcuv8CHAfgRUCnN3FJvGqz1qMbpmOBTWpkbbpYJR0hVWjWyrYsU0KmlrD1dGpEJlN6JeEZ3vv6iO/q6pGgd/npwXg9bhLJ47k9j1u/rnE2Ryw6h1Fhc9GFkN6qAzp1wE5B9nYXMi0fjaNauzspPNfiPssPcHXA+FAk97j+coLrvxXQk+ut1l/cs6qsKY/iul/W+zyeThGSE+Ek1aatM3QvJlrKL/TBoUzarCK/wkJ8rXXVytBZ6Jqzj2r2+Szq6thR1rJ1nZEIXRv6HeTb9SkAo2vs30aauJanM2GVruCidahbsEv4jlSu2IM2Bdyg9jLhg+20HfbeQvy731Nb7CeG1jhBHDBoAlygh8ZS4QEZRGx74UJy9sLpLHO4ptHmYUSgr88DWzkGpnVVCuPWKqPOVsNBMU2b+9ecLLatujth3jAvgkP8cL+D3iXmdpuYm7dNzOKVErObAt3yyrpIgIOiprJ5QgoYwfvW7+BRDvO8v5AQSz+71Y5Cpw7eH5VdDF0h8tLwcpZAFVTIvmhJonFZNhJ8f9GRi0Ia2syz+9EsnkV/AOS0KH07CQAA
-  recorded_at: Fri, 22 Dec 2023 13:39:05 GMT
+  recorded_at: Tue, 09 Jan 2024 09:22:34 GMT
 - request:
     method: get
     uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cgpm/meeting/1.yaml
@@ -132,23 +132,23 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - B706:33CDA3:24AE5B:309604:65859178
+      - 4BB2:FBFDF:FC525:1346D4:659D1058
       Content-Encoding:
       - gzip
       Accept-Ranges:
       - bytes
       Date:
-      - Fri, 22 Dec 2023 13:39:05 GMT
+      - Tue, 09 Jan 2024 09:22:34 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11229-MEL
+      - cache-mel11227-MEL
       X-Cache:
       - HIT
       X-Cache-Hits:
       - '1'
       X-Timer:
-      - S1703252346.926803,VS0,VE1
+      - S1704792155.636032,VS0,VE3
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -156,14 +156,14 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - d944d62ca6e9a2c9af8720884c8a116261d51b8e
+      - 5bf77857ff8000486045a0b75bd9e273f65b5d99
       Expires:
-      - Fri, 22 Dec 2023 13:44:05 GMT
+      - Tue, 09 Jan 2024 09:27:34 GMT
       Source-Age:
       - '1'
     body:
       encoding: ASCII-8BIT
       string: !binary |-
         H4sIAAAAAAAAA7VWy27bMBC86yt4c3ugKDmNLeuYHIIADRD00jNFriyiEiXwYTf9o3xHfqwrSnakJk2ctDEMiCDFmd0dzlKU0siKChpOd2CsanVOdmm8jNeRkjm5vLq9oWmWbWgaOeVqyCNKRKsdaJeT1DrSADilt6QtiasgbIgIqbneer7F1wmhBDQ+rDCqc8PEV+76qbI1DUccBz8d62qu9AwdiHm49xpjIhIQ8nnw0pwMXiv9Y5ZA5Vxnc8b2+31cqK6JW7NloJlom0Y5B2CZ2OK/a1gayoC47q6DnAjluMPIpuHM8hzCeI2rNO/lmqZ9GpdshW9w2bJlki5X7CxLNut0s2J9WdO4kyVLyvJLei5XNFvzJT2H5Rk956mggssyK7Lky5qvjmHhhuc4Dd/HW+UqX3gLZlyOMUvWgOO6V4X1MVHJHaetd7iEuTco0JD9eKIsRSHGMU3S+K6pj9TWiLcX/v8FhqqdGNhTlcbamVYAyB4tQl3QahjxwXDBVzejrz71R+HzkeDiOligM6rh5g5Pt/HwaikegYF8O1jqrcDPHbgXIibsfZRYDe2bAszfa4H6hD40ltIXtbIVSITa8drj1CJ0rGRDl9ki6oU2qvCuNf0mdALX6lcwVN8vCNG8gWE0OTTX+DQ6vMVrcuENcN/3uO+gtpWzhGuJYXGLCzbsnbelAS1o0f8e29OwMLaoGePIoWbEEizpWiUtgb7VvkwXFHqRjheFgZ2aJE8mAQxyvJLKKTTe1DmZ9h6cNW09Nuy5bOZ0Ta5Ag8GiXLa6BANaAMFD9XGK9DwP9wPR1cO9xjGvIWhye9Dk5mM1GW+8f9bkz+pz76rWREgczDR3zCNT4AjoB9wREe9TMXwLKIfOveVGhUYW0I8GH30bWXS2cFgnqSSmpUqF9sa3Jl5fpIsIL+o89JgnnyNJnES/Ablw0gqqCAAA
-  recorded_at: Fri, 22 Dec 2023 13:39:05 GMT
+  recorded_at: Tue, 09 Jan 2024 09:22:34 GMT
 recorded_with: VCR 6.1.0
