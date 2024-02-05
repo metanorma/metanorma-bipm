@@ -2,89 +2,6 @@
 http_interactions:
 - request:
     method: get
-    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cipm/meeting/decision/2012-101-1.yaml
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept-Encoding:
-      - gzip,deflate,identity
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Mechanize/2.8.5 Ruby/3.2.2p53 (http://github.com/sparklemotion/mechanize/)
-      Accept-Charset:
-      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
-      Accept-Language:
-      - en-us,en;q=0.5
-      Host:
-      - raw.githubusercontent.com
-      Connection:
-      - keep-alive
-      Keep-Alive:
-      - '300'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '663'
-      Cache-Control:
-      - max-age=300
-      Content-Security-Policy:
-      - default-src 'none'; style-src 'unsafe-inline'; sandbox
-      Content-Type:
-      - text/plain; charset=utf-8
-      Etag:
-      - W/"ad95a28eadce4b97779256500b6df38d93c50441cd12b9d1303c31fbadfb53f6"
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - deny
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Github-Request-Id:
-      - 56D8:FBCF9:1035AF:13B7A1:659D1058
-      Content-Encoding:
-      - gzip
-      Accept-Ranges:
-      - bytes
-      Date:
-      - Tue, 09 Jan 2024 09:22:34 GMT
-      Via:
-      - 1.1 varnish
-      X-Served-By:
-      - cache-mel11224-MEL
-      X-Cache:
-      - HIT
-      X-Cache-Hits:
-      - '1'
-      X-Timer:
-      - S1704792155.609261,VS0,VE1
-      Vary:
-      - Authorization,Accept-Encoding,Origin
-      Access-Control-Allow-Origin:
-      - "*"
-      Cross-Origin-Resource-Policy:
-      - cross-origin
-      X-Fastly-Request-Id:
-      - 6af167444b2ce0c9b4e6b1a7c996ce2bd94efe36
-      Expires:
-      - Tue, 09 Jan 2024 09:27:34 GMT
-      Source-Age:
-      - '1'
-    body:
-      encoding: ASCII-8BIT
-      string: !binary |-
-        H4sIAAAAAAAAA7VWzW7bMAy++yl46wZMdtLDNvjYtAMKrENvOw6yzTjEbMmQ6GTdG/U5+mKjZae10zU/WxsEsC2J/D6R/CgppSKfr7DWao3OkzUprOfxefwpoiKFxfXtjbq8WnxT57P5uZrP5moeMXGFaaQgt4bRcAqXmFNnG9YnYRW86yzeRwCVNmWrS7EAUIBGHj531HA/8FVzN7S0rtbiivEXJ02lyUwAHu6PRli6oxEqMj8nG1kxNz5Nks1mE2fU1LF1ZYImyW1dEzOiT3KSf1MHDj/mIS7inO8aTCEn1iwsx5wmO+65HAJcuv8CHAfgRUCnN3FJvGqz1qMbpmOBTWpkbbpYJR0hVWjWyrYsU0KmlrD1dGpEJlN6JeEZ3vv6iO/q6pGgd/npwXg9bhLJ47k9j1u/rnE2Ryw6h1Fhc9GFkN6qAzp1wE5B9nYXMi0fjaNauzspPNfiPssPcHXA+FAk97j+coLrvxXQk+ut1l/cs6qsKY/iul/W+zyeThGSE+Ek1aatM3QvJlrKL/TBoUzarCK/wkJ8rXXVytBZ6Jqzj2r2+Szq6thR1rJ1nZEIXRv6HeTb9SkAo2vs30aauJanM2GVruCidahbsEv4jlSu2IM2Bdyg9jLhg+20HfbeQvy731Nb7CeG1jhBHDBoAlygh8ZS4QEZRGx74UJy9sLpLHO4ptHmYUSgr88DWzkGpnVVCuPWKqPOVsNBMU2b+9ecLLatujth3jAvgkP8cL+D3iXmdpuYm7dNzOKVErObAt3yyrpIgIOiprJ5QgoYwfvW7+BRDvO8v5AQSz+71Y5Cpw7eH5VdDF0h8tLwcpZAFVTIvmhJonFZNhJ8f9GRi0Ia2syz+9EsnkV/AOS0KH07CQAA
-  recorded_at: Tue, 09 Jan 2024 09:22:34 GMT
-- request:
-    method: get
     uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cgpm/meeting/1.yaml
     body:
       encoding: US-ASCII
@@ -114,7 +31,7 @@ http_interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '714'
+      - '713'
       Cache-Control:
       - max-age=300
       Content-Security-Policy:
@@ -122,7 +39,7 @@ http_interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Etag:
-      - W/"06e7ad34a225f25326b26b55956c0d23794ace18a49b540e35ee0be69460f124"
+      - W/"64a1cb43c58eaee818abcdd48ef54e688b8fdc1ec115c3616906f4fbecfadb3f"
       Strict-Transport-Security:
       - max-age=31536000
       X-Content-Type-Options:
@@ -132,23 +49,23 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Github-Request-Id:
-      - 4BB2:FBFDF:FC525:1346D4:659D1058
+      - 500E:2C78E6:327CA3:3C5C44:65C0C1F0
       Content-Encoding:
       - gzip
       Accept-Ranges:
       - bytes
       Date:
-      - Tue, 09 Jan 2024 09:22:34 GMT
+      - Mon, 05 Feb 2024 11:09:42 GMT
       Via:
       - 1.1 varnish
       X-Served-By:
-      - cache-mel11227-MEL
+      - cache-mel11223-MEL
       X-Cache:
       - HIT
       X-Cache-Hits:
       - '1'
       X-Timer:
-      - S1704792155.636032,VS0,VE3
+      - S1707131382.498174,VS0,VE1
       Vary:
       - Authorization,Accept-Encoding,Origin
       Access-Control-Allow-Origin:
@@ -156,14 +73,97 @@ http_interactions:
       Cross-Origin-Resource-Policy:
       - cross-origin
       X-Fastly-Request-Id:
-      - 5bf77857ff8000486045a0b75bd9e273f65b5d99
+      - 11dda17132c89ef42d9284fc09c02f331ec96fff
       Expires:
-      - Tue, 09 Jan 2024 09:27:34 GMT
+      - Mon, 05 Feb 2024 11:14:42 GMT
       Source-Age:
       - '1'
     body:
       encoding: ASCII-8BIT
       string: !binary |-
-        H4sIAAAAAAAAA7VWy27bMBC86yt4c3ugKDmNLeuYHIIADRD00jNFriyiEiXwYTf9o3xHfqwrSnakJk2ctDEMiCDFmd0dzlKU0siKChpOd2CsanVOdmm8jNeRkjm5vLq9oWmWbWgaOeVqyCNKRKsdaJeT1DrSADilt6QtiasgbIgIqbneer7F1wmhBDQ+rDCqc8PEV+76qbI1DUccBz8d62qu9AwdiHm49xpjIhIQ8nnw0pwMXiv9Y5ZA5Vxnc8b2+31cqK6JW7NloJlom0Y5B2CZ2OK/a1gayoC47q6DnAjluMPIpuHM8hzCeI2rNO/lmqZ9GpdshW9w2bJlki5X7CxLNut0s2J9WdO4kyVLyvJLei5XNFvzJT2H5Rk956mggssyK7Lky5qvjmHhhuc4Dd/HW+UqX3gLZlyOMUvWgOO6V4X1MVHJHaetd7iEuTco0JD9eKIsRSHGMU3S+K6pj9TWiLcX/v8FhqqdGNhTlcbamVYAyB4tQl3QahjxwXDBVzejrz71R+HzkeDiOligM6rh5g5Pt/HwaikegYF8O1jqrcDPHbgXIibsfZRYDe2bAszfa4H6hD40ltIXtbIVSITa8drj1CJ0rGRDl9ki6oU2qvCuNf0mdALX6lcwVN8vCNG8gWE0OTTX+DQ6vMVrcuENcN/3uO+gtpWzhGuJYXGLCzbsnbelAS1o0f8e29OwMLaoGePIoWbEEizpWiUtgb7VvkwXFHqRjheFgZ2aJE8mAQxyvJLKKTTe1DmZ9h6cNW09Nuy5bOZ0Ta5Ag8GiXLa6BANaAMFD9XGK9DwP9wPR1cO9xjGvIWhye9Dk5mM1GW+8f9bkz+pz76rWREgczDR3zCNT4AjoB9wREe9TMXwLKIfOveVGhUYW0I8GH30bWXS2cFgnqSSmpUqF9sa3Jl5fpIsIL+o89JgnnyNJnES/Ablw0gqqCAAA
-  recorded_at: Tue, 09 Jan 2024 09:22:34 GMT
+        H4sIAAAAAAAAA7VWTU/cMBC951f4tu3BcbLAks0RDgipSKiXnh1nsrGa2JE/dkv/Eb+DP9aJk10SoLDQsloplh2/NzPPbxxKaWRFDS2nWzBWapWTbRov4yySZU4ur25vaJpla5pGTroG8ogSoZUD5XKSWkdaACfVhuiKuBrChoiQhquN5xt8nRBKQOHDCiM7N0x8466fqrRpOeI4+OVY13CpZuhAzMO9VxgTKQEhXwavzNHgjVQ/ZwnUznU2Z2y328WF7NpYmw0DxYRuW+kcgGVig/+uZWkoA+K6uw5yIqTjDiObhjPLcwjjLa7KfJRrmvZxXKUWvsVly5ZJulyxkyxZn6frFevLmsZdWbGkqk7Ts3JFs3O+pGewPKFnPBVU8LLKiiw5PeerQ1i44SVOw3fxRrraF96CGZdjzJK14LjqVWF9TLTkjlPtHS5h7i0KNGQ/nihLUYhxTJM0vmubA7U14v2F/3+BoWpHBvZcpbF2RguAskeLUBe0Gka8N1zw1c3oqy/9Ufh6ILi4DhbojGy5ucPTbTy8WYpHYCDf95Z6L/BLB+6ViAn7GCVWQ/m2APP3WqA+oQ+NpfRFI20NJUJteeNxahE6VrKmy2wR9UIbWXinTb8JncCV/B0M1fcLQhRvYRhNDs01Po0Kb/GGXHgD3Pc97gfITe0s4arEsLjFBRv2ztvSgBa06H+P7WlYGFvUjHHkkDPiEizptCwtgb7Vvk4XFHqVjheFga2cJE8mAQxyvJHKMTTeNDmZ9h6cNboZG/ZcNnO8JlegwGBRLrWqwIASQPBQfZ4iPc/D/UB09XCvcMwbCJrc7jW5+VxNxhvvnzV5Wn3uXa1NhMTBTHPHPDIFjoC+xx0R8T4Vw7eAdOjcW25kaGQB/WDw0beRRWcLh3UqZYlpyUqivfGtidcX6SLCizoPPebZ50gSJ9Ef1Uy8QqoIAAA=
+  recorded_at: Mon, 05 Feb 2024 11:09:42 GMT
+- request:
+    method: get
+    uri: https://raw.githubusercontent.com/relaton/relaton-data-bipm/master/data/cipm/meeting/decision/2012-101-1.yaml
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip,deflate,identity
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Mechanize/2.8.5 Ruby/3.2.2p53 (http://github.com/sparklemotion/mechanize/)
+      Accept-Charset:
+      - ISO-8859-1,utf-8;q=0.7,*;q=0.7
+      Accept-Language:
+      - en-us,en;q=0.5
+      Host:
+      - raw.githubusercontent.com
+      Connection:
+      - keep-alive
+      Keep-Alive:
+      - '300'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '662'
+      Cache-Control:
+      - max-age=300
+      Content-Security-Policy:
+      - default-src 'none'; style-src 'unsafe-inline'; sandbox
+      Content-Type:
+      - text/plain; charset=utf-8
+      Etag:
+      - W/"1b09cbbc344c73d1d785f129e65add3b6526e060c97253c6970f217a08b75f08"
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Github-Request-Id:
+      - FFFA:2C78E6:327CA3:3C5C43:65C0C1F3
+      Content-Encoding:
+      - gzip
+      Accept-Ranges:
+      - bytes
+      Date:
+      - Mon, 05 Feb 2024 11:09:42 GMT
+      Via:
+      - 1.1 varnish
+      X-Served-By:
+      - cache-mel11277-MEL
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Timer:
+      - S1707131382.496933,VS0,VE1
+      Vary:
+      - Authorization,Accept-Encoding,Origin
+      Access-Control-Allow-Origin:
+      - "*"
+      Cross-Origin-Resource-Policy:
+      - cross-origin
+      X-Fastly-Request-Id:
+      - 242874adddff78fa06f880d2202d798a50d54f5a
+      Expires:
+      - Mon, 05 Feb 2024 11:14:42 GMT
+      Source-Age:
+      - '1'
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        H4sIAAAAAAAAA7VWzW7bMAy++yl46wZMdtLDUPjYtAMKrENvOw6yzTjEbMmQ6GTdG/U5+mKjZae10zU/WxsEsC2J/D6R/CgppSKfr7DWao3OkzUprOfxeXwRUZHC4ubuVl1dL76p89n8XM1nczWPmLjCNFKQW8NoOIUrzKmzDeuTsAo+dBYfI4BKm7LVpVgAKEAjD587argf+Kq5G1paV2txxfiLk6bSZCYAjw9HIyzd0QgVmZ+TjayYG58myWaziTNq6ti6MkGT5LauiRnRJznJv6kDhx/zEBdxzvcNppATaxaWY06THfdcDgEu3X8BjgPwKqDTm7gkXrVZ69EN07HAJjWyNl2sko6QKjRrZVuWKSFTS9h6OjUikym9kvAM7319xPd19UTQu/z0YLwdN4nk8dxexq1f1zibIxadw6iwuehCSG/VAZ06YKcge7tLmZaPxlGt3b0Unmtxn+UnuD5gfCiSe1x/OcH13wro2fVW66/uWVXWlEdx3S/rfR5PpwjJiXCSatPWGbpXEy3lF/rgUCZtVpFfYSG+1rpqZegsdM3ZZzW7OIu6OnaUtWxdZyRC14Z+B/l2fQrA6Br7t5EmbuTpTFilK7hsHeoW7BK+I5Ur9qBNAbeovUz4YDtth723EP/u99wW+4mhNU4QBwyaABfoobFUeEAGEdteuJCcvXA6yxyuabR5GBHo6/PAVo6BaV2Vwri1yqiz1XBQTNPm/jUni22r7k6Yd8yL4BA/Puygd4m52ybm9n0Ts3ijxOymQLe8si4S4KCoqWyekQJG8L71O3iUwzzvLyTE0s/utKPQqYP3J2UXQ1eIvDS8nCVQBRWyL1qSaFyWjQTfX3TkopCGNvPifjSLZ9EfuJC2CDsJAAA=
+  recorded_at: Mon, 05 Feb 2024 11:09:42 GMT
 recorded_with: VCR 6.1.0
