@@ -22,19 +22,19 @@ module IsoDoc
         set(:si_aspect_paths, si_paths)
       end
 
-      TITLE = "//bibdata/title".freeze
+      def title1(xml, type, lang)
+        xml.at(ns("//bibdata/title[@type='title-#{type}']" \
+          "[@language='#{lang}']"))
+          &.children&.to_xml || ""
+      end
 
       def title(isoxml, _out)
         lang1, lang2 = @lang == "fr" ? %w(fr en) : %w(en fr)
-        set(:doctitle, @c.encode(isoxml.at(
-          ns("#{TITLE}[@type='title-main'][@language='#{lang1}']"))&.text || ""))
-        set(:docsubtitle, @c.encode(isoxml.at(
-          ns("#{TITLE}[@type='title-main'][@language='#{lang2}']"))&.text || ""))
+        set(:doctitle, title1(isoxml, "main", lang1))
+        set(:docsubtitle, title1(isoxml, "main", lang2))
         %w(appendix annex part subtitle provenance).each do |e|
-          set("#{e}title".to_sym, @c.encode(isoxml.at(
-            ns("#{TITLE}[@type='title-#{e}'][@language='#{lang1}']"))&.text || ""))
-          set("#{e}subtitle".to_sym, @c.encode(isoxml.at(
-            ns("#{TITLE}[@type='title-#{e}'][@language='#{lang2}']"))&.text || ""))
+          set("#{e}title".to_sym, title1(isoxml, e, lang1))
+          set("#{e}subtitle".to_sym, title1(isoxml, e, lang2))
         end
       end
 
@@ -57,7 +57,7 @@ module IsoDoc
         dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/annexid"))
         dn and set(:annexid, @i18n.l10n("#{label1} #{dn.text}"))
         dn and set(:annexid_alt, @i18n.l10n("#{label2} #{dn.text}"))
-        label1, label2  = @lang == "fr" ? %w(Partie Part) : %w(Part Partie)
+        label1, label2 = @lang == "fr" ? %w(Partie Part) : %w(Part Partie)
         dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/part"))
         dn and set(:partid, @i18n.l10n("#{label1} #{dn.text}"))
         dn and set(:partid_alt, @i18n.l10n("#{label2} #{dn.text}"))
@@ -71,7 +71,8 @@ module IsoDoc
       end
 
       def bibdate(isoxml, _out)
-        pubdate = isoxml.at(ns("//bibdata/date[not(@format)][@type = 'published']"))
+        pubdate = isoxml
+          .at(ns("//bibdata/date[not(@format)][@type = 'published']"))
         pubdate and set(:pubdate_monthyear, monthyr(pubdate.text))
       end
     end
