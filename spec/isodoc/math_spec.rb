@@ -17,6 +17,36 @@ RSpec.describe IsoDoc::BIPM do
             </stem>
             <stem type="MathML">
               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>3000.0003</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>3000000.0000003</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>.0003</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>.0000003</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>3000</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>3000000</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
                 <mi>P</mi>
                 <mfenced close=")" open="(">
                   <mrow>
@@ -116,12 +146,48 @@ RSpec.describe IsoDoc::BIPM do
                 <title depth="1">Contents</title>
               </clause>
             <p displayorder="2">
-              <stem type='MathML'>
-                <math xmlns='http://www.w3.org/1998/Math/MathML'>
-                  <mn>30&#xA0;000</mn>
-                </math>
-                <asciimath>30000</asciimath>
-              </stem>
+                         <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>30 000</mn>
+               </math>
+               <asciimath>30000</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>3000.0003</mn>
+               </math>
+               <asciimath>3000.0003</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>3 000 000.000 000 3</mn>
+               </math>
+               <asciimath>3000000.0000003</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>0.0003</mn>
+               </math>
+               <asciimath>.0003</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>0.000 000 3</mn>
+               </math>
+               <asciimath>.0000003</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>3000</mn>
+               </math>
+               <asciimath>3000</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>3 000 000</mn>
+               </math>
+               <asciimath>3000000</asciimath>
+             </stem>
               <stem type='MathML'>
                 <math xmlns='http://www.w3.org/1998/Math/MathML'>
                   <mi>P</mi>
@@ -276,6 +342,36 @@ RSpec.describe IsoDoc::BIPM do
             </stem>
             <stem type="MathML">
               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>3000.0003</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>3000000.0000003</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>.0003</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>.0000003</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>3000</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>3000000</mn>
+              </math>
+            </stem>
+            <stem type="MathML">
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
                 <mi>P</mi>
                 <mfenced close=")" open="(">
                   <mrow>
@@ -377,12 +473,48 @@ RSpec.describe IsoDoc::BIPM do
                 <title depth="1">Table des matières</title>
               </clause>
             <p displayorder="2">
-              <stem type='MathML'>
-               <math xmlns='http://www.w3.org/1998/Math/MathML'>
-                <mn>30&#xA0;000</mn>
+                         <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>30 000</mn>
                </math>
                <asciimath>30000</asciimath>
-              </stem>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>3000,0003</mn>
+               </math>
+               <asciimath>3000.0003</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>3 000 000,000 000 3</mn>
+               </math>
+               <asciimath>3000000.0000003</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>0,0003</mn>
+               </math>
+               <asciimath>.0003</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>0,000 000 3</mn>
+               </math>
+               <asciimath>.0000003</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>3000</mn>
+               </math>
+               <asciimath>3000</asciimath>
+             </stem>
+             <stem type="MathML">
+               <math xmlns="http://www.w3.org/1998/Math/MathML">
+                 <mn>3 000 000</mn>
+               </math>
+               <asciimath>3000000</asciimath>
+             </stem>
               <stem type='MathML'>
                 <math xmlns='http://www.w3.org/1998/Math/MathML'>
                   <mi>P</mi>
