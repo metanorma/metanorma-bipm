@@ -75,13 +75,16 @@ module IsoDoc
       end
 
       def twitter_cldr_localiser_symbols
-        { group: "&#xA0;", fraction_group: "&#xA0;", fraction_group_digits: 3 }
+        { group: "&#xA0;", fraction_group: "&#xA0;",
+          fraction_group_digits: 3 }
       end
 
       def localized_number(num, locale, precision)
-        g = Regexp.quote(twitter_cldr_localiser_symbols[:group])
-        f = Regexp.quote(twitter_cldr_localiser_symbols[:fraction_group])
-        super.sub(/^(\d)#{g}(\d)/, "\\1\\2").sub(/(\d)#{f}(\d)$/, "\\1\\2")
+        g = Regexp.quote(@twitter_cldr_reader[:group])
+        f = Regexp.quote(@twitter_cldr_reader[:fraction_group])
+        d = Regexp.quote(@twitter_cldr_reader[:decimal])
+        super.sub(/^(\d)#{g}(\d) (?= \d\d$ | \d\d#{d} )/x, "\\1\\2")
+          .sub(/(?<= ^\d\d | #{d}\d\d ) (\d)#{f}(\d) $/x, "\\1\\2")
       end
 
       def mathml1(elem, locale)
@@ -97,8 +100,7 @@ module IsoDoc
 
       def bibdata_dates(bibdata)
         pubdate = bibdata.at(ns("./date[not(@format)][@type = 'published']"))
-        return unless pubdate
-
+        pubdate or return
         meta = metadata_init(@lang, @script, @locale, @i18n)
         pubdate.next = pubdate.dup
         pubdate.next["format"] = "ddMMMyyyy"
@@ -193,23 +195,23 @@ module IsoDoc
       end
 
       def termsource_modification(elem)
-        if elem["status"] == "modified"
-          origin = elem.at(ns("./origin"))
-          # s = termsource_status(elem["status"]) and origin.next = l10n(", #{s}")
-        end
+        # if elem["status"] == "modified"
+        # origin = elem.at(ns("./origin"))
+        # s = termsource_status(elem["status"]) and origin.next = l10n(", #{s}")
+        # end
         termsource_add_modification_text(elem.at(ns("./modification")))
       end
 
       def norm_ref_entry_code(_ordinal, identifiers, _ids, _standard, datefn,
 _bib)
-        ret = (identifiers[0] || identifiers[1])
+        ret = identifiers[0] || identifiers[1]
         ret += " #{identifiers[1]}" if identifiers[0] && identifiers[1]
         "#{ret}#{datefn} "
       end
 
       def biblio_ref_entry_code(ordinal, ids, _id, _standard, datefn, _bib)
         # standard and id = nil
-        ret = (ids[:ordinal] || ids[:metanorma] || "[#{ordinal}]")
+        ret = ids[:ordinal] || ids[:metanorma] || "[#{ordinal}]"
         if ids[:sdo]
           ret = prefix_bracketed_ref(ret)
           ret += "#{ids[:sdo]}#{datefn} "

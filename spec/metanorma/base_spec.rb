@@ -1,6 +1,14 @@
 require "spec_helper"
 
 RSpec.describe Metanorma::BIPM do
+  before do
+    # Force to download Relaton index file
+    allow_any_instance_of(Relaton::Index::Type).to receive(:actual?)
+      .and_return(false)
+    allow_any_instance_of(Relaton::Index::FileIO).to receive(:check_file)
+      .and_return(nil)
+  end
+
   it "processes default metadata" do
     input = <<~INPUT
       = Document title
