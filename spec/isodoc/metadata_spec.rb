@@ -97,6 +97,18 @@ RSpec.describe IsoDoc::BIPM do
               <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
             </organization>
           </contributor>
+          <contributor>
+            <role type="authorizer"/>
+            <organization>
+              <name>ORG1</name>
+            </organization>
+          </contributor>
+          <contributor>
+            <role type="authorizer"/>
+            <organization>
+              <name>ORG2</name>
+            </organization>
+          </contributor>
           <version>
             <edition>2</edition>
             <revision-date>2000-01-01</revision-date>
@@ -152,6 +164,7 @@ RSpec.describe IsoDoc::BIPM do
       :appendixid_alt=>"Annexe ABC",
       :appendixsubtitle=>"Chef Title Appendix",
       :appendixtitle=>"Main Title Appendix",
+      :authorizer=>["ORG1", "ORG2"],
       :authors=>["Gustavo Martos", "Xiuqin Li", "Ralf Josephs"],
       :authors_affiliations=>["BIPM", "NIM", "BIPM"],
       :circulateddate=>"XXX",
