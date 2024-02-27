@@ -43,6 +43,7 @@ doctypes:
   - strategy
   - cipm-mra
   - resolution
+  - policy
 default_doctype: brochure
 committees:
   - CGPM

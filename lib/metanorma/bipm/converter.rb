@@ -1,6 +1,7 @@
 require "metanorma/standoc/converter"
 require "metanorma/generic/converter"
 require_relative "front"
+require_relative "cleanup"
 
 module Metanorma
   module BIPM
@@ -96,45 +97,6 @@ module Metanorma
         end
       end
 
-      def boilerplate_file(_xmldoc)
-        if @jcgm
-          File.join(File.dirname(__FILE__), "boilerplate-jcgm-en.adoc")
-        else
-          File.join(File.dirname(__FILE__), "boilerplate-#{@lang}.adoc")
-        end
-      end
-
-      def sections_cleanup(xml)
-        super
-        jcgm_untitled_sections_cleanup(xml) if @jcgm
-      end
-
-      def jcgm_untitled_sections_cleanup(xml)
-        xml.xpath("//clause//clause | //annex//clause | //introduction/clause")
-          .each do |c|
-          next if !c&.at("./title")&.text&.empty?
-
-          c["inline-header"] = true
-        end
-      end
-
-      def section_names_terms_cleanup(xml); end
-
-      def section_names_refs_cleanup(xml); end
-
-      def mathml_mi_italics
-        { uppergreek: false, upperroman: false,
-          lowergreek: false, lowerroman: true }
-      end
-
-      def xref_to_eref(elem, name)
-        if elem.at("//bibitem[@id = '#{elem['target']}']/" \
-                   "docidentifier[@type = 'BIPM-long']")
-          elem["style"] = "BIPM-long"
-        end
-        super
-      end
-
       def document(node)
         @jcgm = node.attr("committee-acronym") == "JCGM"
         super
@@ -156,12 +118,12 @@ module Metanorma
       def presentation_xml_converter(node)
         IsoDoc::BIPM::PresentationXMLConvert
           .new(html_extract_attributes(node)
-          .merge(output_formats: ::Metanorma::BIPM::Processor.new.output_formats))
+          .merge(output_formats: ::Metanorma::BIPM::Processor.new
+          .output_formats))
       end
 
       def pdf_converter(node)
-        return nil if node.attr("no-pdf")
-
+        node.attr("no-pdf") and return nil
         IsoDoc::BIPM::PdfConvert.new(pdf_extract_attributes(node))
       end
     end
