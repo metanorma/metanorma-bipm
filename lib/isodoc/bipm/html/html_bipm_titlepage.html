@@ -21,6 +21,12 @@
       <span class="docnumber">{{ docnumber }}</span>
       <span class="docnumber-separator">:</span>
       <span class="docyear">{{ docyear }} {{ draftinfo }}</span>
+      {% if version %}
+      <br/>{{ labels["version"] }}: {{ version }}
+      {% endif %}
+      {% if revdate %}
+      <br/>{{ labels["date"] }}: {{ revdate }}
+      {% endif %}
     </div>
 
     <div class="coverpage-logo">
@@ -73,8 +79,16 @@
   {% if authors %}
   <div class="coverpage-tc-name">
     {% for item in authors %}
-    <span>{{item}} {% if authors_affiliations[forloop.index0] %}({{ authors_affiliations[forloop.index0] }}){% endif %}{% if forloop.last == false %}, {% endif %}{% endfor %}.
+    <span>{{item}}{% if authors_affiliations[forloop.index0] != "" %} ({{ authors_affiliations[forloop.index0] }}){% endif %}{% if forloop.last == false %}, {% endif %}</span>{% endfor %}.
   </div>
+  {% endif %}
+
+  {% if authorizer %}
+    <div class="coverpage-tc-name">
+      {{ labels["authorized"] }}:
+      {% for item in authorizer %}
+      <span>{{item}}{% if forloop.last == false %}, {% endif %}</span>{% endfor %}
+    </div>
   {% endif %}
 
   <div class="coverpage-warning" id="coverpage-note-destination"/>
