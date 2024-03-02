@@ -221,10 +221,6 @@ _bib)
         ret
       end
 
-      def bibrenderer
-        ::Relaton::Render::BIPM::General.new(language: @lang)
-      end
-
       include Init
     end
   end
