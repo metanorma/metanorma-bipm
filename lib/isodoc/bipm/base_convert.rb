@@ -64,10 +64,6 @@ module IsoDoc
         else super
         end
       end
-
-      def bibrenderer(options = {})
-  ::Relaton::Render::BIPM::General.new(options.merge(language: @lang))
-end
     end
   end
 end

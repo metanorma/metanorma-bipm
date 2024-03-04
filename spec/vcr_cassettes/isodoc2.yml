@@ -1,0 +1,459 @@
+---
+http_interactions:
+- request:
+    method: head
+    uri: https://www.bipm.org/en/committees/cg/cgpm/1-1889
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Mon, 04 Mar 2024 14:33:11 GMT
+      Server:
+      - Apache
+      X-Xss-Protection:
+      - 1;  mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Liferay-Portal:
+      - Liferay Digital Experience Platform
+      Etag:
+      - '"0"'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Content-Length:
+      - '219797'
+      Set-Cookie:
+      - COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:11 GMT;
+        Path=/; Secure; HttpOnly
+      - GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:11
+        GMT; Path=/; Secure; HttpOnly
+      - JSESSIONID=BD97812B1F92CC93F5A42146FF809399; Path=/; Secure; HttpOnly
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Mon, 04 Mar 2024 14:33:11 GMT
+- request:
+    method: head
+    uri: https://www.bipm.org/en/committees/ci/cipm/105-2016
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Mon, 04 Mar 2024 14:33:13 GMT
+      Server:
+      - Apache
+      X-Xss-Protection:
+      - 1;  mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Liferay-Portal:
+      - Liferay Digital Experience Platform
+      Etag:
+      - '"0"'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Content-Length:
+      - '238229'
+      Set-Cookie:
+      - COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:12 GMT;
+        Path=/; Secure; HttpOnly
+      - GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:12
+        GMT; Path=/; Secure; HttpOnly
+      - JSESSIONID=7D7F424F27002487E9686EB5FEA16E05; Path=/; Secure; HttpOnly
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Mon, 04 Mar 2024 14:33:13 GMT
+- request:
+    method: head
+    uri: https://www.bipm.org/en/committees/cg/cgpm/1-1889
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Mon, 04 Mar 2024 14:33:15 GMT
+      Server:
+      - Apache
+      X-Xss-Protection:
+      - 1;  mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Liferay-Portal:
+      - Liferay Digital Experience Platform
+      Etag:
+      - '"0"'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Content-Length:
+      - '221109'
+      Set-Cookie:
+      - COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:16 GMT;
+        Path=/; Secure; HttpOnly
+      - GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:16
+        GMT; Path=/; Secure; HttpOnly
+      - JSESSIONID=C39C8BA10DE6E0ACEF7A783542C78EEB; Path=/; Secure; HttpOnly
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Mon, 04 Mar 2024 14:33:16 GMT
+- request:
+    method: head
+    uri: https://www.bipm.org/en/committees/ci/cipm/105-2016
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Mon, 04 Mar 2024 14:33:18 GMT
+      Server:
+      - Apache
+      X-Xss-Protection:
+      - 1;  mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Liferay-Portal:
+      - Liferay Digital Experience Platform
+      Etag:
+      - '"0"'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Content-Length:
+      - '239541'
+      Set-Cookie:
+      - COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:17 GMT;
+        Path=/; Secure; HttpOnly
+      - GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:17
+        GMT; Path=/; Secure; HttpOnly
+      - JSESSIONID=E4050DB48E70E15769C5B3C77F107DAA; Path=/; Secure; HttpOnly
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Mon, 04 Mar 2024 14:33:18 GMT
+- request:
+    method: head
+    uri: https://www.bipm.org/en/committees/cg/cgpm/1-1889
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Mon, 04 Mar 2024 14:33:19 GMT
+      Server:
+      - Apache
+      X-Xss-Protection:
+      - 1;  mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Liferay-Portal:
+      - Liferay Digital Experience Platform
+      Etag:
+      - '"0"'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Content-Length:
+      - '221101'
+      Set-Cookie:
+      - COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:19 GMT;
+        Path=/; Secure; HttpOnly
+      - GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:19
+        GMT; Path=/; Secure; HttpOnly
+      - JSESSIONID=165E10DAD7B3B363F9686AF29211AB02; Path=/; Secure; HttpOnly
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Mon, 04 Mar 2024 14:33:20 GMT
+- request:
+    method: head
+    uri: https://www.bipm.org/en/committees/ci/cipm/105-2016
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Mon, 04 Mar 2024 14:33:22 GMT
+      Server:
+      - Apache
+      X-Xss-Protection:
+      - 1;  mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Liferay-Portal:
+      - Liferay Digital Experience Platform
+      Etag:
+      - '"0"'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Content-Length:
+      - '239533'
+      Set-Cookie:
+      - COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:21 GMT;
+        Path=/; Secure; HttpOnly
+      - GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:21
+        GMT; Path=/; Secure; HttpOnly
+      - JSESSIONID=3F5AAF19B6A20B31CF4E3E7F5FC6BE67; Path=/; Secure; HttpOnly
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Mon, 04 Mar 2024 14:33:23 GMT
+- request:
+    method: head
+    uri: https://www.bipm.org/en/committees/cg/cgpm/1-1889
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Mon, 04 Mar 2024 14:33:23 GMT
+      Server:
+      - Apache
+      X-Xss-Protection:
+      - 1;  mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Liferay-Portal:
+      - Liferay Digital Experience Platform
+      Etag:
+      - '"0"'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Content-Length:
+      - '221101'
+      Set-Cookie:
+      - COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:24 GMT;
+        Path=/; Secure; HttpOnly
+      - GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:24
+        GMT; Path=/; Secure; HttpOnly
+      - JSESSIONID=DA00A47F937E426E48CB84558CA569D0; Path=/; Secure; HttpOnly
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Mon, 04 Mar 2024 14:33:24 GMT
+- request:
+    method: head
+    uri: https://www.bipm.org/en/committees/ci/cipm/105-2016
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Mon, 04 Mar 2024 14:33:26 GMT
+      Server:
+      - Apache
+      X-Xss-Protection:
+      - 1;  mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubdomains;
+      X-Content-Type-Options:
+      - nosniff
+      Expires:
+      - Thu, 01 Jan 1970 00:00:00 GMT
+      Cache-Control:
+      - private, no-cache, no-store, must-revalidate
+      Pragma:
+      - no-cache
+      Liferay-Portal:
+      - Liferay Digital Experience Platform
+      Etag:
+      - '"0"'
+      Content-Type:
+      - text/html;charset=UTF-8
+      Content-Length:
+      - '239541'
+      Set-Cookie:
+      - COOKIE_SUPPORT=true; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:25 GMT;
+        Path=/; Secure; HttpOnly
+      - GUEST_LANGUAGE_ID=en_US; Max-Age=31536000; Expires=Tue, 04 Mar 2025 14:33:25
+        GMT; Path=/; Secure; HttpOnly
+      - JSESSIONID=CF13D02C4D442EB00E38E256C6267A6B; Path=/; Secure; HttpOnly
+      Access-Control-Allow-Origin:
+      - "*"
+    body:
+      encoding: UTF-8
+      string: ''
+  recorded_at: Mon, 04 Mar 2024 14:33:26 GMT
+recorded_with: VCR 6.1.0

@@ -149,121 +149,121 @@ RSpec.describe IsoDoc do
     INPUT
 
     presxml = <<~PRESXML
-           <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-         <bibdata>
-           <language current="true">en</language>
-         </bibdata>
-         <preface>
-           <clause type="toc" id="_" displayorder="1">
-             <title depth="1">Contents</title>
-           </clause>
-           <foreword displayorder="2">
-             <p id="_">
-        <xref target="ISO712">ISO 712</xref>
-        <xref target="ISBN">[6]</xref>
-        <xref target="ISSN">[7]</xref>
-        <xref target="ISO16634">ISO 16634:-- (all parts)</xref>
-        <xref target="ref1">ICC/167</xref>
-        <xref target="ref10">[9]</xref>
-        <xref target="ref12">Citn</xref>
-        <xref target="zip_ffs">[5]</xref>
-             </p>
-           </foreword>
-         </preface>
-         <bibliography>
-           <references id="_" normative="false" obligation="informative" displayorder="3">
-             <title depth="1">Bibliography</title>
-             <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
-             <bibitem id="ISO712" type="standard">
-               <formattedref>International Organization for Standardization. <em>Cereals and cereal products</em>. ISO 712.</formattedref>
-               <docidentifier type="metanorma-ordinal">[1]</docidentifier>
-               <docidentifier type="ISO">ISO 712</docidentifier>
-               <biblio-tag>[1]<tab/>ISO 712 </biblio-tag>
-             </bibitem>
-             <bibitem id="ISO16634" type="standard">
-               <formattedref><em>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</em>. ISO 16634:-- (all parts).</formattedref>
-               <docidentifier type="metanorma-ordinal">[2]</docidentifier>
-               <docidentifier type="ISO">ISO 16634:-- (all parts)</docidentifier>
-               <note format="text/plain" reference="1" type="Unpublished-Status">Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
-               <biblio-tag>[2]<tab/>ISO 16634:-- (all parts)<fn reference="1"><p>Under preparation. (Stage at the time of publication ISO/DIS 16634)</p></fn></biblio-tag>
-             </bibitem>
-             <bibitem id="ISO20483" type="standard">
-               <formattedref>International Organization for Standardization. (2013–2014) <em>Cereals and pulses</em>. ISO 20483:2013-2014.</formattedref>
-               <docidentifier type="metanorma-ordinal">[3]</docidentifier>
-               <docidentifier type="ISO">ISO 20483:2013-2014</docidentifier>
-               <biblio-tag>[3]<tab/>ISO 20483:2013-2014 </biblio-tag>
-             </bibitem>
-             <bibitem id="ref1">
-               <formattedref format="application/x-isodoc+xml"><smallcap>Standard No I.C.C 167</smallcap>.
-                 <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em>
-                 (see
-                 <link target="http://www.icc.or.at"/>
-                 )</formattedref>
-               <docidentifier type="metanorma-ordinal">[4]</docidentifier>
-               <docidentifier type="ICC">ICC/167</docidentifier>
-               <biblio-tag>[4]<tab/>ICC/167 </biblio-tag>
-             </bibitem>
-             <note>
-               <name>Note:</name>
-               <p>This is an annotation of ISO 20483:2013-2014</p>
-             </note>
-             <bibitem id="zip_ffs">
-               <formattedref format="application/x-isodoc+xml">Title 5</formattedref>
-               <docidentifier type="metanorma-ordinal">[5]</docidentifier>
-               <biblio-tag>[5]<tab/></biblio-tag>
-             </bibitem>
-             <bibitem id="ISBN" type="book">
-               <formattedref>(n.d.) <em>Chemicals for analytical laboratory use</em></formattedref>
-               <docidentifier type="metanorma-ordinal">[6]</docidentifier>
-               <docidentifier type="ISBN">ISBN</docidentifier>
-               <biblio-tag>[6]<tab/></biblio-tag>
-             </bibitem>
-             <bibitem id="ISSN" type="journal">
-               <formattedref><em>Instruments for analytical laboratory use</em>. (n.d.).</formattedref>
-               <docidentifier type="metanorma-ordinal">[7]</docidentifier>
-               <docidentifier type="ISSN">ISSN</docidentifier>
-               <biblio-tag>[7]<tab/></biblio-tag>
-             </bibitem>
-             <note>
-               <name>Note:</name>
-               <p>This is an annotation of document ISSN.</p>
-             </note>
-             <note>
-               <name>Note:</name>
-               <p>This is another annotation of document ISSN.</p>
-             </note>
-             <bibitem id="ISO3696" type="standard">
-               <formattedref><em>Water for analytical laboratory use</em>. BIPM 3696.</formattedref>
-               <docidentifier type="metanorma-ordinal">[8]</docidentifier>
-               <docidentifier type="BIPM">BIPM 3696</docidentifier>
-               <biblio-tag>[8]<tab/>BIPM 3696 </biblio-tag>
-             </bibitem>
-             <bibitem id="ref10">
-               <formattedref format="application/x-isodoc+xml"><smallcap>Standard No I.C.C 167</smallcap>.
-                 <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em>
-                 (see
-                 <link target="http://www.icc.or.at"/>
-                 )</formattedref>
-               <docidentifier type="metanorma-ordinal">[9]</docidentifier>
-               <biblio-tag>[9]<tab/></biblio-tag>
-             </bibitem>
-             <bibitem id="ref11">
-               <formattedref><em>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</em>. IETF RFC 10.</formattedref>
-               <docidentifier type="metanorma-ordinal">[10]</docidentifier>
-               <docidentifier type="IETF">IETF RFC 10</docidentifier>
-               <biblio-tag>[10]<tab/>IETF RFC 10 </biblio-tag>
-             </bibitem>
-             <bibitem id="ref12">
-               <formattedref format="application/x-isodoc+xml">CitationWorks. 2019.
-                 <em>How to cite a reference</em>
-                 .</formattedref>
-               <docidentifier type="metanorma">[Citn]</docidentifier>
-               <docidentifier type="IETF">IETF RFC 20</docidentifier>
-               <biblio-tag>Citn<tab/>IETF RFC 20 </biblio-tag>
-             </bibitem>
-           </references>
-         </bibliography>
-       </iso-standard>
+          <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+        <bibdata>
+          <language current="true">en</language>
+        </bibdata>
+        <preface>
+          <clause type="toc" id="_" displayorder="1">
+            <title depth="1">Contents</title>
+          </clause>
+          <foreword displayorder="2">
+            <p id="_">
+       <xref target="ISO712">ISO 712</xref>
+       <xref target="ISBN">[6]</xref>
+       <xref target="ISSN">[7]</xref>
+       <xref target="ISO16634">ISO 16634:-- (all parts)</xref>
+       <xref target="ref1">ICC/167</xref>
+       <xref target="ref10">[9]</xref>
+       <xref target="ref12">Citn</xref>
+       <xref target="zip_ffs">[5]</xref>
+            </p>
+          </foreword>
+        </preface>
+        <bibliography>
+          <references id="_" normative="false" obligation="informative" displayorder="3">
+            <title depth="1">Bibliography</title>
+            <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
+            <bibitem id="ISO712" type="standard">
+              <formattedref>International Organization for Standardization. <em>Cereals and cereal products</em>. ISO 712.</formattedref>
+              <docidentifier type="metanorma-ordinal">[1]</docidentifier>
+              <docidentifier type="ISO">ISO 712</docidentifier>
+              <biblio-tag>[1]<tab/>ISO 712 </biblio-tag>
+            </bibitem>
+            <bibitem id="ISO16634" type="standard">
+              <formattedref><em>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</em>. ISO 16634:-- (all parts).</formattedref>
+              <docidentifier type="metanorma-ordinal">[2]</docidentifier>
+              <docidentifier type="ISO">ISO 16634:-- (all parts)</docidentifier>
+              <note format="text/plain" reference="1" type="Unpublished-Status">Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
+              <biblio-tag>[2]<tab/>ISO 16634:-- (all parts)<fn reference="1"><p>Under preparation. (Stage at the time of publication ISO/DIS 16634)</p></fn></biblio-tag>
+            </bibitem>
+            <bibitem id="ISO20483" type="standard">
+              <formattedref>International Organization for Standardization. (2013–2014) <em>Cereals and pulses</em>. ISO 20483:2013-2014.</formattedref>
+              <docidentifier type="metanorma-ordinal">[3]</docidentifier>
+              <docidentifier type="ISO">ISO 20483:2013-2014</docidentifier>
+              <biblio-tag>[3]<tab/>ISO 20483:2013-2014 </biblio-tag>
+            </bibitem>
+            <bibitem id="ref1">
+              <formattedref format="application/x-isodoc+xml"><smallcap>Standard No I.C.C 167</smallcap>.
+                <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em>
+                (see
+                <link target="http://www.icc.or.at"/>
+                )</formattedref>
+              <docidentifier type="metanorma-ordinal">[4]</docidentifier>
+              <docidentifier type="ICC">ICC/167</docidentifier>
+              <biblio-tag>[4]<tab/>ICC/167 </biblio-tag>
+            </bibitem>
+            <note>
+              <name>Note:</name>
+              <p>This is an annotation of ISO 20483:2013-2014</p>
+            </note>
+            <bibitem id="zip_ffs">
+              <formattedref format="application/x-isodoc+xml">Title 5</formattedref>
+              <docidentifier type="metanorma-ordinal">[5]</docidentifier>
+              <biblio-tag>[5]<tab/></biblio-tag>
+            </bibitem>
+            <bibitem id="ISBN" type="book">
+              <formattedref>(n.d.) <em>Chemicals for analytical laboratory use</em></formattedref>
+              <docidentifier type="metanorma-ordinal">[6]</docidentifier>
+              <docidentifier type="ISBN">ISBN</docidentifier>
+              <biblio-tag>[6]<tab/></biblio-tag>
+            </bibitem>
+            <bibitem id="ISSN" type="journal">
+              <formattedref><em>Instruments for analytical laboratory use</em>. (n.d.).</formattedref>
+              <docidentifier type="metanorma-ordinal">[7]</docidentifier>
+              <docidentifier type="ISSN">ISSN</docidentifier>
+              <biblio-tag>[7]<tab/></biblio-tag>
+            </bibitem>
+            <note>
+              <name>Note:</name>
+              <p>This is an annotation of document ISSN.</p>
+            </note>
+            <note>
+              <name>Note:</name>
+              <p>This is another annotation of document ISSN.</p>
+            </note>
+            <bibitem id="ISO3696" type="standard">
+              <formattedref><em>Water for analytical laboratory use</em>. BIPM 3696.</formattedref>
+              <docidentifier type="metanorma-ordinal">[8]</docidentifier>
+              <docidentifier type="BIPM">BIPM 3696</docidentifier>
+              <biblio-tag>[8]<tab/>BIPM 3696 </biblio-tag>
+            </bibitem>
+            <bibitem id="ref10">
+              <formattedref format="application/x-isodoc+xml"><smallcap>Standard No I.C.C 167</smallcap>.
+                <em>Determination of the protein content in cereal and cereal products for food and animal feeding stuffs according to the Dumas combustion method</em>
+                (see
+                <link target="http://www.icc.or.at"/>
+                )</formattedref>
+              <docidentifier type="metanorma-ordinal">[9]</docidentifier>
+              <biblio-tag>[9]<tab/></biblio-tag>
+            </bibitem>
+            <bibitem id="ref11">
+              <formattedref><em>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</em>. IETF RFC 10.</formattedref>
+              <docidentifier type="metanorma-ordinal">[10]</docidentifier>
+              <docidentifier type="IETF">IETF RFC 10</docidentifier>
+              <biblio-tag>[10]<tab/>IETF RFC 10 </biblio-tag>
+            </bibitem>
+            <bibitem id="ref12">
+              <formattedref format="application/x-isodoc+xml">CitationWorks. 2019.
+                <em>How to cite a reference</em>
+                .</formattedref>
+              <docidentifier type="metanorma">[Citn]</docidentifier>
+              <docidentifier type="IETF">IETF RFC 20</docidentifier>
+              <biblio-tag>Citn<tab/>IETF RFC 20 </biblio-tag>
+            </bibitem>
+          </references>
+        </bibliography>
+      </iso-standard>
     PRESXML
 
     html = <<~OUTPUT
@@ -339,81 +339,83 @@ RSpec.describe IsoDoc do
   end
 
   it "processes BIPM references" do
-    input = <<~INPUT
-       <bipm-standard xmlns="http://riboseinc.com/isoxml">
-            <sections>
-          <clause id='_' obligation='normative'>
-            <title>Clause</title>
+    VCR.use_cassette "isodoc1" do
+      input = <<~INPUT
+         <bipm-standard xmlns="http://riboseinc.com/isoxml">
+              <sections>
+            <clause id='_' obligation='normative'>
+              <title>Clause</title>
+              <p id='_'>
+                <eref type='inline' bibitemid='a1' citeas='CR 03'/>
+                <eref type='inline' bibitemid='a2' citeas='PV 105'/>
+              </p>
+            </clause>
+          </sections>
+          <bibliography>
+            <references id='_' normative='false' obligation='informative'>
+              <title>Bibliography</title>
+              <bibitem id='a1'>
+                <fetched>2022-02-13</fetched>
+                <title format='text/plain' language='en' script='Latn'>3rd meeting of the CGPM</title>
+                <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/3-1901</uri>
+                <docidentifier type='BIPM' primary='true'>BIPM CR 03</docidentifier>
+                <date type='published'>
+                  <on>1901-10-22</on>
+                </date>
+                <contributor>
+                  <role type='publisher'/>
+                  <organization>
+                    <name>Bureau Intrnational des Poids et Mesures</name>
+                    <abbreviation>BIPM</abbreviation>
+                    <uri>www.bipm.org</uri>
+                  </organization>
+                </contributor>
+                <language>en</language>
+                <language>fr</language>
+                <script>Latn</script>
+              </bibitem>
+              <bibitem id='a2'>
+                <fetched>2022-02-13</fetched>
+                <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
+                <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+                <docidentifier type='BIPM' primary='true'>BIPM PV 105</docidentifier>
+                <date type='published'>
+                  <on>2016-10-28</on>
+                </date>
+                <contributor>
+                  <role type='publisher'/>
+                  <organization>
+                    <name>Bureau Intrnational des Poids et Mesures</name>
+                    <abbreviation>BIPM</abbreviation>
+                    <uri>www.bipm.org</uri>
+                  </organization>
+                </contributor>
+                <language>en</language>
+                <language>fr</language>
+                <script>Latn</script>
+              </bibitem>
+            </references>
+          </bibliography>
+        </bipm-standard>
+      INPUT
+      output = <<~OUTPUT
+        <sections>
+          <clause id='_' obligation='normative' displayorder='2'>
+            <title depth='1'>Clause</title>
             <p id='_'>
-              <eref type='inline' bibitemid='a1' citeas='CR 03'/>
-              <eref type='inline' bibitemid='a2' citeas='PV 105'/>
+              <xref type='inline' target='a1'>CR&#xa0;03</eref>
+              <xref type='inline' target='a2'>PV&#xa0;105</eref>
             </p>
           </clause>
         </sections>
-        <bibliography>
-          <references id='_' normative='false' obligation='informative'>
-            <title>Bibliography</title>
-            <bibitem id='a1'>
-              <fetched>2022-02-13</fetched>
-              <title format='text/plain' language='en' script='Latn'>3rd meeting of the CGPM</title>
-              <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/3-1901</uri>
-              <docidentifier type='BIPM' primary='true'>BIPM CR 03</docidentifier>
-              <date type='published'>
-                <on>1901-10-22</on>
-              </date>
-              <contributor>
-                <role type='publisher'/>
-                <organization>
-                  <name>Bureau Intrnational des Poids et Mesures</name>
-                  <abbreviation>BIPM</abbreviation>
-                  <uri>www.bipm.org</uri>
-                </organization>
-              </contributor>
-              <language>en</language>
-              <language>fr</language>
-              <script>Latn</script>
-            </bibitem>
-            <bibitem id='a2'>
-              <fetched>2022-02-13</fetched>
-              <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
-              <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-              <docidentifier type='BIPM' primary='true'>BIPM PV 105</docidentifier>
-              <date type='published'>
-                <on>2016-10-28</on>
-              </date>
-              <contributor>
-                <role type='publisher'/>
-                <organization>
-                  <name>Bureau Intrnational des Poids et Mesures</name>
-                  <abbreviation>BIPM</abbreviation>
-                  <uri>www.bipm.org</uri>
-                </organization>
-              </contributor>
-              <language>en</language>
-              <language>fr</language>
-              <script>Latn</script>
-            </bibitem>
-          </references>
-        </bibliography>
-      </bipm-standard>
-    INPUT
-    output = <<~OUTPUT
-      <sections>
-        <clause id='_' obligation='normative' displayorder='2'>
-          <title depth='1'>Clause</title>
-          <p id='_'>
-            <xref type='inline' target='a1'>CR&#xa0;03</eref>
-            <xref type='inline' target='a2'>PV&#xa0;105</eref>
-          </p>
-        </clause>
-      </sections>
-    OUTPUT
-    expect(xmlpp(
-             Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
-            .convert("test", input, true))
-            .at("//xmlns:sections").to_xml,
-           ))
-      .to be_equivalent_to xmlpp(output)
+      OUTPUT
+      expect(xmlpp(
+               Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+              .convert("test", input, true))
+              .at("//xmlns:sections").to_xml,
+             ))
+        .to be_equivalent_to xmlpp(output)
+    end
   end
 
   it "enforces consistent references numbering with hidden items: metanorma-ordinal identifiers" do
@@ -468,158 +470,162 @@ RSpec.describe IsoDoc do
   end
 
   it "hides BIPM CGPM Resolution and BIPM CIPM Decision references in brochure" do
-    input = <<~INPUT
-       <bipm-standard xmlns="http://riboseinc.com/isoxml">
-       <bibdata>
-       <language>en</language>
-       <ext><doctype>brochure</doctype></ext>
-       </bibdata>
-       <bibliography><references id="_normative_references" obligation="informative" normative="false"><title>Bibliography</title>
-                         <bibitem id='a1'>
-            <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
-            <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
-            <docidentifier type='BIPM' primary='true'>CGPM Resolution 1</docidentifier>
-            <docnumber>CGPM Resolution 1</docnumber>
-            <date type='published'>
-              <on>1889-09-28</on>
-            </date>
-            <contributor>
-              <role type='publisher'/>
-              <organization>
-                <name>Bureau International des Poids et Mesures</name>
-                <abbreviation>BIPM</abbreviation>
-                <uri>www.bipm.org</uri>
-              </organization>
-            </contributor>
-            <language>en</language>
-            <language>fr</language>
-            <script>Latn</script>
-          </bibitem>
-          <bibitem id='a2'>
-            <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
-            <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-            <docidentifier type='BIPM' primary='true'>CIPM Decision 105</docidentifier>
-            <docnumber>CIPM Decision 105</docnumber>
-            <date type='published'>
-              <on>2016-10-28</on>
-            </date>
-            <contributor>
-              <role type='publisher'/>
-              <organization>
-                <name>Bureau International des Poids et Mesures</name>
-                <abbreviation>BIPM</abbreviation>
-                <uri>www.bipm.org</uri>
-              </organization>
-            </contributor>
-            <language>en</language>
-            <language>fr</language>
-            <script>Latn</script>
-          </bibitem>
+    VCR.use_cassette "isodoc2" do
+      input = <<~INPUT
+         <bipm-standard xmlns="http://riboseinc.com/isoxml">
+         <bibdata>
+         <language>en</language>
+         <ext><doctype>brochure</doctype></ext>
+         </bibdata>
+         <bibliography><references id="_normative_references" obligation="informative" normative="false"><title>Bibliography</title>
+                           <bibitem id='a1'>
+              <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
+              <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
+              <docidentifier type='BIPM' primary='true'>CGPM Resolution 1</docidentifier>
+              <docnumber>CGPM Resolution 1</docnumber>
+              <date type='published'>
+                <on>1889-09-28</on>
+              </date>
+              <contributor>
+                <role type='publisher'/>
+                <organization>
+                  <name>Bureau International des Poids et Mesures</name>
+                  <abbreviation>BIPM</abbreviation>
+                  <uri>www.bipm.org</uri>
+                </organization>
+              </contributor>
+              <language>en</language>
+              <language>fr</language>
+              <script>Latn</script>
+            </bibitem>
+            <bibitem id='a2'>
+              <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
+              <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+              <docidentifier type='BIPM' primary='true'>CIPM Decision 105</docidentifier>
+              <docnumber>CIPM Decision 105</docnumber>
+              <date type='published'>
+                <on>2016-10-28</on>
+              </date>
+              <contributor>
+                <role type='publisher'/>
+                <organization>
+                  <name>Bureau International des Poids et Mesures</name>
+                  <abbreviation>BIPM</abbreviation>
+                  <uri>www.bipm.org</uri>
+                </organization>
+              </contributor>
+              <language>en</language>
+              <language>fr</language>
+              <script>Latn</script>
+            </bibitem>
+            </references>
+          </bibliography>
+        </bipm-standard>
+      INPUT
+      presxml = <<~PRESXML
+            <bibliography>
+          <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
+            <title depth="1">Bibliography</title>
+            <bibitem id="a1" hidden="true">
+              <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>.</formattedref>
+              <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
+              <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
+            </bibitem>
+            <bibitem id="a2" hidden="true">
+              <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>.</formattedref>
+              <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+              <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
+            </bibitem>
           </references>
         </bibliography>
-      </bipm-standard>
-    INPUT
-    presxml = <<~PRESXML
-           <bibliography>
-         <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
-           <title depth="1">Bibliography</title>
-           <bibitem id="a1" hidden="true">
-             <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>.</formattedref>
-             <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
-             <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
-           </bibitem>
-           <bibitem id="a2" hidden="true">
-             <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>.</formattedref>
-             <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-             <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
-           </bibitem>
-         </references>
-       </bibliography>
-    PRESXML
-    expect(xmlpp(Nokogiri::XML(
-      IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true),
-    ).at("//xmlns:bibliography").to_xml))
-      .to be_equivalent_to xmlpp(presxml)
+      PRESXML
+      expect(xmlpp(Nokogiri::XML(
+        IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+        .convert("test", input, true),
+      ).at("//xmlns:bibliography").to_xml))
+        .to be_equivalent_to xmlpp(presxml)
+    end
   end
 
-  it "does not BIPM CGPM Resolution and BIPM CIPM Decision references outside of brochure" do
-    input = <<~INPUT
-       <bipm-standard xmlns="http://riboseinc.com/isoxml">
-       <bibdata>
-       <language>en</language>
-       <ext><doctype>nonbrochure</doctype></ext>
-       </bibdata>
-       <bibliography><references id="_normative_references" obligation="informative" normative="false"><title>Bibliography</title>
-                         <bibitem id='a1'>
-            <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
-            <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
-            <docidentifier type='BIPM' primary='true'>CGPM Resolution 1</docidentifier>
-            <docnumber>CGPM Resolution 1</docnumber>
-            <date type='published'>
-              <on>1889-09-28</on>
-            </date>
-            <contributor>
-              <role type='publisher'/>
-              <organization>
-                <name>Bureau International des Poids et Mesures</name>
-                <abbreviation>BIPM</abbreviation>
-                <uri>www.bipm.org</uri>
-              </organization>
-            </contributor>
-            <language>en</language>
-            <language>fr</language>
-            <script>Latn</script>
-          </bibitem>
-          <bibitem id='a2'>
-            <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
-            <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-            <docidentifier type='BIPM' primary='true'>CIPM Decision 105</docidentifier>
-            <docnumber>CIPM Decision 105</docnumber>
-            <date type='published'>
-              <on>2016-10-28</on>
-            </date>
-            <contributor>
-              <role type='publisher'/>
-              <organization>
-                <name>Bureau International des Poids et Mesures</name>
-                <abbreviation>BIPM</abbreviation>
-                <uri>www.bipm.org</uri>
-              </organization>
-            </contributor>
-            <language>en</language>
-            <language>fr</language>
-            <script>Latn</script>
-          </bibitem>
-          </references>
-        </bibliography>
-      </bipm-standard>
-    INPUT
-    presxml = <<~PRESXML
-      <bibliography>
-         <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
-           <title depth="1">Bibliography</title>
-           <bibitem id="a1">
-             <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>.</formattedref>
-             <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
-             <docidentifier type="metanorma-ordinal">[1]</docidentifier>
-             <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
-             <biblio-tag>[1]<tab/>CGPM Resolution 1 </biblio-tag>
-           </bibitem>
-           <bibitem id="a2">
-           <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>.</formattedref>
-             <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-             <docidentifier type="metanorma-ordinal">[2]</docidentifier>
-             <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
-             <biblio-tag>[2]<tab/>CIPM Decision 105 </biblio-tag>
-           </bibitem>
-         </references>
-       </bibliography>
-    PRESXML
-    expect(xmlpp(Nokogiri::XML(
-      IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true),
-    ).at("//xmlns:bibliography").to_xml))
-      .to be_equivalent_to xmlpp(presxml)
+  it "does not hide BIPM CGPM Resolution and BIPM CIPM Decision references outside of brochure" do
+    VCR.use_cassette "isodoc3" do
+      input = <<~INPUT
+         <bipm-standard xmlns="http://riboseinc.com/isoxml">
+         <bibdata>
+         <language>en</language>
+         <ext><doctype>nonbrochure</doctype></ext>
+         </bibdata>
+         <bibliography><references id="_normative_references" obligation="informative" normative="false"><title>Bibliography</title>
+                           <bibitem id='a1'>
+              <title format='text/plain' language='en' script='Latn'>1st meeting of the CGPM</title>
+              <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
+              <docidentifier type='BIPM' primary='true'>CGPM Resolution 1</docidentifier>
+              <docnumber>CGPM Resolution 1</docnumber>
+              <date type='published'>
+                <on>1889-09-28</on>
+              </date>
+              <contributor>
+                <role type='publisher'/>
+                <organization>
+                  <name>Bureau International des Poids et Mesures</name>
+                  <abbreviation>BIPM</abbreviation>
+                  <uri>www.bipm.org</uri>
+                </organization>
+              </contributor>
+              <language>en</language>
+              <language>fr</language>
+              <script>Latn</script>
+            </bibitem>
+            <bibitem id='a2'>
+              <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
+              <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+              <docidentifier type='BIPM' primary='true'>CIPM Decision 105</docidentifier>
+              <docnumber>CIPM Decision 105</docnumber>
+              <date type='published'>
+                <on>2016-10-28</on>
+              </date>
+              <contributor>
+                <role type='publisher'/>
+                <organization>
+                  <name>Bureau International des Poids et Mesures</name>
+                  <abbreviation>BIPM</abbreviation>
+                  <uri>www.bipm.org</uri>
+                </organization>
+              </contributor>
+              <language>en</language>
+              <language>fr</language>
+              <script>Latn</script>
+            </bibitem>
+            </references>
+          </bibliography>
+        </bipm-standard>
+      INPUT
+      presxml = <<~PRESXML
+        <bibliography>
+           <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
+             <title depth="1">Bibliography</title>
+             <bibitem id="a1">
+               <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>.</formattedref>
+               <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
+               <docidentifier type="metanorma-ordinal">[1]</docidentifier>
+               <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
+               <biblio-tag>[1]<tab/>CGPM Resolution 1 </biblio-tag>
+             </bibitem>
+             <bibitem id="a2">
+             <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>.</formattedref>
+               <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
+               <docidentifier type="metanorma-ordinal">[2]</docidentifier>
+               <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
+               <biblio-tag>[2]<tab/>CIPM Decision 105 </biblio-tag>
+             </bibitem>
+           </references>
+         </bibliography>
+      PRESXML
+      expect(xmlpp(Nokogiri::XML(
+        IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+        .convert("test", input, true),
+      ).at("//xmlns:bibliography").to_xml))
+        .to be_equivalent_to xmlpp(presxml)
+    end
   end
 end
