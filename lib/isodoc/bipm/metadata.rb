@@ -39,9 +39,8 @@ module IsoDoc
       end
 
       def status_print(status)
-        return "Procès-Verbal" if status == "procès-verbal"
-        return "CIPM-MRA" if status == "cipm-mra"
-
+        status == "procès-verbal" and return "Procès-Verbal"
+        status == "cipm-mra" and return "CIPM-MRA"
         status.split(/[- ]/).map.with_index do |s, i|
           %w(en de).include?(s) && i.positive? ? s : s.capitalize
         end.join(" ")
@@ -49,21 +48,20 @@ module IsoDoc
 
       def docid(isoxml, _out)
         super
-        label1, label2 = @lang == "fr" ? %w(Annexe Appendix) : %w(Appendix Annexe)
-        dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))
-        dn and set(:appendixid, @i18n.l10n("#{label1} #{dn.text}"))
-        dn and set(:appendixid_alt, @i18n.l10n("#{label2} #{dn.text}"))
-        label1, label2 = @lang == "fr" ? %w(Appendice Annex) : %w(Annex Appendice)
-        dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/annexid"))
-        dn and set(:annexid, @i18n.l10n("#{label1} #{dn.text}"))
-        dn and set(:annexid_alt, @i18n.l10n("#{label2} #{dn.text}"))
-        label1, label2 = @lang == "fr" ? %w(Partie Part) : %w(Part Partie)
-        dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/part"))
-        dn and set(:partid, @i18n.l10n("#{label1} #{dn.text}"))
-        dn and set(:partid_alt, @i18n.l10n("#{label2} #{dn.text}"))
+        docid_part(isoxml, %w(Appendix Annexe), "appendix", :appendixid)
+        docid_part(isoxml, %w(Annex Appendice), "annexid", :annexid)
+        docid_part(isoxml, %w(Part Partie), "part", :partid)
         set(:org_abbrev,
             isoxml.at(ns("//bibdata/ext/editorialgroup/committee"\
                          "[@acronym = 'JCGM']")) ? "JCGM" : "BIPM")
+      end
+
+      def docid_part(isoxml, labels, elem, key)
+        @lang == "fr" and labels.reverse!
+        label1, label2 = labels
+        dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/#{elem}"))
+        dn and set(key, @i18n.l10n("#{label1} #{dn.text}"))
+        dn and set("#{key}_alt".to_sym, @i18n.l10n("#{label2} #{dn.text}"))
       end
 
       def extract_person_names_affiliations(authors)
@@ -74,6 +72,20 @@ module IsoDoc
         pubdate = isoxml
           .at(ns("//bibdata/date[not(@format)][@type = 'published']"))
         pubdate and set(:pubdate_monthyear, monthyr(pubdate.text))
+      end
+
+      def author(xml, _out)
+        super
+        authorizer(xml)
+      end
+
+      def authorizer(xml)
+        ret = xml.xpath(ns("//bibdata/contributor[xmlns:role/@type = " \
+                           "'authorizer']/organization"))
+          .each_with_object([]) do |org, m|
+          m << extract_variant(org.at(ns("./name")))
+        end
+        ret.empty? or set(:authorizer, ret)
       end
     end
   end
