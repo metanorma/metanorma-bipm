@@ -9,6 +9,7 @@ module Relaton
         end
 
         def klass_initialize(_options)
+          super
           @nametemplateklass = Relaton::Render::Template::Name
           @seriestemplateklass = Relaton::Render::Template::Series
           @extenttemplateklass = Relaton::Render::Template::Extent

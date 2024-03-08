@@ -178,12 +178,14 @@ RSpec.describe IsoDoc do
               <formattedref>International Organization for Standardization. <em>Cereals and cereal products</em>. ISO 712.</formattedref>
               <docidentifier type="metanorma-ordinal">[1]</docidentifier>
               <docidentifier type="ISO">ISO 712</docidentifier>
+              <docidentifier scope="biblio-tag">ISO 712</docidentifier>
               <biblio-tag>[1]<tab/>ISO 712 </biblio-tag>
             </bibitem>
             <bibitem id="ISO16634" type="standard">
               <formattedref><em>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</em>. ISO 16634:-- (all parts).</formattedref>
               <docidentifier type="metanorma-ordinal">[2]</docidentifier>
               <docidentifier type="ISO">ISO 16634:-- (all parts)</docidentifier>
+              <docidentifier scope="biblio-tag">ISO 16634:-- (all parts)</docidentifier>
               <note format="text/plain" reference="1" type="Unpublished-Status">Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
               <biblio-tag>[2]<tab/>ISO 16634:-- (all parts)<fn reference="1"><p>Under preparation. (Stage at the time of publication ISO/DIS 16634)</p></fn></biblio-tag>
             </bibitem>
@@ -191,6 +193,7 @@ RSpec.describe IsoDoc do
               <formattedref>International Organization for Standardization. (2013–2014) <em>Cereals and pulses</em>. ISO 20483:2013-2014.</formattedref>
               <docidentifier type="metanorma-ordinal">[3]</docidentifier>
               <docidentifier type="ISO">ISO 20483:2013-2014</docidentifier>
+              <docidentifier scope="biblio-tag">ISO 20483:2013-2014</docidentifier>
               <biblio-tag>[3]<tab/>ISO 20483:2013-2014 </biblio-tag>
             </bibitem>
             <bibitem id="ref1">
@@ -201,6 +204,7 @@ RSpec.describe IsoDoc do
                 )</formattedref>
               <docidentifier type="metanorma-ordinal">[4]</docidentifier>
               <docidentifier type="ICC">ICC/167</docidentifier>
+              <docidentifier scope="biblio-tag">ICC/167</docidentifier>
               <biblio-tag>[4]<tab/>ICC/167 </biblio-tag>
             </bibitem>
             <note>
@@ -236,6 +240,7 @@ RSpec.describe IsoDoc do
               <formattedref><em>Water for analytical laboratory use</em>. BIPM 3696.</formattedref>
               <docidentifier type="metanorma-ordinal">[8]</docidentifier>
               <docidentifier type="BIPM">BIPM 3696</docidentifier>
+              <docidentifier scope="biblio-tag">BIPM 3696</docidentifier>
               <biblio-tag>[8]<tab/>BIPM 3696 </biblio-tag>
             </bibitem>
             <bibitem id="ref10">
@@ -251,6 +256,7 @@ RSpec.describe IsoDoc do
               <formattedref><em>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</em>. IETF RFC 10.</formattedref>
               <docidentifier type="metanorma-ordinal">[10]</docidentifier>
               <docidentifier type="IETF">IETF RFC 10</docidentifier>
+              <docidentifier scope="biblio-tag">IETF RFC 10</docidentifier>
               <biblio-tag>[10]<tab/>IETF RFC 10 </biblio-tag>
             </bibitem>
             <bibitem id="ref12">
@@ -259,6 +265,7 @@ RSpec.describe IsoDoc do
                 .</formattedref>
               <docidentifier type="metanorma">[Citn]</docidentifier>
               <docidentifier type="IETF">IETF RFC 20</docidentifier>
+              <docidentifier scope="biblio-tag">IETF RFC 20</docidentifier>
               <biblio-tag>Citn<tab/>IETF RFC 20 </biblio-tag>
             </bibitem>
           </references>
@@ -447,16 +454,19 @@ RSpec.describe IsoDoc do
             <formattedref><em>Cereals or cereal products</em>. ABC.</formattedref>
             <docidentifier type='metanorma-ordinal'>[1]</docidentifier>
             <docidentifier>ABC</docidentifier>
+            <docidentifier scope="biblio-tag">ABC</docidentifier>
             <biblio-tag>[1]<tab/>ABC </biblio-tag>
           </bibitem>
           <bibitem id='ref2' type='standard' hidden='true'>
             <formattedref><em>Cereals or cereal products</em>. ABD.</formattedref>
             <docidentifier>ABD</docidentifier>
+            <docidentifier scope="biblio-tag">ABD</docidentifier>
           </bibitem>
           <bibitem id='ref3' type='standard'>
             <formattedref><em>Cereals or cereal products</em>. ABE.</formattedref>
             <docidentifier type='metanorma-ordinal'>[2]</docidentifier>
             <docidentifier>ABE</docidentifier>
+            <docidentifier scope="biblio-tag">ABE</docidentifier>
             <biblio-tag>[2]<tab/>ABE </biblio-tag>
           </bibitem>
         </references>
@@ -527,14 +537,16 @@ RSpec.describe IsoDoc do
           <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
             <title depth="1">Bibliography</title>
             <bibitem id="a1" hidden="true">
-              <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>.</formattedref>
+              <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
               <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
               <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
+              <docidentifier scope="biblio-tag">CGPM Resolution 1</docidentifier>
             </bibitem>
             <bibitem id="a2" hidden="true">
-              <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>.</formattedref>
+              <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
               <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
               <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
+              <docidentifier scope="biblio-tag">CIPM Decision 105</docidentifier>
             </bibitem>
           </references>
         </bibliography>
@@ -605,17 +617,19 @@ RSpec.describe IsoDoc do
            <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
              <title depth="1">Bibliography</title>
              <bibitem id="a1">
-               <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>.</formattedref>
+               <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
                <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
                <docidentifier type="metanorma-ordinal">[1]</docidentifier>
                <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
+               <docidentifier scope="biblio-tag">CGPM Resolution 1</docidentifier>
                <biblio-tag>[1]<tab/>CGPM Resolution 1 </biblio-tag>
              </bibitem>
              <bibitem id="a2">
-             <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>.</formattedref>
+             <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
                <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
                <docidentifier type="metanorma-ordinal">[2]</docidentifier>
                <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
+               <docidentifier scope="biblio-tag">CIPM Decision 105</docidentifier>
                <biblio-tag>[2]<tab/>CIPM Decision 105 </biblio-tag>
              </bibitem>
            </references>
