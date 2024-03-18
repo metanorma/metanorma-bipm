@@ -334,7 +334,8 @@ RSpec.describe IsoDoc do
          </div>
        </body>
     OUTPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, "")
       .gsub(%r{reference="[^"]+"}, 'reference="1"'))))
@@ -348,79 +349,68 @@ RSpec.describe IsoDoc do
   it "processes BIPM references" do
     VCR.use_cassette "isodoc1" do
       input = <<~INPUT
-         <bipm-standard xmlns="http://riboseinc.com/isoxml">
-              <sections>
-            <clause id='_' obligation='normative'>
-              <title>Clause</title>
-              <p id='_'>
-                <eref type='inline' bibitemid='a1' citeas='CR 03'/>
-                <eref type='inline' bibitemid='a2' citeas='PV 105'/>
-              </p>
-            </clause>
-          </sections>
-          <bibliography>
-            <references id='_' normative='false' obligation='informative'>
-              <title>Bibliography</title>
-              <bibitem id='a1'>
-                <fetched>2022-02-13</fetched>
-                <title format='text/plain' language='en' script='Latn'>3rd meeting of the CGPM</title>
-                <uri type='src'>https://www.bipm.org/en/committees/cg/cgpm/3-1901</uri>
-                <docidentifier type='BIPM' primary='true'>BIPM CR 03</docidentifier>
-                <date type='published'>
-                  <on>1901-10-22</on>
-                </date>
-                <contributor>
-                  <role type='publisher'/>
-                  <organization>
-                    <name>Bureau Intrnational des Poids et Mesures</name>
-                    <abbreviation>BIPM</abbreviation>
-                    <uri>www.bipm.org</uri>
-                  </organization>
-                </contributor>
-                <language>en</language>
-                <language>fr</language>
-                <script>Latn</script>
-              </bibitem>
-              <bibitem id='a2'>
-                <fetched>2022-02-13</fetched>
-                <title format='text/plain' language='en' script='Latn'>105th meeting of the CIPM</title>
-                <uri type='src'>https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
-                <docidentifier type='BIPM' primary='true'>BIPM PV 105</docidentifier>
-                <date type='published'>
-                  <on>2016-10-28</on>
-                </date>
-                <contributor>
-                  <role type='publisher'/>
-                  <organization>
-                    <name>Bureau Intrnational des Poids et Mesures</name>
-                    <abbreviation>BIPM</abbreviation>
-                    <uri>www.bipm.org</uri>
-                  </organization>
-                </contributor>
-                <language>en</language>
-                <language>fr</language>
-                <script>Latn</script>
-              </bibitem>
-            </references>
-          </bibliography>
-        </bipm-standard>
+        <bipm-standard xmlns="http://riboseinc.com/isoxml">
+          <bibdata type="standard"><language>en</language><script>Latn</script></bibdata>
+           <sections>
+             <clause id='_' obligation='normative'>
+                      <title>Clause</title>
+                      <p id='_'>
+                        <eref type='inline' bibitemid='a1' citeas='CR 03'/>
+                        <eref type='inline' bibitemid='a2' citeas='PV 105'/>
+                      </p>
+                    </clause>
+                  </sections>
+                  <bibliography>
+                  <references id="_bibliography" normative="false" obligation="informative">
+        <title>Bibliography</title><bibitem id="a1" type="proceedings" schema-version="v1.2.8">  <fetched>2024-03-19</fetched>
+        <title format="text/plain" language="en" script="Latn">1st meeting of the CGPM</title>
+          <uri type="citation" language="en" script="Latn">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>  <uri type="citation" language="fr" script="Latn">https://www.bipm.org/fr/committees/cg/cgpm/1-1889</uri>  <uri type="pdf">https://www.bipm.org/documents/20126/38097196/CGPM1.pdf/0ff415d6-87a2-5e23-5a1c-cadf8b8047a6</uri>  <uri type="src" language="en" script="Latn">https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cgpm/meetings-en/meeting-01.yml</uri>  <uri type="src" language="fr" script="Latn">https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cgpm/meetings-fr/meeting-01.yml</uri>  <docidentifier type="BIPM" primary="true" language="en" script="Latn">CGPM 1st Meeting (1889)</docidentifier>  <docidentifier type="BIPM" primary="true" language="fr" script="Latn">CGPM 1e Réunion (1889)</docidentifier>  <docidentifier type="BIPM" primary="true">CGPM 1st Meeting (1889) / CGPM 1e Réunion (1889)</docidentifier>  <docnumber>CGPM 1st Meeting (1889)</docnumber>  <date type="published">    <on>1889-09-28</on>  </date>  <contributor>    <role type="publisher"/>    <organization>
+        <name language="en" script="Latn">International Bureau of Weights and Measures</name>
+              <abbreviation>BIPM</abbreviation>      <uri>www.bipm.org</uri>    </organization>  </contributor>  <contributor>    <role type="author"/>    <organization>
+        <name language="en" script="Latn">General Conference on Weights and Measures</name>
+              <abbreviation>CGPM</abbreviation>    </organization>  </contributor>  <language>en</language>  <language>fr</language>  <script>Latn</script>  <place>    <city>Paris</city>  </place></bibitem><bibitem id="a2" type="proceedings" schema-version="v1.2.8">  <fetched>2024-03-19</fetched>
+        <title format="text/plain" language="en" script="Latn">Decision CIPM/101-1 (2012)</title>
+          <uri type="citation" language="en" script="Latn">https://www.bipm.org/en/committees/ci/cipm/101-_1-2012</uri>  <uri type="citation" language="fr" script="Latn">https://www.bipm.org/fr/committees/ci/cipm/101-_1-2012</uri>  <uri type="src" language="en" script="Latn">https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cipm/meetings-en/meeting-101-1.yml</uri>  <uri type="src" language="fr" script="Latn">https://raw.githubusercontent.com/metanorma/bipm-data-outcomes/main/cipm/meetings-fr/meeting-101-1.yml</uri>  <docidentifier type="BIPM" primary="true">CIPM DECN 101-1 (2012)</docidentifier>  <docidentifier type="BIPM" primary="true" language="en" script="Latn">CIPM DECN 101-1 (2012, E)</docidentifier>  <docidentifier type="BIPM" primary="true" language="fr" script="Latn">CIPM DECN 101-1 (2012, F)</docidentifier>  <docidentifier type="BIPM-long" language="en" script="Latn">CIPM Decision 101-1 (2012)</docidentifier>  <docidentifier type="BIPM-long" language="fr" script="Latn">Décision CIPM/101-1 (2012)</docidentifier>  <docidentifier type="BIPM-long">CIPM Decision 101-1 (2012) / Décision CIPM/101-1 (2012)</docidentifier>  <docnumber>CIPM DECN 101-1 (2012)</docnumber>  <date type="published">    <on>2012-06-08</on>  </date>  <contributor>    <role type="publisher"/>    <organization>
+        <name language="en" script="Latn">International Bureau of Weights and Measures</name>
+              <abbreviation>BIPM</abbreviation>      <uri>www.bipm.org</uri>    </organization>  </contributor>  <contributor>    <role type="author"/>    <organization>
+        <name language="en" script="Latn">International Committee for Weights and Measures</name>
+              <abbreviation>CIPM</abbreviation>    </organization>  </contributor>  <language>en</language>  <language>fr</language>  <script>Latn</script>  <place>    <city>Paris</city>  </place></bibitem>
+                  </references>
+                  </bibliography>
+                </bipm-standard>
       INPUT
       output = <<~OUTPUT
         <sections>
           <clause id='_' obligation='normative' displayorder='2'>
-            <title depth='1'>Clause</title>
+            <title depth="1">1.<tab/>Clause</title>
             <p id='_'>
-              <xref type='inline' target='a1'>CR&#xa0;03</eref>
-              <xref type='inline' target='a2'>PV&#xa0;105</eref>
+            <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">CGPM 1st Meeting (1889)</link>
+            <link target="https://www.bipm.org/en/committees/ci/cipm/101-_1-2012">CIPM DECN 101-1 (2012, E)</link>
             </p>
           </clause>
         </sections>
       OUTPUT
-      expect(xmlpp(
-               Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
-              .convert("test", input, true))
-              .at("//xmlns:sections").to_xml,
-             ))
+      expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+        .new(presxml_options)
+        .convert("test", input, true))
+         .at("//xmlns:sections").to_xml))
+        .to be_equivalent_to xmlpp(output)
+      output = <<~OUTPUT
+        <sections>
+          <clause id='_' obligation='normative' displayorder='2'>
+            <title depth="1">1.<tab/>Clause</title>
+            <p id='_'>
+            <link target="https://www.bipm.org/fr/committees/cg/cgpm/1-1889">CGPM 1e Réunion (1889)</link>
+            <link target="https://www.bipm.org/fr/committees/ci/cipm/101-_1-2012">CIPM DECN 101-1 (2012, F)</link>
+            </p>
+          </clause>
+        </sections>
+      OUTPUT
+      input = input.sub("<language>en</language>", "<language>fr</language>")
+      expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+        .new(presxml_options)
+        .convert("test", input, true))
+         .at("//xmlns:sections").to_xml))
         .to be_equivalent_to xmlpp(output)
     end
   end
