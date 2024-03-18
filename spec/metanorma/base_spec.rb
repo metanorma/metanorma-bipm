@@ -107,8 +107,8 @@ RSpec.describe Metanorma::BIPM do
           <title format="text/plain" language="fr" type="title-part">Partie</title>
           <title format="text/plain" language="fr" type="title-subpart">Subpartie</title>
           <title format="text/plain" language="fr" type="title-provenance">Provenance-fr</title>
-          <docidentifier type="BIPM" language="en">BIPM 1000 Appendix ABC Annex DEF Part 2</docidentifier>
-          <docidentifier type="BIPM" language="fr">BIPM 1000 Annexe ABC Appendice DEF Partie 2</docidentifier>
+          <docidentifier primary="true" type="BIPM" language="en">BIPM 1000 Appendix ABC Annex DEF Part 2</docidentifier>
+          <docidentifier primary="true" type="BIPM" language="fr">BIPM 1000 Annexe ABC Appendice DEF Partie 2</docidentifier>
           <docnumber>1000</docnumber>
           <date type="implemented">
             <on>D</on>
@@ -365,7 +365,7 @@ RSpec.describe Metanorma::BIPM do
         <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
         <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
         <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
-          <docidentifier type="BIPM">BIPM 1000</docidentifier>
+          <docidentifier primary="true" type="BIPM">BIPM 1000</docidentifier>
           <docnumber>1000</docnumber>
           <date type='implemented'>
           <on>D</on>
@@ -514,8 +514,8 @@ RSpec.describe Metanorma::BIPM do
            <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
            <title language="fr" format="text/plain" type="title-main">Chef Title</title>
            <title language="fr" format="text/plain" type="title-cover">Chef Title (SI)</title>
-           <docidentifier type="BIPM" language="fr">BIPM 1000 Annexe ABC Partie 2.1</docidentifier>
-           <docidentifier type="BIPM" language="en">BIPM 1000 Appendix ABC Part 2.1</docidentifier>
+           <docidentifier primary="true" type="BIPM" language="fr">BIPM 1000 Annexe ABC Partie 2.1</docidentifier>
+           <docidentifier primary="true" type="BIPM" language="en">BIPM 1000 Appendix ABC Part 2.1</docidentifier>
            <docnumber>1000</docnumber>
            <date type="implemented">
              <on>D</on>
@@ -685,8 +685,8 @@ RSpec.describe Metanorma::BIPM do
           <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
           <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
           <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
-          <docidentifier type="BIPM" language="fr">JCGM 1000 Annexe ABC Partie 2.1</docidentifier>
-          <docidentifier type="BIPM" language="en">JCGM 1000 Appendix ABC Part 2.1</docidentifier>
+          <docidentifier primary="true" type="BIPM" language="fr">JCGM 1000 Annexe ABC Partie 2.1</docidentifier>
+          <docidentifier primary="true" type="BIPM" language="en">JCGM 1000 Appendix ABC Part 2.1</docidentifier>
           <docnumber>1000</docnumber>
           <date type='implemented'>
             <on>D</on>
