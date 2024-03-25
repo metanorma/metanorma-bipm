@@ -203,7 +203,7 @@ RSpec.describe IsoDoc::BIPM do
                <name>1.1.</name>
                <preferred>Term2</preferred>
                <termsource status="modified">[Modified from: <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, Clause 3.1</origin>
-            –
+            &#x2014;
            The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</termsource>
              </term>
              <term id="K">
@@ -217,7 +217,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~OUTPUT)
-             <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
          <div class="title-section">
            <p> </p>
          </div>
@@ -236,7 +236,7 @@ RSpec.describe IsoDoc::BIPM do
              <p class="TermNum" id="J">1.1.</p>
              <p class="Terms" style="text-align:left;">Term2</p>
              <p>[Modified from: ISO 7301:2011, Clause 3.1
-            –
+            &#x2014;
            The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</p>
              <p class="TermNum" id="K">1.2.</p>
              <p class="Terms" style="text-align:left;">Term3</p>
@@ -318,7 +318,7 @@ RSpec.describe IsoDoc::BIPM do
                <name>1.1.</name>
                <preferred>Term2</preferred>
                <termsource status="modified">[Modified from: <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality>ISO 7301:2011, <span class="citesec">3.1</span></origin>
-            –
+            &#x2014;
            The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</termsource>
              </term>
              <term id="K">
@@ -332,7 +332,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = xmlpp(<<~OUTPUT)
-           <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
          <div class="title-section">
            <p> </p>
          </div>
@@ -351,7 +351,7 @@ RSpec.describe IsoDoc::BIPM do
              <p class="TermNum" id="J">1.1.</p>
              <p class="Terms" style="text-align:left;">Term2</p>
              <p>[Modified from: ISO 7301:2011, <span class="citesec">3.1</span>
-            –
+            &#x2014;
            The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</p>
              <p class="TermNum" id="K">1.2.</p>
              <p class="Terms" style="text-align:left;">Term3</p>
@@ -1190,7 +1190,8 @@ RSpec.describe IsoDoc::BIPM do
         </sections>
       </bipm-standard>
     INPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to xmlpp(<<~OUTPUT)
@@ -1331,7 +1332,8 @@ RSpec.describe IsoDoc::BIPM do
         </indexsect>
       </bipm-standard>
     INPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to xmlpp(<<~OUTPUT)
@@ -1477,7 +1479,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = <<~PRESXML
-           <foreword displayorder="2">
+      <foreword displayorder="2">
          <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
            <xref target="ISO712">ISO 712, Clause 3</xref>
            <xref target="ISO712">ISO 712, Clause 3.1</xref>
@@ -1534,7 +1536,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = <<~PRESXML
-           <foreword displayorder="2">
+      <foreword displayorder="2">
          <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
            <xref target="ISO712">[ISO 712], <span class="citesec">Clause 3</span></xref>
            <xref target="ISO712">[ISO 712], <span class="citesec">3.1</span></xref>
@@ -1593,7 +1595,7 @@ RSpec.describe IsoDoc::BIPM do
       </iso-standard>
     INPUT
     presxml = <<~OUTPUT
-           <foreword displayorder="2">
+      <foreword displayorder="2">
          <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
          [<xref target="ISO712">ISO 712</xref>] [<xref target="ISO712">ISO 712</xref>]
          and
