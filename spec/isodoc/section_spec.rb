@@ -203,6 +203,7 @@ RSpec.describe IsoDoc::BIPM do
                </div>
                <div id="K">
                  <h2>1.3.</h2>
+                 <div class="figdl">
                  <dl>
                    <dt>
                      <p>Symbol</p>
@@ -210,15 +211,18 @@ RSpec.describe IsoDoc::BIPM do
                    <dd>Definition</dd>
                  </dl>
                </div>
+               </div>
              </div>
              <div id="L" class="Symbols">
                <h1>2.</h1>
+               <div class="figdl">
                <dl>
                  <dt>
                    <p>Symbol</p>
                  </dt>
                  <dd>Definition</dd>
                </dl>
+             </div>
              </div>
              <div id="M">
                <h1>3.  Clause 4</h1>
@@ -493,6 +497,7 @@ RSpec.describe IsoDoc::BIPM do
                </div>
                <div id="K">
                  <h2>3.3.</h2>
+                 <div class="figdl">
                  <dl>
                    <dt>
                      <p>Symbol</p>
@@ -500,15 +505,18 @@ RSpec.describe IsoDoc::BIPM do
                    <dd>Definition</dd>
                  </dl>
                </div>
+               </div>
              </div>
              <div id="L" class="Symbols">
                <h1>4.</h1>
+               <div class="figdl">
                <dl>
                  <dt>
                    <p>Symbol</p>
                  </dt>
                  <dd>Definition</dd>
                </dl>
+             </div>
              </div>
              <div id="M">
                <h1>5.  Clause 4</h1>
