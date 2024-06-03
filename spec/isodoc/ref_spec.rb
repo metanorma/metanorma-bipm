@@ -524,7 +524,7 @@ RSpec.describe IsoDoc do
       INPUT
       presxml = <<~PRESXML
             <bibliography>
-          <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
+          <references id="_normative_references" obligation="informative" normative="false" displayorder="2" hidden="true">
             <title depth="1">Bibliography</title>
             <bibitem id="a1" hidden="true">
               <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
