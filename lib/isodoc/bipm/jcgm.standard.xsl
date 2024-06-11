@@ -709,14 +709,11 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:element name="{$element-name}">
-			<xsl:attribute name="text-align">
-				<xsl:choose>
-					<xsl:when test="@align"><xsl:value-of select="@align"/></xsl:when>
-					<xsl:when test="ancestor::*[local-name()='td']/@align"><xsl:value-of select="ancestor::*[local-name()='td']/@align"/></xsl:when>
-					<xsl:when test="ancestor::*[local-name()='th']/@align"><xsl:value-of select="ancestor::*[local-name()='th']/@align"/></xsl:when>
-					<xsl:otherwise>justify</xsl:otherwise><!-- left -->
-				</xsl:choose>
-			</xsl:attribute>
+
+			<xsl:call-template name="setBlockAttributes">
+				<xsl:with-param name="text_align_default">justify</xsl:with-param>
+			</xsl:call-template>
+
 			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 			<xsl:if test="ancestor::*[@first or @slave]">
 				<!-- JCGM two column layout -->
@@ -13322,7 +13319,10 @@
 		<xsl:call-template name="setTextAlignment">
 			<xsl:with-param name="default" select="$text_align_default"/>
 		</xsl:call-template>
+		<xsl:call-template name="setKeepAttributes"/>
+	</xsl:template>
 
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="setKeepAttributes">
 		<!-- https://www.metanorma.org/author/topics/document-format/text/#avoiding-page-breaks -->
 		<!-- Example: keep-lines-together="true" -->
 		<xsl:if test="@keep-lines-together = 'true'">
