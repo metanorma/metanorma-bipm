@@ -2737,6 +2737,7 @@
 					<xsl:otherwise>justify</xsl:otherwise>
 				</xsl:choose>
 			</xsl:attribute>
+			<xsl:call-template name="setKeepAttributes"/>
 			<xsl:copy-of select="@font-family"/>
 			<xsl:if test="not(ancestor::bipm:table)">
 				<xsl:attribute name="margin-bottom">6pt</xsl:attribute>
@@ -3872,7 +3873,7 @@
 			<xsl:strip-space xmlns:redirect="http://xml.apache.org/xalan/redirect" elements="bipm:xref"/>
 
 	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="namespace_full" select="namespace-uri(/*)"/> <!-- example: https://www.metanorma.org/ns/iso -->
-	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="root_element" select="local-name(/*)"/>
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="root_element" select="local-name(/*)"/> <!-- example: iso-standard -->
 
 	<!-- external parameters -->
 
@@ -5596,7 +5597,7 @@
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="processPrefaceSectionsDefault_items">
 
-		<xsl:variable name="updated_xml_step_move_pagebreak_">
+		<xsl:variable name="updated_xml_step_move_pagebreak">
 
 			<xsl:element name="{$root_element}" namespace="{$namespace_full}">
 
@@ -5614,17 +5615,32 @@
 		</xsl:variable>
 
 		<xsl:variable name="updated_xml_step_move_pagebreak_filename" select="concat($output_path,'_preface_', java:getTime(java:java.util.Date.new()), '.xml')"/>
-
+		<!-- <xsl:message>updated_xml_step_move_pagebreak_filename=<xsl:value-of select="$updated_xml_step_move_pagebreak_filename"/></xsl:message>
+		<xsl:message>start write updated_xml_step_move_pagebreak_filename</xsl:message> -->
 		<redirect:write file="{$updated_xml_step_move_pagebreak_filename}">
-			<xsl:copy-of select="$updated_xml_step_move_pagebreak_"/>
+			<xsl:copy-of select="$updated_xml_step_move_pagebreak"/>
 		</redirect:write>
+		<!-- <xsl:message>end write updated_xml_step_move_pagebreak_filename</xsl:message> -->
 
 		<xsl:copy-of select="document($updated_xml_step_move_pagebreak_filename)"/>
 
+		<!-- TODO: instead of 
+		<xsl:for-each select=".//*[local-name() = 'page_sequence'][normalize-space() != '' or .//image or .//svg]">
+		in each template, add removing empty page_sequence here
+		-->
+
+		<xsl:if test="$debug = 'true'">
+			<redirect:write file="page_sequence_preface.xml">
+				<xsl:copy-of select="document($updated_xml_step_move_pagebreak_filename)"/>
+			</redirect:write>
+		</xsl:if>
+
+		<!-- <xsl:message>start delete updated_xml_step_move_pagebreak_filename</xsl:message> -->
 		<xsl:call-template name="deleteFile">
 			<xsl:with-param name="filepath" select="$updated_xml_step_move_pagebreak_filename"/>
 		</xsl:call-template>
-	</xsl:template>
+		<!-- <xsl:message>end delete updated_xml_step_move_pagebreak_filename</xsl:message> -->
+	</xsl:template> <!-- END: processPrefaceSectionsDefault_items -->
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="copyCommonElements">
 		<!-- copy bibdata, localized-strings, metanorma-extension and boilerplate -->
@@ -5649,37 +5665,7 @@
 		</xsl:for-each>
 	</xsl:template><!-- END: processMainSectionsDefault -->
 
-	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="processMainSectionsDefault_flatxml">
-		<xsl:for-each select="/*/*[local-name()='sections']/* | /*/*[local-name()='bibliography']/*[local-name()='references'][@normative='true']">
-			<xsl:sort select="@displayorder" data-type="number"/>
-			<xsl:variable name="flatxml">
-				<xsl:apply-templates select="." mode="flatxml"/>
-			</xsl:variable>
-			<!-- debug_flatxml='<xsl:copy-of select="$flatxml"/>' -->
-			<xsl:apply-templates select="xalan:nodeset($flatxml)/*"/>
-
-		</xsl:for-each>
-
-		<xsl:for-each select="/*/*[local-name()='annex']">
-			<xsl:sort select="@displayorder" data-type="number"/>
-			<xsl:variable name="flatxml">
-				<xsl:apply-templates select="." mode="flatxml"/>
-			</xsl:variable>
-			<!-- debug_flatxml='<xsl:copy-of select="$flatxml"/>' -->
-			<xsl:apply-templates select="xalan:nodeset($flatxml)/*"/>
-		</xsl:for-each>
-
-		<xsl:for-each select="/*/*[local-name()='bibliography']/*[not(@normative='true')] |          /*/*[local-name()='bibliography']/*[local-name()='clause'][*[local-name()='references'][not(@normative='true')]]">
-			<xsl:sort select="@displayorder" data-type="number"/>
-			<xsl:variable name="flatxml">
-				<xsl:apply-templates select="." mode="flatxml"/>
-			</xsl:variable>
-			<!-- debug_flatxml='<xsl:copy-of select="$flatxml"/>' -->
-			<xsl:apply-templates select="xalan:nodeset($flatxml)/*"/>
-		</xsl:for-each>
-	</xsl:template>
-
-	<!-- Example:
+  <!-- Example:
 	<iso-standard>
 		<sections>
 			<page_sequence>
@@ -5699,7 +5685,7 @@
 	-->
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="processMainSectionsDefault_items">
 
-		<xsl:variable name="updated_xml_step_move_pagebreak_">
+		<xsl:variable name="updated_xml_step_move_pagebreak">
 
 			<xsl:element name="{$root_element}" namespace="{$namespace_full}">
 
@@ -5736,10 +5722,16 @@
 		<xsl:variable name="updated_xml_step_move_pagebreak_filename" select="concat($output_path,'_main_', java:getTime(java:java.util.Date.new()), '.xml')"/>
 
 		<redirect:write file="{$updated_xml_step_move_pagebreak_filename}">
-			<xsl:copy-of select="$updated_xml_step_move_pagebreak_"/>
+			<xsl:copy-of select="$updated_xml_step_move_pagebreak"/>
 		</redirect:write>
 
 		<xsl:copy-of select="document($updated_xml_step_move_pagebreak_filename)"/>
+
+		<xsl:if test="$debug = 'true'">
+			<redirect:write file="page_sequence_main.xml">
+				<xsl:copy-of select="document($updated_xml_step_move_pagebreak_filename)"/>
+			</redirect:write>
+		</xsl:if>
 
 		<xsl:call-template name="deleteFile">
 			<xsl:with-param name="filepath" select="$updated_xml_step_move_pagebreak_filename"/>
@@ -5751,6 +5743,14 @@
 		<xsl:variable name="xml_file" select="java:java.io.File.new($filepath)"/>
 		<xsl:variable name="xml_file_path" select="java:toPath($xml_file)"/>
 		<xsl:variable name="deletefile" select="java:java.nio.file.Files.deleteIfExists($xml_file_path)"/>
+	</xsl:template>
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="getPageSequenceOrientation">
+		<xsl:variable name="previous_orientation" select="preceding-sibling::*[local-name() = 'page_sequence'][@orientation][1]/@orientation"/>
+		<xsl:choose>
+			<xsl:when test="@orientation = 'landscape'">-<xsl:value-of select="@orientation"/></xsl:when>
+			<xsl:when test="$previous_orientation = 'landscape' and not(@orientation = 'portrait')">-<xsl:value-of select="$previous_orientation"/></xsl:when>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="regex_standard_reference">([A-Z]{2,}(/[A-Z]{2,})* \d+(-\d+)*(:\d{4})?)</xsl:variable>
@@ -6097,7 +6097,9 @@
 
 					<xsl:variable name="isNoteOrFnExist" select="./*[local-name()='note'][not(@type = 'units')] or ./*[local-name()='example'] or .//*[local-name()='fn'][local-name(..) != 'name'] or ./*[local-name()='source']"/>
 					<xsl:if test="$isNoteOrFnExist = 'true'">
-						<xsl:attribute name="border-bottom">0pt solid black</xsl:attribute><!-- set 0pt border, because there is a separete table below for footer -->
+
+								<xsl:attribute name="border-bottom">0pt solid black</xsl:attribute><!-- set 0pt border, because there is a separete table below for footer -->
+
 					</xsl:if>
 
 					<xsl:choose>
@@ -6154,13 +6156,14 @@
 				</fo:table>
 
 				<xsl:variable name="colgroup" select="*[local-name()='colgroup']"/>
-				<xsl:for-each select="*[local-name()='tbody']"><!-- select context to tbody -->
-					<xsl:call-template name="insertTableFooterInSeparateTable">
-						<xsl:with-param name="table_attributes" select="$table_attributes"/>
-						<xsl:with-param name="colwidths" select="$colwidths"/>
-						<xsl:with-param name="colgroup" select="$colgroup"/>
-					</xsl:call-template>
-				</xsl:for-each>
+
+						<xsl:for-each select="*[local-name()='tbody']"><!-- select context to tbody -->
+							<xsl:call-template name="insertTableFooterInSeparateTable">
+								<xsl:with-param name="table_attributes" select="$table_attributes"/>
+								<xsl:with-param name="colwidths" select="$colwidths"/>
+								<xsl:with-param name="colgroup" select="$colgroup"/>
+							</xsl:call-template>
+						</xsl:for-each>
 
 				<xsl:if test="*[local-name()='bookmark']"> <!-- special case: table/bookmark -->
 					<fo:block keep-with-previous="always" line-height="0.1">
@@ -6554,8 +6557,10 @@
 					<width_min><xsl:value-of select="@width_min"/></width_min>
 					<e><xsl:value-of select="$d * $W div $D"/></e>
 					<!-- set the column's width to the minimum width plus d times W over D.  -->
+					<xsl:variable name="column_width_" select="round(@width_min + $d * $W div $D)"/> <!--  * 10 -->
+					<xsl:variable name="column_width" select="$column_width_*($column_width_ &gt;= 0) - $column_width_*($column_width_ &lt; 0)"/> <!-- absolute value -->
 					<column divider="100">
-						<xsl:value-of select="round(@width_min + $d * $W div $D)"/> <!--  * 10 -->
+						<xsl:value-of select="$column_width"/>
 					</column>
 				</xsl:for-each>
 
@@ -6979,6 +6984,22 @@
 			</xsl:call-template>
 
 			<xsl:call-template name="refine_table-header-cell-style"/>
+
+			<!-- experimental feature, see https://github.com/metanorma/metanorma-plateau/issues/30#issuecomment-2145461828 -->
+			<!-- <xsl:choose>
+				<xsl:when test="count(node()) = 1 and *[local-name() = 'span'][contains(@style, 'text-orientation')]">
+					<fo:block-container reference-orientation="270">
+						<fo:block role="SKIP" text-align="start">
+							<xsl:apply-templates />
+						</fo:block>
+					</fo:block-container>
+				</xsl:when>
+				<xsl:otherwise>
+					<fo:block role="SKIP">
+						<xsl:apply-templates />
+					</fo:block>
+				</xsl:otherwise>
+			</xsl:choose> -->
 
 			<fo:block role="SKIP">
 				<xsl:apply-templates/>
@@ -10543,6 +10564,15 @@
 		<xsl:choose>
 			<xsl:when test="@mimetype = 'image/svg+xml' and $images/images/image[@id = current()/@id]">
 				<xsl:value-of select="$images/images/image[@id = current()/@id]/@src"/>
+			</xsl:when>
+			<!-- in WebP format, then convert image into PNG -->
+			<xsl:when test="starts-with(@src, 'data:image/webp')">
+				<xsl:variable name="src_png" select="java:org.metanorma.fop.utils.ImageUtils.convertWebPtoPNG(@src)"/>
+				<xsl:value-of select="$src_png"/>
+			</xsl:when>
+			<xsl:when test="not(starts-with(@src, 'data:')) and        (java:endsWith(java:java.lang.String.new(@src), '.webp') or       java:endsWith(java:java.lang.String.new(@src), '.WEBP'))">
+				<xsl:variable name="src_png" select="java:org.metanorma.fop.utils.ImageUtils.convertWebPtoPNG(@src)"/>
+				<xsl:value-of select="concat('url(file:///',$basepath, $src_png, ')')"/>
 			</xsl:when>
 			<xsl:when test="not(starts-with(@src, 'data:'))">
 				<xsl:value-of select="concat('url(file:///',$basepath, @src, ')')"/>
@@ -14232,6 +14262,75 @@
 	<!-- ===================================== -->
 	<!-- Update xml -->
 	<!-- ===================================== -->
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="updateXML">
+		<xsl:if test="$debug = 'true'"><xsl:message>START updated_xml_step1</xsl:message></xsl:if>
+		<xsl:variable name="startTime1" select="java:getTime(java:java.util.Date.new())"/>
+
+		<!-- STEP1: Re-order elements in 'preface', 'sections' based on @displayorder -->
+		<xsl:variable name="updated_xml_step1">
+			<xsl:if test="$table_if = 'false'">
+				<xsl:apply-templates mode="update_xml_step1"/>
+			</xsl:if>
+		</xsl:variable>
+
+		<xsl:variable name="endTime1" select="java:getTime(java:java.util.Date.new())"/>
+		<xsl:if test="$debug = 'true'">
+			<xsl:message>DEBUG: processing time <xsl:value-of select="$endTime1 - $startTime1"/> msec.</xsl:message>
+			<xsl:message>END updated_xml_step1</xsl:message>
+			<!-- <redirect:write file="updated_xml_step1_{java:getTime(java:java.util.Date.new())}.xml">
+				<xsl:copy-of select="$updated_xml_step1"/>
+			</redirect:write> -->
+		</xsl:if>
+
+		<xsl:if test="$debug = 'true'"><xsl:message>START updated_xml_step2</xsl:message></xsl:if>
+		<xsl:variable name="startTime2" select="java:getTime(java:java.util.Date.new())"/>
+
+		<!-- STEP2: add 'fn' after 'eref' and 'origin', if referenced to bibitem with 'note' = Withdrawn.' or 'Cancelled and replaced...'  -->
+		<xsl:variable name="updated_xml_step2">
+
+					<xsl:if test="$table_if = 'false'">
+						<xsl:copy-of select="$updated_xml_step1"/>
+					</xsl:if>
+
+		</xsl:variable>
+
+		<xsl:variable name="endTime2" select="java:getTime(java:java.util.Date.new())"/>
+		<xsl:if test="$debug = 'true'">
+			<xsl:message>DEBUG: processing time <xsl:value-of select="$endTime2 - $startTime2"/> msec.</xsl:message>
+			<xsl:message>END updated_xml_step2</xsl:message>
+			<!-- <redirect:write file="updated_xml_step2_{java:getTime(java:java.util.Date.new())}.xml">
+				<xsl:copy-of select="$updated_xml_step2"/>
+			</redirect:write> -->
+		</xsl:if>
+
+		<xsl:if test="$debug = 'true'"><xsl:message>START updated_xml_step3</xsl:message></xsl:if>
+		<xsl:variable name="startTime3" select="java:getTime(java:java.util.Date.new())"/>
+
+		<xsl:variable name="updated_xml_step3">
+			<xsl:choose>
+				<xsl:when test="$table_if = 'false'">
+					<xsl:apply-templates select="xalan:nodeset($updated_xml_step2)" mode="update_xml_enclose_keep-together_within-line"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:apply-templates select="." mode="update_xml_enclose_keep-together_within-line"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:variable name="endTime3" select="java:getTime(java:java.util.Date.new())"/>
+		<xsl:if test="$debug = 'true'">
+			<xsl:message>DEBUG: processing time <xsl:value-of select="$endTime3 - $startTime3"/> msec.</xsl:message>
+			<xsl:message>END updated_xml_step3</xsl:message>
+			<!-- <redirect:write file="updated_xml_step3_{java:getTime(java:java.util.Date.new())}.xml">
+				<xsl:copy-of select="$updated_xml_step3"/>
+			</redirect:write> -->
+		</xsl:if>
+
+		<xsl:copy-of select="$updated_xml_step3"/>
+
+	</xsl:template>
+
 	<!-- =========================================================================== -->
 	<!-- STEP1:  -->
 	<!--   - Re-order elements in 'preface', 'sections' based on @displayorder -->
@@ -14431,7 +14530,7 @@
 
 		<!-- determine pagebreak is last element before </fo:flow> or not -->
 		<xsl:variable name="isLast">
-			<xsl:for-each select="ancestor-or-self::*[ancestor::*[local-name() = 'sections'] or ancestor-or-self::*[local-name() = 'annex']]">
+			<xsl:for-each select="ancestor-or-self::*[ancestor::*[local-name() = 'preface'] or ancestor::*[local-name() = 'sections'] or ancestor-or-self::*[local-name() = 'annex']]">
 				<xsl:if test="following-sibling::*">false</xsl:if>
 			</xsl:for-each>
 		</xsl:variable>
@@ -14453,7 +14552,7 @@
 			<xsl:text disable-output-escaping="yes">&lt;/page_sequence&gt;</xsl:text>
 
 			<!-- create a new page_sequence (opening elements) -->
-			<xsl:text disable-output-escaping="yes">&lt;page_sequence namespace="</xsl:text><xsl:value-of select="$namespace_full"/>"<xsl:if test="$orientation != ''"> orientation="<xsl:value-of select="$orientation"/>"</xsl:if><xsl:text disable-output-escaping="yes">&gt;</xsl:text>
+			<xsl:text disable-output-escaping="yes">&lt;page_sequence xmlns="</xsl:text><xsl:value-of select="$namespace_full"/>"<xsl:if test="$orientation != ''"> orientation="<xsl:value-of select="$orientation"/>"</xsl:if><xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 
 			<xsl:call-template name="insertOpeningElements">
 				<xsl:with-param name="tree" select="$tree"/>
@@ -14463,7 +14562,7 @@
 	</xsl:template>
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="makeAncestorsElementsTree">
-		<xsl:for-each select="ancestor::*[ancestor::*[local-name() = 'sections'] or ancestor-or-self::*[local-name() = 'annex']]">
+		<xsl:for-each select="ancestor::*[ancestor::*[local-name() = 'preface'] or ancestor::*[local-name() = 'sections'] or ancestor-or-self::*[local-name() = 'annex']]">
 			<element pos="{position()}">
 				<xsl:copy-of select="@*[local-name() != 'id']"/>
 				<xsl:value-of select="name()"/>
@@ -14644,7 +14743,7 @@
 				<xsl:value-of select="substring-before($text, $tag_open)"/>
 				<xsl:variable name="text_after" select="substring-after($text, $tag_open)"/>
 
-				<xsl:element name="{substring-before(substring-after($tag_open, '###'),'###')}">
+				<xsl:element name="{substring-before(substring-after($tag_open, '###'),'###')}" namespace="{$namespace_full}">
 					<xsl:value-of select="substring-before($text_after, $tag_close)"/>
 				</xsl:element>
 
@@ -15466,7 +15565,10 @@
 		<xsl:call-template name="setTextAlignment">
 			<xsl:with-param name="default" select="$text_align_default"/>
 		</xsl:call-template>
+		<xsl:call-template name="setKeepAttributes"/>
+	</xsl:template>
 
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="setKeepAttributes">
 		<!-- https://www.metanorma.org/author/topics/document-format/text/#avoiding-page-breaks -->
 		<!-- Example: keep-lines-together="true" -->
 		<xsl:if test="@keep-lines-together = 'true'">
@@ -15477,6 +15579,72 @@
 			<xsl:attribute name="keep-with-next">always</xsl:attribute>
 		</xsl:if>
 	</xsl:template>
+
+	<!-- insert cover page image -->
+		<!-- background cover image -->
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertBackgroundPageImage">
+		<xsl:param name="number">1</xsl:param>
+		<xsl:param name="name">coverpage-image</xsl:param>
+		<xsl:variable name="num" select="number($number)"/>
+		<!-- background image -->
+		<fo:block-container absolute-position="fixed" left="0mm" top="0mm" font-size="0" id="__internal_layout__coverpage_{$name}_{$number}_{generate-id()}">
+			<fo:block>
+				<xsl:for-each select="/*[contains(local-name(), '-standard')]/*[local-name() = 'metanorma-extension']/*[local-name() = 'presentation-metadata'][*[local-name() = 'name'] = $name][1]/*[local-name() = 'value']/*[local-name() = 'image'][$num]">
+					<xsl:choose>
+						<xsl:when test="*[local-name() = 'svg'] or java:endsWith(java:java.lang.String.new(@src), '.svg')">
+							<fo:instream-foreign-object fox:alt-text="Image Front">
+								<xsl:attribute name="content-height"><xsl:value-of select="$pageHeight"/>mm</xsl:attribute>
+								<xsl:call-template name="getSVG"/>
+							</fo:instream-foreign-object>
+						</xsl:when>
+						<xsl:when test="starts-with(@src, 'data:application/pdf;base64')">
+							<fo:external-graphic src="{@src}" fox:alt-text="Image Front"/>
+						</xsl:when>
+						<xsl:otherwise> <!-- bitmap image -->
+							<xsl:variable name="coverimage_src" select="normalize-space(@src)"/>
+							<xsl:if test="$coverimage_src != ''">
+								<xsl:variable name="coverpage">
+									<xsl:call-template name="getImageURL">
+										<xsl:with-param name="src" select="$coverimage_src"/>
+									</xsl:call-template>
+								</xsl:variable>
+								<!-- <xsl:variable name="coverpage" select="concat('url(file:',$basepath, 'coverpage1.png', ')')"/> --> <!-- for DEBUG -->
+								<fo:external-graphic src="{$coverpage}" width="{$pageWidth}mm" content-height="scale-to-fit" scaling="uniform" fox:alt-text="Image Front"/>
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
+			</fo:block>
+		</fo:block-container>
+	</xsl:template>
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="getImageURL">
+		<xsl:param name="src"/>
+		<xsl:choose>
+			<xsl:when test="starts-with($src, 'data:image')">
+				<xsl:value-of select="$src"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="concat('url(file:///',$basepath, $src, ')')"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="getSVG">
+		<xsl:choose>
+			<xsl:when test="*[local-name() = 'svg']">
+				<xsl:apply-templates select="*[local-name() = 'svg']" mode="svg_update"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="svg_content" select="document(@src)"/>
+				<xsl:for-each select="xalan:nodeset($svg_content)/node()">
+					<xsl:apply-templates select="." mode="svg_update"/>
+				</xsl:for-each>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!-- END: insert cover page image -->
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="number-to-words">
 		<xsl:param name="number"/>
