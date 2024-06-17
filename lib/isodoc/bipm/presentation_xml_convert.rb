@@ -79,17 +79,28 @@ module IsoDoc
           fraction_group_digits: 3 }
       end
 
-      def localized_number(num, locale, precision)
-        g = Regexp.quote(@twitter_cldr_reader[:group])
-        f = Regexp.quote(@twitter_cldr_reader[:fraction_group])
-        d = Regexp.quote(@twitter_cldr_reader[:decimal])
-        super.sub(/^(\d)#{g}(\d) (?= \d\d$ | \d\d#{d} )/x, "\\1\\2")
-          .sub(/(?<= ^\d\d | #{d}\d\d ) (\d)#{f}(\d) $/x, "\\1\\2")
+      def localize_maths(node, locale)
+        super
+        node.xpath(".//m:mn", MATHML).each do |x|
+          x.children = x.text
+            .sub(/^(\d)#{@cldr[:g]}(\d) (?= \d\d$ | \d\d#{@cldr[:d]} )/x,
+                 "\\1\\2")
+            .sub(/(?<= ^\d\d | #{@cldr[:d]}\d\d ) (\d)#{@cldr[:f]}(\d) $/x,
+                 "\\1\\2")
+        end
       end
 
-      def mathml1(elem, locale)
-        asciimath_dup(elem)
-        localize_maths(elem, locale)
+      def mathml1(node, locale)
+        unless @cldr
+          r = @numfmt.twitter_cldr_reader(locale: locale)
+            .transform_values { |v| @c.decode(v) }
+          @cldr = {
+            g: Regexp.quote(r[:group]),
+            f: Regexp.quote(r[:fraction_group]),
+            d: Regexp.quote(r[:decimal]),
+          }
+        end
+        super
       end
 
       def bibdata_i18n(bibdata)
