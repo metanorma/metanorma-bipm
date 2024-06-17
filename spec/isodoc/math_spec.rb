@@ -133,65 +133,49 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = <<~OUTPUT
-        <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
-          <bibdata>
-            <title language="en">test</title>
-            <language current="true">en</language>
-          </bibdata>
-          <preface>
-              <clause type="toc" id="_" displayorder="1">
-                <title depth="1">Contents</title>
-              </clause>
-            <p displayorder="2">
-                         <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>30 000</mn>
-               </math>
-               <asciimath>30000</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>3000.0003</mn>
-               </math>
-               <asciimath>3000.0003</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>3 000 000.000 000 3</mn>
-               </math>
-               <asciimath>3000000.0000003</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>0.0003</mn>
-               </math>
-               <asciimath>.0003</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>0.000 000 3</mn>
-               </math>
-               <asciimath>.0000003</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>3000</mn>
-               </math>
-               <asciimath>3000</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>3 000 000</mn>
-               </math>
-               <asciimath>3000000</asciimath>
-             </stem>
-              <stem type='MathML'>
-                <math xmlns='http://www.w3.org/1998/Math/MathML'>
-                  <mi>P</mi>
-                  <mfenced open='(' close=')'>
+      <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+        <bibdata>
+          <title language="en">test</title>
+          <language current="true">en</language>
+        </bibdata>
+        <preface>
+            <clause type="toc" id="_" displayorder="1">
+              <title depth="1">Contents</title>
+            </clause>
+          <p displayorder="2">
+               30 000
+               3000.0003
+               3 000 000.000 000 3
+               0.0003
+               0.000 000 3
+               3000
+               3 000 000
+            <stem type='MathML'>
+              <math xmlns='http://www.w3.org/1998/Math/MathML'>
+                <mi>P</mi>
+                <mfenced open='(' close=')'>
+                  <mrow>
+                    <mi>X</mi>
+                    <mo>&#x2265;</mo>
+                    <msub>
+                      <mrow>
+                        <mi>X</mi>
+                      </mrow>
+                      <mrow>
+                        <mo>max</mo>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                </mfenced>
+                <mo>=</mo>
+                <munderover>
+                  <mrow>
+                    <mo>&#x2211;</mo>
+                  </mrow>
+                  <mrow>
                     <mrow>
-                      <mi>X</mi>
-                      <mo>&#x2265;</mo>
+                      <mi>j</mi>
+                      <mo>=</mo>
                       <msub>
                         <mrow>
                           <mi>X</mi>
@@ -201,143 +185,108 @@ RSpec.describe IsoDoc::BIPM do
                         </mrow>
                       </msub>
                     </mrow>
-                  </mfenced>
-                  <mo>=</mo>
-                  <munderover>
-                    <mrow>
-                      <mo>&#x2211;</mo>
-                    </mrow>
-                    <mrow>
-                      <mrow>
+                  </mrow>
+                  <mrow>
+                    <mn>1000</mn>
+                  </mrow>
+                </munderover>
+                <mfenced open='(' close=')'>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mn>0.0001</mn>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
                         <mi>j</mi>
-                        <mo>=</mo>
-                        <msub>
-                          <mrow>
-                            <mi>X</mi>
-                          </mrow>
-                          <mrow>
-                            <mo>max</mo>
-                          </mrow>
-                        </msub>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mfenced>
+                <msup>
+                  <mrow>
+                    <mi>p</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>j</mi>
+                  </mrow>
+                </msup>
+                <msup>
+                  <mrow>
+                    <mfenced open='(' close=')'>
+                      <mrow>
+                        <mn>1000.000&#xA0;01</mn>
+                        <mo>&#x2212;</mo>
+                        <mi>p</mi>
                       </mrow>
-                    </mrow>
+                    </mfenced>
+                  </mrow>
+                  <mrow>
                     <mrow>
-                      <mn>1000</mn>
-                    </mrow>
-                  </munderover>
-                  <mfenced open='(' close=')'>
-                    <mtable>
-                      <mtr>
-                        <mtd>
-                          <mn>0.0001</mn>
-                        </mtd>
-                      </mtr>
-                      <mtr>
-                        <mtd>
-                          <mi>j</mi>
-                        </mtd>
-                      </mtr>
-                    </mtable>
-                  </mfenced>
-                  <msup>
-                    <mrow>
-                      <mi>p</mi>
-                    </mrow>
-                    <mrow>
+                      <mn>1.003</mn>
+                      <mo>&#x2212;</mo>
                       <mi>j</mi>
                     </mrow>
-                  </msup>
-                  <msup>
-                    <mrow>
-                      <mfenced open='(' close=')'>
-                        <mrow>
-                          <mn>1000.000&#xA0;01</mn>
-                          <mo>&#x2212;</mo>
-                          <mi>p</mi>
-                        </mrow>
-                      </mfenced>
-                    </mrow>
-                    <mrow>
-                      <mrow>
-                        <mn>1.003</mn>
-                        <mo>&#x2212;</mo>
-                        <mi>j</mi>
-                      </mrow>
-                    </mrow>
-                  </msup>
-                </math>
-                <asciimath>P (X ge X_(max)) = sum_(j = X_(max))^(1000) ([[0.0001], [j]]) p^(j) (1000.00001 - p)^(1.003 - j)</asciimath>
-              </stem>
-            </p>
-          </preface>
-        </iso-standard>
+                  </mrow>
+                </msup>
+              </math>
+              <asciimath>P (X ge X_(max)) = sum_(j = X_(max))^(1000) ([[0.0001], [j]]) p^(j) (1000.00001 - p)^(1.003 - j)</asciimath>
+            </stem>
+          </p>
+        </preface>
+      </iso-standard>
     OUTPUT
     expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
       .to be_equivalent_to xmlpp(output)
 
-output = <<~OUTPUT
-        <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
-          <bibdata>
-            <title language="en">test</title>
-            <language current="true">fr</language>
-          </bibdata>
+    output = <<~OUTPUT
+      <iso-standard xmlns='http://riboseinc.com/isoxml' type='presentation'>
+        <bibdata>
+          <title language="en">test</title>
+          <language current="true">fr</language>
+        </bibdata>
 
-          <preface>
-              <clause type="toc" id="_" displayorder="1">
-                <title depth="1">Table des matières</title>
-              </clause>
-            <p displayorder="2">
-                         <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>30 000</mn>
-               </math>
-               <asciimath>30000</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>3000,0003</mn>
-               </math>
-               <asciimath>3000.0003</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>3 000 000,000 000 3</mn>
-               </math>
-               <asciimath>3000000.0000003</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>0,0003</mn>
-               </math>
-               <asciimath>.0003</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>0,000 000 3</mn>
-               </math>
-               <asciimath>.0000003</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>3000</mn>
-               </math>
-               <asciimath>3000</asciimath>
-             </stem>
-             <stem type="MathML">
-               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                 <mn>3 000 000</mn>
-               </math>
-               <asciimath>3000000</asciimath>
-             </stem>
-              <stem type='MathML'>
-                <math xmlns='http://www.w3.org/1998/Math/MathML'>
-                  <mi>P</mi>
-                  <mfenced open='(' close=')'>
+        <preface>
+            <clause type="toc" id="_" displayorder="1">
+              <title depth="1">Table des matières</title>
+            </clause>
+          <p displayorder="2">
+               30 000
+               3000,0003
+               3 000 000,000 000 3
+               0,0003
+               0,000 000 3
+               3000
+               3 000 000
+            <stem type='MathML'>
+              <math xmlns='http://www.w3.org/1998/Math/MathML'>
+                <mi>P</mi>
+                <mfenced open='(' close=')'>
+                  <mrow>
+                    <mi>X</mi>
+                    <mo>&#x2265;</mo>
+                    <msub>
+                      <mrow>
+                        <mi>X</mi>
+                      </mrow>
+                      <mrow>
+                        <mo>max</mo>
+                      </mrow>
+                    </msub>
+                  </mrow>
+                </mfenced>
+                <mo>=</mo>
+                <munderover>
+                  <mrow>
+                    <mo>&#x2211;</mo>
+                  </mrow>
+                  <mrow>
                     <mrow>
-                      <mi>X</mi>
-                      <mo>&#x2265;</mo>
+                      <mi>j</mi>
+                      <mo>=</mo>
                       <msub>
                         <mrow>
                           <mi>X</mi>
@@ -347,76 +296,57 @@ output = <<~OUTPUT
                         </mrow>
                       </msub>
                     </mrow>
-                  </mfenced>
-                  <mo>=</mo>
-                  <munderover>
-                    <mrow>
-                      <mo>&#x2211;</mo>
-                    </mrow>
-                    <mrow>
-                      <mrow>
+                  </mrow>
+                  <mrow>
+                    <mn>1000</mn>
+                  </mrow>
+                </munderover>
+                <mfenced open='(' close=')'>
+                  <mtable>
+                    <mtr>
+                      <mtd>
+                        <mn>0,0001</mn>
+                      </mtd>
+                    </mtr>
+                    <mtr>
+                      <mtd>
                         <mi>j</mi>
-                        <mo>=</mo>
-                        <msub>
-                          <mrow>
-                            <mi>X</mi>
-                          </mrow>
-                          <mrow>
-                            <mo>max</mo>
-                          </mrow>
-                        </msub>
+                      </mtd>
+                    </mtr>
+                  </mtable>
+                </mfenced>
+                <msup>
+                  <mrow>
+                    <mi>p</mi>
+                  </mrow>
+                  <mrow>
+                    <mi>j</mi>
+                  </mrow>
+                </msup>
+                <msup>
+                  <mrow>
+                    <mfenced open='(' close=')'>
+                      <mrow>
+                        <mn>1000,000&#xA0;01</mn>
+                        <mo>&#x2212;</mo>
+                        <mi>p</mi>
                       </mrow>
-                    </mrow>
+                    </mfenced>
+                  </mrow>
+                  <mrow>
                     <mrow>
-                      <mn>1000</mn>
-                    </mrow>
-                  </munderover>
-                  <mfenced open='(' close=')'>
-                    <mtable>
-                      <mtr>
-                        <mtd>
-                          <mn>0,0001</mn>
-                        </mtd>
-                      </mtr>
-                      <mtr>
-                        <mtd>
-                          <mi>j</mi>
-                        </mtd>
-                      </mtr>
-                    </mtable>
-                  </mfenced>
-                  <msup>
-                    <mrow>
-                      <mi>p</mi>
-                    </mrow>
-                    <mrow>
+                      <mn>1,003</mn>
+                      <mo>&#x2212;</mo>
                       <mi>j</mi>
                     </mrow>
-                  </msup>
-                  <msup>
-                    <mrow>
-                      <mfenced open='(' close=')'>
-                        <mrow>
-                          <mn>1000,000&#xA0;01</mn>
-                          <mo>&#x2212;</mo>
-                          <mi>p</mi>
-                        </mrow>
-                      </mfenced>
-                    </mrow>
-                    <mrow>
-                      <mrow>
-                        <mn>1,003</mn>
-                        <mo>&#x2212;</mo>
-                        <mi>j</mi>
-                      </mrow>
-                    </mrow>
-                  </msup>
-                </math>
-                <asciimath>P (X ge X_(max)) = sum_(j = X_(max))^(1000) ([[0.0001], [j]]) p^(j) (1000.00001 - p)^(1.003 - j)</asciimath>
-              </stem>
-            </p>
-          </preface>
-        </iso-standard>
+                  </mrow>
+                </msup>
+              </math>
+              <asciimath>P (X ge X_(max)) = sum_(j = X_(max))^(1000) ([[0.0001], [j]]) p^(j) (1000.00001 - p)^(1.003 - j)</asciimath>
+            </stem>
+          </p>
+        </preface>
+      </iso-standard>
     OUTPUT
     expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input.sub(">en<", ">fr<"), true))
