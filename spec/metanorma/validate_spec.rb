@@ -16,7 +16,7 @@ RSpec.describe Metanorma::BIPM do
       expect do
         Metanorma::Compile
           .new
-          .compile("xref_error.adoc", type: "bipm", no_install_fonts: true)
+          .compile("xref_error.adoc", type: "bipm", install_fonts: false)
       end.to(
         change { File.exist?("xref_error.err.html") }
           .from(false)
