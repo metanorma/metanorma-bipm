@@ -18,7 +18,6 @@ validate_rng_file: lib/metanorma/bipm/bipm.rng
 htmlcoverpage: lib/isodoc/bipm/html/html_bipm_titlepage.html
 htmlintropage: lib/isodoc/bipm/html/html_bipm_intro.html
 htmlstylesheet: lib/isodoc/bipm/html/htmlstyle.scss
-scripts: lib/isodoc/bipm/html/scripts.html
 boilerplate:
   en: lib/metanorma/bipm/boilerplate-en.xml
   fr: lib/metanorma/bipm/boilerplate-fr.xml
