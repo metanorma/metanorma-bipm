@@ -1080,7 +1080,7 @@ RSpec.describe Metanorma::BIPM do
               <preferred><expression><name>Term1</name></expression></preferred>
             </term>
           </terms>
-          <clause id='_' obligation='normative'>
+          <clause id='_' obligation='normative' type="terms">
             <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
             <clause id='_' obligation='normative'>
@@ -1095,7 +1095,7 @@ RSpec.describe Metanorma::BIPM do
                 <title>Intro 3</title>
               </clause>
             </terms>
-            <clause id='_' obligation='normative'>
+            <clause id='_' obligation='normative' type="terms">
               <title>Intro 4</title>
               <terms id='_' obligation='normative'>
                 <title>Intro 5</title>
@@ -1282,7 +1282,7 @@ RSpec.describe Metanorma::BIPM do
             <preferred><expression><name>Term1</name></expression></preferred>
           </term>
         </terms>
-        <clause id='_' obligation='normative'>
+        <clause id='_' obligation='normative' type="terms">
           <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
           <p id='_'>For the purposes of this document, the following terms and definitions apply.</p>
           <clause id='_' obligation='normative'>
@@ -1297,7 +1297,7 @@ RSpec.describe Metanorma::BIPM do
               <title>Intro 3</title>
             </clause>
           </terms>
-          <clause id='_' obligation='normative'>
+          <clause id='_' obligation='normative' type="terms">
             <title>Intro 4</title>
             <terms id='_' obligation='normative'>
               <title>Intro 5</title>

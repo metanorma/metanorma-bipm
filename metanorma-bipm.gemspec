@@ -25,10 +25,10 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
 
   spec.add_dependency "metanorma-generic", "~> 2.6.2"
-  spec.add_dependency "metanorma-iso", "~> 2.7.3"
+  spec.add_dependency "metanorma-iso", "~> 2.8.0"
 
   spec.add_development_dependency "debug"
   spec.add_development_dependency "equivalent-xml", "~> 0.6"
