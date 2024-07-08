@@ -3875,6 +3875,8 @@
 	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="namespace_full" select="namespace-uri(/*)"/> <!-- example: https://www.metanorma.org/ns/iso -->
 	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="root_element" select="local-name(/*)"/> <!-- example: iso-standard -->
 
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="document_scheme" select="normalize-space(//*[contains(local-name(), '-standard')]/*[local-name() = 'metanorma-extension']/*[local-name() = 'presentation-metadata'][*[local-name() = 'name'] = 'document-scheme']/*[local-name() = 'value'])"/>
+
 	<!-- external parameters -->
 
 	<xsl:param xmlns:redirect="http://xml.apache.org/xalan/redirect" name="svg_images"/> <!-- svg images array -->
@@ -5595,56 +5597,9 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="processPrefaceSectionsDefault_items">
-
-		<xsl:variable name="updated_xml_step_move_pagebreak">
-
-			<xsl:element name="{$root_element}" namespace="{$namespace_full}">
-
-				<xsl:call-template name="copyCommonElements"/>
-
-				<xsl:element name="preface" namespace="{$namespace_full}"> <!-- save context element -->
-					<xsl:element name="page_sequence" namespace="{$namespace_full}">
-						<xsl:for-each select="/*/*[local-name()='preface']/*[not(local-name() = 'note' or local-name() = 'admonition')]">
-							<xsl:sort select="@displayorder" data-type="number"/>
-							<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
-						</xsl:for-each>
-					</xsl:element>
-				</xsl:element>
-			</xsl:element>
-		</xsl:variable>
-
-		<xsl:variable name="updated_xml_step_move_pagebreak_filename" select="concat($output_path,'_preface_', java:getTime(java:java.util.Date.new()), '.xml')"/>
-		<!-- <xsl:message>updated_xml_step_move_pagebreak_filename=<xsl:value-of select="$updated_xml_step_move_pagebreak_filename"/></xsl:message>
-		<xsl:message>start write updated_xml_step_move_pagebreak_filename</xsl:message> -->
-		<redirect:write file="{$updated_xml_step_move_pagebreak_filename}">
-			<xsl:copy-of select="$updated_xml_step_move_pagebreak"/>
-		</redirect:write>
-		<!-- <xsl:message>end write updated_xml_step_move_pagebreak_filename</xsl:message> -->
-
-		<xsl:copy-of select="document($updated_xml_step_move_pagebreak_filename)"/>
-
-		<!-- TODO: instead of 
-		<xsl:for-each select=".//*[local-name() = 'page_sequence'][normalize-space() != '' or .//image or .//svg]">
-		in each template, add removing empty page_sequence here
-		-->
-
-		<xsl:if test="$debug = 'true'">
-			<redirect:write file="page_sequence_preface.xml">
-				<xsl:copy-of select="document($updated_xml_step_move_pagebreak_filename)"/>
-			</redirect:write>
-		</xsl:if>
-
-		<!-- <xsl:message>start delete updated_xml_step_move_pagebreak_filename</xsl:message> -->
-		<xsl:call-template name="deleteFile">
-			<xsl:with-param name="filepath" select="$updated_xml_step_move_pagebreak_filename"/>
-		</xsl:call-template>
-		<!-- <xsl:message>end delete updated_xml_step_move_pagebreak_filename</xsl:message> -->
-	</xsl:template> <!-- END: processPrefaceSectionsDefault_items -->
-
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="copyCommonElements">
 		<!-- copy bibdata, localized-strings, metanorma-extension and boilerplate -->
-		<xsl:copy-of select="/*/*[local-name() != 'preface' and local-name() != 'sections' and local-name() != 'annex' and local-name() != 'bibliography']"/>
+		<xsl:copy-of select="/*/*[local-name() != 'preface' and local-name() != 'sections' and local-name() != 'annex' and local-name() != 'bibliography' and local-name() != 'indexsect']"/>
 	</xsl:template>
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="processMainSectionsDefault">
@@ -5665,8 +5620,16 @@
 		</xsl:for-each>
 	</xsl:template><!-- END: processMainSectionsDefault -->
 
-  <!-- Example:
+	<!-- Example:
 	<iso-standard>
+		<preface>
+			<page_sequence>
+				<clause...
+			</page_sequence>
+			<page_sequence>
+				<clause...
+			</page_sequence>
+		</preface>
 		<sections>
 			<page_sequence>
 				<clause...
@@ -5683,39 +5646,13 @@
 		</page_sequence>
 	</iso-standard>
 	-->
-	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="processMainSectionsDefault_items">
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="processPrefaceAndMainSectionsDefault_items">
 
 		<xsl:variable name="updated_xml_step_move_pagebreak">
-
 			<xsl:element name="{$root_element}" namespace="{$namespace_full}">
-
 				<xsl:call-template name="copyCommonElements"/>
-
-				<xsl:element name="sections" namespace="{$namespace_full}"> <!-- save context element -->
-					<xsl:element name="page_sequence" namespace="{$namespace_full}">
-						<xsl:for-each select="/*/*[local-name()='sections']/* | /*/*[local-name()='bibliography']/*[local-name()='references'][@normative='true']">
-							<xsl:sort select="@displayorder" data-type="number"/>
-							<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
-
-						</xsl:for-each>
-					</xsl:element>
-				</xsl:element>
-
-				<xsl:element name="page_sequence" namespace="{$namespace_full}">
-					<xsl:for-each select="/*/*[local-name()='annex']">
-						<xsl:sort select="@displayorder" data-type="number"/>
-						<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
-					</xsl:for-each>
-				</xsl:element>
-
-				<xsl:element name="page_sequence" namespace="{$namespace_full}">
-					<xsl:element name="bibliography" namespace="{$namespace_full}"> <!-- save context element -->
-						<xsl:for-each select="/*/*[local-name()='bibliography']/*[not(@normative='true')] |              /*/*[local-name()='bibliography']/*[local-name()='clause'][*[local-name()='references'][not(@normative='true')]]">
-							<xsl:sort select="@displayorder" data-type="number"/>
-							<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
-						</xsl:for-each>
-					</xsl:element>
-				</xsl:element>
+				<xsl:call-template name="insertPrefaceSectionsPageSequences"/>
+				<xsl:call-template name="insertMainSectionsPageSequences"/>
 			</xsl:element>
 		</xsl:variable>
 
@@ -5728,15 +5665,181 @@
 		<xsl:copy-of select="document($updated_xml_step_move_pagebreak_filename)"/>
 
 		<xsl:if test="$debug = 'true'">
-			<redirect:write file="page_sequence_main.xml">
-				<xsl:copy-of select="document($updated_xml_step_move_pagebreak_filename)"/>
+			<redirect:write file="page_sequence_preface_and_main.xml">
+				<xsl:copy-of select="$updated_xml_step_move_pagebreak"/>
 			</redirect:write>
 		</xsl:if>
 
 		<xsl:call-template name="deleteFile">
 			<xsl:with-param name="filepath" select="$updated_xml_step_move_pagebreak_filename"/>
 		</xsl:call-template>
-	</xsl:template> <!-- END: processMainSectionsDefault_items -->
+	</xsl:template> <!-- END: processPrefaceAndMainSectionsDefault_items -->
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertPrefaceSectionsPageSequences">
+		<xsl:element name="preface" namespace="{$namespace_full}"> <!-- save context element -->
+			<xsl:element name="page_sequence" namespace="{$namespace_full}">
+				<xsl:for-each select="/*/*[local-name()='preface']/*[not(local-name() = 'note' or local-name() = 'admonition')]">
+					<xsl:sort select="@displayorder" data-type="number"/>
+					<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
+				</xsl:for-each>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template> <!-- END: insertPrefaceSectionsPageSequences -->
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertMainSectionsPageSequences">
+		<xsl:element name="sections" namespace="{$namespace_full}"> <!-- save context element -->
+			<xsl:element name="page_sequence" namespace="{$namespace_full}">
+				<xsl:for-each select="/*/*[local-name()='sections']/* | /*/*[local-name()='bibliography']/*[local-name()='references'][@normative='true']">
+					<xsl:sort select="@displayorder" data-type="number"/>
+					<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
+
+				</xsl:for-each>
+			</xsl:element>
+		</xsl:element>
+
+		<xsl:element name="page_sequence" namespace="{$namespace_full}">
+			<xsl:for-each select="/*/*[local-name()='annex']">
+				<xsl:sort select="@displayorder" data-type="number"/>
+				<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
+			</xsl:for-each>
+		</xsl:element>
+
+		<xsl:element name="page_sequence" namespace="{$namespace_full}">
+			<xsl:element name="bibliography" namespace="{$namespace_full}"> <!-- save context element -->
+				<xsl:for-each select="/*/*[local-name()='bibliography']/*[not(@normative='true')] |            /*/*[local-name()='bibliography']/*[local-name()='clause'][*[local-name()='references'][not(@normative='true')]]">
+					<xsl:sort select="@displayorder" data-type="number"/>
+					<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
+				</xsl:for-each>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template> <!-- END: insertMainSectionsPageSequences -->
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertMainSectionsInSeparatePageSequences">
+		<xsl:element name="sections" namespace="{$namespace_full}"> <!-- save context element -->
+			<xsl:for-each select="/*/*[local-name()='sections']/* | /*/*[local-name()='bibliography']/*[local-name()='references'][@normative='true']">
+				<xsl:sort select="@displayorder" data-type="number"/>
+				<xsl:element name="page_sequence" namespace="{$namespace_full}">
+					<xsl:attribute name="main_page_sequence"/>
+					<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:element>
+
+		<xsl:call-template name="insertAnnexInSeparatePageSequences"/>
+
+		<xsl:call-template name="insertBibliographyInSeparatePageSequences"/>
+
+		<!-- <xsl:call-template name="insertIndexInSeparatePageSequences"/> -->
+	</xsl:template> <!-- END: insertMainSectionsInSeparatePageSequences -->
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertAnnexInSeparatePageSequences">
+		<xsl:for-each select="/*/*[local-name()='annex']">
+			<xsl:sort select="@displayorder" data-type="number"/>
+			<xsl:element name="page_sequence" namespace="{$namespace_full}">
+				<xsl:attribute name="main_page_sequence"/>
+				<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
+			</xsl:element>
+		</xsl:for-each>
+	</xsl:template>
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertBibliographyInSeparatePageSequences">
+		<xsl:element name="bibliography" namespace="{$namespace_full}"> <!-- save context element -->
+			<xsl:for-each select="/*/*[local-name()='bibliography']/*[not(@normative='true')] |           /*/*[local-name()='bibliography']/*[local-name()='clause'][*[local-name()='references'][not(@normative='true')]]">
+				<xsl:sort select="@displayorder" data-type="number"/>
+				<xsl:element name="page_sequence" namespace="{$namespace_full}">
+					<xsl:attribute name="main_page_sequence"/>
+					<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
+				</xsl:element>
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertIndexInSeparatePageSequences">
+		<xsl:for-each select="/*/*[local-name()='indexsect']">
+			<xsl:sort select="@displayorder" data-type="number"/>
+			<xsl:element name="page_sequence" namespace="{$namespace_full}">
+				<xsl:attribute name="main_page_sequence"/>
+				<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak"/>
+			</xsl:element>
+		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="processAllSectionsDefault_items">
+		<xsl:variable name="updated_xml_step_move_pagebreak">
+			<xsl:element name="{$root_element}" namespace="{$namespace_full}">
+				<xsl:call-template name="copyCommonElements"/>
+				<xsl:element name="page_sequence" namespace="{$namespace_full}">
+					<xsl:call-template name="insertPrefaceSections"/>
+					<xsl:call-template name="insertMainSections"/>
+				</xsl:element>
+			</xsl:element>
+		</xsl:variable>
+
+		<xsl:variable name="updated_xml_step_move_pagebreak_filename" select="concat($output_path,'_preface_and_main_', java:getTime(java:java.util.Date.new()), '.xml')"/>
+		<!-- <xsl:message>updated_xml_step_move_pagebreak_filename=<xsl:value-of select="$updated_xml_step_move_pagebreak_filename"/></xsl:message>
+		<xsl:message>start write updated_xml_step_move_pagebreak_filename</xsl:message> -->
+		<redirect:write file="{$updated_xml_step_move_pagebreak_filename}">
+			<xsl:copy-of select="$updated_xml_step_move_pagebreak"/>
+		</redirect:write>
+		<!-- <xsl:message>end write updated_xml_step_move_pagebreak_filename</xsl:message> -->
+
+		<xsl:copy-of select="document($updated_xml_step_move_pagebreak_filename)"/>
+
+		<!-- TODO: instead of 
+		<xsl:for-each select=".//*[local-name() = 'page_sequence'][normalize-space() != '' or .//image or .//svg]">
+		in each template, add removing empty page_sequence here
+		-->
+
+		<xsl:if test="$debug = 'true'">
+			<redirect:write file="page_sequence_preface_and_main.xml">
+				<xsl:copy-of select="$updated_xml_step_move_pagebreak"/>
+			</redirect:write>
+		</xsl:if>
+
+		<!-- <xsl:message>start delete updated_xml_step_move_pagebreak_filename</xsl:message> -->
+		<xsl:call-template name="deleteFile">
+			<xsl:with-param name="filepath" select="$updated_xml_step_move_pagebreak_filename"/>
+		</xsl:call-template>
+		<!-- <xsl:message>end delete updated_xml_step_move_pagebreak_filename</xsl:message> -->
+	</xsl:template> <!-- END: processAllSectionsDefault_items -->
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertPrefaceSections">
+		<xsl:element name="preface" namespace="{$namespace_full}"> <!-- save context element -->
+			<xsl:for-each select="/*/*[local-name()='preface']/*[not(local-name() = 'note' or local-name() = 'admonition')]">
+				<xsl:sort select="@displayorder" data-type="number"/>
+				<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak">
+					<xsl:with-param name="page_sequence_at_top">true</xsl:with-param>
+				</xsl:apply-templates>
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertMainSections">
+		<xsl:element name="sections" namespace="{$namespace_full}"> <!-- save context element -->
+
+			<xsl:for-each select="/*/*[local-name()='sections']/* | /*/*[local-name()='bibliography']/*[local-name()='references'][@normative='true']">
+				<xsl:sort select="@displayorder" data-type="number"/>
+				<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak">
+					<xsl:with-param name="page_sequence_at_top">true</xsl:with-param>
+				</xsl:apply-templates>
+
+			</xsl:for-each>
+		</xsl:element>
+
+		<xsl:for-each select="/*/*[local-name()='annex']">
+			<xsl:sort select="@displayorder" data-type="number"/>
+			<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak">
+					<xsl:with-param name="page_sequence_at_top">true</xsl:with-param>
+				</xsl:apply-templates>
+		</xsl:for-each>
+
+		<xsl:element name="bibliography" namespace="{$namespace_full}"> <!-- save context element -->
+			<xsl:for-each select="/*/*[local-name()='bibliography']/*[not(@normative='true')] |           /*/*[local-name()='bibliography']/*[local-name()='clause'][*[local-name()='references'][not(@normative='true')]]">
+				<xsl:sort select="@displayorder" data-type="number"/>
+				<xsl:apply-templates select="." mode="update_xml_step_move_pagebreak">
+					<xsl:with-param name="page_sequence_at_top">true</xsl:with-param>
+				</xsl:apply-templates>
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="deleteFile">
 		<xsl:param name="filepath"/>
@@ -5781,9 +5884,16 @@
 				<xsl:value-of select="substring-before($text, $tag_open)"/>
 				<!-- <xsl:text disable-output-escaping="yes">&lt;fo:inline keep-together.within-line="always"&gt;</xsl:text> -->
 				<xsl:variable name="text_after" select="substring-after($text, $tag_open)"/>
-				<fo:inline keep-together.within-line="always">
-					<xsl:value-of select="substring-before($text_after, $tag_close)"/>
-				</fo:inline>
+				<xsl:choose>
+					<xsl:when test="local-name(..) = 'keep-together_within-line'"> <!-- prevent two nested <fo:inline keep-together.within-line="always"><fo:inline keep-together.within-line="always" -->
+						<xsl:value-of select="substring-before($text_after, $tag_close)"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<fo:inline keep-together.within-line="always" role="SKIP">
+							<xsl:value-of select="substring-before($text_after, $tag_close)"/>
+						</fo:inline>
+					</xsl:otherwise>
+				</xsl:choose>
 				<!-- <xsl:text disable-output-escaping="yes">&lt;/fo:inline&gt;</xsl:text> -->
 				<xsl:call-template name="replace_fo_inline_tags">
 					<xsl:with-param name="tag_open" select="$tag_open"/>
@@ -6983,6 +7093,8 @@
 				<xsl:with-param name="default">center</xsl:with-param>
 			</xsl:call-template>
 
+			<xsl:copy-of select="@keep-together.within-line"/>
+
 			<xsl:call-template name="refine_table-header-cell-style"/>
 
 			<!-- experimental feature, see https://github.com/metanorma/metanorma-plateau/issues/30#issuecomment-2145461828 -->
@@ -7041,6 +7153,8 @@
 				<xsl:with-param name="default">left</xsl:with-param>
 			</xsl:call-template>
 
+			<xsl:copy-of select="@keep-together.within-line"/>
+
 			<xsl:call-template name="refine_table-cell-style"/>
 
 			<xsl:if test=".//*[local-name() = 'table']"> <!-- if there is nested table -->
@@ -7080,6 +7194,7 @@
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name()='table']/*[local-name()='note' or local-name() = 'example']" priority="2">
 
 				<fo:block xsl:use-attribute-sets="table-note-style">
+					<xsl:copy-of select="@id"/>
 
 					<xsl:call-template name="refine_table-note-style"/>
 
@@ -7177,7 +7292,7 @@
 					<xsl:copy-of select="."/>
 				</xsl:for-each>
 
-				<xsl:if test="following-sibling::*[1][local-name() = 'fn']">
+				<xsl:if test="following-sibling::node()[normalize-space() != ''][1][local-name() = 'fn']">
 					<xsl:attribute name="padding-right">0.5mm</xsl:attribute>
 				</xsl:if>
 
@@ -7244,7 +7359,7 @@
 						<xsl:copy-of select="node()"/>
 					</fn>
 				</xsl:for-each>
-				<xsl:for-each select="ancestor::*[contains(local-name(), '-standard')]/*[local-name()='boilerplate']/* |       ancestor::*[contains(local-name(), '-standard')]/*[local-name()='preface']/* |      ancestor::*[contains(local-name(), '-standard')]/*[local-name()='sections']/* |       ancestor::*[contains(local-name(), '-standard')]//*[local-name()='annex'] |      ancestor::*[contains(local-name(), '-standard')]//*[local-name()='bibliography']/*">
+				<xsl:for-each select="ancestor::*[contains(local-name(), '-standard')]/*[local-name()='boilerplate']/* |       ancestor::*[contains(local-name(), '-standard')]//*[local-name()='preface']/* |      ancestor::*[contains(local-name(), '-standard')]//*[local-name()='sections']/* |       ancestor::*[contains(local-name(), '-standard')]//*[local-name()='annex'] |      ancestor::*[contains(local-name(), '-standard')]//*[local-name()='bibliography']/*">
 					<xsl:sort select="@displayorder" data-type="number"/>
 					<!-- commented:
 					 .//*[local-name() = 'bibitem'][ancestor::*[local-name() = 'references']]/*[local-name() = 'note'] |
@@ -7322,6 +7437,11 @@
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="create_fn">
 		<fn reference="{@reference}" id="{@reference}_{ancestor::*[@id][1]/@id}">
+			<xsl:if test="ancestor::*[local-name()='table'][1]/@id"> <!-- for footnotes in tables -->
+				<xsl:attribute name="id">
+					<xsl:value-of select="concat(@reference, '_', ancestor::*[local-name()='table'][1]/@id)"/>
+				</xsl:attribute>
+			</xsl:if>
 
 			<xsl:apply-templates/>
 		</fn>
@@ -7465,6 +7585,11 @@
 			<xsl:call-template name="refine_fn-reference-style"/>
 
 			<fo:basic-link internal-destination="{@reference}_{ancestor::*[@id][1]/@id}" fox:alt-text="{@reference}"> <!-- @reference   | ancestor::*[local-name()='clause'][1]/@id-->
+				<xsl:if test="ancestor::*[local-name()='table'][1]/@id"> <!-- for footnotes in tables -->
+					<xsl:attribute name="internal-destination">
+						<xsl:value-of select="concat(@reference, '_', ancestor::*[local-name()='table'][1]/@id)"/>
+					</xsl:attribute>
+				</xsl:if>
 
 					<fo:inline font-style="normal"> (</fo:inline>
 
@@ -8511,7 +8636,7 @@
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="recursiveSmallCaps">
     <xsl:param name="text"/>
-    <xsl:param name="ratio"/>
+    <xsl:param name="ratio">0.75</xsl:param>
     <xsl:variable name="char" select="substring($text,1,1)"/>
     <!-- <xsl:variable name="upperCase" select="translate($char, $lower, $upper)"/> -->
 		<xsl:variable name="upperCase" select="java:toUpperCase(java:java.lang.String.new($char))"/>
@@ -10664,6 +10789,8 @@
 			</xsl:choose>
 		</xsl:variable>
 
+		<xsl:variable name="isPrecedingTitle" select="normalize-space(ancestor::*[local-name() = 'figure']/preceding-sibling::*[1][local-name() = 'title'] and 1 = 1)"/>
+
 		<xsl:choose>
 			<xsl:when test=".//*[local-name() = 'a'][*[local-name() = 'rect'] or *[local-name() = 'polygon'] or *[local-name() = 'circle'] or *[local-name() = 'ellipse']]">
 				<fo:block>
@@ -10810,7 +10937,14 @@
 							<xsl:variable name="scale_y">
 								<xsl:choose>
 									<xsl:when test="$svg_height * $scale_x &gt; $height_effective_px">
-										<xsl:value-of select="$height_effective_px div ($svg_height * $scale_x)"/>
+										<xsl:variable name="height_effective_px_">
+											<xsl:choose>
+												<!-- title is 'keep-with-next' with following figure -->
+												<xsl:when test="$isPrecedingTitle = 'true'"><xsl:value-of select="$height_effective_px - 80"/></xsl:when>
+												<xsl:otherwise><xsl:value-of select="$height_effective_px"/></xsl:otherwise>
+											</xsl:choose>
+										</xsl:variable>
+										<xsl:value-of select="$height_effective_px_ div ($svg_height * $scale_x)"/>
 									</xsl:when>
 									<xsl:otherwise>1</xsl:otherwise>
 								</xsl:choose>
@@ -11229,7 +11363,7 @@
 								</xsl:if>
 
 								<xsl:for-each select="$contents_nodes/doc">
-									<fo:bookmark internal-destination="{contents/item[1]/@id}" starting-state="hide">
+									<fo:bookmark internal-destination="{contents/item[@display = 'true'][1]/@id}" starting-state="hide">
 										<xsl:if test="@bundle = 'true'">
 											<xsl:attribute name="internal-destination"><xsl:value-of select="@firstpage_id"/></xsl:attribute>
 										</xsl:if>
@@ -12453,9 +12587,17 @@
 
 						<fo:block-container xsl:use-attribute-sets="example-body-style" role="SKIP">
 							<fo:block-container margin-left="0mm" margin-right="0mm" role="SKIP">
-								<xsl:apply-templates select="node()[not(local-name() = 'name')]">
-									<xsl:with-param name="fo_element" select="$fo_element"/>
-								</xsl:apply-templates>
+								<xsl:variable name="example_body">
+									<xsl:apply-templates select="node()[not(local-name() = 'name')]">
+										<xsl:with-param name="fo_element" select="$fo_element"/>
+									</xsl:apply-templates>
+								</xsl:variable>
+								<xsl:choose>
+									<xsl:when test="xalan:nodeset($example_body)/*">
+										<xsl:copy-of select="$example_body"/>
+									</xsl:when>
+									<xsl:otherwise><fo:block/><!-- prevent empty block-container --></xsl:otherwise>
+								</xsl:choose>
 							</fo:block-container>
 						</fo:block-container>
 					</xsl:when> <!-- end block -->
@@ -12999,7 +13141,22 @@
 
 	<!-- note: @top-level added in mode=" update_xml_step_move_pagebreak" -->
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name() = 'sections']/*[local-name() = 'page_sequence']/*[not(@top-level)]" priority="2">
-		<xsl:call-template name="sections_node"/>
+		<xsl:choose>
+			<xsl:when test="local-name() = 'clause' and normalize-space() = '' and count(*) = 0"/>
+			<xsl:otherwise>
+				<xsl:call-template name="sections_node"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!-- page_sequence/sections/clause -->
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name() = 'page_sequence']/*[local-name() = 'sections']/*[not(@top-level)]" priority="2">
+		<xsl:choose>
+			<xsl:when test="local-name() = 'clause' and normalize-space() = '' and count(*) = 0"/>
+			<xsl:otherwise>
+				<xsl:call-template name="sections_node"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="sections_element_style">
@@ -13016,8 +13173,24 @@
 		</fo:block>
 	</xsl:template>
 
-	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name() = 'preface']/*[local-name() = 'page_sequence']/*" priority="2"> <!-- /*/*[local-name() = 'preface']/* -->
-		<xsl:call-template name="preface_node"/>
+	<!-- preface/ page_sequence/clause -->
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name() = 'preface']/*[local-name() = 'page_sequence']/*[not(@top-level)]" priority="2"> <!-- /*/*[local-name() = 'preface']/* -->
+		<xsl:choose>
+			<xsl:when test="local-name() = 'clause' and normalize-space() = '' and count(*) = 0"/>
+			<xsl:otherwise>
+				<xsl:call-template name="preface_node"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!-- page_sequence/preface/clause -->
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name() = 'page_sequence']/*[local-name() = 'preface']/*[not(@top-level)]" priority="2"> <!-- /*/*[local-name() = 'preface']/* -->
+		<xsl:choose>
+			<xsl:when test="local-name() = 'clause' and normalize-space() = '' and count(*) = 0"/>
+			<xsl:otherwise>
+				<xsl:call-template name="preface_node"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name() = 'clause'][normalize-space() != '' or *[local-name() = 'figure'] or @id]" name="template_clause"> <!-- if clause isn't empty -->
@@ -14327,7 +14500,14 @@
 			</redirect:write> -->
 		</xsl:if>
 
+		<!-- <xsl:if test="$debug = 'true'"><xsl:message>START copying updated_xml_step3</xsl:message></xsl:if>
+		<xsl:variable name="startTime4" select="java:getTime(java:java.util.Date.new())"/>  -->
 		<xsl:copy-of select="$updated_xml_step3"/>
+		<!-- <xsl:variable name="endTime4" select="java:getTime(java:java.util.Date.new())"/>
+		<xsl:if test="$debug = 'true'">
+			<xsl:message>DEBUG: processing time <xsl:value-of select="$endTime4 - $startTime4"/> msec.</xsl:message>
+			<xsl:message>END copying updated_xml_step3</xsl:message>
+		</xsl:if> -->
 
 	</xsl:template>
 
@@ -14509,14 +14689,17 @@
 	<!-- STEP MOVE PAGEBREAK: move <pagebreak/> at top level under 'preface' and 'sections' -->
 	<!-- =========================================================================== -->
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="@*|node()" mode="update_xml_step_move_pagebreak">
+		<xsl:param name="page_sequence_at_top">false</xsl:param>
 		<xsl:copy>
-			<xsl:apply-templates select="@*|node()" mode="update_xml_step_move_pagebreak"/>
+			<xsl:apply-templates select="@*|node()" mode="update_xml_step_move_pagebreak">
+				<xsl:with-param name="page_sequence_at_top" select="$page_sequence_at_top"/>
+			</xsl:apply-templates>
 		</xsl:copy>
 	</xsl:template>
 
 	<!-- replace 'pagebreak' by closing tags + page_sequence and  opening page_sequence + tags -->
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name() = 'pagebreak'][not(following-sibling::*[1][local-name() = 'pagebreak'])]" mode="update_xml_step_move_pagebreak">
-
+		<xsl:param name="page_sequence_at_top"/>
 		<!-- <xsl:choose>
 			<xsl:when test="ancestor::*[local-name() = 'sections']">
 			
@@ -14540,7 +14723,9 @@
 			<xsl:variable name="orientation" select="normalize-space(@orientation)"/>
 
 			<xsl:variable name="tree_">
-				<xsl:call-template name="makeAncestorsElementsTree"/>
+				<xsl:call-template name="makeAncestorsElementsTree">
+					<xsl:with-param name="page_sequence_at_top" select="$page_sequence_at_top"/>
+				</xsl:call-template>
 			</xsl:variable>
 			<xsl:variable name="tree" select="xalan:nodeset($tree_)"/>
 
@@ -14562,12 +14747,26 @@
 	</xsl:template>
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="makeAncestorsElementsTree">
-		<xsl:for-each select="ancestor::*[ancestor::*[local-name() = 'preface'] or ancestor::*[local-name() = 'sections'] or ancestor-or-self::*[local-name() = 'annex']]">
-			<element pos="{position()}">
-				<xsl:copy-of select="@*[local-name() != 'id']"/>
-				<xsl:value-of select="name()"/>
-			</element>
-		</xsl:for-each>
+		<xsl:param name="page_sequence_at_top"/>
+
+		<xsl:choose>
+			<xsl:when test="$page_sequence_at_top = 'true'">
+				<xsl:for-each select="ancestor::*[ancestor::*[contains(local-name(), '-standard')]]">
+					<element pos="{position()}">
+						<xsl:copy-of select="@*[local-name() != 'id']"/>
+						<xsl:value-of select="name()"/>
+					</element>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:for-each select="ancestor::*[ancestor::*[local-name() = 'preface'] or ancestor::*[local-name() = 'sections'] or ancestor-or-self::*[local-name() = 'annex']]">
+					<element pos="{position()}">
+						<xsl:copy-of select="@*[local-name() != 'id']"/>
+						<xsl:value-of select="name()"/>
+					</element>
+				</xsl:for-each>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertClosingElements">
@@ -14605,11 +14804,14 @@
 
 	<!-- move full page width figures, tables at top level -->
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name() = 'figure' or local-name() = 'table'][normalize-space(@width) != 'text-width']" mode="update_xml_step_move_pagebreak">
+		<xsl:param name="page_sequence_at_top">false</xsl:param>
 		<xsl:choose>
 			<xsl:when test="$layout_columns != 1">
 
 				<xsl:variable name="tree_">
-				<xsl:call-template name="makeAncestorsElementsTree"/>
+					<xsl:call-template name="makeAncestorsElementsTree">
+						<xsl:with-param name="page_sequence_at_top" select="$page_sequence_at_top"/>
+					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="tree" select="xalan:nodeset($tree_)"/>
 
@@ -14653,81 +14855,140 @@
 
 	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="express_reference_separators">_.\</xsl:variable>
 	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="express_reference_characters" select="concat($upper,$lower,'1234567890',$express_reference_separators)"/>
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="regex_express_reference">(^([A-Za-z0-9_.\\]+)$)</xsl:variable>
 
 	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="element_name_keep-together_within-line">keep-together_within-line</xsl:variable>
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="tag_keep-together_within-line_open">###<xsl:value-of select="$element_name_keep-together_within-line"/>###</xsl:variable>
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="tag_keep-together_within-line_close">###/<xsl:value-of select="$element_name_keep-together_within-line"/>###</xsl:variable>
 
-	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="text()[not(ancestor::*[local-name() = 'bibdata'] or      ancestor::*[local-name() = 'link'][not(contains(.,' '))] or      ancestor::*[local-name() = 'sourcecode'] or      ancestor::*[local-name() = 'math'] or     ancestor::*[local-name() = 'svg'] or     starts-with(., 'http://') or starts-with(., 'https://') or starts-with(., 'www.') )]" name="keep_together_standard_number" mode="update_xml_enclose_keep-together_within-line">
+	<!-- \S matches any non-whitespace character (equivalent to [^\r\n\t\f\v ]) -->
+	<!-- <xsl:variable name="regex_solidus_units">((\b((\S{1,3}\/\S+)|(\S+\/\S{1,3}))\b)|(\/\S{1,3})\b)</xsl:variable> -->
+	<!-- add &lt; and &gt; to \S -->
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="regex_S">[^\r\n\t\f\v \&lt;&gt;\u3000-\u9FFF]</xsl:variable>
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="regex_solidus_units">((\b((<xsl:value-of select="$regex_S"/>{1,3}\/<xsl:value-of select="$regex_S"/>+)|(<xsl:value-of select="$regex_S"/>+\/<xsl:value-of select="$regex_S"/>{1,3}))\b)|(\/<xsl:value-of select="$regex_S"/>{1,3})\b)</xsl:variable>
 
-		<!-- enclose standard's number into tag 'keep-together_within-line' -->
-		<xsl:variable name="tag_keep-together_within-line_open">###<xsl:value-of select="$element_name_keep-together_within-line"/>###</xsl:variable>
-		<xsl:variable name="tag_keep-together_within-line_close">###/<xsl:value-of select="$element_name_keep-together_within-line"/>###</xsl:variable>
-		<xsl:variable name="text__" select="java:replaceAll(java:java.lang.String.new(.), $regex_standard_reference, concat($tag_keep-together_within-line_open,'$1',$tag_keep-together_within-line_close))"/>
-		<xsl:variable name="text_">
-			<xsl:choose>
-				<xsl:when test="ancestor::*[local-name() = 'table']"><xsl:value-of select="."/></xsl:when> <!-- no need enclose standard's number into tag 'keep-together_within-line' in table cells -->
-				<xsl:otherwise><xsl:value-of select="$text__"/></xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="text"><text><xsl:call-template name="replace_text_tags">
-				<xsl:with-param name="tag_open" select="$tag_keep-together_within-line_open"/>
-				<xsl:with-param name="tag_close" select="$tag_keep-together_within-line_close"/>
-				<xsl:with-param name="text" select="$text_"/>
-			</xsl:call-template></text></xsl:variable>
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="non_white_space">[^\s\u3000-\u9FFF]</xsl:variable>
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="regex_dots_units">((\b((<xsl:value-of select="$non_white_space"/>{1,3}\.<xsl:value-of select="$non_white_space"/>+)|(<xsl:value-of select="$non_white_space"/>+\.<xsl:value-of select="$non_white_space"/>{1,3}))\b)|(\.<xsl:value-of select="$non_white_space"/>{1,3})\b)</xsl:variable>
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="text()[not(ancestor::*[local-name() = 'bibdata'] or      ancestor::*[local-name() = 'link'][not(contains(.,' '))] or      ancestor::*[local-name() = 'sourcecode'] or      ancestor::*[local-name() = 'math'] or     ancestor::*[local-name() = 'svg'] or     starts-with(., 'http://') or starts-with(., 'https://') or starts-with(., 'www.') or normalize-space() = '' )]" name="keep_together_standard_number" mode="update_xml_enclose_keep-together_within-line">
 
 		<xsl:variable name="parent" select="local-name(..)"/>
 
+		<xsl:if test="1 = 2"> <!-- alternative variant -->
+
+			<xsl:variable name="regexs">
+				<!-- enclose standard's number into tag 'keep-together_within-line' -->
+				<xsl:if test="not(ancestor::*[local-name() = 'table'])"><regex><xsl:value-of select="$regex_standard_reference"/></regex></xsl:if>
+				<!-- if EXPRESS reference -->
+
+				<!-- keep-together_within-line for: a/b, aaa/b, a/bbb, /b -->
+				<regex><xsl:value-of select="$regex_solidus_units"/></regex>
+				<!-- keep-together_within-line for: a.b, aaa.b, a.bbb, .b  in table's cell ONLY -->
+				<xsl:if test="ancestor::*[local-name() = 'td' or local-name() = 'th']">
+					<regex><xsl:value-of select="$regex_dots_units"/></regex>
+				</xsl:if>
+			</xsl:variable>
+
+			<xsl:variable name="regex_replacement"><xsl:text>(</xsl:text>
+				<xsl:for-each select="xalan:nodeset($regexs)/regex">
+					<xsl:value-of select="."/>
+					<xsl:if test="position() != last()">|</xsl:if>
+				</xsl:for-each>
+				<xsl:text>)</xsl:text>
+			</xsl:variable>
+
+			<!-- regex_replacement='<xsl:value-of select="$regex_replacement"/>' -->
+
+			<xsl:variable name="text_replaced" select="java:replaceAll(java:java.lang.String.new(.), $regex_replacement, concat($tag_keep-together_within-line_open,'$1',$tag_keep-together_within-line_close))"/>
+
+			<!-- text_replaced='<xsl:value-of select="$text_replaced"/>' -->
+
+			<xsl:call-template name="replace_text_tags">
+				<xsl:with-param name="tag_open" select="$tag_keep-together_within-line_open"/>
+				<xsl:with-param name="tag_close" select="$tag_keep-together_within-line_close"/>
+				<xsl:with-param name="text" select="$text_replaced"/>
+			</xsl:call-template>
+		</xsl:if>
+
+		<xsl:if test="1 = 1">
+
+		<!-- enclose standard's number into tag 'keep-together_within-line' -->
+		<xsl:variable name="text">
+			<xsl:element name="text" namespace="{$namespace_full}">
+				<xsl:choose>
+					<xsl:when test="ancestor::*[local-name() = 'table']"><xsl:value-of select="."/></xsl:when> <!-- no need enclose standard's number into tag 'keep-together_within-line' in table cells -->
+					<xsl:otherwise>
+						<xsl:variable name="text_" select="java:replaceAll(java:java.lang.String.new(.), $regex_standard_reference, concat($tag_keep-together_within-line_open,'$1',$tag_keep-together_within-line_close))"/>
+						<!-- <xsl:value-of select="$text__"/> -->
+
+						<xsl:call-template name="replace_text_tags">
+							<xsl:with-param name="tag_open" select="$tag_keep-together_within-line_open"/>
+							<xsl:with-param name="tag_close" select="$tag_keep-together_within-line_close"/>
+							<xsl:with-param name="text" select="$text_"/>
+						</xsl:call-template>
+
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:element>
+		</xsl:variable>
+
 		<xsl:variable name="text2">
-			<text><xsl:for-each select="xalan:nodeset($text)/text/node()">
+			<xsl:element name="text" namespace="{$namespace_full}">
+				<xsl:for-each select="xalan:nodeset($text)/*[local-name() = 'text']/node()">
 					<xsl:copy-of select="."/>
-				</xsl:for-each></text>
+				</xsl:for-each>
+			</xsl:element>
 		</xsl:variable>
 
 		<!-- keep-together_within-line for: a/b, aaa/b, a/bbb, /b -->
-		<!-- \S matches any non-whitespace character (equivalent to [^\r\n\t\f\v ]) -->
-		<!-- <xsl:variable name="regex_solidus_units">((\b((\S{1,3}\/\S+)|(\S+\/\S{1,3}))\b)|(\/\S{1,3})\b)</xsl:variable> -->
-		<!-- add &lt; and &gt; to \S -->
-		<xsl:variable name="regex_S">[^\r\n\t\f\v \&lt;&gt;\u3000-\u9FFF]</xsl:variable>
-		<xsl:variable name="regex_solidus_units">((\b((<xsl:value-of select="$regex_S"/>{1,3}\/<xsl:value-of select="$regex_S"/>+)|(<xsl:value-of select="$regex_S"/>+\/<xsl:value-of select="$regex_S"/>{1,3}))\b)|(\/<xsl:value-of select="$regex_S"/>{1,3})\b)</xsl:variable>
 		<xsl:variable name="text3">
-			<text><xsl:for-each select="xalan:nodeset($text2)/text/node()">
-				<xsl:choose>
-					<xsl:when test="self::text()">
-						<xsl:variable name="text_units_" select="java:replaceAll(java:java.lang.String.new(.),$regex_solidus_units,concat($tag_keep-together_within-line_open,'$1',$tag_keep-together_within-line_close))"/>
-						<xsl:variable name="text_units"><text><xsl:call-template name="replace_text_tags">
-							<xsl:with-param name="tag_open" select="$tag_keep-together_within-line_open"/>
-							<xsl:with-param name="tag_close" select="$tag_keep-together_within-line_close"/>
-							<xsl:with-param name="text" select="$text_units_"/>
-						</xsl:call-template></text></xsl:variable>
-						<xsl:copy-of select="xalan:nodeset($text_units)/text/node()"/>
-					</xsl:when>
-					<xsl:otherwise><xsl:copy-of select="."/></xsl:otherwise> <!-- copy 'as-is' for <fo:inline keep-together.within-line="always" ...  -->
-				</xsl:choose>
-			</xsl:for-each></text>
+			<xsl:element name="text" namespace="{$namespace_full}">
+				<xsl:for-each select="xalan:nodeset($text2)/*[local-name() = 'text']/node()">
+					<xsl:choose>
+						<xsl:when test="self::text()">
+							<xsl:variable name="text_units" select="java:replaceAll(java:java.lang.String.new(.),$regex_solidus_units,concat($tag_keep-together_within-line_open,'$1',$tag_keep-together_within-line_close))"/>
+							<!-- <xsl:variable name="text_units">
+								<xsl:element name="text" namespace="{$namespace_full}"> -->
+									<xsl:call-template name="replace_text_tags">
+										<xsl:with-param name="tag_open" select="$tag_keep-together_within-line_open"/>
+										<xsl:with-param name="tag_close" select="$tag_keep-together_within-line_close"/>
+										<xsl:with-param name="text" select="$text_units"/>
+									</xsl:call-template>
+								<!-- </xsl:element>
+							</xsl:variable>
+							<xsl:copy-of select="xalan:nodeset($text_units)/*[local-name() = 'text']/node()"/> -->
+						</xsl:when>
+						<xsl:otherwise><xsl:copy-of select="."/></xsl:otherwise> <!-- copy 'as-is' for <fo:inline keep-together.within-line="always" ...  -->
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:element>
 		</xsl:variable>
 
 		<xsl:choose>
 			<xsl:when test="ancestor::*[local-name() = 'td' or local-name() = 'th']">
 				<!-- keep-together_within-line for: a.b, aaa.b, a.bbb, .b  in table's cell ONLY -->
-				<xsl:variable name="non_white_space">[^\s\u3000-\u9FFF]</xsl:variable>
-				<xsl:variable name="regex_dots_units">((\b((<xsl:value-of select="$non_white_space"/>{1,3}\.<xsl:value-of select="$non_white_space"/>+)|(<xsl:value-of select="$non_white_space"/>+\.<xsl:value-of select="$non_white_space"/>{1,3}))\b)|(\.<xsl:value-of select="$non_white_space"/>{1,3})\b)</xsl:variable>
-				<xsl:for-each select="xalan:nodeset($text3)/text/node()">
+				<xsl:for-each select="xalan:nodeset($text3)/*[local-name() = 'text']/node()">
 					<xsl:choose>
 						<xsl:when test="self::text()">
-							<xsl:variable name="text_dots_" select="java:replaceAll(java:java.lang.String.new(.),$regex_dots_units,concat($tag_keep-together_within-line_open,'$1',$tag_keep-together_within-line_close))"/>
-							<xsl:variable name="text_dots"><text><xsl:call-template name="replace_text_tags">
-								<xsl:with-param name="tag_open" select="$tag_keep-together_within-line_open"/>
-								<xsl:with-param name="tag_close" select="$tag_keep-together_within-line_close"/>
-								<xsl:with-param name="text" select="$text_dots_"/>
-							</xsl:call-template></text></xsl:variable>
-							<xsl:copy-of select="xalan:nodeset($text_dots)/text/node()"/>
+							<xsl:variable name="text_dots" select="java:replaceAll(java:java.lang.String.new(.),$regex_dots_units,concat($tag_keep-together_within-line_open,'$1',$tag_keep-together_within-line_close))"/>
+							<!-- <xsl:variable name="text_dots">
+								<xsl:element name="text" namespace="{$namespace_full}"> -->
+									<xsl:call-template name="replace_text_tags">
+										<xsl:with-param name="tag_open" select="$tag_keep-together_within-line_open"/>
+										<xsl:with-param name="tag_close" select="$tag_keep-together_within-line_close"/>
+										<xsl:with-param name="text" select="$text_dots"/>
+									</xsl:call-template>
+								<!-- </xsl:element>
+							</xsl:variable>
+							<xsl:copy-of select="xalan:nodeset($text_dots)/*[local-name() = 'text']/node()"/> -->
 						</xsl:when>
 						<xsl:otherwise><xsl:copy-of select="."/></xsl:otherwise> <!-- copy 'as-is' for <fo:inline keep-together.within-line="always" ...  -->
 					</xsl:choose>
 				</xsl:for-each>
 			</xsl:when>
-			<xsl:otherwise><xsl:copy-of select="xalan:nodeset($text3)/text/node()"/></xsl:otherwise>
+			<xsl:otherwise><xsl:copy-of select="xalan:nodeset($text3)/*[local-name() = 'text']/node()"/></xsl:otherwise>
 		</xsl:choose>
-
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="*[local-name() = 'stem'] | *[local-name() = 'image']" mode="update_xml_enclose_keep-together_within-line">
@@ -15250,6 +15511,15 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:for-each>
+		<!-- references to external attachments (no binary-encoded within the Metanorma XML file) -->
+		<xsl:if test="not(//*[contains(local-name(), '-standard')]/*[local-name() = 'metanorma-extension']/*[local-name() = 'attachment'])">
+			<xsl:for-each select="//*[local-name() = 'bibitem'][@hidden = 'true'][*[local-name() = 'uri'][@type = 'attachment']]">
+				<xsl:variable name="attachment_path" select="*[local-name() = 'uri'][@type = 'attachment']"/>
+				<xsl:variable name="url" select="concat('url(file:///',$inputxml_basepath, $attachment_path, ')')"/>
+				<xsl:variable name="filename_embedded" select="substring-after($attachment_path, concat('_', $inputxml_filename_prefix, '_attachments', '/'))"/>
+				<pdf:embedded-file src="{$url}" filename="{$filename_embedded}"/>
+			</xsl:for-each>
+		</xsl:if>
 	</xsl:template> <!-- addPDFUAmeta -->
 
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="getId">
