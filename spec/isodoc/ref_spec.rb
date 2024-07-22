@@ -334,16 +334,16 @@ RSpec.describe IsoDoc do
          </div>
        </body>
     OUTPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, "")
       .gsub(%r{reference="[^"]+"}, 'reference="1"'))))
-      .to be_equivalent_to xmlpp(presxml)
-    expect(xmlpp(IsoDoc::BIPM::HtmlConvert.new({})
+      .to be_equivalent_to Xml::C14n.format(presxml)
+    expect(Xml::C14n.format(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to xmlpp(html)
+      .gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to Xml::C14n.format(html)
   end
 
   it "processes BIPM references" do
@@ -390,11 +390,11 @@ RSpec.describe IsoDoc do
           </clause>
         </sections>
       OUTPUT
-      expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+      expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
         .new(presxml_options)
         .convert("test", input, true))
          .at("//xmlns:sections").to_xml))
-        .to be_equivalent_to xmlpp(output)
+        .to be_equivalent_to Xml::C14n.format(output)
       output = <<~OUTPUT
         <sections>
           <clause id='_' obligation='normative' displayorder='2'>
@@ -407,11 +407,11 @@ RSpec.describe IsoDoc do
         </sections>
       OUTPUT
       input = input.sub("<language>en</language>", "<language>fr</language>")
-      expect(xmlpp(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+      expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
         .new(presxml_options)
         .convert("test", input, true))
          .at("//xmlns:sections").to_xml))
-        .to be_equivalent_to xmlpp(output)
+        .to be_equivalent_to Xml::C14n.format(output)
     end
   end
 
@@ -462,11 +462,11 @@ RSpec.describe IsoDoc do
         </references>
       </bibliography>
     PRESXML
-    expect(xmlpp(Nokogiri::XML(
+    expect(Xml::C14n.format(Nokogiri::XML(
       IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true),
     ).at("//xmlns:bibliography").to_xml))
-      .to be_equivalent_to xmlpp(presxml)
+      .to be_equivalent_to Xml::C14n.format(presxml)
   end
 
   it "hides BIPM CGPM Resolution and BIPM CIPM Decision references in brochure" do
@@ -541,11 +541,11 @@ RSpec.describe IsoDoc do
           </references>
         </bibliography>
       PRESXML
-      expect(xmlpp(Nokogiri::XML(
+      expect(Xml::C14n.format(Nokogiri::XML(
         IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
         .convert("test", input, true),
       ).at("//xmlns:bibliography").to_xml))
-        .to be_equivalent_to xmlpp(presxml)
+        .to be_equivalent_to Xml::C14n.format(presxml)
     end
   end
 
@@ -625,11 +625,11 @@ RSpec.describe IsoDoc do
            </references>
          </bibliography>
       PRESXML
-      expect(xmlpp(Nokogiri::XML(
+      expect(Xml::C14n.format(Nokogiri::XML(
         IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
         .convert("test", input, true),
       ).at("//xmlns:bibliography").to_xml))
-        .to be_equivalent_to xmlpp(presxml)
+        .to be_equivalent_to Xml::C14n.format(presxml)
     end
   end
 end

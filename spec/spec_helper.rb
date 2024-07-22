@@ -25,6 +25,7 @@ require "metanorma/bipm"
 require "rspec/matchers"
 require "equivalent-xml"
 require "htmlentities"
+require "xml-c14n"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -60,6 +61,8 @@ def strip_guid(html)
   html
     .gsub(%r{ id="_[^"]+"}, ' id="_"')
     .gsub(%r{ target="_[^"]+"}, ' target="_"')
+    .gsub(%r{<fetched>[^<]+</fetched>}, "<fetched/>")
+    .gsub(%r{ schema-version="[^"]+"}, "")
 end
 
 def htmlencode(html)
@@ -71,22 +74,6 @@ def htmlencode(html)
     .gsub(/&#x26;/, "&")
     .gsub(/&#x27;/, "'")
     .gsub(/\\u(....)/) { "&#x#{$1.downcase};" }
-end
-
-def xmlpp(xml)
-  xsl = <<~XSL
-    <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-      <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
-      <xsl:strip-space elements="*"/>
-      <xsl:template match="/">
-        <xsl:copy-of select="."/>
-      </xsl:template>
-    </xsl:stylesheet>
-  XSL
-  Nokogiri::XSLT(xsl).transform(Nokogiri::XML(xml, &:noblanks))
-    .to_xml(indent: 2, encoding: "UTF-8")
-    .gsub(%r{<fetched>[^<]+</fetched>}, "<fetched/>")
-    .gsub(%r{ schema-version="[^"]+"}, "")
 end
 
 ASCIIDOC_BLANK_HDR = <<~HDR.freeze

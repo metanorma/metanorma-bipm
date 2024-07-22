@@ -421,9 +421,9 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     OUTPUT
     stripped_presxml =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
-    expect(stripped_presxml).to(be_equivalent_to(xmlpp(output)))
+    expect(stripped_presxml).to(be_equivalent_to(Xml::C14n.format(output)))
   end
 end

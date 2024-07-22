@@ -80,7 +80,7 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
-    presxml = xmlpp(<<~OUTPUT)
+    presxml = Xml::C14n.format(<<~OUTPUT)
       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
       <bibdata type="standard">
         <title language="en" format="text/plain" type="title-main">Main Title</title>
@@ -173,98 +173,138 @@ RSpec.describe IsoDoc::BIPM do
             <p>&#160;</p>
           </div>
           <br/>
-          <div class='main-section'>
+                       <div class="main-section">
                 <br/>
-      <div id="_" class="TOC">
-        <h1 class="IntroTitle">Contents</h1>
-      </div>
-            <br/>
-            <div>
-                           <h1 class="ForewordTitle">Foreword</h1>
-               <p id="A">This is a preamble</p>
+                <div id="_" class="TOC">
+                   <h1 class="IntroTitle">Contents</h1>
+                </div>
+                <br/>
+                <div>
+                   <h1 class="ForewordTitle">Foreword</h1>
+                   <p id="A">This is a preamble</p>
+                </div>
+                <br/>
+                <div class="Section3" id="B">
+                   <h1 class="IntroTitle">Introduction</h1>
+                   <div id="C">
+                      <h2>Introduction Subsection</h2>
+                   </div>
+                </div>
+                <div id="H">
+                   <h1>
+                   1.
+                    
+                   Terms, Definitions, Symbols and Abbreviated Terms
+                </h1>
+                   <div id="I">
+                      <h2>
+                      1.1.
+                       
+                      Normal Terms
+                   </h2>
+                      <p class="TermNum" id="J">1.1.1.</p>
+                      <p class="Terms" style="text-align:left;">Term2</p>
+                   </div>
+                   <div id="D">
+                      <h2>
+                      1.2.
+                       
+                      Scope
+                   </h2>
+                      <p id="E">Text</p>
+                   </div>
+                   <div id="K">
+                      <h2>1.3.</h2>
+                      <div class="figdl">
+                         <dl>
+                            <dt>
+                               <p>Symbol</p>
+                            </dt>
+                            <dd>Definition</dd>
+                         </dl>
+                      </div>
+                   </div>
+                </div>
+                <div id="L" class="Symbols">
+                   <h1>2.</h1>
+                   <div class="figdl">
+                      <dl>
+                         <dt>
+                            <p>Symbol</p>
+                         </dt>
+                         <dd>Definition</dd>
+                      </dl>
+                   </div>
+                </div>
+                <div id="M">
+                   <h1>
+                   3.
+                    
+                   Clause 4
+                </h1>
+                   <div id="N">
+                      <h2>
+                      3.1.
+                       
+                      Introduction
+                   </h2>
+                   </div>
+                   <div id="O">
+                      <h2>
+                      3.2.
+                       
+                      Clause 4.2
+                   </h2>
+                   </div>
+                </div>
+                <div>
+                   <h1>
+                   4.
+                    
+                   Normative References
+                </h1>
+                </div>
+                <br/>
+                <div id="P" class="Section3">
+                   <h1 class="Annex">
+                      <b>Appendix 1</b>
+                      .  
+                      <b>Annex</b>
+                   </h1>
+                   <div id="Q">
+                      <h2>
+                   A1.1.
+                    
+                   Annex A.1
+                </h2>
+                      <div id="Q1">
+                         <h3>
+                      A1.1.1.
+                       
+                      Annex A.1a
+                   </h3>
+                      </div>
+                   </div>
+                </div>
+                <br/>
+                <div>
+                   <h1 class="Section3">Bibliography</h1>
+                   <div>
+                      <h2 class="Section3">Bibliography Subsection</h2>
+                   </div>
+                </div>
              </div>
-             <br/>
-             <div class="Section3" id="B">
-               <h1 class="IntroTitle">Introduction</h1>
-               <div id="C">
-                 <h2>Introduction Subsection</h2>
-               </div>
-             </div>
-             <div id="H">
-               <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
-               <div id="I">
-                 <h2>1.1.  Normal Terms</h2>
-                 <p class="TermNum" id="J">1.1.1.</p>
-                 <p class="Terms" style="text-align:left;">Term2</p>
-               </div>
-               <div id="D">
-                 <h2>1.2.  Scope</h2>
-                 <p id="E">Text</p>
-               </div>
-               <div id="K">
-                 <h2>1.3.</h2>
-                 <div class="figdl">
-                 <dl>
-                   <dt>
-                     <p>Symbol</p>
-                   </dt>
-                   <dd>Definition</dd>
-                 </dl>
-               </div>
-               </div>
-             </div>
-             <div id="L" class="Symbols">
-               <h1>2.</h1>
-               <div class="figdl">
-               <dl>
-                 <dt>
-                   <p>Symbol</p>
-                 </dt>
-                 <dd>Definition</dd>
-               </dl>
-             </div>
-             </div>
-             <div id="M">
-               <h1>3.  Clause 4</h1>
-               <div id="N">
-                 <h2>3.1.  Introduction</h2>
-               </div>
-               <div id="O">
-                 <h2>3.2.  Clause 4.2</h2>
-               </div>
-               </div>
-                            <div>
-              <h1>4.  Normative References</h1>
-            </div>
-             <br/>
-             <div id="P" class="Section3">
-               <h1 class="Annex"><b>Appendix 1</b>.  <b>Annex</b></h1>
-               <div id="Q">
-                 <h2>A1.1.  Annex A.1</h2>
-                 <div id="Q1">
-                   <h3>A1.1.1.  Annex A.1a</h3>
-                 </div>
-               </div>
-             </div>
-             <br/>
-             <div>
-               <h1 class="Section3">Bibliography</h1>
-               <div>
-                 <h2 class="Section3">Bibliography Subsection</h2>
-               </div>
-             </div>
-           </div>
-         </body>
+          </body>
        </html>
     OUTPUT
     stripped_html =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
-    expect(stripped_html).to(be_equivalent_to(xmlpp(presxml)))
-    stripped_html = xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+    expect(stripped_html).to(be_equivalent_to(Xml::C14n.format(presxml)))
+    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)))
-    expect(stripped_html).to(be_equivalent_to(xmlpp(html)))
+    expect(stripped_html).to(be_equivalent_to(Xml::C14n.format(html)))
   end
 
   it "processes section names, JCGM" do
@@ -357,7 +397,7 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     INPUT
 
-    presxml = xmlpp(<<~OUTPUT)
+    presxml = Xml::C14n.format(<<~OUTPUT)
       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
         <bibdata type="standard">
         <title language="en" format="text/plain" type="title-main">Main Title</title>
@@ -460,107 +500,153 @@ RSpec.describe IsoDoc::BIPM do
             <p>&#160;</p>
           </div>
           <br/>
-          <div class='main-section'>
+                       <div class="main-section">
                 <br/>
-        <div id="_" class="TOC">
-          <h1 class="IntroTitle">Contents</h1>
-        </div>
-            <br/>
-            <div>
-                           <h1 class="ForewordTitle">Foreword</h1>
-               <p id="A">This is a preamble</p>
+                <div id="_" class="TOC">
+                   <h1 class="IntroTitle">Contents</h1>
+                </div>
+                <br/>
+                <div>
+                   <h1 class="ForewordTitle">Foreword</h1>
+                   <p id="A">This is a preamble</p>
+                </div>
+                <br/>
+                <div class="Section3" id="B">
+                   <h1 class="IntroTitle">Introduction</h1>
+                   <div id="C">
+                      <h2>
+                      0.1.
+                       
+                      Introduction Subsection
+                   </h2>
+                   </div>
+                </div>
+                <p class="zzSTDTitle1">
+                   <span class="boldtitle">Main Title</span>
+                </p>
+                <div id="G">
+                   <h1>
+                   1.
+                    
+                   Scope
+                </h1>
+                </div>
+                <div>
+                   <h1>
+                   2.
+                    
+                   Normative References
+                </h1>
+                </div>
+                <div id="H">
+                   <h1>
+                   3.
+                    
+                   Terms, Definitions, Symbols and Abbreviated Terms
+                </h1>
+                   <div id="I">
+                      <h2>
+                      3.1.
+                       
+                      Normal Terms
+                   </h2>
+                      <p class="TermNum" id="J">3.1.1.</p>
+                      <p class="Terms" style="text-align:left;">Term2</p>
+                   </div>
+                   <div id="D">
+                      <h2>
+                      3.2.
+                       
+                      Scope
+                   </h2>
+                      <p id="E">Text</p>
+                   </div>
+                   <div id="K">
+                      <h2>3.3.</h2>
+                      <div class="figdl">
+                         <dl>
+                            <dt>
+                               <p>Symbol</p>
+                            </dt>
+                            <dd>Definition</dd>
+                         </dl>
+                      </div>
+                   </div>
+                </div>
+                <div id="L" class="Symbols">
+                   <h1>4.</h1>
+                   <div class="figdl">
+                      <dl>
+                         <dt>
+                            <p>Symbol</p>
+                         </dt>
+                         <dd>Definition</dd>
+                      </dl>
+                   </div>
+                </div>
+                <div id="M">
+                   <h1>
+                   5.
+                    
+                   Clause 4
+                </h1>
+                   <div id="N">
+                      <h2>
+                      5.1.
+                       
+                      Introduction
+                   </h2>
+                   </div>
+                   <div id="O">
+                      <h2>
+                      5.2.
+                       
+                      Clause 4.2
+                   </h2>
+                   </div>
+                </div>
+                <br/>
+                <div id="P" class="Section3">
+                   <h1 class="Annex">
+                      <b>Annex A</b>
+                      <br/>
+                      <b>Annex</b>
+                   </h1>
+                   <div id="Q">
+                      <h2>
+                   A.1.
+                    
+                   Annex A.1
+                </h2>
+                      <div id="Q1">
+                         <h3>
+                      A.1.1.
+                       
+                      Annex A.1a
+                   </h3>
+                      </div>
+                   </div>
+                </div>
+                <br/>
+                <div>
+                   <h1 class="Section3">Bibliography</h1>
+                   <div>
+                      <h2 class="Section3">Bibliography Subsection</h2>
+                   </div>
+                </div>
              </div>
-             <br/>
-             <div class="Section3" id="B">
-               <h1 class="IntroTitle">Introduction</h1>
-               <div id="C">
-                 <h2>0.1.  Introduction Subsection</h2>
-               </div>
-             </div>
-             <p class="zzSTDTitle1"><span class="boldtitle">Main Title</span></p>
-             <div id="G">
-               <h1>1.  Scope</h1>
-             </div>
-             <div>
-               <h1>2.  Normative References</h1>
-             </div>
-             <div id="H">
-               <h1>3.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
-               <div id="I">
-                 <h2>3.1.  Normal Terms</h2>
-                 <p class="TermNum" id="J">3.1.1.</p>
-                 <p class="Terms" style="text-align:left;">Term2</p>
-               </div>
-               <div id="D">
-                 <h2>3.2.  Scope</h2>
-                 <p id="E">Text</p>
-               </div>
-               <div id="K">
-                 <h2>3.3.</h2>
-                 <div class="figdl">
-                 <dl>
-                   <dt>
-                     <p>Symbol</p>
-                   </dt>
-                   <dd>Definition</dd>
-                 </dl>
-               </div>
-               </div>
-             </div>
-             <div id="L" class="Symbols">
-               <h1>4.</h1>
-               <div class="figdl">
-               <dl>
-                 <dt>
-                   <p>Symbol</p>
-                 </dt>
-                 <dd>Definition</dd>
-               </dl>
-             </div>
-             </div>
-             <div id="M">
-               <h1>5.  Clause 4</h1>
-               <div id="N">
-                 <h2>5.1.  Introduction</h2>
-               </div>
-               <div id="O">
-                 <h2>5.2.  Clause 4.2</h2>
-               </div>
-             </div>
-             <br/>
-             <div id="P" class="Section3">
-               <h1 class="Annex">
-                 <b>Annex A</b>
-                 <br/>
-                 <b>Annex</b>
-               </h1>
-               <div id="Q">
-                 <h2>A.1.  Annex A.1</h2>
-                 <div id="Q1">
-                   <h3>A.1.1.  Annex A.1a</h3>
-                 </div>
-               </div>
-             </div>
-             <br/>
-             <div>
-               <h1 class="Section3">Bibliography</h1>
-               <div>
-                 <h2 class="Section3">Bibliography Subsection</h2>
-               </div>
-             </div>
-           </div>
-         </body>
+          </body>
        </html>
     OUTPUT
     stripped_html =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
-    expect(stripped_html).to(be_equivalent_to(xmlpp(presxml)))
+    expect(stripped_html).to(be_equivalent_to(Xml::C14n.format(presxml)))
     stripped_html =
-      xmlpp(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)))
-    expect(stripped_html).to(be_equivalent_to(xmlpp(html)))
+    expect(stripped_html).to(be_equivalent_to(Xml::C14n.format(html)))
   end
 
   it "processes appendix names in appendix document" do
@@ -663,10 +749,10 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_html =
-      xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    expect(stripped_html).to(be_equivalent_to(xmlpp(output)))
+    expect(stripped_html).to(be_equivalent_to(Xml::C14n.format(output)))
   end
 
   it "processes unnumbered sections" do
@@ -797,8 +883,8 @@ RSpec.describe IsoDoc::BIPM do
           </annex>
       </bipm-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true)))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "handles quoted variant titles" do
@@ -864,13 +950,13 @@ RSpec.describe IsoDoc::BIPM do
         </div>
       </body>
     OUTPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
-      .to be_equivalent_to xmlpp(presxml)
-    expect(strip_guid(xmlpp(IsoDoc::BIPM::HtmlConvert.new({})
+      .to be_equivalent_to Xml::C14n.format(presxml)
+    expect(strip_guid(Xml::C14n.format(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))).to be_equivalent_to xmlpp(html)
+      .gsub(%r{</body>.*}m, "</body>")))).to be_equivalent_to Xml::C14n.format(html)
   end
 end

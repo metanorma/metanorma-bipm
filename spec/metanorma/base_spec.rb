@@ -89,7 +89,7 @@ RSpec.describe Metanorma::BIPM do
       :supersedes-draft_3: 3.0
     INPUT
 
-    output = xmlpp(<<~"OUTPUT")
+    output = Xml::C14n.format(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
       <bipm-standard type="semantic" version="#{Metanorma::BIPM::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
         <bibdata type="standard">
@@ -312,7 +312,7 @@ RSpec.describe Metanorma::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -357,7 +357,7 @@ RSpec.describe Metanorma::BIPM do
       :implemented-date: D
     INPUT
 
-    output = xmlpp(<<~"OUTPUT")
+    output = Xml::C14n.format(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
       <bibdata type="standard">
@@ -460,7 +460,7 @@ RSpec.describe Metanorma::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -507,7 +507,7 @@ RSpec.describe Metanorma::BIPM do
       :obsoleted-date: C
       :implemented-date: D
     INPUT
-    output = xmlpp(<<~"OUTPUT")
+    output = Xml::C14n.format(<<~"OUTPUT")
       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
          <bibdata type="standard">
            <title language="en" format="text/plain" type="title-main">Main Title</title>
@@ -630,7 +630,7 @@ RSpec.describe Metanorma::BIPM do
        </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -677,7 +677,7 @@ RSpec.describe Metanorma::BIPM do
       :implemented-date: D
     INPUT
 
-    output = xmlpp(<<~"OUTPUT")
+    output = Xml::C14n.format(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
       <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
         <bibdata type='standard'>
@@ -783,7 +783,7 @@ RSpec.describe Metanorma::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -800,7 +800,7 @@ RSpec.describe Metanorma::BIPM do
       ....
     INPUT
 
-    output = xmlpp(<<~"OUTPUT")
+    output = Xml::C14n.format(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections>
           <figure id="id">
@@ -813,7 +813,7 @@ RSpec.describe Metanorma::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -825,7 +825,7 @@ RSpec.describe Metanorma::BIPM do
       == Section 1
     INPUT
 
-    output = xmlpp(<<~"OUTPUT")
+    output = Xml::C14n.format(<<~"OUTPUT")
       #{BLANK_HDR}
         <preface>
           <foreword id="_" obligation="informative">
@@ -841,7 +841,7 @@ RSpec.describe Metanorma::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -857,7 +857,7 @@ RSpec.describe Metanorma::BIPM do
       <<a,nopage%>>
     INPUT
 
-    output = xmlpp(<<~"OUTPUT")
+    output = Xml::C14n.format(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections>
           <clause id='a' obligation='normative'>
@@ -873,7 +873,7 @@ RSpec.describe Metanorma::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -937,8 +937,8 @@ RSpec.describe Metanorma::BIPM do
         </annex>
       </bipm-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes the start attribute on ordered lists" do
@@ -964,8 +964,8 @@ RSpec.describe Metanorma::BIPM do
         </sections>
       </bipm-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes sections" do
@@ -1158,8 +1158,8 @@ RSpec.describe Metanorma::BIPM do
         </bibliography>
       </bipm-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "processes sections in JCGM" do
@@ -1360,9 +1360,9 @@ RSpec.describe Metanorma::BIPM do
       </bibliography>
            </bipm-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
       .sub(%r{<boilerplate>.*</boilerplate>}m, ""))
-      .to be_equivalent_to xmlpp(output)
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "customises italicisation of MathML" do
@@ -1408,8 +1408,8 @@ RSpec.describe Metanorma::BIPM do
         </sections>
       </bipm-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "deals with quoted alt titles" do
@@ -1440,8 +1440,8 @@ RSpec.describe Metanorma::BIPM do
       </sections>
       </bipm-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "references BIPM English citations" do
@@ -1476,11 +1476,11 @@ RSpec.describe Metanorma::BIPM do
       OUTPUT
       doc = Asciidoctor.convert(input, *OPTIONS)
       warn doc
-      expect(xmlpp(strip_guid(
+      expect(Xml::C14n.format(strip_guid(
                      Nokogiri::XML(doc)
                      .at("//xmlns:sections").to_xml,
                    )))
-        .to be_equivalent_to xmlpp(output)
+        .to be_equivalent_to Xml::C14n.format(output)
     end
   end
 
@@ -1516,11 +1516,11 @@ RSpec.describe Metanorma::BIPM do
           </clause>
         </sections>
       OUTPUT
-      expect(xmlpp(strip_guid(
+      expect(Xml::C14n.format(strip_guid(
                      Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
                      .at("//xmlns:sections").to_xml,
                    )))
-        .to be_equivalent_to xmlpp(output)
+        .to be_equivalent_to Xml::C14n.format(output)
     end
   end
 end

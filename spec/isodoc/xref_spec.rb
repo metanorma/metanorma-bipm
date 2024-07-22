@@ -159,8 +159,8 @@ RSpec.describe IsoDoc::BIPM do
         </annex>
       </iso-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true)))).to be_equivalent_to xmlpp(output)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cross-references sections" do
@@ -283,10 +283,10 @@ RSpec.describe IsoDoc::BIPM do
           <xref target="R">Chapter 5</xref></p>
       </foreword>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(Xml::C14n.format(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
 .sub(%r{^.*<foreword}m, "<foreword")
-.sub(%r{</foreword>.*$}m, "</foreword>"))).to be_equivalent_to xmlpp(output)
+.sub(%r{</foreword>.*$}m, "</foreword>"))).to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cross-references sections in JCGM" do
@@ -422,11 +422,11 @@ RSpec.describe IsoDoc::BIPM do
         </p>
       </foreword>
     OUTPUT
-    expect(xmlpp(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(Xml::C14n.format(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .sub(%r{^.*<foreword}m, "<foreword")
       .sub(%r{</foreword>.*$}m, "</foreword>")))
-      .to be_equivalent_to xmlpp(output)
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cross-references subfigures" do
@@ -565,11 +565,11 @@ RSpec.describe IsoDoc::BIPM do
          </annex>
        </iso-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to be_equivalent_to xmlpp(output)
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "cross-references subfigures in JCGM" do
@@ -729,9 +729,9 @@ RSpec.describe IsoDoc::BIPM do
          </annex>
        </iso-standard>
     OUTPUT
-    expect(xmlpp(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to be_equivalent_to xmlpp(output)
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 end
