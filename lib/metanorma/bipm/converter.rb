@@ -85,7 +85,7 @@ module Metanorma
       def committee_validate(xml)
         committees = Array(configuration&.committees) || return
         committees.empty? and return
-        xml.xpath("//bibdata/ext/editorialgroup/committee/variant").each do |c|
+        xml.xpath("//bibdata/ext/editorialgroup/committee").each do |c|
           committees.include? c.text or
             @log.add("Document Attributes", nil,
                      "#{c.text} is not a recognised committee")

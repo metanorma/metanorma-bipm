@@ -295,10 +295,8 @@ RSpec.describe IsoDoc::BIPM do
       <bibdata>
       <ext>
         <editorialgroup>
-          <committee acronym="JCGM">
-            <variant language="en" script="Latn">TC</variant>
-            <variant language="fr" script="Latn">CT</variant>
-          </committee>
+          <committee acronym="JCGM" language="en" script="Latn">TC</committee>
+          <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
           <workgroup acronym="B">WC</committee>
         </editorialgroup>
        </ext>
@@ -578,11 +576,9 @@ RSpec.describe IsoDoc::BIPM do
       <bibdata>
       <ext>
                 <editorialgroup>
-                  <committee acronym="JCGM">
-                    <variant language="en" script="Latn">TC</variant>
-                    <variant language="fr" script="Latn">CT</variant>
-                  </committee>
-                  <workgroup acronym="B">WC</committee>
+          <committee acronym="JCGM" language="en" script="Latn">TC</committee>
+          <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
+                  <workgroup acronym="B">WC</workgroup>
                 </editorialgroup>
                </ext>
        </bibdata>
@@ -645,10 +641,8 @@ RSpec.describe IsoDoc::BIPM do
          <bibdata>
            <ext>
              <editorialgroup>
-               <committee acronym="JCGM">
-                 <variant language="en" script="Latn">TC</variant>
-                 <variant language="fr" script="Latn">CT</variant>
-               </committee>
+          <committee acronym="JCGM" language="en" script="Latn">TC</committee>
+          <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
                <workgroup acronym='B'>WC</workgroup>
              </editorialgroup>
            </ext>

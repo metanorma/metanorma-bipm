@@ -130,10 +130,8 @@ RSpec.describe IsoDoc::BIPM do
           </copyright>
           <ext>
             <editorialgroup>
-              <committee acronym="JCGM">
-                <variant language="en" script="Latn">TC</variant>
-                <variant language="fr" script="Latn">CT</variant>
-              </committee>
+                     <committee acronym="JCGM" language="en" script="Latn">TC</committee>
+                    <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
               <workgroup acronym="B">WC</committee>
             </editorialgroup>
             <comment-period><from>N1</from><to>N2</to></comment-period>
@@ -182,7 +180,7 @@ RSpec.describe IsoDoc::BIPM do
       :issueddate=>"XXX",
       :lang=>"en",
       :logo=>"#{File.join(logoloc, 'logo.png')}",
-      :metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>"JCGM", "committee"=>{"variant_language"=>["en", "fr"], "variant_script"=>["Latn", "Latn"], "variant"=>["TC", "CT"]}, "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
+      :metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>["JCGM", "JCGM"], "committee_language"=>["en", "fr"], "committee_script"=>["Latn", "Latn"], "committee"=>["TC", "CT"], "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
       :obsoleteddate=>"XXX",
       :org_abbrev=>"JCGM",
       :partid=>"Part 2.1",
@@ -203,7 +201,7 @@ RSpec.describe IsoDoc::BIPM do
       :stable_untildate=>"XXX",
       :stage=>"Mise en Pratique",
       :stage_display=>"En Vigeur",
-      :tc=>"\\n          TC\\n          CT\\n        ",
+      :tc=>"TC",
       :transmitteddate=>"XXX",
       :unchangeddate=>"XXX",
       :unpublished=>true,
@@ -263,10 +261,8 @@ RSpec.describe IsoDoc::BIPM do
             </owner>
           </copyright>
           <editorialgroup>
-            <committee acronym="TCA">
-              <variant language="en" script="Latn">TC</variant>
-              <variant language="fr" script="Latn">CT</variant>
-            </committee>
+            <committee acronym="TCA" language="en" script="Latn">TC</committee>
+            <committee acronym="TCA" language="fr" script="Latn">CT</committee>
           </editorialgroup>
           <security>Client Confidential</security>
           <ext>
