@@ -25,7 +25,7 @@ require "metanorma/bipm"
 require "rspec/matchers"
 require "equivalent-xml"
 require "htmlentities"
-require "relaton-iso"
+require "relaton_iso"
 require "xml-c14n"
 
 RSpec.configure do |config|
