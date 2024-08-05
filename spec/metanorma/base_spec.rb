@@ -269,10 +269,8 @@ RSpec.describe Metanorma::BIPM do
           <ext>
             <doctype>brochure</doctype>
             <editorialgroup>
-              <committee acronym="TCA">
-                <variant language="en" script="Latn">TC</variant>
-                <variant language="fr" script="Latn">CT</variant>
-              </committee>
+              <committee acronym="TCA" language="en" script="Latn">TC</committee>
+              <committee acronym="TCA" language="fr" script="Latn">CT</committee>
               <workgroup acronym="WGA">WG</workgroup>
             </editorialgroup>
             <comment-period>
@@ -422,10 +420,8 @@ RSpec.describe Metanorma::BIPM do
           <ext>
             <doctype>brochure</doctype>
             <editorialgroup>
-              <committee acronym="TCA">
-                <variant language='en' script='Latn'>TC</variant>
-                <variant language='fr' script='Latn'>CT</variant>
-              </committee>
+              <committee acronym="TCA" language="en" script="Latn">TC</committee>
+              <committee acronym="TCA" language="fr" script="Latn">CT</committee>
               <workgroup>WG</workgroup>
             </editorialgroup>
             <comment-period>
@@ -572,10 +568,8 @@ RSpec.describe Metanorma::BIPM do
            <ext>
              <doctype>brochure</doctype>
              <editorialgroup>
-               <committee acronym="JCTLM">
-                 <variant language="en" script="Latn">TC</variant>
-                 <variant language="fr" script="Latn">CT</variant>
-               </committee>
+               <committee acronym="JCTLM" language="en" script="Latn">TC</committee>
+               <committee acronym="JCTLM" language="fr" script="Latn">CT</committee>
                <workgroup>WG</workgroup>
              </editorialgroup>
              <comment-period>
@@ -743,10 +737,8 @@ RSpec.describe Metanorma::BIPM do
           <ext>
             <doctype>brochure</doctype>
             <editorialgroup>
-              <committee acronym='JCGM'>
-                <variant language='en' script='Latn'>TC</variant>
-                <variant language='fr' script='Latn'>CT</variant>
-              </committee>
+              <committee acronym='JCGM' language='en' script='Latn'>TC</committee>
+              <committee acronym='JCGM' language='fr' script='Latn'>CT</committee>
               <workgroup>WG</workgroup>
             </editorialgroup>
             <comment-period>

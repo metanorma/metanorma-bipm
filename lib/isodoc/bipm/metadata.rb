@@ -83,7 +83,9 @@ module IsoDoc
         ret = xml.xpath(ns("//bibdata/contributor[xmlns:role/@type = " \
                            "'authorizer']/organization"))
           .each_with_object([]) do |org, m|
-          m << extract_variant(org.at(ns("./name")))
+          name = org.at(ns("./name[@language = '#{@lang}']")) ||
+            org.at(ns("./name"))
+          m << name.text
         end
         ret.empty? or set(:authorizer, ret)
       end

@@ -16,22 +16,18 @@ module Metanorma
       end
 
       def metadata_committee1(node, xml)
-        xml.committee **attr_code(acronym:
-                                  node.attr("committee-acronym")) do |c|
-          e = node.attr("committee-en") and
-            c.variant e, language: "en", script: "Latn"
-          e = node.attr("committee-fr") and
-            c.variant e, language: "fr", script: "Latn"
+        %w(en fr).each do |lg|
+          e = node.attr("committee-#{lg}") or next
+          xml.committee e, **attr_code(acronym: node.attr("committee-acronym"),
+                                       language: lg, script: "Latn")
         end
       end
 
       def metadata_committee2(node, xml, num)
-        xml.committee **attr_code(acronym:
-                                  node.attr("committee-acronym_#{num}")) do |c|
-          %w(en fr).each do |lg|
-            e = node.attr("committee-#{lg}_#{num}") and
-              c.variant e, language: lg, script: "Latn"
-          end
+        %w(en fr).each do |lg|
+          e = node.attr("committee-#{lg}_#{num}") or next
+          xml.committee e, **attr_code(acronym: node.attr("committee-acronym"),
+                                       language: lg, script: "Latn")
         end
       end
 

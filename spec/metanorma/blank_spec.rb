@@ -54,9 +54,7 @@ RSpec.describe Metanorma::BIPM do
          #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate('jcgm'))
          .sub(/<docidentifier primary="true" type="BIPM">BIPM/, %(<docidentifier primary="true" type="BIPM">JCGM))
          .sub(%r{</ext>}, "<editorialgroup>
-        <committee acronym='JCGM'>
-          <variant language='en' script='Latn'>Joint Committee for Guides in Metrology</variant>
-        </committee>
+        <committee acronym='JCGM' language='en' script='Latn'>Joint Committee for Guides in Metrology</committee>
       </editorialgroup></ext>") }
              <sections/>
            </bipm-standard>
