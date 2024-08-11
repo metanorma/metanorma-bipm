@@ -116,3 +116,18 @@ metadata_extensions:
 relations:
   - supersedes
   - superseded-by
+fonts_manifest:
+  Arial:
+  Times New Roman:
+  Work Sans:
+  Work Sans Black:
+  Work Sans ExtraBold:
+  Work Sans ExtraLight:
+  Work Sans Light:
+  Work Sans Medium:
+  Work Sans SemiBold:
+  Work Sans Thin:
+  STIX Two Math:
+  Source Han Sans:
+  Source Han Sans Normal:
+  TeXGyreChorus:

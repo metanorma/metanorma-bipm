@@ -14,25 +14,6 @@ module Metanorma
         ).tap { |hs| hs.delete(:doc) }
       end
 
-      def fonts_manifest
-        {
-          "Arial" => nil,
-          "Times New Roman" => nil,
-          "Work Sans" => nil,
-          "Work Sans Black" => nil,
-          "Work Sans ExtraBold" => nil,
-          "Work Sans ExtraLight" => nil,
-          "Work Sans Light" => nil,
-          "Work Sans Medium" => nil,
-          "Work Sans SemiBold" => nil,
-          "Work Sans Thin" => nil,
-          "STIX Two Math" => nil,
-          "Source Han Sans" => nil,
-          "Source Han Sans Normal" => nil,
-          "TeXGyreChorus" => nil,
-        }
-      end
-
       def version
         "Metanorma::BIPM #{Metanorma::BIPM::VERSION}"
       end
