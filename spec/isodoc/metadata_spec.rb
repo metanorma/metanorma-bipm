@@ -1,7 +1,7 @@
 require "spec_helper"
 
 gem_lib = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib"))
-logoloc = File.join(gem_lib, "metanorma", "..", "..", "lib", "isodoc", "bipm",
+logoloc = File.join(gem_lib, "isodoc", "bipm",
                     "html")
 logoloc1 = File.join(gem_lib, "isodoc", "bipm", "html")
 

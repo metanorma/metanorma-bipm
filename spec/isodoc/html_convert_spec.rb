@@ -153,7 +153,8 @@ RSpec.describe IsoDoc::BIPM do
       </body>
     OUTPUT
     stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)))
     stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", presxml, true)
@@ -247,7 +248,8 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
@@ -362,7 +364,8 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
@@ -388,8 +391,8 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, backend: :bipm,
-                                                       header_footer: true))))
+    expect(Xml::C14n.format(strip_guid(Asciidoctor
+      .convert(input, backend: :bipm, header_footer: true))))
       .to be_equivalent_to output
     html = File.read("test.html", encoding: "utf-8")
     expect(html).to match(%r{jquery\.min\.js})
@@ -796,7 +799,8 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_html =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(presxml))
@@ -1014,7 +1018,8 @@ RSpec.describe IsoDoc::BIPM do
     HTML
 
     stripped_html =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(Xml::C14n.format(presxml)))
@@ -1089,7 +1094,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     output = <<~OUTPUT
-           <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
          <div class="title-section">
            <p> </p>
          </div>
@@ -1176,7 +1181,8 @@ RSpec.describe IsoDoc::BIPM do
     expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
       .convert("test", input, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))).to be_equivalent_to Xml::C14n.format(output)
+      .gsub(%r{</body>.*}m, "</body>"))))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "generates an index in English" do
