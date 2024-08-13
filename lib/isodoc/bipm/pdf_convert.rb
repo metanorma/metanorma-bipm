@@ -1,22 +1,18 @@
 require "isodoc"
+require "metanorma-generic"
+require_relative "base_convert"
 
 module IsoDoc
   module BIPM
-    # A {Converter} implementation that generates PDF HTML output, and a
-    # document schema encapsulation of the document for validation
-    class PdfConvert < IsoDoc::XslfoPdfConvert
+    class PdfConvert < IsoDoc::Generic::PdfConvert
       def initialize(options)
-        @libdir = File.dirname(__FILE__)
         super
-      end
-
-      def configuration
-        Metanorma::BIPM.configuration
+        @libdir = File.dirname(__FILE__)
       end
 
       def pdf_stylesheet(docxml)
         docxml&.at(ns("//bibdata/ext/editorialgroup/committee/@acronym"))
-        &.value == "JCGM" and
+          &.value == "JCGM" and
           return "jcgm.standard.xsl"
 
         doctype = @doctype
@@ -37,6 +33,9 @@ module IsoDoc
         end
         super
       end
+
+      include Init
+      include BaseConvert
     end
   end
 end
