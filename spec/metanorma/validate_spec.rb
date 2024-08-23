@@ -40,11 +40,11 @@ RSpec.describe Metanorma::BIPM do
 
     INPUT
     expect(File.exist?("test.err.html")).to be true
-    expect(File.read("test.err.html")).to include "TC is not a recognised committee"
-    expect(File.read("test.err.html")).to include "tech committee is not a recognised committee"
-    expect(File.read("test.err.html")).to include "committee technologique is not a recognised committee"
-    expect(File.read("test.err.html")).not_to include "CCU is not a recognised committee"
-    expect(File.read("test.err.html")).not_to include "Consultative Committee for Units is not a recognised committee"
-    expect(File.read("test.err.html")).not_to include "Comité consultatif des unités is not a recognised committee"
+    expect(File.read("test.err.html")).to include("TC is not a recognised committee")
+    expect(File.read("test.err.html")).to include("tech committee is not a recognised committee")
+    expect(File.read("test.err.html")).to include("committee technologique is not a recognised committee")
+    expect(File.read("test.err.html")).not_to include("CCU is not a recognised committee")
+    expect(File.read("test.err.html")).not_to include("Consultative Committee for Units is not a recognised committee")
+    expect(File.read("test.err.html")).not_to include("Comité consultatif des unités is not a recognised committee")
   end
 end
