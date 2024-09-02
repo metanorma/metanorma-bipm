@@ -21,7 +21,7 @@ module IsoDoc
         "bipm.#{doctype}.xsl"
       end
 
-      def pdf_options(docxml)
+      def pdf_options(docxml, filename)
         n = configuration.document_namespace
         q = "//m:bipm-standard/m:bibdata/m:language[@current = 'true']"
         if docxml.root.name == "metanorma-collection" &&

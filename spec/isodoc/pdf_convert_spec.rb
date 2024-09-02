@@ -136,7 +136,7 @@ RSpec.describe IsoDoc::BIPM do
     allow(docxml).to receive(:at).and_return(true)
     allow(root).to receive(:name).and_return("metanorma-collection")
 
-    opts = IsoDoc::BIPM::PdfConvert.new({}).pdf_options(docxml)
+    opts = IsoDoc::BIPM::PdfConvert.new({}).pdf_options(docxml, nil)
 
     expect(opts).to be_a Hash
     expect(opts).to have_key("--split-by-language")
