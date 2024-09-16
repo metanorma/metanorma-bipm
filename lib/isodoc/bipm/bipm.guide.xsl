@@ -16078,6 +16078,20 @@
 
 	<!-- END: insert cover page image -->
 
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="insertVerticalChar">
+		<xsl:param name="str"/>
+		<xsl:if test="string-length($str) &gt; 0">
+			<fo:inline-container writing-mode="lr-tb" text-align="center" alignment-baseline="central" reference-orientation="90" width="1em" margin="0" padding="0" text-indent="0mm" last-line-end-indent="0mm" start-indent="0mm" end-indent="0mm">
+				<fo:block-container width="1em">
+						<fo:block line-height="1em"><xsl:value-of select="substring($str,1,1)"/></fo:block>
+				</fo:block-container>
+			</fo:inline-container>
+			<xsl:call-template name="insertVerticalChar">
+				<xsl:with-param name="str" select="substring($str, 2)"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="number-to-words">
 		<xsl:param name="number"/>
 		<xsl:param name="first"/>
