@@ -7,5 +7,5 @@ require "asciidoctor" unless defined? Asciidoctor::Converter
 
 if defined? Metanorma::Registry
   require_relative "metanorma/bipm"
-  Metanorma::Registry.instance.register(Metanorma::BIPM::Processor)
+  Metanorma::Registry.instance.register(Metanorma::Bipm::Processor)
 end

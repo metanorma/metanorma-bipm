@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Metanorma::BIPM do
+RSpec.describe Metanorma::Bipm do
   before do
     # Force to download Relaton index file
     allow_any_instance_of(Relaton::Index::Type).to receive(:actual?)
@@ -91,7 +91,7 @@ RSpec.describe Metanorma::BIPM do
 
     output = Xml::C14n.format(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
-      <bipm-standard type="semantic" version="#{Metanorma::BIPM::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
+      <bipm-standard type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
         <bibdata type="standard">
           <title format="text/plain" language="en" type="title-main">Main Title</title>
           <title format="text/plain" language="en" type="title-cover">Main Title (SI)</title>
@@ -119,8 +119,8 @@ RSpec.describe Metanorma::BIPM do
           <contributor>
             <role type="author"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+              <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
             </organization>
           </contributor>
           <contributor>
@@ -204,8 +204,8 @@ RSpec.describe Metanorma::BIPM do
           <contributor>
             <role type="publisher"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+              <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
             </organization>
           </contributor>
           <edition>2</edition>
@@ -223,8 +223,8 @@ RSpec.describe Metanorma::BIPM do
             <from>2001</from>
             <owner>
               <organization>
-                <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+                <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+                <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
               </organization>
             </owner>
           </copyright>
@@ -268,6 +268,7 @@ RSpec.describe Metanorma::BIPM do
           </relation>
           <ext>
             <doctype>brochure</doctype>
+            <flavor>bipm</flavor>
             <editorialgroup>
               <committee acronym="TCA" language="en" script="Latn">TC</committee>
               <committee acronym="TCA" language="fr" script="Latn">CT</committee>
@@ -357,7 +358,7 @@ RSpec.describe Metanorma::BIPM do
 
     output = Xml::C14n.format(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
       <bibdata type="standard">
         <title language='en' format='text/plain' type='title-main'>Main Title</title>
         <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
@@ -374,15 +375,15 @@ RSpec.describe Metanorma::BIPM do
           <contributor>
             <role type="author"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['fr']}</name>
-              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
+              <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
             </organization>
           </contributor>
           <contributor>
             <role type="publisher"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['fr']}</name>
-              <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
+              <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
             </organization>
           </contributor>
           <edition>2</edition>
@@ -400,8 +401,8 @@ RSpec.describe Metanorma::BIPM do
             <from>2001</from>
             <owner>
               <organization>
-                <name>#{Metanorma::BIPM.configuration.organization_name_long['fr']}</name>
-                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+                <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
+                <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
               </organization>
             </owner>
           </copyright>
@@ -419,6 +420,7 @@ RSpec.describe Metanorma::BIPM do
           </relation>
           <ext>
             <doctype>brochure</doctype>
+            <flavor>bipm</flavor>
             <editorialgroup>
               <committee acronym="TCA" language="en" script="Latn">TC</committee>
               <committee acronym="TCA" language="fr" script="Latn">CT</committee>
@@ -504,7 +506,7 @@ RSpec.describe Metanorma::BIPM do
       :implemented-date: D
     INPUT
     output = Xml::C14n.format(<<~"OUTPUT")
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
          <bibdata type="standard">
            <title language="en" format="text/plain" type="title-main">Main Title</title>
            <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
@@ -567,6 +569,7 @@ RSpec.describe Metanorma::BIPM do
            </relation>
            <ext>
              <doctype>brochure</doctype>
+            <flavor>bipm</flavor>
              <editorialgroup>
                <committee acronym="JCTLM" language="en" script="Latn">TC</committee>
                <committee acronym="JCTLM" language="fr" script="Latn">CT</committee>
@@ -673,7 +676,7 @@ RSpec.describe Metanorma::BIPM do
 
     output = Xml::C14n.format(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
         <bibdata type='standard'>
           <title language='en' format='text/plain' type='title-main'>Main Title</title>
           <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
@@ -736,6 +739,7 @@ RSpec.describe Metanorma::BIPM do
           </relation>
           <ext>
             <doctype>brochure</doctype>
+            <flavor>bipm</flavor>
             <editorialgroup>
               <committee acronym='JCGM' language='en' script='Latn'>TC</committee>
               <committee acronym='JCGM' language='fr' script='Latn'>CT</committee>

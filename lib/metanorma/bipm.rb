@@ -4,7 +4,7 @@ require "metanorma/bipm/processor"
 require "metanorma/bipm/converter"
 
 module Metanorma
-  module BIPM
+  module Bipm
     def self.fonts_used
       {
         html: ["Times New Roman", "STIX", "Courier New"],
@@ -37,4 +37,4 @@ module Metanorma
     configure {}
   end
 end
-Metanorma::Registry.instance.register(Metanorma::BIPM::Processor)
+Metanorma::Registry.instance.register(Metanorma::Bipm::Processor)

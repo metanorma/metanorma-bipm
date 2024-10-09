@@ -1,10 +1,10 @@
 require "metanorma/processor"
 
 module Metanorma
-  module BIPM
+  module Bipm
     class Processor < Metanorma::Generic::Processor
       def configuration
-        Metanorma::BIPM.configuration
+        Metanorma::Bipm.configuration
       end
 
       def output_formats
@@ -15,20 +15,20 @@ module Metanorma
       end
 
       def version
-        "Metanorma::BIPM #{Metanorma::BIPM::VERSION}"
+        "Metanorma::Bipm #{Metanorma::Bipm::VERSION}"
       end
 
       def output(isodoc_node, inname, outname, format, options = {})
         options_preprocess(options)
         case format
         when :html
-          IsoDoc::BIPM::HtmlConvert.new(options)
+          IsoDoc::Bipm::HtmlConvert.new(options)
             .convert(inname, isodoc_node, nil, outname)
         when :presentation
-          IsoDoc::BIPM::PresentationXMLConvert.new(options)
+          IsoDoc::Bipm::PresentationXMLConvert.new(options)
             .convert(inname, isodoc_node, nil, outname)
         when :pdf
-          IsoDoc::BIPM::PdfConvert.new(options)
+          IsoDoc::Bipm::PdfConvert.new(options)
             .convert(inname, isodoc_node, nil, outname)
         else
           super

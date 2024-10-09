@@ -8,7 +8,7 @@ require_relative "../../relaton/render/general"
 require_relative "presentation_blocks"
 
 module IsoDoc
-  module BIPM
+  module Bipm
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def convert1(docxml, filename, dir)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \

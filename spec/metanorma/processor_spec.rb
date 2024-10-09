@@ -1,8 +1,8 @@
 require "spec_helper"
 
-RSpec.describe Metanorma::BIPM::Processor do
+RSpec.describe Metanorma::Bipm::Processor do
   registry = Metanorma::Registry.instance
-  registry.register(Metanorma::BIPM::Processor)
+  registry.register(Metanorma::Bipm::Processor)
 
   let(:processor) { registry.find_processor(:bipm) }
 
@@ -17,7 +17,7 @@ RSpec.describe Metanorma::BIPM::Processor do
   end
 
   it "registers version against metanorma" do
-    expect(processor.version.to_s).to match(%r{^Metanorma::BIPM })
+    expect(processor.version.to_s).to match(%r{^Metanorma::Bipm })
   end
 
   it "generates IsoDoc XML from a blank document" do

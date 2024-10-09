@@ -1,5 +1,5 @@
 module Metanorma
-  module BIPM
+  module Bipm
     class Converter < Metanorma::Generic::Converter
       def boilerplate_file(_xmldoc)
         if @jcgm

@@ -4,7 +4,7 @@ require_relative "init"
 require_relative "base_convert"
 
 module IsoDoc
-  module BIPM
+  module Bipm
     class HtmlConvert < IsoDoc::Generic::HtmlConvert
       def doccontrol(elem, out)
         out.div **attr_code(class: "doccontrol") do |div|

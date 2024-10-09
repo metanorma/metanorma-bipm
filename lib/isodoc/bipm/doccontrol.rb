@@ -1,5 +1,5 @@
 module IsoDoc
-  module BIPM
+  module Bipm
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def doccontrol(doc)
         return unless doc.at(ns("//bibdata/relation[@type = 'supersedes']"))

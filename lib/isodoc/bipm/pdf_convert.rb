@@ -3,7 +3,7 @@ require "metanorma-generic"
 require_relative "base_convert"
 
 module IsoDoc
-  module BIPM
+  module Bipm
     class PdfConvert < IsoDoc::Generic::PdfConvert
       def initialize(options)
         super

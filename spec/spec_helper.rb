@@ -96,7 +96,7 @@ HDR
 
 def boilerplate_read(file)
   HTMLEntities.new.decode(
-    Metanorma::BIPM::Converter.new(:bipm, {}).boilerplate_file_restructure(file)
+    Metanorma::Bipm::Converter.new(:bipm, {}).boilerplate_file_restructure(file)
     .to_xml.gsub(/<(\/)?sections>/, "<\\1boilerplate>")
       .gsub(/ id="_[^"]+"/, " id='_'"),
   )
@@ -129,21 +129,21 @@ end
 
 BLANK_HDR = <<~"HDR".freeze
     <?xml version="1.0" encoding="UTF-8"?>
-    <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::BIPM::VERSION}" type="semantic">
+    <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::Bipm::VERSION}" type="semantic">
     <bibdata type="standard">
       <docidentifier primary="true" type="BIPM">BIPM </docidentifier>
       <contributor>
         <role type="author"/>
         <organization>
-          <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-          <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+          <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+          <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
         </organization>
       </contributor>
       <contributor>
         <role type="publisher"/>
         <organization>
-          <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-          <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+          <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+          <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
         </organization>
       </contributor>
       <language>en</language>
@@ -155,13 +155,14 @@ BLANK_HDR = <<~"HDR".freeze
         <from>#{Time.new.year}</from>
         <owner>
           <organization>
-            <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-            <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+            <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+            <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
           </organization>
         </owner>
       </copyright>
       <ext>
         <doctype>brochure</doctype>
+        <flavor>bipm</flavor>
       </ext>
     </bibdata>
     <metanorma-extension>
@@ -200,6 +201,6 @@ HDR
 
 def mock_pdf
   allow(Mn2pdf).to receive(:convert) do |url, output,|
-    FileUtils.cp(url.gsub(/"/, ""), output.gsub(/"/, ""))
+    FileUtils.cp(url.delete('"'), output.delete('"'))
   end
 end

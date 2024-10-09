@@ -4,7 +4,7 @@ require_relative "xref"
 require_relative "i18n"
 
 module IsoDoc
-  module BIPM
+  module Bipm
     module Init
       def metadata_init(lang, script, locale, labels)
         @meta = Metadata.new(lang, script, locale, labels)
@@ -21,7 +21,7 @@ module IsoDoc
       end
 
       def bibrenderer(options = {})
-        ::Relaton::Render::BIPM::General.new(options.merge(language: @lang,
+        ::Relaton::Render::Bipm::General.new(options.merge(language: @lang,
                                                            i18nhash: @i18n.get))
       end
 

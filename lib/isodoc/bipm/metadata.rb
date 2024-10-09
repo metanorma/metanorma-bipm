@@ -1,10 +1,10 @@
 require "isodoc"
 
 module IsoDoc
-  module BIPM
+  module Bipm
     class Metadata < IsoDoc::Generic::Metadata
       def configuration
-        Metanorma::BIPM.configuration
+        Metanorma::Bipm.configuration
       end
 
       SI_ASPECT = %w(A_e_deltanu A_e cd_Kcd_h_deltanu cd_Kcd full K_k_deltanu

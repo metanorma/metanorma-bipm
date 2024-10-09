@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe IsoDoc::BIPM do
+RSpec.describe IsoDoc::Bipm do
   it "inserts part in appendix title" do
     input = <<~INPUT
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
@@ -36,7 +36,7 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(strip_guid(Xml::C14n.format(IsoDoc::BIPM::PresentationXMLConvert
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
@@ -64,7 +64,7 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     OUTPUT
 
-    expect(strip_guid(Xml::C14n.format(IsoDoc::BIPM::PresentationXMLConvert
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
@@ -93,7 +93,7 @@ RSpec.describe IsoDoc::BIPM do
       </body>
     OUTPUT
 
-    expect(strip_guid(Xml::C14n.format(IsoDoc::BIPM::HtmlConvert.new({})
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", input, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))).to be_equivalent_to output
@@ -153,10 +153,10 @@ RSpec.describe IsoDoc::BIPM do
       </body>
     OUTPUT
     stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))
@@ -248,11 +248,11 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))
@@ -364,11 +364,11 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))
@@ -436,7 +436,7 @@ RSpec.describe IsoDoc::BIPM do
         </div>
       </body>
     OUTPUT
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", input, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))
@@ -445,7 +445,7 @@ RSpec.describe IsoDoc::BIPM do
 
   it "generates document control text" do
     input = <<~"INPUT"
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
         <bibdata type="standard">
           <title language='en' format='text/plain' type='title-main'>Main Title</title>
           <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
@@ -453,8 +453,8 @@ RSpec.describe IsoDoc::BIPM do
             <contributor>
               <role type="author"/>
               <organization>
-                <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+                <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+                <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
               </organization>
             </contributor>
               <contributor>
@@ -538,8 +538,8 @@ RSpec.describe IsoDoc::BIPM do
             <contributor>
               <role type="publisher"/>
               <organization>
-                <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+                <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+                <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
               </organization>
             </contributor>
             <edition>2</edition>
@@ -587,7 +587,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = Xml::C14n.format(<<~"OUTPUT")
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::BIPM::VERSION}" type="presentation">
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::Bipm::VERSION}" type="presentation">
         <bibdata type="standard">
         <title language="en" format="text/plain" type="title-main">Main Title</title>
         <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
@@ -595,7 +595,7 @@ RSpec.describe IsoDoc::BIPM do
           <contributor>
             <role type="author"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
               <abbreviation>BIPM</abbreviation>
             </organization>
           </contributor>
@@ -680,7 +680,7 @@ RSpec.describe IsoDoc::BIPM do
           <contributor>
             <role type="publisher"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
               <abbreviation>BIPM</abbreviation>
             </organization>
           </contributor>
@@ -799,12 +799,12 @@ RSpec.describe IsoDoc::BIPM do
     OUTPUT
 
     stripped_html =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(presxml))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))
@@ -813,7 +813,7 @@ RSpec.describe IsoDoc::BIPM do
 
   it "generates shorter document control text" do
     input = <<~"INPUT"
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::BIPM::VERSION}" type="semantic">
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
         <bibdata type="standard">
           <title language='en' format='text/plain' type='title-main'>Main Title</title>
           <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
@@ -821,8 +821,8 @@ RSpec.describe IsoDoc::BIPM do
             <contributor>
               <role type="author"/>
               <organization>
-                <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+                <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+                <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
               </organization>
             </contributor>
               <contributor>
@@ -854,8 +854,8 @@ RSpec.describe IsoDoc::BIPM do
             <contributor>
               <role type="publisher"/>
               <organization>
-                <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
-                <abbreviation>#{Metanorma::BIPM.configuration.organization_name_short}</abbreviation>
+                <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+                <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
               </organization>
             </contributor>
             <edition>2</edition>
@@ -886,7 +886,7 @@ RSpec.describe IsoDoc::BIPM do
     INPUT
 
     presxml = <<~PRESXML
-      <bipm-standard xmlns='https://www.metanorma.org/ns/bipm' version="#{Metanorma::BIPM::VERSION}" type='presentation'>
+      <bipm-standard xmlns='https://www.metanorma.org/ns/bipm' version="#{Metanorma::Bipm::VERSION}" type='presentation'>
       <bibdata type='standard'>
              <title language='en' format='text/plain' type='title-main'>Main Title</title>
              <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
@@ -1018,12 +1018,12 @@ RSpec.describe IsoDoc::BIPM do
     HTML
 
     stripped_html =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
     expect(stripped_html).to(be_equivalent_to(Xml::C14n.format(presxml)))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))
@@ -1032,7 +1032,7 @@ RSpec.describe IsoDoc::BIPM do
 
   it "processes nested roman and alphabetic lists" do
     input = <<~"INPUT"
-      <bipm-standard type="semantic" version="#{Metanorma::BIPM::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
+      <bipm-standard type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
         <preface>
         <foreword displayorder="1">
           <ol id="_a165a98f-d641-4ccc-9c7e-d3268d93130c" type="alphabet_upper">
@@ -1178,7 +1178,7 @@ RSpec.describe IsoDoc::BIPM do
          </div>
        </body>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::HtmlConvert.new({})
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", input, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>"))))
@@ -1214,7 +1214,7 @@ RSpec.describe IsoDoc::BIPM do
         </sections>
       </bipm-standard>
     INPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
@@ -1356,7 +1356,7 @@ RSpec.describe IsoDoc::BIPM do
         </indexsect>
       </bipm-standard>
     INPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
@@ -1512,7 +1512,7 @@ RSpec.describe IsoDoc::BIPM do
        </foreword>
     PRESXML
 
-    expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+    expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
         .new(presxml_options)
     .convert("test", input, true))
     .at(".//xmlns:foreword").to_xml))
@@ -1567,7 +1567,7 @@ RSpec.describe IsoDoc::BIPM do
        </foreword>
     PRESXML
 
-    expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+    expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true))
       .at(".//xmlns:foreword").to_xml))
@@ -1624,7 +1624,7 @@ RSpec.describe IsoDoc::BIPM do
          <xref target="ISO712">[ISO 712], <span class="citesec">3.1</span></xref><xref target="ISO712">[ISO 712], <span class="citetbl">Table 3.1</span></xref></p>
        </foreword>
     OUTPUT
-    expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+    expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true))
       .at(".//xmlns:foreword").to_xml))
@@ -1708,7 +1708,7 @@ RSpec.describe IsoDoc::BIPM do
        </iso-standard>
     PRESXML
 
-    xml = Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+    xml = Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
     .convert("test", input, true))
     xml.at("//xmlns:localized-strings").remove
