@@ -24,9 +24,9 @@ si_aspect_paths = si_aspect.map do |x|
   File.join(logoloc1, "si-aspect", "#{x}.png")
 end
 
-RSpec.describe IsoDoc::BIPM do
+RSpec.describe IsoDoc::Bipm do
   it "processes default metadata in English" do
-    csdc = IsoDoc::BIPM::HtmlConvert.new({})
+    csdc = IsoDoc::Bipm::HtmlConvert.new({})
     input = <<~"INPUT"
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
         <bibdata type="standard">
@@ -88,13 +88,13 @@ RSpec.describe IsoDoc::BIPM do
           <contributor>
             <role type="author"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
             </organization>
           </contributor>
           <contributor>
             <role type="publisher"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
             </organization>
           </contributor>
           <contributor>
@@ -124,7 +124,7 @@ RSpec.describe IsoDoc::BIPM do
             <from>2001</from>
             <owner>
               <organization>
-                <name>#{Metanorma::BIPM.configuration.organization_name_long['en']}</name>
+                <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
               </organization>
             </owner>
           </copyright>
@@ -152,7 +152,7 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~"OUTPUT"
       {:accesseddate=>"XXX",
       :adapteddate=>"XXX",
-      :agency=>"#{Metanorma::BIPM.configuration.organization_name_long['en']}",
+      :agency=>"#{Metanorma::Bipm.configuration.organization_name_long['en']}",
       :annexid=>"Annex DEF",
       :annexid_alt=>"Appendice DEF",
       :annexsubtitle=>"Chef Title Annex",
@@ -191,7 +191,7 @@ RSpec.describe IsoDoc::BIPM do
       :provenancetitle=>"Main Title Provenance",
       :pubdate_monthyear=>"April 2021",
       :publisheddate=>"XXX",
-      :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long['en']}",
+      :publisher=>"#{Metanorma::Bipm.configuration.organization_name_long['en']}",
       :receiveddate=>"XXX",
       :revdate=>"2000-01-01",
       :revdate_monthyear=>"January 2000",
@@ -217,7 +217,7 @@ RSpec.describe IsoDoc::BIPM do
   end
 
   it "processes default metadata in French" do
-    csdc = IsoDoc::BIPM::HtmlConvert.new({})
+    csdc = IsoDoc::Bipm::HtmlConvert.new({})
     input = <<~"INPUT"
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
         <bibdata type="standard">
@@ -233,13 +233,13 @@ RSpec.describe IsoDoc::BIPM do
           <contributor>
             <role type="author"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['fr']}</name>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
             </organization>
           </contributor>
           <contributor>
             <role type="publisher"/>
             <organization>
-              <name>#{Metanorma::BIPM.configuration.organization_name_long['fr']}</name>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
             </organization>
           </contributor>
           <version>
@@ -256,7 +256,7 @@ RSpec.describe IsoDoc::BIPM do
             <from>2001</from>
             <owner>
               <organization>
-                <name>#{Metanorma::BIPM.configuration.organization_name_long['fr']}</name>
+                <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
               </organization>
             </owner>
           </copyright>
@@ -286,7 +286,7 @@ RSpec.describe IsoDoc::BIPM do
     output = <<~"OUTPUT"
       {:accesseddate=>"XXX",
       :adapteddate=>"XXX",
-      :agency=>"#{Metanorma::BIPM.configuration.organization_name_long['fr']}",
+      :agency=>"#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
       :annexid=>"Appendice DEF",
       :annexid_alt=>"Annex DEF",
       :annexsubtitle=>"Main Title Annex",
@@ -319,7 +319,7 @@ RSpec.describe IsoDoc::BIPM do
       :partid=>"Partie 2.1",
       :partid_alt=>"Part 2.1",
       :publisheddate=>"XXX",
-      :publisher=>"#{Metanorma::BIPM.configuration.organization_name_long['fr']}",
+      :publisher=>"#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
       :receiveddate=>"XXX",
       :revdate=>"2000-01-01",
       :revdate_monthyear=>"Janvier 2000",
@@ -394,7 +394,7 @@ RSpec.describe IsoDoc::BIPM do
       :vote_starteddate=>"XXX"}
     OUTPUT
 
-    csdc = IsoDoc::BIPM::HtmlConvert.new({})
+    csdc = IsoDoc::Bipm::HtmlConvert.new({})
     docxml, = csdc.convert_init(input, "test", true)
     expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s
       .gsub(/, :/, ",\n:")).to be_equivalent_to output
@@ -417,7 +417,7 @@ RSpec.describe IsoDoc::BIPM do
       </bipm-standard>
     OUTPUT
     stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
     expect(stripped_presxml).to(be_equivalent_to(Xml::C14n.format(output)))

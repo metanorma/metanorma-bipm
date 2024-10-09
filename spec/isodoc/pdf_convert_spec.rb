@@ -1,11 +1,11 @@
 require "spec_helper"
 
-RSpec.describe IsoDoc::BIPM do
+RSpec.describe IsoDoc::Bipm do
   it "splits bilingual collection PDF" do
     FileUtils.rm_rf("test.pdf")
     FileUtils.rm_rf("test_en.pdf")
     FileUtils.rm_rf("test_fr.pdf")
-    IsoDoc::BIPM::PdfConvert.new({}).convert("test", <<~"INPUT", false)
+    IsoDoc::Bipm::PdfConvert.new({}).convert("test", <<~"INPUT", false)
       <metanorma-collection xmlns="http://metanorma.org">
         <bibdata type="collection">
           <title format="text/plain" language="en">The International Temperature Scale of 1990 (ITS-90)</title>
@@ -69,7 +69,7 @@ RSpec.describe IsoDoc::BIPM do
     FileUtils.rm_rf("test.pdf")
     FileUtils.rm_rf("test_en.pdf")
     FileUtils.rm_rf("test_fr.pdf")
-    IsoDoc::BIPM::PdfConvert.new({}).convert("test", <<~"INPUT", false)
+    IsoDoc::Bipm::PdfConvert.new({}).convert("test", <<~"INPUT", false)
       <metanorma-collection xmlns="http://metanorma.org">
         <bibdata type="collection">
           <title format="text/plain" language="en">The International Temperature Scale of 1990 (ITS-90)</title>
@@ -136,7 +136,7 @@ RSpec.describe IsoDoc::BIPM do
     allow(docxml).to receive(:at).and_return(true)
     allow(root).to receive(:name).and_return("metanorma-collection")
 
-    opts = IsoDoc::BIPM::PdfConvert.new({}).pdf_options(docxml, nil)
+    opts = IsoDoc::Bipm::PdfConvert.new({}).pdf_options(docxml, nil)
 
     expect(opts).to be_a Hash
     expect(opts).to have_key("--split-by-language")

@@ -54,6 +54,7 @@
       <optional>
         <ref name="docsubtype"/>
       </optional>
+      <ref name="flavor"/>
       <ref name="editorialgroup"/>
       <optional>
         <ref name="comment-period"/>

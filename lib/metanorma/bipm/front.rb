@@ -1,5 +1,5 @@
 module Metanorma
-  module BIPM
+  module Bipm
     class Converter < Metanorma::Generic::Converter
       def metadata_committee(node, xml)
         return unless node.attr("committee-en") || node.attr("committee-fr")

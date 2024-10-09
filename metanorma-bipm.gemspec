@@ -4,7 +4,7 @@ require "metanorma/bipm/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "metanorma-bipm"
-  spec.version       = Metanorma::BIPM::VERSION
+  spec.version       = Metanorma::Bipm::VERSION
   spec.authors       = ["Ribose Inc."]
   spec.email         = ["open.source@ribose.com"]
 

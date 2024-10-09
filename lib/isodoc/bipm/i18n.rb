@@ -1,8 +1,8 @@
 module IsoDoc
-  module BIPM
+  module Bipm
     class I18n < IsoDoc::Generic::I18n
       def configuration
-        Metanorma::BIPM.configuration
+        Metanorma::Bipm.configuration
       end
     end
   end

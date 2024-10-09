@@ -1,5 +1,5 @@
 module IsoDoc
-  module BIPM
+  module Bipm
     class Counter < IsoDoc::XrefGen::Counter
     end
 

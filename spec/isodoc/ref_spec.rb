@@ -334,13 +334,13 @@ RSpec.describe IsoDoc do
          </div>
        </body>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::BIPM::PresentationXMLConvert
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, "")
       .gsub(%r{reference="[^"]+"}, 'reference="1"'))))
       .to be_equivalent_to Xml::C14n.format(presxml)
-    expect(Xml::C14n.format(IsoDoc::BIPM::HtmlConvert.new({})
+    expect(Xml::C14n.format(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", presxml, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to Xml::C14n.format(html)
@@ -390,7 +390,7 @@ RSpec.describe IsoDoc do
           </clause>
         </sections>
       OUTPUT
-      expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+      expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
         .new(presxml_options)
         .convert("test", input, true))
          .at("//xmlns:sections").to_xml))
@@ -407,7 +407,7 @@ RSpec.describe IsoDoc do
         </sections>
       OUTPUT
       input = input.sub("<language>en</language>", "<language>fr</language>")
-      expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::BIPM::PresentationXMLConvert
+      expect(Xml::C14n.format(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
         .new(presxml_options)
         .convert("test", input, true))
          .at("//xmlns:sections").to_xml))
@@ -463,7 +463,7 @@ RSpec.describe IsoDoc do
       </bibliography>
     PRESXML
     expect(Xml::C14n.format(Nokogiri::XML(
-      IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+      IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true),
     ).at("//xmlns:bibliography").to_xml))
       .to be_equivalent_to Xml::C14n.format(presxml)
@@ -542,7 +542,7 @@ RSpec.describe IsoDoc do
         </bibliography>
       PRESXML
       expect(Xml::C14n.format(Nokogiri::XML(
-        IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+        IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
         .convert("test", input, true),
       ).at("//xmlns:bibliography").to_xml))
         .to be_equivalent_to Xml::C14n.format(presxml)
@@ -626,7 +626,7 @@ RSpec.describe IsoDoc do
          </bibliography>
       PRESXML
       expect(Xml::C14n.format(Nokogiri::XML(
-        IsoDoc::BIPM::PresentationXMLConvert.new(presxml_options)
+        IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
         .convert("test", input, true),
       ).at("//xmlns:bibliography").to_xml))
         .to be_equivalent_to Xml::C14n.format(presxml)
