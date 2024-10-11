@@ -2,7 +2,7 @@ require "twitter_cldr"
 require "sterile"
 
 module IsoDoc
-  module BIPM
+  module Bipm
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def add_id
         %(id="_#{UUIDTools::UUID.random_create}")

@@ -1,5 +1,5 @@
 module IsoDoc
-  module BIPM
+  module Bipm
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def middle_title(docxml)
         @jcgm or return nil

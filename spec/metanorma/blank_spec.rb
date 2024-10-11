@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Metanorma::BIPM do
+RSpec.describe Metanorma::Bipm do
   it "processes a blank document" do
     input = <<~"INPUT"
       #{ASCIIDOC_BLANK_HDR}

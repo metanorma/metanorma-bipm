@@ -4,12 +4,12 @@ require_relative "front"
 require_relative "cleanup"
 
 module Metanorma
-  module BIPM
+  module Bipm
     class Converter < Metanorma::Generic::Converter
       register_for "bipm"
 
       def configuration
-        Metanorma::BIPM.configuration
+        Metanorma::Bipm.configuration
       end
 
       def org_name_long
@@ -112,19 +112,19 @@ module Metanorma
       end
 
       def html_converter(node)
-        IsoDoc::BIPM::HtmlConvert.new(html_extract_attributes(node))
+        IsoDoc::Bipm::HtmlConvert.new(html_extract_attributes(node))
       end
 
       def presentation_xml_converter(node)
-        IsoDoc::BIPM::PresentationXMLConvert
+        IsoDoc::Bipm::PresentationXMLConvert
           .new(html_extract_attributes(node)
-          .merge(output_formats: ::Metanorma::BIPM::Processor.new
+          .merge(output_formats: ::Metanorma::Bipm::Processor.new
           .output_formats))
       end
 
       def pdf_converter(node)
         node.attr("no-pdf") and return nil
-        IsoDoc::BIPM::PdfConvert.new(pdf_extract_attributes(node))
+        IsoDoc::Bipm::PdfConvert.new(pdf_extract_attributes(node))
       end
     end
   end

@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Relaton::Render::BIPM do
+RSpec.describe Relaton::Render::Bipm do
   it "renders book, five editors" do
     input = <<~INPUT
       <bibitem type="book">
@@ -425,8 +425,8 @@ RSpec.describe Relaton::Render::BIPM do
   private
 
   def renderer
-    i = IsoDoc::BIPM::PresentationXMLConvert.new({})
+    i = IsoDoc::Bipm::PresentationXMLConvert.new({})
     i.i18n_init("en", "Latn", nil)
-    Relaton::Render::BIPM::General.new(i18nhash: i.i18n.get)
+    Relaton::Render::Bipm::General.new(i18nhash: i.i18n.get)
   end
 end

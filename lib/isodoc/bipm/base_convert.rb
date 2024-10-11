@@ -1,12 +1,12 @@
 require "isodoc"
 
 module IsoDoc
-  module BIPM
+  module Bipm
     module BaseConvert
       attr_accessor :jcgm
 
       def configuration
-        Metanorma::BIPM.configuration
+        Metanorma::Bipm.configuration
       end
 
       TOP_ELEMENTS = IsoDoc::Function::ToWordHtml::TOP_ELEMENTS +
