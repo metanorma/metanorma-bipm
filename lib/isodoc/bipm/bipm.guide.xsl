@@ -2278,6 +2278,7 @@
 	<xsl:template match="bipm:preface/*[not(local-name() = 'note' or local-name() = 'admonition')][1]" priority="3">
 		<fo:block keep-with-next="always">
 			<xsl:call-template name="setId"/>
+			<xsl:call-template name="addReviewHelper"/>
 		</fo:block>
 		<fo:table table-layout="fixed" width="173.5mm">
 			<xsl:call-template name="setId">
@@ -2427,6 +2428,7 @@
 
 		<fo:block keep-with-next="always">
 			<xsl:call-template name="setId"/>
+			<xsl:call-template name="addReviewHelper"/>
 		</fo:block>
 		<fo:table table-layout="fixed" width="174mm" line-height="135%">
 			<xsl:if test="@orientation = 'landscape'">
@@ -2638,6 +2640,7 @@
 					<xsl:otherwise>
 						<fo:block>
 							<xsl:call-template name="setId"/>
+							<xsl:call-template name="addReviewHelper"/>
 							<xsl:apply-templates/>
 						</fo:block>
 					</xsl:otherwise>
@@ -2646,6 +2649,7 @@
 			<xsl:otherwise>
 				<fo:block>
 					<xsl:call-template name="setId"/>
+					<xsl:call-template name="addReviewHelper"/>
 					<xsl:apply-templates/>
 				</fo:block>
 			</xsl:otherwise>
@@ -2674,6 +2678,8 @@
 				</xsl:if>
 
 			</xsl:if>
+
+			<xsl:call-template name="addReviewHelper"/>
 
 			<!-- if note relates to title, but not fn -->
 			<xsl:if test="ancestor::bipm:title and not(bipm:sup_fn)"><fo:inline>* </fo:inline></xsl:if>
@@ -13262,6 +13268,29 @@
 	<!-- END definition -->
 	<!-- ========== -->
 
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="reviews_">
+		<xsl:for-each select="//*[local-name() = 'review'][@from]">
+			<xsl:copy>
+				<xsl:copy-of select="@from"/>
+				<xsl:copy-of select="@id"/>
+			</xsl:copy>
+		</xsl:for-each>
+	</xsl:variable>
+	<xsl:variable xmlns:redirect="http://xml.apache.org/xalan/redirect" name="reviews" select="xalan:nodeset($reviews_)"/>
+
+	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" name="addReviewHelper">
+		<!-- if there is review with from="...", then add small helper block for Annot tag adding, see 'review' template -->
+		<xsl:variable name="curr_id" select="@id"/>
+		<xsl:variable name="review_id" select="normalize-space($reviews//*[local-name() = 'review'][@from = $curr_id]/@id)"/>
+		<xsl:if test="$review_id != ''"> <!-- i.e. if review found -->
+			<fo:block keep-with-next="always" line-height="0.1" id="{$review_id}" font-size="1pt" role="SKIP"><xsl:value-of select="$hair_space"/><fo:basic-link internal-destination="{$review_id}" fox:alt-text="Annot___{$review_id}" role="Annot"><xsl:value-of select="$hair_space"/></fo:basic-link></fo:block>
+		</xsl:if>
+		<!-- <fo:block>
+			<curr_id><xsl:value-of select="$curr_id"/></curr_id>
+			<xsl:copy-of select="$reviews"/>
+		</fo:block> -->
+	</xsl:template>
+
 	<!-- main sections -->
 	<xsl:template xmlns:redirect="http://xml.apache.org/xalan/redirect" match="/*/*[local-name() = 'sections']/*" name="sections_node" priority="2">
 
@@ -13269,6 +13298,8 @@
 			<xsl:call-template name="setId"/>
 
 			<xsl:call-template name="sections_element_style"/>
+
+			<xsl:call-template name="addReviewHelper"/>
 
 			<xsl:apply-templates/>
 		</fo:block>
@@ -13305,6 +13336,7 @@
 
 		<fo:block>
 			<xsl:call-template name="setId"/>
+			<xsl:call-template name="addReviewHelper"/>
 			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template>
@@ -13340,6 +13372,8 @@
 			<xsl:call-template name="setBlockSpanAll"/>
 
 			<xsl:call-template name="refine_clause_style"/>
+
+			<xsl:call-template name="addReviewHelper"/>
 
 			<xsl:apply-templates/>
 		</fo:block>
@@ -13395,6 +13429,23 @@
 
 		<xsl:variable name="id_from" select="normalize-space(current()/@from)"/>
 
+		<xsl:if test="1 = 1">
+		<xsl:choose>
+			<!-- if there isn't the attribute '@from', then -->
+			<xsl:when test="$id_from = ''">
+				<fo:block id="{@id}" font-size="1pt" role="SKIP"><xsl:value-of select="$hair_space"/><fo:basic-link internal-destination="{@id}" fox:alt-text="Annot___{@id}" role="Annot"><xsl:value-of select="$hair_space"/></fo:basic-link></fo:block>
+			</xsl:when>
+			<!-- if there isn't element with id 'from', then create 'bookmark' here -->
+			<xsl:when test="ancestor::*[contains(local-name(), '-standard')] and not(ancestor::*[contains(local-name(), '-standard')]//*[@id = $id_from])">
+				<fo:block id="{@from}" font-size="1pt" role="SKIP"><xsl:value-of select="$hair_space"/><fo:basic-link internal-destination="{@from}" fox:alt-text="Annot___{@id}" role="Annot"><xsl:value-of select="$hair_space"/></fo:basic-link></fo:block>
+			</xsl:when>
+			<xsl:when test="not(/*[@id = $id_from]) and not(/*//*[@id = $id_from]) and not(preceding-sibling::*[@id = $id_from])">
+				<fo:block id="{@from}" font-size="1pt" role="SKIP"><xsl:value-of select="$hair_space"/><fo:basic-link internal-destination="{@from}" fox:alt-text="Annot___{@id}" role="Annot"><xsl:value-of select="$hair_space"/></fo:basic-link></fo:block>
+			</xsl:when>
+		</xsl:choose>
+		</xsl:if>
+
+    <xsl:if test="1 = 2">
 		<xsl:choose>
 			<!-- if there isn't the attribute '@from', then -->
 			<xsl:when test="$id_from = ''">
@@ -13408,6 +13459,7 @@
 				<fo:block id="{@from}" font-size="1pt"><xsl:value-of select="$hair_space"/></fo:block>
 			</xsl:when>
 		</xsl:choose>
+    </xsl:if>
 
 	</xsl:template>
 
