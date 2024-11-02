@@ -115,14 +115,24 @@ RSpec.describe IsoDoc::Bipm do
               <title depth="2">1.2.<tab/>Scope</title>
               <p id="E">Text</p>
             </clause>
-            <definitions id="K"><title>1.3.</title>
+            <definitions id="K">
+                        <title depth="2">
+               1.3.
+               <tab/>
+               Symbols
+            </title>
               <dl>
                 <dt>Symbol</dt>
                 <dd>Definition</dd>
               </dl>
             </definitions>
           </clause>
-          <definitions id="L" displayorder="5"><title>2.</title>
+          <definitions id="L" displayorder="5">
+                   <title depth="1">
+            2.
+            <tab/>
+            Symbols
+         </title>
             <dl>
               <dt>Symbol</dt>
               <dd>Definition</dd>
@@ -214,7 +224,11 @@ RSpec.describe IsoDoc::Bipm do
                       <p id="E">Text</p>
                    </div>
                    <div id="K">
-                      <h2>1.3.</h2>
+               <h2>
+               1.3.
+                
+               Symbols
+            </h2>
                       <div class="figdl">
                          <dl>
                             <dt>
@@ -226,7 +240,11 @@ RSpec.describe IsoDoc::Bipm do
                    </div>
                 </div>
                 <div id="L" class="Symbols">
-                   <h1>2.</h1>
+                            <h1>
+            2.
+             
+            Symbols
+         </h1>
                    <div class="figdl">
                       <dl>
                          <dt>
@@ -442,14 +460,24 @@ RSpec.describe IsoDoc::Bipm do
               <title depth="2">3.2.<tab/>Scope</title>
               <p id="E">Text</p>
             </clause>
-            <definitions id="K"><title>3.3.</title>
+            <definitions id="K">
+                        <title depth="2">
+               3.3.
+               <tab/>
+               Symbols
+            </title>
               <dl>
                 <dt>Symbol</dt>
                 <dd>Definition</dd>
               </dl>
             </definitions>
           </clause>
-          <definitions id="L" displayorder="8"><title>4.</title>
+          <definitions id="L" displayorder="8">
+                   <title depth="1">
+            4.
+            <tab/>
+            Symbols
+         </title>
             <dl>
               <dt>Symbol</dt>
               <dd>Definition</dd>
@@ -562,7 +590,11 @@ RSpec.describe IsoDoc::Bipm do
                       <p id="E">Text</p>
                    </div>
                    <div id="K">
-                      <h2>3.3.</h2>
+                                  <h2>
+               3.3.
+                
+               Symbols
+            </h2>
                       <div class="figdl">
                          <dl>
                             <dt>
@@ -574,7 +606,11 @@ RSpec.describe IsoDoc::Bipm do
                    </div>
                 </div>
                 <div id="L" class="Symbols">
-                   <h1>4.</h1>
+            <h1>
+            4.
+             
+            Symbols
+         </h1>
                    <div class="figdl">
                       <dl>
                          <dt>

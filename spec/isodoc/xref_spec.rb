@@ -72,7 +72,7 @@ RSpec.describe IsoDoc::Bipm do
            <clause type="toc" id="_" displayorder="1">
         <title depth="1">Contents</title>
       </clause>
-          <foreword displayorder="2">
+          <foreword displayorder="2"><title>Foreword</title>
             <p>
               <xref target='N1'>Equation (1)</xref>
       <xref target='N2'>Equation ((??))</xref>
@@ -86,7 +86,7 @@ RSpec.describe IsoDoc::Bipm do
           </foreword>
           <introduction id='intro' displayorder='3'>
             <formula id='N1'>
-              <name>1</name>
+              <name>(1)</name>
               <stem type='AsciiMath'>r = 1 %</stem>
             </formula>
             <clause id='xyz'>
@@ -105,7 +105,7 @@ RSpec.describe IsoDoc::Bipm do
         Scope
       </title>
             <formula id='N'>
-              <name>2</name>
+              <name>(2)</name>
               <stem type='AsciiMath'>r = 1 %</stem>
             </formula>
             <p>
@@ -123,11 +123,11 @@ RSpec.describe IsoDoc::Bipm do
       </title>
             <clause id='widgets1'><title>3.1.</title>
               <formula id='note1'>
-                <name>3</name>
+                <name>(3)</name>
                 <stem type='AsciiMath'>r = 1 %</stem>
               </formula>
               <formula id='note2'>
-                <name>4</name>
+                <name>(4)</name>
                 <stem type='AsciiMath'>r = 1 %</stem>
               </formula>
               <p>
@@ -143,7 +143,7 @@ RSpec.describe IsoDoc::Bipm do
       </title>
           <clause id='annex1a'><title>A1.1.</title>
             <formula id='AN'>
-              <name>1.1</name>
+              <name>(1.1)</name>
               <stem type='AsciiMath'>r = 1 %</stem>
             </formula>
           </clause>
@@ -152,7 +152,7 @@ RSpec.describe IsoDoc::Bipm do
               <stem type='AsciiMath'>r = 1 %</stem>
             </formula>
             <formula id='Anote2'>
-              <name>1.2</name>
+              <name>(1.2)</name>
               <stem type='AsciiMath'>r = 1 %</stem>
             </formula>
           </clause>
@@ -493,7 +493,7 @@ RSpec.describe IsoDoc::Bipm do
              <clause type="toc" id="_" displayorder="1">
             <title depth="1">Contents</title>
           </clause>
-           <foreword id='fwd' displayorder="2">
+           <foreword id='fwd' displayorder="2"><title>Foreword</title>
              <p>
                <xref target='N'>Figure 1</xref>
                <xref target='note1'>Figure 1-1</xref>
@@ -651,7 +651,7 @@ RSpec.describe IsoDoc::Bipm do
              <clause type="toc" id="_" displayorder="1">
             <title depth="1">Contents</title>
           </clause>
-           <foreword id='fwd' displayorder="2">
+           <foreword id='fwd' displayorder="2"><title>Foreword</title>
              <p>
                <xref target='N'>Figure 1</xref>
                <xref target='note1'>Figure 1 a)</xref>

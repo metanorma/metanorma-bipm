@@ -60,8 +60,7 @@ module IsoDoc
         number.nil? || number.empty? and return
         unless name = node.at(ns("./#{elem}[not(@type = 'quoted')]"))
           node.at(ns("./#{elem}[@type = 'quoted']")) and return
-          (node.children.empty? and node.add_child("<#{elem}></#{elem}>")) or
-            node.children.first.previous = "<#{elem}></#{elem}>"
+          node.add_first_child "<#{elem}></#{elem}>"
           name = node.children.first
         end
         if name.children.empty? then name.add_child(cleanup_entities(number))
@@ -142,7 +141,7 @@ module IsoDoc
 
       def quotesource(docxml)
         super
-        jcgm_eref(docxml, "//quote/source")
+        jcgm_eref(docxml, "//quote//source")
       end
 
       def jcgm_eref(docxml, xpath)
