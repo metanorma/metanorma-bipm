@@ -25,11 +25,6 @@ module IsoDoc
                                                            i18nhash: @i18n.get))
       end
 
-      def omit_docid_prefix(prefix)
-        %w(BIPM BIPM-long).include? prefix and return true
-        super
-      end
-
       def amd?(_text)
         false
       end

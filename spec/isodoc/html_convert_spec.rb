@@ -75,7 +75,7 @@ RSpec.describe IsoDoc::Bipm do
     input = <<~INPUT
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
         <preface>
-          <foreword displayorder="1">
+          <foreword displayorder="1"><title>Foreword</title>
             <pre>ABC</pre>
           </foreword>
         </preface>
@@ -1034,7 +1034,7 @@ RSpec.describe IsoDoc::Bipm do
     input = <<~"INPUT"
       <bipm-standard type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
         <preface>
-        <foreword displayorder="1">
+        <foreword displayorder="1"><title>Foreword</title>
           <ol id="_a165a98f-d641-4ccc-9c7e-d3268d93130c" type="alphabet_upper">
             <li>
               <p id="_484e82a7-48a3-4d88-a575-34143c9f7813">a</p>
@@ -1503,7 +1503,7 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     presxml = <<~PRESXML
-      <foreword displayorder="2">
+      <foreword displayorder="2"><title>Foreword</title>
          <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
            <xref target="ISO712">ISO 712, Clause 3</xref>
            <xref target="ISO712">ISO 712, Clause 3.1</xref>
@@ -1558,7 +1558,7 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     presxml = <<~PRESXML
-      <foreword displayorder="2">
+      <foreword displayorder="2"><title>Foreword</title>
          <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
            <xref target="ISO712">[ISO 712], <span class="citesec">Clause 3</span></xref>
            <xref target="ISO712">[ISO 712], <span class="citesec">3.1</span></xref>
@@ -1615,7 +1615,7 @@ RSpec.describe IsoDoc::Bipm do
       </iso-standard>
     INPUT
     presxml = <<~OUTPUT
-      <foreword displayorder="2">
+      <foreword displayorder="2"><title>Foreword</title>
          <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
          [<xref target="ISO712">ISO 712</xref>] [<xref target="ISO712">ISO 712</xref>]
          and
@@ -1669,7 +1669,7 @@ RSpec.describe IsoDoc::Bipm do
              <clause type="toc" id="_" displayorder="1">
             <title depth="1">Table des matières</title>
           </clause>
-           <foreword id='A' displayorder='2'>
+           <foreword id='A' displayorder='2'><title>Avant-propos</title>
              <p id='B'>abc</p>
              <note id='C'>
                <name>NOTE&#xA0;:</name>

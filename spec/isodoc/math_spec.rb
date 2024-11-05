@@ -373,7 +373,7 @@ RSpec.describe IsoDoc::Bipm do
               <clause type="toc" id="_" displayorder="1">
                 <title depth="1">Contents</title>
               </clause>
-          <foreword displayorder='2'>
+          <foreword displayorder='2'><title>Foreword</title>
             <p>
               <stem type='MathML'>
                  <m:math>
