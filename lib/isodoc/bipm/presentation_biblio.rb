@@ -67,6 +67,16 @@ _bib)
                                    "\\1\\2<strong>\\3</strong>,\\4\\5")
         ret
       end
+
+      def wrap_brackets(txt)
+        /^\[.*\]$/.match?(txt) ? txt : "[#{txt}]"
+      end
+
+      def reference_name(ref)
+        super
+        @jcgm and
+          @xrefs.get[ref["id"]][:xref] = wrap_brackets(@xrefs.get[ref["id"]][:xref])
+      end
     end
   end
 end

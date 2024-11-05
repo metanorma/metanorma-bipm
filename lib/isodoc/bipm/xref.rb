@@ -23,16 +23,6 @@ module IsoDoc
         super
       end
 
-      def wrap_brackets(txt)
-        /^\[.*\]$/.match?(txt) ? txt : "[#{txt}]"
-      end
-
-      def reference_names(ref)
-        super
-        @jcgm and
-          @anchors[ref["id"]][:xref] = wrap_brackets(@anchors[ref["id"]][:xref])
-      end
-
       UNNUM = "@unnumbered = 'true'".freeze
 
       def clause_order_main(docxml)
