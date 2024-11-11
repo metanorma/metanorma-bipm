@@ -7,6 +7,7 @@ module IsoDoc
       end
 
       def table1(elem)
+        table_fn(elem)
         labelled_ancestor(elem) || elem["unnumbered"] and return
         n = @xrefs.anchor(elem["id"], :label, false)
         prefix_name(elem, ".<tab/>",

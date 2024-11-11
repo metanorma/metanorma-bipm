@@ -149,7 +149,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = <<~"OUTPUT"
+    output = 
       {:accesseddate=>"XXX",
       :adapteddate=>"XXX",
       :agency=>"#{Metanorma::Bipm.configuration.organization_name_long['en']}",
@@ -196,8 +196,8 @@ RSpec.describe IsoDoc::Bipm do
       :revdate=>"2000-01-01",
       :revdate_monthyear=>"January 2000",
       :script=>"Latn",
-      :si_aspect_index=>#{si_aspect},
-      :si_aspect_paths=>#{si_aspect_paths},
+      :si_aspect_index=>si_aspect,
+      :si_aspect_paths=>si_aspect_paths,
       :stable_untildate=>"XXX",
       :stage=>"Mise en Pratique",
       :stage_display=>"En Vigeur",
@@ -208,12 +208,10 @@ RSpec.describe IsoDoc::Bipm do
       :updateddate=>"XXX",
       :vote_endeddate=>"XXX",
       :vote_starteddate=>"XXX"}
-    OUTPUT
 
     docxml, = csdc.convert_init(input, "test", true)
-    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s
-      .gsub(/, :/, ",\n:"))
-      .to be_equivalent_to output
+    expect(metadata(csdc.info(docxml, nil)))
+      .to be_equivalent_to(output)
   end
 
   it "processes default metadata in French" do
@@ -283,7 +281,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = <<~"OUTPUT"
+    output = 
       {:accesseddate=>"XXX",
       :adapteddate=>"XXX",
       :agency=>"#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
@@ -324,8 +322,8 @@ RSpec.describe IsoDoc::Bipm do
       :revdate=>"2000-01-01",
       :revdate_monthyear=>"Janvier 2000",
       :script=>"Latn",
-      :si_aspect_index=>#{si_aspect},
-      :si_aspect_paths=>#{si_aspect_paths},
+      :si_aspect_index=>si_aspect,
+      :si_aspect_paths=>si_aspect_paths,
       :stable_untildate=>"XXX",
       :stage=>"Working Draft",
       :stage_display=>"Working Draft",
@@ -335,11 +333,10 @@ RSpec.describe IsoDoc::Bipm do
       :updateddate=>"XXX",
       :vote_endeddate=>"XXX",
       :vote_starteddate=>"XXX"}
-    OUTPUT
 
     docxml, = csdc.convert_init(input, "test", true)
-    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s
-      .gsub(/, :/, ",\n:")).to be_equivalent_to output
+    expect(metadata(csdc.info(docxml, nil)))
+      .to be_equivalent_to(output)
   end
 
   it "ignores unrecognised status" do
@@ -359,7 +356,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = <<~"OUTPUT"
+    output = 
       {:accesseddate=>"XXX",
       :adapteddate=>"XXX",
       :announceddate=>"XXX",
@@ -381,8 +378,8 @@ RSpec.describe IsoDoc::Bipm do
       :revdate=>"2000-01-01",
       :revdate_monthyear=>"January 2000",
       :script=>"Latn",
-      :si_aspect_index=>#{si_aspect},
-      :si_aspect_paths=>#{si_aspect_paths},
+      :si_aspect_index=>si_aspect,
+      :si_aspect_paths=>si_aspect_paths,
       :stable_untildate=>"XXX",
       :stage=>"Standard",
       :stage_display=>"Standard",
@@ -392,12 +389,11 @@ RSpec.describe IsoDoc::Bipm do
       :updateddate=>"XXX",
       :vote_endeddate=>"XXX",
       :vote_starteddate=>"XXX"}
-    OUTPUT
 
     csdc = IsoDoc::Bipm::HtmlConvert.new({})
     docxml, = csdc.convert_init(input, "test", true)
-    expect(htmlencode(metadata(csdc.info(docxml, nil))).to_s
-      .gsub(/, :/, ",\n:")).to be_equivalent_to output
+    expect(metadata(csdc.info(docxml, nil)))
+      .to be_equivalent_to(output)
   end
 
   it "processes dates in Presentation XML" do
