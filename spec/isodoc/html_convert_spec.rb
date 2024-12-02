@@ -71,34 +71,6 @@ RSpec.describe IsoDoc::Bipm do
       .to be_equivalent_to output
   end
 
-  it "processes pre" do
-    input = <<~INPUT
-      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
-        <preface>
-          <foreword displayorder="1"><title>Foreword</title>
-            <pre>ABC</pre>
-          </foreword>
-        </preface>
-      </bipm-standard>
-    INPUT
-
-    output = Xml::C14n.format(<<~"OUTPUT")
-      #{HTML_HDR}
-      <br/>
-          <div>
-            <h1 class="ForewordTitle">Foreword</h1>
-            <pre>ABC</pre>
-          </div>
-        </div>
-      </body>
-    OUTPUT
-
-    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::HtmlConvert.new({})
-      .convert("test", input, true)
-      .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))).to be_equivalent_to output
-  end
-
   it "processes table" do
     input = <<~INPUT
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
@@ -152,16 +124,18 @@ RSpec.describe IsoDoc::Bipm do
         </div>
       </body>
     OUTPUT
-    stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    pres_output =
+      IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
-      .convert("test", input, true)))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
-      .convert("test", presxml, true)
+      .convert("test", input, true)
+    expect(Xml::C14n.format(strip_guid(pres_output
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to(be_equivalent_to(Xml::C14n.format(presxml)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))
-    expect(stripped_presxml).to(be_equivalent_to(Xml::C14n.format(presxml)))
-    expect(stripped_html).to(be_equivalent_to(output))
+      .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
+
   end
 
   it "processes simple terms & definitions" do
@@ -247,17 +221,17 @@ RSpec.describe IsoDoc::Bipm do
        </body>
     OUTPUT
 
-    stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    pres_output =
+      IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
-      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
-      .convert("test", presxml, true)
+    expect(Xml::C14n.format(strip_guid(pres_output
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to(be_equivalent_to(Xml::C14n.format(presxml)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))
-    expect(stripped_presxml).to(be_equivalent_to(Xml::C14n.format(presxml)))
-    expect(stripped_html).to(be_equivalent_to(output))
+      .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
   end
 
   it "processes simple terms & definitions in JCGM" do
@@ -362,18 +336,17 @@ RSpec.describe IsoDoc::Bipm do
          </div>
        </body>
     OUTPUT
-
-    stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    pres_output =
+      IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
-      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
-      .convert("test", presxml, true)
+    expect(Xml::C14n.format(strip_guid(pres_output
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to(be_equivalent_to(Xml::C14n.format(presxml)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))
-    expect(stripped_presxml).to(be_equivalent_to(Xml::C14n.format(presxml)))
-    expect(stripped_html).to(be_equivalent_to(output))
+      .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
   end
 
   it "injects JS into blank html" do
@@ -404,7 +377,7 @@ RSpec.describe IsoDoc::Bipm do
       <bipm-standard xmlns="http://riboseinc.com/isoxml">
         <sections>
           <clause id="A" displayorder="1">
-            <title>Clause</title>
+            <fmt-title>Clause</fmt-title>
             <ol start="4" type="arabic">
               <li>
                 <ol type="roman_upper">
@@ -797,18 +770,17 @@ RSpec.describe IsoDoc::Bipm do
           </div>
         </body>
     OUTPUT
-
-    stripped_html =
-      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    pres_output =
+      IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
-      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    expect(stripped_html).to(be_equivalent_to(presxml))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
-      .convert("test", presxml, true)
+    expect(Xml::C14n.format(strip_guid(pres_output
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to(be_equivalent_to(Xml::C14n.format(presxml)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))
-    expect(stripped_html).to(be_equivalent_to(output))
+      .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
   end
 
   it "generates shorter document control text" do
@@ -1016,25 +988,24 @@ RSpec.describe IsoDoc::Bipm do
            </div>
          </body>
     HTML
-
-    stripped_html =
-      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    pres_output =
+      IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
-      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    expect(stripped_html).to(be_equivalent_to(Xml::C14n.format(presxml)))
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
-      .convert("test", presxml, true)
+    expect(Xml::C14n.format(strip_guid(pres_output
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to(be_equivalent_to(Xml::C14n.format(presxml)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>")))
-    expect(stripped_html).to(be_equivalent_to(Xml::C14n.format(output)))
+      .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
   end
 
   it "processes nested roman and alphabetic lists" do
     input = <<~"INPUT"
       <bipm-standard type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
         <preface>
-        <foreword displayorder="1"><title>Foreword</title>
+        <foreword displayorder="1"><fmt-title>Foreword</fmt-title>
           <ol id="_a165a98f-d641-4ccc-9c7e-d3268d93130c" type="alphabet_upper">
             <li>
               <p id="_484e82a7-48a3-4d88-a575-34143c9f7813">a</p>

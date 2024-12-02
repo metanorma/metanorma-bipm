@@ -41,9 +41,9 @@ RSpec.describe Metanorma::Bipm::Processor do
       <bipm-standard xmlns="https://metanorma.org/ns/bipm">
         <sections>
           <terms id="H" obligation="normative" displayorder="1">
-          <title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</title>
+          <fmt-title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</fmt-title>
             <term id="J">
-            <name>1.1.</name>
+            <fmt-name>1.1.</fmt-name>
               <preferred>Term2</preferred>
             </term>
           </terms>

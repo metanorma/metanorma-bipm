@@ -8,8 +8,8 @@ module IsoDoc
     class HtmlConvert < IsoDoc::Generic::HtmlConvert
       def doccontrol(elem, out)
         out.div **attr_code(class: "doccontrol") do |div|
-          clause_parse_title(elem, div, elem.at(ns("./title")), out)
-          elem.children.reject { |c1| c1.name == "title" }.each do |c1|
+          clause_parse_title(elem, div, elem.at(ns("./fmt-title")), out)
+          elem.children.reject { |c1| c1.name == "fmt-title" }.each do |c1|
             parse(c1, div)
           end
         end

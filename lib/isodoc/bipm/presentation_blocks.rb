@@ -6,13 +6,18 @@ module IsoDoc
         @iso.middle_title(docxml)
       end
 
-      def table1(elem)
+      # KILL
+      def table1x(elem)
         table_fn(elem)
         labelled_ancestor(elem) || elem["unnumbered"] and return
         n = @xrefs.anchor(elem["id"], :label, false)
         prefix_name(elem, ".<tab/>",
                     l10n("#{@i18n.table.capitalize} #{n}"), "name")
       end
+
+       def table_delim
+         ".<tab/>"
+       end
 
       def figure1(elem)
         if @jcgm
@@ -26,7 +31,7 @@ module IsoDoc
       def note1(elem)
         elem.parent.name == "bibitem" || elem["notag"] == "true" and return
         lbl = l10n(note_label(elem))
-        prefix_name(elem, "", lbl, "name")
+        prefix_name(elem, {}, lbl, "name")
       end
 
       def note_label(elem)

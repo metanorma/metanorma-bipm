@@ -74,8 +74,8 @@ _bib)
 
       def reference_name(ref)
         super
-        @jcgm and
-          @xrefs.get[ref["id"]][:xref] = wrap_brackets(@xrefs.get[ref["id"]][:xref])
+        @jcgm and @xrefs.get[ref["id"]][:xref] =
+                    wrap_brackets(@xrefs.get[ref["id"]][:xref])
       end
     end
   end

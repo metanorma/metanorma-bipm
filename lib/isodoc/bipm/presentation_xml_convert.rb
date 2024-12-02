@@ -33,13 +33,19 @@ module IsoDoc
         super
       end
 
-      def annex1(elem)
+      # KILL
+      def annex1x(elem)
         @jcgm and return super
         elem["unnumbered"] == "true" and return
         lbl = @xrefs.anchor(elem["id"], :label)
         t = elem.at(ns("./title")) and
           t.children = "<strong>#{to_xml(t.children)}</strong>"
         prefix_name(elem, ".<tab/>", lbl, "title")
+      end
+
+      def annex_delim(elem)
+        @jcgm and return super
+        ".<tab/>"
       end
 
       def clause(docxml)
@@ -57,7 +63,8 @@ module IsoDoc
         super
       end
 
-      def prefix_name(node, delim, number, elem)
+      # KILL
+      def prefix_namex(node, delims, number, elem)
         number.nil? || number.empty? and return
         unless name = node.at(ns("./#{elem}[not(@type = 'quoted')]"))
           node.at(ns("./#{elem}[@type = 'quoted']")) and return
@@ -66,6 +73,16 @@ module IsoDoc
         end
         if name.children.empty? then name.add_child(cleanup_entities(number))
         else (name.children.first.previous = "#{number}#{delim}")
+        end
+      end
+
+      def prefix_name(node, delims, number, elem)
+        if n = node.at(ns("./#{elem}[@type = 'quoted']"))
+          n1 = n.dup
+          n1.name = "fmt-#{elem}"
+          n.next = n1
+        else
+          super
         end
       end
 

@@ -21,8 +21,8 @@ module IsoDoc
       end
 
       def bibrenderer(options = {})
-        ::Relaton::Render::Bipm::General.new(options.merge(language: @lang,
-                                                           i18nhash: @i18n.get))
+        ::Relaton::Render::Bipm::General.new(options
+          .merge(language: @lang, i18nhash: @i18n.get))
       end
 
       def amd?(_text)

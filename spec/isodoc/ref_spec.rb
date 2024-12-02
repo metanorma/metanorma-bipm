@@ -334,16 +334,18 @@ RSpec.describe IsoDoc do
          </div>
        </body>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+        pres_output =
+      IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
-      .sub(%r{<localized-strings>.*</localized-strings>}m, "")
+    expect(Xml::C14n.format(strip_guid(pres_output
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, "")
       .gsub(%r{reference="[^"]+"}, 'reference="1"'))))
-      .to be_equivalent_to Xml::C14n.format(presxml)
-    expect(Xml::C14n.format(IsoDoc::Bipm::HtmlConvert.new({})
-      .convert("test", presxml, true)
+      .to(be_equivalent_to(Xml::C14n.format(presxml)))
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>"))).to be_equivalent_to Xml::C14n.format(html)
+      .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
   end
 
   it "processes BIPM references" do
