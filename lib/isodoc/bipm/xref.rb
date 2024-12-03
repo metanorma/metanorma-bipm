@@ -211,15 +211,16 @@ module IsoDoc
         hierarchical_asset_names(clause, lbl)
       end
 
-      def annex_names1_anchors(num, level)
+      def annex_name_anchors1(clause, num, level)
         lbl = @jcgm ? "" : @annexlbl
+        @anchors[clause["id"]] = 
         { label: num, xref: labelled_autonum(lbl, num), #l10n("#{lbl}#{num}"),
           level: level, type: "clause", elem: lbl }
       end
 
       def annex_names1(clause, parentnum, num, level)
         lbl = clause_number_semx(parentnum, clause, num)
-        @anchors[clause["id"]] = annex_names1_anchors(lbl, level)
+        annex_name_anchors1(clause, lbl, level)
         i = Counter.new(0)
         clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
           annex_names1(c, lbl, i.increment(c).print, level + 1)
