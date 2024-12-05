@@ -1591,4 +1591,70 @@ RSpec.describe IsoDoc::Bipm do
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
   end
+
+    it "processes duplicate ids between Semantic and Presentation XML titles" do
+    input = <<~INPUT
+      <iso-standard xmlns="http://riboseinc.com/isoxml">
+           <sections>
+           <clause id="A1">
+           <title>Title <bookmark id="A2"/> <index><primary>title</primary></index></title>
+           </clause>
+           </sections>
+      </iso-standard>
+    INPUT
+    output = <<~OUTPUT
+       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1">Contents</fmt-title>
+             </clause>
+          </preface>
+          <sections>
+             <clause id="A1" displayorder="2">
+                <title id="_">
+                   Title
+                   <bookmark original-id="A2"/>
+                </title>
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A1">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">
+                      Title
+                      <bookmark id="A2"/>
+                      <bookmark id="_"/>
+                   </semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="A1">1</semx>
+                </fmt-xref-label>
+             </clause>
+          </sections>
+          <indexsect id="_" displayorder="3">
+             <title>Index</title>
+             <clause id="_">
+                <title>T</title>
+                <ul>
+                   <li>
+                      title,
+                      <xref target="_" pagenumber="true">
+                         <span class="fmt-element-name">Chapter</span>
+                         <semx element="autonum" source="A1">1</semx>
+                      </xref>
+                   </li>
+                </ul>
+             </clause>
+          </indexsect>
+       </iso-standard>
+    OUTPUT
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input, true))))
+      .to be_equivalent_to Xml::C14n.format(output)
+  end
 end
