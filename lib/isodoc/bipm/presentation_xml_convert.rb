@@ -81,6 +81,7 @@ module IsoDoc
           n1 = n.dup
           n1.name = "fmt-#{elem}"
           n.next = n1
+          prefix_name_postprocess(node, elem)
         else
           super
         end
