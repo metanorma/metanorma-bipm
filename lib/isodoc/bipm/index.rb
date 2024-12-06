@@ -16,7 +16,6 @@ module IsoDoc
         i = docxml.at(ns("//indexsect")) ||
           docxml.root.add_child("<indexsect #{add_id}><title>#{@i18n.index}" \
                                 "</title></indexsect>").first
-        require "debug"; binding.b
         index = sort_indexterms(
           docxml.xpath(ns("//index")),
           docxml.xpath(ns("//index-xref[@also = 'false']")),

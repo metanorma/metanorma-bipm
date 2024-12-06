@@ -1599,6 +1599,9 @@ RSpec.describe IsoDoc::Bipm do
            <clause id="A1">
            <title>Title <bookmark id="A2"/> <index><primary>title</primary></index></title>
            </clause>
+           <clause id="A2">
+           <variant-title type='quoted'>Title <bookmark id="A3"/> <index><primary>title2</primary></index></variant-title>
+           </clause>
            </sections>
       </iso-standard>
     INPUT
@@ -1634,14 +1637,34 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="A1">1</semx>
                 </fmt-xref-label>
              </clause>
+             <clause id="A2" displayorder="3">
+                <title type="quoted">
+                   <blacksquare/>
+                   Title
+                   <bookmark original-id="A3"/>
+                </title>
+                <fmt-title type="quoted" depth="1">
+                   <blacksquare/>
+                   Title
+                   <bookmark id="A3"/>
+                   <bookmark id="_"/>
+                </fmt-title>
+             </clause>
           </sections>
-          <indexsect id="_" displayorder="3">
+          <indexsect id="_" displayorder="4">
              <title>Index</title>
              <clause id="_">
                 <title>T</title>
                 <ul>
                    <li>
                       title,
+                      <xref target="_" pagenumber="true">
+                         <span class="fmt-element-name">Chapter</span>
+                         <semx element="autonum" source="A1">1</semx>
+                      </xref>
+                   </li>
+                   <li>
+                      title2,
                       <xref target="_" pagenumber="true">
                          <span class="fmt-element-name">Chapter</span>
                          <semx element="autonum" source="A1">1</semx>
