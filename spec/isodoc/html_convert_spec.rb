@@ -2133,11 +2133,11 @@ RSpec.describe IsoDoc::Bipm do
       .to be_equivalent_to Xml::C14n.format(presxml)
   end
 
-  it "processes notes in French" do
+  it "processes notes" do
     input = <<~INPUT
           <iso-standard xmlns="http://riboseinc.com/isoxml">
           <bibdata>
-          <language>fr</language>
+          <language>en</language>
           <script>Latn</script>
           </bibdata>
           <preface><foreword id="A">
@@ -2162,128 +2162,287 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     presxml = <<~PRESXML
-        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-           <bibdata>
-              <language current="true">fr</language>
-              <script current="true">Latn</script>
-           </bibdata>
-           <preface>
-              <clause type="toc" id="_" displayorder="1">
-                 <fmt-title depth="1">Table des matières</fmt-title>
-              </clause>
-              <foreword id="A" displayorder="2">
-                 <title id="_">Avant-propos</title>
-                 <fmt-title depth="1">
-                    <semx element="title" source="_">Avant-propos</semx>
-                 </fmt-title>
-                 <p id="B">abc</p>
-                 <note id="C" autonum="1">
-                    <fmt-name>
-                       <span class="fmt-caption-label">NOTE :</span>
-                    </fmt-name>
-                    <fmt-xref-label>
-                       <span class="fmt-element-name">note</span>
-                       <semx element="autonum" source="C">1</semx>
-                    </fmt-xref-label>
-                    <fmt-xref-label container="A">
-                       <span class="fmt-xref-container">
-                          <semx element="foreword" source="A">Avant-propos</semx>
-                       </span>
-                       <span class="fmt-comma">,</span>
-                       <span class="fmt-element-name">note</span>
-                       <semx element="autonum" source="C">1</semx>
-                    </fmt-xref-label>
-                    Hello
-                 </note>
-                 <ul id="D">
-                    <li>
-                       <p id="E">List item</p>
-                       <note id="F" autonum="2">
-                          <fmt-name>
-                             <span class="fmt-caption-label">NOTE :</span>
-                          </fmt-name>
-                          <fmt-xref-label>
-                             <span class="fmt-element-name">note</span>
-                             <semx element="autonum" source="F">2</semx>
-                          </fmt-xref-label>
-                          <fmt-xref-label container="A">
-                             <span class="fmt-xref-container">
-                                <semx element="foreword" source="A">Avant-propos</semx>
-                             </span>
-                             <span class="fmt-comma">,</span>
-                             <span class="fmt-element-name">note</span>
-                             <semx element="autonum" source="F">2</semx>
-                          </fmt-xref-label>
-                          List note
-                       </note>
-                    </li>
-                 </ul>
-              </foreword>
-           </preface>
-           <sections>
-              <clause id="A1" displayorder="3">
-                 <fmt-title depth="1">
-                    <span class="fmt-caption-label">
-                       <semx element="autonum" source="A1">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                    </span>
-                 </fmt-title>
-                 <fmt-xref-label>
-                    <span class="fmt-element-name">chapitre</span>
-                    <semx element="autonum" source="A1">1</semx>
-                 </fmt-xref-label>
-                 <p id="B1">abc</p>
-                 <note id="C1" autonum="1">
-                    <fmt-name>
-                       <span class="fmt-caption-label">Note :</span>
-                    </fmt-name>
-                    <fmt-xref-label>
-                       <span class="fmt-element-name">note</span>
-                       <semx element="autonum" source="C1">1</semx>
-                    </fmt-xref-label>
-                    <fmt-xref-label container="A1">
-                       <span class="fmt-xref-container">
-                          <span class="fmt-element-name">chapitre</span>
-                          <semx element="autonum" source="A1">1</semx>
-                       </span>
-                       <span class="fmt-comma">,</span>
-                       <span class="fmt-element-name">note</span>
-                       <semx element="autonum" source="C1">1</semx>
-                    </fmt-xref-label>
-                    Hello
-                 </note>
-                 <ul id="D1">
-                    <li>
-                       <p id="E1">List item</p>
-                       <note id="F1" autonum="2">
-                          <fmt-name>
-                             <span class="fmt-caption-label">Remarque :</span>
-                          </fmt-name>
-                          <fmt-xref-label>
-                             <span class="fmt-element-name">note</span>
-                             <semx element="autonum" source="F1">2</semx>
-                          </fmt-xref-label>
-                          <fmt-xref-label container="A1">
-                             <span class="fmt-xref-container">
-                                <span class="fmt-element-name">chapitre</span>
-                                <semx element="autonum" source="A1">1</semx>
-                             </span>
-                             <span class="fmt-comma">,</span>
-                             <span class="fmt-element-name">note</span>
-                             <semx element="autonum" source="F1">2</semx>
-                          </fmt-xref-label>
-                          List note
-                       </note>
-                    </li>
-                 </ul>
-              </clause>
-           </sections>
-        </iso-standard>
+       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+          <bibdata>
+             <language current="true">en</language>
+             <script current="true">Latn</script>
+          </bibdata>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1">Contents</fmt-title>
+             </clause>
+             <foreword id="A" displayorder="2">
+                <title id="_">Foreword</title>
+                <fmt-title depth="1">
+                   <semx element="title" source="_">Foreword</semx>
+                </fmt-title>
+                <p id="B">abc</p>
+                <note id="C" autonum="1">
+                   <fmt-name>
+                      <span class="fmt-caption-label">NOTE</span>
+                      <span class="fmt-label-delim">
+                         :
+                         <tab/>
+                      </span>
+                   </fmt-name>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">Note</span>
+                      <semx element="autonum" source="C">1</semx>
+                   </fmt-xref-label>
+                   <fmt-xref-label container="A">
+                      <span class="fmt-xref-container">
+                         <semx element="foreword" source="A">Foreword</semx>
+                      </span>
+                      <span class="fmt-comma">,</span>
+                      <span class="fmt-element-name">Note</span>
+                      <semx element="autonum" source="C">1</semx>
+                   </fmt-xref-label>
+                   Hello
+                </note>
+                <ul id="D">
+                   <li>
+                      <p id="E">List item</p>
+                      <note id="F" autonum="2">
+                         <fmt-name>
+                            <span class="fmt-caption-label">NOTE</span>
+                            <span class="fmt-label-delim">
+                               :
+                               <tab/>
+                            </span>
+                         </fmt-name>
+                         <fmt-xref-label>
+                            <span class="fmt-element-name">Note</span>
+                            <semx element="autonum" source="F">2</semx>
+                         </fmt-xref-label>
+                         <fmt-xref-label container="A">
+                            <span class="fmt-xref-container">
+                               <semx element="foreword" source="A">Foreword</semx>
+                            </span>
+                            <span class="fmt-comma">,</span>
+                            <span class="fmt-element-name">Note</span>
+                            <semx element="autonum" source="F">2</semx>
+                         </fmt-xref-label>
+                         List note
+                      </note>
+                   </li>
+                </ul>
+             </foreword>
+          </preface>
+          <sections>
+             <clause id="A1" displayorder="3">
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A1">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="A1">1</semx>
+                </fmt-xref-label>
+                <p id="B1">abc</p>
+                <note id="C1" autonum="1">
+                   <fmt-name>
+                      <span class="fmt-caption-label">Note</span>
+                      <span class="fmt-label-delim">
+                         :
+                         <tab/>
+                      </span>
+                   </fmt-name>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">Note</span>
+                      <semx element="autonum" source="C1">1</semx>
+                   </fmt-xref-label>
+                   <fmt-xref-label container="A1">
+                      <span class="fmt-xref-container">
+                         <span class="fmt-element-name">Chapter</span>
+                         <semx element="autonum" source="A1">1</semx>
+                      </span>
+                      <span class="fmt-comma">,</span>
+                      <span class="fmt-element-name">Note</span>
+                      <semx element="autonum" source="C1">1</semx>
+                   </fmt-xref-label>
+                   Hello
+                </note>
+                <ul id="D1">
+                   <li>
+                      <p id="E1">List item</p>
+                      <note id="F1" autonum="2">
+                         <fmt-name>
+                            <span class="fmt-caption-label">Note</span>
+                            <span class="fmt-label-delim">
+                               :
+                               <tab/>
+                            </span>
+                         </fmt-name>
+                         <fmt-xref-label>
+                            <span class="fmt-element-name">Note</span>
+                            <semx element="autonum" source="F1">2</semx>
+                         </fmt-xref-label>
+                         <fmt-xref-label container="A1">
+                            <span class="fmt-xref-container">
+                               <span class="fmt-element-name">Chapter</span>
+                               <semx element="autonum" source="A1">1</semx>
+                            </span>
+                            <span class="fmt-comma">,</span>
+                            <span class="fmt-element-name">Note</span>
+                            <semx element="autonum" source="F1">2</semx>
+                         </fmt-xref-label>
+                         List note
+                      </note>
+                   </li>
+                </ul>
+             </clause>
+          </sections>
+       </iso-standard>
     PRESXML
 
     xml = Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
     .convert("test", input, true))
+    xml.at("//xmlns:localized-strings").remove
+    expect(Xml::C14n.format(strip_guid(xml.to_xml)))
+      .to be_equivalent_to Xml::C14n.format(presxml)
+
+        presxml = <<~PRESXML
+              <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+          <bibdata>
+             <language current="true">fr</language>
+             <script current="true">Latn</script>
+          </bibdata>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1">Table des matières</fmt-title>
+             </clause>
+             <foreword id="A" displayorder="2">
+                <title id="_">Avant-propos</title>
+                <fmt-title depth="1">
+                   <semx element="title" source="_">Avant-propos</semx>
+                </fmt-title>
+                <p id="B">abc</p>
+                <note id="C" autonum="1">
+                   <fmt-name>
+                      <span class="fmt-caption-label">NOTE</span>
+                      <span class="fmt-label-delim">
+                          :
+                         <tab/>
+                      </span>
+                   </fmt-name>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">note</span>
+                      <semx element="autonum" source="C">1</semx>
+                   </fmt-xref-label>
+                   <fmt-xref-label container="A">
+                      <span class="fmt-xref-container">
+                         <semx element="foreword" source="A">Avant-propos</semx>
+                      </span>
+                      <span class="fmt-comma">,</span>
+                      <span class="fmt-element-name">note</span>
+                      <semx element="autonum" source="C">1</semx>
+                   </fmt-xref-label>
+                   Hello
+                </note>
+                <ul id="D">
+                   <li>
+                      <p id="E">List item</p>
+                      <note id="F" autonum="2">
+                         <fmt-name>
+                            <span class="fmt-caption-label">NOTE</span>
+                            <span class="fmt-label-delim">
+                                :
+                               <tab/>
+                            </span>
+                         </fmt-name>
+                         <fmt-xref-label>
+                            <span class="fmt-element-name">note</span>
+                            <semx element="autonum" source="F">2</semx>
+                         </fmt-xref-label>
+                         <fmt-xref-label container="A">
+                            <span class="fmt-xref-container">
+                               <semx element="foreword" source="A">Avant-propos</semx>
+                            </span>
+                            <span class="fmt-comma">,</span>
+                            <span class="fmt-element-name">note</span>
+                            <semx element="autonum" source="F">2</semx>
+                         </fmt-xref-label>
+                         List note
+                      </note>
+                   </li>
+                </ul>
+             </foreword>
+          </preface>
+          <sections>
+             <clause id="A1" displayorder="3">
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A1">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">chapitre</span>
+                   <semx element="autonum" source="A1">1</semx>
+                </fmt-xref-label>
+                <p id="B1">abc</p>
+                <note id="C1" autonum="1">
+                   <fmt-name>
+                      <span class="fmt-caption-label">Note</span>
+                      <span class="fmt-label-delim">
+                          :
+                         <tab/>
+                      </span>
+                   </fmt-name>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">note</span>
+                      <semx element="autonum" source="C1">1</semx>
+                   </fmt-xref-label>
+                   <fmt-xref-label container="A1">
+                      <span class="fmt-xref-container">
+                         <span class="fmt-element-name">chapitre</span>
+                         <semx element="autonum" source="A1">1</semx>
+                      </span>
+                      <span class="fmt-comma">,</span>
+                      <span class="fmt-element-name">note</span>
+                      <semx element="autonum" source="C1">1</semx>
+                   </fmt-xref-label>
+                   Hello
+                </note>
+                <ul id="D1">
+                   <li>
+                      <p id="E1">List item</p>
+                      <note id="F1" autonum="2">
+                         <fmt-name>
+                            <span class="fmt-caption-label">Remarque</span>
+                            <span class="fmt-label-delim">
+                                :
+                               <tab/>
+                            </span>
+                         </fmt-name>
+                         <fmt-xref-label>
+                            <span class="fmt-element-name">note</span>
+                            <semx element="autonum" source="F1">2</semx>
+                         </fmt-xref-label>
+                         <fmt-xref-label container="A1">
+                            <span class="fmt-xref-container">
+                               <span class="fmt-element-name">chapitre</span>
+                               <semx element="autonum" source="A1">1</semx>
+                            </span>
+                            <span class="fmt-comma">,</span>
+                            <span class="fmt-element-name">note</span>
+                            <semx element="autonum" source="F1">2</semx>
+                         </fmt-xref-label>
+                         List note
+                      </note>
+                   </li>
+                </ul>
+             </clause>
+          </sections>
+       </iso-standard>
+    PRESXML
+
+    xml = Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input.sub("<language>en</language>", "<language>fr</language>"), true))
     xml.at("//xmlns:localized-strings").remove
     expect(Xml::C14n.format(strip_guid(xml.to_xml)))
       .to be_equivalent_to Xml::C14n.format(presxml)

@@ -15,9 +15,9 @@ module IsoDoc
                     l10n("#{@i18n.table.capitalize} #{n}"), "name")
       end
 
-       def table_delim
-         ".<tab/>"
-       end
+      def table_delim
+        l10n("x.<tab/>").sub("x", "") # force French " .</tab>"
+      end
 
       def figure1(elem)
         if @jcgm
@@ -27,11 +27,15 @@ module IsoDoc
         end
       end
 
+      def note_delim(_elem)
+        l10n("x:<tab/>").sub("x", "") # force French " :</tab>"
+      end
+
       # notes and remarques (list notes) are not numbered
       def note1(elem)
         elem.parent.name == "bibitem" || elem["notag"] == "true" and return
         lbl = l10n(note_label(elem))
-        prefix_name(elem, {}, lbl, "name")
+        prefix_name(elem, { label: note_delim(elem) }, lbl, "name")
       end
 
       def note_label(elem)
