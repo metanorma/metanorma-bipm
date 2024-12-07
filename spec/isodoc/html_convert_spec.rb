@@ -193,6 +193,18 @@ RSpec.describe IsoDoc::Bipm do
             </term>
             <term id="K">
               <preferred>Term3</preferred>
+                   <termexample id="_bd57bbf1-f948-4bae-b0ce-73c00431f893">
+        <ul>
+        <li>A</li>
+        </ul>
+      </termexample>
+      <termnote id="_671a1994-4783-40d0-bc81-987d06ffb74e"  keep-with-next="true" keep-lines-together="true">
+        <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+      </termnote>
+      <termnote id="_671a1994-4783-40d0-bc81-987d06ffb74f">
+      <ul><li>A</li></ul>
+        <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+      </termnote>
               <termsource status="identical">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.2</referenceFrom></locality></origin>
       </termsource>
@@ -269,6 +281,84 @@ RSpec.describe IsoDoc::Bipm do
                       <semx element="autonum" source="K">2</semx>
                    </fmt-xref-label>
                    <preferred>Term3</preferred>
+                                      <termexample id="_" autonum="">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            <span class="fmt-element-name">EXAMPLE</span>
+                         </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Example</span>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Example</span>
+                      </fmt-xref-label>
+                      <ul>
+                         <li>A</li>
+                      </ul>
+                   </termexample>
+                   <termnote id="_" keep-with-next="true" keep-lines-together="true" autonum="1">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            Note
+                            <semx element="autonum" source="_">1</semx>
+                            to entry
+                         </span>
+                         <span class="fmt-label-delim">: </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">1</semx>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">1</semx>
+                      </fmt-xref-label>
+                      <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                   </termnote>
+                   <termnote id="_" autonum="2">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            Note
+                            <semx element="autonum" source="_">2</semx>
+                            to entry
+                         </span>
+                         <span class="fmt-label-delim">: </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">2</semx>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">2</semx>
+                      </fmt-xref-label>
+                      <ul>
+                         <li>A</li>
+                      </ul>
+                      <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                   </termnote>
                    <termsource status="identical">
                       [
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
@@ -300,18 +390,43 @@ RSpec.describe IsoDoc::Bipm do
            <div id="_" class="TOC">
              <h1 class="IntroTitle">Contents</h1>
            </div>
-           <div id="H">
-             <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
-             <p class="TermNum" id="J">1.1.</p>
-             <p class="Terms" style="text-align:left;">Term2</p>
-             <p>[Modified from: ISO 7301:2011, Clause 3.1
-            &#x2014;
+             <div id="H">
+                <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
+                <p class="TermNum" id="J">1.1.</p>
+                <p class="Terms" style="text-align:left;">Term2</p>
+                <p>[Modified from: ISO 7301:2011, Clause 3.1
+            —
            The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</p>
-             <p class="TermNum" id="K">1.2.</p>
-             <p class="Terms" style="text-align:left;">Term3</p>
-             <p>[ISO 7301:2011, Clause 3.2]</p>
-           </div>
-         </div>
+                <p class="TermNum" id="K">1.2.</p>
+                <p class="Terms" style="text-align:left;">Term3</p>
+                <div id="_" class="example">
+                   <p class="example-title">EXAMPLE</p>
+                   <div class="ul_wrap">
+                      <ul>
+                         <li>A</li>
+                      </ul>
+                   </div>
+                </div>
+                <div id="_" class="Note" style="page-break-after: avoid;page-break-inside: avoid;">
+                   <p>
+                      <span class="termnote_label">Note 1 to entry: </span>
+                      The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.
+                   </p>
+                </div>
+                <div id="_" class="Note">
+                   <p>
+                      <span class="termnote_label">Note 2 to entry: </span>
+                   </p>
+                   <div class="ul_wrap">
+                      <ul>
+                         <li>A</li>
+                      </ul>
+                   </div>
+                   <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                </div>
+                <p>[ISO 7301:2011, Clause 3.2]</p>
+             </div>
+          </div>
        </body>
     OUTPUT
 
@@ -355,6 +470,18 @@ RSpec.describe IsoDoc::Bipm do
             </term>
             <term id="K">
               <preferred>Term3</preferred>
+                                 <termexample id="_bd57bbf1-f948-4bae-b0ce-73c00431f893">
+        <ul>
+        <li>A</li>
+        </ul>
+      </termexample>
+      <termnote id="_671a1994-4783-40d0-bc81-987d06ffb74e"  keep-with-next="true" keep-lines-together="true">
+        <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+      </termnote>
+      <termnote id="_671a1994-4783-40d0-bc81-987d06ffb74f">
+      <ul><li>A</li></ul>
+        <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+      </termnote>
               <termsource status="identical">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.2</referenceFrom></locality></origin>
       </termsource>
@@ -440,6 +567,81 @@ RSpec.describe IsoDoc::Bipm do
                       <semx element="autonum" source="K">2</semx>
                    </fmt-xref-label>
                    <preferred>Term3</preferred>
+                                      <termexample id="_" autonum="">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            <span class="fmt-element-name">EXAMPLE</span>
+                         </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Example</span>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Example</span>
+                      </fmt-xref-label>
+                      <ul>
+                         <li>A</li>
+                      </ul>
+                   </termexample>
+                   <termnote id="_" keep-with-next="true" keep-lines-together="true" autonum="1">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            Note
+                            <semx element="autonum" source="_">1</semx>
+                            to entry
+                         </span>
+                         <span class="fmt-label-delim">: </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">1</semx>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">1</semx>
+                      </fmt-xref-label>
+                      <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                   </termnote>
+                   <termnote id="_" autonum="2">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            Note
+                            <semx element="autonum" source="_">2</semx>
+                            to entry
+                         </span>
+                         <span class="fmt-label-delim">: </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">2</semx>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">2</semx>
+                      </fmt-xref-label>
+                      <ul>
+                         <li>A</li>
+                      </ul>
+                      <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                   </termnote>
                    <termsource status="identical">
                       [
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
@@ -481,6 +683,39 @@ RSpec.describe IsoDoc::Bipm do
            The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</p>
              <p class="TermNum" id="K">1.2.</p>
              <p class="Terms" style="text-align:left;">Term3</p>
+                             <div id="_" class="example">
+                   <p class="example-title">EXAMPLE</p>
+                   <div class="ul_wrap">
+                      <ul>
+                         <li>A</li>
+                      </ul>
+                   </div>
+                </div>
+                <div id="_" class="Note" style="page-break-after: avoid;page-break-inside: avoid;">
+                   <p>
+                      <span class="termnote_label">Note 1 to entry: </span>
+                      The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.
+                   </p>
+                </div>
+                <div id="_" class="Note">
+                   <p>
+                      <span class="termnote_label">Note 2 to entry: </span>
+                   </p>
+                   <div class="ul_wrap">
+                      <ul>
+                         <li>A</li>
+                      </ul>
+                   </div>
+                   <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                </div>
+                <p>
+                   [ISO 7301:2011,
+                   <span class="citesec">3.2</span>
+                   ]
+                </p>
+             </div>
+          </div>
+       </body>
              <p>[ISO 7301:2011, <span class="citesec">3.2</span>]</p>
            </div>
          </div>
