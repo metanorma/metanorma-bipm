@@ -140,7 +140,7 @@ RSpec.describe IsoDoc::Bipm do
         </bibdata>
         <preface>
             <clause type="toc" id="_" displayorder="1">
-              <title depth="1">Contents</title>
+              <fmt-title depth="1">Contents</fmt-title>
             </clause>
           <p displayorder="2">
                30 000
@@ -251,7 +251,7 @@ RSpec.describe IsoDoc::Bipm do
 
         <preface>
             <clause type="toc" id="_" displayorder="1">
-              <title depth="1">Table des matières</title>
+              <fmt-title depth="1">Table des matières</fmt-title>
             </clause>
           <p displayorder="2">
                30 000
@@ -368,35 +368,40 @@ RSpec.describe IsoDoc::Bipm do
       </iso-standard>
     INPUT
     output = <<~OUTPUT
-      <iso-standard xmlns='http://riboseinc.com/isoxml' xmlns:m='http://www.w3.org/1998/Math/MathML' type='presentation'>
-        <preface>
+        <iso-standard xmlns="http://riboseinc.com/isoxml" xmlns:m="http://www.w3.org/1998/Math/MathML" type="presentation">
+           <preface>
               <clause type="toc" id="_" displayorder="1">
-                <title depth="1">Contents</title>
+                 <fmt-title depth="1">Contents</fmt-title>
               </clause>
-          <foreword displayorder='2'><title>Foreword</title>
-            <p>
-              <stem type='MathML'>
-                 <m:math>
-                   <m:msup>
-                     <m:mrow>
-                       <m:mo>(</m:mo>
-                       <m:mrow>
-                         <m:mi>x</m:mi>
-                         <m:mo>+</m:mo>
-                         <m:mi>y</m:mi>
-                       </m:mrow>
-                       <m:mo>)</m:mo>
-                     </m:mrow>
-                     <m:mn>2</m:mn>
-                   </m:msup>
-                 </m:math>
-                 <asciimath>(x + y)^(2)</asciimath>
-              </stem>
-            </p>
-          </foreword>
-        </preface>
-        <sections> </sections>
-      </iso-standard>
+              <foreword displayorder="2">
+                 <title id="_">Foreword</title>
+                 <fmt-title depth="1">
+                    <semx element="title" source="_">Foreword</semx>
+                 </fmt-title>
+                 <p>
+                    <stem type="MathML">
+                       <m:math>
+                          <m:msup>
+                             <m:mrow>
+                                <m:mo>(</m:mo>
+                                <m:mrow>
+                                   <m:mi>x</m:mi>
+                                   <m:mo>+</m:mo>
+                                   <m:mi>y</m:mi>
+                                </m:mrow>
+                                <m:mo>)</m:mo>
+                             </m:mrow>
+                             <m:mn>2</m:mn>
+                          </m:msup>
+                       </m:math>
+                       <asciimath>(x + y)^(2)</asciimath>
+                    </stem>
+                 </p>
+              </foreword>
+           </preface>
+           <sections>
+        </sections>
+        </iso-standard>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))))

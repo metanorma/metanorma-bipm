@@ -6,7 +6,7 @@ module IsoDoc
 
         clause = <<~DOCCONTROL
           <doccontrol displayorder="999">
-          <title>Document Control</title>
+          <fmt-title>Document Control</fmt-title>
           <table unnumbered="true"><tbody>
           <tr><th>Authors:</th><td/><td>#{list_authors(doc)}</td></tr>
           #{doccontrol_row1(doc)} #{doccontrol_row2(doc)} #{list_drafts(doc)}
@@ -61,7 +61,7 @@ module IsoDoc
         ret = list_people(
           xml, "//bibdata/contributor[xmlns:role/@type = 'author']/person"
         )
-        @i18n.boolean_conj(ret, "and")
+        connectives_spans(@i18n.boolean_conj(ret, "and"))
       end
 
       COCHAIR = "xmlns:role[contains(text(),'co-chair')]".freeze
@@ -73,7 +73,7 @@ module IsoDoc
         ret.empty? and return ""
         role = xml&.at(ns("//bibdata/contributor[#{COCHAIR}]/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
-        "#{label}: #{@i18n.boolean_conj(ret, 'and')}"
+        "#{label}: #{connectives_spans(@i18n.boolean_conj(ret, 'and'))}"
       end
 
       def list_chairs(xml)
@@ -81,7 +81,7 @@ module IsoDoc
         ret.empty? and return ""
         role = xml&.at(ns("//bibdata/contributor#{CHAIR}/role"))&.text
         label = ret.size > 1 && role ? "#{role}s" : role
-        "#{label}: #{@i18n.boolean_conj(ret, 'and')}"
+        "#{label}: #{connectives_spans(@i18n.boolean_conj(ret, 'and'))}"
       end
 
       def list_people(xml, xpath)

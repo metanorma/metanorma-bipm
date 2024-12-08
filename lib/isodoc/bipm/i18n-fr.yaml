@@ -44,9 +44,9 @@ table_of_contents: Table des matières
 source: ""
 adapted_from: "Adapté de: "
 modified_from: "Modifié de: "
-note: "Note:"
-prefacenote: "NOTE:"
-listnote: "Remarque:"
-termnote: "Note % à l’article:"
+note: "Note"
+prefacenote: "NOTE"
+listnote: "Remarque"
+termnote: "Note % à l’article"
 date: Date
 authorized: Autorisé
