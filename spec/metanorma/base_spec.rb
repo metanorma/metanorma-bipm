@@ -1460,15 +1460,15 @@ RSpec.describe Metanorma::Bipm do
       INPUT
 
       output = <<~OUTPUT
-        <sections>
-          <clause id='_' obligation='normative'>
-            <title>Clause</title>
-            <p id='_'>
-            <eref type="inline" bibitemid="a1" citeas="CGPM 1st Meeting (1889)"/>
-            <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="CIPM Decision 101-1 (2012)"/>
-            </p>
+      <sections>
+          <clause id="_" obligation="normative">
+             <title>Clause</title>
+             <p id="_">
+                <eref type="inline" bibitemid="a1" citeas="CGPM 1st Meeting (1889)"/>
+                <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="CIPM Decision 101-1 (2012)"/>
+             </p>
           </clause>
-        </sections>
+       </sections>
       OUTPUT
       doc = Asciidoctor.convert(input, *OPTIONS)
       warn doc
@@ -1502,15 +1502,15 @@ RSpec.describe Metanorma::Bipm do
       INPUT
 
       output = <<~OUTPUT
-        <sections>
-          <clause id='_' obligation='normative'>
-            <title>Clause</title>
-            <p id='_'>
-            <eref type="inline" bibitemid="a1" citeas="CGPM 1e Réunion (1889)"/>
-            <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>
-            </p>
+       <sections>
+          <clause id="_" obligation="normative">
+             <title>Clause</title>
+             <p id="_">
+                <eref type="inline" bibitemid="a1" citeas="CGPM 1e Réunion (1889)"/>
+                <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>
+             </p>
           </clause>
-        </sections>
+       </sections>
       OUTPUT
       expect(Xml::C14n.format(strip_guid(
                      Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))

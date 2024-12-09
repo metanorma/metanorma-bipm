@@ -166,7 +166,7 @@ RSpec.describe IsoDoc do
                    <xref target="ISO712">ISO 712</xref>
                    <xref target="ISBN">[6]</xref>
                    <xref target="ISSN">[7]</xref>
-                   <xref target="ISO16634">ISO 16634:-- (all parts)</xref>
+                   <xref target="ISO16634">ISO 16634:-- (all parts)</xref>
                    <xref target="ref1">ICC/167</xref>
                    <xref target="ref10">[9]</xref>
                    <xref target="ref12">Citn</xref>
@@ -199,16 +199,16 @@ RSpec.describe IsoDoc do
                 <bibitem id="ISO16634" type="standard">
                    <formattedref>
                       <em>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</em>
-                      . ISO 16634:-- (all parts).
+                      . ISO 16634:-- (all parts).
                    </formattedref>
                    <docidentifier type="metanorma-ordinal">[2]</docidentifier>
-                   <docidentifier type="ISO">ISO 16634:-- (all parts)</docidentifier>
-                   <docidentifier scope="biblio-tag">ISO 16634:-- (all parts)</docidentifier>
+                   <docidentifier type="ISO">ISO 16634:-- (all parts)</docidentifier>
+                   <docidentifier scope="biblio-tag">ISO 16634:-- (all parts)</docidentifier>
                    <note format="text/plain" reference="1" type="Unpublished-Status">Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
                    <biblio-tag>
                       [2]
                       <tab/>
-                      ISO 16634:-- (all parts)
+                      ISO 16634:-- (all parts)
                       <fn reference="1">
                          <p>Under preparation. (Stage at the time of publication ISO/DIS 16634)</p>
                       </fn>
@@ -373,29 +373,28 @@ RSpec.describe IsoDoc do
     PRESXML
 
     output = <<~OUTPUT
-      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-        <div class="title-section">
-              <p> </p>
-           </div>
-           <br/>
-           <div class="prefatory-section">
-              <p> </p>
-           </div>
-           <br/>
-           <div class="main-section">
-
-           <br/>
-           <div id="_" class="TOC">
-             <h1 class="IntroTitle">Contents</h1>
-           </div>
-           <br/>
-                        <div>
+       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+          <div class="title-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="prefatory-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="main-section">
+             <br/>
+             <div id="_" class="TOC">
+                <h1 class="IntroTitle">Contents</h1>
+             </div>
+             <br/>
+             <div>
                 <h1 class="ForewordTitle">Foreword</h1>
                 <p id="_">
                    <a href="#ISO712">ISO 712</a>
                    <a href="#ISBN">[6]</a>
                    <a href="#ISSN">[7]</a>
-                   <a href="#ISO16634">ISO 16634:-- (all parts)</a>
+                   <a href="#ISO16634">ISO 16634:-- (all parts)</a>
                    <a href="#ref1">ICC/167</a>
                    <a href="#ref10">[9]</a>
                    <a href="#ref12">Citn</a>
@@ -412,12 +411,12 @@ RSpec.describe IsoDoc do
                    . ISO 712.
                 </p>
                 <p id="ISO16634" class="Biblio">
-                   [2]  ISO 16634:-- (all parts)
+                   [2]  ISO 16634:-- (all parts)
                    <a class="FootnoteRef" href="#fn:1">
                       <sup>1</sup>
                    </a>
                    <i>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</i>
-                   . ISO 16634:-- (all parts).
+                   . ISO 16634:-- (all parts).
                 </p>
                 <p id="ISO20483" class="Biblio">
                    [3]  ISO 20483:2013-2014 International Organization for Standardization. (2013–2014)
@@ -562,8 +561,8 @@ RSpec.describe IsoDoc do
          <semx element="autonum" source="_">1</semx>
       </fmt-xref-label>
             <p id='_'>
-            <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">CGPM 1st Meeting (1889)</link>
-            <link target="https://www.bipm.org/en/committees/ci/cipm/101-_1-2012">CIPM DECN 101-1 (2012, E)</link>
+            <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">CGPM 1st Meeting (1889)</link>
+         <link target="https://www.bipm.org/en/committees/ci/cipm/101-_1-2012">CIPM DECN 101-1 (2012, E)</link>
             </p>
           </clause>
         </sections>
@@ -592,8 +591,8 @@ RSpec.describe IsoDoc do
                  <semx element="autonum" source="_">1</semx>
               </fmt-xref-label>
               <p id="_">
-                 <link target="https://www.bipm.org/fr/committees/cg/cgpm/1-1889">CGPM 1e Réunion (1889)</link>
-                 <link target="https://www.bipm.org/fr/committees/ci/cipm/101-_1-2012">CIPM DECN 101-1 (2012, F)</link>
+         <link target="https://www.bipm.org/fr/committees/cg/cgpm/1-1889">CGPM 1e Réunion (1889)</link>
+         <link target="https://www.bipm.org/fr/committees/ci/cipm/101-_1-2012">CIPM DECN 101-1 (2012, F)</link>
               </p>
            </clause>
         </sections>
