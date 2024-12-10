@@ -18,6 +18,7 @@ RSpec.describe IsoDoc do
               <eref bibitemid="ref10"/>
               <eref bibitemid="ref12"/>
               <eref bibitemid="zip_ffs"/>
+              <eref bibitemid="metrologia"/>
             </p>
           </foreword>
         </preface>
@@ -143,6 +144,66 @@ RSpec.describe IsoDoc do
               <docidentifier type="metanorma">[Citn]</docidentifier>
               <docidentifier type="IETF">RFC 20</docidentifier>
             </bibitem>
+            <bibitem type="article" id="metrologia">
+  <fetched>2024-12-10</fetched>
+  <title format="text/plain" language="en" script="Latn">News from the Bureau International des Poids et Mesures</title>
+  <uri type="src">https://doi.org/10.1088/0026-1394/8/1/006</uri>
+  <uri type="doi">https://doi.org/10.1088/0026-1394/8/1/006</uri>
+  <docidentifier type="BIPM" primary="true">Metrologia 8 1 32</docidentifier>
+  <docidentifier type="doi">10.1088/0026-1394/8/1/006</docidentifier>
+  <date type="published">
+    <on>1972-01-01</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename language="en" script="Latn">J Terrien</completename>
+      </name>
+    </person>
+  </contributor>
+  <copyright>
+    <from>1972</from>
+    <owner>
+      <organization>
+        <name>Published under licence by IOP Publishing Ltd</name>
+      </organization>
+    </owner>
+  </copyright>
+  <relation type="hasManifestation">
+    <bibitem>
+      <title format="text/plain" language="en" script="Latn">News from the Bureau International des Poids et Mesures</title>
+      <date type="ppub">
+        <on>1972-01-01</on>
+      </date>
+      <medium>
+        <carrier>print</carrier>
+      </medium>
+    </bibitem>
+  </relation>
+  <series>
+    <title format="text/plain" language="en" script="Latn">Metrologia</title>
+  </series>
+  <extent>
+    <locality type="volume">
+      <referenceFrom>8</referenceFrom>
+    </locality>
+  </extent>
+  <extent>
+    <locality type="issue">
+      <referenceFrom>1</referenceFrom>
+    </locality>
+  </extent>
+  <extent>
+    <locality type="page">
+      <referenceFrom>32</referenceFrom>
+      <referenceTo>36</referenceTo>
+    </locality>
+  </extent>
+  <ext schema-version="v1.0.0">
+    <doctype>article</doctype>
+  </ext>
+</bibitem>
           </references>
         </bibliography>
       </iso-standard>
@@ -171,6 +232,7 @@ RSpec.describe IsoDoc do
                    <xref target="ref10">[9]</xref>
                    <xref target="ref12">Citn</xref>
                    <xref target="zip_ffs">[5]</xref>
+                   <xref target="metrologia">[11]</xref>
                 </p>
              </foreword>
           </preface>
@@ -183,9 +245,7 @@ RSpec.describe IsoDoc do
                 <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                 <bibitem id="ISO712" type="standard">
                    <formattedref>
-                      International Organization for Standardization.
                       <em>Cereals and cereal products</em>
-                      . ISO 712.
                    </formattedref>
                    <docidentifier type="metanorma-ordinal">[1]</docidentifier>
                    <docidentifier type="ISO">ISO 712</docidentifier>
@@ -216,9 +276,7 @@ RSpec.describe IsoDoc do
                 </bibitem>
                 <bibitem id="ISO20483" type="standard">
                    <formattedref>
-                      International Organization for Standardization. (2013–2014)
                       <em>Cereals and pulses</em>
-                      . ISO 20483:2013-2014.
                    </formattedref>
                    <docidentifier type="metanorma-ordinal">[3]</docidentifier>
                    <docidentifier type="ISO">ISO 20483:2013-2014</docidentifier>
@@ -367,6 +425,26 @@ RSpec.describe IsoDoc do
                       IETF RFC 20
                    </biblio-tag>
                 </bibitem>
+                <bibitem type="article" id="metrologia">
+                   <formattedref>
+                      J Terrien (1972)
+                      <em>Metrologia</em>
+                      .
+                      <strong>8</strong>
+                      ; (1); 32–36.
+                      <link target="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</link>
+                      . [viewed: December 10, 2024].
+                   </formattedref>
+                   <uri type="src">https://doi.org/10.1088/0026-1394/8/1/006</uri>
+                   <uri type="doi">https://doi.org/10.1088/0026-1394/8/1/006</uri>
+                   <docidentifier type="metanorma-ordinal">[11]</docidentifier>
+                   <docidentifier type="BIPM" primary="true">Metrologia 8 1 32</docidentifier>
+                   <docidentifier type="doi">doi 10.1088/0026-1394/8/1/006</docidentifier>
+                   <biblio-tag>
+                      [11]
+                      <tab/>
+                   </biblio-tag>
+                </bibitem>
              </references>
           </bibliography>
        </iso-standard>
@@ -399,6 +477,7 @@ RSpec.describe IsoDoc do
                    <a href="#ref10">[9]</a>
                    <a href="#ref12">Citn</a>
                    <a href="#zip_ffs">[5]</a>
+                   <a href="#metrologia">[11]</a>
                 </p>
              </div>
              <br/>
@@ -406,9 +485,8 @@ RSpec.describe IsoDoc do
                 <h1 class="Section3">Bibliography</h1>
                 <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                 <p id="ISO712" class="Biblio">
-                   [1]  ISO 712 International Organization for Standardization.
+                   [1]  ISO 712
                    <i>Cereals and cereal products</i>
-                   . ISO 712.
                 </p>
                 <p id="ISO16634" class="Biblio">
                    [2]  ISO 16634:-- (all parts)
@@ -419,9 +497,8 @@ RSpec.describe IsoDoc do
                    . ISO 16634:-- (all parts).
                 </p>
                 <p id="ISO20483" class="Biblio">
-                   [3]  ISO 20483:2013-2014 International Organization for Standardization. (2013–2014)
+                   [3]  ISO 20483:2013-2014
                    <i>Cereals and pulses</i>
-                   . ISO 20483:2013-2014.
                 </p>
                 <p id="ref1" class="Biblio">
                    [4]  ICC/167
@@ -483,6 +560,15 @@ RSpec.describe IsoDoc do
                    Citn  IETF RFC 20 CitationWorks. 2019.
                    <i>How to cite a reference</i>
                    .
+                </p>
+                <p id="metrologia" class="Biblio">
+                   [11]  J Terrien (1972)
+                   <i>Metrologia</i>
+                   .
+                   <b>8</b>
+                   ; (1); 32–36.
+                   <a href="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</a>
+                   . [viewed: December 10, 2024].
                 </p>
              </div>
              <aside id="fn:1" class="footnote">

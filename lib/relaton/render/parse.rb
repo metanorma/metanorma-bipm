@@ -14,6 +14,14 @@ module Relaton
               .include?(r[:nonpersonal])
           end
         end
+
+        def authoritative_identifier(doc)
+          if %w(article journal book).include?(doc.type)
+            [] # we don't want BIPM identifiers for these!
+          else
+            super
+          end
+        end
       end
     end
   end

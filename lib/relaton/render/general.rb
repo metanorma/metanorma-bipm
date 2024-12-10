@@ -1,4 +1,5 @@
 require "relaton-render"
+require_relative "parse"
 
 module Relaton
   module Render
@@ -16,7 +17,7 @@ module Relaton
           @sizetemplateklass = Relaton::Render::Template::Size
           @generaltemplateklass = Relaton::Render::Template::General
           @fieldsklass = Relaton::Render::Fields
-          @parseklass = Relaton::Render::Parse
+          @parseklass = Relaton::Render::Bipm::Parse
         end
       end
     end
