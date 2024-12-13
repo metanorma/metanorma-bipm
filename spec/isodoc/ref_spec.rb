@@ -433,7 +433,7 @@ RSpec.describe IsoDoc do
                       <strong>8</strong>
                       ; (1); 32–36.
                       <link target="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</link>
-                      . [viewed: December 10, 2024].
+                      .
                    </formattedref>
                    <uri type="src">https://doi.org/10.1088/0026-1394/8/1/006</uri>
                    <uri type="doi">https://doi.org/10.1088/0026-1394/8/1/006</uri>
@@ -568,7 +568,7 @@ RSpec.describe IsoDoc do
                    <b>8</b>
                    ; (1); 32–36.
                    <a href="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</a>
-                   . [viewed: December 10, 2024].
+                   .
                 </p>
              </div>
              <aside id="fn:1" class="footnote">
@@ -810,13 +810,13 @@ RSpec.describe IsoDoc do
               <semx element="title" source="_">Bibliography</semx>
             </fmt-title>
             <bibitem id="a1" hidden="true">
-              <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
+              <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>.</formattedref>
               <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
               <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
               <docidentifier scope="biblio-tag">CGPM Resolution 1</docidentifier>
             </bibitem>
             <bibitem id="a2" hidden="true">
-              <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
+              <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>.</formattedref>
               <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
               <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
               <docidentifier scope="biblio-tag">CIPM Decision 105</docidentifier>
@@ -893,7 +893,7 @@ RSpec.describe IsoDoc do
               <semx element="title" source="_">Bibliography</semx>
             </fmt-title>
              <bibitem id="a1">
-               <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
+               <formattedref>Bureau International des Poids et Mesures. (1889) <em>1st meeting of the CGPM</em>. CGPM Resolution 1. <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>.</formattedref>
                <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
                <docidentifier type="metanorma-ordinal">[1]</docidentifier>
                <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
@@ -901,7 +901,7 @@ RSpec.describe IsoDoc do
                <biblio-tag>[1]<tab/>CGPM Resolution 1 </biblio-tag>
              </bibitem>
              <bibitem id="a2">
-             <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
+             <formattedref>Bureau International des Poids et Mesures. (2016) <em>105th meeting of the CIPM</em>. CIPM Decision 105. <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>.</formattedref>
                <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
                <docidentifier type="metanorma-ordinal">[2]</docidentifier>
                <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
