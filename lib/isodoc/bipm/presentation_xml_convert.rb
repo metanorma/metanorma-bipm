@@ -2,7 +2,6 @@ require "isodoc"
 require "metanorma-generic"
 require "metanorma-iso"
 require_relative "init"
-require_relative "index"
 require_relative "doccontrol"
 require_relative "../../relaton/render/general"
 require_relative "presentation_blocks"
@@ -33,16 +32,6 @@ module IsoDoc
         super
       end
 
-      # KILL
-      def annex1x(elem)
-        @jcgm and return super
-        elem["unnumbered"] == "true" and return
-        lbl = @xrefs.anchor(elem["id"], :label)
-        t = elem.at(ns("./title")) and
-          t.children = "<strong>#{to_xml(t.children)}</strong>"
-        prefix_name(elem, ".<tab/>", lbl, "title")
-      end
-
       def annex_delim(elem)
         @jcgm and return super
         ".<tab/>"
@@ -61,19 +50,6 @@ module IsoDoc
         elem.at("./ancestor::*[@unnumbered = 'true']") and
           elem["unnumbered"] = "true"
         super
-      end
-
-      # KILL
-      def prefix_namex(node, delims, number, elem)
-        number.nil? || number.empty? and return
-        unless name = node.at(ns("./#{elem}[not(@type = 'quoted')]"))
-          node.at(ns("./#{elem}[@type = 'quoted']")) and return
-          node.add_first_child "<#{elem}></#{elem}>"
-          name = node.children.first
-        end
-        if name.children.empty? then name.add_child(cleanup_entities(number))
-        else (name.children.first.previous = "#{number}#{delim}")
-        end
       end
 
       def prefix_name(node, delims, number, elem)
@@ -202,6 +178,24 @@ module IsoDoc
         # s = termsource_status(elem["status"]) and origin.next = l10n(", #{s}")
         # end
         termsource_add_modification_text(elem.at(ns("./modification")))
+      end
+
+      def enable_indexsect
+        true
+      end
+
+      def index1(docxml, indexsect, index)
+        index.keys.sort.each do |k|
+          c = indexsect.add_child "<clause #{add_id}><title>#{k}</title><ul></ul></clause>"
+          words = index[k].keys.each_with_object({}) do |w, v|
+            v[sortable(w).downcase] = w
+          end
+          words.keys.localize(@lang.to_sym).sort.to_a.each do |w|
+            c.first.at(ns("./ul")).add_child index_entries(words, index[k], w)
+          end
+        end
+        docxml.xpath(ns("//indexsect//xref")).each { |x| x.children.remove }
+        @xrefs.bookmark_anchor_names(docxml)
       end
 
       include Init
