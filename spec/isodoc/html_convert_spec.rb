@@ -1814,7 +1814,7 @@ RSpec.describe IsoDoc::Bipm do
                 <xref target="I">
                    <semx element="indexsect" source="I">Index</semx>
                 </xref>
-                <bookmark to="End" id="_"/>
+                <bookmark id="_"/>
                 <bookmark id="_"/>
                 <bookmark id="_"/>
                 <bookmark id="_"/>
