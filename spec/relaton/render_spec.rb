@@ -245,7 +245,7 @@ RSpec.describe Relaton::Render::Bipm do
         </bibitem>
       INPUT
       output = <<~OUTPUT
-        <formattedref>Ribose Inc. (2019) <em>metanorma-standoc</em>. Version 1.3.1. <link target='https://github.com/metanorma/metanorma-standoc'>https://github.com/metanorma/metanorma-standoc</link>. [viewed: #{Date.today.strftime('%B %-d, %Y')}].</formattedref>
+        <formattedref>Ribose Inc. (2019) <em>metanorma-standoc</em>. Version 1.3.1. <link target='https://github.com/metanorma/metanorma-standoc'>https://github.com/metanorma/metanorma-standoc</link>.</formattedref>
       OUTPUT
       expect(renderer.render(input))
         .to be_equivalent_to output
