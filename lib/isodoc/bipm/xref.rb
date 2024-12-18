@@ -59,14 +59,6 @@ module IsoDoc
         "./term[#{UNNUM}] | ./terms[#{UNNUM}] | " \
         "./definitions[#{UNNUM}]".freeze
 
-      # KILL
-      def section_name_anchors(clause, num, lvl)
-        lbl = @jcgm ? "clause_jcgm" : "clause"
-        @anchors[clause["id"]] =
-          { label: num.print, xref: l10n("#{@labels[lbl]} #{num.print}"),
-            level: lvl, type: "clause", elem: @labels[lbl] }
-      end
-
       def section_name_anchors(clause, num, level)
         lbl = @jcgm ? "clause_jcgm" : "clause"
         xref = labelled_autonum(@labels[lbl], num)
@@ -75,21 +67,6 @@ module IsoDoc
         @anchors[clause["id"]] =
           { label:, xref:, title:, level:, type: "clause",
             elem: @labels[lbl] }
-      end
-
-      # KILL
-      def section_names(clause, num, lvl)
-        clause.nil? and return num
-        num.increment(clause)
-        @anchors[clause["id"]] = section_name_anchors(clause, num, lvl)
-        i = Counter.new(0, prefix: num.print)
-        clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
-          section_names1(c, i.increment(c).print, lvl + 1)
-        end
-        clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each do |c|
-          unnumbered_section_names1(c, lvl + 1)
-        end
-        num
       end
 
       def section_names(clause, num, lvl)
@@ -135,7 +112,7 @@ module IsoDoc
           section_names1(c, lbl, i.increment(c).print, level + 1)
         end
         clause.xpath(ns(UNNUMBERED_SUBCLAUSES)).each do |c|
-          unnumbered_section_names1(c, lvl + 1)
+          unnumbered_section_names1(c, level + 1)
         end
       end
 
@@ -180,7 +157,7 @@ module IsoDoc
         @anchors[clause["id"]] = annex_name_anchors(clause, lbl)
         if @klass.single_term_clause?(clause)
           annex_names1(clause.at(ns("./references | ./terms | ./definitions")),
-                       lbl, 1)
+                       nil, "#{prefix}#{num}", 1)
         else
           i = Counter.new(0)
           clause.xpath(ns(NUMBERED_SUBCLAUSES)).each do |c|
@@ -202,8 +179,8 @@ module IsoDoc
         lbl = semx(clause, lbl, "title")
         @anchors[clause["id"]] = unnumbered_annex_anchors(lbl)
         if @klass.single_term_clause?(clause)
-          annex_names1(clause.at(ns("./references | ./terms | ./definitions")),
-                       num.to_s, 1)
+          unnumbered_annex_names1(clause.at(ns("./references | ./terms | ./definitions")),
+                       1)
         else
           clause.xpath(ns(SUBCLAUSES))
             .each { |c| unnumbered_annex_names1(c, 2) }
