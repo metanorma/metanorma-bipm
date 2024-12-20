@@ -1506,7 +1506,7 @@ RSpec.describe Metanorma::Bipm do
           <clause id="_" obligation="normative">
              <title>Clause</title>
              <p id="_">
-                <eref type="inline" bibitemid="a1" citeas="CGPM 1e Réunion (1889)"/>
+                <eref type="inline" bibitemid="a1" citeas="CGPM 1&lt;sup&gt;e&lt;/sup&gt; réunion (1889)"/>
                 <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>
              </p>
           </clause>

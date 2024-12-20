@@ -216,7 +216,7 @@ RSpec.describe Relaton::Render::Bipm do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Aluffi P, Anderson D, Hering M, Mustaţă M and Payne S (Eds.) (2022) <em>London Mathematical Society Lecture Note Series</em> (N.S.). <strong>1</strong> (7) 89–112.</formattedref>
+      <formattedref>Aluffi P, Anderson D, Hering M, Mustaţă M and Payne S (Eds.) (2022) Facets of Algebraic Geometry: A Collection in Honor of William Fulton's 80th Birthday. <em><em>London Mathematical Society Lecture Note Series</em> (N.S.)</em>. <strong>1</strong> (7) 89–112.</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output

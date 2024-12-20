@@ -428,7 +428,10 @@ RSpec.describe IsoDoc do
                 <bibitem type="article" id="metrologia">
                    <formattedref>
                       J Terrien (1972)
-                      <em>Metrologia</em>
+                       News from the Bureau International des Poids et Mesures.
+                      <em>
+                 <em>Metrologia</em>
+              </em>
                       .
                       <strong>8</strong>
                       ; (1); 32–36.
@@ -562,8 +565,8 @@ RSpec.describe IsoDoc do
                    .
                 </p>
                 <p id="metrologia" class="Biblio">
-                   [11]  J Terrien (1972)
-                   <i>Metrologia</i>
+                   [11]  J Terrien (1972) News from the Bureau International des Poids et Mesures.
+                   <i><i>Metrologia</i></i>
                    .
                    <b>8</b>
                    ; (1); 32–36.
