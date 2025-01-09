@@ -61,6 +61,7 @@ end
 def strip_guid(html)
   html
     .gsub(%r{ id="_[^"]+"}, ' id="_"')
+    .gsub(%r{ original-id="_[^"]+"}, ' original-id="_"')
     .gsub(%r{ target="_[^"]+"}, ' target="_"')
     .gsub(%r{ source="_[^"]+"}, ' source="_"')
     .gsub(%r{<fetched>[^<]+</fetched>}, "<fetched/>")

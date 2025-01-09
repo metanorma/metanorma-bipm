@@ -183,7 +183,7 @@ RSpec.describe IsoDoc::Bipm do
           <terms id="H" obligation="normative">
             <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <term id="J">
-              <preferred>Term2</preferred>
+              <preferred><expression><name>Term2</name></expression></preferred>
               <termsource status="modified">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
           <modification>
@@ -192,7 +192,7 @@ RSpec.describe IsoDoc::Bipm do
       </termsource>
             </term>
             <term id="K">
-              <preferred>Term3</preferred>
+              <preferred><expression><name>Term3</name></expression></preferred>
                    <termexample id="_bd57bbf1-f948-4bae-b0ce-73c00431f893">
         <ul>
         <li>A</li>
@@ -253,17 +253,42 @@ RSpec.describe IsoDoc::Bipm do
                       <span class="fmt-autonum-delim">.</span>
                       <semx element="autonum" source="J">1</semx>
                    </fmt-xref-label>
-                   <preferred>Term2</preferred>
-                   <termsource status="modified">
-                      [Modified from:
+                   <preferred id="_">
+                      <expression>
+                         <name>Term2</name>
+                      </expression>
+                   </preferred>
+                   <fmt-preferred>
+                      <p>
+                         <semx element="preferred" source="_">
+                            <strong>Term2</strong>
+                         </semx>
+                      </p>
+                   </fmt-preferred>
+                   <termsource status="modified" id="_">
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
                          <locality type="clause">
                             <referenceFrom>3.1</referenceFrom>
                          </locality>
-                         ISO 7301:2011, Clause 3.1
                       </origin>
-                      — The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]
+                      <modification>
+                         <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+                      </modification>
                    </termsource>
+                   <fmt-termsource status="modified">
+                      [Modified from:
+                      <semx element="termsource" source="_">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                            <locality type="clause">
+                               <referenceFrom>3.1</referenceFrom>
+                            </locality>
+                            ISO 7301:2011, Clause 3.1
+                         </origin>
+                         —
+                         <semx element="modification" source="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</semx>
+                      </semx>
+                      ]
+                   </fmt-termsource>
                 </term>
                 <term id="K">
                    <fmt-name>
@@ -280,8 +305,19 @@ RSpec.describe IsoDoc::Bipm do
                       <span class="fmt-autonum-delim">.</span>
                       <semx element="autonum" source="K">2</semx>
                    </fmt-xref-label>
-                   <preferred>Term3</preferred>
-                                      <termexample id="_" autonum="">
+                   <preferred id="_">
+                      <expression>
+                         <name>Term3</name>
+                      </expression>
+                   </preferred>
+                   <fmt-preferred>
+                      <p>
+                         <semx element="preferred" source="_">
+                            <strong>Term3</strong>
+                         </semx>
+                      </p>
+                   </fmt-preferred>
+                   <termexample id="_" autonum="">
                       <fmt-name>
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">EXAMPLE</span>
@@ -359,16 +395,25 @@ RSpec.describe IsoDoc::Bipm do
                       </ul>
                       <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
                    </termnote>
-                   <termsource status="identical">
-                      [
+                   <termsource status="identical" id="_">
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
                          <locality type="clause">
                             <referenceFrom>3.2</referenceFrom>
                          </locality>
-                         ISO 7301:2011, Clause 3.2
                       </origin>
-                      ]
                    </termsource>
+                   <fmt-termsource status="identical">
+                      [
+                      <semx element="termsource" source="_">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                            <locality type="clause">
+                               <referenceFrom>3.2</referenceFrom>
+                            </locality>
+                            ISO 7301:2011, Clause 3.2
+                         </origin>
+                      </semx>
+                      ]
+                   </fmt-termsource>
                 </term>
              </terms>
           </sections>
@@ -376,29 +421,34 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     output = Xml::C14n.format(<<~OUTPUT)
-      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-         <div class="title-section">
-           <p> </p>
-         </div>
-         <br/>
-         <div class="prefatory-section">
-           <p> </p>
-         </div>
-         <br/>
-         <div class="main-section">
-           <br/>
-           <div id="_" class="TOC">
-             <h1 class="IntroTitle">Contents</h1>
-           </div>
+       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+          <div class="title-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="prefatory-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="main-section">
+             <br/>
+             <div id="_" class="TOC">
+                <h1 class="IntroTitle">Contents</h1>
+             </div>
              <div id="H">
                 <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
                 <p class="TermNum" id="J">1.1.</p>
-                <p class="Terms" style="text-align:left;">Term2</p>
-                <p>[Modified from: ISO 7301:2011, Clause 3.1
-            —
-           The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</p>
+                <p class="Terms" style="text-align:left;">
+                   <b>Term2</b>
+                </p>
+                <p>[Modified from:
+         ISO 7301:2011, Clause 3.1
+            — The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here
+       ]</p>
                 <p class="TermNum" id="K">1.2.</p>
-                <p class="Terms" style="text-align:left;">Term3</p>
+                <p class="Terms" style="text-align:left;">
+                   <b>Term3</b>
+                </p>
                 <div id="_" class="example">
                    <p class="example-title">EXAMPLE</p>
                    <div class="ul_wrap">
@@ -424,7 +474,9 @@ RSpec.describe IsoDoc::Bipm do
                    </div>
                    <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
                 </div>
-                <p>[ISO 7301:2011, Clause 3.2]</p>
+                <p>[
+         ISO 7301:2011, Clause 3.2
+       ]</p>
              </div>
           </div>
        </body>
@@ -460,7 +512,7 @@ RSpec.describe IsoDoc::Bipm do
           <terms id="H" obligation="normative">
             <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <term id="J">
-              <preferred>Term2</preferred>
+              <preferred><expression><name>Term2</name></expression></preferred>
               <termsource status="modified">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
           <modification>
@@ -469,7 +521,7 @@ RSpec.describe IsoDoc::Bipm do
       </termsource>
             </term>
             <term id="K">
-              <preferred>Term3</preferred>
+              <preferred><expression><name>Term3</name></expression></preferred>
                                  <termexample id="_bd57bbf1-f948-4bae-b0ce-73c00431f893">
         <ul>
         <li>A</li>
@@ -539,18 +591,43 @@ RSpec.describe IsoDoc::Bipm do
                       <span class="fmt-autonum-delim">.</span>
                       <semx element="autonum" source="J">1</semx>
                    </fmt-xref-label>
-                   <preferred>Term2</preferred>
-                   <termsource status="modified">
-                      [Modified from:
+                   <preferred id="_">
+                      <expression>
+                         <name>Term2</name>
+                      </expression>
+                   </preferred>
+                   <fmt-preferred>
+                      <p>
+                         <semx element="preferred" source="_">
+                            <strong>Term2</strong>
+                         </semx>
+                      </p>
+                   </fmt-preferred>
+                   <termsource status="modified" id="_">
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
                          <locality type="clause">
                             <referenceFrom>3.1</referenceFrom>
                          </locality>
-                         ISO 7301:2011,
-                         <span class="citesec">3.1</span>
                       </origin>
-                      — The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]
+                      <modification>
+                         <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+                      </modification>
                    </termsource>
+                   <fmt-termsource status="modified">
+                      [Modified from:
+                      <semx element="termsource" source="_">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                            <locality type="clause">
+                               <referenceFrom>3.1</referenceFrom>
+                            </locality>
+                            ISO 7301:2011,
+                            <span class="citesec">3.1</span>
+                         </origin>
+                         —
+                         <semx element="modification" source="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</semx>
+                      </semx>
+                      ]
+                   </fmt-termsource>
                 </term>
                 <term id="K">
                    <fmt-name>
@@ -566,8 +643,19 @@ RSpec.describe IsoDoc::Bipm do
                       <span class="fmt-autonum-delim">.</span>
                       <semx element="autonum" source="K">2</semx>
                    </fmt-xref-label>
-                   <preferred>Term3</preferred>
-                                      <termexample id="_" autonum="">
+                   <preferred id="_">
+                      <expression>
+                         <name>Term3</name>
+                      </expression>
+                   </preferred>
+                   <fmt-preferred>
+                      <p>
+                         <semx element="preferred" source="_">
+                            <strong>Term3</strong>
+                         </semx>
+                      </p>
+                   </fmt-preferred>
+                   <termexample id="_" autonum="">
                       <fmt-name>
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">EXAMPLE</span>
@@ -642,17 +730,26 @@ RSpec.describe IsoDoc::Bipm do
                       </ul>
                       <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
                    </termnote>
-                   <termsource status="identical">
-                      [
+                   <termsource status="identical" id="_">
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
                          <locality type="clause">
                             <referenceFrom>3.2</referenceFrom>
                          </locality>
-                         ISO 7301:2011,
-                         <span class="citesec">3.2</span>
                       </origin>
-                      ]
                    </termsource>
+                   <fmt-termsource status="identical">
+                      [
+                      <semx element="termsource" source="_">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                            <locality type="clause">
+                               <referenceFrom>3.2</referenceFrom>
+                            </locality>
+                            ISO 7301:2011,
+                            <span class="citesec">3.2</span>
+                         </origin>
+                      </semx>
+                      ]
+                   </fmt-termsource>
                 </term>
              </terms>
           </sections>
@@ -660,30 +757,36 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     output = Xml::C14n.format(<<~OUTPUT)
-      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-         <div class="title-section">
-           <p> </p>
-         </div>
-         <br/>
-         <div class="prefatory-section">
-           <p> </p>
-         </div>
-         <br/>
-         <div class="main-section">
-           <br/>
-           <div id="_" class="TOC">
-             <h1 class="IntroTitle">Contents</h1>
-           </div>
-           <div id="H">
-             <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
-             <p class="TermNum" id="J">1.1.</p>
-             <p class="Terms" style="text-align:left;">Term2</p>
-             <p>[Modified from: ISO 7301:2011, <span class="citesec">3.1</span>
-            &#x2014;
-           The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here]</p>
-             <p class="TermNum" id="K">1.2.</p>
-             <p class="Terms" style="text-align:left;">Term3</p>
-                             <div id="_" class="example">
+       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+          <div class="title-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="prefatory-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="main-section">
+             <br/>
+             <div id="_" class="TOC">
+                <h1 class="IntroTitle">Contents</h1>
+             </div>
+             <div id="H">
+                <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
+                <p class="TermNum" id="J">1.1.</p>
+                <p class="Terms" style="text-align:left;">
+                   <b>Term2</b>
+                </p>
+                <p>
+                   [Modified from: ISO 7301:2011,
+                   <span class="citesec">3.1</span>
+                   — The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here ]
+                </p>
+                <p class="TermNum" id="K">1.2.</p>
+                <p class="Terms" style="text-align:left;">
+                   <b>Term3</b>
+                </p>
+                <div id="_" class="example">
                    <p class="example-title">EXAMPLE</p>
                    <div class="ul_wrap">
                       <ul>
@@ -709,16 +812,12 @@ RSpec.describe IsoDoc::Bipm do
                    <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
                 </div>
                 <p>
-                   [ISO 7301:2011,
+                   [ ISO 7301:2011,
                    <span class="citesec">3.2</span>
                    ]
                 </p>
              </div>
           </div>
-       </body>
-             <p>[ISO 7301:2011, <span class="citesec">3.2</span>]</p>
-           </div>
-         </div>
        </body>
     OUTPUT
     pres_output =

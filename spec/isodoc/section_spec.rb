@@ -27,7 +27,7 @@ RSpec.describe IsoDoc::Bipm do
             <terms id="I" obligation="normative">
               <title>Normal Terms</title>
               <term id="J">
-                <preferred>Term2</preferred>
+                <preferred><expression><name>Term2</name></expression></preferred>
               </term>
             </terms>
             <clause id="D" obligation="normative">
@@ -176,7 +176,18 @@ RSpec.describe IsoDoc::Bipm do
                          <span class="fmt-autonum-delim">.</span>
                          <semx element="autonum" source="J">1</semx>
                       </fmt-xref-label>
-                      <preferred>Term2</preferred>
+                                     <preferred id="_">
+                  <expression>
+                     <name>Term2</name>
+                  </expression>
+               </preferred>
+               <fmt-preferred>
+                  <p>
+                     <semx element="preferred" source="_">
+                        <strong>Term2</strong>
+                     </semx>
+                  </p>
+               </fmt-preferred>
                    </term>
                 </terms>
                 <clause id="D" obligation="normative">
@@ -434,9 +445,18 @@ RSpec.describe IsoDoc::Bipm do
                       <span class="fmt-autonum-delim">.</span>
                       <semx element="autonum" source="term-term-1">1</semx>
                    </fmt-xref-label>
-                   <preferred>
-                      <strong>Term</strong>
-                   </preferred>
+            <preferred id="_">
+               <expression>
+                  <name>Term</name>
+               </expression>
+            </preferred>
+            <fmt-preferred>
+               <p>
+                  <semx element="preferred" source="_">
+                     <strong>Term</strong>
+                  </semx>
+               </p>
+            </fmt-preferred>
                 </term>
              </terms>
           </annex>
@@ -489,7 +509,7 @@ RSpec.describe IsoDoc::Bipm do
                  <div id="I">
                     <h2>1.1.  Normal Terms</h2>
                     <p class="TermNum" id="J">1.1.1.</p>
-                    <p class="Terms" style="text-align:left;">Term2</p>
+                    <p class="Terms" style="text-align:left;"><b>Term2</b></p>
                  </div>
                  <div id="D">
                     <h2>1.2.  Scope</h2>
@@ -619,7 +639,7 @@ RSpec.describe IsoDoc::Bipm do
             <terms id="I" obligation="normative">
               <title>Normal Terms</title>
               <term id="J">
-                <preferred>Term2</preferred>
+                <preferred><expression><name>Term2</name></expression></preferred>
               </term>
             </terms>
             <clause id="D" obligation="normative">
@@ -799,7 +819,18 @@ RSpec.describe IsoDoc::Bipm do
                           <span class="fmt-autonum-delim">.</span>
                           <semx element="autonum" source="J">1</semx>
                        </fmt-xref-label>
-                       <preferred>Term2</preferred>
+               <preferred id="_">
+                  <expression>
+                     <name>Term2</name>
+                  </expression>
+               </preferred>
+               <fmt-preferred>
+                  <p>
+                     <semx element="preferred" source="_">
+                        <strong>Term2</strong>
+                     </semx>
+                  </p>
+               </fmt-preferred>
                     </term>
                  </terms>
                  <clause id="D" obligation="normative">
@@ -1069,7 +1100,7 @@ RSpec.describe IsoDoc::Bipm do
                  <div id="I">
                     <h2>3.1.  Normal Terms</h2>
                     <p class="TermNum" id="J">3.1.1.</p>
-                    <p class="Terms" style="text-align:left;">Term2</p>
+                    <p class="Terms" style="text-align:left;"><b>Term2</b></p>
                  </div>
                  <div id="D">
                     <h2>3.2.  Scope</h2>
@@ -1678,9 +1709,18 @@ RSpec.describe IsoDoc::Bipm do
                       <semx element="title" source="term-term-1">[term-term-1]</semx>
                       "
                    </fmt-xref-label>
-                   <preferred>
-                      <strong>Term</strong>
-                   </preferred>
+            <preferred id="_">
+               <expression>
+                  <name>Term</name>
+               </expression>
+            </preferred>
+            <fmt-preferred>
+               <p>
+                  <semx element="preferred" source="_">
+                     <strong>Term</strong>
+                  </semx>
+               </p>
+            </fmt-preferred>
                 </term>
              </terms>
           </annex>
