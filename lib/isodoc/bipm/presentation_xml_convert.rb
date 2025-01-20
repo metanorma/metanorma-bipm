@@ -128,7 +128,7 @@ module IsoDoc
       def extract_brackets(node)
         start = node.at("./text()[1]")
         finish = node.at("./text()[last()]")
-        (/^\[/.match?(start.text) && /\]$/.match?(finish.text)) or return
+        (/^\[/.match?(start&.text) && /\]$/.match?(finish&.text)) or return
         start.replace(start.text[1..-1])
         node.previous = "["
         finish = node.at("./text()[last()]")
@@ -143,7 +143,8 @@ module IsoDoc
         end
       end
 
-      def termsource1(elem)
+      # KILL
+      def termsource1_xx(elem)
         # elem["status"] == "modified" and return super
         while elem&.next_element&.name == "termsource"
           elem << "; #{to_xml(elem.next_element.remove.children)}"
@@ -151,6 +152,10 @@ module IsoDoc
         elem.children = l10n("[#{termsource_adapt(elem['status'])}" \
                              "#{to_xml(elem.children).strip}]")
       end
+
+      def termsource_label(elem, sources)
+      elem.replace(l10n("[#{termsource_adapt(elem['status'])} #{sources}]"))
+    end
 
       def termsource_adapt(status)
         case status
