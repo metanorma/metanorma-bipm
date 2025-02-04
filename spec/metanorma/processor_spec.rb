@@ -28,7 +28,7 @@ RSpec.describe Metanorma::Bipm::Processor do
     output = Xml::C14n.format(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections/>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(processor
@@ -38,7 +38,7 @@ RSpec.describe Metanorma::Bipm::Processor do
 
   it "generates HTML from IsoDoc XML" do
     input = <<~INPUT
-      <bipm-standard xmlns="https://metanorma.org/ns/bipm">
+      <metanorma xmlns="https://metanorma.org/ns/standoc">
         <sections>
           <terms id="H" obligation="normative" displayorder="1">
           <fmt-title>1.<tab/>Terms, Definitions, Symbols and Abbreviated Terms</fmt-title>
@@ -48,7 +48,7 @@ RSpec.describe Metanorma::Bipm::Processor do
             </term>
           </terms>
         </sections>
-      </bipm-standard>
+      </metanorma>
     INPUT
 
     output = Xml::C14n.format(<<~OUTPUT)
