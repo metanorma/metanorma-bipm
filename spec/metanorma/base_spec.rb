@@ -91,7 +91,7 @@ RSpec.describe Metanorma::Bipm do
 
     output = Xml::C14n.format(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
-      <bipm-standard type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
+      <metanorma type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/standoc">
         <bibdata type="standard">
           <title format="text/plain" language="en" type="title-main">Main Title</title>
           <title format="text/plain" language="en" type="title-cover">Main Title (SI)</title>
@@ -308,7 +308,7 @@ RSpec.describe Metanorma::Bipm do
          </metanorma-extension>
         #{boilerplate('en').gsub(/#{Time.now.year}/, '2001')}
         <sections/>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -358,7 +358,7 @@ RSpec.describe Metanorma::Bipm do
 
     output = Xml::C14n.format(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
       <bibdata type="standard">
         <title language='en' format='text/plain' type='title-main'>Main Title</title>
         <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
@@ -455,7 +455,7 @@ RSpec.describe Metanorma::Bipm do
          </metanorma-extension>
         #{boilerplate('fr').gsub(/#{Time.now.year}/, '2001')}
         <sections/>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -506,7 +506,7 @@ RSpec.describe Metanorma::Bipm do
       :implemented-date: D
     INPUT
     output = Xml::C14n.format(<<~"OUTPUT")
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
          <bibdata type="standard">
            <title language="en" format="text/plain" type="title-main">Main Title</title>
            <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
@@ -624,7 +624,7 @@ RSpec.describe Metanorma::Bipm do
            </feedback-statement>
          </boilerplate>
          <sections/>
-       </bipm-standard>
+       </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -676,7 +676,7 @@ RSpec.describe Metanorma::Bipm do
 
     output = Xml::C14n.format(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic">
         <bibdata type='standard'>
           <title language='en' format='text/plain' type='title-main'>Main Title</title>
           <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
@@ -776,7 +776,7 @@ RSpec.describe Metanorma::Bipm do
          </metanorma-extension>
         #{boilerplate('jcgm').gsub(/#{Time.now.year}/, '2001')}
         <sections/>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -806,7 +806,7 @@ RSpec.describe Metanorma::Bipm do
               Amen</pre>
           </figure>
         </sections>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -834,7 +834,7 @@ RSpec.describe Metanorma::Bipm do
             <title>Section 1</title>
           </clause>
         </sections>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -866,7 +866,7 @@ RSpec.describe Metanorma::Bipm do
             </p>
           </clause>
         </sections>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -931,7 +931,7 @@ RSpec.describe Metanorma::Bipm do
         <annex id='_' obligation='normative' unnumbered="true">
           <title>Appendix</title>
         </annex>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -958,7 +958,7 @@ RSpec.describe Metanorma::Bipm do
             </li>
           </ol>
         </sections>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -1152,7 +1152,7 @@ RSpec.describe Metanorma::Bipm do
             </references>
           </clause>
         </bibliography>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -1354,7 +1354,7 @@ RSpec.describe Metanorma::Bipm do
           </references>
         </clause>
       </bibliography>
-           </bipm-standard>
+           </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
       .sub(%r{<boilerplate>.*</boilerplate>}m, ""))
@@ -1402,7 +1402,7 @@ RSpec.describe Metanorma::Bipm do
             </stem>
           </formula>
         </sections>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -1434,7 +1434,7 @@ RSpec.describe Metanorma::Bipm do
         </clause>
       </clause>
       </sections>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to Xml::C14n.format(output)

@@ -131,7 +131,7 @@ end
 
 BLANK_HDR = <<~"HDR".freeze
     <?xml version="1.0" encoding="UTF-8"?>
-    <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::Bipm::VERSION}" type="semantic">
+    <metanorma xmlns="https://www.metanorma.org/ns/standoc" version="#{Metanorma::Bipm::VERSION}" type="semantic">
     <bibdata type="standard">
       <docidentifier primary="true" type="BIPM">BIPM </docidentifier>
       <contributor>
