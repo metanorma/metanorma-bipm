@@ -9,7 +9,7 @@ RSpec.describe Metanorma::Bipm do
     output = Xml::C14n.format(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections/>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -29,7 +29,7 @@ RSpec.describe Metanorma::Bipm do
     output = Xml::C14n.format(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections/>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
@@ -57,7 +57,7 @@ RSpec.describe Metanorma::Bipm do
         <committee acronym='JCGM' language='en' script='Latn'>Joint Committee for Guides in Metrology</committee>
       </editorialgroup></ext>") }
              <sections/>
-           </bipm-standard>
+           </metanorma>
     OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))

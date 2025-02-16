@@ -278,12 +278,19 @@ RSpec.describe IsoDoc::Bipm do
                    <fmt-termsource status="modified">
                       [Modified from:
                       <semx element="termsource" source="_">
-                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
                             <locality type="clause">
                                <referenceFrom>3.1</referenceFrom>
                             </locality>
-                            ISO 7301:2011, Clause 3.1
                          </origin>
+                         <semx element="origin" source="_">
+                            <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                               <locality type="clause">
+                                  <referenceFrom>3.1</referenceFrom>
+                               </locality>
+                               ISO 7301:2011, Clause 3.1
+                            </fmt-origin>
+                         </semx>
                          —
                          <semx element="modification" source="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</semx>
                       </semx>
@@ -405,12 +412,19 @@ RSpec.describe IsoDoc::Bipm do
                    <fmt-termsource status="identical">
                       [
                       <semx element="termsource" source="_">
-                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
                             <locality type="clause">
                                <referenceFrom>3.2</referenceFrom>
                             </locality>
-                            ISO 7301:2011, Clause 3.2
                          </origin>
+                         <semx element="origin" source="_">
+                            <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                               <locality type="clause">
+                                  <referenceFrom>3.2</referenceFrom>
+                               </locality>
+                               ISO 7301:2011, Clause 3.2
+                            </fmt-origin>
+                         </semx>
                       </semx>
                       ]
                    </fmt-termsource>
@@ -616,13 +630,20 @@ RSpec.describe IsoDoc::Bipm do
                    <fmt-termsource status="modified">
                       [Modified from:
                       <semx element="termsource" source="_">
-                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
                             <locality type="clause">
                                <referenceFrom>3.1</referenceFrom>
                             </locality>
-                            ISO 7301:2011,
-                            <span class="citesec">3.1</span>
                          </origin>
+                         <semx element="origin" source="_">
+                            <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                               <locality type="clause">
+                                  <referenceFrom>3.1</referenceFrom>
+                               </locality>
+                               ISO 7301:2011,
+                               <span class="citesec">3.1</span>
+                            </fmt-origin>
+                         </semx>
                          —
                          <semx element="modification" source="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</semx>
                       </semx>
@@ -740,13 +761,20 @@ RSpec.describe IsoDoc::Bipm do
                    <fmt-termsource status="identical">
                       [
                       <semx element="termsource" source="_">
-                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
                             <locality type="clause">
                                <referenceFrom>3.2</referenceFrom>
                             </locality>
-                            ISO 7301:2011,
-                            <span class="citesec">3.2</span>
                          </origin>
+                         <semx element="origin" source="_">
+                            <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                               <locality type="clause">
+                                  <referenceFrom>3.2</referenceFrom>
+                               </locality>
+                               ISO 7301:2011,
+                               <span class="citesec">3.2</span>
+                            </fmt-origin>
+                         </semx>
                       </semx>
                       ]
                    </fmt-termsource>
@@ -1752,59 +1780,80 @@ RSpec.describe IsoDoc::Bipm do
                 <ul>
                    <li>
                       élongé,
-                      <xref target="_" pagenumber="true">
-                         <span class="fmt-element-name">Chapter</span>
-                         <semx element="autonum" source="A">1</semx>
-                      </xref>
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Chapter</span>
+                            <semx element="autonum" source="A">1</semx>
+                         </fmt-xref>
+                      </semx>
                    </li>
                    <li>
                       <em>Eman</em>
                       cipation,
-                      <xref target="_" pagenumber="true">
-                         <span class="fmt-element-name">Chapter</span>
-                         <semx element="autonum" source="A">1</semx>
-                      </xref>
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Chapter</span>
+                            <semx element="autonum" source="A">1</semx>
+                         </fmt-xref>
+                      </semx>
                       ,
-                      <xref target="_" pagenumber="true">
-                         <span class="fmt-element-name">Section</span>
-                         <semx element="autonum" source="A">1</semx>
-                         <span class="fmt-autonum-delim">.</span>
-                         <semx element="autonum" source="B">1</semx>
-                      </xref>
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="A">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="B">1</semx>
+                         </fmt-xref>
+                      </semx>
                       <ul>
                          <li>
                             dans la France,
-                            <xref target="_" pagenumber="true">
-                               <span class="fmt-element-name">Chapter</span>
-                               <semx element="autonum" source="A">1</semx>
-                            </xref>
+                            <xref target="_" pagenumber="true" id="_"/>
+                            <semx element="xref" source="_">
+                               <fmt-xref target="_" pagenumber="true">
+                                  <span class="fmt-element-name">Chapter</span>
+                                  <semx element="autonum" source="A">1</semx>
+                               </fmt-xref>
+                            </semx>
                             <ul>
                                <li>
                                   à Paris,
-                                  <xref target="_" pagenumber="true">
-                                     <span class="fmt-element-name">Section</span>
-                                     <semx element="autonum" source="A">1</semx>
-                                     <span class="fmt-autonum-delim">.</span>
-                                     <semx element="autonum" source="B">1</semx>
-                                  </xref>
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">Section</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                        <span class="fmt-autonum-delim">.</span>
+                                        <semx element="autonum" source="B">1</semx>
+                                     </fmt-xref>
+                                  </semx>
                                </li>
                                <li>
                                   en Bretagne,
-                                  <xref target="_" pagenumber="true">
-                                     <span class="fmt-element-name">Chapter</span>
-                                     <semx element="autonum" source="A">1</semx>
-                                  </xref>
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">Chapter</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                     </fmt-xref>
+                                  </semx>
                                </li>
                             </ul>
                          </li>
                          <li>
                             dans les États-Unis,
-                            <xref target="_" pagenumber="true">
-                               <span class="fmt-element-name">Section</span>
-                               <semx element="autonum" source="A">1</semx>
-                               <span class="fmt-autonum-delim">.</span>
-                               <semx element="autonum" source="B">1</semx>
-                            </xref>
+                            <xref target="_" pagenumber="true" id="_"/>
+                            <semx element="xref" source="_">
+                               <fmt-xref target="_" pagenumber="true">
+                                  <span class="fmt-element-name">Section</span>
+                                  <semx element="autonum" source="A">1</semx>
+                                  <span class="fmt-autonum-delim">.</span>
+                                  <semx element="autonum" source="B">1</semx>
+                               </fmt-xref>
+                            </semx>
                          </li>
                       </ul>
                    </li>
@@ -1818,10 +1867,13 @@ RSpec.describe IsoDoc::Bipm do
                             <ul>
                                <li>
                                   en allemand,
-                                  <xref target="_" pagenumber="true">
-                                     <span class="fmt-element-name">Chapter</span>
-                                     <semx element="autonum" source="A">1</semx>
-                                  </xref>
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">Chapter</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                     </fmt-xref>
+                                  </semx>
                                </li>
                             </ul>
                          </li>
@@ -1834,12 +1886,15 @@ RSpec.describe IsoDoc::Bipm do
                 <ul>
                    <li>
                       zebra,
-                      <xref target="_" pagenumber="true">
-                         <span class="fmt-element-name">Section</span>
-                         <semx element="autonum" source="A">1</semx>
-                         <span class="fmt-autonum-delim">.</span>
-                         <semx element="autonum" source="B">1</semx>
-                      </xref>
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="A">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="B">1</semx>
+                         </fmt-xref>
+                      </semx>
                    </li>
                 </ul>
              </clause>
@@ -1888,7 +1943,7 @@ RSpec.describe IsoDoc::Bipm do
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to Xml::C14n.format(<<~OUTPUT)
-      <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
+       <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
           <bibdata>
              <language current="true">fr</language>
              <script current="true">Latn</script>
@@ -1910,9 +1965,12 @@ RSpec.describe IsoDoc::Bipm do
                    <span class="fmt-element-name">chapitre</span>
                    <semx element="autonum" source="A">1</semx>
                 </fmt-xref-label>
-                <xref target="I">
-                   <semx element="indexsect" source="I">Index</semx>
-                </xref>
+                <xref target="I" id="_"/>
+                <semx element="xref" source="_">
+                   <fmt-xref target="I">
+                      <semx element="indexsect" source="I">Index</semx>
+                   </fmt-xref>
+                </semx>
                 <bookmark id="_"/>
                 <bookmark id="_"/>
                 <bookmark id="_"/>
@@ -1963,58 +2021,79 @@ RSpec.describe IsoDoc::Bipm do
                 <ul>
                    <li>
                       élongé,
-                      <xref target="_" to="End" pagenumber="true">
-                         <span class="fmt-element-name">chapitre</span>
-                         <semx element="autonum" source="A">1</semx>
-                      </xref>
+                      <xref target="_" to="End" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" to="End" pagenumber="true">
+                            <span class="fmt-element-name">chapitre</span>
+                            <semx element="autonum" source="A">1</semx>
+                         </fmt-xref>
+                      </semx>
                    </li>
                    <li>
                       Emancipation,
-                      <xref target="_" pagenumber="true">
-                         <span class="fmt-element-name">chapitre</span>
-                         <semx element="autonum" source="A">1</semx>
-                      </xref>
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">chapitre</span>
+                            <semx element="autonum" source="A">1</semx>
+                         </fmt-xref>
+                      </semx>
                       ,
-                      <xref target="_" pagenumber="true">
-                         <span class="fmt-element-name">section</span>
-                         <semx element="autonum" source="A">1</semx>
-                         <span class="fmt-autonum-delim">.</span>
-                         <semx element="autonum" source="B">1</semx>
-                      </xref>
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">section</span>
+                            <semx element="autonum" source="A">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="B">1</semx>
+                         </fmt-xref>
+                      </semx>
                       <ul>
                          <li>
                             dans la France,
-                            <xref target="_" pagenumber="true">
-                               <span class="fmt-element-name">chapitre</span>
-                               <semx element="autonum" source="A">1</semx>
-                            </xref>
+                            <xref target="_" pagenumber="true" id="_"/>
+                            <semx element="xref" source="_">
+                               <fmt-xref target="_" pagenumber="true">
+                                  <span class="fmt-element-name">chapitre</span>
+                                  <semx element="autonum" source="A">1</semx>
+                               </fmt-xref>
+                            </semx>
                             <ul>
                                <li>
                                   à Paris,
-                                  <xref target="_" pagenumber="true">
-                                     <span class="fmt-element-name">section</span>
-                                     <semx element="autonum" source="A">1</semx>
-                                     <span class="fmt-autonum-delim">.</span>
-                                     <semx element="autonum" source="B">1</semx>
-                                  </xref>
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">section</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                        <span class="fmt-autonum-delim">.</span>
+                                        <semx element="autonum" source="B">1</semx>
+                                     </fmt-xref>
+                                  </semx>
                                </li>
                                <li>
                                   en Bretagne,
-                                  <xref target="_" pagenumber="true">
-                                     <span class="fmt-element-name">chapitre</span>
-                                     <semx element="autonum" source="A">1</semx>
-                                  </xref>
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">chapitre</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                     </fmt-xref>
+                                  </semx>
                                </li>
                             </ul>
                          </li>
                          <li>
                             dans les États-Unis,
-                            <xref target="_" pagenumber="true">
-                               <span class="fmt-element-name">section</span>
-                               <semx element="autonum" source="A">1</semx>
-                               <span class="fmt-autonum-delim">.</span>
-                               <semx element="autonum" source="B">1</semx>
-                            </xref>
+                            <xref target="_" pagenumber="true" id="_"/>
+                            <semx element="xref" source="_">
+                               <fmt-xref target="_" pagenumber="true">
+                                  <span class="fmt-element-name">section</span>
+                                  <semx element="autonum" source="A">1</semx>
+                                  <span class="fmt-autonum-delim">.</span>
+                                  <semx element="autonum" source="B">1</semx>
+                               </fmt-xref>
+                            </semx>
                          </li>
                       </ul>
                    </li>
@@ -2030,10 +2109,13 @@ RSpec.describe IsoDoc::Bipm do
                             <ul>
                                <li>
                                   en allemand,
-                                  <xref target="_" pagenumber="true">
-                                     <span class="fmt-element-name">chapitre</span>
-                                     <semx element="autonum" source="A">1</semx>
-                                  </xref>
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">chapitre</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                     </fmt-xref>
+                                  </semx>
                                </li>
                             </ul>
                          </li>
@@ -2046,12 +2128,15 @@ RSpec.describe IsoDoc::Bipm do
                 <ul>
                    <li>
                       zebra,
-                      <xref target="_" pagenumber="true">
-                         <span class="fmt-element-name">section</span>
-                         <semx element="autonum" source="A">1</semx>
-                         <span class="fmt-autonum-delim">.</span>
-                         <semx element="autonum" source="B">1</semx>
-                      </xref>
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">section</span>
+                            <semx element="autonum" source="A">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="B">1</semx>
+                         </fmt-xref>
+                      </semx>
                    </li>
                 </ul>
              </clause>
@@ -2092,16 +2177,37 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     presxml = <<~PRESXML
-      <foreword displayorder="2">
-                 <title id="_">Foreword</title>
-           <fmt-title depth="1">
-              <semx element="title" source="_">Foreword</semx>
-           </fmt-title>
-           <p id="_">
-           <xref target="ISO712">ISO 712, Clause 3</xref>
-           <xref target="ISO712">ISO 712, Clause 3.1</xref>
-           <xref target="ISO712">ISO 712, Table 3.1</xref>
-         </p>
+       <foreword id="_" displayorder="2">
+          <title id="_">Foreword</title>
+          <fmt-title depth="1">
+             <semx element="title" source="_">Foreword</semx>
+          </fmt-title>
+          <p id="_">
+             <eref bibitemid="ISO712" id="_">
+                <locality type="clause">
+                   <referenceFrom>3</referenceFrom>
+                </locality>
+             </eref>
+             <semx element="eref" source="_">
+                <fmt-xref target="ISO712">ISO 712, Clause 3</fmt-xref>
+             </semx>
+             <eref bibitemid="ISO712" id="_">
+                <locality type="clause">
+                   <referenceFrom>3.1</referenceFrom>
+                </locality>
+             </eref>
+             <semx element="eref" source="_">
+                <fmt-xref target="ISO712">ISO 712, Clause 3.1</fmt-xref>
+             </semx>
+             <eref bibitemid="ISO712" id="_">
+                <locality type="table">
+                   <referenceFrom>3.1</referenceFrom>
+                </locality>
+             </eref>
+             <semx element="eref" source="_">
+                <fmt-xref target="ISO712">ISO 712, Table 3.1</fmt-xref>
+             </semx>
+          </p>
        </foreword>
     PRESXML
 
@@ -2151,16 +2257,46 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     presxml = <<~PRESXML
-      <foreword displayorder="2">
-                 <title id="_">Foreword</title>
-           <fmt-title depth="1">
-              <semx element="title" source="_">Foreword</semx>
-           </fmt-title>
-           <p id="_">
-           <xref target="ISO712">[ISO 712], <span class="citesec">Clause 3</span></xref>
-           <xref target="ISO712">[ISO 712], <span class="citesec">3.1</span></xref>
-           <xref target="ISO712">[ISO 712], <span class="citetbl">Table 3.1</span></xref>
-         </p>
+       <foreword id="_" displayorder="2">
+          <title id="_">Foreword</title>
+          <fmt-title depth="1">
+             <semx element="title" source="_">Foreword</semx>
+          </fmt-title>
+          <p id="_">
+             <eref bibitemid="ISO712" id="_">
+                <locality type="clause">
+                   <referenceFrom>3</referenceFrom>
+                </locality>
+             </eref>
+             <semx element="eref" source="_">
+                <fmt-xref target="ISO712">
+                   [ISO 712],
+                   <span class="citesec">Clause 3</span>
+                </fmt-xref>
+             </semx>
+             <eref bibitemid="ISO712" id="_">
+                <locality type="clause">
+                   <referenceFrom>3.1</referenceFrom>
+                </locality>
+             </eref>
+             <semx element="eref" source="_">
+                <fmt-xref target="ISO712">
+                   [ISO 712],
+                   <span class="citesec">3.1</span>
+                </fmt-xref>
+             </semx>
+             <eref bibitemid="ISO712" id="_">
+                <locality type="table">
+                   <referenceFrom>3.1</referenceFrom>
+                </locality>
+             </eref>
+             <semx element="eref" source="_">
+                <fmt-xref target="ISO712">
+                   [ISO 712],
+                   <span class="citetbl">Table 3.1</span>
+                </fmt-xref>
+             </semx>
+          </p>
        </foreword>
     PRESXML
 
@@ -2212,17 +2348,62 @@ RSpec.describe IsoDoc::Bipm do
       </iso-standard>
     INPUT
     presxml = <<~OUTPUT
-      <foreword displayorder="2">
-                 <title id="_">Foreword</title>
-           <fmt-title depth="1">
-              <semx element="title" source="_">Foreword</semx>
-           </fmt-title>
-           <p id="_">
-         [<xref target="ISO712">ISO 712</xref>] [<xref target="ISO712">ISO 712</xref>]
-         and
-         [<xref target="ISO712">ISO 712</xref>, <xref target="ISO712">ISO 712</xref>]
-         and
-         <xref target="ISO712">[ISO 712], <span class="citesec">3.1</span></xref><xref target="ISO712">[ISO 712], <span class="citetbl">Table 3.1</span></xref></p>
+       <foreword id="_" displayorder="2">
+          <title id="_">Foreword</title>
+          <fmt-title depth="1">
+             <semx element="title" source="_">Foreword</semx>
+          </fmt-title>
+          <p id="_">
+             <eref bibitemid="ISO712" id="_"/>
+             <semx element="eref" source="_">
+                [
+                <fmt-xref target="ISO712">ISO 712</fmt-xref>
+                ]
+             </semx>
+             <eref bibitemid="ISO712" id="_"/>
+             <semx element="eref" source="_">
+                [
+                <fmt-xref target="ISO712">ISO 712</fmt-xref>
+                ]
+             </semx>
+             and
+             <eref bibitemid="ISO712" id="_"/>
+             <semx element="eref" source="_">
+                [
+                <fmt-xref target="ISO712">ISO 712</fmt-xref>
+                ]
+             </semx>
+             ,
+             <eref bibitemid="ISO712" id="_"/>
+             <semx element="eref" source="_">
+                [
+                <fmt-xref target="ISO712">ISO 712</fmt-xref>
+                ]
+             </semx>
+             and
+             <eref bibitemid="ISO712" id="_">
+                <locality type="clause">
+                   <referenceFrom>3.1</referenceFrom>
+                </locality>
+             </eref>
+             <semx element="eref" source="_">
+                <fmt-xref target="ISO712">
+                   [ISO 712],
+                   <span class="citesec">3.1</span>
+                </fmt-xref>
+             </semx>
+             <eref bibitemid="ISO712" id="_">
+                <locality type="table">
+                   <referenceFrom>3.1</referenceFrom>
+                </locality>
+             </eref>
+             <semx element="eref" source="_">
+                <fmt-xref target="ISO712">
+                   [ISO 712],
+                   <span class="citetbl">Table 3.1</span>
+                </fmt-xref>
+             </semx>
+          </p>
        </foreword>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert

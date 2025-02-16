@@ -99,15 +99,16 @@ module IsoDoc
 
       def eref(docxml)
         super
-        jcgm_eref(docxml, "//eref")
+        jcgm_eref(docxml, "//fmt-eref")
       end
 
       def origin(docxml)
         super
-        jcgm_eref(docxml, "//origin[not(termref)]")
+        jcgm_eref(docxml, "//fmt-origin[not(.//termref)]")
       end
 
-      def quotesource(docxml)
+      # KILL
+      def quotesourcex(docxml)
         super
         jcgm_eref(docxml, "//quote//source")
       end
@@ -118,9 +119,9 @@ module IsoDoc
         # merge adjacent text nodes
         docxml.root.replace(Nokogiri::XML(docxml.root.to_xml).root)
         docxml.xpath(ns(xpath)).each do |x| # rubocop: disable Style/CombinableLoops
-          if x.next&.text? && /^\],\s+\[$/.match?(x.next.text) &&
-              %w(eref origin source).include?(x.next.next&.name)
-            x.next.replace(", ")
+          if x.parent.next&.text? && /^\],\s+\[$/.match?(x.parent.next.text) &&
+              %w(eref origin fmt-eref fmt-origin).include?(x.parent.next.next&.name)
+            x.parent.next.replace(", ")
           end
         end
       end
