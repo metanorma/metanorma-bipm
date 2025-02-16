@@ -42,6 +42,10 @@ module IsoDoc
         out << "&#x25a0;"
       end
 
+      def sections_names
+        super + %w[doccontrol]
+      end
+
       def top_element_render(elem, out)
         case elem.name
         when "doccontrol" then doccontrol elem, out
