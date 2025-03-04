@@ -30,7 +30,7 @@ $docstage-colors-list: (
   retired: #2E382E
 );
 
-@import 'base_style/all';
+@use 'base_style/all' as *;
 
 /*
     1. HTML & Body
