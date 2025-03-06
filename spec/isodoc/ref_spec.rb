@@ -274,9 +274,17 @@ RSpec.describe IsoDoc do
                    <formattedref>
                       <em>Cereals and cereal products</em>
                    </formattedref>
+                   <title format="text/plain">Cereals or cereal products</title>
+                   <title format="text/plain" type="main">Cereals and cereal products</title>
                    <docidentifier type="metanorma-ordinal">[1]</docidentifier>
                    <docidentifier type="ISO">ISO 712</docidentifier>
                    <docidentifier scope="biblio-tag">ISO 712</docidentifier>
+                   <contributor>
+                      <role type="publisher"/>
+                      <organization>
+                         <name>International Organization for Standardization</name>
+                      </organization>
+                   </contributor>
                    <biblio-tag>
                       [1]
                       <tab/>
@@ -288,16 +296,35 @@ RSpec.describe IsoDoc do
                       <em>Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</em>
                       . ISO 16634:-- (all parts).
                    </formattedref>
+                   <title format="text/plain" language="x">Cereals, pulses, milled cereal products, xxxx, oilseeds and animal feeding stuffs</title>
+                   <title format="text/plain" language="en">Cereals, pulses, milled cereal products, oilseeds and animal feeding stuffs</title>
                    <docidentifier type="metanorma-ordinal">[2]</docidentifier>
                    <docidentifier type="ISO">ISO 16634:-- (all parts)</docidentifier>
                    <docidentifier scope="biblio-tag">ISO 16634:-- (all parts)</docidentifier>
+                   <date type="published">
+                      <on>--</on>
+                   </date>
+                   <contributor>
+                      <role type="publisher"/>
+                      <organization>
+                         <abbreviation>ISO</abbreviation>
+                      </organization>
+                   </contributor>
                    <note format="text/plain" reference="1" type="Unpublished-Status">Under preparation. (Stage at the time of publication ISO/DIS 16634)</note>
+                   <extent type="part">
+                      <referenceFrom>all</referenceFrom>
+                   </extent>
                    <biblio-tag>
                       [2]
                       <tab/>
                       ISO 16634:-- (all parts)
-                      <fn reference="1">
+                      <fn reference="1" original-reference="1" id="_" target="_">
                          <p>Under preparation. (Stage at the time of publication ISO/DIS 16634)</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <semx element="autonum" source="_">1</semx>
+                            </sup>
+                         </fmt-fn-label>
                       </fn>
                    </biblio-tag>
                 </bibitem>
@@ -305,9 +332,20 @@ RSpec.describe IsoDoc do
                    <formattedref>
                       <em>Cereals and pulses</em>
                    </formattedref>
+                   <title format="text/plain">Cereals and pulses</title>
                    <docidentifier type="metanorma-ordinal">[3]</docidentifier>
                    <docidentifier type="ISO">ISO 20483:2013-2014</docidentifier>
                    <docidentifier scope="biblio-tag">ISO 20483:2013-2014</docidentifier>
+                   <date type="published">
+                      <from>2013</from>
+                      <to>2014</to>
+                   </date>
+                   <contributor>
+                      <role type="publisher"/>
+                      <organization>
+                         <name>International Organization for Standardization</name>
+                      </organization>
+                   </contributor>
                    <biblio-tag>
                       [3]
                       <tab/>
@@ -358,8 +396,15 @@ RSpec.describe IsoDoc do
                       (n.d.)
                       <em>Chemicals for analytical laboratory use</em>
                    </formattedref>
+                   <title format="text/plain">Chemicals for analytical laboratory use</title>
                    <docidentifier type="metanorma-ordinal">[6]</docidentifier>
                    <docidentifier type="ISBN">ISBN</docidentifier>
+                   <contributor>
+                      <role type="publisher"/>
+                      <organization>
+                         <abbreviation>ISBN</abbreviation>
+                      </organization>
+                   </contributor>
                    <biblio-tag>
                       [6]
                       <tab/>
@@ -370,8 +415,15 @@ RSpec.describe IsoDoc do
                       <em>Instruments for analytical laboratory use</em>
                       . (n.d.).
                    </formattedref>
+                   <title format="text/plain">Instruments for analytical laboratory use</title>
                    <docidentifier type="metanorma-ordinal">[7]</docidentifier>
                    <docidentifier type="ISSN">ISSN</docidentifier>
+                   <contributor>
+                      <role type="publisher"/>
+                      <organization>
+                         <abbreviation>ISSN</abbreviation>
+                      </organization>
+                   </contributor>
                    <biblio-tag>
                       [7]
                       <tab/>
@@ -402,9 +454,16 @@ RSpec.describe IsoDoc do
                       <em>Water for analytical laboratory use</em>
                       . BIPM 3696.
                    </formattedref>
+                   <title format="text/plain">Water for analytical laboratory use</title>
                    <docidentifier type="metanorma-ordinal">[8]</docidentifier>
                    <docidentifier type="BIPM">BIPM 3696</docidentifier>
                    <docidentifier scope="biblio-tag">BIPM 3696</docidentifier>
+                   <contributor>
+                      <role type="publisher"/>
+                      <organization>
+                         <abbreviation>ISO</abbreviation>
+                      </organization>
+                   </contributor>
                    <biblio-tag>
                       [8]
                       <tab/>
@@ -434,6 +493,7 @@ RSpec.describe IsoDoc do
                       <em>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</em>
                       . IETF RFC 10.
                    </formattedref>
+                   <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
                    <docidentifier type="metanorma-ordinal">[10]</docidentifier>
                    <docidentifier type="IETF">IETF RFC 10</docidentifier>
                    <docidentifier scope="biblio-tag">IETF RFC 10</docidentifier>
@@ -473,11 +533,65 @@ RSpec.describe IsoDoc do
                       </semx>
                       .
                    </formattedref>
+                   <fetched/>
+                   <title format="text/plain" language="en" script="Latn">News from the Bureau International des Poids et Mesures</title>
                    <uri type="src">https://doi.org/10.1088/0026-1394/8/1/006</uri>
                    <uri type="doi">https://doi.org/10.1088/0026-1394/8/1/006</uri>
                    <docidentifier type="metanorma-ordinal">[11]</docidentifier>
                    <docidentifier type="BIPM" primary="true">Metrologia 8 1 32</docidentifier>
                    <docidentifier type="doi">doi 10.1088/0026-1394/8/1/006</docidentifier>
+                   <date type="published">
+                      <on>1972-01-01</on>
+                   </date>
+                   <contributor>
+                      <role type="author"/>
+                      <person>
+                         <name>
+                            <completename language="en" script="Latn">J Terrien</completename>
+                         </name>
+                      </person>
+                   </contributor>
+                   <copyright>
+                      <from>1972</from>
+                      <owner>
+                         <organization>
+                            <name>Published under licence by IOP Publishing Ltd</name>
+                         </organization>
+                      </owner>
+                   </copyright>
+                   <relation type="hasManifestation">
+                      <bibitem>
+                         <title format="text/plain" language="en" script="Latn">News from the Bureau International des Poids et Mesures</title>
+                         <date type="ppub">
+                            <on>1972-01-01</on>
+                         </date>
+                         <medium>
+                            <carrier>print</carrier>
+                         </medium>
+                      </bibitem>
+                   </relation>
+                   <series>
+                      <title format="text/plain" language="en" script="Latn">Metrologia</title>
+                   </series>
+                   <extent>
+                      <locality type="volume">
+                         <referenceFrom>8</referenceFrom>
+                      </locality>
+                   </extent>
+                   <extent>
+                      <locality type="issue">
+                         <referenceFrom>1</referenceFrom>
+                      </locality>
+                   </extent>
+                   <extent>
+                      <locality type="page">
+                         <referenceFrom>32</referenceFrom>
+                         <referenceTo>36</referenceTo>
+                      </locality>
+                   </extent>
+                   <ext>
+                      <doctype>article</doctype>
+                   </ext>
                    <biblio-tag>
                       [11]
                       <tab/>
@@ -485,6 +599,23 @@ RSpec.describe IsoDoc do
                 </bibitem>
              </references>
           </bibliography>
+          <fmt-footnote-container>
+             <fmt-fn-body id="_" target="_" reference="1">
+                <semx element="fn" source="_">
+                   <p>
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">1</semx>
+                         </sup>
+                         <span class="fmt-caption-delim">
+                            <tab/>
+                         </span>
+                      </fmt-fn-label>
+                      Under preparation. (Stage at the time of publication ISO/DIS 16634)
+                   </p>
+                </semx>
+             </fmt-fn-body>
+          </fmt-footnote-container>
        </iso-standard>
     PRESXML
 
@@ -775,6 +906,7 @@ RSpec.describe IsoDoc do
                    <em>Cereals or cereal products</em>
                    . ABC.
                 </formattedref>
+                <title format="text/plain">Cereals or cereal products</title>
                 <docidentifier type="metanorma-ordinal">[1]</docidentifier>
                 <docidentifier>ABC</docidentifier>
                 <docidentifier scope="biblio-tag">ABC</docidentifier>
@@ -789,6 +921,7 @@ RSpec.describe IsoDoc do
                    <em>Cereals or cereal products</em>
                    . ABD.
                 </formattedref>
+                <title format="text/plain">Cereals or cereal products</title>
                 <docidentifier>ABD</docidentifier>
                 <docidentifier scope="biblio-tag">ABD</docidentifier>
              </bibitem>
@@ -797,6 +930,7 @@ RSpec.describe IsoDoc do
                    <em>Cereals or cereal products</em>
                    . ABE.
                 </formattedref>
+                <title format="text/plain">Cereals or cereal products</title>
                 <docidentifier type="metanorma-ordinal">[2]</docidentifier>
                 <docidentifier>ABE</docidentifier>
                 <docidentifier scope="biblio-tag">ABE</docidentifier>
@@ -887,9 +1021,25 @@ RSpec.describe IsoDoc do
                    </semx>
                    .
                 </formattedref>
+                <title format="text/plain" language="en" script="Latn">1st meeting of the CGPM</title>
                 <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
                 <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
                 <docidentifier scope="biblio-tag">CGPM Resolution 1</docidentifier>
+                <docnumber>CGPM Resolution 1</docnumber>
+                <date type="published">
+                   <on>1889-09-28</on>
+                </date>
+                <contributor>
+                   <role type="publisher"/>
+                   <organization>
+                      <name>Bureau International des Poids et Mesures</name>
+                      <abbreviation>BIPM</abbreviation>
+                      <uri>www.bipm.org</uri>
+                   </organization>
+                </contributor>
+                <language>en</language>
+                <language>fr</language>
+                <script>Latn</script>
              </bibitem>
              <bibitem id="a2" hidden="true">
                 <formattedref>
@@ -902,9 +1052,25 @@ RSpec.describe IsoDoc do
                    </semx>
                    .
                 </formattedref>
+                <title format="text/plain" language="en" script="Latn">105th meeting of the CIPM</title>
                 <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
                 <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
                 <docidentifier scope="biblio-tag">CIPM Decision 105</docidentifier>
+                <docnumber>CIPM Decision 105</docnumber>
+                <date type="published">
+                   <on>2016-10-28</on>
+                </date>
+                <contributor>
+                   <role type="publisher"/>
+                   <organization>
+                      <name>Bureau International des Poids et Mesures</name>
+                      <abbreviation>BIPM</abbreviation>
+                      <uri>www.bipm.org</uri>
+                   </organization>
+                </contributor>
+                <language>en</language>
+                <language>fr</language>
+                <script>Latn</script>
              </bibitem>
           </references>
        </bibliography>
@@ -988,10 +1154,26 @@ RSpec.describe IsoDoc do
                    </semx>
                    .
                 </formattedref>
+                <title format="text/plain" language="en" script="Latn">1st meeting of the CGPM</title>
                 <uri type="src">https://www.bipm.org/en/committees/cg/cgpm/1-1889</uri>
                 <docidentifier type="metanorma-ordinal">[1]</docidentifier>
                 <docidentifier type="BIPM" primary="true">CGPM Resolution 1</docidentifier>
                 <docidentifier scope="biblio-tag">CGPM Resolution 1</docidentifier>
+                <docnumber>CGPM Resolution 1</docnumber>
+                <date type="published">
+                   <on>1889-09-28</on>
+                </date>
+                <contributor>
+                   <role type="publisher"/>
+                   <organization>
+                      <name>Bureau International des Poids et Mesures</name>
+                      <abbreviation>BIPM</abbreviation>
+                      <uri>www.bipm.org</uri>
+                   </organization>
+                </contributor>
+                <language>en</language>
+                <language>fr</language>
+                <script>Latn</script>
                 <biblio-tag>
                    [1]
                    <tab/>
@@ -1009,10 +1191,26 @@ RSpec.describe IsoDoc do
                    </semx>
                    .
                 </formattedref>
+                <title format="text/plain" language="en" script="Latn">105th meeting of the CIPM</title>
                 <uri type="src">https://www.bipm.org/en/committees/ci/cipm/105-2016</uri>
                 <docidentifier type="metanorma-ordinal">[2]</docidentifier>
                 <docidentifier type="BIPM" primary="true">CIPM Decision 105</docidentifier>
                 <docidentifier scope="biblio-tag">CIPM Decision 105</docidentifier>
+                <docnumber>CIPM Decision 105</docnumber>
+                <date type="published">
+                   <on>2016-10-28</on>
+                </date>
+                <contributor>
+                   <role type="publisher"/>
+                   <organization>
+                      <name>Bureau International des Poids et Mesures</name>
+                      <abbreviation>BIPM</abbreviation>
+                      <uri>www.bipm.org</uri>
+                   </organization>
+                </contributor>
+                <language>en</language>
+                <language>fr</language>
+                <script>Latn</script>
                 <biblio-tag>
                    [2]
                    <tab/>
