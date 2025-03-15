@@ -1231,4 +1231,227 @@ RSpec.describe IsoDoc do
         .to be_equivalent_to Xml::C14n.format(presxml)
     end
   end
+
+    it "processes bibliographic localities" do
+    input = <<~INPUT
+          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <bibdata>
+          <language>en</language>
+          <script>Latn</script>
+          </bibdata>
+          <preface><foreword>
+        <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3</referenceFrom></locality></eref>
+        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></eref>
+        <eref bibitemid="ISO712"><locality type="table"><referenceFrom>3.1</referenceFrom></locality></eref>
+        </p>
+        </foreword></preface>
+        <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
+        <bibitem id="ISO712" type="standard">
+        <title format="text/plain">Cereals or cereal products</title>
+        <title type="main" format="text/plain">Cereals and cereal products</title>
+        <docidentifier type="ISO">ISO 712</docidentifier>
+        <contributor>
+          <role type="publisher"/>
+          <organization>
+            <name>International Organization for Standardization</name>
+          </organization>
+        </contributor>
+      </bibitem>
+      </references>
+      </bibliography>
+      </iso-standard>
+    INPUT
+
+    presxml = <<~PRESXML
+      <foreword id="_" displayorder="2">
+         <title id="_">Foreword</title>
+         <fmt-title depth="1">
+            <semx element="title" source="_">Foreword</semx>
+         </fmt-title>
+         <p id="_">
+            <eref bibitemid="ISO712" id="_">
+               <locality type="clause">
+                  <referenceFrom>3</referenceFrom>
+               </locality>
+            </eref>
+            <semx element="eref" source="_">
+               <fmt-xref target="ISO712">ISO 712, Clause 3</fmt-xref>
+            </semx>
+            <eref bibitemid="ISO712" id="_">
+               <locality type="clause">
+                  <referenceFrom>3.1</referenceFrom>
+               </locality>
+            </eref>
+            <semx element="eref" source="_">
+               <fmt-xref target="ISO712">ISO 712, Clause 3.1</fmt-xref>
+            </semx>
+            <eref bibitemid="ISO712" id="_">
+               <locality type="table">
+                  <referenceFrom>3.1</referenceFrom>
+               </locality>
+            </eref>
+            <semx element="eref" source="_">
+               <fmt-xref target="ISO712">ISO 712, Table 3.1</fmt-xref>
+            </semx>
+         </p>
+      </foreword>
+    PRESXML
+
+    expect(Xml::C14n.format(strip_guid(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
+        .new(presxml_options)
+    .convert("test", input, true))
+    .at(".//xmlns:foreword").to_xml)))
+      .to be_equivalent_to Xml::C14n.format(presxml)
+
+    presxml = <<~PRESXML
+      <foreword id="_" displayorder="2">
+         <title id="_">Foreword</title>
+         <fmt-title depth="1">
+            <semx element="title" source="_">Foreword</semx>
+         </fmt-title>
+         <p id="_">
+            <eref bibitemid="ISO712" id="_">
+               <locality type="clause">
+                  <referenceFrom>3</referenceFrom>
+               </locality>
+            </eref>
+            <semx element="eref" source="_">
+               <fmt-xref target="ISO712">
+                  [ISO 712],
+                  <span class="citesec">Clause 3</span>
+               </fmt-xref>
+            </semx>
+            <eref bibitemid="ISO712" id="_">
+               <locality type="clause">
+                  <referenceFrom>3.1</referenceFrom>
+               </locality>
+            </eref>
+            <semx element="eref" source="_">
+               <fmt-xref target="ISO712">
+                  [ISO 712],
+                  <span class="citesec">3.1</span>
+               </fmt-xref>
+            </semx>
+            <eref bibitemid="ISO712" id="_">
+               <locality type="table">
+                  <referenceFrom>3.1</referenceFrom>
+               </locality>
+            </eref>
+            <semx element="eref" source="_">
+               <fmt-xref target="ISO712">
+                  [ISO 712],
+                  <span class="citetbl">Table 3.1</span>
+               </fmt-xref>
+            </semx>
+         </p>
+      </foreword>
+    PRESXML
+
+    expect(Xml::C14n.format(strip_guid(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input.sub("</bibdata>", "#{jcgm_ext}</bibdata>"), true))
+      .at(".//xmlns:foreword").to_xml)))
+      .to be_equivalent_to Xml::C14n.format(presxml)
+  end
+
+      it "handles brackets for multiple erefs in JCGM" do
+    input = <<~INPUT
+          <iso-standard xmlns="http://riboseinc.com/isoxml">
+          <bibdata>
+          <language>en</language>
+          <script>Latn</script>
+          #{jcgm_ext}
+                    </bibdata>
+          <preface><foreword>
+        <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
+        <eref bibitemid="ISO712"/> <eref bibitemid="ISO712"/>
+        and
+        <eref bibitemid="ISO712"/>, <eref bibitemid="ISO712"/>
+        and
+        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></eref>
+        <eref bibitemid="ISO712"><locality type="table"><referenceFrom>3.1</referenceFrom></locality></eref>
+        </p>
+        </foreword></preface>
+        <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
+        <bibitem id="ISO712" type="standard">
+        <title format="text/plain">Cereals or cereal products</title>
+        <title type="main" format="text/plain">Cereals and cereal products</title>
+        <docidentifier type="ISO">ISO 712</docidentifier>
+        <contributor>
+          <role type="publisher"/>
+          <organization>
+            <name>International Organization for Standardization</name>
+          </organization>
+        </contributor>
+      </bibitem>
+      </references>
+      </bibliography>
+      </iso-standard>
+    INPUT
+    presxml = <<~OUTPUT
+      <foreword id="_" displayorder="2">
+         <title id="_">Foreword</title>
+         <fmt-title depth="1">
+            <semx element="title" source="_">Foreword</semx>
+         </fmt-title>
+         <p id="_">
+            <eref bibitemid="ISO712" id="_"/>
+            <semx element="eref" source="_">
+               [
+               <fmt-xref target="ISO712">ISO 712</fmt-xref>
+               ]
+            </semx>
+            <eref bibitemid="ISO712" id="_"/>
+            <semx element="eref" source="_">
+               [
+               <fmt-xref target="ISO712">ISO 712</fmt-xref>
+               ]
+            </semx>
+            and
+            <eref bibitemid="ISO712" id="_"/>
+            <semx element="eref" source="_">
+               [
+               <fmt-xref target="ISO712">ISO 712</fmt-xref>
+               ]
+            </semx>
+            ,
+            <eref bibitemid="ISO712" id="_"/>
+            <semx element="eref" source="_">
+               [
+               <fmt-xref target="ISO712">ISO 712</fmt-xref>
+               ]
+            </semx>
+            and
+            <eref bibitemid="ISO712" id="_">
+               <locality type="clause">
+                  <referenceFrom>3.1</referenceFrom>
+               </locality>
+            </eref>
+            <semx element="eref" source="_">
+               <fmt-xref target="ISO712">
+                  [ISO 712],
+                  <span class="citesec">3.1</span>
+               </fmt-xref>
+            </semx>
+            <eref bibitemid="ISO712" id="_">
+               <locality type="table">
+                  <referenceFrom>3.1</referenceFrom>
+               </locality>
+            </eref>
+            <semx element="eref" source="_">
+               <fmt-xref target="ISO712">
+                  [ISO 712],
+                  <span class="citetbl">Table 3.1</span>
+               </fmt-xref>
+            </semx>
+         </p>
+      </foreword>
+    OUTPUT
+    expect(Xml::C14n.format(strip_guid(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input, true))
+      .at(".//xmlns:foreword").to_xml)))
+      .to be_equivalent_to Xml::C14n.format(presxml)
+  end
 end
