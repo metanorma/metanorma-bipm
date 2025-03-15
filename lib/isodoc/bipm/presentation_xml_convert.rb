@@ -206,8 +206,8 @@ module IsoDoc
       end
 
       def fn_label_brackets(fnote)
-        "<span class='fmt-label-delim'>(</span>" \
-        "<sup>#{fn_label(fnote)}" \
+        "<sup><span class='fmt-label-delim'>(</span>" \
+        "#{fn_label(fnote)}" \
           "<span class='fmt-label-delim'>)</span></sup>"
       end
 

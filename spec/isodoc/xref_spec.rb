@@ -1513,8 +1513,8 @@ RSpec.describe IsoDoc::Bipm do
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
-      .convert("test", input.sub("<preface>",
-                                 "<bibdata>#{jcgm_ext}</bibdata><preface>"), true)
+      .convert("test", input.sub("</bibdata>",
+                                 "#{jcgm_ext}</bibdata>"), true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
