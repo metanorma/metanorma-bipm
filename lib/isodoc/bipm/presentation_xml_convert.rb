@@ -224,7 +224,7 @@ module IsoDoc
           "<sup>#{fn_label(fnote)}" \
             "<span class='fmt-label-delim'>)</span></sup>"
         else
-          super
+          "<sup>#{fn_label(fnote)}</sup>"
         end
       end
 

@@ -322,7 +322,9 @@ RSpec.describe IsoDoc do
                          <p>Under preparation. (Stage at the time of publication ISO/DIS 16634)</p>
                          <fmt-fn-label>
                             <sup>
+                         <span class="fmt-label-delim">(</span>
                                <semx element="autonum" source="_">1</semx>
+                               <span class="fmt-label-delim">)</span>
                             </sup>
                          </fmt-fn-label>
                       </fn>
@@ -605,7 +607,9 @@ RSpec.describe IsoDoc do
                    <p>
                       <fmt-fn-label>
                          <sup>
+                      <span class="fmt-label-delim">(</span>
                             <semx element="autonum" source="_">1</semx>
+                            <span class="fmt-label-delim">)</span>
                          </sup>
                          <span class="fmt-caption-delim">
                             <tab/>

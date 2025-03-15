@@ -1199,13 +1199,14 @@ RSpec.describe IsoDoc::Bipm do
       .to be_equivalent_to Xml::C14n.format(output)
 
     output = <<~OUTPUT
-        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+      <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
            <bibdata>
               <ext>
                  <editorialgroup>
-                    <committee acronym="JCGM" language="en" script="Latn">TC</committee>
-                    <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
-                    <workgroup acronym="B">WC</workgroup>
+                             <committee acronym="JCGM">
+            Joint Committee for Guides in Metrology
+            Comité commun pour les guides en métrologie
+          </committee>
                  </editorialgroup>
               </ext>
            </bibdata>
