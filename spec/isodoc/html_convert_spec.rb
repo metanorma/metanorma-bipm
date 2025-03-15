@@ -179,16 +179,6 @@ RSpec.describe IsoDoc::Bipm do
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
 
-jcgm = <<~JCGM
-         <ext>
-            <editorialgroup>
-              <committee acronym="JCGM">
-                Joint Committee for Guides in Metrology
-                Comité commun pour les guides en métrologie
-              </committee>
-            </editorialgroup>
-          </ext>
-JCGM
 presxml = <<~OUTPUT
 OUTPUT
 output = <<~OUTPUT
@@ -196,7 +186,7 @@ OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
-      .convert("test", input.sub("<sections>", "<bibdata>#{jcgm}</bibdata><sections>"), true)
+      .convert("test", input.sub("<sections>", "<bibdata>#{jcgm_ext}</bibdata><sections>"), true)
     expect(Xml::C14n.format(strip_guid(pres_output
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to(be_equivalent_to(Xml::C14n.format(presxml)))
@@ -537,55 +527,6 @@ OUTPUT
       .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
-  end
-
-  it "processes simple terms & definitions in JCGM" do
-    input = <<~INPUT
-      <bipm-standard xmlns="http://riboseinc.com/isoxml">
-      <bibdata>
-          <ext>
-            <editorialgroup>
-              <committee acronym="JCGM">
-                Joint Committee for Guides in Metrology
-                Comité commun pour les guides en métrologie
-              </committee>
-            </editorialgroup>
-          </ext>
-        </bibdata>
-        <sections>
-          <terms id="H" obligation="normative">
-            <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
-            <term id="J">
-              <preferred><expression><name>Term2</name></expression></preferred>
-              <termsource status="modified">
-        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
-          <modification>
-          <p id="_e73a417d-ad39-417d-a4c8-20e4e2529489">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
-        </modification>
-      </termsource>
-            </term>
-            <term id="K">
-              <preferred><expression><name>Term3</name></expression></preferred>
-                                 <termexample id="_bd57bbf1-f948-4bae-b0ce-73c00431f893">
-        <ul>
-        <li>A</li>
-        </ul>
-      </termexample>
-      <termnote id="_671a1994-4783-40d0-bc81-987d06ffb74e"  keep-with-next="true" keep-lines-together="true">
-        <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
-      </termnote>
-      <termnote id="_671a1994-4783-40d0-bc81-987d06ffb74f">
-      <ul><li>A</li></ul>
-        <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
-      </termnote>
-              <termsource status="identical">
-        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.2</referenceFrom></locality></origin>
-      </termsource>
-            </term>
-          </terms>
-        </sections>
-      </bipm-standard>
-    INPUT
 
     presxml = <<~INPUT
        <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
@@ -881,7 +822,7 @@ OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
-      .convert("test", input, true)
+      .convert("test", input.sub("<sections>", "<bibdata>#{jcgm_ext}</bibdata><sections>", true))
     expect(Xml::C14n.format(strip_guid(pres_output
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to(be_equivalent_to(Xml::C14n.format(presxml)))
@@ -1650,45 +1591,6 @@ OUTPUT
     .convert("test", input, true))
     .at(".//xmlns:foreword").to_xml)))
       .to be_equivalent_to Xml::C14n.format(presxml)
-  end
-
-  it "processes bibliographic localities in JCGM" do
-    input = <<~INPUT
-          <iso-standard xmlns="http://riboseinc.com/isoxml">
-          <bibdata>
-          <language>en</language>
-          <script>Latn</script>
-          <ext>
-                  <editorialgroup>
-                    <committee acronym="JCGM" language="en" script="Latn">TC</committee>
-                    <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
-                    <workgroup acronym="B">WC</committee>
-                  </editorialgroup>
-                 </ext>
-          </bibdata>
-          <preface><foreword>
-        <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
-        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3</referenceFrom></locality></eref>
-        <eref bibitemid="ISO712"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></eref>
-        <eref bibitemid="ISO712"><locality type="table"><referenceFrom>3.1</referenceFrom></locality></eref>
-        </p>
-        </foreword></preface>
-        <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
-        <bibitem id="ISO712" type="standard">
-        <title format="text/plain">Cereals or cereal products</title>
-        <title type="main" format="text/plain">Cereals and cereal products</title>
-        <docidentifier type="ISO">ISO 712</docidentifier>
-        <contributor>
-          <role type="publisher"/>
-          <organization>
-            <name>International Organization for Standardization</name>
-          </organization>
-        </contributor>
-      </bibitem>
-      </references>
-      </bibliography>
-      </iso-standard>
-    INPUT
 
     presxml = <<~PRESXML
        <foreword id="_" displayorder="2">
@@ -1736,7 +1638,7 @@ OUTPUT
 
     expect(Xml::C14n.format(strip_guid(Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
-      .convert("test", input, true))
+      .convert("test", input.sub("</bibdata>", "#{jcgm_ext}</bibdata>"), true))
       .at(".//xmlns:foreword").to_xml)))
       .to be_equivalent_to Xml::C14n.format(presxml)
   end
@@ -1747,13 +1649,7 @@ OUTPUT
           <bibdata>
           <language>en</language>
           <script>Latn</script>
-          <ext>
-           <editorialgroup>
-                    <committee acronym="JCGM" language="en" script="Latn">TC</committee>
-                    <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
-                    <workgroup acronym="B">WC</committee>
-                  </editorialgroup>
-                 </ext>
+          #{jcgm_ext}
                     </bibdata>
           <preface><foreword>
         <p id="_f06fd0d1-a203-4f3d-a515-0bdba0f8d83f">
@@ -2598,16 +2494,6 @@ OUTPUT
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
 
-jcgm = <<~JCGM
-         <ext>
-            <editorialgroup>
-              <committee acronym="JCGM">
-                Joint Committee for Guides in Metrology
-                Comité commun pour les guides en métrologie
-              </committee>
-            </editorialgroup>
-          </ext>
-JCGM
 presxml = <<~OUTPUT
 OUTPUT
 output = <<~OUTPUT
@@ -2615,7 +2501,7 @@ OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
-      .convert("test", input.sub("<sections>", "<bibdata>#{jcgm}</bibdata><sections>"), true)
+      .convert("test", input.sub("<sections>", "<bibdata>#{jcgm_ext}</bibdata><sections>"), true)
     expect(Xml::C14n.format(strip_guid(pres_output
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to(be_equivalent_to(Xml::C14n.format(presxml)))
