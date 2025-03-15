@@ -149,65 +149,68 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = 
-      {:accesseddate=>"XXX",
-      :adapteddate=>"XXX",
-      :agency=>"#{Metanorma::Bipm.configuration.organization_name_long['en']}",
-      :annexid=>"Annex DEF",
-      :annexid_alt=>"Appendice DEF",
-      :annexsubtitle=>"Chef Title Annex",
-      :annextitle=>"Main Title Annex",
-      :announceddate=>"XXX",
-      :appendixid=>"Appendix ABC",
-      :appendixid_alt=>"Annexe ABC",
-      :appendixsubtitle=>"Chef Title Appendix",
-      :appendixtitle=>"Main Title Appendix",
-      :authorizer=>["ORG1", "ORG2"],
-      :authors=>["Gustavo Martos", "Xiuqin Li", "Ralf Josephs"],
-      :authors_affiliations=>["BIPM", "NIM", "BIPM"],
-      :circulateddate=>"XXX",
-      :confirmeddate=>"XXX",
-      :copieddate=>"XXX",
-      :correcteddate=>"XXX",
-      :createddate=>"XXX",
-      :docnumber=>"1000",
-      :docsubtitle=>"Chef Title",
-      :doctitle=>"Main Title",
-      :docyear=>"2001",
-      :draft=>"3.4",
-      :draftinfo=>" (draft 3.4, 2000-01-01)",
-      :implementeddate=>"XXX",
-      :issueddate=>"XXX",
-      :lang=>"en",
-      :logo=>"#{File.join(logoloc, 'logo.png')}",
-      :metadata_extensions=>{"editorialgroup"=>{"committee_acronym"=>["JCGM", "JCGM"], "committee_language"=>["en", "fr"], "committee_script"=>["Latn", "Latn"], "committee"=>["TC", "CT"], "workgroup_acronym"=>"B", "workgroup"=>"WC"}, "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "si-aspect"=>"A_e_deltanu", "meeting-note"=>"ABC", "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
-      :obsoleteddate=>"XXX",
-      :org_abbrev=>"JCGM",
-      :partid=>"Part 2.1",
-      :partid_alt=>"Partie 2.1",
-      :partsubtitle=>"Chef Title Part",
-      :parttitle=>"Main Title Part",
-      :provenancesubtitle=>"Chef Title Provenance",
-      :provenancetitle=>"Main Title Provenance",
-      :pubdate_monthyear=>"April 2021",
-      :publisheddate=>"XXX",
-      :publisher=>"#{Metanorma::Bipm.configuration.organization_name_long['en']}",
-      :receiveddate=>"XXX",
-      :revdate=>"2000-01-01",
-      :revdate_monthyear=>"January 2000",
-      :script=>"Latn",
-      :si_aspect_index=>si_aspect,
-      :si_aspect_paths=>si_aspect_paths,
-      :stable_untildate=>"XXX",
-      :stage=>"Mise en Pratique",
-      :stage_display=>"En Vigeur",
-      :tc=>"TC",
-      :transmitteddate=>"XXX",
-      :unchangeddate=>"XXX",
-      :unpublished=>true,
-      :updateddate=>"XXX",
-      :vote_endeddate=>"XXX",
-      :vote_starteddate=>"XXX"}
+    output =
+      { accesseddate: "XXX",
+        adapteddate: "XXX",
+        agency: "#{Metanorma::Bipm.configuration.organization_name_long['en']}",
+        annexid: "Annex DEF",
+        annexid_alt: "Appendice DEF",
+        annexsubtitle: "Chef Title Annex",
+        annextitle: "Main Title Annex",
+        announceddate: "XXX",
+        appendixid: "Appendix ABC",
+        appendixid_alt: "Annexe ABC",
+        appendixsubtitle: "Chef Title Appendix",
+        appendixtitle: "Main Title Appendix",
+        authorizer: ["ORG1", "ORG2"],
+        authors: ["Gustavo Martos", "Xiuqin Li", "Ralf Josephs"],
+        authors_affiliations: ["BIPM", "NIM", "BIPM"],
+        circulateddate: "XXX",
+        confirmeddate: "XXX",
+        copieddate: "XXX",
+        correcteddate: "XXX",
+        createddate: "XXX",
+        docnumber: "1000",
+        docsubtitle: "Chef Title",
+        doctitle: "Main Title",
+        docyear: "2001",
+        draft: "3.4",
+        draftinfo: " (draft 3.4, 2000-01-01)",
+        implementeddate: "XXX",
+        issueddate: "XXX",
+        lang: "en",
+        logo: "#{File.join(logoloc, 'logo.png')}",
+        metadata_extensions: {
+          "editorialgroup" => { "committee_acronym" => ["JCGM", "JCGM"],
+                                "committee_language" => ["en", "fr"], "committee_script" => ["Latn", "Latn"], "committee" => ["TC", "CT"], "workgroup_acronym" => "B", "workgroup" => "WC" }, "comment-period" => { "from" => "N1", "to" => "N2" }, "si-aspect" => "A_e_deltanu", "meeting-note" => "ABC", "structuredidentifier" => { "docnumber" => "1000", "part" => "2.1", "appendix" => "ABC", "annexid" => "DEF" }
+        },
+        obsoleteddate: "XXX",
+        org_abbrev: "JCGM",
+        partid: "Part 2.1",
+        partid_alt: "Partie 2.1",
+        partsubtitle: "Chef Title Part",
+        parttitle: "Main Title Part",
+        provenancesubtitle: "Chef Title Provenance",
+        provenancetitle: "Main Title Provenance",
+        pubdate_monthyear: "April 2021",
+        publisheddate: "XXX",
+        publisher: "#{Metanorma::Bipm.configuration.organization_name_long['en']}",
+        receiveddate: "XXX",
+        revdate: "2000-01-01",
+        revdate_monthyear: "January 2000",
+        script: "Latn",
+        si_aspect_index: si_aspect,
+        si_aspect_paths: si_aspect_paths,
+        stable_untildate: "XXX",
+        stage: "Mise en Pratique",
+        stage_display: "En Vigeur",
+        tc: "TC",
+        transmitteddate: "XXX",
+        unchangeddate: "XXX",
+        unpublished: true,
+        updateddate: "XXX",
+        vote_endeddate: "XXX",
+        vote_starteddate: "XXX" }
 
     docxml, = csdc.convert_init(input, "test", true)
     expect(metadata(csdc.info(docxml, nil)))
@@ -281,58 +284,59 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = 
-      {:accesseddate=>"XXX",
-      :adapteddate=>"XXX",
-      :agency=>"#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
-      :annexid=>"Appendice DEF",
-      :annexid_alt=>"Annex DEF",
-      :annexsubtitle=>"Main Title Annex",
-      :annextitle=>"Chef Title Annex",
-      :announceddate=>"XXX",
-      :appendixid=>"Annexe ABC",
-      :appendixid_alt=>"Appendix ABC",
-      :appendixsubtitle=>"Main Title Appendix",
-      :appendixtitle=>"Chef Title Appendix",
-      :circulateddate=>"XXX",
-      :confirmeddate=>"XXX",
-      :copieddate=>"XXX",
-      :correcteddate=>"XXX",
-      :createddate=>"XXX",
-      :docnumber=>"1000",
-      :docsubtitle=>"Main Title",
-      :doctitle=>"Chef Title",
-      :doctype=>"CIPM-MRA",
-      :doctype_display=>"CIPM-MRA",
-      :docyear=>"2001",
-      :draft=>"3.4",
-      :draftinfo=>" (brouillon 3.4, 2000-01-01)",
-      :implementeddate=>"XXX",
-      :issueddate=>"XXX",
-      :lang=>"fr",
-      :logo=>"#{File.join(logoloc, 'logo.png')}",
-      :metadata_extensions=>{"doctype"=>"cipm-mra", "comment-period"=>{"from"=>"N1", "to"=>"N2"}, "structuredidentifier"=>{"docnumber"=>"1000", "part"=>"2.1", "appendix"=>"ABC", "annexid"=>"DEF"}},
-      :obsoleteddate=>"XXX",
-      :org_abbrev=>"BIPM",
-      :partid=>"Partie 2.1",
-      :partid_alt=>"Part 2.1",
-      :publisheddate=>"XXX",
-      :publisher=>"#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
-      :receiveddate=>"XXX",
-      :revdate=>"2000-01-01",
-      :revdate_monthyear=>"Janvier 2000",
-      :script=>"Latn",
-      :si_aspect_index=>si_aspect,
-      :si_aspect_paths=>si_aspect_paths,
-      :stable_untildate=>"XXX",
-      :stage=>"Working Draft",
-      :stage_display=>"Working Draft",
-      :transmitteddate=>"XXX",
-      :unchangeddate=>"XXX",
-      :unpublished=>true,
-      :updateddate=>"XXX",
-      :vote_endeddate=>"XXX",
-      :vote_starteddate=>"XXX"}
+    output =
+      { accesseddate: "XXX",
+        adapteddate: "XXX",
+        agency: "#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
+        annexid: "Appendice DEF",
+        annexid_alt: "Annex DEF",
+        annexsubtitle: "Main Title Annex",
+        annextitle: "Chef Title Annex",
+        announceddate: "XXX",
+        appendixid: "Annexe ABC",
+        appendixid_alt: "Appendix ABC",
+        appendixsubtitle: "Main Title Appendix",
+        appendixtitle: "Chef Title Appendix",
+        circulateddate: "XXX",
+        confirmeddate: "XXX",
+        copieddate: "XXX",
+        correcteddate: "XXX",
+        createddate: "XXX",
+        docnumber: "1000",
+        docsubtitle: "Main Title",
+        doctitle: "Chef Title",
+        doctype: "CIPM-MRA",
+        doctype_display: "CIPM-MRA",
+        docyear: "2001",
+        draft: "3.4",
+        draftinfo: " (brouillon 3.4, 2000-01-01)",
+        implementeddate: "XXX",
+        issueddate: "XXX",
+        lang: "fr",
+        logo: "#{File.join(logoloc, 'logo.png')}",
+        metadata_extensions: { "doctype" => "cipm-mra",
+                               "comment-period" => { "from" => "N1", "to" => "N2" }, "structuredidentifier" => { "docnumber" => "1000", "part" => "2.1", "appendix" => "ABC", "annexid" => "DEF" } },
+        obsoleteddate: "XXX",
+        org_abbrev: "BIPM",
+        partid: "Partie 2.1",
+        partid_alt: "Part 2.1",
+        publisheddate: "XXX",
+        publisher: "#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
+        receiveddate: "XXX",
+        revdate: "2000-01-01",
+        revdate_monthyear: "Janvier 2000",
+        script: "Latn",
+        si_aspect_index: si_aspect,
+        si_aspect_paths: si_aspect_paths,
+        stable_untildate: "XXX",
+        stage: "Working Draft",
+        stage_display: "Working Draft",
+        transmitteddate: "XXX",
+        unchangeddate: "XXX",
+        unpublished: true,
+        updateddate: "XXX",
+        vote_endeddate: "XXX",
+        vote_starteddate: "XXX" }
 
     docxml, = csdc.convert_init(input, "test", true)
     expect(metadata(csdc.info(docxml, nil)))
@@ -356,39 +360,39 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = 
-      {:accesseddate=>"XXX",
-      :adapteddate=>"XXX",
-      :announceddate=>"XXX",
-      :circulateddate=>"XXX",
-      :confirmeddate=>"XXX",
-      :copieddate=>"XXX",
-      :correcteddate=>"XXX",
-      :createddate=>"XXX",
-      :draft=>"3.4",
-      :draftinfo=>" (draft 3.4, 2000-01-01)",
-      :implementeddate=>"XXX",
-      :issueddate=>"XXX",
-      :lang=>"en",
-      :logo=>"#{File.join(logoloc, 'logo.png')}",
-      :obsoleteddate=>"XXX",
-      :org_abbrev=>"BIPM",
-      :publisheddate=>"XXX",
-      :receiveddate=>"XXX",
-      :revdate=>"2000-01-01",
-      :revdate_monthyear=>"January 2000",
-      :script=>"Latn",
-      :si_aspect_index=>si_aspect,
-      :si_aspect_paths=>si_aspect_paths,
-      :stable_untildate=>"XXX",
-      :stage=>"Standard",
-      :stage_display=>"Standard",
-      :transmitteddate=>"XXX",
-      :unchangeddate=>"XXX",
-      :unpublished=>true,
-      :updateddate=>"XXX",
-      :vote_endeddate=>"XXX",
-      :vote_starteddate=>"XXX"}
+    output =
+      { accesseddate: "XXX",
+        adapteddate: "XXX",
+        announceddate: "XXX",
+        circulateddate: "XXX",
+        confirmeddate: "XXX",
+        copieddate: "XXX",
+        correcteddate: "XXX",
+        createddate: "XXX",
+        draft: "3.4",
+        draftinfo: " (draft 3.4, 2000-01-01)",
+        implementeddate: "XXX",
+        issueddate: "XXX",
+        lang: "en",
+        logo: "#{File.join(logoloc, 'logo.png')}",
+        obsoleteddate: "XXX",
+        org_abbrev: "BIPM",
+        publisheddate: "XXX",
+        receiveddate: "XXX",
+        revdate: "2000-01-01",
+        revdate_monthyear: "January 2000",
+        script: "Latn",
+        si_aspect_index: si_aspect,
+        si_aspect_paths: si_aspect_paths,
+        stable_untildate: "XXX",
+        stage: "Standard",
+        stage_display: "Standard",
+        transmitteddate: "XXX",
+        unchangeddate: "XXX",
+        unpublished: true,
+        updateddate: "XXX",
+        vote_endeddate: "XXX",
+        vote_starteddate: "XXX" }
 
     csdc = IsoDoc::Bipm::HtmlConvert.new({})
     docxml, = csdc.convert_init(input, "test", true)
@@ -417,5 +421,75 @@ RSpec.describe IsoDoc::Bipm do
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
     expect(stripped_presxml).to(be_equivalent_to(Xml::C14n.format(output)))
+  end
+
+  it "inserts part in appendix title" do
+    input = <<~INPUT
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+      <bibdata>
+      <title type="title-main" language="en">Maintitle</title>
+      <title type="title-part" language="en">Parttitle</title>
+      <title type="title-main" language="fr">Titrechef</title>
+      <title type="title-part" language="fr">Titrepartie</title>
+      <ext>
+      <structuredidentifier>
+      <part>3</part>
+      </structuredidentifier>
+      </ext>
+      </bibdata>
+      </bipm-standard>
+    INPUT
+
+    output = Xml::C14n.format(<<~OUTPUT)
+      <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
+        <bibdata>
+           <title type='title-main' language='en'>Maintitle</title>
+           <title type='title-part' language='en'>Parttitle</title>
+           <title type='title-part-with-numbering' language='en'>Part 3: Parttitle</title>
+           <title type='title-main' language='fr'>Titrechef</title>
+           <title type='title-part' language='fr'>Titrepartie</title>
+           <title type='title-part-with-numbering' language='fr'>Partie 3&#xA0;: Titrepartie</title>
+          <ext>
+            <structuredidentifier>
+              <part>3</part>
+            </structuredidentifier>
+          </ext>
+        </bibdata>
+      </bipm-standard>
+    OUTPUT
+
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to be_equivalent_to output
+
+    input = <<~INPUT
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+      <bibdata>
+      <title type="title-main" language="en">Maintitle</title>
+      <title type="title-part" language="en">Parttitle</title>
+      <title type="title-main" language="fr">Titrechef</title>
+      <title type="title-part" language="fr">Titrepartie</title>
+      </bibdata>
+      </bipm-standard>
+    INPUT
+
+    output = Xml::C14n.format(<<~OUTPUT)
+      <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
+        <bibdata>
+          <title type='title-main' language='en'>Maintitle</title>
+          <title type='title-part' language='en'>Parttitle</title>
+          <title type='title-main' language='fr'>Titrechef</title>
+          <title type='title-part' language='fr'>Titrepartie</title>
+        </bibdata>
+      </bipm-standard>
+    OUTPUT
+
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to be_equivalent_to output
   end
 end

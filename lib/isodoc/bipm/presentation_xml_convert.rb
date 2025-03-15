@@ -120,7 +120,8 @@ module IsoDoc
         docxml.root.replace(Nokogiri::XML(docxml.root.to_xml).root)
         docxml.xpath(ns(xpath)).each do |x| # rubocop: disable Style/CombinableLoops
           if x.parent.next&.text? && /^\],\s+\[$/.match?(x.parent.next.text) &&
-              %w(eref origin fmt-eref fmt-origin).include?(x.parent.next.next&.name)
+              %w(eref origin fmt-eref
+                 fmt-origin).include?(x.parent.next.next&.name)
             x.parent.next.replace(", ")
           end
         end
@@ -155,8 +156,8 @@ module IsoDoc
       end
 
       def termsource_label(elem, sources)
-      elem.replace(l10n("[#{termsource_adapt(elem['status'])} #{sources}]"))
-    end
+        elem.replace(l10n("[#{termsource_adapt(elem['status'])} #{sources}]"))
+      end
 
       def termsource_adapt(status)
         case status
@@ -202,6 +203,35 @@ module IsoDoc
         end
         docxml.xpath(ns("//indexsect//xref")).each { |x| x.children.remove }
         @xrefs.bookmark_anchor_names(docxml)
+      end
+
+      def fn_label_brackets(fnote)
+        "<span class='fmt-label-delim'>(</span></sup>" \
+        "<sup>#{fn_label(fnote)}" \
+          "<span class='fmt-label-delim'>)</span></sup>"
+      end
+
+      def fn_ref_label(fnote)
+        if @jcgm then iso_fn_ref_label(fnote)
+        else fn_label_brackets(fnote)
+        end
+      end
+
+      # copied from ISO
+      def iso_fn_ref_label(fnote)
+        if fnote.ancestors("table, figure").empty? ||
+            !fnote.ancestors("name, fmt-name").empty?
+          "<sup>#{fn_label(fnote)}" \
+            "<span class='fmt-label-delim'>)</span></sup>"
+        else
+          super
+        end
+      end
+
+      def fn_body_label(fnote)
+        if @jcgm then super
+        else fn_label_brackets(fnote)
+        end
       end
 
       include Init
