@@ -599,8 +599,6 @@ RSpec.describe IsoDoc do
                       <tab/>
                    </biblio-tag>
                 </bibitem>
-             </references>
-          </bibliography>
           <fmt-footnote-container>
              <fmt-fn-body id="_" target="_" reference="1">
                 <semx element="fn" source="_">
@@ -620,8 +618,10 @@ RSpec.describe IsoDoc do
                 </semx>
              </fmt-fn-body>
           </fmt-footnote-container>
+             </references>
        </iso-standard>
-    PRESXML
+         </bibliography>
+     PRESXML
 
     output = <<~OUTPUT
        <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
@@ -743,10 +743,10 @@ RSpec.describe IsoDoc do
                    <a href="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</a>
                    .
                 </p>
-             </div>
              <aside id="fn:1" class="footnote">
                 <p>Under preparation. (Stage at the time of publication ISO/DIS 16634)</p>
              </aside>
+             </div>
           </div>
        </body>
     OUTPUT

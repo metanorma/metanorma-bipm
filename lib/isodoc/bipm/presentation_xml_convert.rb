@@ -107,12 +107,6 @@ module IsoDoc
         jcgm_eref(docxml, "//fmt-origin[not(.//termref)]")
       end
 
-      # KILL
-      def quotesourcex(docxml)
-        super
-        jcgm_eref(docxml, "//quote//source")
-      end
-
       def jcgm_eref(docxml, xpath)
         @jcgm or return
         docxml.xpath(ns(xpath)).each { |x| extract_brackets(x) }
@@ -143,16 +137,6 @@ module IsoDoc
           t.name = "title"
           t.children.first.previous = "<blacksquare/>"
         end
-      end
-
-      # KILL
-      def termsource1_xx(elem)
-        # elem["status"] == "modified" and return super
-        while elem&.next_element&.name == "termsource"
-          elem << "; #{to_xml(elem.next_element.remove.children)}"
-        end
-        elem.children = l10n("[#{termsource_adapt(elem['status'])}" \
-                             "#{to_xml(elem.children).strip}]")
       end
 
       def termsource_label(elem, sources)
@@ -232,6 +216,40 @@ module IsoDoc
         if @jcgm then super
         else fn_label_brackets(fnote)
         end
+      end
+
+      def document_footnotes(docxml)
+        @jcgm and return super
+        sects = sort_footnote_sections(docxml)
+        excl = non_document_footnotes(docxml)
+        fns = filter_document_footnotes(sects, excl)
+        sects.each_with_index do |s, i|
+          ret = renumber_document_footnotes(fns[i], 1)
+          ret = footnote_collect(ret)
+          f = footnote_container(fns[i], ret) and s << f
+        end
+      end
+
+      def renumber_document_footnotes(fns, idx)
+        @jcgm and return super
+        fns.each_with_object({}) do |f, seen|
+          idx = renumber_document_footnote(f, idx, seen)
+        end
+        fns
+      end
+
+      def table_fn(elem)
+        !@jcgm && !elem.ancestors("quote").empty? and return
+        super
+      end
+
+      def non_document_footnotes(docxml)
+        table_fns = docxml.xpath(ns("//table//fn")) -
+          docxml.xpath(ns("//table/name//fn"))
+        @jcgm or table_fns -= docxml.xpath(ns("//quote//table//fn"))
+        fig_fns = docxml.xpath(ns("//figure//fn")) -
+          docxml.xpath(ns("//figure/name//fn"))
+        table_fns + fig_fns
       end
 
       include Init
