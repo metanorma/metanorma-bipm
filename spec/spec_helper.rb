@@ -201,6 +201,19 @@ HTML_HDR = <<~HDR.freeze
     <div class="main-section">
 HDR
 
+def jcgm_ext
+  <<~JCGM
+    <ext>
+       <editorialgroup>
+         <committee acronym="JCGM">
+           Joint Committee for Guides in Metrology
+           Comité commun pour les guides en métrologie
+         </committee>
+       </editorialgroup>
+     </ext>
+  JCGM
+end
+
 def mock_pdf
   allow(Mn2pdf).to receive(:convert) do |url, output,|
     FileUtils.cp(url.delete('"'), output.delete('"'))

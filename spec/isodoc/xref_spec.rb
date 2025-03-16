@@ -690,114 +690,7 @@ RSpec.describe IsoDoc::Bipm do
       .sub(%r{^.*<foreword}m, "<foreword")
       .sub(%r{</foreword>.*$}m, "</foreword>"))))
       .to be_equivalent_to Xml::C14n.format(output)
-  end
 
-  it "cross-references sections in JCGM" do
-    input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
-      <bibdata>
-      <ext>
-        <editorialgroup>
-          <committee acronym="JCGM" language="en" script="Latn">TC</committee>
-          <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
-          <workgroup acronym="B">WC</committee>
-        </editorialgroup>
-       </ext>
-       </bibdata>
-        <preface>
-          <foreword obligation="informative">
-            <title>Foreword</title>
-            <p id="A">This is a preamble
-              <xref target="C"/>
-              <xref target="C1"/>
-              <xref target="D"/>
-              <xref target="H"/>
-              <xref target="I"/>
-              <xref target="J"/>
-              <xref target="K"/>
-              <xref target="L"/>
-              <xref target="M"/>
-              <xref target="N"/>
-              <xref target="O"/>
-              <xref target="P"/>
-              <xref target="Q"/>
-              <xref target="Q1"/>
-              <xref target="Q2"/>
-              <xref target="Q3"/>
-              <xref target="R"/></p>
-          </foreword>
-          <introduction id="B" obligation="informative">
-            <title>Introduction</title>
-            <clause id="C" inline-header="false" obligation="informative">
-              <title>Introduction Subsection</title>
-            </clause>
-            <clause id="C1" inline-header="false" obligation="informative">Text</clause>
-          </introduction>
-        </preface>
-        <sections>
-          <clause id="D" obligation="normative" type="scope">
-            <title>Scope</title>
-            <p id="E">Text</p>
-          </clause>
-          <terms id="H" obligation="normative">
-            <title>Terms, definitions, symbols and abbreviated terms</title>
-            <terms id="I" obligation="normative">
-              <title>Normal Terms</title>
-              <term id="J">
-                <preferred>Term2</preferred>
-              </term>
-            </terms>
-            <definitions id="K">
-              <dl>
-                <dt>Symbol</dt>
-                <dd>Definition</dd>
-              </dl>
-            </definitions>
-          </terms>
-          <definitions id="L">
-            <dl>
-              <dt>Symbol</dt>
-              <dd>Definition</dd>
-            </dl>
-          </definitions>
-          <clause id="M" inline-header="false" obligation="normative">
-            <title>Clause 4</title>
-            <clause id="N" inline-header="false" obligation="normative">
-              <title>Introduction</title>
-            </clause>
-            <clause id="O" inline-header="false" obligation="normative">
-              <title>Clause 4.2</title>
-            </clause>
-          </clause>
-        </sections>
-        <annex id="P" inline-header="false" obligation="normative">
-          <title>Annex</title>
-          <clause id="Q" inline-header="false" obligation="normative">
-            <title>Annex A.1</title>
-            <clause id="Q1" inline-header="false" obligation="normative">
-              <title>Annex A.1a</title>
-            </clause>
-          </clause>
-          <appendix id="Q2" inline-header="false" obligation="normative">
-            <title>An Appendix</title>
-            <clause id="Q3" inline-header="false" obligation="normative">
-              <title>Appendix subclause</title>
-            </clause>
-          </appendix>
-        </annex>
-        <bibliography>
-          <references id="R" normative="true" obligation="informative">
-            <title>Normative References</title>
-          </references>
-          <clause id="S" obligation="informative">
-            <title>Bibliography</title>
-            <references id="T" normative="false" obligation="informative">
-              <title>Bibliography Subsection</title>
-            </references>
-          </clause>
-        </bibliography>
-      </iso-standard>
-    INPUT
     output = <<~OUTPUT
         <foreword obligation="informative" id="_" displayorder="2">
            <title id="_">Foreword</title>
@@ -935,8 +828,9 @@ RSpec.describe IsoDoc::Bipm do
            </p>
         </foreword>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input.sub("<sections>", "<bibdata>#{jcgm_ext}</bibdata><sections>"), true)
       .sub(%r{^.*<foreword}m, "<foreword")
       .sub(%r{</foreword>.*$}m, "</foreword>"))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -1303,82 +1197,16 @@ RSpec.describe IsoDoc::Bipm do
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to Xml::C14n.format(output)
-  end
 
-  it "cross-references subfigures in JCGM" do
-    input = <<~INPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml">
-      <bibdata>
-      <ext>
-                <editorialgroup>
-          <committee acronym="JCGM" language="en" script="Latn">TC</committee>
-          <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
-                  <workgroup acronym="B">WC</workgroup>
-                </editorialgroup>
-               </ext>
-       </bibdata>
-        <preface>
-          <foreword id="fwd">
-            <p>
-              <xref target="N"/>
-              <xref target="note1"/>
-              <xref target="note2"/>
-              <xref target="AN"/>
-              <xref target="Anote1"/>
-              <xref target="Anote2"/>
-            </p>
-          </foreword>
-        </preface>
-        <sections>
-          <clause id="scope" type="scope">
-            <title>Scope</title>
-          </clause>
-          <terms id="terms"/>
-          <clause id="widgets">
-            <title>Widgets</title>
-            <clause id="widgets1">
-              <figure id="N">
-                <figure id="note1">
-                  <name>Split-it-right sample divider</name>
-                  <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
-                </figure>
-                <figure id="note2">
-                  <name>Split-it-right sample divider</name>
-                  <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
-                </figure>
-              </figure>
-              <p>
-                <xref target="note1"/>
-                <xref target="note2"/>
-              </p>
-            </clause>
-          </clause>
-        </sections>
-        <annex id="annex1">
-          <clause id="annex1a"/>
-          <clause id="annex1b">
-            <figure id="AN">
-              <figure id="Anote1">
-                <name>Split-it-right sample divider</name>
-                <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
-              </figure>
-              <figure id="Anote2">
-                <name>Split-it-right sample divider</name>
-                <image id="_8357ede4-6d44-4672-bac4-9a85e82ab7f0" mimetype="image/png" src="rice_images/rice_image1.png"/>
-              </figure>
-            </figure>
-          </clause>
-        </annex>
-      </iso-standard>
-    INPUT
     output = <<~OUTPUT
-        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+      <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
            <bibdata>
               <ext>
                  <editorialgroup>
-                    <committee acronym="JCGM" language="en" script="Latn">TC</committee>
-                    <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
-                    <workgroup acronym="B">WC</workgroup>
+                             <committee acronym="JCGM">
+            Joint Committee for Guides in Metrology
+            Comité commun pour les guides en métrologie
+          </committee>
                  </editorialgroup>
               </ext>
            </bibdata>
@@ -1684,8 +1512,10 @@ RSpec.describe IsoDoc::Bipm do
            </annex>
         </iso-standard>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true)
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input.sub("</bibdata>",
+                                 "#{jcgm_ext}</bibdata>"), true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to Xml::C14n.format(output)
   end
