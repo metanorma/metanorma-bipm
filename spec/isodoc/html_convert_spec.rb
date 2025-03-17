@@ -1694,7 +1694,7 @@ RSpec.describe IsoDoc::Bipm do
       .to be_equivalent_to Xml::C14n.format(presxml)
   end
 
-  it "processes IsoXML footnotes" do
+  it "processes footnotes" do
     mock_uuid_increment
     input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
@@ -1722,14 +1722,27 @@ RSpec.describe IsoDoc::Bipm do
           </preface>
           <sections>
           <clause id="A">
-          A.<fn reference="42">
+      <clause id="AA">
+          <p>A.<fn reference="42">
           <p id="_1e228e29-baef-4f38-b048-b05a051747e4">Third footnote.</p>
       </fn></p>
           <p>B.<fn reference="2">
         <p id="_1e228e29-baef-4f38-b048-b05a051747e4">Formerly denoted as 15 % (m/m).</p>
       </fn></p>
+      </clause>
+      <clause id="AB">
+        <p>A.<fn reference="42">
+          <p id="_1e228e29-baef-4f38-b048-b05a051747e4">Third footnote.</p>
+      </fn></p>
+          <p>B.<fn reference="2">
+        <p id="_1e228e29-baef-4f38-b048-b05a051747e4">Formerly denoted as 15 % (m/m).</p>
+      </fn></p>
+      </clause>
           </clause>
-          <bibliography><references id="_normative_references" obligation="informative" normative="true"><title>Normative References</title>
+          </sections>
+          <bibliography>
+          <references id="_normative_references" obligation="informative" normative="true">
+          <title>Normative References</title>
           <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
       <bibitem id="ISO712" type="standard">
         <title format="text/plain">Cereals or cereal products</title>
@@ -1749,7 +1762,7 @@ RSpec.describe IsoDoc::Bipm do
           </iso-standard>
     INPUT
     presxml = <<~INPUT
-        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <bibdata>
              <title>
                 <fn reference="1" original-reference="43" id="_" target="_">
@@ -1932,17 +1945,90 @@ RSpec.describe IsoDoc::Bipm do
                    <span class="fmt-element-name">Chapter</span>
                    <semx element="autonum" source="A">1</semx>
                 </fmt-xref-label>
-                A.
-                <fn reference="1" original-reference="42" id="_" target="_">
-                   <p original-id="_">Third footnote.</p>
-                   <fmt-fn-label>
-                      <sup>
-                         <span class="fmt-label-delim">(</span>
-                         <semx element="autonum" source="_">1</semx>
-                         <span class="fmt-label-delim">)</span>
-                      </sup>
-                   </fmt-fn-label>
-                </fn>
+                <clause id="AA">
+                   <fmt-title depth="2">
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="A">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="AA">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-title>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">Section</span>
+                      <semx element="autonum" source="A">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="AA">1</semx>
+                   </fmt-xref-label>
+                   <p>
+                      A.
+                      <fn reference="1" original-reference="42" id="_" target="_">
+                         <p original-id="_">Third footnote.</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <span class="fmt-label-delim">(</span>
+                               <semx element="autonum" source="_">1</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </p>
+                   <p>
+                      B.
+                      <fn reference="2" original-reference="2" id="_" target="_">
+                         <p original-id="_">Formerly denoted as 15 % (m/m).</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <span class="fmt-label-delim">(</span>
+                               <semx element="autonum" source="_">2</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </p>
+                </clause>
+                <clause id="AB">
+                   <fmt-title depth="2">
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="A">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="AB">2</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-title>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">Section</span>
+                      <semx element="autonum" source="A">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="AB">2</semx>
+                   </fmt-xref-label>
+                   <p>
+                      A.
+                      <fn reference="1" original-reference="42" id="_" target="_">
+                         <p id="_">Third footnote.</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <span class="fmt-label-delim">(</span>
+                               <semx element="autonum" source="_">1</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </p>
+                   <p>
+                      B.
+                      <fn reference="2" original-reference="2" id="_" target="_">
+                         <p id="_">Formerly denoted as 15 % (m/m).</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <span class="fmt-label-delim">(</span>
+                               <semx element="autonum" source="_">2</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </p>
+                </clause>
                 <fmt-footnote-container>
                    <fmt-fn-body id="_" target="_" reference="1">
                       <semx element="fn" source="_">
@@ -1961,28 +2047,13 @@ RSpec.describe IsoDoc::Bipm do
                          </p>
                       </semx>
                    </fmt-fn-body>
-                </fmt-footnote-container>
-             </clause>
-             <p displayorder="4">
-                B.
-                <fn reference="1" original-reference="2" id="_" target="_">
-                   <p original-id="_">Formerly denoted as 15 % (m/m).</p>
-                   <fmt-fn-label>
-                      <sup>
-                         <span class="fmt-label-delim">(</span>
-                         <semx element="autonum" source="_">1</semx>
-                         <span class="fmt-label-delim">)</span>
-                      </sup>
-                   </fmt-fn-label>
-                </fn>
-                <fmt-footnote-container>
-                   <fmt-fn-body id="_" target="_" reference="1">
+                   <fmt-fn-body id="_" target="_" reference="2">
                       <semx element="fn" source="_">
                          <p id="_">
                             <fmt-fn-label>
                                <sup>
                                   <span class="fmt-label-delim">(</span>
-                                  <semx element="autonum" source="_">1</semx>
+                                  <semx element="autonum" source="_">2</semx>
                                   <span class="fmt-label-delim">)</span>
                                </sup>
                                <span class="fmt-caption-delim">
@@ -1994,8 +2065,8 @@ RSpec.describe IsoDoc::Bipm do
                       </semx>
                    </fmt-fn-body>
                 </fmt-footnote-container>
-             </p>
-             <references id="_" obligation="informative" normative="true" displayorder="5">
+             </clause>
+             <references id="_" obligation="informative" normative="true" displayorder="4">
                 <title id="_">Normative References</title>
                 <fmt-title depth="1">
                    <span class="fmt-caption-label">
@@ -2074,11 +2145,12 @@ RSpec.describe IsoDoc::Bipm do
              </references>
           </sections>
           <bibliography>
+           
        </bibliography>
        </iso-standard>
-    INPUT
+          INPUT
     output = <<~OUTPUT
-       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+        <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
           <div class="title-section">
              <p> </p>
           </div>
@@ -2092,13 +2164,13 @@ RSpec.describe IsoDoc::Bipm do
                 <div class="boilerplate-copyright">
                    <div>
                       <h1>
-                         <a class="FootnoteRef" href="#fn:_10">
+                         <a class="FootnoteRef" href="#fn:_12">
                             <sup>(1)</sup>
                          </a>
                       </h1>
                    </div>
                 </div>
-                <aside id="fn:_10" class="footnote">
+                <aside id="fn:_12" class="footnote">
                    <p>D</p>
                 </aside>
              </div>
@@ -2111,65 +2183,86 @@ RSpec.describe IsoDoc::Bipm do
                 <h1 class="ForewordTitle">Foreword</h1>
                 <p>
                    A.
-                   <a class="FootnoteRef" href="#fn:_13">
+                   <a class="FootnoteRef" href="#fn:_15">
                       <sup>(1)</sup>
                    </a>
                 </p>
                 <p>
                    B.
-                   <a class="FootnoteRef" href="#fn:_13">
+                   <a class="FootnoteRef" href="#fn:_15">
                       <sup>(1)</sup>
                    </a>
                 </p>
                 <p>
                    C.
-                   <a class="FootnoteRef" href="#fn:_16">
+                   <a class="FootnoteRef" href="#fn:_18">
                       <sup>(2)</sup>
                    </a>
                 </p>
-                <aside id="fn:_13" class="footnote">
+                <aside id="fn:_15" class="footnote">
                    <p id="_">Formerly denoted as 15 % (m/m).</p>
                 </aside>
-                <aside id="fn:_16" class="footnote">
+                <aside id="fn:_18" class="footnote">
                    <p id="_">Hello! denoted as 15 % (m/m).</p>
                 </aside>
              </div>
              <div id="A">
                 <h1>1.</h1>
-                <a class="FootnoteRef" href="#fn:_18">
-                   <sup>(1)</sup>
-                </a>
-                <aside id="fn:_18" class="footnote">
+                <div id="AA">
+                   <h2>1.1.</h2>
+                   <p>
+                      A.
+                      <a class="FootnoteRef" href="#fn:_20">
+                         <sup>(1)</sup>
+                      </a>
+                   </p>
+                   <p>
+                      B.
+                      <a class="FootnoteRef" href="#fn:_22">
+                         <sup>(2)</sup>
+                      </a>
+                   </p>
+                </div>
+                <div id="AB">
+                   <h2>1.2.</h2>
+                   <p>
+                      A.
+                      <a class="FootnoteRef" href="#fn:_20">
+                         <sup>(1)</sup>
+                      </a>
+                   </p>
+                   <p>
+                      B.
+                      <a class="FootnoteRef" href="#fn:_22">
+                         <sup>(2)</sup>
+                      </a>
+                   </p>
+                </div>
+                <aside id="fn:_20" class="footnote">
                    <p id="_">Third footnote.</p>
                 </aside>
-             </div>
-             <p>
-                B.
-                <a class="FootnoteRef" href="#fn:_20">
-                   <sup>(1)</sup>
-                </a>
-                <aside id="fn:_20" class="footnote">
+                <aside id="fn:_22" class="footnote">
                    <p id="_">Formerly denoted as 15 % (m/m).</p>
                 </aside>
-             </p>
+             </div>
              <div>
                 <h1>2.  Normative References</h1>
                 <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                 <p id="ISO712" class="NormRef">
                    <i>
                       Cereals and cereal products
-                      <a class="FootnoteRef" href="#fn:_22">
+                      <a class="FootnoteRef" href="#fn:_26">
                          <sup>(1)</sup>
                       </a>
                    </i>
                 </p>
-                <aside id="fn:_22" class="footnote">
+                <aside id="fn:_26" class="footnote">
                    <p id="_">ISO is a standards organisation.</p>
                 </aside>
              </div>
           </div>
        </body>
-    OUTPUT
+           OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert
         .new(presxml_options)
@@ -2183,297 +2276,354 @@ RSpec.describe IsoDoc::Bipm do
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
 
     presxml = <<~OUTPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-         <bibdata>
-            <title>
-               <fn reference="1" original-reference="43" id="_" target="_">
-                  <p>C</p>
-                  <fmt-fn-label>
-                     <sup>
-                        <semx element="autonum" source="_">1</semx>
-                        <span class="fmt-label-delim">)</span>
-                     </sup>
-                  </fmt-fn-label>
-               </fn>
-            </title>
-         </bibdata>
-         <boilerplate>
-            <copyright-statement>
-               <clause>
-                  <title id="_">
-                     <fn reference="2" original-reference="44" id="_" target="_">
-                        <p>D</p>
-                        <fmt-fn-label>
-                           <sup>
-                              <semx element="autonum" source="_">2</semx>
-                              <span class="fmt-label-delim">)</span>
-                           </sup>
-                        </fmt-fn-label>
-                     </fn>
-                  </title>
-                  <fmt-title depth="1">
-                     <semx element="title" source="_">
-                        <fn reference="2" original-reference="44" id="_" target="_">
-                           <p>D</p>
-                           <fmt-fn-label>
-                              <sup>
-                                 <semx element="autonum" source="_">2</semx>
-                                 <span class="fmt-label-delim">)</span>
-                              </sup>
-                           </fmt-fn-label>
-                        </fn>
-                     </semx>
-                  </fmt-title>
-               </clause>
-            </copyright-statement>
-         </boilerplate>
-         <preface>
-            <clause type="toc" id="_" displayorder="1">
-               <fmt-title depth="1">Contents</fmt-title>
-            </clause>
-            <foreword id="F" displayorder="2">
-               <title id="_">Foreword</title>
-               <fmt-title depth="1">
-                  <semx element="title" source="_">Foreword</semx>
-               </fmt-title>
-               <p>
-                  A.
-                  <fn reference="3" original-reference="2" id="_" target="_">
-                     <p original-id="_">Formerly denoted as 15 % (m/m).</p>
-                     <fmt-fn-label>
-                        <sup>
-                           <semx element="autonum" source="_">3</semx>
-                           <span class="fmt-label-delim">)</span>
-                        </sup>
-                     </fmt-fn-label>
-                  </fn>
-               </p>
-               <p>
-                  B.
-                  <fn reference="3" original-reference="2" id="_" target="_">
-                     <p id="_">Formerly denoted as 15 % (m/m).</p>
-                     <fmt-fn-label>
-                        <sup>
-                           <semx element="autonum" source="_">3</semx>
-                           <span class="fmt-label-delim">)</span>
-                        </sup>
-                     </fmt-fn-label>
-                  </fn>
-               </p>
-               <p>
-                  C.
-                  <fn reference="4" original-reference="1" id="_" target="_">
-                     <p original-id="_">Hello! denoted as 15 % (m/m).</p>
-                     <fmt-fn-label>
-                        <sup>
-                           <semx element="autonum" source="_">4</semx>
-                           <span class="fmt-label-delim">)</span>
-                        </sup>
-                     </fmt-fn-label>
-                  </fn>
-               </p>
-            </foreword>
-         </preface>
-         <bibdata>
-            <ext>
-               <editorialgroup>
-                  <committee acronym="JCGM">
-             Joint Committee for Guides in Metrology
-             Comité commun pour les guides en métrologie
-           </committee>
-               </editorialgroup>
-            </ext>
-         </bibdata>
-         <sections>
-            <clause id="A" displayorder="5">
-               <fmt-title depth="1">
-                  <span class="fmt-caption-label">
-                     <semx element="autonum" source="A">2</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                  </span>
-               </fmt-title>
-               <fmt-xref-label>
-                  <span class="fmt-element-name">Clause</span>
-                  <semx element="autonum" source="A">2</semx>
-               </fmt-xref-label>
-               A.
-               <fn reference="6" original-reference="42" id="_" target="_">
-                  <p original-id="_">Third footnote.</p>
-                  <fmt-fn-label>
-                     <sup>
-                        <semx element="autonum" source="_">6</semx>
-                        <span class="fmt-label-delim">)</span>
-                     </sup>
-                  </fmt-fn-label>
-               </fn>
-            </clause>
-            <p displayorder="3">
-               B.
-               <fn reference="3" original-reference="2" id="_" target="_">
-                  <p id="_">Formerly denoted as 15 % (m/m).</p>
-                  <fmt-fn-label>
-                     <sup>
-                        <semx element="autonum" source="_">3</semx>
-                        <span class="fmt-label-delim">)</span>
-                     </sup>
-                  </fmt-fn-label>
-               </fn>
-            </p>
-            <references id="_" obligation="informative" normative="true" displayorder="4">
-               <title id="_">Normative References</title>
-               <fmt-title depth="1">
-                  <span class="fmt-caption-label">
-                     <semx element="autonum" source="_">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                  </span>
-                  <span class="fmt-caption-delim">
-                     <tab/>
-                  </span>
-                  <semx element="title" source="_">Normative References</semx>
-               </fmt-title>
-               <fmt-xref-label>
-                  <span class="fmt-element-name">Clause</span>
-                  <semx element="autonum" source="_">1</semx>
-               </fmt-xref-label>
-               <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
-               <bibitem id="ISO712" type="standard">
-                  <formattedref>
-                     <em>
-                        Cereals and cereal products
-                        <fn reference="5" original-reference="7" id="_" target="_">
-                           <p original-id="_">ISO is a standards organisation.</p>
-                           <fmt-fn-label>
-                              <sup>
-                                 <semx element="autonum" source="_">5</semx>
-                                 <span class="fmt-label-delim">)</span>
-                              </sup>
-                           </fmt-fn-label>
-                        </fn>
-                     </em>
-                  </formattedref>
-                  <title format="text/plain">Cereals or cereal products</title>
-                  <title type="main" format="text/plain">
-                     Cereals and cereal products
-                     <fn reference="5" original-reference="7" id="_" target="_">
-                        <p id="_">ISO is a standards organisation.</p>
-                        <fmt-fn-label>
-                           <sup>
-                              <semx element="autonum" source="_">5</semx>
-                              <span class="fmt-label-delim">)</span>
-                           </sup>
-                        </fmt-fn-label>
-                     </fn>
-                  </title>
-                  <docidentifier type="ISO">ISO 712</docidentifier>
-                  <docidentifier scope="biblio-tag">ISO 712</docidentifier>
-                  <contributor>
-                     <role type="publisher"/>
-                     <organization>
-                        <name>International Organization for Standardization</name>
-                     </organization>
-                  </contributor>
-                  <biblio-tag> </biblio-tag>
-               </bibitem>
-            </references>
-         </sections>
-         <bibliography>
-      </bibliography>
-         <fmt-footnote-container>
-            <fmt-fn-body id="_" target="_" reference="1">
-               <semx element="fn" source="_">
-                  <p>
-                     <fmt-fn-label>
-                        <sup>
-                           <semx element="autonum" source="_">1</semx>
-                        </sup>
-                        <span class="fmt-caption-delim">
-                           <tab/>
-                        </span>
-                     </fmt-fn-label>
-                     C
-                  </p>
-               </semx>
-            </fmt-fn-body>
-            <fmt-fn-body id="_" target="_" reference="2">
-               <semx element="fn" source="_">
-                  <p>
-                     <fmt-fn-label>
-                        <sup>
-                           <semx element="autonum" source="_">2</semx>
-                        </sup>
-                        <span class="fmt-caption-delim">
-                           <tab/>
-                        </span>
-                     </fmt-fn-label>
-                     D
-                  </p>
-               </semx>
-            </fmt-fn-body>
-            <fmt-fn-body id="_" target="_" reference="3">
-               <semx element="fn" source="_">
-                  <p id="_">
-                     <fmt-fn-label>
-                        <sup>
-                           <semx element="autonum" source="_">3</semx>
-                        </sup>
-                        <span class="fmt-caption-delim">
-                           <tab/>
-                        </span>
-                     </fmt-fn-label>
-                     Formerly denoted as 15 % (m/m).
-                  </p>
-               </semx>
-            </fmt-fn-body>
-            <fmt-fn-body id="_" target="_" reference="4">
-               <semx element="fn" source="_">
-                  <p id="_">
-                     <fmt-fn-label>
-                        <sup>
-                           <semx element="autonum" source="_">4</semx>
-                        </sup>
-                        <span class="fmt-caption-delim">
-                           <tab/>
-                        </span>
-                     </fmt-fn-label>
-                     Hello! denoted as 15 % (m/m).
-                  </p>
-               </semx>
-            </fmt-fn-body>
-            <fmt-fn-body id="_" target="_" reference="5">
-               <semx element="fn" source="_">
-                  <p id="_">
-                     <fmt-fn-label>
-                        <sup>
-                           <semx element="autonum" source="_">5</semx>
-                        </sup>
-                        <span class="fmt-caption-delim">
-                           <tab/>
-                        </span>
-                     </fmt-fn-label>
-                     ISO is a standards organisation.
-                  </p>
-               </semx>
-            </fmt-fn-body>
-            <fmt-fn-body id="_" target="_" reference="6">
-               <semx element="fn" source="_">
-                  <p id="_">
-                     <fmt-fn-label>
-                        <sup>
-                           <semx element="autonum" source="_">6</semx>
-                        </sup>
-                        <span class="fmt-caption-delim">
-                           <tab/>
-                        </span>
-                     </fmt-fn-label>
-                     Third footnote.
-                  </p>
-               </semx>
-            </fmt-fn-body>
-         </fmt-footnote-container>
-      </iso-standard>
+       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+          <bibdata>
+             <title>
+                <fn reference="1" original-reference="43" id="_" target="_">
+                   <p>C</p>
+                   <fmt-fn-label>
+                      <sup>
+                         <semx element="autonum" source="_">1</semx>
+                         <span class="fmt-label-delim">)</span>
+                      </sup>
+                   </fmt-fn-label>
+                </fn>
+             </title>
+          </bibdata>
+          <boilerplate>
+             <copyright-statement>
+                <clause>
+                   <title id="_">
+                      <fn reference="2" original-reference="44" id="_" target="_">
+                         <p>D</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <semx element="autonum" source="_">2</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </title>
+                   <fmt-title depth="1">
+                      <semx element="title" source="_">
+                         <fn reference="2" original-reference="44" id="_" target="_">
+                            <p>D</p>
+                            <fmt-fn-label>
+                               <sup>
+                                  <semx element="autonum" source="_">2</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </fmt-fn-label>
+                         </fn>
+                      </semx>
+                   </fmt-title>
+                </clause>
+             </copyright-statement>
+          </boilerplate>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1">Contents</fmt-title>
+             </clause>
+             <foreword id="F" displayorder="2">
+                <title id="_">Foreword</title>
+                <fmt-title depth="1">
+                   <semx element="title" source="_">Foreword</semx>
+                </fmt-title>
+                <p>
+                   A.
+                   <fn reference="3" original-reference="2" id="_" target="_">
+                      <p original-id="_">Formerly denoted as 15 % (m/m).</p>
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">3</semx>
+                            <span class="fmt-label-delim">)</span>
+                         </sup>
+                      </fmt-fn-label>
+                   </fn>
+                </p>
+                <p>
+                   B.
+                   <fn reference="3" original-reference="2" id="_" target="_">
+                      <p id="_">Formerly denoted as 15 % (m/m).</p>
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">3</semx>
+                            <span class="fmt-label-delim">)</span>
+                         </sup>
+                      </fmt-fn-label>
+                   </fn>
+                </p>
+                <p>
+                   C.
+                   <fn reference="4" original-reference="1" id="_" target="_">
+                      <p original-id="_">Hello! denoted as 15 % (m/m).</p>
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">4</semx>
+                            <span class="fmt-label-delim">)</span>
+                         </sup>
+                      </fmt-fn-label>
+                   </fn>
+                </p>
+             </foreword>
+          </preface>
+          <bibdata>
+             <ext>
+                <editorialgroup>
+                   <committee acronym="JCGM">
+              Joint Committee for Guides in Metrology
+              Comité commun pour les guides en métrologie
+            </committee>
+                </editorialgroup>
+             </ext>
+          </bibdata>
+          <sections>
+             <clause id="A" displayorder="4">
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A">2</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Clause</span>
+                   <semx element="autonum" source="A">2</semx>
+                </fmt-xref-label>
+                <clause id="AA">
+                   <fmt-title depth="2">
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="A">2</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="AA">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-title>
+                   <fmt-xref-label>
+                      <semx element="autonum" source="A">2</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="AA">1</semx>
+                   </fmt-xref-label>
+                   <p>
+                      A.
+                      <fn reference="6" original-reference="42" id="_" target="_">
+                         <p original-id="_">Third footnote.</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <semx element="autonum" source="_">6</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </p>
+                   <p>
+                      B.
+                      <fn reference="3" original-reference="2" id="_" target="_">
+                         <p id="_">Formerly denoted as 15 % (m/m).</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <semx element="autonum" source="_">3</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </p>
+                </clause>
+                <clause id="AB">
+                   <fmt-title depth="2">
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="A">2</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="AB">2</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-title>
+                   <fmt-xref-label>
+                      <semx element="autonum" source="A">2</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="AB">2</semx>
+                   </fmt-xref-label>
+                   <p>
+                      A.
+                      <fn reference="6" original-reference="42" id="_" target="_">
+                         <p id="_">Third footnote.</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <semx element="autonum" source="_">6</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </p>
+                   <p>
+                      B.
+                      <fn reference="3" original-reference="2" id="_" target="_">
+                         <p id="_">Formerly denoted as 15 % (m/m).</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <semx element="autonum" source="_">3</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </p>
+                </clause>
+             </clause>
+             <references id="_" obligation="informative" normative="true" displayorder="3">
+                <title id="_">Normative References</title>
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="_">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">Normative References</semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Clause</span>
+                   <semx element="autonum" source="_">1</semx>
+                </fmt-xref-label>
+                <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
+                <bibitem id="ISO712" type="standard">
+                   <formattedref>
+                      <em>
+                         Cereals and cereal products
+                         <fn reference="5" original-reference="7" id="_" target="_">
+                            <p original-id="_">ISO is a standards organisation.</p>
+                            <fmt-fn-label>
+                               <sup>
+                                  <semx element="autonum" source="_">5</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </fmt-fn-label>
+                         </fn>
+                      </em>
+                   </formattedref>
+                   <title format="text/plain">Cereals or cereal products</title>
+                   <title type="main" format="text/plain">
+                      Cereals and cereal products
+                      <fn reference="5" original-reference="7" id="_" target="_">
+                         <p id="_">ISO is a standards organisation.</p>
+                         <fmt-fn-label>
+                            <sup>
+                               <semx element="autonum" source="_">5</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </fmt-fn-label>
+                      </fn>
+                   </title>
+                   <docidentifier type="ISO">ISO 712</docidentifier>
+                   <docidentifier scope="biblio-tag">ISO 712</docidentifier>
+                   <contributor>
+                      <role type="publisher"/>
+                      <organization>
+                         <name>International Organization for Standardization</name>
+                      </organization>
+                   </contributor>
+                   <biblio-tag> </biblio-tag>
+                </bibitem>
+             </references>
+          </sections>
+          <bibliography>
+           
+       </bibliography>
+          <fmt-footnote-container>
+             <fmt-fn-body id="_" target="_" reference="1">
+                <semx element="fn" source="_">
+                   <p>
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">1</semx>
+                         </sup>
+                         <span class="fmt-caption-delim">
+                            <tab/>
+                         </span>
+                      </fmt-fn-label>
+                      C
+                   </p>
+                </semx>
+             </fmt-fn-body>
+             <fmt-fn-body id="_" target="_" reference="2">
+                <semx element="fn" source="_">
+                   <p>
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">2</semx>
+                         </sup>
+                         <span class="fmt-caption-delim">
+                            <tab/>
+                         </span>
+                      </fmt-fn-label>
+                      D
+                   </p>
+                </semx>
+             </fmt-fn-body>
+             <fmt-fn-body id="_" target="_" reference="3">
+                <semx element="fn" source="_">
+                   <p id="_">
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">3</semx>
+                         </sup>
+                         <span class="fmt-caption-delim">
+                            <tab/>
+                         </span>
+                      </fmt-fn-label>
+                      Formerly denoted as 15 % (m/m).
+                   </p>
+                </semx>
+             </fmt-fn-body>
+             <fmt-fn-body id="_" target="_" reference="4">
+                <semx element="fn" source="_">
+                   <p id="_">
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">4</semx>
+                         </sup>
+                         <span class="fmt-caption-delim">
+                            <tab/>
+                         </span>
+                      </fmt-fn-label>
+                      Hello! denoted as 15 % (m/m).
+                   </p>
+                </semx>
+             </fmt-fn-body>
+             <fmt-fn-body id="_" target="_" reference="5">
+                <semx element="fn" source="_">
+                   <p id="_">
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">5</semx>
+                         </sup>
+                         <span class="fmt-caption-delim">
+                            <tab/>
+                         </span>
+                      </fmt-fn-label>
+                      ISO is a standards organisation.
+                   </p>
+                </semx>
+             </fmt-fn-body>
+             <fmt-fn-body id="_" target="_" reference="6">
+                <semx element="fn" source="_">
+                   <p id="_">
+                      <fmt-fn-label>
+                         <sup>
+                            <semx element="autonum" source="_">6</semx>
+                         </sup>
+                         <span class="fmt-caption-delim">
+                            <tab/>
+                         </span>
+                      </fmt-fn-label>
+                      Third footnote.
+                   </p>
+                </semx>
+             </fmt-fn-body>
+          </fmt-footnote-container>
+       </iso-standard>
     OUTPUT
     output = <<~OUTPUT
-       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+        <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
           <div class="title-section">
              <p> </p>
           </div>
@@ -2487,7 +2637,7 @@ RSpec.describe IsoDoc::Bipm do
                 <div class="boilerplate-copyright">
                    <div>
                       <h1>
-                         <a class="FootnoteRef" href="#fn:_33">
+                         <a class="FootnoteRef" href="#fn:_39">
                             <sup>2)</sup>
                          </a>
                       </h1>
@@ -2503,36 +2653,30 @@ RSpec.describe IsoDoc::Bipm do
                 <h1 class="ForewordTitle">Foreword</h1>
                 <p>
                    A.
-                   <a class="FootnoteRef" href="#fn:_36">
+                   <a class="FootnoteRef" href="#fn:_42">
                       <sup>3)</sup>
                    </a>
                 </p>
                 <p>
                    B.
-                   <a class="FootnoteRef" href="#fn:_36">
+                   <a class="FootnoteRef" href="#fn:_42">
                       <sup>3)</sup>
                    </a>
                 </p>
                 <p>
                    C.
-                   <a class="FootnoteRef" href="#fn:_39">
+                   <a class="FootnoteRef" href="#fn:_45">
                       <sup>4)</sup>
                    </a>
                 </p>
              </div>
-             <p>
-                B.
-                <a class="FootnoteRef" href="#fn:_36">
-                   <sup>3)</sup>
-                </a>
-             </p>
              <div>
                 <h1>1.  Normative References</h1>
                 <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                 <p id="ISO712" class="NormRef">
                    <i>
                       Cereals and cereal products
-                      <a class="FootnoteRef" href="#fn:_42">
+                      <a class="FootnoteRef" href="#fn:_47">
                          <sup>5)</sup>
                       </a>
                    </i>
@@ -2540,26 +2684,53 @@ RSpec.describe IsoDoc::Bipm do
              </div>
              <div id="A">
                 <h1>2.</h1>
-                <a class="FootnoteRef" href="#fn:_45">
-                   <sup>6)</sup>
-                </a>
+                <div id="AA">
+                   <h2>2.1.</h2>
+                   <p>
+                      A.
+                      <a class="FootnoteRef" href="#fn:_50">
+                         <sup>6)</sup>
+                      </a>
+                   </p>
+                   <p>
+                      B.
+                      <a class="FootnoteRef" href="#fn:_42">
+                         <sup>3)</sup>
+                      </a>
+                   </p>
+                </div>
+                <div id="AB">
+                   <h2>2.2.</h2>
+                   <p>
+                      A.
+                      <a class="FootnoteRef" href="#fn:_50">
+                         <sup>6)</sup>
+                      </a>
+                   </p>
+                   <p>
+                      B.
+                      <a class="FootnoteRef" href="#fn:_42">
+                         <sup>3)</sup>
+                      </a>
+                   </p>
+                </div>
              </div>
-             <aside id="fn:_31" class="footnote">
+             <aside id="fn:_37" class="footnote">
                 <p>C</p>
              </aside>
-             <aside id="fn:_33" class="footnote">
+             <aside id="fn:_39" class="footnote">
                 <p>D</p>
              </aside>
-             <aside id="fn:_36" class="footnote">
+             <aside id="fn:_42" class="footnote">
                 <p id="_">Formerly denoted as 15 % (m/m).</p>
              </aside>
-             <aside id="fn:_39" class="footnote">
+             <aside id="fn:_45" class="footnote">
                 <p id="_">Hello! denoted as 15 % (m/m).</p>
              </aside>
-             <aside id="fn:_42" class="footnote">
+             <aside id="fn:_47" class="footnote">
                 <p id="_">ISO is a standards organisation.</p>
              </aside>
-             <aside id="fn:_45" class="footnote">
+             <aside id="fn:_50" class="footnote">
                 <p id="_">Third footnote.</p>
              </aside>
           </div>
