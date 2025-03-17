@@ -2,6 +2,7 @@ require "spec_helper"
 
 RSpec.describe IsoDoc::Bipm do
   it "processes table" do
+    mock_uuid_increment
     input = <<~INPUT
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
         <sections>
@@ -89,7 +90,7 @@ RSpec.describe IsoDoc::Bipm do
             </table>
             <quote>
             <table id="D">
-              <name>Second Table<fn reference="1a"><p>X</p></fn></name>
+              <name>Second Table<fn reference="1a"><p>X1</p></fn></name>
               <tbody>
               <tr><td>Text<fn reference="2a"><p>Y</p></fn></td></tr>
               </tbody>
@@ -350,7 +351,7 @@ RSpec.describe IsoDoc::Bipm do
                       <name id="_">
                          Second Table
                          <fn reference="2" original-reference="1a" target="_" original-id="_">
-                            <p>X</p>
+                            <p>X1</p>
                             <fmt-fn-label>
                                <sup>
                                   <span class="fmt-label-delim">(</span>
@@ -372,7 +373,7 @@ RSpec.describe IsoDoc::Bipm do
                          <semx element="name" source="_">
                             Second Table
                             <fn reference="2" original-reference="1a" id="_" target="_">
-                               <p>X</p>
+                               <p>X1</p>
                                <fmt-fn-label>
                                   <sup>
                                      <span class="fmt-label-delim">(</span>
@@ -392,7 +393,7 @@ RSpec.describe IsoDoc::Bipm do
                             <td>
                                Text
                                <fn reference="3" original-reference="2a" id="_" target="_">
-                                  <p>X</p>
+                                  <p>Y</p>
                                   <fmt-fn-label>
                                      <sup>
                                         <span class="fmt-label-delim">(</span>
@@ -437,7 +438,7 @@ RSpec.describe IsoDoc::Bipm do
                                   <tab/>
                                </span>
                             </fmt-fn-label>
-                            X
+                            X1
                          </p>
                       </semx>
                    </fmt-fn-body>
@@ -467,16 +468,16 @@ RSpec.describe IsoDoc::Bipm do
     output = Xml::C14n.format(<<~"OUTPUT")
       #{HTML_HDR}
             <br/>
-          <div id="_" class="TOC">
-            <h1 class="IntroTitle">Contents</h1>
-          </div>
+             <div id="_" class="TOC">
+                <h1 class="IntroTitle">Contents</h1>
+             </div>
              <div id="A">
                 <h1>1.</h1>
                 <p class="TableTitle" style="text-align:center;">
                    Table 1.  Repeatability and reproducibility of
                    <i>husked</i>
                    rice yield
-                   <a class="FootnoteRef" href="#fn:1">
+                   <a class="FootnoteRef" href="#fn:_5">
                       <sup>(1)</sup>
                    </a>
                 </p>
@@ -582,7 +583,7 @@ RSpec.describe IsoDoc::Bipm do
                 <div class="Quote">
                    <p class="TableTitle" style="text-align:center;">
                       Table 2.  Second Table
-                      <a class="FootnoteRef" href="#fn:2">
+                      <a class="FootnoteRef" href="#fn:_7">
                          <sup>(2)</sup>
                       </a>
                    </p>
@@ -591,20 +592,22 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
                                Text
-                               <a href="#D3" class="TableFootnoteRef">(3)</a>
+                               <a class="FootnoteRef" href="#fn:_9">
+                                  <sup>(3)</sup>
+                               </a>
                             </td>
                          </tr>
                       </tbody>
                    </table>
                 </div>
-                <aside id="fn:1" class="footnote">
+                <aside id="fn:_5" class="footnote">
                    <p>X</p>
                 </aside>
-                <aside id="fn:2" class="footnote">
-                   <p>X</p>
+                <aside id="fn:_7" class="footnote">
+                   <p>X1</p>
                 </aside>
-                <aside id="fn:3" class="footnote">
-                   <p>ʏ</p>
+                <aside id="fn:_9" class="footnote">
+                   <p>Y</p>
                 </aside>
              </div>
           </div>
@@ -874,7 +877,7 @@ RSpec.describe IsoDoc::Bipm do
                       <name id="_">
                          Second Table
                          <fn reference="2" original-reference="1a" target="_" original-id="_">
-                            <p>X</p>
+                            <p>X1</p>
                             <fmt-fn-label>
                                <sup>
                                   <semx element="autonum" source="_">2</semx>
@@ -895,7 +898,7 @@ RSpec.describe IsoDoc::Bipm do
                          <semx element="name" source="_">
                             Second Table
                             <fn reference="2" original-reference="1a" id="_" target="_">
-                               <p>X</p>
+                               <p>X1</p>
                                <fmt-fn-label>
                                   <sup>
                                      <semx element="autonum" source="_">2</semx>
@@ -914,7 +917,7 @@ RSpec.describe IsoDoc::Bipm do
                             <td>
                                Text
                                <fn reference="2a" id="_" target="_">
-                                  <p>X</p>
+                                  <p>Y</p>
                                   <fmt-fn-label>
                                      <sup>
                                         <semx element="autonum" source="_">2a</semx>
@@ -936,7 +939,7 @@ RSpec.describe IsoDoc::Bipm do
                                         <tab/>
                                      </span>
                                   </fmt-fn-label>
-                                  X
+                                  Y
                                </p>
                             </semx>
                          </fmt-fn-body>
@@ -972,12 +975,12 @@ RSpec.describe IsoDoc::Bipm do
                             <tab/>
                          </span>
                       </fmt-fn-label>
-                      X
+                      X1
                    </p>
                 </semx>
              </fmt-fn-body>
           </fmt-footnote-container>
-       </bipm-standard>    
+       </bipm-standard>
     OUTPUT
     output = <<~OUTPUT
       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
@@ -994,121 +997,150 @@ RSpec.describe IsoDoc::Bipm do
             <div id="_" class="TOC">
                <h1 class="IntroTitle">Contents</h1>
             </div>
-            <div id="A">
-               <h1>1.</h1>
-               <p class="TableTitle" style="text-align:center;">
-                  Table 1.  Repeatability and reproducibility of
-                  <i>husked</i>
-                  rice yield
-                  <a class="FootnoteRef" href="#fn:1">
-                     <sup>1)</sup>
-                  </a>
-               </p>
-               <table id="tableD-1" class="MsoISOTable" style="border-width:1px;border-spacing:0;width:70%;page-break-after: avoid;page-break-inside: avoid;table-layout:fixed;" title="tool tip">
-                  <caption>
-                     <span style="display:none">long desc</span>
-                  </caption>
-                  <colgroup>
-                     <col style="width: 30%;"/>
-                     <col style="width: 20%;"/>
-                     <col style="width: 20%;"/>
-                     <col style="width: 20%;"/>
-                     <col style="width: 10%;"/>
-                  </colgroup>
-                  <thead>
-                     <tr>
-                        <td rowspan="2" style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;" scope="col">Description</td>
-                        <td colspan="4" style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="colgroup">Rice sample</td>
-                     </tr>
-                     <tr>
-                        <td style="text-align:left;vertical-align:top;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Arborio</td>
-                        <td style="text-align:center;vertical-align:middle;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">
-                           Drago
-                           <a href="#tableD-1a" class="TableFootnoteRef">a</a>
-                        </td>
-                        <td style="text-align:center;vertical-align:bottom;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">
-                           Balilla
-                           <a href="#tableD-1a" class="TableFootnoteRef">a</a>
-                        </td>
-                        <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Thaibonnet</td>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <th style="font-weight:bold;text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Number of laboratories retained after eliminating outliers</th>
-                        <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
-                        <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">11</td>
-                        <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
-                        <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
-                     </tr>
-                     <tr>
-                        <td style="text-align:left;border-top:none;border-bottom:solid windowtext 1.5pt;">Mean value, g/100 g</td>
-                        <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,2</td>
-                        <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">82,0</td>
-                        <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,8</td>
-                        <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">77,7</td>
-                     </tr>
-                  </tbody>
-                  <tfoot>
-                     <tr>
-                        <td style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
-                           Reproducibility limit,
-                           <span class="stem">(#(R)#)</span>
-                           (= 2,83
-                           <span class="stem">(#(s_R)#)</span>
-                           )
-                        </td>
-                        <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">2,89</td>
-                        <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">0,57</td>
-                        <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">2,26</td>
-                        <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
-                           <div class="figdl">
-                              <dl>
-                                 <dt>
-                                    <p>6,06</p>
-                                 </dt>
-                                 <dd>Definition</dd>
-                              </dl>
-                           </div>
-                        </td>
-                     </tr>
-                  </tfoot>
-                  <div class="figdl">
-                     <p class="ListTitle">Key</p>
-                     <dl>
-                        <dt>
-                           <p>Drago</p>
-                        </dt>
-                        <dd>A type of rice</dd>
-                     </dl>
-                  </div>
-                  <div class="BlockSource">
-                     <p>[: , Section 1
-           — with adjustments
-        ;
-          , Section 2]</p>
-                  </div>
-                  <div class="Note">
-                     <p>
-                        <span class="note_label">Note:  </span>
-                        This is a table about rice
-                     </p>
-                  </div>
-                  <aside id="fn:tableD-1a" class="footnote">
-                     <p id="_">
-                        <span class="TableFootnoteRef">a</span>
-                          Parboiled rice.
-                     </p>
-                  </aside>
-               </table>
-               <p class="TableTitle" style="text-align:center;">Table.  Second Table</p>
-               <table id="C" class="MsoISOTable" style="border-width:1px;border-spacing:0;"/>
-            </div>
-            <aside id="fn:1" class="footnote">
-               <p>X</p>
-            </aside>
-         </div>
-      </body>
+             <div id="A">
+                <h1>1.</h1>
+                <p class="TableTitle" style="text-align:center;">
+                   Table 1.  Repeatability and reproducibility of
+                   <i>husked</i>
+                   rice yield
+                   <a class="FootnoteRef" href="#fn:_27">
+                      <sup>1)</sup>
+                   </a>
+                </p>
+                <table id="tableD-1" class="MsoISOTable" style="border-width:1px;border-spacing:0;width:70%;page-break-after: avoid;page-break-inside: avoid;table-layout:fixed;" title="tool tip">
+                   <caption>
+                      <span style="display:none">long desc</span>
+                   </caption>
+                   <colgroup>
+                      <col style="width: 30%;"/>
+                      <col style="width: 20%;"/>
+                      <col style="width: 20%;"/>
+                      <col style="width: 20%;"/>
+                      <col style="width: 10%;"/>
+                   </colgroup>
+                   <thead>
+                      <tr>
+                         <td rowspan="2" style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;" scope="col">Description</td>
+                         <td colspan="4" style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="colgroup">Rice sample</td>
+                      </tr>
+                      <tr>
+                         <td style="text-align:left;vertical-align:top;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Arborio</td>
+                         <td style="text-align:center;vertical-align:middle;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">
+                            Drago
+                            <a href="#tableD-1a" class="TableFootnoteRef">a</a>
+                         </td>
+                         <td style="text-align:center;vertical-align:bottom;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">
+                            Balilla
+                            <a href="#tableD-1a" class="TableFootnoteRef">a</a>
+                         </td>
+                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Thaibonnet</td>
+                      </tr>
+                   </thead>
+                   <tbody>
+                      <tr>
+                         <th style="font-weight:bold;text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Number of laboratories retained after eliminating outliers</th>
+                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
+                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">11</td>
+                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
+                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
+                      </tr>
+                      <tr>
+                         <td style="text-align:left;border-top:none;border-bottom:solid windowtext 1.5pt;">Mean value, g/100 g</td>
+                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,2</td>
+                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">82,0</td>
+                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,8</td>
+                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">77,7</td>
+                      </tr>
+                   </tbody>
+                   <tfoot>
+                      <tr>
+                         <td style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
+                            Reproducibility limit,
+                            <span class="stem">(#(R)#)</span>
+                            (= 2,83
+                            <span class="stem">(#(s_R)#)</span>
+                            )
+                         </td>
+                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">2,89</td>
+                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">0,57</td>
+                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">2,26</td>
+                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
+                            <div class="figdl">
+                               <dl>
+                                  <dt>
+                                     <p>6,06</p>
+                                  </dt>
+                                  <dd>Definition</dd>
+                               </dl>
+                            </div>
+                         </td>
+                      </tr>
+                   </tfoot>
+                   <div class="figdl">
+                      <p class="ListTitle">Key</p>
+                      <dl>
+                         <dt>
+                            <p>Drago</p>
+                         </dt>
+                         <dd>A type of rice</dd>
+                      </dl>
+                   </div>
+                   <div class="BlockSource">
+                      <p>[: , Section 1
+            — with adjustments
+         ;
+           , Section 2]</p>
+                   </div>
+                   <div class="Note">
+                      <p>
+                         <span class="note_label">Note:  </span>
+                         This is a table about rice
+                      </p>
+                   </div>
+                   <aside id="fn:tableD-1a" class="footnote">
+                      <p id="_">
+                         <span class="TableFootnoteRef">a</span>
+                           Parboiled rice.
+                      </p>
+                   </aside>
+                </table>
+                <p class="TableTitle" style="text-align:center;">Table.  Second Table</p>
+                <table id="C" class="MsoISOTable" style="border-width:1px;border-spacing:0;"/>
+                <div class="Quote">
+                   <p class="TableTitle" style="text-align:center;">
+                      Table 2.  Second Table
+                      <a class="FootnoteRef" href="#fn:_29">
+                         <sup>2)</sup>
+                      </a>
+                   </p>
+                   <table id="D" class="MsoISOTable" style="border-width:1px;border-spacing:0;">
+                      <tbody>
+                         <tr>
+                            <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
+                               Text
+                               <a class="FootnoteRef" href="#fn:_36">
+                                  <sup>2a</sup>
+                               </a>
+                            </td>
+                         </tr>
+                      </tbody>
+                      <aside id="fn:_36" class="footnote">
+                         <p>
+                            <sup>2a</sup>
+                              Y
+                         </p>
+                      </aside>
+                   </table>
+                </div>
+             </div>
+             <aside id="fn:_27" class="footnote">
+                <p>X</p>
+             </aside>
+             <aside id="fn:_29" class="footnote">
+                <p>X1</p>
+             </aside>
+          </div>
+       </body>
     OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert
@@ -1663,6 +1695,7 @@ RSpec.describe IsoDoc::Bipm do
   end
 
   it "processes IsoXML footnotes" do
+    mock_uuid_increment
     input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
       <bibdata>
@@ -2045,97 +2078,97 @@ RSpec.describe IsoDoc::Bipm do
        </iso-standard>
     INPUT
     output = <<~OUTPUT
-      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-         <div class="title-section">
-            <p> </p>
-         </div>
-         <br/>
-         <div class="prefatory-section">
-            <p> </p>
-         </div>
-         <br/>
-         <div class="main-section">
-            <div class="authority">
-               <div class="boilerplate-copyright">
-                  <div>
-                     <h1>
-                        <a class="FootnoteRef" href="#fn:2">
-                           <sup>(2)</sup>
-                        </a>
-                     </h1>
-                  </div>
-               </div>
-            </div>
-            <br/>
-            <div id="_" class="TOC">
-               <h1 class="IntroTitle">Contents</h1>
-            </div>
-            <br/>
-            <div id="F">
-               <h1 class="ForewordTitle">Foreword</h1>
-               <p>
-                  A.
-                  <a class="FootnoteRef" href="#fn:3">
-                     <sup>(3)</sup>
-                  </a>
-               </p>
-               <p>
-                  B.
-                  <a class="FootnoteRef" href="#fn:3">
-                     <sup>(3)</sup>
-                  </a>
-               </p>
-               <p>
-                  C.
-                  <a class="FootnoteRef" href="#fn:4">
-                     <sup>(4)</sup>
-                  </a>
-               </p>
-            </div>
-            <div id="A">
-               <h1>1.</h1>
-               <a class="FootnoteRef" href="#fn:5">
-                  <sup>(5)</sup>
-               </a>
-            </div>
-            <p>
-               B.
-               <a class="FootnoteRef" href="#fn:3">
-                  <sup>(3)</sup>
-               </a>
-            </p>
-            <div>
-               <h1>2.  Normative References</h1>
-               <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
-               <p id="ISO712" class="NormRef">
-                  <i>
-                     Cereals and cereal products
-                     <a class="FootnoteRef" href="#fn:6">
-                        <sup>(6)</sup>
-                     </a>
-                  </i>
-               </p>
-            </div>
-            <aside id="fn:1" class="footnote">
-               <p>C</p>
-            </aside>
-            <aside id="fn:2" class="footnote">
-               <p>D</p>
-            </aside>
-            <aside id="fn:3" class="footnote">
-               <p id="_">Formerly denoted as 15 % (m/m).</p>
-            </aside>
-            <aside id="fn:4" class="footnote">
-               <p id="_">Hello! denoted as 15 % (m/m).</p>
-            </aside>
-            <aside id="fn:5" class="footnote">
-               <p id="_">Third footnote.</p>
-            </aside>
-            <aside id="fn:6" class="footnote">
-               <p id="_">ISO is a standards organisation.</p>
-            </aside>
-         </div>
-      </body>
+       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+          <div class="title-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="prefatory-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="main-section">
+             <div class="authority">
+                <div class="boilerplate-copyright">
+                   <div>
+                      <h1>
+                         <a class="FootnoteRef" href="#fn:_10">
+                            <sup>(1)</sup>
+                         </a>
+                      </h1>
+                   </div>
+                </div>
+                <aside id="fn:_10" class="footnote">
+                   <p>D</p>
+                </aside>
+             </div>
+             <br/>
+             <div id="_" class="TOC">
+                <h1 class="IntroTitle">Contents</h1>
+             </div>
+             <br/>
+             <div id="F">
+                <h1 class="ForewordTitle">Foreword</h1>
+                <p>
+                   A.
+                   <a class="FootnoteRef" href="#fn:_13">
+                      <sup>(1)</sup>
+                   </a>
+                </p>
+                <p>
+                   B.
+                   <a class="FootnoteRef" href="#fn:_13">
+                      <sup>(1)</sup>
+                   </a>
+                </p>
+                <p>
+                   C.
+                   <a class="FootnoteRef" href="#fn:_16">
+                      <sup>(2)</sup>
+                   </a>
+                </p>
+                <aside id="fn:_13" class="footnote">
+                   <p id="_">Formerly denoted as 15 % (m/m).</p>
+                </aside>
+                <aside id="fn:_16" class="footnote">
+                   <p id="_">Hello! denoted as 15 % (m/m).</p>
+                </aside>
+             </div>
+             <div id="A">
+                <h1>1.</h1>
+                <a class="FootnoteRef" href="#fn:_18">
+                   <sup>(1)</sup>
+                </a>
+                <aside id="fn:_18" class="footnote">
+                   <p id="_">Third footnote.</p>
+                </aside>
+             </div>
+             <p>
+                B.
+                <a class="FootnoteRef" href="#fn:_20">
+                   <sup>(1)</sup>
+                </a>
+                <aside id="fn:_20" class="footnote">
+                   <p id="_">Formerly denoted as 15 % (m/m).</p>
+                </aside>
+             </p>
+             <div>
+                <h1>2.  Normative References</h1>
+                <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
+                <p id="ISO712" class="NormRef">
+                   <i>
+                      Cereals and cereal products
+                      <a class="FootnoteRef" href="#fn:_22">
+                         <sup>(1)</sup>
+                      </a>
+                   </i>
+                </p>
+                <aside id="fn:_22" class="footnote">
+                   <p id="_">ISO is a standards organisation.</p>
+                </aside>
+             </div>
+          </div>
+       </body>
     OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert
@@ -2440,97 +2473,97 @@ RSpec.describe IsoDoc::Bipm do
       </iso-standard>
     OUTPUT
     output = <<~OUTPUT
-      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-         <div class="title-section">
-            <p> </p>
-         </div>
-         <br/>
-         <div class="prefatory-section">
-            <p> </p>
-         </div>
-         <br/>
-         <div class="main-section">
-            <div class="authority">
-               <div class="boilerplate-copyright">
-                  <div>
-                     <h1>
-                        <a class="FootnoteRef" href="#fn:2">
-                           <sup>2)</sup>
-                        </a>
-                     </h1>
-                  </div>
-               </div>
-            </div>
-            <br/>
-            <div id="_" class="TOC">
-               <h1 class="IntroTitle">Contents</h1>
-            </div>
-            <br/>
-            <div id="F">
-               <h1 class="ForewordTitle">Foreword</h1>
-               <p>
-                  A.
-                  <a class="FootnoteRef" href="#fn:3">
-                     <sup>3)</sup>
-                  </a>
-               </p>
-               <p>
-                  B.
-                  <a class="FootnoteRef" href="#fn:3">
-                     <sup>3)</sup>
-                  </a>
-               </p>
-               <p>
-                  C.
-                  <a class="FootnoteRef" href="#fn:4">
-                     <sup>4)</sup>
-                  </a>
-               </p>
-            </div>
-            <p>
-               B.
-               <a class="FootnoteRef" href="#fn:3">
-                  <sup>3)</sup>
-               </a>
-            </p>
-            <div>
-               <h1>1.  Normative References</h1>
-               <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
-               <p id="ISO712" class="NormRef">
-                  <i>
-                     Cereals and cereal products
-                     <a class="FootnoteRef" href="#fn:5">
-                        <sup>5)</sup>
-                     </a>
-                  </i>
-               </p>
-            </div>
-            <div id="A">
-               <h1>2.</h1>
-               <a class="FootnoteRef" href="#fn:6">
-                  <sup>6)</sup>
-               </a>
-            </div>
-            <aside id="fn:1" class="footnote">
-               <p>C</p>
-            </aside>
-            <aside id="fn:2" class="footnote">
-               <p>D</p>
-            </aside>
-            <aside id="fn:3" class="footnote">
-               <p id="_">Formerly denoted as 15 % (m/m).</p>
-            </aside>
-            <aside id="fn:4" class="footnote">
-               <p id="_">Hello! denoted as 15 % (m/m).</p>
-            </aside>
-            <aside id="fn:5" class="footnote">
-               <p id="_">ISO is a standards organisation.</p>
-            </aside>
-            <aside id="fn:6" class="footnote">
-               <p id="_">Third footnote.</p>
-            </aside>
-         </div>
-      </body>
+       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+          <div class="title-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="prefatory-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="main-section">
+             <div class="authority">
+                <div class="boilerplate-copyright">
+                   <div>
+                      <h1>
+                         <a class="FootnoteRef" href="#fn:_33">
+                            <sup>2)</sup>
+                         </a>
+                      </h1>
+                   </div>
+                </div>
+             </div>
+             <br/>
+             <div id="_" class="TOC">
+                <h1 class="IntroTitle">Contents</h1>
+             </div>
+             <br/>
+             <div id="F">
+                <h1 class="ForewordTitle">Foreword</h1>
+                <p>
+                   A.
+                   <a class="FootnoteRef" href="#fn:_36">
+                      <sup>3)</sup>
+                   </a>
+                </p>
+                <p>
+                   B.
+                   <a class="FootnoteRef" href="#fn:_36">
+                      <sup>3)</sup>
+                   </a>
+                </p>
+                <p>
+                   C.
+                   <a class="FootnoteRef" href="#fn:_39">
+                      <sup>4)</sup>
+                   </a>
+                </p>
+             </div>
+             <p>
+                B.
+                <a class="FootnoteRef" href="#fn:_36">
+                   <sup>3)</sup>
+                </a>
+             </p>
+             <div>
+                <h1>1.  Normative References</h1>
+                <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
+                <p id="ISO712" class="NormRef">
+                   <i>
+                      Cereals and cereal products
+                      <a class="FootnoteRef" href="#fn:_42">
+                         <sup>5)</sup>
+                      </a>
+                   </i>
+                </p>
+             </div>
+             <div id="A">
+                <h1>2.</h1>
+                <a class="FootnoteRef" href="#fn:_45">
+                   <sup>6)</sup>
+                </a>
+             </div>
+             <aside id="fn:_31" class="footnote">
+                <p>C</p>
+             </aside>
+             <aside id="fn:_33" class="footnote">
+                <p>D</p>
+             </aside>
+             <aside id="fn:_36" class="footnote">
+                <p id="_">Formerly denoted as 15 % (m/m).</p>
+             </aside>
+             <aside id="fn:_39" class="footnote">
+                <p id="_">Hello! denoted as 15 % (m/m).</p>
+             </aside>
+             <aside id="fn:_42" class="footnote">
+                <p id="_">ISO is a standards organisation.</p>
+             </aside>
+             <aside id="fn:_45" class="footnote">
+                <p id="_">Third footnote.</p>
+             </aside>
+          </div>
+       </body>
     OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert

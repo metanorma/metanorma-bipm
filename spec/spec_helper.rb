@@ -27,6 +27,7 @@ require "equivalent-xml"
 require "htmlentities"
 require "relaton_iso"
 require "xml-c14n"
+require_relative "support/uuid_mock"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
