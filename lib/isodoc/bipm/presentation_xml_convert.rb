@@ -164,10 +164,6 @@ module IsoDoc
       end
 
       def termsource_modification(elem)
-        # if elem["status"] == "modified"
-        # origin = elem.at(ns("./origin"))
-        # s = termsource_status(elem["status"]) and origin.next = l10n(", #{s}")
-        # end
         termsource_add_modification_text(elem.at(ns("./modification")))
       end
 
@@ -215,6 +211,16 @@ module IsoDoc
       def fn_body_label(fnote)
         if @jcgm then super
         else fn_label_brackets(fnote)
+        end
+      end
+
+      # explode out all the subclauses into separate entries
+      # assume no hanging clauses
+      def sort_footnote_sections(docxml)
+        ret = super
+        ret.flat_map do |x|
+          clauses = x.xpath(ns(".//clause[not(./clause)]"))
+          clauses.empty? ? [x] : clauses.to_a
         end
       end
 
