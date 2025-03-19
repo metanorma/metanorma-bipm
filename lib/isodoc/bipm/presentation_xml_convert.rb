@@ -224,14 +224,36 @@ module IsoDoc
         end
       end
 
+      # quote/table/fn references are not unique within quote
+      # if there are multiple tables
+      def renumber_document_footnote_key(fnote)
+        key = fnote["reference"]
+        !@jcgm && (t = fnote.at("./ancestor::xmlns:table")) and
+          key = "#{t['id']} #{key}"
+        key
+      end
+
+      def renumber_document_footnote(fnote, idx, seen)
+        fnote["original-reference"] = fnote["reference"]
+        key = renumber_document_footnote_key(fnote)
+        if seen[key]
+          fnote["reference"] = seen[fnote["reference"]]
+        else
+          seen[key] = idx
+          fnote["reference"] = idx
+          idx += 1
+        end
+        idx
+      end
+
       def document_footnotes(docxml)
         @jcgm and return super
         sects = sort_footnote_sections(docxml)
         excl = non_document_footnotes(docxml)
         fns = filter_document_footnotes(sects, excl)
+        #sects.select { |s| s.at(ns(".//fn")) }.each_with_index do |s, i|
         sects.each_with_index do |s, i|
-          ret = renumber_document_footnotes(fns[i], 1)
-          ret = footnote_collect(ret)
+          ret = footnote_collect(renumber_document_footnotes(fns[i], 1))
           f = footnote_container(fns[i], ret) and s << f
         end
       end

@@ -94,7 +94,13 @@ RSpec.describe IsoDoc::Bipm do
               <tbody>
               <tr><td>Text<fn reference="2a"><p>Y</p></fn></td></tr>
               </tbody>
-            </table>           
+            </table>
+            <table id="D1">
+              <name>Second Table<fn reference="1a"><p>X11</p></fn></name>
+              <tbody>
+              <tr><td>Text<fn reference="2a"><p>Y1</p></fn></td></tr>
+              </tbody>
+            </table>
             </quote>
           </clause>
         </sections>
@@ -102,7 +108,7 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     presxml = <<~INPUT
-        <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
+           <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
           <preface>
              <clause type="toc" id="_" displayorder="1">
                 <fmt-title depth="1">Contents</fmt-title>
@@ -406,6 +412,65 @@ RSpec.describe IsoDoc::Bipm do
                          </tr>
                       </tbody>
                    </table>
+                   <table id="D1" autonum="3">
+                      <name id="_">
+                         Second Table
+                         <fn reference="4" original-reference="1a" target="_" original-id="_">
+                            <p>X11</p>
+                            <fmt-fn-label>
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">4</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </fmt-fn-label>
+                         </fn>
+                      </name>
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            <span class="fmt-element-name">Table</span>
+                            <semx element="autonum" source="D1">3</semx>
+                         </span>
+                         <span class="fmt-caption-delim">
+                            .
+                            <tab/>
+                         </span>
+                         <semx element="name" source="_">
+                            Second Table
+                            <fn reference="4" original-reference="1a" id="_" target="_">
+                               <p>X11</p>
+                               <fmt-fn-label>
+                                  <sup>
+                                     <span class="fmt-label-delim">(</span>
+                                     <semx element="autonum" source="_">4</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </fmt-fn-label>
+                            </fn>
+                         </semx>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Table</span>
+                         <semx element="autonum" source="D1">3</semx>
+                      </fmt-xref-label>
+                      <tbody>
+                         <tr>
+                            <td>
+                               Text
+                               <fn reference="5" original-reference="2a" id="_" target="_">
+                                  <p>Y1</p>
+                                  <fmt-fn-label>
+                                     <sup>
+                                        <span class="fmt-label-delim">(</span>
+                                        <semx element="autonum" source="_">5</semx>
+                                        <span class="fmt-label-delim">)</span>
+                                     </sup>
+                                  </fmt-fn-label>
+                               </fn>
+                            </td>
+                         </tr>
+                      </tbody>
+                   </table>
                 </quote>
                 <fmt-footnote-container>
                    <fmt-fn-body id="_" target="_" reference="1">
@@ -456,6 +521,40 @@ RSpec.describe IsoDoc::Bipm do
                                </span>
                             </fmt-fn-label>
                             Y
+                         </p>
+                      </semx>
+                   </fmt-fn-body>
+                   <fmt-fn-body id="_" target="_" reference="4">
+                      <semx element="fn" source="_">
+                         <p>
+                            <fmt-fn-label>
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">4</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                               <span class="fmt-caption-delim">
+                                  <tab/>
+                               </span>
+                            </fmt-fn-label>
+                            X11
+                         </p>
+                      </semx>
+                   </fmt-fn-body>
+                   <fmt-fn-body id="_" target="_" reference="5">
+                      <semx element="fn" source="_">
+                         <p>
+                            <fmt-fn-label>
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">5</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                               <span class="fmt-caption-delim">
+                                  <tab/>
+                               </span>
+                            </fmt-fn-label>
+                            Y1
                          </p>
                       </semx>
                    </fmt-fn-body>
@@ -599,6 +698,24 @@ RSpec.describe IsoDoc::Bipm do
                          </tr>
                       </tbody>
                    </table>
+                   <p class="TableTitle" style="text-align:center;">
+                      Table 3.  Second Table
+                      <a class="FootnoteRef" href="#fn:_11">
+                         <sup>(4)</sup>
+                      </a>
+                   </p>
+                   <table id="D1" class="MsoISOTable" style="border-width:1px;border-spacing:0;">
+                      <tbody>
+                         <tr>
+                            <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
+                               Text
+                               <a class="FootnoteRef" href="#fn:_13">
+                                  <sup>(5)</sup>
+                               </a>
+                            </td>
+                         </tr>
+                      </tbody>
+                   </table>
                 </div>
                 <aside id="fn:_5" class="footnote">
                    <p>X</p>
@@ -608,6 +725,12 @@ RSpec.describe IsoDoc::Bipm do
                 </aside>
                 <aside id="fn:_9" class="footnote">
                    <p>Y</p>
+                </aside>
+                <aside id="fn:_11" class="footnote">
+                   <p>X11</p>
+                </aside>
+                <aside id="fn:_13" class="footnote">
+                   <p>Y1</p>
                 </aside>
              </div>
           </div>
@@ -945,6 +1068,78 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-fn-body>
                       </fmt-footnote-container>
                    </table>
+            <table id="D1" autonum="3">
+               <name id="_">
+                  Second Table
+                  <fn reference="2" original-reference="1a" target="_" original-id="_">
+                     <p>X11</p>
+                     <fmt-fn-label>
+                        <sup>
+                           <semx element="autonum" source="_">2</semx>
+                           <span class="fmt-label-delim">)</span>
+                        </sup>
+                     </fmt-fn-label>
+                  </fn>
+               </name>
+               <fmt-name>
+                  <span class="fmt-caption-label">
+                     <span class="fmt-element-name">Table</span>
+                     <semx element="autonum" source="D1">3</semx>
+                  </span>
+                  <span class="fmt-caption-delim">
+                     .
+                     <tab/>
+                  </span>
+                  <semx element="name" source="_">
+                     Second Table
+                     <fn reference="2" original-reference="1a" id="_" target="_">
+                        <p>X11</p>
+                        <fmt-fn-label>
+                           <sup>
+                              <semx element="autonum" source="_">2</semx>
+                              <span class="fmt-label-delim">)</span>
+                           </sup>
+                        </fmt-fn-label>
+                     </fn>
+                  </semx>
+               </fmt-name>
+               <fmt-xref-label>
+                  <span class="fmt-element-name">Table</span>
+                  <semx element="autonum" source="D1">3</semx>
+               </fmt-xref-label>
+               <tbody>
+                  <tr>
+                     <td>
+                        Text
+                        <fn reference="2a" id="_" target="_">
+                           <p>Y1</p>
+                           <fmt-fn-label>
+                              <sup>
+                                 <semx element="autonum" source="_">2a</semx>
+                              </sup>
+                           </fmt-fn-label>
+                        </fn>
+                     </td>
+                  </tr>
+               </tbody>
+               <fmt-footnote-container>
+                  <fmt-fn-body id="_" target="_" reference="2a">
+                     <semx element="fn" source="_">
+                        <p>
+                           <fmt-fn-label>
+                              <sup>
+                                 <semx element="autonum" source="_">2a</semx>
+                              </sup>
+                              <span class="fmt-caption-delim">
+                                 <tab/>
+                              </span>
+                           </fmt-fn-label>
+                           Y1
+                        </p>
+                     </semx>
+                  </fmt-fn-body>
+               </fmt-footnote-container>
+            </table>
                 </quote>
              </clause>
           </sections>
@@ -983,27 +1178,27 @@ RSpec.describe IsoDoc::Bipm do
        </bipm-standard>
     OUTPUT
     output = <<~OUTPUT
-      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-         <div class="title-section">
-            <p> </p>
-         </div>
-         <br/>
-         <div class="prefatory-section">
-            <p> </p>
-         </div>
-         <br/>
-         <div class="main-section">
-            <br/>
-            <div id="_" class="TOC">
-               <h1 class="IntroTitle">Contents</h1>
-            </div>
+       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+          <div class="title-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="prefatory-section">
+             <p> </p>
+          </div>
+          <br/>
+          <div class="main-section">
+             <br/>
+             <div id="_" class="TOC">
+                <h1 class="IntroTitle">Contents</h1>
+             </div>
              <div id="A">
                 <h1>1.</h1>
                 <p class="TableTitle" style="text-align:center;">
                    Table 1.  Repeatability and reproducibility of
                    <i>husked</i>
                    rice yield
-                   <a class="FootnoteRef" href="#fn:_27">
+                   <a class="FootnoteRef" href="#fn:_32">
                       <sup>1)</sup>
                    </a>
                 </p>
@@ -1109,7 +1304,7 @@ RSpec.describe IsoDoc::Bipm do
                 <div class="Quote">
                    <p class="TableTitle" style="text-align:center;">
                       Table 2.  Second Table
-                      <a class="FootnoteRef" href="#fn:_29">
+                      <a class="FootnoteRef" href="#fn:_34">
                          <sup>2)</sup>
                       </a>
                    </p>
@@ -1118,25 +1313,49 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
                                Text
-                               <a class="FootnoteRef" href="#fn:_36">
+                               <a class="FootnoteRef" href="#fn:_42">
                                   <sup>2a</sup>
                                </a>
                             </td>
                          </tr>
                       </tbody>
-                      <aside id="fn:_36" class="footnote">
+                      <aside id="fn:_42" class="footnote">
                          <p>
                             <sup>2a</sup>
                               Y
                          </p>
                       </aside>
                    </table>
+                   <p class="TableTitle" style="text-align:center;">
+                      Table 3.  Second Table
+                      <a class="FootnoteRef" href="#fn:_34">
+                         <sup>2)</sup>
+                      </a>
+                   </p>
+                   <table id="D1" class="MsoISOTable" style="border-width:1px;border-spacing:0;">
+                      <tbody>
+                         <tr>
+                            <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
+                               Text
+                               <a class="FootnoteRef" href="#fn:_45">
+                                  <sup>2a</sup>
+                               </a>
+                            </td>
+                         </tr>
+                      </tbody>
+                      <aside id="fn:_45" class="footnote">
+                         <p>
+                            <sup>2a</sup>
+                              Y1
+                         </p>
+                      </aside>
+                   </table>
                 </div>
              </div>
-             <aside id="fn:_27" class="footnote">
+             <aside id="fn:_32" class="footnote">
                 <p>X</p>
              </aside>
-             <aside id="fn:_29" class="footnote">
+             <aside id="fn:_34" class="footnote">
                 <p>X1</p>
              </aside>
           </div>
