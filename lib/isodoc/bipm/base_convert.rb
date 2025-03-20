@@ -52,6 +52,10 @@ module IsoDoc
         else super
         end
       end
+
+      def table_footnote?(node)
+        super && !node.ancestors.map(&:name).include?("quote")
+      end
     end
   end
 end

@@ -107,12 +107,6 @@ module IsoDoc
         jcgm_eref(docxml, "//fmt-origin[not(.//termref)]")
       end
 
-      # KILL
-      def quotesourcex(docxml)
-        super
-        jcgm_eref(docxml, "//quote//source")
-      end
-
       def jcgm_eref(docxml, xpath)
         @jcgm or return
         docxml.xpath(ns(xpath)).each { |x| extract_brackets(x) }
@@ -145,16 +139,6 @@ module IsoDoc
         end
       end
 
-      # KILL
-      def termsource1_xx(elem)
-        # elem["status"] == "modified" and return super
-        while elem&.next_element&.name == "termsource"
-          elem << "; #{to_xml(elem.next_element.remove.children)}"
-        end
-        elem.children = l10n("[#{termsource_adapt(elem['status'])}" \
-                             "#{to_xml(elem.children).strip}]")
-      end
-
       def termsource_label(elem, sources)
         elem.replace(l10n("[#{termsource_adapt(elem['status'])} #{sources}]"))
       end
@@ -180,10 +164,6 @@ module IsoDoc
       end
 
       def termsource_modification(elem)
-        # if elem["status"] == "modified"
-        # origin = elem.at(ns("./origin"))
-        # s = termsource_status(elem["status"]) and origin.next = l10n(", #{s}")
-        # end
         termsource_add_modification_text(elem.at(ns("./modification")))
       end
 
@@ -232,6 +212,72 @@ module IsoDoc
         if @jcgm then super
         else fn_label_brackets(fnote)
         end
+      end
+
+      # explode out all the subclauses into separate entries
+      # assume no hanging clauses
+      def sort_footnote_sections(docxml)
+        ret = super
+        ret.flat_map do |x|
+          clauses = x.xpath(ns(".//clause[not(./clause)]"))
+          clauses.empty? ? [x] : clauses.to_a
+        end
+      end
+
+      # quote/table/fn references are not unique within quote
+      # if there are multiple tables
+      def renumber_document_footnote_key(fnote)
+        key = fnote["reference"]
+        !@jcgm && (t = fnote.at("./ancestor::xmlns:table")) and
+          key = "#{t['id']} #{key}"
+        key
+      end
+
+      def renumber_document_footnote(fnote, idx, seen)
+        fnote["original-reference"] = fnote["reference"]
+        key = renumber_document_footnote_key(fnote)
+        if seen[key]
+          fnote["reference"] = seen[fnote["reference"]]
+        else
+          seen[key] = idx
+          fnote["reference"] = idx
+          idx += 1
+        end
+        idx
+      end
+
+      def document_footnotes(docxml)
+        @jcgm and return super
+        sects = sort_footnote_sections(docxml)
+        excl = non_document_footnotes(docxml)
+        fns = filter_document_footnotes(sects, excl)
+        #sects.select { |s| s.at(ns(".//fn")) }.each_with_index do |s, i|
+        sects.each_with_index do |s, i|
+          ret = footnote_collect(renumber_document_footnotes(fns[i], 1))
+          f = footnote_container(fns[i], ret) and s << f
+        end
+      end
+
+      def renumber_document_footnotes(fns, idx)
+        @jcgm and return super
+        fns.each_with_object({}) do |f, seen|
+          idx = renumber_document_footnote(f, idx, seen)
+        end
+        fns
+      end
+
+      def table_fn(elem)
+        !@jcgm && !elem.ancestors("quote").empty? and return
+        super
+      end
+
+      def non_document_footnotes(docxml)
+        table_fns = docxml.xpath(ns("//table//fn")) -
+          docxml.xpath(ns("//table/name//fn"))
+        @jcgm or table_fns -= docxml.xpath(ns("//quote//table//fn"))
+        fig_fns = docxml.xpath(ns("//figure//fn")) -
+          docxml.xpath(ns("//figure/name//fn"))
+        table_fns + fig_fns
       end
 
       include Init
