@@ -6,15 +6,6 @@ module IsoDoc
         @iso.middle_title(docxml)
       end
 
-      # KILL
-      def table1x(elem)
-        table_fn(elem)
-        labelled_ancestor(elem) || elem["unnumbered"] and return
-        n = @xrefs.anchor(elem["id"], :label, false)
-        prefix_name(elem, ".<tab/>",
-                    l10n("#{@i18n.table.capitalize} #{n}"), "name")
-      end
-
       def table_delim
         l10n("x.<tab/>").sub("x", "") # force French " .</tab>"
       end
@@ -45,6 +36,34 @@ module IsoDoc
           else @i18n.listnote end
         else @i18n.prefacenote
         end
+      end
+
+      def termsource_label(elem, sources)
+        elem.replace(l10n("[#{termsource_adapt(elem['status'])} #{sources}]"))
+      end
+
+      def termsource_adapt(status)
+        case status
+        when "adapted" then @i18n.adapted_from
+        when "modified" then @i18n.modified_from
+        else ""
+        end
+      end
+
+      def termsource(docxml)
+        termsource_insert_empty_modification(docxml)
+        super
+      end
+
+      def termsource_insert_empty_modification(docxml)
+        docxml.xpath("//xmlns:termsource[@status = 'modified']" \
+                     "[not(xmlns:modification)]").each do |f|
+          f << "<modification/>"
+        end
+      end
+
+      def termsource_modification(elem)
+        termsource_add_modification_text(elem.at(ns("./modification")))
       end
     end
   end
