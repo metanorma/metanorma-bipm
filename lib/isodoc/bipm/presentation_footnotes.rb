@@ -35,9 +35,15 @@ module IsoDoc
       def sort_footnote_sections(docxml)
         ret = super
         ret.flat_map do |x|
-          clauses = x.xpath(ns(".//clause[not(./clause)]"))
-          clauses.empty? ? [x] : clauses.to_a.unshift(x)
+          explode_subclauses(x)
         end
+      end
+
+      def explode_subclauses(clause)
+        clause.at(ns(".//clause")) or return [clause]
+        (clause.xpath(ns(".//clause")) - clause.xpath(ns(".//clause//clause")))
+          .map { |x| explode_subclauses(x) }
+          .flatten.unshift(clause)
       end
 
       # quote/table/fn references are not unique within quote
