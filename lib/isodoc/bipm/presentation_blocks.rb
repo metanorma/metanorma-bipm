@@ -65,6 +65,10 @@ module IsoDoc
       def termsource_modification(elem)
         termsource_add_modification_text(elem.at(ns("./modification")))
       end
+
+      def ul_label_list
+        %w(&#x2022; &#x2212; &#x6f;)
+      end
     end
   end
 end
