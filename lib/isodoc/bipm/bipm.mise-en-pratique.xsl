@@ -776,7 +776,6 @@
 			<xsl:otherwise>
 				<xsl:apply-templates select="." mode="fn_to_xref"/> <!-- displays asterisks with link to side note -->
 				<xsl:call-template name="fn_to_note_side"/> <!-- convert footnote to side note with asterisk at start  -->
-
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -887,9 +886,7 @@
 							<!-- move all footnotes in the current list (not only current list item) into first 'li' -->
 							<xsl:variable name="curr_list_id" select="../@id"/>
 							<xsl:for-each select="..//bipm:fn[ancestor::bipm:ol[1]/@id = $curr_list_id or ancestor::bipm:ul[1]/@id = $curr_list_id]">
-
 								<xsl:call-template name="fn_to_note_side"/>
-
 							</xsl:for-each>
 
 						</xsl:otherwise>
@@ -910,24 +907,32 @@
 	</xsl:template>
 
 	<xsl:template name="fn_to_note_side">
-		<xsl:element name="note_side" namespace="https://www.metanorma.org/ns/standoc">
+		<xsl:variable name="target" select="@target"/>
+		<xsl:choose>
+			<!-- skip side note, see the comment https://github.com/metanorma/isodoc/issues/658#issuecomment-2768874528: -->
+			<!-- every repeated footnote is only rendered at the first instance -->
+			<xsl:when test="preceding::*[@target = $target]"/>
+			<xsl:otherwise>
+				<xsl:element name="note_side" namespace="https://www.metanorma.org/ns/standoc">
 
-			<xsl:attribute name="id">
-				<xsl:value-of select="@target"/>
-			</xsl:attribute>
+					<xsl:attribute name="id">
+						<xsl:value-of select="@target"/>
+					</xsl:attribute>
 
-			<xsl:variable name="curr_id" select="@target"/>
+					<xsl:variable name="curr_id" select="@target"/>
 
-			<xsl:element name="sup_fn" namespace="https://www.metanorma.org/ns/standoc">
-				<!-- <xsl:value-of select="concat('(',$number,')')"/> -->
-			<!-- https://github.com/metanorma/isodoc/issues/658#issuecomment-2726450824 -->
-			<xsl:apply-templates select="*[local-name() = 'fmt-fn-label']/node()" mode="flatxml"/>
-			</xsl:element>
-			<xsl:text> </xsl:text>
+					<xsl:element name="sup_fn" namespace="https://www.metanorma.org/ns/standoc">
+						<!-- <xsl:value-of select="concat('(',$number,')')"/> -->
+						<!-- https://github.com/metanorma/isodoc/issues/658#issuecomment-2726450824 -->
+						<xsl:apply-templates select="*[local-name() = 'fmt-fn-label']/node()" mode="flatxml"/>
+					</xsl:element>
+					<xsl:text> </xsl:text>
 
-			<!-- <xsl:apply-templates mode="flatxml"/> -->
-			<xsl:apply-templates select="$footnotes/*[local-name() = 'fmt-fn-body'][@id = $curr_id]/node()" mode="flatxml"/>
-		</xsl:element>
+					<!-- <xsl:apply-templates mode="flatxml"/> -->
+					<xsl:apply-templates select="$footnotes/*[local-name() = 'fmt-fn-body'][@id = $curr_id]/node()" mode="flatxml"/>
+				</xsl:element>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- remove latest elements (after li), because they moved into latest 'li' -->
