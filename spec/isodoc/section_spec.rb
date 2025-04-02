@@ -15,80 +15,86 @@ RSpec.describe IsoDoc::Bipm do
       </iso-standard>
     INPUT
     output = <<~OUTPUT
-      <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-         <preface>
-            <clause type="toc" id="_" displayorder="1">
-               <fmt-title depth="1">Contents</fmt-title>
-            </clause>
-         </preface>
-         <sections>
-            <clause id="A1" displayorder="2">
-               <title id="_">
-                  Title
-                  <bookmark original-id="A2"/>
-               </title>
-               <fmt-title depth="1">
-                  <span class="fmt-caption-label">
-                     <semx element="autonum" source="A1">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                  </span>
-                  <span class="fmt-caption-delim">
-                     <tab/>
-                  </span>
-                  <semx element="title" source="_">
-                     Title
-                     <bookmark id="A2"/>
-                     <bookmark id="_"/>
-                  </semx>
-               </fmt-title>
-               <fmt-xref-label>
-                  <span class="fmt-element-name">Chapter</span>
-                  <semx element="autonum" source="A1">1</semx>
-               </fmt-xref-label>
-            </clause>
-            <clause id="A2" displayorder="3">
-               <title type="quoted">
-                  <blacksquare/>
-                  Title
-                  <bookmark original-id="A3"/>
-               </title>
-               <fmt-title type="quoted" depth="1">
-                  <blacksquare/>
-                  Title
-                  <bookmark id="A3"/>
-                  <bookmark id="_"/>
-               </fmt-title>
-            </clause>
-         </sections>
-         <indexsect id="_" displayorder="4">
-            <title>Index</title>
-            <clause id="_">
-               <title>T</title>
-               <ul>
-                  <li>
-                     title,
-                     <xref target="_" pagenumber="true" id="_"/>
-                     <semx element="xref" source="_">
-                        <fmt-xref target="_" pagenumber="true">
-                           <span class="fmt-element-name">Chapter</span>
-                           <semx element="autonum" source="A1">1</semx>
-                        </fmt-xref>
-                     </semx>
-                  </li>
-                  <li>
-                     title2,
-                     <xref target="_" pagenumber="true" id="_"/>
-                     <semx element="xref" source="_">
-                        <fmt-xref target="_" pagenumber="true">
-                           <span class="fmt-element-name">Chapter</span>
-                           <semx element="autonum" source="A1">1</semx>
-                        </fmt-xref>
-                     </semx>
-                  </li>
-               </ul>
-            </clause>
-         </indexsect>
-      </iso-standard>
+       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1">Contents</fmt-title>
+             </clause>
+          </preface>
+          <sections>
+             <clause id="A1" displayorder="2">
+                <title id="_">
+                   Title
+                   <bookmark original-id="A2"/>
+                </title>
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A1">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">
+                      Title
+                      <bookmark id="A2"/>
+                      <bookmark id="_"/>
+                   </semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="A1">1</semx>
+                </fmt-xref-label>
+             </clause>
+             <clause id="A2" displayorder="3">
+                <title type="quoted">
+                   <blacksquare/>
+                   Title
+                   <bookmark original-id="A3"/>
+                </title>
+                <fmt-title type="quoted" depth="1">
+                   <blacksquare/>
+                   Title
+                   <bookmark id="A3"/>
+                   <bookmark id="_"/>
+                </fmt-title>
+             </clause>
+          </sections>
+          <indexsect id="_" displayorder="4">
+             <title>Index</title>
+             <clause id="_">
+                <title>T</title>
+                <ul>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      title,
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Chapter</span>
+                            <semx element="autonum" source="A1">1</semx>
+                         </fmt-xref>
+                      </semx>
+                   </li>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      title2,
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Chapter</span>
+                            <semx element="autonum" source="A1">1</semx>
+                         </fmt-xref>
+                      </semx>
+                   </li>
+                </ul>
+             </clause>
+          </indexsect>
+       </iso-standard>
     OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
@@ -731,223 +737,233 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     presxml = <<~INPUT
-      <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-         <preface>
-            <clause type="toc" id="_" displayorder="1">
-               <fmt-title depth="1">Contents</fmt-title>
-            </clause>
-         </preface>
-         <sections>
-            <terms id="H" obligation="normative" displayorder="2">
-               <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
-               <fmt-title depth="1">
-                  <span class="fmt-caption-label">
-                     <semx element="autonum" source="H">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                  </span>
-                  <span class="fmt-caption-delim">
-                     <tab/>
-                  </span>
-                  <semx element="title" source="_">Terms, Definitions, Symbols and Abbreviated Terms</semx>
-               </fmt-title>
-               <fmt-xref-label>
-                  <span class="fmt-element-name">Chapter</span>
-                  <semx element="autonum" source="H">1</semx>
-               </fmt-xref-label>
-               <term id="J">
-                  <fmt-name>
-                     <span class="fmt-caption-label">
-                        <semx element="autonum" source="H">1</semx>
-                        <span class="fmt-autonum-delim">.</span>
-                        <semx element="autonum" source="J">1</semx>
-                        <span class="fmt-autonum-delim">.</span>
-                     </span>
-                  </fmt-name>
-                  <fmt-xref-label>
-                     <span class="fmt-element-name">Section</span>
-                     <semx element="autonum" source="H">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                     <semx element="autonum" source="J">1</semx>
-                  </fmt-xref-label>
-                  <preferred id="_">
-                     <expression>
-                        <name>Term2</name>
-                     </expression>
-                  </preferred>
-                  <fmt-preferred>
-                     <p>
-                        <semx element="preferred" source="_">
-                           <strong>Term2</strong>
-                        </semx>
-                     </p>
-                  </fmt-preferred>
-                  <termsource status="modified" id="_">
-                     <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
-                        <locality type="clause">
-                           <referenceFrom>3.1</referenceFrom>
-                        </locality>
-                     </origin>
-                     <modification>
-                        <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
-                     </modification>
-                  </termsource>
-                  <fmt-termsource status="modified">
-                     [Modified from:
-                     <semx element="termsource" source="_">
-                        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
-                           <locality type="clause">
-                              <referenceFrom>3.1</referenceFrom>
-                           </locality>
-                        </origin>
-                        <semx element="origin" source="_">
-                           <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
-                              <locality type="clause">
-                                 <referenceFrom>3.1</referenceFrom>
-                              </locality>
-                              ISO 7301:2011, Clause 3.1
-                           </fmt-origin>
-                        </semx>
-                        —
-                        <semx element="modification" source="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</semx>
-                     </semx>
-                     ]
-                  </fmt-termsource>
-               </term>
-               <term id="K">
-                  <fmt-name>
-                     <span class="fmt-caption-label">
-                        <semx element="autonum" source="H">1</semx>
-                        <span class="fmt-autonum-delim">.</span>
-                        <semx element="autonum" source="K">2</semx>
-                        <span class="fmt-autonum-delim">.</span>
-                     </span>
-                  </fmt-name>
-                  <fmt-xref-label>
-                     <span class="fmt-element-name">Section</span>
-                     <semx element="autonum" source="H">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                     <semx element="autonum" source="K">2</semx>
-                  </fmt-xref-label>
-                  <preferred id="_">
-                     <expression>
-                        <name>Term3</name>
-                     </expression>
-                  </preferred>
-                  <fmt-preferred>
-                     <p>
-                        <semx element="preferred" source="_">
-                           <strong>Term3</strong>
-                        </semx>
-                     </p>
-                  </fmt-preferred>
-                  <termexample id="_" autonum="">
-                     <fmt-name>
-                        <span class="fmt-caption-label">
-                           <span class="fmt-element-name">EXAMPLE</span>
-                        </span>
-                     </fmt-name>
-                     <fmt-xref-label>
-                        <span class="fmt-element-name">Example</span>
-                     </fmt-xref-label>
-                     <fmt-xref-label container="K">
-                        <span class="fmt-xref-container">
-                           <span class="fmt-element-name">Section</span>
-                           <semx element="autonum" source="H">1</semx>
-                           <span class="fmt-autonum-delim">.</span>
-                           <semx element="autonum" source="K">2</semx>
-                        </span>
-                        <span class="fmt-comma">,</span>
-                        <span class="fmt-element-name">Example</span>
-                     </fmt-xref-label>
-                     <ul>
-                        <li>A</li>
-                     </ul>
-                  </termexample>
-                  <termnote id="_" keep-with-next="true" keep-lines-together="true" autonum="1">
-                     <fmt-name>
-                        <span class="fmt-caption-label">
-                           Note
-                           <semx element="autonum" source="_">1</semx>
-                           to entry
-                        </span>
-                        <span class="fmt-label-delim">: </span>
-                     </fmt-name>
-                     <fmt-xref-label>
-                        <span class="fmt-element-name">Note</span>
-                        <semx element="autonum" source="_">1</semx>
-                     </fmt-xref-label>
-                     <fmt-xref-label container="K">
-                        <span class="fmt-xref-container">
-                           <span class="fmt-element-name">Section</span>
-                           <semx element="autonum" source="H">1</semx>
-                           <span class="fmt-autonum-delim">.</span>
-                           <semx element="autonum" source="K">2</semx>
-                        </span>
-                        <span class="fmt-comma">,</span>
-                        <span class="fmt-element-name">Note</span>
-                        <semx element="autonum" source="_">1</semx>
-                     </fmt-xref-label>
-                     <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
-                  </termnote>
-                  <termnote id="_" autonum="2">
-                     <fmt-name>
-                        <span class="fmt-caption-label">
-                           Note
-                           <semx element="autonum" source="_">2</semx>
-                           to entry
-                        </span>
-                        <span class="fmt-label-delim">: </span>
-                     </fmt-name>
-                     <fmt-xref-label>
-                        <span class="fmt-element-name">Note</span>
-                        <semx element="autonum" source="_">2</semx>
-                     </fmt-xref-label>
-                     <fmt-xref-label container="K">
-                        <span class="fmt-xref-container">
-                           <span class="fmt-element-name">Section</span>
-                           <semx element="autonum" source="H">1</semx>
-                           <span class="fmt-autonum-delim">.</span>
-                           <semx element="autonum" source="K">2</semx>
-                        </span>
-                        <span class="fmt-comma">,</span>
-                        <span class="fmt-element-name">Note</span>
-                        <semx element="autonum" source="_">2</semx>
-                     </fmt-xref-label>
-                     <ul>
-                        <li>A</li>
-                     </ul>
-                     <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
-                  </termnote>
-                  <termsource status="identical" id="_">
-                     <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
-                        <locality type="clause">
-                           <referenceFrom>3.2</referenceFrom>
-                        </locality>
-                     </origin>
-                  </termsource>
-                  <fmt-termsource status="identical">
-                     [
-                     <semx element="termsource" source="_">
-                        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
-                           <locality type="clause">
-                              <referenceFrom>3.2</referenceFrom>
-                           </locality>
-                        </origin>
-                       <semx element="origin" source="_">
-                           <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
-                              <locality type="clause">
-                                 <referenceFrom>3.2</referenceFrom>
-                              </locality>
-                              ISO 7301:2011, Clause 3.2
-                           </fmt-origin>
-                        </semx>
-                     </semx>
-                     ]
-                  </fmt-termsource>
-               </term>
-            </terms>
-         </sections>
-      </bipm-standard>
+       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1">Contents</fmt-title>
+             </clause>
+          </preface>
+          <sections>
+             <terms id="H" obligation="normative" displayorder="2">
+                <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="H">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">Terms, Definitions, Symbols and Abbreviated Terms</semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="H">1</semx>
+                </fmt-xref-label>
+                <term id="J">
+                   <fmt-name>
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="H">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="J">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-name>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">Section</span>
+                      <semx element="autonum" source="H">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="J">1</semx>
+                   </fmt-xref-label>
+                   <preferred id="_">
+                      <expression>
+                         <name>Term2</name>
+                      </expression>
+                   </preferred>
+                   <fmt-preferred>
+                      <p>
+                         <semx element="preferred" source="_">
+                            <strong>Term2</strong>
+                         </semx>
+                      </p>
+                   </fmt-preferred>
+                   <termsource status="modified" id="_">
+                      <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                         <locality type="clause">
+                            <referenceFrom>3.1</referenceFrom>
+                         </locality>
+                      </origin>
+                      <modification>
+                         <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+                      </modification>
+                   </termsource>
+                   <fmt-termsource status="modified">
+                      [Modified from:
+                      <semx element="termsource" source="_">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
+                            <locality type="clause">
+                               <referenceFrom>3.1</referenceFrom>
+                            </locality>
+                         </origin>
+                         <semx element="origin" source="_">
+                            <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                               <locality type="clause">
+                                  <referenceFrom>3.1</referenceFrom>
+                               </locality>
+                               ISO 7301:2011, Clause 3.1
+                            </fmt-origin>
+                         </semx>
+                         —
+                         <semx element="modification" source="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</semx>
+                      </semx>
+                      ]
+                   </fmt-termsource>
+                </term>
+                <term id="K">
+                   <fmt-name>
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="H">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="K">2</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-name>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">Section</span>
+                      <semx element="autonum" source="H">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="K">2</semx>
+                   </fmt-xref-label>
+                   <preferred id="_">
+                      <expression>
+                         <name>Term3</name>
+                      </expression>
+                   </preferred>
+                   <fmt-preferred>
+                      <p>
+                         <semx element="preferred" source="_">
+                            <strong>Term3</strong>
+                         </semx>
+                      </p>
+                   </fmt-preferred>
+                   <termexample id="_" autonum="">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            <span class="fmt-element-name">EXAMPLE</span>
+                         </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Example</span>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Example</span>
+                      </fmt-xref-label>
+                      <ul>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">•</semx>
+                            </fmt-name>
+                            A
+                         </li>
+                      </ul>
+                   </termexample>
+                   <termnote id="_" keep-with-next="true" keep-lines-together="true" autonum="1">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            Note
+                            <semx element="autonum" source="_">1</semx>
+                            to entry
+                         </span>
+                         <span class="fmt-label-delim">: </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">1</semx>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">1</semx>
+                      </fmt-xref-label>
+                      <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                   </termnote>
+                   <termnote id="_" autonum="2">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            Note
+                            <semx element="autonum" source="_">2</semx>
+                            to entry
+                         </span>
+                         <span class="fmt-label-delim">: </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">2</semx>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">2</semx>
+                      </fmt-xref-label>
+                      <ul>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">•</semx>
+                            </fmt-name>
+                            A
+                         </li>
+                      </ul>
+                      <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                   </termnote>
+                   <termsource status="identical" id="_">
+                      <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                         <locality type="clause">
+                            <referenceFrom>3.2</referenceFrom>
+                         </locality>
+                      </origin>
+                   </termsource>
+                   <fmt-termsource status="identical">
+                      [
+                      <semx element="termsource" source="_">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
+                            <locality type="clause">
+                               <referenceFrom>3.2</referenceFrom>
+                            </locality>
+                         </origin>
+                         <semx element="origin" source="_">
+                            <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                               <locality type="clause">
+                                  <referenceFrom>3.2</referenceFrom>
+                               </locality>
+                               ISO 7301:2011, Clause 3.2
+                            </fmt-origin>
+                         </semx>
+                      </semx>
+                      ]
+                   </fmt-termsource>
+                </term>
+             </terms>
+          </sections>
+       </bipm-standard>
     INPUT
 
     output = Xml::C14n.format(<<~OUTPUT)
@@ -1025,230 +1041,240 @@ RSpec.describe IsoDoc::Bipm do
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
 
     presxml = <<~INPUT
-      <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-         <bibdata>
-            <ext>
-               <editorialgroup>
-                  <committee acronym="JCGM">
-                Joint Committee for Guides in Metrology
-                Comité commun pour les guides en métrologie
-              </committee>
-               </editorialgroup>
-            </ext>
-         </bibdata>
-         <preface>
-            <clause type="toc" id="_" displayorder="1">
-               <fmt-title depth="1">Contents</fmt-title>
-            </clause>
-         </preface>
-         <sections>
-            <terms id="H" obligation="normative" displayorder="2">
-               <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
-               <fmt-title depth="1">
-                  <span class="fmt-caption-label">
-                     <semx element="autonum" source="H">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                  </span>
-                  <span class="fmt-caption-delim">
-                     <tab/>
-                  </span>
-                  <semx element="title" source="_">Terms, Definitions, Symbols and Abbreviated Terms</semx>
-               </fmt-title>
-               <fmt-xref-label>
-                  <span class="fmt-element-name">Clause</span>
-                  <semx element="autonum" source="H">1</semx>
-               </fmt-xref-label>
-               <term id="J">
-                  <fmt-name>
-                     <span class="fmt-caption-label">
-                        <semx element="autonum" source="H">1</semx>
-                        <span class="fmt-autonum-delim">.</span>
-                        <semx element="autonum" source="J">1</semx>
-                        <span class="fmt-autonum-delim">.</span>
-                     </span>
-                  </fmt-name>
-                  <fmt-xref-label>
-                     <semx element="autonum" source="H">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                     <semx element="autonum" source="J">1</semx>
-                  </fmt-xref-label>
-                  <preferred id="_">
-                     <expression>
-                        <name>Term2</name>
-                     </expression>
-                  </preferred>
-                  <fmt-preferred>
-                     <p>
-                        <semx element="preferred" source="_">
-                           <strong>Term2</strong>
-                        </semx>
-                     </p>
-                  </fmt-preferred>
-                  <termsource status="modified" id="_">
-                     <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
-                        <locality type="clause">
-                           <referenceFrom>3.1</referenceFrom>
-                        </locality>
-                     </origin>
-                     <modification>
-                        <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
-                     </modification>
-                  </termsource>
-                  <fmt-termsource status="modified">
-                     [Modified from:
-                     <semx element="termsource" source="_">
-                        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
-                          <locality type="clause">
-                              <referenceFrom>3.1</referenceFrom>
-                           </locality>
-                        </origin>
-                        <semx element="origin" source="_">
-                           <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
-                              <locality type="clause">
-                                 <referenceFrom>3.1</referenceFrom>
-                              </locality>
-                              ISO 7301:2011,
-                              <span class="citesec">3.1</span>
-                           </fmt-origin>
-                        </semx>
-                        —
-                        <semx element="modification" source="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</semx>
-                     </semx>
-                     ]
-                  </fmt-termsource>
-               </term>
-               <term id="K">
-                  <fmt-name>
-                     <span class="fmt-caption-label">
-                        <semx element="autonum" source="H">1</semx>
-                        <span class="fmt-autonum-delim">.</span>
-                        <semx element="autonum" source="K">2</semx>
-                        <span class="fmt-autonum-delim">.</span>
-                     </span>
-                  </fmt-name>
-                  <fmt-xref-label>
-                     <semx element="autonum" source="H">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                     <semx element="autonum" source="K">2</semx>
-                  </fmt-xref-label>
-                  <preferred id="_">
-                     <expression>
-                        <name>Term3</name>
-                     </expression>
-                  </preferred>
-                  <fmt-preferred>
-                     <p>
-                        <semx element="preferred" source="_">
-                           <strong>Term3</strong>
-                        </semx>
-                     </p>
-                  </fmt-preferred>
-                  <termexample id="_" autonum="">
-                     <fmt-name>
-                        <span class="fmt-caption-label">
-                           <span class="fmt-element-name">EXAMPLE</span>
-                        </span>
-                     </fmt-name>
-                     <fmt-xref-label>
-                        <span class="fmt-element-name">Example</span>
-                     </fmt-xref-label>
-                     <fmt-xref-label container="K">
-                        <span class="fmt-xref-container">
-                           <semx element="autonum" source="H">1</semx>
-                           <span class="fmt-autonum-delim">.</span>
-                           <semx element="autonum" source="K">2</semx>
-                        </span>
-                        <span class="fmt-comma">,</span>
-                        <span class="fmt-element-name">Example</span>
-                     </fmt-xref-label>
-                     <ul>
-                        <li>A</li>
-                     </ul>
-                  </termexample>
-                  <termnote id="_" keep-with-next="true" keep-lines-together="true" autonum="1">
-                     <fmt-name>
-                        <span class="fmt-caption-label">
-                           Note
-                           <semx element="autonum" source="_">1</semx>
-                           to entry
-                        </span>
-                        <span class="fmt-label-delim">: </span>
-                     </fmt-name>
-                     <fmt-xref-label>
-                        <span class="fmt-element-name">Note</span>
-                        <semx element="autonum" source="_">1</semx>
-                     </fmt-xref-label>
-                     <fmt-xref-label container="K">
-                        <span class="fmt-xref-container">
-                          <semx element="autonum" source="H">1</semx>
-                           <span class="fmt-autonum-delim">.</span>
-                           <semx element="autonum" source="K">2</semx>
-                        </span>
-                        <span class="fmt-comma">,</span>
-                        <span class="fmt-element-name">Note</span>
-                        <semx element="autonum" source="_">1</semx>
-                     </fmt-xref-label>
-                     <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
-                  </termnote>
-                  <termnote id="_" autonum="2">
-                     <fmt-name>
-                        <span class="fmt-caption-label">
-                           Note
-                           <semx element="autonum" source="_">2</semx>
-                           to entry
-                        </span>
-                        <span class="fmt-label-delim">: </span>
-                     </fmt-name>
-                     <fmt-xref-label>
-                        <span class="fmt-element-name">Note</span>
-                        <semx element="autonum" source="_">2</semx>
-                     </fmt-xref-label>
-                     <fmt-xref-label container="K">
-                        <span class="fmt-xref-container">
-                           <semx element="autonum" source="H">1</semx>
-                           <span class="fmt-autonum-delim">.</span>
-                           <semx element="autonum" source="K">2</semx>
-                        </span>
-                        <span class="fmt-comma">,</span>
-                        <span class="fmt-element-name">Note</span>
-                        <semx element="autonum" source="_">2</semx>
-                     </fmt-xref-label>
-                     <ul>
-                        <li>A</li>
-                     </ul>
-                     <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
-                  </termnote>
-                  <termsource status="identical" id="_">
-                     <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
-                        <locality type="clause">
-                           <referenceFrom>3.2</referenceFrom>
-                        </locality>
-                     </origin>
-                  </termsource>
-                  <fmt-termsource status="identical">
-                     [
-                     <semx element="termsource" source="_">
-                        <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
-                           <locality type="clause">
-                              <referenceFrom>3.2</referenceFrom>
-                           </locality>
-                        </origin>
-                        <semx element="origin" source="_">
-                           <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
-                              <locality type="clause">
-                                 <referenceFrom>3.2</referenceFrom>
-                              </locality>
-                              ISO 7301:2011,
-                              <span class="citesec">3.2</span>
-                           </fmt-origin>
-                        </semx>
-                     </semx>
-                     ]
-                  </fmt-termsource>
-               </term>
-            </terms>
-         </sections>
-      </bipm-standard>
+       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+          <bibdata>
+             <ext>
+                <editorialgroup>
+                   <committee acronym="JCGM">
+              Joint Committee for Guides in Metrology
+              Comité commun pour les guides en métrologie
+            </committee>
+                </editorialgroup>
+             </ext>
+          </bibdata>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1">Contents</fmt-title>
+             </clause>
+          </preface>
+          <sections>
+             <terms id="H" obligation="normative" displayorder="2">
+                <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="H">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">Terms, Definitions, Symbols and Abbreviated Terms</semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Clause</span>
+                   <semx element="autonum" source="H">1</semx>
+                </fmt-xref-label>
+                <term id="J">
+                   <fmt-name>
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="H">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="J">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-name>
+                   <fmt-xref-label>
+                      <semx element="autonum" source="H">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="J">1</semx>
+                   </fmt-xref-label>
+                   <preferred id="_">
+                      <expression>
+                         <name>Term2</name>
+                      </expression>
+                   </preferred>
+                   <fmt-preferred>
+                      <p>
+                         <semx element="preferred" source="_">
+                            <strong>Term2</strong>
+                         </semx>
+                      </p>
+                   </fmt-preferred>
+                   <termsource status="modified" id="_">
+                      <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                         <locality type="clause">
+                            <referenceFrom>3.1</referenceFrom>
+                         </locality>
+                      </origin>
+                      <modification>
+                         <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+                      </modification>
+                   </termsource>
+                   <fmt-termsource status="modified">
+                      [Modified from:
+                      <semx element="termsource" source="_">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
+                            <locality type="clause">
+                               <referenceFrom>3.1</referenceFrom>
+                            </locality>
+                         </origin>
+                         <semx element="origin" source="_">
+                            <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                               <locality type="clause">
+                                  <referenceFrom>3.1</referenceFrom>
+                               </locality>
+                               ISO 7301:2011,
+                               <span class="citesec">3.1</span>
+                            </fmt-origin>
+                         </semx>
+                         —
+                         <semx element="modification" source="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</semx>
+                      </semx>
+                      ]
+                   </fmt-termsource>
+                </term>
+                <term id="K">
+                   <fmt-name>
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="H">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="K">2</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-name>
+                   <fmt-xref-label>
+                      <semx element="autonum" source="H">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="K">2</semx>
+                   </fmt-xref-label>
+                   <preferred id="_">
+                      <expression>
+                         <name>Term3</name>
+                      </expression>
+                   </preferred>
+                   <fmt-preferred>
+                      <p>
+                         <semx element="preferred" source="_">
+                            <strong>Term3</strong>
+                         </semx>
+                      </p>
+                   </fmt-preferred>
+                   <termexample id="_" autonum="">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            <span class="fmt-element-name">EXAMPLE</span>
+                         </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Example</span>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Example</span>
+                      </fmt-xref-label>
+                      <ul>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">•</semx>
+                            </fmt-name>
+                            A
+                         </li>
+                      </ul>
+                   </termexample>
+                   <termnote id="_" keep-with-next="true" keep-lines-together="true" autonum="1">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            Note
+                            <semx element="autonum" source="_">1</semx>
+                            to entry
+                         </span>
+                         <span class="fmt-label-delim">: </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">1</semx>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">1</semx>
+                      </fmt-xref-label>
+                      <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                   </termnote>
+                   <termnote id="_" autonum="2">
+                      <fmt-name>
+                         <span class="fmt-caption-label">
+                            Note
+                            <semx element="autonum" source="_">2</semx>
+                            to entry
+                         </span>
+                         <span class="fmt-label-delim">: </span>
+                      </fmt-name>
+                      <fmt-xref-label>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">2</semx>
+                      </fmt-xref-label>
+                      <fmt-xref-label container="K">
+                         <span class="fmt-xref-container">
+                            <semx element="autonum" source="H">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="K">2</semx>
+                         </span>
+                         <span class="fmt-comma">,</span>
+                         <span class="fmt-element-name">Note</span>
+                         <semx element="autonum" source="_">2</semx>
+                      </fmt-xref-label>
+                      <ul>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">•</semx>
+                            </fmt-name>
+                            A
+                         </li>
+                      </ul>
+                      <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
+                   </termnote>
+                   <termsource status="identical" id="_">
+                      <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                         <locality type="clause">
+                            <referenceFrom>3.2</referenceFrom>
+                         </locality>
+                      </origin>
+                   </termsource>
+                   <fmt-termsource status="identical">
+                      [
+                      <semx element="termsource" source="_">
+                         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
+                            <locality type="clause">
+                               <referenceFrom>3.2</referenceFrom>
+                            </locality>
+                         </origin>
+                         <semx element="origin" source="_">
+                            <fmt-origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
+                               <locality type="clause">
+                                  <referenceFrom>3.2</referenceFrom>
+                               </locality>
+                               ISO 7301:2011,
+                               <span class="citesec">3.2</span>
+                            </fmt-origin>
+                         </semx>
+                      </semx>
+                      ]
+                   </fmt-termsource>
+                </term>
+             </terms>
+          </sections>
+       </bipm-standard>
     INPUT
 
     output = Xml::C14n.format(<<~OUTPUT)
@@ -1363,193 +1389,226 @@ RSpec.describe IsoDoc::Bipm do
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to Xml::C14n.format(<<~OUTPUT)
-        <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
-           <bibdata>
-              <language current="true">en</language>
-              <script current="true">Latn</script>
-           </bibdata>
-           <preface>
-              <clause type="toc" id="_" displayorder="1">
-                 <fmt-title depth="1">Contents</fmt-title>
-              </clause>
-           </preface>
-           <sections>
-              <clause id="A" displayorder="2">
-                 <fmt-title depth="1">
-                    <span class="fmt-caption-label">
-                       <semx element="autonum" source="A">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                    </span>
-                 </fmt-title>
-                 <fmt-xref-label>
-                    <span class="fmt-element-name">Chapter</span>
-                    <semx element="autonum" source="A">1</semx>
-                 </fmt-xref-label>
-                 <bookmark id="_"/>
-                 <bookmark id="_"/>
-                 <bookmark id="_"/>
-                 <bookmark id="_"/>
-                 <bookmark id="_"/>
-                 <clause id="B">
-                    <fmt-title depth="2">
-                       <span class="fmt-caption-label">
-                          <semx element="autonum" source="A">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                          <semx element="autonum" source="B">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                       </span>
-                    </fmt-title>
-                    <fmt-xref-label>
-                       <span class="fmt-element-name">Section</span>
-                       <semx element="autonum" source="A">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                       <semx element="autonum" source="B">1</semx>
-                    </fmt-xref-label>
-                    <bookmark id="_"/>
-                    <bookmark id="_"/>
-                    <bookmark id="_"/>
-                    <bookmark id="_"/>
-                 </clause>
-              </clause>
-           </sections>
-           <indexsect id="_" displayorder="3">
-              <title>Index</title>
-              <clause id="_">
-                 <title>D</title>
-                 <ul>
-                    <li>
-                       <em>Dasein</em>
-                       , see
-                       <em>Eman</em>
-                       cipation, être
-                    </li>
-                 </ul>
-              </clause>
-              <clause id="_">
-                 <title>E</title>
-                 <ul>
-                    <li>
-                       élongé,
-                       <xref target="_" pagenumber="true" id="_"/>
-                       <semx element="xref" source="_">
-                          <fmt-xref target="_" pagenumber="true">
-                             <span class="fmt-element-name">Chapter</span>
-                             <semx element="autonum" source="A">1</semx>
-                          </fmt-xref>
-                       </semx>
-                    </li>
-                    <li>
-                       <em>Eman</em>
-                       cipation,
-                       <xref target="_" pagenumber="true" id="_"/>
-                       <semx element="xref" source="_">
-                          <fmt-xref target="_" pagenumber="true">
-                             <span class="fmt-element-name">Chapter</span>
-                             <semx element="autonum" source="A">1</semx>
-                          </fmt-xref>
-                       </semx>
-                       ,
-                       <xref target="_" pagenumber="true" id="_"/>
-                       <semx element="xref" source="_">
-                          <fmt-xref target="_" pagenumber="true">
-                             <span class="fmt-element-name">Section</span>
-                             <semx element="autonum" source="A">1</semx>
-                             <span class="fmt-autonum-delim">.</span>
-                             <semx element="autonum" source="B">1</semx>
-                          </fmt-xref>
-                       </semx>
-                       <ul>
-                          <li>
-                             dans la France,
-                             <xref target="_" pagenumber="true" id="_"/>
-                             <semx element="xref" source="_">
-                                <fmt-xref target="_" pagenumber="true">
-                                   <span class="fmt-element-name">Chapter</span>
-                                   <semx element="autonum" source="A">1</semx>
-                                </fmt-xref>
-                             </semx>
-                             <ul>
-                                <li>
-                                   à Paris,
-                                   <xref target="_" pagenumber="true" id="_"/>
-                                   <semx element="xref" source="_">
-                                      <fmt-xref target="_" pagenumber="true">
-                                         <span class="fmt-element-name">Section</span>
-                                         <semx element="autonum" source="A">1</semx>
-                                         <span class="fmt-autonum-delim">.</span>
-                                         <semx element="autonum" source="B">1</semx>
-                                      </fmt-xref>
-                                   </semx>
-                                </li>
-                                <li>
-                                   en Bretagne,
-                                   <xref target="_" pagenumber="true" id="_"/>
-                                   <semx element="xref" source="_">
-                                      <fmt-xref target="_" pagenumber="true">
-                                         <span class="fmt-element-name">Chapter</span>
-                                         <semx element="autonum" source="A">1</semx>
-                                      </fmt-xref>
-                                   </semx>
-                                </li>
-                             </ul>
-                          </li>
-                          <li>
-                             dans les États-Unis,
-                             <xref target="_" pagenumber="true" id="_"/>
-                             <semx element="xref" source="_">
-                                <fmt-xref target="_" pagenumber="true">
-                                   <span class="fmt-element-name">Section</span>
-                                   <semx element="autonum" source="A">1</semx>
-                                   <span class="fmt-autonum-delim">.</span>
-                                   <semx element="autonum" source="B">1</semx>
-                                </fmt-xref>
-                             </semx>
-                          </li>
-                       </ul>
-                    </li>
-                    <li>
-                       être
-                       <ul>
-                          <li>
-                             Husserl, see zebra, see also
-                             <em>Eman</em>
-                             cipation, zebra
-                             <ul>
-                                <li>
-                                   en allemand,
-                                   <xref target="_" pagenumber="true" id="_"/>
-                                   <semx element="xref" source="_">
-                                      <fmt-xref target="_" pagenumber="true">
-                                         <span class="fmt-element-name">Chapter</span>
-                                         <semx element="autonum" source="A">1</semx>
-                                      </fmt-xref>
-                                   </semx>
-                                </li>
-                             </ul>
-                          </li>
-                       </ul>
-                    </li>
-                 </ul>
-              </clause>
-              <clause id="_">
-                 <title>Z</title>
-                 <ul>
-                    <li>
-                       zebra,
-                       <xref target="_" pagenumber="true" id="_"/>
-                       <semx element="xref" source="_">
-                          <fmt-xref target="_" pagenumber="true">
-                             <span class="fmt-element-name">Section</span>
-                             <semx element="autonum" source="A">1</semx>
-                             <span class="fmt-autonum-delim">.</span>
-                             <semx element="autonum" source="B">1</semx>
-                          </fmt-xref>
-                       </semx>
-                    </li>
-                 </ul>
-              </clause>
-           </indexsect>
-        </bipm-standard>
+       <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
+          <bibdata>
+             <language current="true">en</language>
+             <script current="true">Latn</script>
+          </bibdata>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1">Contents</fmt-title>
+             </clause>
+          </preface>
+          <sections>
+             <clause id="A" displayorder="2">
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="A">1</semx>
+                </fmt-xref-label>
+                <bookmark id="_"/>
+                <bookmark id="_"/>
+                <bookmark id="_"/>
+                <bookmark id="_"/>
+                <bookmark id="_"/>
+                <clause id="B">
+                   <fmt-title depth="2">
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="A">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="B">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-title>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">Section</span>
+                      <semx element="autonum" source="A">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="B">1</semx>
+                   </fmt-xref-label>
+                   <bookmark id="_"/>
+                   <bookmark id="_"/>
+                   <bookmark id="_"/>
+                   <bookmark id="_"/>
+                </clause>
+             </clause>
+          </sections>
+          <indexsect id="_" displayorder="3">
+             <title>Index</title>
+             <clause id="_">
+                <title>D</title>
+                <ul>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      <em>Dasein</em>
+                      , see
+                      <em>Eman</em>
+                      cipation, être
+                   </li>
+                </ul>
+             </clause>
+             <clause id="_">
+                <title>E</title>
+                <ul>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      élongé,
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Chapter</span>
+                            <semx element="autonum" source="A">1</semx>
+                         </fmt-xref>
+                      </semx>
+                   </li>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      <em>Eman</em>
+                      cipation,
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Chapter</span>
+                            <semx element="autonum" source="A">1</semx>
+                         </fmt-xref>
+                      </semx>
+                      ,
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="A">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="B">1</semx>
+                         </fmt-xref>
+                      </semx>
+                      <ul>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">−</semx>
+                            </fmt-name>
+                            dans la France,
+                            <xref target="_" pagenumber="true" id="_"/>
+                            <semx element="xref" source="_">
+                               <fmt-xref target="_" pagenumber="true">
+                                  <span class="fmt-element-name">Chapter</span>
+                                  <semx element="autonum" source="A">1</semx>
+                               </fmt-xref>
+                            </semx>
+                            <ul>
+                               <li>
+                                  <fmt-name>
+                                     <semx element="autonum" source="">o</semx>
+                                  </fmt-name>
+                                  à Paris,
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">Section</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                        <span class="fmt-autonum-delim">.</span>
+                                        <semx element="autonum" source="B">1</semx>
+                                     </fmt-xref>
+                                  </semx>
+                               </li>
+                               <li>
+                                  <fmt-name>
+                                     <semx element="autonum" source="">o</semx>
+                                  </fmt-name>
+                                  en Bretagne,
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">Chapter</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                     </fmt-xref>
+                                  </semx>
+                               </li>
+                            </ul>
+                         </li>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">−</semx>
+                            </fmt-name>
+                            dans les États-Unis,
+                            <xref target="_" pagenumber="true" id="_"/>
+                            <semx element="xref" source="_">
+                               <fmt-xref target="_" pagenumber="true">
+                                  <span class="fmt-element-name">Section</span>
+                                  <semx element="autonum" source="A">1</semx>
+                                  <span class="fmt-autonum-delim">.</span>
+                                  <semx element="autonum" source="B">1</semx>
+                               </fmt-xref>
+                            </semx>
+                         </li>
+                      </ul>
+                   </li>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      être
+                      <ul>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">−</semx>
+                            </fmt-name>
+                            Husserl, see zebra, see also
+                            <em>Eman</em>
+                            cipation, zebra
+                            <ul>
+                               <li>
+                                  <fmt-name>
+                                     <semx element="autonum" source="">o</semx>
+                                  </fmt-name>
+                                  en allemand,
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">Chapter</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                     </fmt-xref>
+                                  </semx>
+                               </li>
+                            </ul>
+                         </li>
+                      </ul>
+                   </li>
+                </ul>
+             </clause>
+             <clause id="_">
+                <title>Z</title>
+                <ul>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      zebra,
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">Section</span>
+                            <semx element="autonum" source="A">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="B">1</semx>
+                         </fmt-xref>
+                      </semx>
+                   </li>
+                </ul>
+             </clause>
+          </indexsect>
+       </bipm-standard>
       OUTPUT
   end
 
@@ -1593,205 +1652,238 @@ RSpec.describe IsoDoc::Bipm do
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
       .to be_equivalent_to Xml::C14n.format(<<~OUTPUT)
-        <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
-           <bibdata>
-              <language current="true">fr</language>
-              <script current="true">Latn</script>
-           </bibdata>
-           <preface>
-              <clause type="toc" id="_" displayorder="1">
-                 <fmt-title depth="1">Table des matières</fmt-title>
-              </clause>
-           </preface>
-           <sections>
-              <clause id="A" displayorder="2">
-                 <fmt-title depth="1">
-                    <span class="fmt-caption-label">
-                       <semx element="autonum" source="A">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                    </span>
-                 </fmt-title>
-                 <fmt-xref-label>
-                    <span class="fmt-element-name">chapitre</span>
-                    <semx element="autonum" source="A">1</semx>
-                 </fmt-xref-label>
-                 <xref target="I" id="_"/>
-                 <semx element="xref" source="_">
-                    <fmt-xref target="I">
-                       <semx element="indexsect" source="I">Index</semx>
-                    </fmt-xref>
-                 </semx>
-                 <bookmark id="_"/>
-                 <bookmark id="_"/>
-                 <bookmark id="_"/>
-                 <bookmark id="_"/>
-                 <bookmark id="_"/>
-                 <clause id="B">
-                    <fmt-title depth="2">
-                       <span class="fmt-caption-label">
-                          <semx element="autonum" source="A">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                          <semx element="autonum" source="B">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                       </span>
-                    </fmt-title>
-                    <fmt-xref-label>
-                       <span class="fmt-element-name">section</span>
-                       <semx element="autonum" source="A">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                       <semx element="autonum" source="B">1</semx>
-                    </fmt-xref-label>
-                    <bookmark id="_"/>
-                    <bookmark id="_"/>
-                    <bookmark id="_"/>
-                    <bookmark id="_"/>
-                    <bookmark id="End"/>
-                 </clause>
-              </clause>
-           </sections>
-           <indexsect id="I" displayorder="3">
-              <title id="_">Index</title>
-              <fmt-title depth="1">
-                 <semx element="title" source="_">Index</semx>
-              </fmt-title>
-              <p>Voici un index</p>
-              <clause id="_">
-                 <title>D</title>
-                 <ul>
-                    <li>
-                       <em>Dasein</em>
-                       ,
-                       <em>voir</em>
-                       Emancipation, être
-                    </li>
-                 </ul>
-              </clause>
-              <clause id="_">
-                 <title>E</title>
-                 <ul>
-                    <li>
-                       élongé,
-                       <xref target="_" to="End" pagenumber="true" id="_"/>
-                       <semx element="xref" source="_">
-                          <fmt-xref target="_" to="End" pagenumber="true">
-                             <span class="fmt-element-name">chapitre</span>
-                             <semx element="autonum" source="A">1</semx>
-                          </fmt-xref>
-                       </semx>
-                    </li>
-                    <li>
-                       Emancipation,
-                       <xref target="_" pagenumber="true" id="_"/>
-                       <semx element="xref" source="_">
-                          <fmt-xref target="_" pagenumber="true">
-                             <span class="fmt-element-name">chapitre</span>
-                             <semx element="autonum" source="A">1</semx>
-                          </fmt-xref>
-                       </semx>
-                       ,
-                       <xref target="_" pagenumber="true" id="_"/>
-                       <semx element="xref" source="_">
-                          <fmt-xref target="_" pagenumber="true">
-                             <span class="fmt-element-name">section</span>
-                             <semx element="autonum" source="A">1</semx>
-                             <span class="fmt-autonum-delim">.</span>
-                             <semx element="autonum" source="B">1</semx>
-                          </fmt-xref>
-                       </semx>
-                       <ul>
-                          <li>
-                             dans la France,
-                             <xref target="_" pagenumber="true" id="_"/>
-                             <semx element="xref" source="_">
-                                <fmt-xref target="_" pagenumber="true">
-                                   <span class="fmt-element-name">chapitre</span>
-                                   <semx element="autonum" source="A">1</semx>
-                                </fmt-xref>
-                             </semx>
-                             <ul>
-                                <li>
-                                   à Paris,
-                                   <xref target="_" pagenumber="true" id="_"/>
-                                   <semx element="xref" source="_">
-                                      <fmt-xref target="_" pagenumber="true">
-                                         <span class="fmt-element-name">section</span>
-                                         <semx element="autonum" source="A">1</semx>
-                                         <span class="fmt-autonum-delim">.</span>
-                                         <semx element="autonum" source="B">1</semx>
-                                      </fmt-xref>
-                                   </semx>
-                                </li>
-                                <li>
-                                   en Bretagne,
-                                   <xref target="_" pagenumber="true" id="_"/>
-                                   <semx element="xref" source="_">
-                                      <fmt-xref target="_" pagenumber="true">
-                                         <span class="fmt-element-name">chapitre</span>
-                                         <semx element="autonum" source="A">1</semx>
-                                      </fmt-xref>
-                                   </semx>
-                                </li>
-                             </ul>
-                          </li>
-                          <li>
-                             dans les États-Unis,
-                             <xref target="_" pagenumber="true" id="_"/>
-                             <semx element="xref" source="_">
-                                <fmt-xref target="_" pagenumber="true">
+       <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
+          <bibdata>
+             <language current="true">fr</language>
+             <script current="true">Latn</script>
+          </bibdata>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1">Table des matières</fmt-title>
+             </clause>
+          </preface>
+          <sections>
+             <clause id="A" displayorder="2">
+                <fmt-title depth="1">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">chapitre</span>
+                   <semx element="autonum" source="A">1</semx>
+                </fmt-xref-label>
+                <xref target="I" id="_"/>
+                <semx element="xref" source="_">
+                   <fmt-xref target="I">
+                      <semx element="indexsect" source="I">Index</semx>
+                   </fmt-xref>
+                </semx>
+                <bookmark id="_"/>
+                <bookmark id="_"/>
+                <bookmark id="_"/>
+                <bookmark id="_"/>
+                <bookmark id="_"/>
+                <clause id="B">
+                   <fmt-title depth="2">
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="A">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="B">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                   </fmt-title>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">section</span>
+                      <semx element="autonum" source="A">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="B">1</semx>
+                   </fmt-xref-label>
+                   <bookmark id="_"/>
+                   <bookmark id="_"/>
+                   <bookmark id="_"/>
+                   <bookmark id="_"/>
+                   <bookmark id="End"/>
+                </clause>
+             </clause>
+          </sections>
+          <indexsect id="I" displayorder="3">
+             <title id="_">Index</title>
+             <fmt-title depth="1">
+                <semx element="title" source="_">Index</semx>
+             </fmt-title>
+             <p>Voici un index</p>
+             <clause id="_">
+                <title>D</title>
+                <ul>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      <em>Dasein</em>
+                      ,
+                      <em>voir</em>
+                      Emancipation, être
+                   </li>
+                </ul>
+             </clause>
+             <clause id="_">
+                <title>E</title>
+                <ul>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      élongé,
+                      <xref target="_" to="End" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" to="End" pagenumber="true">
+                            <span class="fmt-element-name">chapitre</span>
+                            <semx element="autonum" source="A">1</semx>
+                         </fmt-xref>
+                      </semx>
+                   </li>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      Emancipation,
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">chapitre</span>
+                            <semx element="autonum" source="A">1</semx>
+                         </fmt-xref>
+                      </semx>
+                      ,
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">section</span>
+                            <semx element="autonum" source="A">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="B">1</semx>
+                         </fmt-xref>
+                      </semx>
+                      <ul>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">−</semx>
+                            </fmt-name>
+                            dans la France,
+                            <xref target="_" pagenumber="true" id="_"/>
+                            <semx element="xref" source="_">
+                               <fmt-xref target="_" pagenumber="true">
+                                  <span class="fmt-element-name">chapitre</span>
+                                  <semx element="autonum" source="A">1</semx>
+                               </fmt-xref>
+                            </semx>
+                            <ul>
+                               <li>
+                                  <fmt-name>
+                                     <semx element="autonum" source="">o</semx>
+                                  </fmt-name>
+                                  à Paris,
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">section</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                        <span class="fmt-autonum-delim">.</span>
+                                        <semx element="autonum" source="B">1</semx>
+                                     </fmt-xref>
+                                  </semx>
+                               </li>
+                               <li>
+                                  <fmt-name>
+                                     <semx element="autonum" source="">o</semx>
+                                  </fmt-name>
+                                  en Bretagne,
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">chapitre</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                     </fmt-xref>
+                                  </semx>
+                               </li>
+                            </ul>
+                         </li>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">−</semx>
+                            </fmt-name>
+                            dans les États-Unis,
+                            <xref target="_" pagenumber="true" id="_"/>
+                            <semx element="xref" source="_">
+                               <fmt-xref target="_" pagenumber="true">
                                   <span class="fmt-element-name">section</span>
-                                   <semx element="autonum" source="A">1</semx>
-                                   <span class="fmt-autonum-delim">.</span>
-                                   <semx element="autonum" source="B">1</semx>
-                                </fmt-xref>
-                             </semx>
-                          </li>
-                       </ul>
-                    </li>
-                    <li>
-                       être
-                       <ul>
-                          <li>
-                             Husserl,
-                             <em>voir</em>
-                             zebra,
-                             <em>voir aussi</em>
-                             Emancipation, zebra
-                             <ul>
-                                <li>
-                                   en allemand,
-                                   <xref target="_" pagenumber="true" id="_"/>
-                                   <semx element="xref" source="_">
-                                      <fmt-xref target="_" pagenumber="true">
-                                         <span class="fmt-element-name">chapitre</span>
-                                         <semx element="autonum" source="A">1</semx>
-                                      </fmt-xref>
-                                   </semx>
-                                </li>
-                             </ul>
-                          </li>
-                       </ul>
-                    </li>
-                 </ul>
-              </clause>
-              <clause id="_">
-                 <title>Z</title>
-                 <ul>
-                    <li>
-                       zebra,
-                       <xref target="_" pagenumber="true" id="_"/>
-                       <semx element="xref" source="_">
-                          <fmt-xref target="_" pagenumber="true">
-                             <span class="fmt-element-name">section</span>
-                             <semx element="autonum" source="A">1</semx>
-                             <span class="fmt-autonum-delim">.</span>
-                             <semx element="autonum" source="B">1</semx>
-                          </fmt-xref>
-                       </semx>
-                    </li>
-                 </ul>
-              </clause>
-           </indexsect>
-        </bipm-standard>
+                                  <semx element="autonum" source="A">1</semx>
+                                  <span class="fmt-autonum-delim">.</span>
+                                  <semx element="autonum" source="B">1</semx>
+                               </fmt-xref>
+                            </semx>
+                         </li>
+                      </ul>
+                   </li>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      être
+                      <ul>
+                         <li>
+                            <fmt-name>
+                               <semx element="autonum" source="">−</semx>
+                            </fmt-name>
+                            Husserl,
+                            <em>voir</em>
+                            zebra,
+                            <em>voir aussi</em>
+                            Emancipation, zebra
+                            <ul>
+                               <li>
+                                  <fmt-name>
+                                     <semx element="autonum" source="">o</semx>
+                                  </fmt-name>
+                                  en allemand,
+                                  <xref target="_" pagenumber="true" id="_"/>
+                                  <semx element="xref" source="_">
+                                     <fmt-xref target="_" pagenumber="true">
+                                        <span class="fmt-element-name">chapitre</span>
+                                        <semx element="autonum" source="A">1</semx>
+                                     </fmt-xref>
+                                  </semx>
+                               </li>
+                            </ul>
+                         </li>
+                      </ul>
+                   </li>
+                </ul>
+             </clause>
+             <clause id="_">
+                <title>Z</title>
+                <ul>
+                   <li>
+                      <fmt-name>
+                         <semx element="autonum" source="">•</semx>
+                      </fmt-name>
+                      zebra,
+                      <xref target="_" pagenumber="true" id="_"/>
+                      <semx element="xref" source="_">
+                         <fmt-xref target="_" pagenumber="true">
+                            <span class="fmt-element-name">section</span>
+                            <semx element="autonum" source="A">1</semx>
+                            <span class="fmt-autonum-delim">.</span>
+                            <semx element="autonum" source="B">1</semx>
+                         </fmt-xref>
+                      </semx>
+                   </li>
+                </ul>
+             </clause>
+          </indexsect>
+       </bipm-standard>
       OUTPUT
   end
 end

@@ -65,6 +65,18 @@ module IsoDoc
       def termsource_modification(elem)
         termsource_add_modification_text(elem.at(ns("./modification")))
       end
+
+      def ul_label_list(_elem)
+        %w(&#x2022; &#x2212; &#x6f;)
+      end
+
+      def ol_label_template(_elem)
+        super
+          .merge({
+                   roman: %{<span class="fmt-label-delim">(</span>%<span class="fmt-label-delim">)</span>},
+                   arabic: %{%<span class="fmt-label-delim">.</span>},
+                 })
+      end
     end
   end
 end
