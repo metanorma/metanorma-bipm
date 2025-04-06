@@ -40,11 +40,31 @@ RSpec.describe Metanorma::Bipm do
 
     INPUT
     expect(File.exist?("test.err.html")).to be true
-    expect(File.read("test.err.html")).to include("TC is not a recognised committee")
-    expect(File.read("test.err.html")).to include("tech committee is not a recognised committee")
-    expect(File.read("test.err.html")).to include("committee technologique is not a recognised committee")
-    expect(File.read("test.err.html")).not_to include("CCU is not a recognised committee")
-    expect(File.read("test.err.html")).not_to include("Consultative Committee for Units is not a recognised committee")
-    expect(File.read("test.err.html")).not_to include("Comité consultatif des unités is not a recognised committee")
+    expect(File.read("test.err.html"))
+      .to include("TC is not a recognised committee")
+    expect(File.read("test.err.html"))
+      .to include("tech committee is not a recognised committee")
+    expect(File.read("test.err.html"))
+      .to include("committee technologique is not a recognised committee")
+    expect(File.read("test.err.html"))
+      .not_to include("CCU is not a recognised committee")
+    expect(File.read("test.err.html"))
+      .not_to include("Consultative Committee for Units is not a recognised committee")
+    expect(File.read("test.err.html"))
+      .not_to include("Comité consultatif des unités is not a recognised committee")
+  end
+
+  it "validates document against Metanorma XML schema" do
+    Asciidoctor.convert(<<~"INPUT", *OPTIONS)
+      = A
+      X
+      :docfile: test.adoc
+      :no-pdf:
+
+      [align=mid-air]
+      Para
+    INPUT
+    expect(File.read("test.err.html"))
+      .to include('value of attribute "align" is invalid; must be equal to')
   end
 end
