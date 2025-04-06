@@ -469,7 +469,7 @@
 
 								<!-- flatxml=<xsl:copy-of select="$flatxml"/> -->
 
-								<xsl:apply-templates select="xalan:nodeset($flatxml)/bipm:bipm-standard" mode="bipm-standard">
+								<xsl:apply-templates select="xalan:nodeset($flatxml)/bipm:metanorma" mode="bipm-standard">
 									<xsl:with-param name="curr_docnum" select="$num"/>
 								</xsl:apply-templates>
 
@@ -618,6 +618,17 @@
 	</xsl:template>
 
 	<xsl:template match="*[local-name() = 'clause']/*[local-name() = 'fmt-footnote-container']" priority="3" mode="update_xml_pres"/>
+
+	<xsl:template match="*[local-name() = 'li']/*[local-name() = 'fmt-name']" priority="3" mode="update_xml_pres">
+		<xsl:choose>
+			<!-- no need li labels in BIPM brochure preface -->
+			<xsl:when test="ancestor::*[bipm:preface] and ancestor::bipm:clause[not(@type = 'toc')]"/>
+			<xsl:otherwise>
+				<xsl:attribute name="label"><xsl:value-of select="."/></xsl:attribute>
+				<xsl:attribute name="full">true</xsl:attribute>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
 	<!-- ================================= -->
 	<!-- Flattening xml for fit notes at page sides (margins) -->
@@ -2928,13 +2939,17 @@
 						<fo:list-item-label end-indent="label-end()">
 							<fo:block> <!-- debug: border="0.5pt solid green" -->
 								<fo:inline>
-									<!-- <xsl:if test="@list_type = 'ul'">
-										<xsl:attribute name="font-size">15pt</xsl:attribute> -->
+									<xsl:if test="@list_type = 'ul'">
+										<xsl:variable name="li_label" select="@label"/>
+										<xsl:copy-of select="$ul_labels//label[. = $li_label]/@*[not(local-name() = 'level')]"/>
+									</xsl:if>
+
 									<xsl:copy-of select="@font-size"/>
 									<xsl:copy-of select="@baseline-shift"/>
 									<xsl:if test="@list_type = 'ul' and ancestor::bipm:note_side">
 										<xsl:attribute name="font-size">10pt</xsl:attribute>
 									</xsl:if>
+
 									<xsl:value-of select="@label"/>
 								</fo:inline>
 							</fo:block>
@@ -14329,8 +14344,14 @@
 			<xsl:when test="local-name(..) = 'ul'">
 				<xsl:choose>
 					<xsl:when test="normalize-space($processing_instruction_type) = 'simple'"/>
+					<!-- https://github.com/metanorma/isodoc/issues/675 -->
+					<xsl:when test="@label"><xsl:value-of select="@label"/></xsl:when>
 					<xsl:otherwise><xsl:call-template name="setULLabel"/></xsl:otherwise>
 				</xsl:choose>
+			</xsl:when>
+			<!-- https://github.com/metanorma/isodoc/issues/675 -->
+			<xsl:when test="local-name(..) = 'ol' and @label and @full = 'true'"> <!-- @full added in the template li/fmt-name -->
+				<xsl:value-of select="@label"/>
 			</xsl:when>
 			<xsl:when test="local-name(..) = 'ol' and @label"> <!-- for ordered lists 'ol', and if there is @label, for instance label="1.1.2" -->
 
@@ -14456,7 +14477,7 @@
 
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:template> <!-- getListItemFormat -->
 
 	<xsl:template match="*[local-name() = 'ul'] | *[local-name() = 'ol']">
 		<xsl:param name="indent">0</xsl:param>
@@ -14589,6 +14610,11 @@
 				<fo:block xsl:use-attribute-sets="list-item-label-style" role="SKIP">
 
 					<xsl:call-template name="refine_list-item-label-style"/>
+
+					<xsl:if test="local-name(..) = 'ul'">
+						<xsl:variable name="li_label" select="@label"/>
+						<xsl:copy-of select="$ul_labels//label[. = $li_label]/@*[not(local-name() = 'level')]"/>
+					</xsl:if>
 
 					<!-- if 'p' contains all text in 'add' first and last elements in first p are 'add' -->
 					<xsl:if test="*[1][count(node()[normalize-space() != '']) = 1 and *[local-name() = 'add']]">
@@ -15983,6 +16009,16 @@
 				</xsl:element>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+
+	<!-- li/fmt-name -->
+	<xsl:template match="*[local-name() = 'li']/*[local-name() = 'fmt-name']" priority="2" mode="update_xml_step1">
+		<xsl:attribute name="label"><xsl:value-of select="."/></xsl:attribute>
+		<xsl:attribute name="full">true</xsl:attribute>
+	</xsl:template>
+	<xsl:template match="*[local-name() = 'li']/*[local-name() = 'fmt-name']" priority="2" mode="update_xml_pres">
+		<xsl:attribute name="label"><xsl:value-of select="."/></xsl:attribute>
+		<xsl:attribute name="full">true</xsl:attribute>
 	</xsl:template>
 
 	<xsl:template match="*[local-name() = 'fmt-preferred']"/>
