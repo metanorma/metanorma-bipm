@@ -469,7 +469,7 @@
 
 								<!-- flatxml=<xsl:copy-of select="$flatxml"/> -->
 
-								<xsl:apply-templates select="xalan:nodeset($flatxml)/bipm:bipm-standard" mode="bipm-standard">
+								<xsl:apply-templates select="xalan:nodeset($flatxml)/bipm:metanorma" mode="bipm-standard">
 									<xsl:with-param name="curr_docnum" select="$num"/>
 								</xsl:apply-templates>
 
@@ -618,6 +618,17 @@
 	</xsl:template>
 
 	<xsl:template match="*[local-name() = 'clause']/*[local-name() = 'fmt-footnote-container']" priority="3" mode="update_xml_pres"/>
+
+	<xsl:template match="*[local-name() = 'li']/*[local-name() = 'fmt-name']" priority="3" mode="update_xml_pres">
+		<xsl:choose>
+			<!-- no need li labels in BIPM brochure preface -->
+			<xsl:when test="ancestor::*[bipm:preface] and ancestor::bipm:clause[not(@type = 'toc')]"/>
+			<xsl:otherwise>
+				<xsl:attribute name="label"><xsl:value-of select="."/></xsl:attribute>
+				<xsl:attribute name="full">true</xsl:attribute>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
 	<!-- ================================= -->
 	<!-- Flattening xml for fit notes at page sides (margins) -->
@@ -776,7 +787,6 @@
 			<xsl:otherwise>
 				<xsl:apply-templates select="." mode="fn_to_xref"/> <!-- displays asterisks with link to side note -->
 				<xsl:call-template name="fn_to_note_side"/> <!-- convert footnote to side note with asterisk at start  -->
-
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -887,9 +897,7 @@
 							<!-- move all footnotes in the current list (not only current list item) into first 'li' -->
 							<xsl:variable name="curr_list_id" select="../@id"/>
 							<xsl:for-each select="..//bipm:fn[ancestor::bipm:ol[1]/@id = $curr_list_id or ancestor::bipm:ul[1]/@id = $curr_list_id]">
-
 								<xsl:call-template name="fn_to_note_side"/>
-
 							</xsl:for-each>
 
 						</xsl:otherwise>
@@ -910,24 +918,32 @@
 	</xsl:template>
 
 	<xsl:template name="fn_to_note_side">
-		<xsl:element name="note_side" namespace="https://www.metanorma.org/ns/standoc">
+		<xsl:variable name="target" select="@target"/>
+		<xsl:choose>
+			<!-- skip side note, see the comment https://github.com/metanorma/isodoc/issues/658#issuecomment-2768874528: -->
+			<!-- every repeated footnote is only rendered at the first instance -->
+			<xsl:when test="preceding::*[@target = $target]"/>
+			<xsl:otherwise>
+				<xsl:element name="note_side" namespace="https://www.metanorma.org/ns/standoc">
 
-			<xsl:attribute name="id">
-				<xsl:value-of select="@target"/>
-			</xsl:attribute>
+					<xsl:attribute name="id">
+						<xsl:value-of select="@target"/>
+					</xsl:attribute>
 
-			<xsl:variable name="curr_id" select="@target"/>
+					<xsl:variable name="curr_id" select="@target"/>
 
-			<xsl:element name="sup_fn" namespace="https://www.metanorma.org/ns/standoc">
-				<!-- <xsl:value-of select="concat('(',$number,')')"/> -->
-			<!-- https://github.com/metanorma/isodoc/issues/658#issuecomment-2726450824 -->
-			<xsl:apply-templates select="*[local-name() = 'fmt-fn-label']/node()" mode="flatxml"/>
-			</xsl:element>
-			<xsl:text> </xsl:text>
+					<xsl:element name="sup_fn" namespace="https://www.metanorma.org/ns/standoc">
+						<!-- <xsl:value-of select="concat('(',$number,')')"/> -->
+						<!-- https://github.com/metanorma/isodoc/issues/658#issuecomment-2726450824 -->
+						<xsl:apply-templates select="*[local-name() = 'fmt-fn-label']/node()" mode="flatxml"/>
+					</xsl:element>
+					<xsl:text> </xsl:text>
 
-			<!-- <xsl:apply-templates mode="flatxml"/> -->
-			<xsl:apply-templates select="$footnotes/*[local-name() = 'fmt-fn-body'][@id = $curr_id]/node()" mode="flatxml"/>
-		</xsl:element>
+					<!-- <xsl:apply-templates mode="flatxml"/> -->
+					<xsl:apply-templates select="$footnotes/*[local-name() = 'fmt-fn-body'][@id = $curr_id]/node()" mode="flatxml"/>
+				</xsl:element>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- remove latest elements (after li), because they moved into latest 'li' -->
@@ -2923,13 +2939,17 @@
 						<fo:list-item-label end-indent="label-end()">
 							<fo:block> <!-- debug: border="0.5pt solid green" -->
 								<fo:inline>
-									<!-- <xsl:if test="@list_type = 'ul'">
-										<xsl:attribute name="font-size">15pt</xsl:attribute> -->
+									<xsl:if test="@list_type = 'ul'">
+										<xsl:variable name="li_label" select="@label"/>
+										<xsl:copy-of select="$ul_labels//label[. = $li_label]/@*[not(local-name() = 'level')]"/>
+									</xsl:if>
+
 									<xsl:copy-of select="@font-size"/>
 									<xsl:copy-of select="@baseline-shift"/>
 									<xsl:if test="@list_type = 'ul' and ancestor::bipm:note_side">
 										<xsl:attribute name="font-size">10pt</xsl:attribute>
 									</xsl:if>
+
 									<xsl:value-of select="@label"/>
 								</fo:inline>
 							</fo:block>
@@ -4676,6 +4696,7 @@
 	</xsl:template> <!-- refine_table-style -->
 
 	<xsl:attribute-set name="table-name-style">
+		<xsl:attribute name="role">Caption</xsl:attribute>
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
 
 			<xsl:attribute name="font-weight">bold</xsl:attribute>
@@ -4689,6 +4710,9 @@
 
 	<xsl:template name="refine_table-name-style">
 		<xsl:param name="continued"/>
+		<xsl:if test="$continued = 'true'">
+			<xsl:attribute name="role">SKIP</xsl:attribute>
+		</xsl:if>
 
 	</xsl:template> <!-- refine_table-name-style -->
 
@@ -6504,7 +6528,7 @@
 				</xsl:if>
 
 			</fo:block-container>
-		</xsl:variable>
+		</xsl:variable> <!-- END: variable name="table" -->
 
 		<xsl:variable name="isAdded" select="@added"/>
 		<xsl:variable name="isDeleted" select="@deleted"/>
@@ -7047,7 +7071,7 @@
 
 			<xsl:variable name="tableWithNotesAndFootnotes">
 
-				<fo:table keep-with-previous="always">
+				<fo:table keep-with-previous="always" role="SKIP">
 					<xsl:for-each select="xalan:nodeset($table_attributes)/table_attributes/@*">
 						<xsl:variable name="name" select="local-name()"/>
 						<xsl:choose>
@@ -7078,9 +7102,9 @@
 						</xsl:otherwise>
 					</xsl:choose>
 
-					<fo:table-body>
-						<fo:table-row>
-							<fo:table-cell xsl:use-attribute-sets="table-footer-cell-style" number-columns-spanned="{$cols-count}">
+					<fo:table-body role="SKIP">
+						<fo:table-row role="SKIP">
+							<fo:table-cell xsl:use-attribute-sets="table-footer-cell-style" number-columns-spanned="{$cols-count}" role="SKIP">
 
 								<xsl:call-template name="refine_table-footer-cell-style"/>
 
@@ -14320,8 +14344,14 @@
 			<xsl:when test="local-name(..) = 'ul'">
 				<xsl:choose>
 					<xsl:when test="normalize-space($processing_instruction_type) = 'simple'"/>
+					<!-- https://github.com/metanorma/isodoc/issues/675 -->
+					<xsl:when test="@label"><xsl:value-of select="@label"/></xsl:when>
 					<xsl:otherwise><xsl:call-template name="setULLabel"/></xsl:otherwise>
 				</xsl:choose>
+			</xsl:when>
+			<!-- https://github.com/metanorma/isodoc/issues/675 -->
+			<xsl:when test="local-name(..) = 'ol' and @label and @full = 'true'"> <!-- @full added in the template li/fmt-name -->
+				<xsl:value-of select="@label"/>
 			</xsl:when>
 			<xsl:when test="local-name(..) = 'ol' and @label"> <!-- for ordered lists 'ol', and if there is @label, for instance label="1.1.2" -->
 
@@ -14447,7 +14477,7 @@
 
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
+	</xsl:template> <!-- getListItemFormat -->
 
 	<xsl:template match="*[local-name() = 'ul'] | *[local-name() = 'ol']">
 		<xsl:param name="indent">0</xsl:param>
@@ -14580,6 +14610,11 @@
 				<fo:block xsl:use-attribute-sets="list-item-label-style" role="SKIP">
 
 					<xsl:call-template name="refine_list-item-label-style"/>
+
+					<xsl:if test="local-name(..) = 'ul'">
+						<xsl:variable name="li_label" select="@label"/>
+						<xsl:copy-of select="$ul_labels//label[. = $li_label]/@*[not(local-name() = 'level')]"/>
+					</xsl:if>
 
 					<!-- if 'p' contains all text in 'add' first and last elements in first p are 'add' -->
 					<xsl:if test="*[1][count(node()[normalize-space() != '']) = 1 and *[local-name() = 'add']]">
@@ -15974,6 +16009,16 @@
 				</xsl:element>
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+
+	<!-- li/fmt-name -->
+	<xsl:template match="*[local-name() = 'li']/*[local-name() = 'fmt-name']" priority="2" mode="update_xml_step1">
+		<xsl:attribute name="label"><xsl:value-of select="."/></xsl:attribute>
+		<xsl:attribute name="full">true</xsl:attribute>
+	</xsl:template>
+	<xsl:template match="*[local-name() = 'li']/*[local-name() = 'fmt-name']" priority="2" mode="update_xml_pres">
+		<xsl:attribute name="label"><xsl:value-of select="."/></xsl:attribute>
+		<xsl:attribute name="full">true</xsl:attribute>
 	</xsl:template>
 
 	<xsl:template match="*[local-name() = 'fmt-preferred']"/>

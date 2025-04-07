@@ -72,14 +72,14 @@
         </zeroOrMore>
       </group>
     </define>
-    <define name="Annex-Section-Attr" combine="interleave">
+    <define name="Annex-Section-Attributes" combine="interleave">
       <optional>
         <attribute name="unnumbered">
           <data type="boolean"/>
         </attribute>
       </optional>
     </define>
-    <define name="OlAttr" combine="interleave">
+    <define name="OlAttributes" combine="interleave">
       <optional>
         <attribute name="start"/>
       </optional>
