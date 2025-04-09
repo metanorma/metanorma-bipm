@@ -6582,6 +6582,7 @@
 
 	</xsl:template>
 
+	<!-- table/name-->
 	<xsl:template match="*[local-name()='table']/*[local-name() = 'name']">
 		<xsl:param name="continued"/>
 		<xsl:if test="normalize-space() != ''">
@@ -7531,6 +7532,7 @@
 	<!-- footnotes in text (title, bibliography, main body), not for tables, figures and names --> <!-- table's, figure's names -->
 	<!-- fn in text -->
 	<xsl:template match="*[local-name() = 'fn'][not(ancestor::*[(local-name() = 'table' or local-name() = 'figure')] and not(ancestor::*[local-name() = 'name']))]" priority="2" name="fn">
+		<xsl:param name="footnote_body_from_table">false</xsl:param>
 
 		<!-- list of unique footnotes -->
 		<xsl:variable name="p_fn_">
@@ -7596,7 +7598,7 @@
 				<xsl:copy-of select="$footnote_inline"/>
 			</xsl:when>
 			<!-- <xsl:when test="$footnotes//*[local-name() = 'fmt-fn-body'][@id = $ref_id] or normalize-space(@skip_footnote_body) = 'false'"> -->
-			<xsl:when test="$p_fn//fn[@gen_id = $gen_id] or normalize-space(@skip_footnote_body) = 'false'">
+			<xsl:when test="$p_fn//fn[@gen_id = $gen_id] or normalize-space(@skip_footnote_body) = 'false' or $footnote_body_from_table = 'true'">
 
 				<fo:footnote xsl:use-attribute-sets="fn-style" role="SKIP">
 					<xsl:copy-of select="$footnote_inline"/>
@@ -8007,42 +8009,54 @@
 	<!-- fn reference in the table rendering (for instance, 'some text 1) some text' ) -->
 	<!-- fn --> <!-- in table --> <!-- for figure see <xsl:template match="*[local-name() = 'figure']/*[local-name() = 'fn']" priority="2"/> -->
 	<xsl:template match="*[local-name()='fn']">
-		<fo:inline xsl:use-attribute-sets="fn-reference-style">
+		<xsl:variable name="target" select="@target"/>
+		<xsl:choose>
+			<!-- case for footnotes in Requirement tables (https://github.com/metanorma/metanorma-ogc/issues/791) -->
+			<xsl:when test="not(ancestor::*[local-name() = 'table'][1]/*[local-name() = 'fmt-footnote-container']/*[local-name() = 'fmt-fn-body'][@id = $target]) and        $footnotes/*[local-name() = 'fmt-fn-body'][@id = $target]">
+				<xsl:call-template name="fn">
+					<xsl:with-param name="footnote_body_from_table">true</xsl:with-param>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
 
-			<xsl:call-template name="refine_fn-reference-style"/>
+				<fo:inline xsl:use-attribute-sets="fn-reference-style">
 
-			<!-- <fo:basic-link internal-destination="{@reference}_{ancestor::*[@id][1]/@id}" fox:alt-text="footnote {@reference}"> --> <!-- @reference   | ancestor::*[local-name()='clause'][1]/@id-->
-			<fo:basic-link internal-destination="{@target}" fox:alt-text="footnote {@reference}">
-				<!-- <xsl:if test="ancestor::*[local-name()='table'][1]/@id"> --> <!-- for footnotes in tables -->
-				<!-- 	<xsl:attribute name="internal-destination">
-						<xsl:value-of select="concat(@reference, '_', ancestor::*[local-name()='table'][1]/@id)"/>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:if test="$namespace = 'ogc' or $namespace = 'ogc-white-paper'">
-					<xsl:attribute name="internal-destination">
-						<xsl:value-of select="@reference"/><xsl:text>_</xsl:text>
-						<xsl:value-of select="ancestor::*[local-name()='table'][1]/@id"/>
-					</xsl:attribute>
-				</xsl:if> -->
-				<!-- <xsl:if test="$namespace = 'plateau'">
-					<xsl:text>※</xsl:text>
-				</xsl:if> -->
-				<!-- <xsl:value-of select="@reference"/> -->
+					<xsl:call-template name="refine_fn-reference-style"/>
 
-						<fo:inline font-style="normal"> </fo:inline>
-						<!-- Example: <fmt-fn-label><sup><span class="fmt-label-delim">(</span>a<span class="fmt-label-delim">)</span></sup></fmt-fn-label> -->
-						<!-- to <fo:inline font-style="normal">(</fo:inline> ... -->
-						<xsl:apply-templates select="*[local-name() = 'fmt-fn-label']/node()"/>
+					<!-- <fo:basic-link internal-destination="{@reference}_{ancestor::*[@id][1]/@id}" fox:alt-text="footnote {@reference}"> --> <!-- @reference   | ancestor::*[local-name()='clause'][1]/@id-->
+					<fo:basic-link internal-destination="{@target}" fox:alt-text="footnote {@reference}">
+						<!-- <xsl:if test="ancestor::*[local-name()='table'][1]/@id"> --> <!-- for footnotes in tables -->
+						<!-- 	<xsl:attribute name="internal-destination">
+								<xsl:value-of select="concat(@reference, '_', ancestor::*[local-name()='table'][1]/@id)"/>
+							</xsl:attribute>
+						</xsl:if>
+						<xsl:if test="$namespace = 'ogc' or $namespace = 'ogc-white-paper'">
+							<xsl:attribute name="internal-destination">
+								<xsl:value-of select="@reference"/><xsl:text>_</xsl:text>
+								<xsl:value-of select="ancestor::*[local-name()='table'][1]/@id"/>
+							</xsl:attribute>
+						</xsl:if> -->
+						<!-- <xsl:if test="$namespace = 'plateau'">
+							<xsl:text>※</xsl:text>
+						</xsl:if> -->
+						<!-- <xsl:value-of select="@reference"/> -->
 
-				<!-- <xsl:if test="$namespace = 'bsi'">
-					<xsl:text>)</xsl:text>
-				</xsl:if> -->
-				<!-- commented, https://github.com/metanorma/isodoc/issues/614 -->
-				<!-- <xsl:if test="$namespace = 'jis'">
-					<fo:inline font-weight="normal">)</fo:inline>
-				</xsl:if> -->
-			</fo:basic-link>
-		</fo:inline>
+								<fo:inline font-style="normal"> </fo:inline>
+								<!-- Example: <fmt-fn-label><sup><span class="fmt-label-delim">(</span>a<span class="fmt-label-delim">)</span></sup></fmt-fn-label> -->
+								<!-- to <fo:inline font-style="normal">(</fo:inline> ... -->
+								<xsl:apply-templates select="*[local-name() = 'fmt-fn-label']/node()"/>
+
+						<!-- <xsl:if test="$namespace = 'bsi'">
+							<xsl:text>)</xsl:text>
+						</xsl:if> -->
+						<!-- commented, https://github.com/metanorma/isodoc/issues/614 -->
+						<!-- <xsl:if test="$namespace = 'jis'">
+							<fo:inline font-weight="normal">)</fo:inline>
+						</xsl:if> -->
+					</fo:basic-link>
+				</fo:inline>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template> <!-- fn -->
 
 	<!-- fn/text() -->
