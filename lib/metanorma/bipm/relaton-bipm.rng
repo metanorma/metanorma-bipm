@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+<grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0">
   <include href="biblio-standoc.rng">
     <define name="DocumentType">
       <choice>
@@ -44,30 +44,24 @@
         </optional>
       </element>
     </define>
-    <define name="BibDataExtensionType">
-      <optional>
-        <attribute name="schema-version"/>
-      </optional>
-      <optional>
-        <ref name="doctype"/>
-      </optional>
-      <optional>
-        <ref name="docsubtype"/>
-      </optional>
-      <ref name="flavor"/>
-      <ref name="editorialgroup"/>
-      <optional>
-        <ref name="comment-period"/>
-      </optional>
-      <optional>
-        <ref name="si-aspect"/>
-      </optional>
-      <optional>
-        <ref name="meeting-note"/>
-      </optional>
-      <ref name="structuredidentifier"/>
-    </define>
   </include>
+  <define name="BibDataExtensionType" combine="interleave">
+    <optional>
+      <ref name="comment-period">
+        <a:documentation>Period during which comments are allowed on the document draft</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="si-aspect">
+        <a:documentation>The domain of SI covered by the document; used to select logo in PDF cover page. The logo nominates one primary SI base units, and defining consonants for that unit and possibly others as well</a:documentation>
+      </ref>
+    </optional>
+    <optional>
+      <ref name="meeting-note">
+        <a:documentation>Note on when and where a guide was adopted</a:documentation>
+      </ref>
+    </optional>
+  </define>
   <define name="comment-period">
     <element name="comment-period">
       <element name="from">

@@ -98,13 +98,6 @@ committees:
   - INetQI
   - International Network on Quality Infrastructure
 metadata_extensions:
-  comment-period:
-    comment-period-from:
-      _output: from
-    comment-period-to:
-      _output: to
-  si-aspect:
-  meeting-note:
   structuredidentifier:
     docnumber:
     partnumber:
@@ -113,6 +106,13 @@ metadata_extensions:
       _output: appendix
     annex-id:
       _output: annexid
+  comment-period:
+    comment-period-from:
+      _output: from
+    comment-period-to:
+      _output: to
+  si-aspect:
+  meeting-note:
 relations:
   - supersedes
   - superseded-by
