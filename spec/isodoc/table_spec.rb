@@ -927,7 +927,7 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-origin>
                       </semx>
                       —
-                      <semx element="modification" source="_">with adjustments</semx>
+                      with adjustments
                       ;
                       <origin bibitemid="ISO712" type="inline" citeas="" id="_">
                          <localityStack>
@@ -1196,7 +1196,7 @@ RSpec.describe IsoDoc::Bipm do
                    Table 1.  Repeatability and reproducibility of
                    <i>husked</i>
                    rice yield
-                   <a class="FootnoteRef" href="#fn:_32">
+                   <a class="FootnoteRef" href="#fn:_31">
                       <sup>1)</sup>
                    </a>
                 </p>
@@ -1302,7 +1302,7 @@ RSpec.describe IsoDoc::Bipm do
                 <div class="Quote">
                    <p class="TableTitle" style="text-align:center;">
                       Table 2.  Second Table
-                      <a class="FootnoteRef" href="#fn:_34">
+                      <a class="FootnoteRef" href="#fn:_33">
                          <sup>2)</sup>
                       </a>
                    </p>
@@ -1311,13 +1311,13 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
                                Text
-                               <a class="FootnoteRef" href="#fn:_42">
+                               <a class="FootnoteRef" href="#fn:_41">
                                   <sup>2a</sup>
                                </a>
                             </td>
                          </tr>
                       </tbody>
-                      <aside id="fn:_42" class="footnote">
+                      <aside id="fn:_41" class="footnote">
                          <p>
                             <sup>2a</sup>
                               Y
@@ -1326,7 +1326,7 @@ RSpec.describe IsoDoc::Bipm do
                    </table>
                    <p class="TableTitle" style="text-align:center;">
                       Table 3.  Second Table
-                      <a class="FootnoteRef" href="#fn:_34">
+                      <a class="FootnoteRef" href="#fn:_33">
                          <sup>2)</sup>
                       </a>
                    </p>
@@ -1335,13 +1335,13 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
                                Text
-                               <a class="FootnoteRef" href="#fn:_45">
+                               <a class="FootnoteRef" href="#fn:_44">
                                   <sup>2a</sup>
                                </a>
                             </td>
                          </tr>
                       </tbody>
-                      <aside id="fn:_45" class="footnote">
+                      <aside id="fn:_44" class="footnote">
                          <p>
                             <sup>2a</sup>
                               Y1
@@ -1350,10 +1350,10 @@ RSpec.describe IsoDoc::Bipm do
                    </table>
                 </div>
              </div>
-             <aside id="fn:_32" class="footnote">
+             <aside id="fn:_31" class="footnote">
                 <p>X</p>
              </aside>
-             <aside id="fn:_34" class="footnote">
+             <aside id="fn:_33" class="footnote">
                 <p>X1</p>
              </aside>
           </div>
