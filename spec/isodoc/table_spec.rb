@@ -283,7 +283,7 @@ RSpec.describe IsoDoc::Bipm do
                             , Section 1
                          </fmt-origin>
                       </semx>
-                      — with adjustments;
+                      — with adjustments ;
                       <origin bibitemid="ISO712" type="inline" citeas="" id="_">
                          <localityStack>
                             <locality type="section">
