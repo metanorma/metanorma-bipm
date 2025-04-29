@@ -68,12 +68,12 @@ module Metanorma
         super
       end
 
-      def clause_parse(attrs, xml, node)
+      def clause_attrs_preprocess(attrs, node)
         node.option?("unnumbered") and attrs[:unnumbered] = true
         super
       end
 
-      def annex_parse(attrs, xml, node)
+      def annex_attrs_preprocess(attrs, node)
         node.option?("unnumbered") and attrs[:unnumbered] = true
         super
       end
