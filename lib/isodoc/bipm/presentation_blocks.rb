@@ -56,7 +56,7 @@ module IsoDoc
       end
 
       def termsource_insert_empty_modification(docxml)
-        docxml.xpath("//xmlns:termsource[@status = 'modified']" \
+        docxml.xpath("//xmlns:term//xmlns:source[@status = 'modified']" \
                      "[not(xmlns:modification)]").each do |f|
           f << "<modification/>"
         end
@@ -71,11 +71,11 @@ module IsoDoc
       end
 
       def ol_label_template(_elem)
-        super
-          .merge({
-                   roman: %{<span class="fmt-label-delim">(</span>%<span class="fmt-label-delim">)</span>},
-                   arabic: %{%<span class="fmt-label-delim">.</span>},
-                 })
+        super.merge({
+                      roman: %{<span class="fmt-label-delim">(</span>% \
+                      <span class="fmt-label-delim">)</span>},
+                      arabic: %{%<span class="fmt-label-delim">.</span>},
+                    })
       end
     end
   end

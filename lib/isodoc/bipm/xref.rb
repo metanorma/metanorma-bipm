@@ -49,15 +49,13 @@ module IsoDoc
         end
       end
 
-      NUMBERED_SUBCLAUSES =
-        "./clause[not(#{UNNUM})] | ./references[not(#{UNNUM})] | " \
-        "./term[not(#{UNNUM})] | ./terms[not(#{UNNUM})] | " \
-        "./definitions[not(#{UNNUM})]".freeze
+      NUMBERED_SUBCLAUSES = <<~XPATH.freeze
+        ./clause[not(#{UNNUM})] | ./references[not(#{UNNUM})] | ./term[not(#{UNNUM})] | ./terms[not(#{UNNUM})] | ./definitions[not(#{UNNUM})]
+      XPATH
 
-      UNNUMBERED_SUBCLAUSES =
-        "./clause[#{UNNUM}] | ./references[#{UNNUM}] | " \
-        "./term[#{UNNUM}] | ./terms[#{UNNUM}] | " \
-        "./definitions[#{UNNUM}]".freeze
+      UNNUMBERED_SUBCLAUSES = <<~XPATH.freeze
+        ./clause[#{UNNUM}] | ./references[#{UNNUM}] | ./term[#{UNNUM}] | ./terms[#{UNNUM}] | ./definitions[#{UNNUM}]
+      XPATH
 
       def section_name_anchors(clause, num, level)
         lbl = @jcgm ? "clause_jcgm" : "clause"
@@ -76,12 +74,12 @@ module IsoDoc
         section_name_anchors(clause, lbl, lvl)
         clause.xpath(ns(NUMBERED_SUBCLAUSES))
           .each_with_object(clause_counter(0)) do |c, i|
-          section_names1(c, lbl, i.increment(c).print, lvl + 1)
-        end
+            section_names1(c, lbl, i.increment(c).print, lvl + 1)
+          end
         clause.xpath(ns(UNNUMBERED_SUBCLAUSES))
           .each_with_object(clause_counter(0)) do |c, i|
-          unnumbered_section_names1(c, lvl + 1)
-        end
+            unnumbered_section_names1(c, lvl + 1)
+          end
         num
       end
 
@@ -100,7 +98,7 @@ module IsoDoc
         xref = labelled_autonum(@labels[lbl], num)
         label = num
         @anchors[clause["id"]] =
-          { label: num, level: level, xref: labelled_autonum(lbl, num), # l10n("#{lbl}#{num}"),
+          { label: num, level: level, xref: labelled_autonum(lbl, num),
             type: "clause", elem: lbl }
       end
 
@@ -146,8 +144,7 @@ module IsoDoc
 
       def annex_name_anchors(clause, num)
         { label: annex_name_lbl(clause, num), type: "clause", value: num.to_s,
-          xref: labelled_autonum(@annexlbl, num), # #l10n("#{@annexlbl} #{num}"),
-          level: 1, elem: @annexlbl }
+          xref: labelled_autonum(@annexlbl, num), level: 1, elem: @annexlbl }
       end
 
       def annex_names(clause, num)
@@ -180,7 +177,7 @@ module IsoDoc
         @anchors[clause["id"]] = unnumbered_annex_anchors(lbl)
         if @klass.single_term_clause?(clause)
           unnumbered_annex_names1(clause.at(ns("./references | ./terms | ./definitions")),
-                       1)
+                                  1)
         else
           clause.xpath(ns(SUBCLAUSES))
             .each { |c| unnumbered_annex_names1(c, 2) }
@@ -191,8 +188,8 @@ module IsoDoc
       def annex_name_anchors1(clause, num, level)
         lbl = @jcgm ? "" : @annexlbl
         @anchors[clause["id"]] = 
-        { label: num, xref: labelled_autonum(lbl, num), #l10n("#{lbl}#{num}"),
-          level: level, type: "clause", elem: lbl }
+          { label: num, xref: labelled_autonum(lbl, num), #l10n("#{lbl}#{num}"),
+            level: level, type: "clause", elem: lbl }
       end
 
       def annex_names1(clause, parentnum, num, level)

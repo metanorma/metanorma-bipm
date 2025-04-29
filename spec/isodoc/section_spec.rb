@@ -706,12 +706,12 @@ RSpec.describe IsoDoc::Bipm do
             <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
             <term id="J">
               <preferred><expression><name>Term2</name></expression></preferred>
-              <termsource status="modified">
+              <source status="modified">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.1</referenceFrom></locality></origin>
           <modification>
           <p id="_e73a417d-ad39-417d-a4c8-20e4e2529489">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
         </modification>
-      </termsource>
+      </source>
             </term>
             <term id="K">
               <preferred><expression><name>Term3</name></expression></preferred>
@@ -727,9 +727,9 @@ RSpec.describe IsoDoc::Bipm do
       <ul><li>A</li></ul>
         <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
       </termnote>
-              <termsource status="identical">
+              <source status="identical">
         <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011"><locality type="clause"><referenceFrom>3.2</referenceFrom></locality></origin>
-      </termsource>
+      </source>
             </term>
           </terms>
         </sections>
@@ -787,7 +787,7 @@ RSpec.describe IsoDoc::Bipm do
                          </semx>
                       </p>
                    </fmt-preferred>
-                   <termsource status="modified" id="_">
+                   <source status="modified" id="_">
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
                          <locality type="clause">
                             <referenceFrom>3.1</referenceFrom>
@@ -796,10 +796,10 @@ RSpec.describe IsoDoc::Bipm do
                       <modification id="_">
                          <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
                       </modification>
-                   </termsource>
+                   </source>
                    <fmt-termsource status="modified">
                       [Modified from:
-                      <semx element="termsource" source="_">
+                      <semx element="source" source="_">
                          <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
                             <locality type="clause">
                                <referenceFrom>3.1</referenceFrom>
@@ -934,16 +934,16 @@ RSpec.describe IsoDoc::Bipm do
                       </ul>
                       <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
                    </termnote>
-                   <termsource status="identical" id="_">
+                   <source status="identical" id="_">
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
                          <locality type="clause">
                             <referenceFrom>3.2</referenceFrom>
                          </locality>
                       </origin>
-                   </termsource>
+                   </source>
                    <fmt-termsource status="identical">
                       [
-                      <semx element="termsource" source="_">
+                      <semx element="source" source="_">
                          <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
                             <locality type="clause">
                                <referenceFrom>3.2</referenceFrom>
@@ -1100,7 +1100,7 @@ RSpec.describe IsoDoc::Bipm do
                          </semx>
                       </p>
                    </fmt-preferred>
-                   <termsource status="modified" id="_">
+                   <source status="modified" id="_">
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
                          <locality type="clause">
                             <referenceFrom>3.1</referenceFrom>
@@ -1109,10 +1109,10 @@ RSpec.describe IsoDoc::Bipm do
                       <modification id="_">
                          <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
                       </modification>
-                   </termsource>
+                   </source>
                    <fmt-termsource status="modified">
                       [Modified from:
-                      <semx element="termsource" source="_">
+                      <semx element="source" source="_">
                          <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
                             <locality type="clause">
                                <referenceFrom>3.1</referenceFrom>
@@ -1244,16 +1244,16 @@ RSpec.describe IsoDoc::Bipm do
                       </ul>
                       <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
                    </termnote>
-                   <termsource status="identical" id="_">
+                   <source status="identical" id="_">
                       <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011">
                          <locality type="clause">
                             <referenceFrom>3.2</referenceFrom>
                          </locality>
                       </origin>
-                   </termsource>
+                   </source>
                    <fmt-termsource status="identical">
                       [
-                      <semx element="termsource" source="_">
+                      <semx element="source" source="_">
                          <origin bibitemid="ISO7301" type="inline" citeas="ISO 7301:2011" id="_">
                             <locality type="clause">
                                <referenceFrom>3.2</referenceFrom>
