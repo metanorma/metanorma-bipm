@@ -67,6 +67,7 @@ def strip_guid(html)
     .gsub(%r{ source="_[^"]+"}, ' source="_"')
     .gsub(%r{<fetched>[^<]+</fetched>}, "<fetched/>")
     .gsub(%r{ schema-version="[^"]+"}, "")
+    .gsub(%r( bibitemid="_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"), ' bibitemid="_"')
 end
 
 def htmlencode(html)
