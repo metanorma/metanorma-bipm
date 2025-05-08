@@ -17,8 +17,7 @@ module Metanorma
       def jcgm_untitled_sections_cleanup(xml)
         xml.xpath("//clause//clause | //annex//clause | //introduction/clause")
           .each do |c|
-          next if !c&.at("./title")&.text&.empty?
-
+          !c&.at("./title")&.text&.empty? and next
           c["inline-header"] = true
         end
       end
@@ -33,7 +32,7 @@ module Metanorma
       end
 
       def xref_to_eref(elem, name)
-        if elem.at("//bibitem[@id = '#{elem['target']}']/" \
+        if elem.at("//bibitem[@anchor = '#{elem['target']}']/" \
                    "docidentifier[@type = 'BIPM-long']")
           elem["style"] = "BIPM-long"
         end

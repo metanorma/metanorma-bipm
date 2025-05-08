@@ -2,8 +2,7 @@ module Metanorma
   module Bipm
     class Converter < Metanorma::Generic::Converter
       def metadata_committee(node, xml)
-        return unless node.attr("committee-en") || node.attr("committee-fr")
-
+        node.attr("committee-en") || node.attr("committee-fr") or return
         xml.editorialgroup do |a|
           metadata_committee1(node, a)
           i = 2
@@ -100,8 +99,7 @@ module Metanorma
 
       def typed_title(node, xml, lang, type)
         at = { language: lang, format: "text/plain" }
-        return unless title = node.attr("title-#{type}-#{lang}")
-
+        title = node.attr("title-#{type}-#{lang}") or return
         xml.title **attr_code(at.merge(type: "title-#{type}")) do |t1|
           t1 << Metanorma::Utils::asciidoc_sub(title)
         end

@@ -34,8 +34,7 @@ module Metanorma
 
       def sectiontype(node, level = true)
         ret = sectiontype1(node)
-        return ret if ret == "terms and definitions"
-
+        ret == "terms and definitions" and return ret
         super
       end
 
