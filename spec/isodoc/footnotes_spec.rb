@@ -78,11 +78,13 @@ RSpec.describe IsoDoc::Bipm do
                 <fn reference="1" id="_" original-reference="43" target="_">
                    <p>C</p>
                    <fmt-fn-label>
-                      <sup>
-                         <span class="fmt-label-delim">(</span>
-                         <semx element="autonum" source="_">1</semx>
-                         <span class="fmt-label-delim">)</span>
-                      </sup>
+                      <span class="fmt-caption-label">
+                         <sup>
+                            <span class="fmt-label-delim">(</span>
+                            <semx element="autonum" source="_">1</semx>
+                            <span class="fmt-label-delim">)</span>
+                         </sup>
+                      </span>
                    </fmt-fn-label>
                 </fn>
              </title>
@@ -91,11 +93,13 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="fn" source="_">
                       <p>
                          <fmt-fn-label>
-                            <sup>
-                               <span class="fmt-label-delim">(</span>
-                               <semx element="autonum" source="_">1</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">1</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                             <span class="fmt-caption-delim">
                                <tab/>
                             </span>
@@ -113,11 +117,13 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="1" original-id="_" original-reference="44" id="_" target="_">
                          <p>D</p>
                          <fmt-fn-label>
-                            <sup>
-                               <span class="fmt-label-delim">(</span>
-                               <semx element="autonum" source="_">1</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">1</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </title>
@@ -126,11 +132,13 @@ RSpec.describe IsoDoc::Bipm do
                          <fn reference="1" id="_" original-reference="44" target="_">
                             <p>D</p>
                             <fmt-fn-label>
-                               <sup>
-                                  <span class="fmt-label-delim">(</span>
-                                  <semx element="autonum" source="_">1</semx>
-                                  <span class="fmt-label-delim">)</span>
-                               </sup>
+                               <span class="fmt-caption-label">
+                                  <sup>
+                                     <span class="fmt-label-delim">(</span>
+                                     <semx element="autonum" source="_">1</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </span>
                             </fmt-fn-label>
                          </fn>
                       </semx>
@@ -140,11 +148,13 @@ RSpec.describe IsoDoc::Bipm do
                          <semx element="fn" source="_">
                             <p>
                                <fmt-fn-label>
-                                  <sup>
-                                     <span class="fmt-label-delim">(</span>
-                                     <semx element="autonum" source="_">1</semx>
-                                     <span class="fmt-label-delim">)</span>
-                                  </sup>
+                                  <span class="fmt-caption-label">
+                                     <sup>
+                                        <span class="fmt-label-delim">(</span>
+                                        <semx element="autonum" source="_">1</semx>
+                                        <span class="fmt-label-delim">)</span>
+                                     </sup>
+                                  </span>
                                   <span class="fmt-caption-delim">
                                      <tab/>
                                   </span>
@@ -171,11 +181,13 @@ RSpec.describe IsoDoc::Bipm do
                    <fn reference="1" id="_" original-reference="2" target="_">
                       <p original-id="_">Formerly denoted as 15 % (m/m).</p>
                       <fmt-fn-label>
-                         <sup>
-                            <span class="fmt-label-delim">(</span>
-                            <semx element="autonum" source="_">1</semx>
-                            <span class="fmt-label-delim">)</span>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <span class="fmt-label-delim">(</span>
+                               <semx element="autonum" source="_">1</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </span>
                       </fmt-fn-label>
                    </fn>
                 </p>
@@ -184,11 +196,13 @@ RSpec.describe IsoDoc::Bipm do
                    <fn reference="1" id="_" original-reference="2" target="_">
                       <p id="_">Formerly denoted as 15 % (m/m).</p>
                       <fmt-fn-label>
-                         <sup>
-                            <span class="fmt-label-delim">(</span>
-                            <semx element="autonum" source="_">1</semx>
-                            <span class="fmt-label-delim">)</span>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <span class="fmt-label-delim">(</span>
+                               <semx element="autonum" source="_">1</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </span>
                       </fmt-fn-label>
                    </fn>
                 </p>
@@ -197,11 +211,13 @@ RSpec.describe IsoDoc::Bipm do
                    <fn reference="2" id="_" original-reference="1" target="_">
                       <p original-id="_">Hello! denoted as 15 % (m/m).</p>
                       <fmt-fn-label>
-                         <sup>
-                            <span class="fmt-label-delim">(</span>
-                            <semx element="autonum" source="_">2</semx>
-                            <span class="fmt-label-delim">)</span>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <span class="fmt-label-delim">(</span>
+                               <semx element="autonum" source="_">2</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </span>
                       </fmt-fn-label>
                    </fn>
                 </p>
@@ -210,11 +226,13 @@ RSpec.describe IsoDoc::Bipm do
                       <semx element="fn" source="_">
                          <p id="_">
                             <fmt-fn-label>
-                               <sup>
-                                  <span class="fmt-label-delim">(</span>
-                                  <semx element="autonum" source="_">1</semx>
-                                  <span class="fmt-label-delim">)</span>
-                               </sup>
+                               <span class="fmt-caption-label">
+                                  <sup>
+                                     <span class="fmt-label-delim">(</span>
+                                     <semx element="autonum" source="_">1</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </span>
                                <span class="fmt-caption-delim">
                                   <tab/>
                                </span>
@@ -227,11 +245,13 @@ RSpec.describe IsoDoc::Bipm do
                       <semx element="fn" source="_">
                          <p id="_">
                             <fmt-fn-label>
-                               <sup>
-                                  <span class="fmt-label-delim">(</span>
-                                  <semx element="autonum" source="_">2</semx>
-                                  <span class="fmt-label-delim">)</span>
-                               </sup>
+                               <span class="fmt-caption-label">
+                                  <sup>
+                                     <span class="fmt-label-delim">(</span>
+                                     <semx element="autonum" source="_">2</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </span>
                                <span class="fmt-caption-delim">
                                   <tab/>
                                </span>
@@ -250,11 +270,13 @@ RSpec.describe IsoDoc::Bipm do
                    <fn reference="1" original-id="_" original-reference="45" id="_" target="_">
                       <p original-id="_">Fourth footnote.</p>
                       <fmt-fn-label>
-                         <sup>
-                            <span class="fmt-label-delim">(</span>
-                            <semx element="autonum" source="_">1</semx>
-                            <span class="fmt-label-delim">)</span>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <span class="fmt-label-delim">(</span>
+                               <semx element="autonum" source="_">1</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </span>
                       </fmt-fn-label>
                    </fn>
                 </title>
@@ -271,11 +293,13 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="1" id="_" original-reference="45" target="_">
                          <p id="_">Fourth footnote.</p>
                          <fmt-fn-label>
-                            <sup>
-                               <span class="fmt-label-delim">(</span>
-                               <semx element="autonum" source="_">1</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">1</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </semx>
@@ -304,11 +328,13 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="1" id="_" original-reference="42" target="_">
                          <p original-id="_">Third footnote.</p>
                          <fmt-fn-label>
-                            <sup>
-                               <span class="fmt-label-delim">(</span>
-                               <semx element="autonum" source="_">1</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">1</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </p>
@@ -317,11 +343,13 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="2" id="_" original-reference="2" target="_">
                          <p original-id="_">Formerly denoted as 15 % (m/m).</p>
                          <fmt-fn-label>
-                            <sup>
-                               <span class="fmt-label-delim">(</span>
-                               <semx element="autonum" source="_">2</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">2</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </p>
@@ -330,11 +358,13 @@ RSpec.describe IsoDoc::Bipm do
                          <semx element="fn" source="_">
                             <p id="_">
                                <fmt-fn-label>
-                                  <sup>
-                                     <span class="fmt-label-delim">(</span>
-                                     <semx element="autonum" source="_">1</semx>
-                                     <span class="fmt-label-delim">)</span>
-                                  </sup>
+                                  <span class="fmt-caption-label">
+                                     <sup>
+                                        <span class="fmt-label-delim">(</span>
+                                        <semx element="autonum" source="_">1</semx>
+                                        <span class="fmt-label-delim">)</span>
+                                     </sup>
+                                  </span>
                                   <span class="fmt-caption-delim">
                                      <tab/>
                                   </span>
@@ -347,11 +377,13 @@ RSpec.describe IsoDoc::Bipm do
                          <semx element="fn" source="_">
                             <p id="_">
                                <fmt-fn-label>
-                                  <sup>
-                                     <span class="fmt-label-delim">(</span>
-                                     <semx element="autonum" source="_">2</semx>
-                                     <span class="fmt-label-delim">)</span>
-                                  </sup>
+                                  <span class="fmt-caption-label">
+                                     <sup>
+                                        <span class="fmt-label-delim">(</span>
+                                        <semx element="autonum" source="_">2</semx>
+                                        <span class="fmt-label-delim">)</span>
+                                     </sup>
+                                  </span>
                                   <span class="fmt-caption-delim">
                                      <tab/>
                                   </span>
@@ -382,11 +414,13 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="1" id="_" original-reference="42" target="_">
                          <p original-id="_">Third footnote.</p>
                          <fmt-fn-label>
-                            <sup>
-                               <span class="fmt-label-delim">(</span>
-                               <semx element="autonum" source="_">1</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">1</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </p>
@@ -395,11 +429,13 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="2" id="_" original-reference="2" target="_">
                          <p original-id="_">Formerly denoted as 15 % (m/m).</p>
                          <fmt-fn-label>
-                            <sup>
-                               <span class="fmt-label-delim">(</span>
-                               <semx element="autonum" source="_">2</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">2</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </p>
@@ -408,11 +444,13 @@ RSpec.describe IsoDoc::Bipm do
                          <semx element="fn" source="_">
                             <p id="_">
                                <fmt-fn-label>
-                                  <sup>
-                                     <span class="fmt-label-delim">(</span>
-                                     <semx element="autonum" source="_">1</semx>
-                                     <span class="fmt-label-delim">)</span>
-                                  </sup>
+                                  <span class="fmt-caption-label">
+                                     <sup>
+                                        <span class="fmt-label-delim">(</span>
+                                        <semx element="autonum" source="_">1</semx>
+                                        <span class="fmt-label-delim">)</span>
+                                     </sup>
+                                  </span>
                                   <span class="fmt-caption-delim">
                                      <tab/>
                                   </span>
@@ -425,11 +463,13 @@ RSpec.describe IsoDoc::Bipm do
                          <semx element="fn" source="_">
                             <p id="_">
                                <fmt-fn-label>
-                                  <sup>
-                                     <span class="fmt-label-delim">(</span>
-                                     <semx element="autonum" source="_">2</semx>
-                                     <span class="fmt-label-delim">)</span>
-                                  </sup>
+                                  <span class="fmt-caption-label">
+                                     <sup>
+                                        <span class="fmt-label-delim">(</span>
+                                        <semx element="autonum" source="_">2</semx>
+                                        <span class="fmt-label-delim">)</span>
+                                     </sup>
+                                  </span>
                                   <span class="fmt-caption-delim">
                                      <tab/>
                                   </span>
@@ -445,11 +485,13 @@ RSpec.describe IsoDoc::Bipm do
                       <semx element="fn" source="_">
                          <p original-id="_">
                             <fmt-fn-label>
-                               <sup>
-                                  <span class="fmt-label-delim">(</span>
-                                  <semx element="autonum" source="_">1</semx>
-                                  <span class="fmt-label-delim">)</span>
-                               </sup>
+                               <span class="fmt-caption-label">
+                                  <sup>
+                                     <span class="fmt-label-delim">(</span>
+                                     <semx element="autonum" source="_">1</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </span>
                                <span class="fmt-caption-delim">
                                   <tab/>
                                </span>
@@ -484,11 +526,13 @@ RSpec.describe IsoDoc::Bipm do
                          <fn reference="1" id="_" original-reference="7" target="_">
                             <p original-id="_">ISO is a standards organisation.</p>
                             <fmt-fn-label>
-                               <sup>
-                                  <span class="fmt-label-delim">(</span>
-                                  <semx element="autonum" source="_">1</semx>
-                                  <span class="fmt-label-delim">)</span>
-                               </sup>
+                               <span class="fmt-caption-label">
+                                  <sup>
+                                     <span class="fmt-label-delim">(</span>
+                                     <semx element="autonum" source="_">1</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </span>
                             </fmt-fn-label>
                          </fn>
                       </em>
@@ -499,11 +543,13 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="1" id="_" original-reference="7" target="_">
                          <p id="_">ISO is a standards organisation.</p>
                          <fmt-fn-label>
-                            <sup>
-                               <span class="fmt-label-delim">(</span>
-                               <semx element="autonum" source="_">1</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">1</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </title>
@@ -522,11 +568,13 @@ RSpec.describe IsoDoc::Bipm do
                       <semx element="fn" source="_">
                          <p id="_">
                             <fmt-fn-label>
-                               <sup>
-                                  <span class="fmt-label-delim">(</span>
-                                  <semx element="autonum" source="_">1</semx>
-                                  <span class="fmt-label-delim">)</span>
-                               </sup>
+                               <span class="fmt-caption-label">
+                                  <sup>
+                                     <span class="fmt-label-delim">(</span>
+                                     <semx element="autonum" source="_">1</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </span>
                                <span class="fmt-caption-delim">
                                   <tab/>
                                </span>
@@ -690,10 +738,12 @@ RSpec.describe IsoDoc::Bipm do
                 <fn reference="1" id="_" original-reference="43" target="_">
                    <p>C</p>
                    <fmt-fn-label>
-                      <sup>
-                         <semx element="autonum" source="_">1</semx>
-                         <span class="fmt-label-delim">)</span>
-                      </sup>
+                      <span class="fmt-caption-label">
+                         <sup>
+                            <semx element="autonum" source="_">1</semx>
+                            <span class="fmt-label-delim">)</span>
+                         </sup>
+                      </span>
                    </fmt-fn-label>
                 </fn>
              </title>
@@ -705,10 +755,12 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="2" original-id="_" original-reference="44" id="_" target="_">
                          <p>D</p>
                          <fmt-fn-label>
-                            <sup>
-                               <semx element="autonum" source="_">2</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <semx element="autonum" source="_">2</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </title>
@@ -717,10 +769,12 @@ RSpec.describe IsoDoc::Bipm do
                          <fn reference="2" id="_" original-reference="44" target="_">
                             <p>D</p>
                             <fmt-fn-label>
-                               <sup>
-                                  <semx element="autonum" source="_">2</semx>
-                                  <span class="fmt-label-delim">)</span>
-                               </sup>
+                               <span class="fmt-caption-label">
+                                  <sup>
+                                     <semx element="autonum" source="_">2</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </span>
                             </fmt-fn-label>
                          </fn>
                       </semx>
@@ -742,10 +796,12 @@ RSpec.describe IsoDoc::Bipm do
                    <fn reference="3" id="_" original-reference="2" target="_">
                       <p original-id="_">Formerly denoted as 15 % (m/m).</p>
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">3</semx>
-                            <span class="fmt-label-delim">)</span>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">3</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </span>
                       </fmt-fn-label>
                    </fn>
                 </p>
@@ -754,10 +810,12 @@ RSpec.describe IsoDoc::Bipm do
                    <fn reference="3" id="_" original-reference="2" target="_">
                       <p id="_">Formerly denoted as 15 % (m/m).</p>
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">3</semx>
-                            <span class="fmt-label-delim">)</span>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">3</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </span>
                       </fmt-fn-label>
                    </fn>
                 </p>
@@ -766,10 +824,12 @@ RSpec.describe IsoDoc::Bipm do
                    <fn reference="4" id="_" original-reference="1" target="_">
                       <p original-id="_">Hello! denoted as 15 % (m/m).</p>
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">4</semx>
-                            <span class="fmt-label-delim">)</span>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">4</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </span>
                       </fmt-fn-label>
                    </fn>
                 </p>
@@ -792,10 +852,12 @@ RSpec.describe IsoDoc::Bipm do
                    <fn reference="6" original-id="_" original-reference="45" id="_" target="_">
                       <p original-id="_">Fourth footnote.</p>
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">6</semx>
-                            <span class="fmt-label-delim">)</span>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">6</semx>
+                               <span class="fmt-label-delim">)</span>
+                            </sup>
+                         </span>
                       </fmt-fn-label>
                    </fn>
                 </title>
@@ -812,10 +874,12 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="6" id="_" original-reference="45" target="_">
                          <p id="_">Fourth footnote.</p>
                          <fmt-fn-label>
-                            <sup>
-                               <semx element="autonum" source="_">6</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <semx element="autonum" source="_">6</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </semx>
@@ -843,10 +907,12 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="7" id="_" original-reference="42" target="_">
                          <p original-id="_">Third footnote.</p>
                          <fmt-fn-label>
-                            <sup>
-                               <semx element="autonum" source="_">7</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <semx element="autonum" source="_">7</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </p>
@@ -855,10 +921,12 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="3" id="_" original-reference="2" target="_">
                          <p id="_">Formerly denoted as 15 % (m/m).</p>
                          <fmt-fn-label>
-                            <sup>
-                               <semx element="autonum" source="_">3</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <semx element="autonum" source="_">3</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </p>
@@ -882,10 +950,12 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="7" id="_" original-reference="42" target="_">
                          <p id="_">Third footnote.</p>
                          <fmt-fn-label>
-                            <sup>
-                               <semx element="autonum" source="_">7</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <semx element="autonum" source="_">7</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </p>
@@ -894,10 +964,12 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="3" id="_" original-reference="2" target="_">
                          <p id="_">Formerly denoted as 15 % (m/m).</p>
                          <fmt-fn-label>
-                            <sup>
-                               <semx element="autonum" source="_">3</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <semx element="autonum" source="_">3</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </p>
@@ -927,10 +999,12 @@ RSpec.describe IsoDoc::Bipm do
                          <fn reference="5" id="_" original-reference="7" target="_">
                             <p original-id="_">ISO is a standards organisation.</p>
                             <fmt-fn-label>
-                               <sup>
-                                  <semx element="autonum" source="_">5</semx>
-                                  <span class="fmt-label-delim">)</span>
-                               </sup>
+                               <span class="fmt-caption-label">
+                                  <sup>
+                                     <semx element="autonum" source="_">5</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </span>
                             </fmt-fn-label>
                          </fn>
                       </em>
@@ -941,10 +1015,12 @@ RSpec.describe IsoDoc::Bipm do
                       <fn reference="5" id="_" original-reference="7" target="_">
                          <p id="_">ISO is a standards organisation.</p>
                          <fmt-fn-label>
-                            <sup>
-                               <semx element="autonum" source="_">5</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <semx element="autonum" source="_">5</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </title>
@@ -968,9 +1044,11 @@ RSpec.describe IsoDoc::Bipm do
                 <semx element="fn" source="_">
                    <p>
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">1</semx>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">1</semx>
+                            </sup>
+                         </span>
                          <span class="fmt-caption-delim">
                             <tab/>
                          </span>
@@ -983,9 +1061,11 @@ RSpec.describe IsoDoc::Bipm do
                 <semx element="fn" source="_">
                    <p>
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">2</semx>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">2</semx>
+                            </sup>
+                         </span>
                          <span class="fmt-caption-delim">
                             <tab/>
                          </span>
@@ -998,9 +1078,11 @@ RSpec.describe IsoDoc::Bipm do
                 <semx element="fn" source="_">
                    <p id="_">
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">3</semx>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">3</semx>
+                            </sup>
+                         </span>
                          <span class="fmt-caption-delim">
                             <tab/>
                          </span>
@@ -1013,9 +1095,11 @@ RSpec.describe IsoDoc::Bipm do
                 <semx element="fn" source="_">
                    <p id="_">
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">4</semx>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">4</semx>
+                            </sup>
+                         </span>
                          <span class="fmt-caption-delim">
                             <tab/>
                          </span>
@@ -1028,9 +1112,11 @@ RSpec.describe IsoDoc::Bipm do
                 <semx element="fn" source="_">
                    <p id="_">
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">5</semx>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">5</semx>
+                            </sup>
+                         </span>
                          <span class="fmt-caption-delim">
                             <tab/>
                          </span>
@@ -1043,9 +1129,11 @@ RSpec.describe IsoDoc::Bipm do
                 <semx element="fn" source="_">
                    <p original-id="_">
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">6</semx>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">6</semx>
+                            </sup>
+                         </span>
                          <span class="fmt-caption-delim">
                             <tab/>
                          </span>
@@ -1058,9 +1146,11 @@ RSpec.describe IsoDoc::Bipm do
                 <semx element="fn" source="_">
                    <p id="_">
                       <fmt-fn-label>
-                         <sup>
-                            <semx element="autonum" source="_">7</semx>
-                         </sup>
+                         <span class="fmt-caption-label">
+                            <sup>
+                               <semx element="autonum" source="_">7</semx>
+                            </sup>
+                         </span>
                          <span class="fmt-caption-delim">
                             <tab/>
                          </span>

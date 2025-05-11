@@ -318,14 +318,16 @@ RSpec.describe IsoDoc do
                       [2]
                       <tab/>
                       ISO 16634:-- (all parts)
-                      <fn reference="1" original-reference="1" id="_" target="_">
+                      <fn id="_" reference="1" original-reference="1" target="_">
                          <p>Under preparation. (Stage at the time of publication ISO/DIS 16634)</p>
                          <fmt-fn-label>
-                            <sup>
-                         <span class="fmt-label-delim">(</span>
-                               <semx element="autonum" source="_">1</semx>
-                               <span class="fmt-label-delim">)</span>
-                            </sup>
+                            <span class="fmt-caption-label">
+                               <sup>
+                                  <span class="fmt-label-delim">(</span>
+                                  <semx element="autonum" source="_">1</semx>
+                                  <span class="fmt-label-delim">)</span>
+                               </sup>
+                            </span>
                          </fmt-fn-label>
                       </fn>
                    </biblio-tag>
@@ -599,28 +601,30 @@ RSpec.describe IsoDoc do
                       <tab/>
                    </biblio-tag>
                 </bibitem>
-          <fmt-footnote-container>
-             <fmt-fn-body id="_" target="_" reference="1">
-                <semx element="fn" source="_">
-                   <p>
-                      <fmt-fn-label>
-                         <sup>
-                      <span class="fmt-label-delim">(</span>
-                            <semx element="autonum" source="_">1</semx>
-                            <span class="fmt-label-delim">)</span>
-                         </sup>
-                         <span class="fmt-caption-delim">
-                            <tab/>
-                         </span>
-                      </fmt-fn-label>
-                      Under preparation. (Stage at the time of publication ISO/DIS 16634)
-                   </p>
-                </semx>
-             </fmt-fn-body>
-          </fmt-footnote-container>
+                <fmt-footnote-container>
+                   <fmt-fn-body id="_" target="_" reference="1">
+                      <semx element="fn" source="_">
+                         <p>
+                            <fmt-fn-label>
+                               <span class="fmt-caption-label">
+                                  <sup>
+                                     <span class="fmt-label-delim">(</span>
+                                     <semx element="autonum" source="_">1</semx>
+                                     <span class="fmt-label-delim">)</span>
+                                  </sup>
+                               </span>
+                               <span class="fmt-caption-delim">
+                                  <tab/>
+                               </span>
+                            </fmt-fn-label>
+                            Under preparation. (Stage at the time of publication ISO/DIS 16634)
+                         </p>
+                      </semx>
+                   </fmt-fn-body>
+                </fmt-footnote-container>
              </references>
+          </bibliography>
        </iso-standard>
-         </bibliography>
      PRESXML
 
     output = <<~OUTPUT
