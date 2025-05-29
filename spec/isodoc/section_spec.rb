@@ -15,10 +15,10 @@ RSpec.describe IsoDoc::Bipm do
       </iso-standard>
     INPUT
     output = <<~OUTPUT
-       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title id="_" depth="1">Contents</fmt-title>
+                <fmt-title depth="1" id="_">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
@@ -27,7 +27,7 @@ RSpec.describe IsoDoc::Bipm do
                    Title
                    <bookmark original-id="A2"/>
                 </title>
-                <fmt-title id="_" depth="1">
+                <fmt-title depth="1" id="_">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="A1">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -47,16 +47,18 @@ RSpec.describe IsoDoc::Bipm do
                 </fmt-xref-label>
              </clause>
              <clause id="A2" displayorder="3">
-                <title type="quoted">
-                   <blacksquare/>
+                <title type="quoted" id="_">
                    Title
                    <bookmark original-id="A3"/>
                 </title>
-                <fmt-title type="quoted" depth="1" id="_">
-                   <blacksquare/>
-                   Title
-                   <bookmark id="A3"/>
-                   <bookmark id="_"/>
+                <fmt-title depth="1" id="_">
+                   <span class="fmt-caption-label">▀</span>
+                   <span class="fmt-caption-delim"/>
+                   <semx element="title" source="_">
+                      Title
+                      <bookmark id="A3"/>
+                      <bookmark id="_"/>
+                   </semx>
                 </fmt-title>
              </clause>
           </sections>
@@ -381,105 +383,108 @@ RSpec.describe IsoDoc::Bipm do
           </bibitem>
         </relation>
         </bibdata>
-                 <preface>
-             <clause type="toc" id="_" displayorder="1">
-                <fmt-title id="_" depth="1">Contents</fmt-title>
-             </clause>
-          </preface>
-          <sections>
-      <clause id="_" displayorder="2">
-         <fmt-title depth="1" id="_">
-            <span class="fmt-caption-label">
-               <semx element="autonum" source="_">1</semx>
-               <span class="fmt-autonum-delim">.</span>
-            </span>
-         </fmt-title>
-         <fmt-xref-label>
-            <span class="fmt-element-name">Chapter</span>
-            <semx element="autonum" source="_">1</semx>
-         </fmt-xref-label>
+           <preface>
+      <clause type="toc" id="_" displayorder="1">
+         <fmt-title depth="1" id="_">Contents</fmt-title>
       </clause>
+      </preface>
+          <sections>
+             <clause id="_" displayorder="2">
+                <fmt-title depth="1" id="_">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="_">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="_">1</semx>
+                </fmt-xref-label>
+             </clause>
           </sections>
-          <doccontrol displayorder="999">
-             <fmt-title id="_">Document Control</fmt-title>
-             <table unnumbered="true">
-                <tbody>
-                   <tr>
-                      <th>Authors:</th>
-                      <td/>
-                      <td>
-                         Andrew Yacoot (NPL)
-                         <span class="fmt-enum-comma">,</span>
-                         Ulrich Kuetgens (PTB)
-                         <span class="fmt-enum-comma">,</span>
-                         <span class="fmt-conn">and</span>
-                         Enrico Massa (INRIM)
-                      </td>
-                   </tr>
-                   <tr>
-                      <td>Draft 1.0 Version 1.0</td>
-                      <td>2018-06-11</td>
-                      <td>
-                         WG-N co-chairs: Ronald Dixson (NIST)
-                         <span class="fmt-conn">and</span>
-                         Harald Bosse (PTB)
-                      </td>
-                   </tr>
-                   <tr>
-                      <td>Draft 2.0 Version 2.0</td>
-                      <td>2019-06-11</td>
-                      <td>WG-N chair: Andrew Yacoot (NPL)</td>
-                   </tr>
-                   <tr>
-                      <td>Draft 3.0 </td>
-                      <td>2019-06-11</td>
-                      <td/>
-                   </tr>
-                </tbody>
-             </table>
-          </doccontrol>
+          <colophon>
+             <clause class="doccontrol" id="_" displayorder="3">
+                <fmt-title id="_" depth="1">Document Control</fmt-title>
+                <table id="_" unnumbered="true">
+                   <tbody>
+                      <tr id="_">
+                         <th id="_">Authors:</th>
+                         <td id="_"/>
+                         <td id="_">
+                            Andrew Yacoot (NPL)
+                            <span class="fmt-enum-comma">,</span>
+                            Ulrich Kuetgens (PTB)
+                            <span class="fmt-enum-comma">,</span>
+                            <span class="fmt-conn">and</span>
+                            Enrico Massa (INRIM)
+                         </td>
+                      </tr>
+                      <tr id="_">
+                         <td id="_">Draft 1.0 Version 1.0</td>
+                         <td id="_">2018-06-11</td>
+                         <td id="_">
+                            WG-N co-chairs: Ronald Dixson (NIST)
+                            <span class="fmt-conn">and</span>
+                            Harald Bosse (PTB)
+                         </td>
+                      </tr>
+                      <tr id="_">
+                         <td>Draft 2.0 Version 2.0</td>
+                         <td>2019-06-11</td>
+                         <td id="_">WG-N chair: Andrew Yacoot (NPL)</td>
+                      </tr>
+                      <tr id="_">
+                         <td id="_">Draft 3.0 </td>
+                         <td id="_">2019-06-11</td>
+                         <td/>
+                      </tr>
+                   </tbody>
+                </table>
+             </clause>
+          </colophon>
        </bipm-standard>
     OUTPUT
 
     output = Xml::C14n.format(<<~"OUTPUT")
       #{HTML_HDR}
-               <br/>
-            <div id="_" class="TOC">
-              <h1 class="IntroTitle">Contents</h1>
-            </div>
-       <div id="_">
-         <h1>1.</h1>
-      </div>
-           <div class='doccontrol'>
-              <h1>Document Control</h1>
-              <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
-                 <tbody>
-                   <tr>
-                     <th style='font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;' scope='row'>Authors:</th>
-                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
-                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL), Ulrich Kuetgens (PTB), and Enrico Massa (INRIM)</td>
-                   </tr>
-                   <tr>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 1.0 Version 1.0</td>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2018-06-11</td>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
-                   </tr>
-                   <tr>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>Draft 2.0 Version 2.0</td>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>2019-06-11</td>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.0pt;'>WG-N chair: Andrew Yacoot (NPL)</td>
-                   </tr>
-                   <tr>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 3.0 </td>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2019-06-11</td>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
-                   </tr>
-                 </tbody>
-               </table>
-            </div>
+              <br/>
+             <div id="_" class="TOC">
+                <h1 class="IntroTitle">Contents</h1>
+             </div>
+             <div id="_">
+                <h1>1.</h1>
+             </div>
+             <br/>
+              <div class="Section3" id="_">
+                <h1 class="IntroTitle">Document Control</h1>
+                <table id="_" class="MsoISOTable" style="border-width:1px;border-spacing:0;">
+                   <tbody>
+                      <tr>
+                         <th style="font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Authors:</th>
+                         <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;"/>
+                         <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">Andrew Yacoot (NPL), Ulrich Kuetgens (PTB), and Enrico Massa (INRIM)</td>
+                      </tr>
+                      <tr>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.0pt;">Draft 1.0 Version 1.0</td>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.0pt;">2018-06-11</td>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.0pt;">WG-N co-chairs: Ronald Dixson (NIST) and Harald Bosse (PTB)</td>
+                      </tr>
+                      <tr>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.0pt;">Draft 2.0 Version 2.0</td>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.0pt;">2019-06-11</td>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.0pt;">WG-N chair: Andrew Yacoot (NPL)</td>
+                      </tr>
+                      <tr>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;">Draft 3.0 </td>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;">2019-06-11</td>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;"/>
+                      </tr>
+                   </tbody>
+                </table>
+             </div>
           </div>
-        </body>
-    OUTPUT
+       </body>
+           OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert
         .new(presxml_options)
@@ -569,147 +574,146 @@ RSpec.describe IsoDoc::Bipm do
 
     presxml = <<~PRESXML
       <bipm-standard xmlns='https://www.metanorma.org/ns/bipm' version="#{Metanorma::Bipm::VERSION}" type='presentation'>
-      <bibdata type='standard'>
-             <title language='en' format='text/plain' type='title-main'>Main Title</title>
-             <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
-             <title language='en' format='text/plain' type='title-appendix'>Main Title (SI)</title>
+          <bibdata type="standard">
+             <title language="en" format="text/plain" type="title-main">Main Title</title>
+             <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
+             <title language="en" format="text/plain" type="title-appendix">Main Title (SI)</title>
              <contributor>
-               <role type='author'/>
-               <organization>
-                 <name>Bureau International des Poids et Mesures</name>
-                 <abbreviation>BIPM</abbreviation>
-               </organization>
+                <role type="author"/>
+                <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <abbreviation>BIPM</abbreviation>
+                </organization>
              </contributor>
              <contributor>
-               <role type='author'/>
-               <person>
-                 <name>
-                   <completename>Andrew Yacoot</completename>
-                 </name>
-                 <affiliation>
-                   <organization>
-                     <name>NPL</name>
-                   </organization>
-                 </affiliation>
-               </person>
+                <role type="author"/>
+                <person>
+                   <name>
+                      <completename>Andrew Yacoot</completename>
+                   </name>
+                   <affiliation>
+                      <organization>
+                         <name>NPL</name>
+                      </organization>
+                   </affiliation>
+                </person>
              </contributor>
              <contributor>
-               <role type='author'/>
-               <person>
-                 <name>
-                   <completename>Ulrich Kuetgens</completename>
-                 </name>
-                 <affiliation>
-                   <organization>
-                     <name>PTB</name>
-                   </organization>
-                 </affiliation>
-               </person>
+                <role type="author"/>
+                <person>
+                   <name>
+                      <completename>Ulrich Kuetgens</completename>
+                   </name>
+                   <affiliation>
+                      <organization>
+                         <name>PTB</name>
+                      </organization>
+                   </affiliation>
+                </person>
              </contributor>
              <contributor>
-               <role type='publisher'/>
-               <organization>
-                 <name>Bureau International des Poids et Mesures</name>
-                 <abbreviation>BIPM</abbreviation>
-               </organization>
+                <role type="publisher"/>
+                <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <abbreviation>BIPM</abbreviation>
+                </organization>
              </contributor>
-             <edition language=''>2</edition><edition language='en'>second edition</edition>
+             <edition language="">2</edition>
+             <edition language="en">second edition</edition>
              <version>
-               <revision-date>2000-01-01</revision-date>
-               <draft>3.4</draft>
+                <revision-date>2000-01-01</revision-date>
+                <draft>3.4</draft>
              </version>
-             <language current='true'>en</language>
-             <script current='true'>Latn</script>
+             <language current="true">en</language>
+             <script current="true">Latn</script>
              <status>
-               <stage>working-draft</stage>
-               <iteration>3</iteration>
+                <stage>working-draft</stage>
+                <iteration>3</iteration>
              </status>
-             <relation type='supersedes'>
-               <bibitem>
-                 <date type='published'>2018-06-11</date>
-                 <edition>1.0</edition>
-                 <version>
-                   <draft>1.0</draft>
-                 </version>
-               </bibitem>
+             <relation type="supersedes">
+                <bibitem>
+                   <date type="published">2018-06-11</date>
+                   <edition>1.0</edition>
+                   <version>
+                      <draft>1.0</draft>
+                   </version>
+                </bibitem>
              </relation>
-           </bibdata>
-             <preface>
-              <clause type="toc" id="_" displayorder="1">
-                <fmt-title id="_" depth="1">Contents</fmt-title>
-              </clause>
-            </preface>
-            <sections>
-        <clause id="_" displayorder="2">
-         <fmt-title depth="1" id="_">
-            <span class="fmt-caption-label">
-               <semx element="autonum" source="_">1</semx>
-               <span class="fmt-autonum-delim">.</span>
-            </span>
-         </fmt-title>
-         <fmt-xref-label>
-            <span class="fmt-element-name">Chapter</span>
-            <semx element="autonum" source="_">1</semx>
-         </fmt-xref-label>
-      </clause>
-         </sections>
-         <doccontrol displayorder="999">
-             <fmt-title id="_">Document Control</fmt-title>
-             <table unnumbered='true'>
-               <tbody>
-                 <tr>
-                   <th>Authors:</th>
-                   <td/>
-                   <td>Andrew Yacoot (NPL) <span class="fmt-conn">and</span> Ulrich Kuetgens (PTB)</td>
-                 </tr>
-                 <tr>
-                   <td>Draft 1.0 Version 1.0</td>
-                   <td>2018-06-11</td>
-                   <td/>
-                 </tr>
-               </tbody>
-             </table>
-           </doccontrol>
-         </bipm-standard>
+          </bibdata>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1" id="_">Contents</fmt-title>
+             </clause>
+          </preface>
+          <sections>
+             <clause id="_" displayorder="2">
+                <fmt-title depth="1" id="_">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="_">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="_">1</semx>
+                </fmt-xref-label>
+             </clause>
+          </sections>
+          <colophon>
+             <clause class="doccontrol" id="_" displayorder="3">
+                <fmt-title id="_" depth="1">Document Control</fmt-title>
+                <table id="_" unnumbered="true">
+                   <tbody>
+                      <tr id="_">
+                         <th id="_">Authors:</th>
+                         <td id="_"/>
+                         <td id="_">
+                            Andrew Yacoot (NPL)
+                            <span class="fmt-conn">and</span>
+                            Ulrich Kuetgens (PTB)
+                         </td>
+                      </tr>
+                      <tr id="_">
+                         <td id="_">Draft 1.0 Version 1.0</td>
+                         <td id="_">2018-06-11</td>
+                         <td id="_"/>
+                      </tr>
+                   </tbody>
+                </table>
+             </clause>
+          </colophon>
+       </bipm-standard>
     PRESXML
 
     output = <<~HTML
-      <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
-           <div class='title-section'>
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class='prefatory-section'>
-             <p>&#160;</p>
-           </div>
-           <br/>
-           <div class='main-section'>
-               <br/>
-            <div id="_" class="TOC">
-              <h1 class="IntroTitle">Contents</h1>
-            </div>
-       <div id="_">
-         <h1>1.</h1>
-      </div>
-             <div class='doccontrol'>
-               <h1>Document Control</h1>
-               <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
-                 <tbody>
-                   <tr>
-                     <th style='font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;' scope='row'>Authors:</th>
-                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'/>
-                     <td style='border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;'>Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
-                   </tr>
-                   <tr>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>Draft 1.0 Version 1.0</td>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'>2018-06-11</td>
-                     <td style='border-top:none;border-bottom:solid windowtext 1.5pt;'/>
-                   </tr>
-                 </tbody>
-               </table>
+      #{HTML_HDR}
+              <br/>
+             <div id="_" class="TOC">
+                <h1 class="IntroTitle">Contents</h1>
+             </div>
+              <div id="_">
+                <h1>1.</h1>
+             </div>
+             <br/>
+             <div class="Section3" id="_">
+                <h1 class="IntroTitle">Document Control</h1>
+                <table id="_" class="MsoISOTable" style="border-width:1px;border-spacing:0;">
+                   <tbody>
+                      <tr>
+                         <th style="font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Authors:</th>
+                         <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;"/>
+                         <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
+                      </tr>
+                      <tr>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;">Draft 1.0 Version 1.0</td>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;">2018-06-11</td>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;"/>
+                      </tr>
+                   </tbody>
+                </table>
              </div>
           </div>
-         </body>
+       </body>
     HTML
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert

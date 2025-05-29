@@ -9,8 +9,8 @@ module IsoDoc
         Metanorma::Bipm.configuration
       end
 
-      TOP_ELEMENTS = IsoDoc::Function::ToWordHtml::TOP_ELEMENTS +
-        " | //doccontrol[@displayorder]".freeze
+      #TOP_ELEMENTS = IsoDoc::Function::ToWordHtml::TOP_ELEMENTS +
+        #" | //doccontrol[@displayorder]".freeze
 
       def convert1(docxml, filename, dir)
         @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
@@ -31,27 +31,29 @@ module IsoDoc
         @jcgm ? docxml : super
       end
 
-      def error_parse(node, out)
+      # KILL
+      def error_parsex(node, out)
         case node.name
         when "blacksquare" then blacksquare_parse(node, out)
         else super
         end
       end
 
+      #KILL
       def blacksquare_parse(_node, out)
         out << "&#x25a0;"
       end
 
-      def sections_names
-        super + %w[doccontrol]
-      end
+      #def sections_names
+        #super + %w[doccontrol]
+      #end
 
-      def top_element_render(elem, out)
-        case elem.name
-        when "doccontrol" then doccontrol elem, out
-        else super
-        end
-      end
+      #def top_element_render(elem, out)
+        #case elem.name
+        #when "doccontrol" then doccontrol elem, out
+        #else super
+        #end
+      #end
 
       def table_footnote?(node)
         super && !node.ancestors.map(&:name).include?("quote")
