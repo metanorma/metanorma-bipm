@@ -39,7 +39,7 @@ module IsoDoc
       end
 
       def clause(docxml)
-        quotedtitles(docxml)
+        # quotedtitles(docxml)
         super
         @jcgm and
           docxml.xpath(ns("//preface/introduction[clause]")).each do |f|
@@ -54,14 +54,24 @@ module IsoDoc
       end
 
       def prefix_name(node, delims, number, elem)
-        if n = node.at(ns("./#{elem}[@type = 'quoted']"))
-          n1 = n.dup
-          n1.name = "fmt-#{elem}"
-          n.next = n1
-          prefix_name_postprocess(node, elem)
+        if elem == "title" &&
+            n = node.at(ns("./variant-#{elem}[@type = 'quoted']"))
+          quoted_title_render(node, elem, n)
         else
           super
         end
+      end
+
+      def quoted_title_render(node, elem, variant_title)
+        add_id(variant_title)
+        variant_title.next =
+          fmt_caption("&#x2580;", elem, variant_title, {}, {})
+        if s = variant_title.next.at(ns("./semx[@element='title']"))
+          s["source"] = variant_title["id"]
+        end
+        # to prevent it rendering, as Semantic XML element
+        variant_title.name = "title"
+        prefix_name_postprocess(node, elem)
       end
 
       def conversions(docxml)
@@ -133,6 +143,7 @@ module IsoDoc
         node.next = "]"
       end
 
+      # KILL
       def quotedtitles(docxml)
         docxml.xpath(ns("//variant-title[@type = 'quoted']")).each do |t|
           t.name = "title"

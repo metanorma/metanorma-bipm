@@ -15,10 +15,10 @@ RSpec.describe IsoDoc::Bipm do
       </iso-standard>
     INPUT
     output = <<~OUTPUT
-       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title id="_" depth="1">Contents</fmt-title>
+                <fmt-title depth="1" id="_">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
@@ -27,7 +27,7 @@ RSpec.describe IsoDoc::Bipm do
                    Title
                    <bookmark original-id="A2"/>
                 </title>
-                <fmt-title id="_" depth="1">
+                <fmt-title depth="1" id="_">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="A1">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -47,14 +47,18 @@ RSpec.describe IsoDoc::Bipm do
                 </fmt-xref-label>
              </clause>
              <clause id="A2" displayorder="3">
-                <title type="quoted">
-                   ▀Title
+                <title type="quoted" id="_">
+                   Title
                    <bookmark original-id="A3"/>
                 </title>
-                <fmt-title type="quoted" depth="1" id="_">
-                   ▀Title
-                   <bookmark id="A3"/>
-                   <bookmark id="_"/>
+                <fmt-title depth="1" id="_">
+                   <span class="fmt-caption-label">▀</span>
+                   <span class="fmt-caption-delim"/>
+                   <semx element="title" source="_">
+                      Title
+                      <bookmark id="A3"/>
+                      <bookmark id="_"/>
+                   </semx>
                 </fmt-title>
              </clause>
           </sections>

@@ -1803,44 +1803,46 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
     presxml = <<~OUTPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-         <bibdata/>
-         <preface>
-            <clause type="toc" id="_" displayorder="1">
-               <fmt-title id="_" depth="1">Contents</fmt-title>
-            </clause>
-         </preface>
-         <sections>
-            <clause id="A" obligation="normative" displayorder="2">
-               <title id="_">Clause</title>
-               <fmt-title id="_" depth="1">
-                  <span class="fmt-caption-label">
-                     <semx element="autonum" source="A">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
-                  </span>
-                  <span class="fmt-caption-delim">
-                     <tab/>
-                  </span>
-                  <semx element="title" source="_">Clause</semx>
-               </fmt-title>
-               <fmt-xref-label>
-                  <span class="fmt-element-name">Chapter</span>
-                  <semx element="autonum" source="A">1</semx>
-               </fmt-xref-label>
-               <clause id="B" obligation="normative">
-                  <title type="quoted">
-                     ▀
-                     <strong>Definition of the metre</strong>
-                     (CR, 85)
-                  </title>
-                  <fmt-title id="_" type="quoted" depth="2">
-                     ▀
-                     <strong>Definition of the metre</strong>
-                     (CR, 85)
-                  </fmt-title>
-               </clause>
-            </clause>
-         </sections>
-      </iso-standard>
+          <bibdata/>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1" id="_">Contents</fmt-title>
+             </clause>
+          </preface>
+                   <sections>
+             <clause id="A" obligation="normative" displayorder="2">
+                <title id="_">Clause</title>
+                <fmt-title depth="1" id="_">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">Clause</semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="A">1</semx>
+                </fmt-xref-label>
+                <clause id="B" obligation="normative">
+                   <title type="quoted" id="_">
+                      <strong>Definition of the metre</strong>
+                      (CR, 85)
+                   </title>
+                   <fmt-title depth="2" id="_">
+                      <span class="fmt-caption-label">▀</span>
+                      <span class="fmt-caption-delim"/>
+                      <semx element="title" source="_">
+                         <strong>Definition of the metre</strong>
+                         (CR, 85)
+                      </semx>
+                   </fmt-title>
+                </clause>
+             </clause>
+          </sections>
+       </iso-standard>
     OUTPUT
     output = <<~OUTPUT
       <body lang='EN-US' xml:lang='EN-US' link='blue' vlink='#954F72' class='container'>
