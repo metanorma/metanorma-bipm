@@ -136,7 +136,7 @@ module IsoDoc
       def quotedtitles(docxml)
         docxml.xpath(ns("//variant-title[@type = 'quoted']")).each do |t|
           t.name = "title"
-          t.children.first.previous = "<blacksquare/>"
+          t.children.first.previous = "&#x2580;"
         end
       end
 

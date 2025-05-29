@@ -48,13 +48,11 @@ RSpec.describe IsoDoc::Bipm do
              </clause>
              <clause id="A2" displayorder="3">
                 <title type="quoted">
-                   <blacksquare/>
-                   Title
+                   ▀Title
                    <bookmark original-id="A3"/>
                 </title>
                 <fmt-title type="quoted" depth="1" id="_">
-                   <blacksquare/>
-                   Title
+                   ▀Title
                    <bookmark id="A3"/>
                    <bookmark id="_"/>
                 </fmt-title>

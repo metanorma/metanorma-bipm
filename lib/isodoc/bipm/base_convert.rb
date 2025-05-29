@@ -31,13 +31,15 @@ module IsoDoc
         @jcgm ? docxml : super
       end
 
-      def error_parse(node, out)
+      # KILL
+      def error_parsex(node, out)
         case node.name
         when "blacksquare" then blacksquare_parse(node, out)
         else super
         end
       end
 
+      #KILL
       def blacksquare_parse(_node, out)
         out << "&#x25a0;"
       end

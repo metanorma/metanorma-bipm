@@ -1828,12 +1828,12 @@ RSpec.describe IsoDoc::Bipm do
                </fmt-xref-label>
                <clause id="B" obligation="normative">
                   <title type="quoted">
-                     <blacksquare/>
+                     ▀
                      <strong>Definition of the metre</strong>
                      (CR, 85)
                   </title>
                   <fmt-title id="_" type="quoted" depth="2">
-                     <blacksquare/>
+                     ▀
                      <strong>Definition of the metre</strong>
                      (CR, 85)
                   </fmt-title>
@@ -1861,7 +1861,7 @@ RSpec.describe IsoDoc::Bipm do
             <h1>1.&#160; Clause</h1>
             <div id='B'>
               <h2>
-                &#9632;
+                ▀
                 <b>Definition of the metre</b>
                  (CR, 85)
               </h2>
