@@ -2,17 +2,18 @@ module IsoDoc
   module Bipm
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def doccontrol(doc)
-        return unless doc.at(ns("//bibdata/relation[@type = 'supersedes']"))
-
+        doc.at(ns("//bibdata/relation[@type = 'supersedes']")) or return
         clause = <<~DOCCONTROL
-          <doccontrol displayorder="999">
-          <fmt-title>Document Control</fmt-title>
-          <table unnumbered="true"><tbody>
-          <tr><th>Authors:</th><td/><td>#{list_authors(doc)}</td></tr>
+          <clause class="doccontrol" #{add_id_text}>
+          <fmt-title #{add_id_text}>Document Control</fmt-title>
+          <table #{add_id_text} unnumbered="true"><tbody>
+          <tr #{add_id_text}><th #{add_id_text}>Authors:</th><td #{add_id_text}/><td #{add_id_text}>#{list_authors(doc)}</td></tr>
           #{doccontrol_row1(doc)} #{doccontrol_row2(doc)} #{list_drafts(doc)}
-          </tbody></table></doccontrol>
+          </tbody></table></clause>
         DOCCONTROL
-        doc.root << clause
+        ins = doc.root.at(ns("./colophon")) ||
+          doc.root.add_child("<colophon/>").first
+        ins << clause
       end
 
       def doccontrol_row1(doc)
@@ -20,8 +21,8 @@ module IsoDoc
                                 1) == ["", ""] && list_cochairs(doc).empty?
 
         <<~ROW
-          <tr>#{list_draft(doc, 1)&.map { |x| "<td>#{x}</td>" }&.join}
-          <td>#{list_cochairs(doc)}</td></tr>
+          <tr #{add_id_text}>#{list_draft(doc, 1)&.map { |x| "<td #{add_id_text}>#{x}</td>" }&.join}
+          <td #{add_id_text}>#{list_cochairs(doc)}</td></tr>
         ROW
       end
 
@@ -30,8 +31,8 @@ module IsoDoc
           return ""
 
         <<~ROW
-          <tr>#{list_draft(docxml, 2)&.map { |x| "<td>#{x}</td>" }&.join}
-          <td>#{list_chairs(docxml)}</td></tr>
+          <tr #{add_id_text}>#{list_draft(docxml, 2)&.map { |x| "<td>#{x}</td>" }&.join}
+          <td #{add_id_text}>#{list_chairs(docxml)}</td></tr>
         ROW
       end
 
@@ -39,9 +40,9 @@ module IsoDoc
         ret = ""
         i = 3
         while list_draft(xml, i) != ["", ""]
-          ret += "<tr>#{list_draft(xml, i).map do |x|
-                          "<td>#{x}</td>"
-                        end.join} " \
+          ret += "<tr #{add_id_text}>#{list_draft(xml, i).map do |x|
+            "<td #{add_id_text}>#{x}</td>"
+          end.join} " \
                  "<td/></tr>"
           i += 1
         end
@@ -51,10 +52,9 @@ module IsoDoc
       def list_draft(xml, idx)
         d = xml.at(ns("//bibdata/relation[@type = 'supersedes'][#{idx}]" \
                       "/bibitem")) or return ["", ""]
-
-        draft = d&.at(ns("./version/draft"))&.text and draft = "Draft #{draft}"
-        edn = d&.at(ns("./edition"))&.text and edn = "Version #{edn}"
-        [[draft, edn].join(" "), d&.at(ns("./date"))&.text]
+        draft = d.at(ns("./version/draft"))&.text and draft = "Draft #{draft}"
+        edn = d.at(ns("./edition"))&.text and edn = "Version #{edn}"
+        [[draft, edn].join(" "), d.at(ns("./date"))&.text]
       end
 
       def list_authors(xml)
