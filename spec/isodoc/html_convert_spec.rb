@@ -28,8 +28,8 @@ RSpec.describe IsoDoc::Bipm do
     input = <<~INPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml">
           <preface>
-          <clause type="toc" id="_" displayorder="1"> <fmt-title depth="1">Table of contents</fmt-title> </clause>
-          <foreword displayorder="2" id="fwd"><fmt-title>Foreword</fmt-title>
+          <clause type="toc" id="_" displayorder="1"> <fmt-title id="_" depth="1">Table of contents</fmt-title> </clause>
+          <foreword displayorder="2" id="fwd"><fmt-title id="_">Foreword</fmt-title>
           <ul id="_61961034-0fb1-436b-b281-828857a59ddb"  keep-with-next="true" keep-lines-together="true">
           <name>Caption</name>
         <li>
@@ -62,39 +62,39 @@ RSpec.describe IsoDoc::Bipm do
          <preface>
             <foreword displayorder="1" id="fwd">
                <title id="_">Foreword</title>
-               <fmt-title depth="1">Foreword</fmt-title>
+               <fmt-title id="_" depth="1">Foreword</fmt-title>
                <ul id="_" keep-with-next="true" keep-lines-together="true">
                   <name id="_">Caption</name>
-                  <fmt-name>
+                  <fmt-name id="_">
                      <semx element="name" source="_">Caption</semx>
                   </fmt-name>
-                  <li>
-                     <fmt-name>
-                        <semx element="autonum" source="">•</semx>
+                  <li id="_">
+                     <fmt-name id="_">
+                        <semx element="autonum" source="_">•</semx>
                      </fmt-name>
                      <p id="_">Level 1</p>
                   </li>
-                  <li>
-                     <fmt-name>
-                        <semx element="autonum" source="">•</semx>
+                  <li id="_">
+                     <fmt-name id="_">
+                        <semx element="autonum" source="_">•</semx>
                      </fmt-name>
                      <p id="_">deletion of 4.3.</p>
                      <ul id="_" keep-with-next="true" keep-lines-together="true">
-                        <li>
-                           <fmt-name>
-                              <semx element="autonum" source="">−</semx>
+                        <li id="_">
+                           <fmt-name id="_">
+                              <semx element="autonum" source="_">−</semx>
                            </fmt-name>
                            <p id="_">Level 2</p>
                            <ul id="_" keep-with-next="true" keep-lines-together="true">
-                              <li>
-                                 <fmt-name>
-                                    <semx element="autonum" source="">o</semx>
+                              <li id="_">
+                                 <fmt-name id="_">
+                                    <semx element="autonum" source="_">o</semx>
                                  </fmt-name>
                                  <p id="_">Level 3</p>
                                  <ul id="_" keep-with-next="true" keep-lines-together="true">
-                                    <li>
-                                       <fmt-name>
-                                          <semx element="autonum" source="">•</semx>
+                                    <li id="_">
+                                       <fmt-name id="_">
+                                          <semx element="autonum" source="_">•</semx>
                                        </fmt-name>
                                        <p id="_">Level 4</p>
                                     </li>
@@ -107,7 +107,7 @@ RSpec.describe IsoDoc::Bipm do
                </ul>
             </foreword>
             <clause type="toc" id="_" displayorder="2">
-               <fmt-title depth="1">Table of contents</fmt-title>
+               <fmt-title id="_" depth="1">Table of contents</fmt-title>
             </clause>
          </preface>
       </iso-standard>
@@ -162,20 +162,20 @@ RSpec.describe IsoDoc::Bipm do
       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
          <preface>
             <clause type="toc" id="_" displayorder="1">
-               <fmt-title depth="1">Contents</fmt-title>
+               <fmt-title id="_" depth="1">Contents</fmt-title>
             </clause>
             <foreword id="_" displayorder="2">
                <title id="_">Foreword</title>
-               <fmt-title depth="1">
+               <fmt-title id="_" depth="1">
                   <semx element="title" source="_">Foreword</semx>
                </fmt-title>
                <ol id="_" type="alphabet" keep-with-next="true" keep-lines-together="true" autonum="1">
                   <name id="_">Caption</name>
-                  <fmt-name>
+                  <fmt-name id="_">
                      <semx element="name" source="_">Caption</semx>
                   </fmt-name>
                   <li id="_">
-                     <fmt-name>
+                     <fmt-name id="_">
                         <semx element="autonum" source="_">a</semx>
                         <span class="fmt-label-delim">)</span>
                      </fmt-name>
@@ -184,28 +184,28 @@ RSpec.describe IsoDoc::Bipm do
                </ol>
                <ol id="A" type="alphabet">
                   <li id="_">
-                     <fmt-name>
+                     <fmt-name id="_">
                         <semx element="autonum" source="_">a</semx>
                         <span class="fmt-label-delim">)</span>
                      </fmt-name>
                      <p id="_">Level 1</p>
                   </li>
                   <li id="_">
-                     <fmt-name>
+                     <fmt-name id="_">
                         <semx element="autonum" source="_">b</semx>
                         <span class="fmt-label-delim">)</span>
                      </fmt-name>
                      <p id="_">Level 1</p>
                      <ol type="arabic">
                         <li id="_">
-                           <fmt-name>
+                           <fmt-name id="_">
                               <semx element="autonum" source="_">1</semx>
                               <span class="fmt-label-delim">.</span>
                            </fmt-name>
                            <p id="_">Level 2</p>
                            <ol type="roman">
                               <li id="_">
-                                 <fmt-name>
+                                 <fmt-name id="_">
                                     <span class="fmt-label-delim">(</span>
                                     <semx element="autonum" source="_">i</semx>
                                     <span class="fmt-label-delim">)</span>
@@ -213,7 +213,7 @@ RSpec.describe IsoDoc::Bipm do
                                  <p id="_">Level 3</p>
                                  <ol type="alphabet_upper">
                                     <li id="_">
-                                       <fmt-name>
+                                       <fmt-name id="_">
                                           <semx element="autonum" source="_">A</semx>
                                           <span class="fmt-label-delim">.</span>
                                        </fmt-name>
@@ -242,7 +242,7 @@ RSpec.describe IsoDoc::Bipm do
       <bipm-standard xmlns="http://riboseinc.com/isoxml">
         <sections>
           <clause id="A" displayorder="1">
-            <fmt-title>Clause</fmt-title>
+            <fmt-title id="_">Clause</fmt-title>
             <ol start="4" type="arabic">
               <li>
                 <ol type="roman_upper">
@@ -285,7 +285,7 @@ RSpec.describe IsoDoc::Bipm do
     input = <<~"INPUT"
       <bipm-standard type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/bipm">
         <preface>
-        <foreword displayorder="1"><fmt-title>Foreword</fmt-title>
+        <foreword displayorder="1"><fmt-title id="_">Foreword</fmt-title>
           <ol id="_a165a98f-d641-4ccc-9c7e-d3268d93130c" type="alphabet_upper">
             <li>
               <p id="_484e82a7-48a3-4d88-a575-34143c9f7813">a</p>
@@ -472,16 +472,16 @@ RSpec.describe IsoDoc::Bipm do
          </bibdata>
          <preface>
             <clause type="toc" id="_" displayorder="1">
-               <fmt-title depth="1">Contents</fmt-title>
+               <fmt-title id="_" depth="1">Contents</fmt-title>
             </clause>
             <foreword id="A" displayorder="2">
                <title id="_">Foreword</title>
-               <fmt-title depth="1">
+               <fmt-title id="_" depth="1">
                   <semx element="title" source="_">Foreword</semx>
                </fmt-title>
                <p id="B">abc</p>
                <note id="C" autonum="1">
-                  <fmt-name>
+                  <fmt-name id="_">
                      <span class="fmt-caption-label">NOTE</span>
                      <span class="fmt-label-delim">
                         :
@@ -503,13 +503,13 @@ RSpec.describe IsoDoc::Bipm do
                   Hello
                </note>
                <ul id="D">
-                  <li>
-                     <fmt-name>
-                        <semx element="autonum" source="">•</semx>
+                  <li id="_">
+                     <fmt-name id="_">
+                        <semx element="autonum" source="_">•</semx>
                      </fmt-name>
                      <p id="E">List item</p>
                      <note id="F" autonum="2">
-                        <fmt-name>
+                        <fmt-name id="_">
                            <span class="fmt-caption-label">NOTE</span>
                            <span class="fmt-label-delim">
                               :
@@ -536,7 +536,7 @@ RSpec.describe IsoDoc::Bipm do
          </preface>
          <sections>
             <clause id="A1" displayorder="3">
-               <fmt-title depth="1">
+               <fmt-title id="_" depth="1">
                   <span class="fmt-caption-label">
                      <semx element="autonum" source="A1">1</semx>
                      <span class="fmt-autonum-delim">.</span>
@@ -548,7 +548,7 @@ RSpec.describe IsoDoc::Bipm do
                </fmt-xref-label>
                <p id="B1">abc</p>
                <note id="C1" autonum="1">
-                  <fmt-name>
+                  <fmt-name id="_">
                      <span class="fmt-caption-label">Note</span>
                      <span class="fmt-label-delim">
                         :
@@ -571,13 +571,13 @@ RSpec.describe IsoDoc::Bipm do
                   Hello
                </note>
                <ul id="D1">
-                  <li>
-                     <fmt-name>
-                        <semx element="autonum" source="">•</semx>
+                  <li id="_">
+                     <fmt-name id="_">
+                        <semx element="autonum" source="_">•</semx>
                      </fmt-name>
                      <p id="E1">List item</p>
                      <note id="F1" autonum="2">
-                        <fmt-name>
+                        <fmt-name id="_">
                            <span class="fmt-caption-label">Note</span>
                            <span class="fmt-label-delim">
                               :
@@ -621,16 +621,16 @@ RSpec.describe IsoDoc::Bipm do
          </bibdata>
          <preface>
             <clause type="toc" id="_" displayorder="1">
-               <fmt-title depth="1">Table des matières</fmt-title>
+               <fmt-title id="_" depth="1">Table des matières</fmt-title>
             </clause>
             <foreword id="A" displayorder="2">
                <title id="_">Avant-propos</title>
-               <fmt-title depth="1">
+               <fmt-title id="_" depth="1">
                   <semx element="title" source="_">Avant-propos</semx>
                </fmt-title>
                <p id="B">abc</p>
                <note id="C" autonum="1">
-                  <fmt-name>
+                  <fmt-name id="_">
                      <span class="fmt-caption-label">NOTE</span>
                      <span class="fmt-label-delim">
                          :
@@ -652,13 +652,13 @@ RSpec.describe IsoDoc::Bipm do
                   Hello
                </note>
                <ul id="D">
-                  <li>
-                     <fmt-name>
-                        <semx element="autonum" source="">•</semx>
+                  <li id="_">
+                     <fmt-name id="_">
+                        <semx element="autonum" source="_">•</semx>
                      </fmt-name>
                      <p id="E">List item</p>
                      <note id="F" autonum="2">
-                        <fmt-name>
+                        <fmt-name id="_">
                            <span class="fmt-caption-label">NOTE</span>
                            <span class="fmt-label-delim">
                                :
@@ -685,7 +685,7 @@ RSpec.describe IsoDoc::Bipm do
          </preface>
          <sections>
             <clause id="A1" displayorder="3">
-               <fmt-title depth="1">
+               <fmt-title id="_" depth="1">
                   <span class="fmt-caption-label">
                      <semx element="autonum" source="A1">1</semx>
                      <span class="fmt-autonum-delim">.</span>
@@ -697,7 +697,7 @@ RSpec.describe IsoDoc::Bipm do
                </fmt-xref-label>
                <p id="B1">abc</p>
                <note id="C1" autonum="1">
-                  <fmt-name>
+                  <fmt-name id="_">
                      <span class="fmt-caption-label">Note</span>
                      <span class="fmt-label-delim">
                          :
@@ -720,13 +720,13 @@ RSpec.describe IsoDoc::Bipm do
                   Hello
                </note>
                <ul id="D1">
-                  <li>
-                     <fmt-name>
-                        <semx element="autonum" source="">•</semx>
+                  <li id="_">
+                     <fmt-name id="_">
+                        <semx element="autonum" source="_">•</semx>
                      </fmt-name>
                      <p id="E1">List item</p>
                      <note id="F1" autonum="2">
-                        <fmt-name>
+                        <fmt-name id="_">
                            <span class="fmt-caption-label">Remarque</span>
                            <span class="fmt-label-delim">
                                :

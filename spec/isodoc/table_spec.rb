@@ -110,13 +110,13 @@ RSpec.describe IsoDoc::Bipm do
     presxml = <<~INPUT
        <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
           <preface>
-             <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Contents</fmt-title>
+             <clause type="toc" id="_11" displayorder="1">
+                <fmt-title depth="1" id="_30">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
              <clause id="A" displayorder="2">
-                <fmt-title depth="1">
+                <fmt-title depth="1" id="_31">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="A">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -127,7 +127,7 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="A">1</semx>
                 </fmt-xref-label>
                 <table id="tableD-1" alt="tool tip" summary="long desc" width="70%" keep-with-next="true" keep-lines-together="true" autonum="1">
-                   <name id="_">
+                   <name id="_20">
                       Repeatability and reproducibility of
                       <em>husked</em>
                       rice yield
@@ -144,7 +144,7 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-fn-label>
                       </fn>
                    </name>
-                   <fmt-name>
+                   <fmt-name id="_32">
                       <span class="fmt-caption-label">
                          <span class="fmt-element-name">Table</span>
                          <semx element="autonum" source="tableD-1">1</semx>
@@ -157,7 +157,7 @@ RSpec.describe IsoDoc::Bipm do
                          Repeatability and reproducibility of
                          <em>husked</em>
                          rice yield
-                         <fn reference="1" id="_" original-reference="1" target="_">
+                         <fn reference="1" id="_1" original-reference="1" target="_">
                             <p>X</p>
                             <fmt-fn-label>
                                <span class="fmt-caption-label">
@@ -191,7 +191,7 @@ RSpec.describe IsoDoc::Bipm do
                          <td valign="top" align="left">Arborio</td>
                          <td valign="middle" align="center">
                             Drago
-                            <fn reference="a" id="_" target="_">
+                            <fn reference="a" id="_2" target="_">
                                <p original-id="_">Parboiled rice.</p>
                                <fmt-fn-label>
                                   <span class="fmt-caption-label">
@@ -206,7 +206,7 @@ RSpec.describe IsoDoc::Bipm do
                          </td>
                          <td valign="bottom" align="center">
                             Balilla
-                            <fn reference="a" id="_" target="_">
+                            <fn reference="a" id="_3" target="_">
                                <p id="_">Parboiled rice.</p>
                                <fmt-fn-label>
                                   <span class="fmt-caption-label">
@@ -242,12 +242,12 @@ RSpec.describe IsoDoc::Bipm do
                       <tr>
                          <td align="left">
                             Reproducibility limit,
-                            <stem type="AsciiMath" id="_">R</stem>
+                            <stem type="AsciiMath" id="_28">R</stem>
                             <fmt-stem type="AsciiMath">
                                <semx element="stem" source="_">R</semx>
                             </fmt-stem>
                             (= 2,83
-                            <stem type="AsciiMath" id="_">s_R</stem>
+                            <stem type="AsciiMath" id="_29">s_R</stem>
                             <fmt-stem type="AsciiMath">
                                <semx element="stem" source="_">s_R</semx>
                             </fmt-stem>
@@ -265,14 +265,14 @@ RSpec.describe IsoDoc::Bipm do
                       </tr>
                    </tfoot>
                    <dl key="true">
-                      <name id="_">Key</name>
-                      <fmt-name>
+                      <name id="_25">Key</name>
+                      <fmt-name id="_33">
                          <semx element="name" source="_">Key</semx>
                       </fmt-name>
                       <dt>Drago</dt>
                       <dd>A type of rice</dd>
                    </dl>
-                   <source status="generalisation" id="_">
+                   <source status="generalisation" id="_4">
                       <origin bibitemid="ISO712" type="inline" citeas="">
                          <localityStack>
                             <locality type="section">
@@ -280,14 +280,14 @@ RSpec.describe IsoDoc::Bipm do
                             </locality>
                          </localityStack>
                       </origin>
-                      <modification id="_">
-                         <p original-id="_">with adjustments</p>
+                      <modification id="_5">
+                         <p id="_">with adjustments</p>
                       </modification>
                    </source>
                    <fmt-source>
                       [:
                       <semx element="source" source="_">
-                         <origin bibitemid="ISO712" type="inline" citeas="" id="_">
+                         <origin bibitemid="ISO712" type="inline" citeas="" id="_26">
                             <localityStack>
                                <locality type="section">
                                   <referenceFrom>1</referenceFrom>
@@ -309,7 +309,7 @@ RSpec.describe IsoDoc::Bipm do
                       </semx>
                       ;
                       <semx element="source" source="_">
-                         <origin bibitemid="ISO712" type="inline" citeas="" id="_">
+                         <origin bibitemid="ISO712" type="inline" citeas="" id="_27">
                             <localityStack>
                                <locality type="section">
                                   <referenceFrom>2</referenceFrom>
@@ -329,7 +329,7 @@ RSpec.describe IsoDoc::Bipm do
                       </semx>
                       ]
                    </fmt-source>
-                   <source status="specialisation" id="_">
+                   <source status="specialisation" id="_6">
                       <origin bibitemid="ISO712" type="inline" citeas="">
                          <localityStack>
                             <locality type="section">
@@ -339,7 +339,7 @@ RSpec.describe IsoDoc::Bipm do
                       </origin>
                    </source>
                    <note>
-                      <fmt-name>
+                      <fmt-name id="_34">
                          <span class="fmt-caption-label">Note</span>
                          <span class="fmt-label-delim">
                             :
@@ -349,7 +349,7 @@ RSpec.describe IsoDoc::Bipm do
                       <p>This is a table about rice</p>
                    </note>
                    <fmt-footnote-container>
-                      <fmt-fn-body id="_" target="_" reference="a">
+                      <fmt-fn-body id="_19" target="_" reference="a">
                          <semx element="fn" source="_">
                             <p id="_">
                                <fmt-fn-label>
@@ -371,8 +371,8 @@ RSpec.describe IsoDoc::Bipm do
                    </fmt-footnote-container>
                 </table>
                 <table id="C" unnumbered="true">
-                   <name id="_">Second Table</name>
-                   <fmt-name>
+                   <name id="_21">Second Table</name>
+                   <fmt-name id="_35">
                       <span class="fmt-caption-label">
                          <span class="fmt-element-name">Table</span>
                       </span>
@@ -389,7 +389,7 @@ RSpec.describe IsoDoc::Bipm do
                 </table>
                 <quote>
                    <table id="D" autonum="2">
-                      <name id="_">
+                      <name id="_22">
                          Second Table
                          <fn reference="2" original-reference="1a" target="_" original-id="_">
                             <p>X1</p>
@@ -404,7 +404,7 @@ RSpec.describe IsoDoc::Bipm do
                             </fmt-fn-label>
                          </fn>
                       </name>
-                      <fmt-name>
+                      <fmt-name id="_36">
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">Table</span>
                             <semx element="autonum" source="D">2</semx>
@@ -415,7 +415,7 @@ RSpec.describe IsoDoc::Bipm do
                          </span>
                          <semx element="name" source="_">
                             Second Table
-                            <fn reference="2" id="_" original-reference="1a" target="_">
+                            <fn reference="2" id="_7" original-reference="1a" target="_">
                                <p>X1</p>
                                <fmt-fn-label>
                                   <span class="fmt-caption-label">
@@ -437,7 +437,7 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td>
                                Text
-                               <fn reference="3" id="_" original-reference="2a" target="_">
+                               <fn reference="3" id="_8" original-reference="2a" target="_">
                                   <p>Y</p>
                                   <fmt-fn-label>
                                      <span class="fmt-caption-label">
@@ -454,7 +454,7 @@ RSpec.describe IsoDoc::Bipm do
                       </tbody>
                    </table>
                    <table id="D1" autonum="3">
-                      <name id="_">
+                      <name id="_23">
                          Second Table
                          <fn reference="4" original-reference="1a" target="_" original-id="_">
                             <p>X11</p>
@@ -469,7 +469,7 @@ RSpec.describe IsoDoc::Bipm do
                             </fmt-fn-label>
                          </fn>
                       </name>
-                      <fmt-name>
+                      <fmt-name id="_37">
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">Table</span>
                             <semx element="autonum" source="D1">3</semx>
@@ -480,7 +480,7 @@ RSpec.describe IsoDoc::Bipm do
                          </span>
                          <semx element="name" source="_">
                             Second Table
-                            <fn reference="4" id="_" original-reference="1a" target="_">
+                            <fn reference="4" id="_9" original-reference="1a" target="_">
                                <p>X11</p>
                                <fmt-fn-label>
                                   <span class="fmt-caption-label">
@@ -502,7 +502,7 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td>
                                Text
-                               <fn reference="5" id="_" original-reference="2a" target="_">
+                               <fn reference="5" id="_10" original-reference="2a" target="_">
                                   <p>Y1</p>
                                   <fmt-fn-label>
                                      <span class="fmt-caption-label">
@@ -520,7 +520,7 @@ RSpec.describe IsoDoc::Bipm do
                    </table>
                 </quote>
                 <fmt-footnote-container>
-                   <fmt-fn-body id="_" target="_" reference="1">
+                   <fmt-fn-body id="_14" target="_" reference="1">
                       <semx element="fn" source="_">
                          <p>
                             <fmt-fn-label>
@@ -539,7 +539,7 @@ RSpec.describe IsoDoc::Bipm do
                          </p>
                       </semx>
                    </fmt-fn-body>
-                   <fmt-fn-body id="_" target="_" reference="2">
+                   <fmt-fn-body id="_15" target="_" reference="2">
                       <semx element="fn" source="_">
                          <p>
                             <fmt-fn-label>
@@ -558,7 +558,7 @@ RSpec.describe IsoDoc::Bipm do
                          </p>
                       </semx>
                    </fmt-fn-body>
-                   <fmt-fn-body id="_" target="_" reference="3">
+                   <fmt-fn-body id="_16" target="_" reference="3">
                       <semx element="fn" source="_">
                          <p>
                             <fmt-fn-label>
@@ -577,7 +577,7 @@ RSpec.describe IsoDoc::Bipm do
                          </p>
                       </semx>
                    </fmt-fn-body>
-                   <fmt-fn-body id="_" target="_" reference="4">
+                   <fmt-fn-body id="_17" target="_" reference="4">
                       <semx element="fn" source="_">
                          <p>
                             <fmt-fn-label>
@@ -596,7 +596,7 @@ RSpec.describe IsoDoc::Bipm do
                          </p>
                       </semx>
                    </fmt-fn-body>
-                   <fmt-fn-body id="_" target="_" reference="5">
+                   <fmt-fn-body id="_18" target="_" reference="5">
                       <semx element="fn" source="_">
                          <p>
                             <fmt-fn-label>
@@ -619,13 +619,12 @@ RSpec.describe IsoDoc::Bipm do
              </clause>
           </sections>
        </bipm-standard>
-
-    INPUT
+           INPUT
 
     output = Xml::C14n.format(<<~"OUTPUT")
       #{HTML_HDR}
              <br/>
-             <div id="_" class="TOC">
+             <div id="_11" class="TOC">
                 <h1 class="IntroTitle">Contents</h1>
              </div>
              <div id="A">
@@ -821,13 +820,13 @@ RSpec.describe IsoDoc::Bipm do
              </ext>
           </bibdata>
           <preface>
-             <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Contents</fmt-title>
+             <clause type="toc" id="_48" displayorder="1">
+                <fmt-title depth="1" id="_66">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
              <clause id="A" displayorder="2">
-                <fmt-title depth="1">
+                <fmt-title depth="1" id="_67">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="A">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -838,7 +837,7 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="A">1</semx>
                 </fmt-xref-label>
                 <table id="tableD-1" alt="tool tip" summary="long desc" width="70%" keep-with-next="true" keep-lines-together="true" autonum="1">
-                   <name id="_">
+                   <name id="_54">
                       Repeatability and reproducibility of
                       <em>husked</em>
                       rice yield
@@ -854,7 +853,7 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-fn-label>
                       </fn>
                    </name>
-                   <fmt-name>
+                   <fmt-name id="_68">
                       <span class="fmt-caption-label">
                          <span class="fmt-element-name">Table</span>
                          <semx element="autonum" source="tableD-1">1</semx>
@@ -867,7 +866,7 @@ RSpec.describe IsoDoc::Bipm do
                          Repeatability and reproducibility of
                          <em>husked</em>
                          rice yield
-                         <fn reference="1" id="_" original-reference="1" target="_">
+                         <fn reference="1" id="_38" original-reference="1" target="_">
                             <p>X</p>
                             <fmt-fn-label>
                                <span class="fmt-caption-label">
@@ -900,7 +899,7 @@ RSpec.describe IsoDoc::Bipm do
                          <td valign="top" align="left">Arborio</td>
                          <td valign="middle" align="center">
                             Drago
-                            <fn reference="a" id="_" target="_">
+                            <fn reference="a" id="_39" target="_">
                                <p original-id="_">Parboiled rice.</p>
                                <fmt-fn-label>
                                   <span class="fmt-caption-label">
@@ -913,7 +912,7 @@ RSpec.describe IsoDoc::Bipm do
                          </td>
                          <td valign="bottom" align="center">
                             Balilla
-                            <fn reference="a" id="_" target="_">
+                            <fn reference="a" id="_40" target="_">
                                <p id="_">Parboiled rice.</p>
                                <fmt-fn-label>
                                   <span class="fmt-caption-label">
@@ -947,12 +946,12 @@ RSpec.describe IsoDoc::Bipm do
                       <tr>
                          <td align="left">
                             Reproducibility limit,
-                            <stem type="AsciiMath" id="_">R</stem>
+                            <stem type="AsciiMath" id="_64">R</stem>
                             <fmt-stem type="AsciiMath">
                                <semx element="stem" source="_">R</semx>
                             </fmt-stem>
                             (= 2,83
-                            <stem type="AsciiMath" id="_">s_R</stem>
+                            <stem type="AsciiMath" id="_65">s_R</stem>
                             <fmt-stem type="AsciiMath">
                                <semx element="stem" source="_">s_R</semx>
                             </fmt-stem>
@@ -970,14 +969,14 @@ RSpec.describe IsoDoc::Bipm do
                       </tr>
                    </tfoot>
                    <dl key="true">
-                      <name id="_">Key</name>
-                      <fmt-name>
+                      <name id="_61">Key</name>
+                      <fmt-name id="_69">
                          <semx element="name" source="_">Key</semx>
                       </fmt-name>
                       <dt>Drago</dt>
                       <dd>A type of rice</dd>
                    </dl>
-                   <source status="generalisation" id="_">
+                   <source status="generalisation" id="_41">
                       <origin bibitemid="ISO712" type="inline" citeas="">
                          <localityStack>
                             <locality type="section">
@@ -985,14 +984,14 @@ RSpec.describe IsoDoc::Bipm do
                             </locality>
                          </localityStack>
                       </origin>
-                      <modification id="_">
-                         <p original-id="_">with adjustments</p>
+                      <modification id="_42">
+                         <p id="_">with adjustments</p>
                       </modification>
                    </source>
                    <fmt-source>
                       [:
                       <semx element="source" source="_">
-                         <origin bibitemid="ISO712" type="inline" citeas="" id="_">
+                         <origin bibitemid="ISO712" type="inline" citeas="" id="_62">
                             <localityStack>
                                <locality type="section">
                                   <referenceFrom>1</referenceFrom>
@@ -1014,7 +1013,7 @@ RSpec.describe IsoDoc::Bipm do
                       </semx>
                       ;
                       <semx element="source" source="_">
-                         <origin bibitemid="ISO712" type="inline" citeas="" id="_">
+                         <origin bibitemid="ISO712" type="inline" citeas="" id="_63">
                             <localityStack>
                                <locality type="section">
                                   <referenceFrom>2</referenceFrom>
@@ -1034,7 +1033,7 @@ RSpec.describe IsoDoc::Bipm do
                       </semx>
                       ]
                    </fmt-source>
-                   <source status="specialisation" id="_">
+                   <source status="specialisation" id="_43">
                       <origin bibitemid="ISO712" type="inline" citeas="">
                          <localityStack>
                             <locality type="section">
@@ -1044,7 +1043,7 @@ RSpec.describe IsoDoc::Bipm do
                       </origin>
                    </source>
                    <note>
-                      <fmt-name>
+                      <fmt-name id="_70">
                          <span class="fmt-caption-label">Note</span>
                          <span class="fmt-label-delim">
                             :
@@ -1054,7 +1053,7 @@ RSpec.describe IsoDoc::Bipm do
                       <p>This is a table about rice</p>
                    </note>
                    <fmt-footnote-container>
-                      <fmt-fn-body id="_" target="_" reference="a">
+                      <fmt-fn-body id="_53" target="_" reference="a">
                          <semx element="fn" source="_">
                             <p id="_">
                                <fmt-fn-label>
@@ -1074,8 +1073,8 @@ RSpec.describe IsoDoc::Bipm do
                    </fmt-footnote-container>
                 </table>
                 <table id="C" unnumbered="true">
-                   <name id="_">Second Table</name>
-                   <fmt-name>
+                   <name id="_55">Second Table</name>
+                   <fmt-name id="_71">
                       <span class="fmt-caption-label">
                          <span class="fmt-element-name">Table</span>
                       </span>
@@ -1092,7 +1091,7 @@ RSpec.describe IsoDoc::Bipm do
                 </table>
                 <quote>
                    <table id="D" autonum="2">
-                      <name id="_">
+                      <name id="_57">
                          Second Table
                          <fn reference="2" original-reference="1a" target="_" original-id="_">
                             <p>X1</p>
@@ -1106,7 +1105,7 @@ RSpec.describe IsoDoc::Bipm do
                             </fmt-fn-label>
                          </fn>
                       </name>
-                      <fmt-name>
+                      <fmt-name id="_72">
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">Table</span>
                             <semx element="autonum" source="D">2</semx>
@@ -1117,7 +1116,7 @@ RSpec.describe IsoDoc::Bipm do
                          </span>
                          <semx element="name" source="_">
                             Second Table
-                            <fn reference="2" id="_" original-reference="1a" target="_">
+                            <fn reference="2" id="_44" original-reference="1a" target="_">
                                <p>X1</p>
                                <fmt-fn-label>
                                   <span class="fmt-caption-label">
@@ -1138,7 +1137,7 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td>
                                Text
-                               <fn reference="2a" id="_" target="_">
+                               <fn reference="2a" id="_45" target="_">
                                   <p>Y</p>
                                   <fmt-fn-label>
                                      <span class="fmt-caption-label">
@@ -1152,7 +1151,7 @@ RSpec.describe IsoDoc::Bipm do
                          </tr>
                       </tbody>
                       <fmt-footnote-container>
-                         <fmt-fn-body id="_" target="_" reference="2a">
+                         <fmt-fn-body id="_56" target="_" reference="2a">
                             <semx element="fn" source="_">
                                <p>
                                   <fmt-fn-label>
@@ -1172,7 +1171,7 @@ RSpec.describe IsoDoc::Bipm do
                       </fmt-footnote-container>
                    </table>
                    <table id="D1" autonum="3">
-                      <name id="_">
+                      <name id="_59">
                          Second Table
                          <fn reference="2" original-reference="1a" target="_" original-id="_">
                             <p>X11</p>
@@ -1186,7 +1185,7 @@ RSpec.describe IsoDoc::Bipm do
                             </fmt-fn-label>
                          </fn>
                       </name>
-                      <fmt-name>
+                      <fmt-name id="_73">
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">Table</span>
                             <semx element="autonum" source="D1">3</semx>
@@ -1197,7 +1196,7 @@ RSpec.describe IsoDoc::Bipm do
                          </span>
                          <semx element="name" source="_">
                             Second Table
-                            <fn reference="2" id="_" original-reference="1a" target="_">
+                            <fn reference="2" id="_46" original-reference="1a" target="_">
                                <p>X11</p>
                                <fmt-fn-label>
                                   <span class="fmt-caption-label">
@@ -1218,7 +1217,7 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td>
                                Text
-                               <fn reference="2a" id="_" target="_">
+                               <fn reference="2a" id="_47" target="_">
                                   <p>Y1</p>
                                   <fmt-fn-label>
                                      <span class="fmt-caption-label">
@@ -1232,7 +1231,7 @@ RSpec.describe IsoDoc::Bipm do
                          </tr>
                       </tbody>
                       <fmt-footnote-container>
-                         <fmt-fn-body id="_" target="_" reference="2a">
+                         <fmt-fn-body id="_58" target="_" reference="2a">
                             <semx element="fn" source="_">
                                <p>
                                   <fmt-fn-label>
@@ -1255,7 +1254,7 @@ RSpec.describe IsoDoc::Bipm do
              </clause>
           </sections>
           <fmt-footnote-container>
-             <fmt-fn-body id="_" target="_" reference="1">
+             <fmt-fn-body id="_51" target="_" reference="1">
                 <semx element="fn" source="_">
                    <p>
                       <fmt-fn-label>
@@ -1272,7 +1271,7 @@ RSpec.describe IsoDoc::Bipm do
                    </p>
                 </semx>
              </fmt-fn-body>
-             <fmt-fn-body id="_" target="_" reference="2">
+             <fmt-fn-body id="_52" target="_" reference="2">
                 <semx element="fn" source="_">
                    <p>
                       <fmt-fn-label>
@@ -1293,7 +1292,7 @@ RSpec.describe IsoDoc::Bipm do
        </bipm-standard>
     OUTPUT
     output = <<~OUTPUT
-      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
+       <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
           <div class="title-section">
              <p> </p>
           </div>
@@ -1304,7 +1303,7 @@ RSpec.describe IsoDoc::Bipm do
           <br/>
           <div class="main-section">
              <br/>
-             <div id="_" class="TOC">
+             <div id="_48" class="TOC">
                 <h1 class="IntroTitle">Contents</h1>
              </div>
              <div id="A">
@@ -1313,7 +1312,7 @@ RSpec.describe IsoDoc::Bipm do
                    Table 1.  Repeatability and reproducibility of
                    <i>husked</i>
                    rice yield
-                   <a class="FootnoteRef" href="#fn:_43">
+                   <a class="FootnoteRef" href="#fn:_51">
                       <sup>1)</sup>
                    </a>
                 </p>
@@ -1421,7 +1420,7 @@ RSpec.describe IsoDoc::Bipm do
                 <div class="Quote">
                    <p class="TableTitle" style="text-align:center;">
                       Table 2.  Second Table
-                      <a class="FootnoteRef" href="#fn:_44">
+                      <a class="FootnoteRef" href="#fn:_52">
                          <sup>2)</sup>
                       </a>
                    </p>
@@ -1430,13 +1429,13 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
                                Text
-                               <a class="FootnoteRef" href="#fn:_48">
+                               <a class="FootnoteRef" href="#fn:_56">
                                   <sup>2a</sup>
                                </a>
                             </td>
                          </tr>
                       </tbody>
-                      <aside id="fn:_48" class="footnote">
+                      <aside id="fn:_56" class="footnote">
                          <p>
                             <sup>2a</sup>
                               Y
@@ -1445,7 +1444,7 @@ RSpec.describe IsoDoc::Bipm do
                    </table>
                    <p class="TableTitle" style="text-align:center;">
                       Table 3.  Second Table
-                      <a class="FootnoteRef" href="#fn:_44">
+                      <a class="FootnoteRef" href="#fn:_52">
                          <sup>2)</sup>
                       </a>
                    </p>
@@ -1454,13 +1453,13 @@ RSpec.describe IsoDoc::Bipm do
                          <tr>
                             <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
                                Text
-                               <a class="FootnoteRef" href="#fn:_50">
+                               <a class="FootnoteRef" href="#fn:_58">
                                   <sup>2a</sup>
                                </a>
                             </td>
                          </tr>
                       </tbody>
-                      <aside id="fn:_50" class="footnote">
+                      <aside id="fn:_58" class="footnote">
                          <p>
                             <sup>2a</sup>
                               Y1
@@ -1469,10 +1468,10 @@ RSpec.describe IsoDoc::Bipm do
                    </table>
                 </div>
              </div>
-             <aside id="fn:_43" class="footnote">
+             <aside id="fn:_51" class="footnote">
                 <p>X</p>
              </aside>
-             <aside id="fn:_44" class="footnote">
+             <aside id="fn:_52" class="footnote">
                 <p>X1</p>
              </aside>
           </div>
