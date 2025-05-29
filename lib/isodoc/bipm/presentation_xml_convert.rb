@@ -146,7 +146,8 @@ module IsoDoc
 
       def index1(docxml, indexsect, index)
         index.keys.sort.each do |k|
-          c = indexsect.add_child "<clause #{add_id}><title>#{k}</title><ul></ul></clause>"
+          c = indexsect
+            .add_child "<clause #{add_id_text}><title #{add_id_text}>#{k}</title><ul></ul></clause>"
           words = index[k].keys.each_with_object({}) do |w, v|
             v[sortable(w).downcase] = w
           end

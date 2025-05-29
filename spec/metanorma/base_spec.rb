@@ -612,7 +612,7 @@ RSpec.describe Metanorma::Bipm do
              </copyright-statement>
              <license-statement>
                <clause id="_" obligation="normative">
-                 <title>Note concernant les droits d’auteur</title>
+                 <title id="_">Note concernant les droits d’auteur</title>
                  <p id="_">Ce document est distribué selon les termes et conditions de la licence Creative Commons Attribution 4.0 International (<link target="http://creativecommons.org/licenses/by/4.0/:"/>), qui permet l’utilisation sans restriction, la distribution et la reproduction sur quelque support que soit, sous réserve de mentionner dûment l’auteur ou les auteurs originaux ainsi que la source de l’œuvre, d’intégrer un lien vers la licence Creative Commons et d’indiquer si des modifications ont été effectuées.</p>
                </clause>
              </license-statement>
@@ -800,7 +800,7 @@ RSpec.describe Metanorma::Bipm do
       #{BLANK_HDR}
         <sections>
           <figure id="_" anchor="id">
-            <name>Figure 1</name>
+            <name id="_">Figure 1</name>
             <pre id="_">This is a literal
 
               Amen</pre>
@@ -825,13 +825,13 @@ RSpec.describe Metanorma::Bipm do
       #{BLANK_HDR}
         <preface>
           <foreword id="_" obligation="informative">
-            <title>Foreword</title>
+            <title id="_">Foreword</title>
             <p id="_">This is a preamble</p>
           </foreword>
         </preface>
         <sections>
           <clause id="_" obligation="normative">
-            <title>Section 1</title>
+            <title id="_">Section 1</title>
           </clause>
         </sections>
       </metanorma>
@@ -857,7 +857,7 @@ RSpec.describe Metanorma::Bipm do
       #{BLANK_HDR}
         <sections>
           <clause id="_" anchor="a" obligation='normative'>
-            <title>Section 1</title>
+            <title id="_">Section 1</title>
             <p id='_'>
               <xref target='a'/>
               <xref target='a' pagenumber='true'/>
@@ -925,11 +925,11 @@ RSpec.describe Metanorma::Bipm do
       #{BLANK_HDR}
         <sections>
           <clause id='_' unnumbered='true' obligation='normative'>
-            <title>Clause</title>
+            <title id="_">Clause</title>
           </clause>
         </sections>
         <annex id='_' obligation='normative' unnumbered="true">
-          <title>Appendix</title>
+          <title id="_">Appendix</title>
         </annex>
       </metanorma>
     OUTPUT
@@ -1047,30 +1047,30 @@ RSpec.describe Metanorma::Bipm do
       #{BLANK_HDR.sub(%r{</script>}, '</script><abstract><p>Text</p></abstract>')}
           <preface>
              <abstract id="_">
-                <title>Abstract</title>
+                <title id="_">Abstract</title>
                 <p id="_">Text</p>
              </abstract>
              <foreword id="_" obligation="informative">
-                <title>Foreword</title>
+                <title id="_">Foreword</title>
                 <p id="_">Text</p>
              </foreword>
              <clause id="_" obligation="informative">
-                <title>Dedication</title>
+                <title id="_">Dedication</title>
              </clause>
              <acknowledgements id="_" obligation="informative">
-                <title>Acknowledgements</title>
+                <title id="_">Acknowledgements</title>
              </acknowledgements>
           </preface>
           <sections>
              <clause id="_" obligation="normative">
-                <title>Introduction</title>
+                <title id="_">Introduction</title>
              </clause>
              <clause id="_" type="scope" obligation="normative">
-                <title>Scope</title>
+                <title id="_">Scope</title>
                 <p id="_">Text</p>
              </clause>
              <terms id="_" obligation="normative">
-                <title>Photometric units</title>
+                <title id="_">Photometric units</title>
                 <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
                 <term id="_" anchor="term-Term1">
                    <preferred>
@@ -1081,24 +1081,24 @@ RSpec.describe Metanorma::Bipm do
                 </term>
              </terms>
              <clause id="_" obligation="normative" type="terms">
-                <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
+                <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
                 <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
                 <clause id="_" obligation="normative">
-                   <title>Introduction</title>
+                   <title id="_">Introduction</title>
                    <clause id="_" obligation="normative">
-                      <title>Intro 1</title>
+                      <title id="_">Intro 1</title>
                    </clause>
                 </clause>
                 <terms id="_" obligation="normative">
-                   <title>Intro 2</title>
+                   <title id="_">Intro 2</title>
                    <clause id="_" obligation="normative">
-                      <title>Intro 3</title>
+                      <title id="_">Intro 3</title>
                    </clause>
                 </terms>
                 <clause id="_" obligation="normative" type="terms">
-                   <title>Intro 4</title>
+                   <title id="_">Intro 4</title>
                    <terms id="_" obligation="normative">
-                      <title>Intro 5</title>
+                      <title id="_">Intro 5</title>
                       <term id="_" anchor="term-Term1-1">
                          <preferred>
                             <expression>
@@ -1109,7 +1109,7 @@ RSpec.describe Metanorma::Bipm do
                    </terms>
                 </clause>
                 <terms id="_" obligation="normative">
-                   <title>Normal Terms</title>
+                   <title id="_">Normal Terms</title>
                    <term id="_" anchor="term-Term2">
                       <preferred>
                          <expression>
@@ -1119,49 +1119,49 @@ RSpec.describe Metanorma::Bipm do
                    </term>
                 </terms>
                 <definitions id="_" obligation="normative">
-                   <title>Symbols and Abbreviated Terms</title>
+                   <title id="_">Symbols and Abbreviated Terms</title>
                    <clause id="_" obligation="normative">
-                      <title>General</title>
+                      <title id="_">General</title>
                    </clause>
                    <definitions id="_" type="symbols" obligation="normative">
-                      <title>Symbols</title>
+                      <title id="_">Symbols</title>
                    </definitions>
                 </definitions>
              </clause>
              <definitions id="_" type="abbreviated_terms" obligation="normative">
-                <title>Abbreviated Terms</title>
+                <title id="_">Abbreviated Terms</title>
              </definitions>
              <clause id="_" obligation="normative">
-                <title>Clause 4</title>
+                <title id="_">Clause 4</title>
                 <clause id="_" obligation="normative">
-                   <title>Introduction</title>
+                   <title id="_">Introduction</title>
                 </clause>
                 <clause id="_" obligation="normative">
-                   <title>Clause 4.2</title>
+                   <title id="_">Clause 4.2</title>
                 </clause>
                 <clause id="_" obligation="normative">
        </clause>
              </clause>
              <terms id="_" obligation="normative">
-                <title>Terms and Definitions</title>
+                <title id="_">Terms and Definitions</title>
                 <p id="_">No terms and definitions are listed in this document.</p>
              </terms>
           </sections>
           <annex id="_" obligation="normative">
-             <title>Annex</title>
+             <title id="_">Annex</title>
              <clause id="_" obligation="normative">
-                <title>Annex A.1</title>
+                <title id="_">Annex A.1</title>
              </clause>
           </annex>
           <bibliography>
              <references id="_" normative="true" obligation="informative">
-                <title>Normative References</title>
+                <title id="_">Normative References</title>
                 <p id="_">There are no normative references in this document.</p>
              </references>
              <clause id="_" obligation="informative">
-                <title>Bibliography</title>
+                <title id="_">Bibliography</title>
                 <references id="_" normative="false" obligation="informative">
-                   <title>Bibliography Subsection</title>
+                   <title id="_">Bibliography Subsection</title>
                 </references>
              </clause>
           </bibliography>
@@ -1258,35 +1258,35 @@ RSpec.describe Metanorma::Bipm do
       #{BLANK_HDR.sub(%r{</script>}, '</script><abstract><p>Text</p></abstract>').sub(%r{<boilerplate>.*</boilerplate>}m, '')}
           <preface>
              <abstract id="_">
-                <title>Abstract</title>
+                <title id="_">Abstract</title>
                 <p id="_">Text</p>
              </abstract>
              <foreword id="_" obligation="informative">
-                <title>Foreword</title>
+                <title id="_">Foreword</title>
                 <p id="_">Text</p>
              </foreword>
              <introduction id="_" obligation="informative">
-                <title>Introduction</title>
+                <title id="_">Introduction</title>
                 <clause id="_" obligation="informative">
-                   <title>Introduction Subsection</title>
+                   <title id="_">Introduction Subsection</title>
                 </clause>
                 <clause id="_" obligation="informative" inline-header="true">
        </clause>
              </introduction>
              <clause id="_" obligation="informative">
-                <title>Dedication</title>
+                <title id="_">Dedication</title>
              </clause>
              <acknowledgements id="_" obligation="informative">
-                <title>Acknowledgements</title>
+                <title id="_">Acknowledgements</title>
              </acknowledgements>
           </preface>
           <sections>
              <clause id="_" type="scope" obligation="normative">
-                <title>Scope</title>
+                <title id="_">Scope</title>
                 <p id="_">Text</p>
              </clause>
              <terms id="_" obligation="normative">
-                <title>Photometric units</title>
+                <title id="_">Photometric units</title>
                 <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
                 <term id="_" anchor="term-Term1">
                    <preferred>
@@ -1297,24 +1297,24 @@ RSpec.describe Metanorma::Bipm do
                 </term>
              </terms>
              <clause id="_" obligation="normative" type="terms">
-                <title>Terms, Definitions, Symbols and Abbreviated Terms</title>
+                <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
                 <p id="_">For the purposes of this document, the following terms and definitions apply.</p>
                 <clause id="_" obligation="normative">
-                   <title>Introduction</title>
+                   <title id="_">Introduction</title>
                    <clause id="_" obligation="normative">
-                      <title>Intro 1</title>
+                      <title id="_">Intro 1</title>
                    </clause>
                 </clause>
                 <terms id="_" obligation="normative">
-                   <title>Intro 2</title>
+                   <title id="_">Intro 2</title>
                    <clause id="_" obligation="normative">
-                      <title>Intro 3</title>
+                      <title id="_">Intro 3</title>
                    </clause>
                 </terms>
                 <clause id="_" obligation="normative" type="terms">
-                   <title>Intro 4</title>
+                   <title id="_">Intro 4</title>
                    <terms id="_" obligation="normative">
-                      <title>Intro 5</title>
+                      <title id="_">Intro 5</title>
                       <term id="_" anchor="term-Term1-1">
                          <preferred>
                             <expression>
@@ -1325,7 +1325,7 @@ RSpec.describe Metanorma::Bipm do
                    </terms>
                 </clause>
                 <terms id="_" obligation="normative">
-                   <title>Normal Terms</title>
+                   <title id="_">Normal Terms</title>
                    <term id="_" anchor="term-Term2">
                       <preferred>
                          <expression>
@@ -1335,49 +1335,49 @@ RSpec.describe Metanorma::Bipm do
                    </term>
                 </terms>
                 <definitions id="_" obligation="normative">
-                   <title>Symbols and Abbreviated Terms</title>
+                   <title id="_">Symbols and Abbreviated Terms</title>
                    <clause id="_" obligation="normative">
-                      <title>General</title>
+                      <title id="_">General</title>
                    </clause>
                    <definitions id="_" type="symbols" obligation="normative">
-                      <title>Symbols</title>
+                      <title id="_">Symbols</title>
                    </definitions>
                 </definitions>
              </clause>
              <definitions id="_" type="abbreviated_terms" obligation="normative">
-                <title>Abbreviated Terms</title>
+                <title id="_">Abbreviated Terms</title>
              </definitions>
              <clause id="_" obligation="normative">
-                <title>Clause 4</title>
+                <title id="_">Clause 4</title>
                 <clause id="_" obligation="normative">
-                   <title>Introduction</title>
+                   <title id="_">Introduction</title>
                 </clause>
                 <clause id="_" obligation="normative">
-                   <title>Clause 4.2</title>
+                   <title id="_">Clause 4.2</title>
                 </clause>
                 <clause id="_" obligation="normative" inline-header="true">
        </clause>
              </clause>
              <terms id="_" obligation="normative">
-                <title>Terms and Definitions</title>
+                <title id="_">Terms and Definitions</title>
                 <p id="_">No terms and definitions are listed in this document.</p>
              </terms>
           </sections>
           <annex id="_" obligation="normative">
-             <title>Annex</title>
+             <title id="_">Annex</title>
              <clause id="_" obligation="normative">
-                <title>Annex A.1</title>
+                <title id="_">Annex A.1</title>
              </clause>
           </annex>
           <bibliography>
              <references id="_" normative="true" obligation="informative">
-                <title>Normative References</title>
+                <title id="_">Normative References</title>
                 <p id="_">There are no normative references in this document.</p>
              </references>
              <clause id="_" obligation="informative">
-                <title>Bibliography</title>
+                <title id="_">Bibliography</title>
                 <references id="_" normative="false" obligation="informative">
-                   <title>Bibliography Subsection</title>
+                   <title id="_">Bibliography Subsection</title>
                 </references>
              </clause>
           </bibliography>
@@ -1452,9 +1452,9 @@ RSpec.describe Metanorma::Bipm do
       #{BLANK_HDR}
       <sections>
       <clause id='_' obligation='normative'>
-        <title>Clause</title>
+        <title id="_">Clause</title>
         <clause id='_' obligation='normative'>
-          <variant-title type='quoted'>
+          <variant-title id="_" type='quoted'>
             <strong>Definition of the metre</strong>
              (CR, 85)
           </variant-title>
@@ -1489,7 +1489,7 @@ RSpec.describe Metanorma::Bipm do
       output = <<~OUTPUT
         <sections>
           <clause id="_" obligation="normative">
-             <title>Clause</title>
+             <title id="_">Clause</title>
              <p id="_">
                 <eref type="inline" bibitemid="a1" citeas="CGPM 1st Meeting (1889)"/>
                 <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="CIPM Decision 101-1 (2012)"/>
@@ -1531,7 +1531,7 @@ RSpec.describe Metanorma::Bipm do
       output = <<~OUTPUT
         <sections>
           <clause id="_" obligation="normative">
-             <title>Clause</title>
+             <title id="_">Clause</title>
              <p id="_">
                 <eref type="inline" bibitemid="a1" citeas="CGPM 1&lt;sup&gt;e&lt;/sup&gt; réunion (1889)"/>
                 <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>

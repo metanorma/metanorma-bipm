@@ -18,7 +18,7 @@ RSpec.describe IsoDoc::Bipm do
        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Contents</fmt-title>
+                <fmt-title id="_" depth="1">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
@@ -27,7 +27,7 @@ RSpec.describe IsoDoc::Bipm do
                    Title
                    <bookmark original-id="A2"/>
                 </title>
-                <fmt-title depth="1">
+                <fmt-title id="_" depth="1">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="A1">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -52,7 +52,7 @@ RSpec.describe IsoDoc::Bipm do
                    Title
                    <bookmark original-id="A3"/>
                 </title>
-                <fmt-title type="quoted" depth="1">
+                <fmt-title type="quoted" depth="1" id="_">
                    <blacksquare/>
                    Title
                    <bookmark id="A3"/>
@@ -61,13 +61,13 @@ RSpec.describe IsoDoc::Bipm do
              </clause>
           </sections>
           <indexsect id="_" displayorder="4">
-             <title>Index</title>
+             <fmt-title id="_">Index</fmt-title>
              <clause id="_">
-                <title>T</title>
+                <title id="_">T</title>
                 <ul>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       title,
                       <xref target="_" pagenumber="true" id="_"/>
@@ -78,9 +78,9 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-xref>
                       </semx>
                    </li>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       title2,
                       <xref target="_" pagenumber="true" id="_"/>
@@ -383,14 +383,25 @@ RSpec.describe IsoDoc::Bipm do
         </bibdata>
                  <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Contents</fmt-title>
+                <fmt-title id="_" depth="1">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
-             <clause displayorder="2"/>
+      <clause id="_" displayorder="2">
+         <fmt-title depth="1" id="_">
+            <span class="fmt-caption-label">
+               <semx element="autonum" source="_">1</semx>
+               <span class="fmt-autonum-delim">.</span>
+            </span>
+         </fmt-title>
+         <fmt-xref-label>
+            <span class="fmt-element-name">Chapter</span>
+            <semx element="autonum" source="_">1</semx>
+         </fmt-xref-label>
+      </clause>
           </sections>
           <doccontrol displayorder="999">
-             <fmt-title>Document Control</fmt-title>
+             <fmt-title id="_">Document Control</fmt-title>
              <table unnumbered="true">
                 <tbody>
                    <tr>
@@ -436,8 +447,10 @@ RSpec.describe IsoDoc::Bipm do
             <div id="_" class="TOC">
               <h1 class="IntroTitle">Contents</h1>
             </div>
-            <div> <h1/> </div>
-            <div class='doccontrol'>
+       <div id="_">
+         <h1>1.</h1>
+      </div>
+           <div class='doccontrol'>
               <h1>Document Control</h1>
               <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
                  <tbody>
@@ -623,14 +636,25 @@ RSpec.describe IsoDoc::Bipm do
            </bibdata>
              <preface>
               <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Contents</fmt-title>
+                <fmt-title id="_" depth="1">Contents</fmt-title>
               </clause>
             </preface>
             <sections>
-           <clause displayorder="2"/>
+        <clause id="_" displayorder="2">
+         <fmt-title depth="1" id="_">
+            <span class="fmt-caption-label">
+               <semx element="autonum" source="_">1</semx>
+               <span class="fmt-autonum-delim">.</span>
+            </span>
+         </fmt-title>
+         <fmt-xref-label>
+            <span class="fmt-element-name">Chapter</span>
+            <semx element="autonum" source="_">1</semx>
+         </fmt-xref-label>
+      </clause>
          </sections>
          <doccontrol displayorder="999">
-             <fmt-title>Document Control</fmt-title>
+             <fmt-title id="_">Document Control</fmt-title>
              <table unnumbered='true'>
                <tbody>
                  <tr>
@@ -664,7 +688,9 @@ RSpec.describe IsoDoc::Bipm do
             <div id="_" class="TOC">
               <h1 class="IntroTitle">Contents</h1>
             </div>
-            <div> <h1/> </div>
+       <div id="_">
+         <h1>1.</h1>
+      </div>
              <div class='doccontrol'>
                <h1>Document Control</h1>
                <table class='MsoISOTable' style='border-width:1px;border-spacing:0;'>
@@ -717,14 +743,14 @@ RSpec.describe IsoDoc::Bipm do
               <preferred><expression><name>Term3</name></expression></preferred>
                    <termexample id="_bd57bbf1-f948-4bae-b0ce-73c00431f893">
         <ul>
-        <li>A</li>
+        <li id="_">A</li>
         </ul>
       </termexample>
       <termnote id="_671a1994-4783-40d0-bc81-987d06ffb74e"  keep-with-next="true" keep-lines-together="true">
         <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
       </termnote>
       <termnote id="_671a1994-4783-40d0-bc81-987d06ffb74f">
-      <ul><li>A</li></ul>
+      <ul><li id="_">A</li></ul>
         <p id="_19830f33-e46c-42cc-94ca-a5ef101132d5">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
       </termnote>
               <source status="identical">
@@ -740,13 +766,13 @@ RSpec.describe IsoDoc::Bipm do
        <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Contents</fmt-title>
+                <fmt-title id="_" depth="1">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
              <terms id="H" obligation="normative" displayorder="2">
                 <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
-                <fmt-title depth="1">
+                <fmt-title id="_" depth="1">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="H">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -761,7 +787,7 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="H">1</semx>
                 </fmt-xref-label>
                 <term id="J">
-                   <fmt-name>
+                   <fmt-name id="_">
                       <span class="fmt-caption-label">
                          <semx element="autonum" source="H">1</semx>
                          <span class="fmt-autonum-delim">.</span>
@@ -794,7 +820,7 @@ RSpec.describe IsoDoc::Bipm do
                          </locality>
                       </origin>
                       <modification id="_">
-                         <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+                         <p id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
                       </modification>
                    </source>
                    <fmt-termsource status="modified">
@@ -820,7 +846,7 @@ RSpec.describe IsoDoc::Bipm do
                    </fmt-termsource>
                 </term>
                 <term id="K">
-                   <fmt-name>
+                   <fmt-name id="_">
                       <span class="fmt-caption-label">
                          <semx element="autonum" source="H">1</semx>
                          <span class="fmt-autonum-delim">.</span>
@@ -847,7 +873,7 @@ RSpec.describe IsoDoc::Bipm do
                       </p>
                    </fmt-preferred>
                    <termexample id="_" autonum="">
-                      <fmt-name>
+                      <fmt-name id="_">
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">EXAMPLE</span>
                          </span>
@@ -866,16 +892,16 @@ RSpec.describe IsoDoc::Bipm do
                          <span class="fmt-element-name">Example</span>
                       </fmt-xref-label>
                       <ul>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">•</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">•</semx>
                             </fmt-name>
                             A
                          </li>
                       </ul>
                    </termexample>
                    <termnote id="_" keep-with-next="true" keep-lines-together="true" autonum="1">
-                      <fmt-name>
+                      <fmt-name id="_">
                          <span class="fmt-caption-label">
                             Note
                             <semx element="autonum" source="_">1</semx>
@@ -901,7 +927,7 @@ RSpec.describe IsoDoc::Bipm do
                       <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
                    </termnote>
                    <termnote id="_" autonum="2">
-                      <fmt-name>
+                      <fmt-name id="_">
                          <span class="fmt-caption-label">
                             Note
                             <semx element="autonum" source="_">2</semx>
@@ -925,9 +951,9 @@ RSpec.describe IsoDoc::Bipm do
                          <semx element="autonum" source="_">2</semx>
                       </fmt-xref-label>
                       <ul>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">•</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">•</semx>
                             </fmt-name>
                             A
                          </li>
@@ -999,7 +1025,7 @@ RSpec.describe IsoDoc::Bipm do
                   <p class="example-title">EXAMPLE</p>
                   <div class="ul_wrap">
                      <ul>
-                        <li>A</li>
+                        <li id="_">A</li>
                      </ul>
                   </div>
                </div>
@@ -1015,7 +1041,7 @@ RSpec.describe IsoDoc::Bipm do
                   </p>
                   <div class="ul_wrap">
                      <ul>
-                        <li>A</li>
+                        <li id="_">A</li>
                      </ul>
                   </div>
                   <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
@@ -1054,13 +1080,13 @@ RSpec.describe IsoDoc::Bipm do
           </bibdata>
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Contents</fmt-title>
+                <fmt-title id="_" depth="1">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
              <terms id="H" obligation="normative" displayorder="2">
                 <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
-                <fmt-title depth="1">
+                <fmt-title id="_" depth="1">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="H">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -1075,7 +1101,7 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="H">1</semx>
                 </fmt-xref-label>
                 <term id="J">
-                   <fmt-name>
+                   <fmt-name id="_">
                       <span class="fmt-caption-label">
                          <semx element="autonum" source="H">1</semx>
                          <span class="fmt-autonum-delim">.</span>
@@ -1107,7 +1133,7 @@ RSpec.describe IsoDoc::Bipm do
                          </locality>
                       </origin>
                       <modification id="_">
-                         <p original-id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
+                         <p id="_">The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here</p>
                       </modification>
                    </source>
                    <fmt-termsource status="modified">
@@ -1134,7 +1160,7 @@ RSpec.describe IsoDoc::Bipm do
                    </fmt-termsource>
                 </term>
                 <term id="K">
-                   <fmt-name>
+                   <fmt-name id="_">
                       <span class="fmt-caption-label">
                          <semx element="autonum" source="H">1</semx>
                          <span class="fmt-autonum-delim">.</span>
@@ -1160,7 +1186,7 @@ RSpec.describe IsoDoc::Bipm do
                       </p>
                    </fmt-preferred>
                    <termexample id="_" autonum="">
-                      <fmt-name>
+                      <fmt-name id="_">
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">EXAMPLE</span>
                          </span>
@@ -1178,16 +1204,16 @@ RSpec.describe IsoDoc::Bipm do
                          <span class="fmt-element-name">Example</span>
                       </fmt-xref-label>
                       <ul>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">•</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">•</semx>
                             </fmt-name>
                             A
                          </li>
                       </ul>
                    </termexample>
                    <termnote id="_" keep-with-next="true" keep-lines-together="true" autonum="1">
-                      <fmt-name>
+                      <fmt-name id="_">
                          <span class="fmt-caption-label">
                             Note
                             <semx element="autonum" source="_">1</semx>
@@ -1212,7 +1238,7 @@ RSpec.describe IsoDoc::Bipm do
                       <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
                    </termnote>
                    <termnote id="_" autonum="2">
-                      <fmt-name>
+                      <fmt-name id="_">
                          <span class="fmt-caption-label">
                             Note
                             <semx element="autonum" source="_">2</semx>
@@ -1235,9 +1261,9 @@ RSpec.describe IsoDoc::Bipm do
                          <semx element="autonum" source="_">2</semx>
                       </fmt-xref-label>
                       <ul>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">•</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">•</semx>
                             </fmt-name>
                             A
                          </li>
@@ -1311,7 +1337,7 @@ RSpec.describe IsoDoc::Bipm do
                   <p class="example-title">EXAMPLE</p>
                   <div class="ul_wrap">
                      <ul>
-                        <li>A</li>
+                        <li id="_">A</li>
                      </ul>
                   </div>
                </div>
@@ -1327,7 +1353,7 @@ RSpec.describe IsoDoc::Bipm do
                   </p>
                   <div class="ul_wrap">
                      <ul>
-                        <li>A</li>
+                        <li id="_">A</li>
                      </ul>
                   </div>
                   <p id="_">The starch of waxy rice consists almost entirely of amylopectin. The kernels have a tendency to stick together after cooking.</p>
@@ -1396,12 +1422,12 @@ RSpec.describe IsoDoc::Bipm do
           </bibdata>
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Contents</fmt-title>
+                <fmt-title id="_" depth="1">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
              <clause id="A" displayorder="2">
-                <fmt-title depth="1">
+                <fmt-title id="_" depth="1">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="A">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -1417,7 +1443,7 @@ RSpec.describe IsoDoc::Bipm do
                 <bookmark id="_"/>
                 <bookmark id="_"/>
                 <clause id="B">
-                   <fmt-title depth="2">
+                   <fmt-title id="_" depth="2">
                       <span class="fmt-caption-label">
                          <semx element="autonum" source="A">1</semx>
                          <span class="fmt-autonum-delim">.</span>
@@ -1439,13 +1465,13 @@ RSpec.describe IsoDoc::Bipm do
              </clause>
           </sections>
           <indexsect id="_" displayorder="3">
-             <title>Index</title>
+             <fmt-title id="_">Index</fmt-title>
              <clause id="_">
-                <title>D</title>
+                <title id="_">D</title>
                 <ul>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       <em>Dasein</em>
                       , see
@@ -1455,11 +1481,11 @@ RSpec.describe IsoDoc::Bipm do
                 </ul>
              </clause>
              <clause id="_">
-                <title>E</title>
+                <title id="_">E</title>
                 <ul>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       élongé,
                       <xref target="_" pagenumber="true" id="_"/>
@@ -1470,9 +1496,9 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-xref>
                       </semx>
                    </li>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       <em>Eman</em>
                       cipation,
@@ -1494,9 +1520,9 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-xref>
                       </semx>
                       <ul>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">−</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">−</semx>
                             </fmt-name>
                             dans la France,
                             <xref target="_" pagenumber="true" id="_"/>
@@ -1507,9 +1533,9 @@ RSpec.describe IsoDoc::Bipm do
                                </fmt-xref>
                             </semx>
                             <ul>
-                               <li>
-                                  <fmt-name>
-                                     <semx element="autonum" source="">o</semx>
+                               <li id="_">
+                                  <fmt-name id="_">
+                                     <semx element="autonum" source="_">o</semx>
                                   </fmt-name>
                                   à Paris,
                                   <xref target="_" pagenumber="true" id="_"/>
@@ -1522,9 +1548,9 @@ RSpec.describe IsoDoc::Bipm do
                                      </fmt-xref>
                                   </semx>
                                </li>
-                               <li>
-                                  <fmt-name>
-                                     <semx element="autonum" source="">o</semx>
+                               <li id="_">
+                                  <fmt-name id="_">
+                                     <semx element="autonum" source="_">o</semx>
                                   </fmt-name>
                                   en Bretagne,
                                   <xref target="_" pagenumber="true" id="_"/>
@@ -1537,9 +1563,9 @@ RSpec.describe IsoDoc::Bipm do
                                </li>
                             </ul>
                          </li>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">−</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">−</semx>
                             </fmt-name>
                             dans les États-Unis,
                             <xref target="_" pagenumber="true" id="_"/>
@@ -1554,23 +1580,23 @@ RSpec.describe IsoDoc::Bipm do
                          </li>
                       </ul>
                    </li>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       être
                       <ul>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">−</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">−</semx>
                             </fmt-name>
                             Husserl, see zebra, see also
                             <em>Eman</em>
                             cipation, zebra
                             <ul>
-                               <li>
-                                  <fmt-name>
-                                     <semx element="autonum" source="">o</semx>
+                               <li id="_">
+                                  <fmt-name id="_">
+                                     <semx element="autonum" source="_">o</semx>
                                   </fmt-name>
                                   en allemand,
                                   <xref target="_" pagenumber="true" id="_"/>
@@ -1588,11 +1614,11 @@ RSpec.describe IsoDoc::Bipm do
                 </ul>
              </clause>
              <clause id="_">
-                <title>Z</title>
+                <title id="_">Z</title>
                 <ul>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       zebra,
                       <xref target="_" pagenumber="true" id="_"/>
@@ -1659,12 +1685,12 @@ RSpec.describe IsoDoc::Bipm do
           </bibdata>
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Table des matières</fmt-title>
+                <fmt-title id="_" depth="1">Table des matières</fmt-title>
              </clause>
           </preface>
           <sections>
              <clause id="A" displayorder="2">
-                <fmt-title depth="1">
+                <fmt-title id="_" depth="1">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="A">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -1686,7 +1712,7 @@ RSpec.describe IsoDoc::Bipm do
                 <bookmark id="_"/>
                 <bookmark id="_"/>
                 <clause id="B">
-                   <fmt-title depth="2">
+                   <fmt-title id="_" depth="2">
                       <span class="fmt-caption-label">
                          <semx element="autonum" source="A">1</semx>
                          <span class="fmt-autonum-delim">.</span>
@@ -1710,16 +1736,16 @@ RSpec.describe IsoDoc::Bipm do
           </sections>
           <indexsect id="I" displayorder="3">
              <title id="_">Index</title>
-             <fmt-title depth="1">
+             <fmt-title id="_" depth="1">
                 <semx element="title" source="_">Index</semx>
              </fmt-title>
              <p>Voici un index</p>
              <clause id="_">
-                <title>D</title>
+                <title id="_">D</title>
                 <ul>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       <em>Dasein</em>
                       ,
@@ -1729,11 +1755,11 @@ RSpec.describe IsoDoc::Bipm do
                 </ul>
              </clause>
              <clause id="_">
-                <title>E</title>
+                <title id="_">E</title>
                 <ul>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       élongé,
                       <xref target="_" to="End" pagenumber="true" id="_"/>
@@ -1744,9 +1770,9 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-xref>
                       </semx>
                    </li>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       Emancipation,
                       <xref target="_" pagenumber="true" id="_"/>
@@ -1767,9 +1793,9 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-xref>
                       </semx>
                       <ul>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">−</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">−</semx>
                             </fmt-name>
                             dans la France,
                             <xref target="_" pagenumber="true" id="_"/>
@@ -1780,9 +1806,9 @@ RSpec.describe IsoDoc::Bipm do
                                </fmt-xref>
                             </semx>
                             <ul>
-                               <li>
-                                  <fmt-name>
-                                     <semx element="autonum" source="">o</semx>
+                               <li id="_">
+                                  <fmt-name id="_">
+                                     <semx element="autonum" source="_">o</semx>
                                   </fmt-name>
                                   à Paris,
                                   <xref target="_" pagenumber="true" id="_"/>
@@ -1795,9 +1821,9 @@ RSpec.describe IsoDoc::Bipm do
                                      </fmt-xref>
                                   </semx>
                                </li>
-                               <li>
-                                  <fmt-name>
-                                     <semx element="autonum" source="">o</semx>
+                               <li id="_">
+                                  <fmt-name id="_">
+                                     <semx element="autonum" source="_">o</semx>
                                   </fmt-name>
                                   en Bretagne,
                                   <xref target="_" pagenumber="true" id="_"/>
@@ -1810,9 +1836,9 @@ RSpec.describe IsoDoc::Bipm do
                                </li>
                             </ul>
                          </li>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">−</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">−</semx>
                             </fmt-name>
                             dans les États-Unis,
                             <xref target="_" pagenumber="true" id="_"/>
@@ -1827,15 +1853,15 @@ RSpec.describe IsoDoc::Bipm do
                          </li>
                       </ul>
                    </li>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       être
                       <ul>
-                         <li>
-                            <fmt-name>
-                               <semx element="autonum" source="">−</semx>
+                         <li id="_">
+                            <fmt-name id="_">
+                               <semx element="autonum" source="_">−</semx>
                             </fmt-name>
                             Husserl,
                             <em>voir</em>
@@ -1843,9 +1869,9 @@ RSpec.describe IsoDoc::Bipm do
                             <em>voir aussi</em>
                             Emancipation, zebra
                             <ul>
-                               <li>
-                                  <fmt-name>
-                                     <semx element="autonum" source="">o</semx>
+                               <li id="_">
+                                  <fmt-name id="_">
+                                     <semx element="autonum" source="_">o</semx>
                                   </fmt-name>
                                   en allemand,
                                   <xref target="_" pagenumber="true" id="_"/>
@@ -1863,11 +1889,11 @@ RSpec.describe IsoDoc::Bipm do
                 </ul>
              </clause>
              <clause id="_">
-                <title>Z</title>
+                <title id="_">Z</title>
                 <ul>
-                   <li>
-                      <fmt-name>
-                         <semx element="autonum" source="">•</semx>
+                   <li id="_">
+                      <fmt-name id="_">
+                         <semx element="autonum" source="_">•</semx>
                       </fmt-name>
                       zebra,
                       <xref target="_" pagenumber="true" id="_"/>

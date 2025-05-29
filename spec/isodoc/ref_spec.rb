@@ -216,11 +216,11 @@ RSpec.describe IsoDoc do
           </bibdata>
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title depth="1">Contents</fmt-title>
+                <fmt-title id="_" depth="1">Contents</fmt-title>
              </clause>
              <foreword id="_" displayorder="2">
                 <title id="_">Foreword</title>
-                <fmt-title depth="1">
+                <fmt-title id="_" depth="1">
                    <semx element="title" source="_">Foreword</semx>
                 </fmt-title>
                 <p id="_">
@@ -264,9 +264,9 @@ RSpec.describe IsoDoc do
              </foreword>
           </preface>
           <bibliography>
-             <references id="_" normative="false" obligation="informative" displayorder="3">
+             <references id="_bibliography" normative="false" obligation="informative" displayorder="3">
                 <title id="_">Bibliography</title>
-                <fmt-title depth="1">
+                <fmt-title id="_" depth="1">
                    <semx element="title" source="_">Bibliography</semx>
                 </fmt-title>
                 <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
@@ -378,7 +378,7 @@ RSpec.describe IsoDoc do
                    </biblio-tag>
                 </bibitem>
                 <note>
-                   <fmt-name>
+                   <fmt-name id="_">
                       <span class="fmt-caption-label">Note</span>
                       <span class="fmt-label-delim">
                          :
@@ -434,7 +434,7 @@ RSpec.describe IsoDoc do
                    </biblio-tag>
                 </bibitem>
                 <note>
-                   <fmt-name>
+                   <fmt-name id="_">
                       <span class="fmt-caption-label">Note</span>
                       <span class="fmt-label-delim">
                          :
@@ -444,7 +444,7 @@ RSpec.describe IsoDoc do
                    <p>This is an annotation of document ISSN.</p>
                 </note>
                 <note>
-                   <fmt-name>
+                   <fmt-name id="_">
                       <span class="fmt-caption-label">Note</span>
                       <span class="fmt-label-delim">
                          :
@@ -809,7 +809,7 @@ RSpec.describe IsoDoc do
         <sections>
          <clause id="_" obligation="normative" displayorder="2">
       <title id="_">Clause</title>
-      <fmt-title depth="1">
+      <fmt-title id="_" depth="1">
          <span class="fmt-caption-label">
             <semx element="autonum" source="_">1</semx>
             <span class="fmt-autonum-delim">.</span>
@@ -845,7 +845,7 @@ RSpec.describe IsoDoc do
         <sections>
            <clause id="_" obligation="normative" displayorder="2">
               <title id="_">Clause</title>
-              <fmt-title depth="1">
+              <fmt-title id="_" depth="1">
                  <span class="fmt-caption-label">
                     <semx element="autonum" source="_">1</semx>
                     <span class="fmt-autonum-delim">.</span>
@@ -904,9 +904,9 @@ RSpec.describe IsoDoc do
     INPUT
     presxml = <<~PRESXML
        <bibliography>
-          <references id="_" obligation="informative" normative="false" displayorder="2">
+          <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
              <title id="_">Bibliography</title>
-             <fmt-title depth="1">
+             <fmt-title id="_" depth="1">
                 <semx element="title" source="_">Bibliography</semx>
              </fmt-title>
              <bibitem id="ref1" type="standard">
@@ -1013,9 +1013,9 @@ RSpec.describe IsoDoc do
       INPUT
       presxml = <<~PRESXML
        <bibliography>
-          <references id="_" obligation="informative" normative="false" hidden="true" displayorder="2">
+          <references id="_normative_references" obligation="informative" normative="false" hidden="true" displayorder="2">
              <title id="_">Bibliography</title>
-             <fmt-title depth="1">
+             <fmt-title id="_" depth="1">
                 <semx element="title" source="_">Bibliography</semx>
              </fmt-title>
              <bibitem id="a1" hidden="true">
@@ -1146,9 +1146,9 @@ RSpec.describe IsoDoc do
       INPUT
       presxml = <<~PRESXML
        <bibliography>
-          <references id="_" obligation="informative" normative="false" displayorder="2">
+          <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
              <title id="_">Bibliography</title>
-             <fmt-title depth="1">
+             <fmt-title id="_" depth="1">
                 <semx element="title" source="_">Bibliography</semx>
              </fmt-title>
              <bibitem id="a1">
@@ -1270,7 +1270,7 @@ RSpec.describe IsoDoc do
     presxml = <<~PRESXML
       <foreword id="_" displayorder="2">
          <title id="_">Foreword</title>
-         <fmt-title depth="1">
+         <fmt-title id="_" depth="1">
             <semx element="title" source="_">Foreword</semx>
          </fmt-title>
          <p id="_">
@@ -1311,7 +1311,7 @@ RSpec.describe IsoDoc do
     presxml = <<~PRESXML
       <foreword id="_" displayorder="2">
          <title id="_">Foreword</title>
-         <fmt-title depth="1">
+         <fmt-title id="_" depth="1">
             <semx element="title" source="_">Foreword</semx>
          </fmt-title>
          <p id="_">
@@ -1396,7 +1396,7 @@ RSpec.describe IsoDoc do
     presxml = <<~OUTPUT
       <foreword id="_" displayorder="2">
          <title id="_">Foreword</title>
-         <fmt-title depth="1">
+         <fmt-title id="_" depth="1">
             <semx element="title" source="_">Foreword</semx>
          </fmt-title>
          <p id="_">
