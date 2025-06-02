@@ -1256,7 +1256,7 @@
 				</xsl:if>
 
 				<!-- Document Control -->
-				<xsl:apply-templates select="bipm:doccontrol" mode="sections"/>
+				<xsl:apply-templates select="bipm:doccontrol | bipm:colophon" mode="sections"/>
 
 				<!-- Index -->
 				<xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//bipm:indexsect" mode="index">
@@ -1411,7 +1411,7 @@
 				</xsl:if>
 
 				<!-- Document Control -->
-				<xsl:apply-templates select="bipm:doccontrol" mode="sections"/>
+				<xsl:apply-templates select="bipm:doccontrol | bipm:colophon" mode="sections"/>
 
 				<!-- Index -->
 				<xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//bipm:indexsect" mode="index">
@@ -4687,7 +4687,7 @@
 	<xsl:template name="refine_table-style">
 		<xsl:param name="margin-side"/>
 
-			<xsl:if test="not(ancestor::*[local-name()='preface']) and not(ancestor::*[local-name()='note_side']) and not(ancestor::*[local-name() = 'annex'] and .//*[local-name() = 'xref'][@pagenumber]) and not(ancestor::*[local-name() = 'doccontrol'])">
+			<xsl:if test="not(ancestor::*[local-name()='preface']) and not(ancestor::*[local-name()='note_side']) and not(ancestor::*[local-name() = 'annex'] and .//*[local-name() = 'xref'][@pagenumber]) and not(ancestor::*[local-name() = 'doccontrol']) and not(ancestor::*[local-name() = 'colophon'])">
 				<xsl:attribute name="border-top">0.5pt solid black</xsl:attribute>
 				<xsl:attribute name="border-bottom">0.5pt solid black</xsl:attribute>
 			</xsl:if>
@@ -4767,11 +4767,11 @@
 
 	<xsl:template name="refine_table-header-cell-style">
 
-			<xsl:if test="(ancestor::*[local-name() = 'annex'] and ancestor::*[local-name() = 'table']//*[local-name() = 'xref'][@pagenumber]) or ancestor::*[local-name() = 'doccontrol']"><!-- for Annex ToC -->
+			<xsl:if test="(ancestor::*[local-name() = 'annex'] and ancestor::*[local-name() = 'table']//*[local-name() = 'xref'][@pagenumber]) or ancestor::*[local-name() = 'doccontrol'] or ancestor::*[local-name() = 'colophon']"><!-- for Annex ToC -->
 				<xsl:attribute name="border-top">solid black 0pt</xsl:attribute>
 				<xsl:attribute name="border-bottom">solid black 0pt</xsl:attribute>
 			</xsl:if>
-			<xsl:if test="ancestor::*[local-name() = 'doccontrol']">
+			<xsl:if test="ancestor::*[local-name() = 'doccontrol'] or ancestor::*[local-name() = 'colophon']">
 				<xsl:call-template name="setTextAlignment">
 					<xsl:with-param name="default">left</xsl:with-param>
 				</xsl:call-template>
@@ -4807,10 +4807,13 @@
 			<xsl:if test="$rownum = 1">
 				<xsl:attribute name="padding-top">3mm</xsl:attribute>
 			</xsl:if>
+			<xsl:if test="preceding-sibling::*[local-name() = 'th']">
+				<xsl:attribute name="padding-top">2mm</xsl:attribute>
+			</xsl:if>
 			<xsl:if test="not(ancestor::*[local-name()='tr']/following-sibling::*[local-name()='tr'])"> <!-- last row -->
 				<xsl:attribute name="padding-bottom">2mm</xsl:attribute>
 			</xsl:if>
-			<xsl:if test="ancestor::*[local-name() = 'doccontrol']">
+			<xsl:if test="ancestor::*[local-name() = 'doccontrol'] or ancestor::*[local-name() = 'colophon']">
 				<xsl:attribute name="display-align">before</xsl:attribute>
 			</xsl:if>
 
@@ -9227,7 +9230,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<xsl:if test="$key = 'font-family' or $key = 'font-size' or $key = 'color'">
+				<xsl:if test="$key = 'font-family' or $key = 'font-size' or $key = 'color' or $key = 'baseline-shift'">
 					<style name="{$key}"><xsl:value-of select="$value"/></style>
 				</xsl:if>
 				<xsl:if test="$key = 'text-indent'">
