@@ -52,7 +52,10 @@ RSpec.describe IsoDoc::Bipm do
                    <bookmark original-id="A3"/>
                 </title>
                 <fmt-title depth="1" id="_">
-                   <span class="fmt-caption-label">▀</span>
+                   <span class="fmt-caption-label">
+                         <span style="font-size:130%">■</span>
+                           
+                      </span>
                    <span class="fmt-caption-delim"/>
                    <semx element="title" source="_">
                       Title

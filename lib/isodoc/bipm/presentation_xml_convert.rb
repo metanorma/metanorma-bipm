@@ -62,10 +62,13 @@ module IsoDoc
         end
       end
 
+      BLACKSQUARE =
+        '<span style="font-size:130%">&#x25a0;</span>&#xa0;&#xa0;'.freeze
+
       def quoted_title_render(node, elem, variant_title)
         add_id(variant_title)
         variant_title.next =
-          fmt_caption("&#x2580;", elem, variant_title, {}, {})
+          fmt_caption(BLACKSQUARE, elem, variant_title, {}, {})
         if s = variant_title.next.at(ns("./semx[@element='title']"))
           s["source"] = variant_title["id"]
         end
