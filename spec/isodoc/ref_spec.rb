@@ -773,7 +773,6 @@ RSpec.describe IsoDoc do
   end
 
   it "processes BIPM references" do
-    VCR.use_cassette "isodoc1" do
       input = <<~INPUT
         <bipm-standard xmlns="http://riboseinc.com/isoxml">
           <bibdata type="standard"><language>en</language><script>Latn</script></bibdata>
@@ -878,7 +877,6 @@ RSpec.describe IsoDoc do
         .convert("test", input, true))
          .at("//xmlns:sections").to_xml)))
         .to be_equivalent_to Xml::C14n.format(output)
-    end
   end
 
   it "enforces consistent references numbering with hidden items: metanorma-ordinal identifiers" do
@@ -959,7 +957,6 @@ RSpec.describe IsoDoc do
   end
 
   it "hides BIPM CGPM Resolution and BIPM CIPM Decision references in brochure" do
-    VCR.use_cassette "isodoc2" do
       input = <<~INPUT
          <bipm-standard xmlns="http://riboseinc.com/isoxml">
          <bibdata>
@@ -1088,11 +1085,9 @@ RSpec.describe IsoDoc do
         .convert("test", input, true),
       ).at("//xmlns:bibliography").to_xml)))
         .to be_equivalent_to Xml::C14n.format(presxml)
-    end
   end
 
   it "does not hide BIPM CGPM Resolution and BIPM CIPM Decision references outside of brochure" do
-    VCR.use_cassette "isodoc3" do
       input = <<~INPUT
          <bipm-standard xmlns="http://riboseinc.com/isoxml">
          <bibdata>
@@ -1233,7 +1228,6 @@ RSpec.describe IsoDoc do
         .convert("test", input, true),
       ).at("//xmlns:bibliography").to_xml)))
         .to be_equivalent_to Xml::C14n.format(presxml)
-    end
   end
 
     it "processes bibliographic localities" do

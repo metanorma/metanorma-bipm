@@ -1,14 +1,6 @@
 require "spec_helper"
 
 RSpec.describe Metanorma::Bipm do
-  before do
-    # Force to download Relaton index file
-    allow_any_instance_of(Relaton::Index::Type).to receive(:actual?)
-      .and_return(false)
-    allow_any_instance_of(Relaton::Index::FileIO).to receive(:check_file)
-      .and_return(nil)
-  end
-
   it "processes default metadata" do
     input = <<~INPUT
       = Document title
@@ -1468,12 +1460,9 @@ RSpec.describe Metanorma::Bipm do
   end
 
   it "references BIPM English citations" do
-    allow(File).to receive(:exist?).and_call_original
-    VCR.use_cassette("bipm", match_requests_on: %i[method uri body]) do
+    #allow(File).to receive(:exist?).and_call_original
       input = <<~INPUT
-        = Document title
-        Author
-        :no-isobib-cache:
+        #{LOCAL_CACHED_ISOBIB_BLANK_HDR}
 
         == Clause
 
@@ -1498,24 +1487,18 @@ RSpec.describe Metanorma::Bipm do
         </sections>
       OUTPUT
       doc = Asciidoctor.convert(input, *OPTIONS)
-      warn doc
       expect(Xml::C14n.format(strip_guid(
                      Nokogiri::XML(doc)
                      .at("//xmlns:sections").to_xml,
                    )))
         .to be_equivalent_to Xml::C14n.format(output)
-    end
   end
 
   it "references BIPM French citations" do
-    allow(File).to receive(:exist?).with(/index\.yaml/).and_return false
-    allow(File).to receive(:exist?).and_call_original
-    VCR.use_cassette("bipm-fr", match_requests_on: %i[method uri body]) do
+    #allow(File).to receive(:exist?).with(/index\.yaml/).and_return false
+    #allow(File).to receive(:exist?).and_call_original
       input = <<~INPUT
-        = Document title
-        Author
-        :no-isobib-cache:
-        :language: fr
+        #{LOCAL_CACHED_ISOBIB_BLANK_HDR.sub(/:nodoc:/, ":nodoc:\n:language: fr")}
 
         == Clause
 
@@ -1544,6 +1527,5 @@ RSpec.describe Metanorma::Bipm do
                      .at("//xmlns:sections").to_xml,
                    )))
         .to be_equivalent_to Xml::C14n.format(output)
-    end
   end
 end
