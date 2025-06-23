@@ -143,14 +143,6 @@ module IsoDoc
         node.next = "]"
       end
 
-      # KILL
-      def quotedtitles(docxml)
-        docxml.xpath(ns("//variant-title[@type = 'quoted']")).each do |t|
-          t.name = "title"
-          t.children.first.previous = "&#x2580;"
-        end
-      end
-
       def enable_indexsect
         true
       end
