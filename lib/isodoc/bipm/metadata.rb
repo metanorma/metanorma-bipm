@@ -48,16 +48,18 @@ module IsoDoc
 
       def docid(isoxml, _out)
         super
-        docid_part(isoxml, %w(Appendix Annexe), "appendix", :appendixid)
-        docid_part(isoxml, %w(Annex Appendice), "annexid", :annexid)
-        docid_part(isoxml, %w(Part Partie), "part", :partid)
+        docid_part(isoxml, [@i18n.get["level2_ancillary"],
+                            @i18n.get["level2_ancillary_alt"]], "appendix", :appendixid)
+        docid_part(isoxml, [@i18n.get["level3_ancillary"],
+                            @i18n.get["level3_ancillary_alt"]],  "annexid", :annexid)
+        docid_part(isoxml, @lang == "fr" ? %w(Partie Part) : %w(Part Partie),
+                   "part", :partid)
         set(:org_abbrev,
             isoxml.at(ns("//bibdata/ext/editorialgroup/committee"\
                          "[@acronym = 'JCGM']")) ? "JCGM" : "BIPM")
       end
 
       def docid_part(isoxml, labels, elem, key)
-        @lang == "fr" and labels.reverse!
         label1, label2 = labels
         dn = isoxml.at(ns("//bibdata/ext/structuredidentifier/#{elem}"))
         dn and set(key, @i18n.l10n("#{label1} #{dn.text}"))
