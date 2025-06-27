@@ -33,6 +33,10 @@ end
 
 OPTIONS = [backend: :bipm, header_footer: true].freeze
 
+DOC_SCHEME_2019 = <<~XML.freeze
+  <metanorma-extension><presentation-metadata><name>document-scheme</name><value>2019</value></presentation-metadata></metanorma-extension>
+XML
+
 def presxml_options
   { semanticxmlinsert: "false" }
 end

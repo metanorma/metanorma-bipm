@@ -99,8 +99,8 @@ RSpec.describe Metanorma::Bipm do
             <title format="text/plain" language="fr" type="title-part">Partie</title>
             <title format="text/plain" language="fr" type="title-subpart">Subpartie</title>
             <title format="text/plain" language="fr" type="title-provenance">Provenance-fr</title>
-            <docidentifier primary="true" type="BIPM" language="en">BIPM 1000 Appendix ABC Annex DEF Part 2</docidentifier>
-            <docidentifier primary="true" type="BIPM" language="fr">BIPM 1000 Annexe ABC Appendice DEF Partie 2</docidentifier>
+            <docidentifier primary="true" type="BIPM">BIPM 1000 ABC DEF 2</docidentifier>
+            <docidentifier type="BIPM-parent-document">BIPM 1000</docidentifier>
             <docnumber>1000</docnumber>
             <date type="implemented">
               <on>D</on>
@@ -301,372 +301,372 @@ RSpec.describe Metanorma::Bipm do
           #{boilerplate('en').gsub(/#{Time.now.year}/, '2001')}
           <sections/>
         </metanorma>
-      OUTPUT
+    OUTPUT
 
-      expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-        .to be_equivalent_to output
-    end
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
+  end
 
-    it "processes default metadata in French, no components to id" do
-      input = <<~INPUT
-        = Document title
-        Author
-        :docfile: test.adoc
-        :nodoc:
-        :novalid:
-        :docnumber: 1000
-        :doctype: standard
-        :edition: 2
-        :revdate: 2000-01-01
-        :draft: 3.4
-        :committee-en: TC
-        :committee-fr: CT
-        :committee-number: 1
-        :committee-type: A
-        :committee-acronym: TCA
-        :subcommittee: SC
-        :subcommittee-number: 2
-        :subcommittee-type: B
-        :workgroup: WG
-        :workgroup-number: 3
-        :workgroup-type: C
-        :secretariat: SECRETARIAT
-        :copyright-year: 2001
-        :status: working-draft
-        :iteration: 3
-        :language: fr
-        :title-en: Main Title
-        :title-fr: Chef Title
-        :title-cover-en: Main Title (SI)
-        :title-cover-fr: Chef Title (SI)
-        :security: Client Confidential
-        :comment-period-from: X
-        :comment-period-to: Y
-        :supersedes: A
-        :superseded-by: B
-        :obsoleted-date: C
-        :implemented-date: D
-      INPUT
+  it "processes default metadata in French, no components to id" do
+    input = <<~INPUT
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+      :docnumber: 1000
+      :doctype: standard
+      :edition: 2
+      :revdate: 2000-01-01
+      :draft: 3.4
+      :committee-en: TC
+      :committee-fr: CT
+      :committee-number: 1
+      :committee-type: A
+      :committee-acronym: TCA
+      :subcommittee: SC
+      :subcommittee-number: 2
+      :subcommittee-type: B
+      :workgroup: WG
+      :workgroup-number: 3
+      :workgroup-type: C
+      :secretariat: SECRETARIAT
+      :copyright-year: 2001
+      :status: working-draft
+      :iteration: 3
+      :language: fr
+      :title-en: Main Title
+      :title-fr: Chef Title
+      :title-cover-en: Main Title (SI)
+      :title-cover-fr: Chef Title (SI)
+      :security: Client Confidential
+      :comment-period-from: X
+      :comment-period-to: Y
+      :supersedes: A
+      :superseded-by: B
+      :obsoleted-date: C
+      :implemented-date: D
+    INPUT
 
-      output = Xml::C14n.format(<<~"OUTPUT")
-        <?xml version="1.0" encoding="UTF-8"?>
-        <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
-        <bibdata type="standard">
-          <title language='en' format='text/plain' type='title-main'>Main Title</title>
-          <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
-          <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
-          <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
-            <docidentifier primary="true" type="BIPM">BIPM 1000</docidentifier>
-            <docnumber>1000</docnumber>
-            <date type='implemented'>
-            <on>D</on>
-          </date>
-          <date type='obsoleted'>
-            <on>C</on>
-          </date>
-            <contributor>
-              <role type="author"/>
+    output = Xml::C14n.format(<<~"OUTPUT")
+      <?xml version="1.0" encoding="UTF-8"?>
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
+      <bibdata type="standard">
+        <title language='en' format='text/plain' type='title-main'>Main Title</title>
+        <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
+        <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
+        <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
+          <docidentifier primary="true" type="BIPM">BIPM 1000</docidentifier>
+          <docnumber>1000</docnumber>
+          <date type='implemented'>
+          <on>D</on>
+        </date>
+        <date type='obsoleted'>
+          <on>C</on>
+        </date>
+          <contributor>
+            <role type="author"/>
+            <organization>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
+              <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
+            </organization>
+          </contributor>
+          <contributor>
+            <role type="publisher"/>
+            <organization>
+              <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
+              <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
+            </organization>
+          </contributor>
+          <edition>2</edition>
+          <version>
+            <revision-date>2000-01-01</revision-date>
+            <draft>3.4</draft>
+          </version>
+          <language>fr</language>
+          <script>Latn</script>
+          <status>
+            <stage>working-draft</stage>
+            <iteration>3</iteration>
+          </status>
+          <copyright>
+            <from>2001</from>
+            <owner>
               <organization>
                 <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
                 <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
               </organization>
-            </contributor>
-            <contributor>
-              <role type="publisher"/>
-              <organization>
-                <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
-                <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
-              </organization>
-            </contributor>
-            <edition>2</edition>
-            <version>
-              <revision-date>2000-01-01</revision-date>
-              <draft>3.4</draft>
-            </version>
-            <language>fr</language>
-            <script>Latn</script>
-            <status>
-              <stage>working-draft</stage>
-              <iteration>3</iteration>
-            </status>
-            <copyright>
-              <from>2001</from>
-              <owner>
-                <organization>
-                  <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
-                  <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
-                </organization>
-              </owner>
-            </copyright>
-            <relation type='supersedes'>
-              <bibitem>
-                <title>--</title>
-                <docidentifier>A</docidentifier>
-              </bibitem>
-            </relation>
-            <relation type='supersededBy'>
-              <bibitem>
-                <title>--</title>
-                <docidentifier>B</docidentifier>
-              </bibitem>
-            </relation>
-            <ext>
-              <doctype>brochure</doctype>
-              <flavor>bipm</flavor>
-              <editorialgroup>
-                <committee acronym="TCA" language="en" script="Latn">TC</committee>
-                <committee acronym="TCA" language="fr" script="Latn">CT</committee>
-                <workgroup>WG</workgroup>
-              </editorialgroup>
-              <comment-period>
-                <from>X</from>
-                <to>Y</to>
-              </comment-period>
-              <structuredidentifier>
-                <docnumber>1000</docnumber>
-              </structuredidentifier>
-            </ext>
-          </bibdata>
-                   <metanorma-extension>
-             <presentation-metadata>
-               <name>TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-             <presentation-metadata>
-               <name>HTML TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-             <presentation-metadata>
-               <name>DOC TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-             <presentation-metadata>
-               <name>PDF TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-           </metanorma-extension>
-          #{boilerplate('fr').gsub(/#{Time.now.year}/, '2001')}
-          <sections/>
-        </metanorma>
-      OUTPUT
+            </owner>
+          </copyright>
+          <relation type='supersedes'>
+            <bibitem>
+              <title>--</title>
+              <docidentifier>A</docidentifier>
+            </bibitem>
+          </relation>
+          <relation type='supersededBy'>
+            <bibitem>
+              <title>--</title>
+              <docidentifier>B</docidentifier>
+            </bibitem>
+          </relation>
+          <ext>
+            <doctype>brochure</doctype>
+            <flavor>bipm</flavor>
+            <editorialgroup>
+              <committee acronym="TCA" language="en" script="Latn">TC</committee>
+              <committee acronym="TCA" language="fr" script="Latn">CT</committee>
+              <workgroup>WG</workgroup>
+            </editorialgroup>
+            <comment-period>
+              <from>X</from>
+              <to>Y</to>
+            </comment-period>
+            <structuredidentifier>
+              <docnumber>1000</docnumber>
+            </structuredidentifier>
+          </ext>
+        </bibdata>
+                 <metanorma-extension>
+           <presentation-metadata>
+             <name>TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>HTML TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>DOC TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>PDF TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+         </metanorma-extension>
+        #{boilerplate('fr').gsub(/#{Time.now.year}/, '2001')}
+        <sections/>
+      </metanorma>
+    OUTPUT
 
-      expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-        .to be_equivalent_to output
-    end
-
-    it "processes default metadata for JCTLM" do
-      input = <<~INPUT
-        = Document title
-        Author
-        :docfile: test.adoc
-        :nodoc:
-        :novalid:
-        :docnumber: 1000
-        :appendix-id: II
-        :doctype: standard
-        :edition: 2
-        :revdate: 2000-01-01
-        :draft: 3.4
-        :committee-en: TC
-        :committee-fr: CT
-        :committee-number: 1
-        :committee-type: A
-        :committee-acronym: JCTLM
-        :subcommittee: SC
-        :subcommittee-number: 2
-        :subcommittee-type: B
-        :workgroup: WG
-        :workgroup-number: 3
-        :workgroup-type: C
-        :secretariat: SECRETARIAT
-        :copyright-year: 2001
-        :status: working-draft
-        :iteration: 3
-        :language: fr
-        :title-en: Main Title
-        :title-fr: Chef Title
-        :title-cover-en: Main Title (SI)
-        :title-cover-fr: Chef Title (SI)
-        :partnumber: 2.1
-        :security: Client Confidential
-        :appendix-id: ABC
-        :comment-period-from: X
-        :comment-period-to: Y
-        :supersedes: A
-        :superseded-by: B
-        :obsoleted-date: C
-        :implemented-date: D
-      INPUT
-      output = Xml::C14n.format(<<~"OUTPUT")
-        <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
-           <bibdata type="standard">
-             <title language="en" format="text/plain" type="title-main">Main Title</title>
-             <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
-             <title language="fr" format="text/plain" type="title-main">Chef Title</title>
-             <title language="fr" format="text/plain" type="title-cover">Chef Title (SI)</title>
-             <docidentifier primary="true" type="BIPM" language="fr">BIPM 1000 Annexe ABC Partie 2.1</docidentifier>
-             <docidentifier primary="true" type="BIPM" language="en">BIPM 1000 Appendix ABC Part 2.1</docidentifier>
-             <docnumber>1000</docnumber>
-             <date type="implemented">
-               <on>D</on>
-             </date>
-             <date type="obsoleted">
-               <on>C</on>
-             </date>
-             <contributor>
-               <role type="author"/>
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
+  end
+  
+  it "processes default metadata for JCTLM" do
+    input = <<~INPUT
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+      :docnumber: 1000
+      :appendix-id: II
+      :doctype: standard
+      :edition: 2
+      :revdate: 2000-01-01
+      :draft: 3.4
+      :committee-en: TC
+      :committee-fr: CT
+      :committee-number: 1
+      :committee-type: A
+      :committee-acronym: JCTLM
+      :subcommittee: SC
+      :subcommittee-number: 2
+      :subcommittee-type: B
+      :workgroup: WG
+      :workgroup-number: 3
+      :workgroup-type: C
+      :secretariat: SECRETARIAT
+      :copyright-year: 2001
+      :status: working-draft
+      :iteration: 3
+      :language: fr
+      :title-en: Main Title
+      :title-fr: Chef Title
+      :title-cover-en: Main Title (SI)
+      :title-cover-fr: Chef Title (SI)
+      :partnumber: 2.1
+      :security: Client Confidential
+      :appendix-id: ABC
+      :comment-period-from: X
+      :comment-period-to: Y
+      :supersedes: A
+      :superseded-by: B
+      :obsoleted-date: C
+      :implemented-date: D
+    INPUT
+    output = Xml::C14n.format(<<~"OUTPUT")
+      <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
+         <bibdata type="standard">
+           <title language="en" format="text/plain" type="title-main">Main Title</title>
+           <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
+           <title language="fr" format="text/plain" type="title-main">Chef Title</title>
+           <title language="fr" format="text/plain" type="title-cover">Chef Title (SI)</title>
+          <docidentifier primary="true" type="BIPM">BIPM 1000 ABC 2.1</docidentifier>
+          <docidentifier type="BIPM-parent-document">BIPM 1000</docidentifier>
+           <docnumber>1000</docnumber>
+           <date type="implemented">
+             <on>D</on>
+           </date>
+           <date type="obsoleted">
+             <on>C</on>
+           </date>
+           <contributor>
+             <role type="author"/>
+             <organization>
+               <name>Bureau international des poids et mesures</name>
+               <abbreviation>BIPM</abbreviation>
+             </organization>
+           </contributor>
+           <contributor>
+             <role type="publisher"/>
+             <organization>
+               <name>Bureau international des poids et mesures</name>
+               <abbreviation>BIPM</abbreviation>
+             </organization>
+           </contributor>
+           <edition>2</edition>
+           <version>
+             <revision-date>2000-01-01</revision-date>
+             <draft>3.4</draft>
+           </version>
+           <language>fr</language>
+           <script>Latn</script>
+           <status>
+             <stage>working-draft</stage>
+             <iteration>3</iteration>
+           </status>
+           <copyright>
+             <from>2001</from>
+             <owner>
                <organization>
                  <name>Bureau international des poids et mesures</name>
                  <abbreviation>BIPM</abbreviation>
                </organization>
-             </contributor>
-             <contributor>
-               <role type="publisher"/>
-               <organization>
-                 <name>Bureau international des poids et mesures</name>
-                 <abbreviation>BIPM</abbreviation>
-               </organization>
-             </contributor>
-             <edition>2</edition>
-             <version>
-               <revision-date>2000-01-01</revision-date>
-               <draft>3.4</draft>
-             </version>
-             <language>fr</language>
-             <script>Latn</script>
-             <status>
-               <stage>working-draft</stage>
-               <iteration>3</iteration>
-             </status>
-             <copyright>
-               <from>2001</from>
-               <owner>
-                 <organization>
-                   <name>Bureau international des poids et mesures</name>
-                   <abbreviation>BIPM</abbreviation>
-                 </organization>
-               </owner>
-             </copyright>
-             <relation type="supersedes">
-               <bibitem>
-                 <title>--</title>
-                 <docidentifier>A</docidentifier>
-               </bibitem>
-             </relation>
-             <relation type="supersededBy">
-               <bibitem>
-                 <title>--</title>
-                 <docidentifier>B</docidentifier>
-               </bibitem>
-             </relation>
-             <ext>
-               <doctype>brochure</doctype>
-              <flavor>bipm</flavor>
-               <editorialgroup>
-                 <committee acronym="JCTLM" language="en" script="Latn">TC</committee>
-                 <committee acronym="JCTLM" language="fr" script="Latn">CT</committee>
-                 <workgroup>WG</workgroup>
-               </editorialgroup>
-               <comment-period>
-                 <from>X</from>
-                 <to>Y</to>
-               </comment-period>
-               <structuredidentifier>
-                 <docnumber>1000</docnumber>
-                 <part>2.1</part>
-                 <appendix>ABC</appendix>
-               </structuredidentifier>
-             </ext>
-           </bibdata>
-           <metanorma-extension>
-             <presentation-metadata>
-               <name>TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-             <presentation-metadata>
-               <name>HTML TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-             <presentation-metadata>
-               <name>DOC TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-             <presentation-metadata>
-               <name>PDF TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-           </metanorma-extension>
-           <boilerplate>
-             <copyright-statement>
-               <clause id="_" obligation="normative">
-                 <p id="_" align="center">© Bureau international des poids et mesures 2001 tous droits réservés</p>
-               </clause>
-             </copyright-statement>
-             <license-statement>
-               <clause id="_" obligation="normative">
-                 <title id="_">Note concernant les droits d’auteur</title>
-                 <p id="_">Ce document est distribué selon les termes et conditions de la licence Creative Commons Attribution 4.0 International (<link target="http://creativecommons.org/licenses/by/4.0/:"/>), qui permet l’utilisation sans restriction, la distribution et la reproduction sur quelque support que soit, sous réserve de mentionner dûment l’auteur ou les auteurs originaux ainsi que la source de l’œuvre, d’intégrer un lien vers la licence Creative Commons et d’indiquer si des modifications ont été effectuées.</p>
-               </clause>
-             </license-statement>
-             <feedback-statement>
-               <p id="_">BIPM<br/>
-         Pavillon de Breteuil<br/>
-         F-92312 Sèvres Cedex<br/>
-         FRANCE</p>
-             </feedback-statement>
-           </boilerplate>
-           <sections/>
-         </metanorma>
-      OUTPUT
+             </owner>
+           </copyright>
+           <relation type="supersedes">
+             <bibitem>
+               <title>--</title>
+               <docidentifier>A</docidentifier>
+             </bibitem>
+           </relation>
+           <relation type="supersededBy">
+             <bibitem>
+               <title>--</title>
+               <docidentifier>B</docidentifier>
+             </bibitem>
+           </relation>
+           <ext>
+             <doctype>brochure</doctype>
+            <flavor>bipm</flavor>
+             <editorialgroup>
+               <committee acronym="JCTLM" language="en" script="Latn">TC</committee>
+               <committee acronym="JCTLM" language="fr" script="Latn">CT</committee>
+               <workgroup>WG</workgroup>
+             </editorialgroup>
+             <comment-period>
+               <from>X</from>
+               <to>Y</to>
+             </comment-period>
+             <structuredidentifier>
+               <docnumber>1000</docnumber>
+               <part>2.1</part>
+               <appendix>ABC</appendix>
+             </structuredidentifier>
+           </ext>
+         </bibdata>
+         <metanorma-extension>
+           <presentation-metadata>
+             <name>TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>HTML TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>DOC TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+           <presentation-metadata>
+             <name>PDF TOC Heading Levels</name>
+             <value>2</value>
+           </presentation-metadata>
+         </metanorma-extension>
+         <boilerplate>
+           <copyright-statement>
+             <clause id="_" obligation="normative">
+               <p id="_" align="center">© Bureau international des poids et mesures 2001 tous droits réservés</p>
+             </clause>
+           </copyright-statement>
+           <license-statement>
+             <clause id="_" obligation="normative">
+               <title id="_">Note concernant les droits d’auteur</title>
+               <p id="_">Ce document est distribué selon les termes et conditions de la licence Creative Commons Attribution 4.0 International (<link target="http://creativecommons.org/licenses/by/4.0/:"/>), qui permet l’utilisation sans restriction, la distribution et la reproduction sur quelque support que soit, sous réserve de mentionner dûment l’auteur ou les auteurs originaux ainsi que la source de l’œuvre, d’intégrer un lien vers la licence Creative Commons et d’indiquer si des modifications ont été effectuées.</p>
+             </clause>
+           </license-statement>
+           <feedback-statement>
+             <p id="_">BIPM<br/>
+       Pavillon de Breteuil<br/>
+       F-92312 Sèvres Cedex<br/>
+       FRANCE</p>
+           </feedback-statement>
+         </boilerplate>
+         <sections/>
+       </metanorma>
+    OUTPUT
 
-      expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-        .to be_equivalent_to output
-    end
+    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to output
+  end
 
-    it "processes default metadata for JCGM" do
-      input = <<~INPUT
-        = Document title
-        Author
-        :docfile: test.adoc
-        :nodoc:
-        :novalid:
-        :docnumber: 1000
-        :doctype: standard
-        :edition: 2
-        :revdate: 2000-01-01
-        :draft: 3.4
-        :committee-en: TC
-        :committee-fr: CT
-        :committee-number: 1
-        :committee-type: A
-        :committee-acronym: JCGM
-        :subcommittee: SC
-        :subcommittee-number: 2
-        :subcommittee-type: B
-        :workgroup: WG
-        :workgroup-number: 3
-        :workgroup-type: C
-        :secretariat: SECRETARIAT
-        :copyright-year: 2001
-        :status: working-draft
-        :iteration: 3
-        :language: fr
-        :title-en: Main Title
-        :title-fr: Chef Title
-        :title-cover-en: Main Title (SI)
-        :title-cover-fr: Chef Title (SI)
-        :partnumber: 2.1
-        :security: Client Confidential
-        :appendix-id: ABC
-        :comment-period-from: X
-        :comment-period-to: Y
-        :supersedes: A
-        :superseded-by: B
-        :obsoleted-date: C
-        :implemented-date: D
-      INPUT
+  it "processes default metadata for JCGM" do
+    input = <<~INPUT
+      = Document title
+      Author
+      :docfile: test.adoc
+      :nodoc:
+      :novalid:
+      :docnumber: 1000
+      :doctype: standard
+      :edition: 2
+      :revdate: 2000-01-01
+      :draft: 3.4
+      :committee-en: TC
+      :committee-fr: CT
+      :committee-number: 1
+      :committee-type: A
+      :committee-acronym: JCGM
+      :subcommittee: SC
+      :subcommittee-number: 2
+      :subcommittee-type: B
+      :workgroup: WG
+      :workgroup-number: 3
+      :workgroup-type: C
+      :secretariat: SECRETARIAT
+      :copyright-year: 2001
+      :status: working-draft
+      :iteration: 3
+      :language: fr
+      :title-en: Main Title
+      :title-fr: Chef Title
+      :title-cover-en: Main Title (SI)
+      :title-cover-fr: Chef Title (SI)
+      :partnumber: 2.1
+      :security: Client Confidential
+      :appendix-id: ABC
+      :comment-period-from: X
+      :comment-period-to: Y
+      :supersedes: A
+      :superseded-by: B
+      :obsoleted-date: C
+      :implemented-date: D
+    INPUT
 
-      output = Xml::C14n.format(<<~"OUTPUT")
+    output = Xml::C14n.format(<<~"OUTPUT")
         <?xml version="1.0" encoding="UTF-8"?>
         <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
         <bibdata type='standard'>
@@ -674,8 +674,8 @@ RSpec.describe Metanorma::Bipm do
           <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
           <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
           <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
-          <docidentifier primary="true" type="BIPM" language="fr">JCGM 1000 Annexe ABC Partie 2.1</docidentifier>
-          <docidentifier primary="true" type="BIPM" language="en">JCGM 1000 Appendix ABC Part 2.1</docidentifier>
+          <docidentifier primary="true" type="BIPM">JCGM 1000 ABC 2.1</docidentifier>
+          <docidentifier type="BIPM-parent-document">JCGM 1000</docidentifier>
           <docnumber>1000</docnumber>
           <date type='implemented'>
             <on>D</on>
@@ -1460,72 +1460,73 @@ RSpec.describe Metanorma::Bipm do
   end
 
   it "references BIPM English citations" do
-    #allow(File).to receive(:exist?).and_call_original
-      input = <<~INPUT
-        #{LOCAL_CACHED_ISOBIB_BLANK_HDR}
+    # allow(File).to receive(:exist?).and_call_original
+    input = <<~INPUT
+      #{LOCAL_CACHED_ISOBIB_BLANK_HDR}
 
-        == Clause
+      == Clause
 
-        <<a1>>
-        <<a2>>
+      <<a1>>
+      <<a2>>
 
-        [bibliography]
-        == Bibliography
-        * [[[a1,CGPM -- Meeting 1 (1889)]]]
-        * [[[a2,BIPM DECN CIPM/101-1 (2012, EN)]]]
-      INPUT
+      [bibliography]
+      == Bibliography
+      * [[[a1,CGPM -- Meeting 1 (1889)]]]
+      * [[[a2,BIPM DECN CIPM/101-1 (2012, EN)]]]
+    INPUT
 
-      output = <<~OUTPUT
-        <sections>
-          <clause id="_" obligation="normative">
-             <title id="_">Clause</title>
-             <p id="_">
-                <eref type="inline" bibitemid="a1" citeas="CGPM 1st Meeting (1889)"/>
-                <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="CIPM Decision 101-1 (2012)"/>
-             </p>
-          </clause>
-        </sections>
-      OUTPUT
-      doc = Asciidoctor.convert(input, *OPTIONS)
-      expect(Xml::C14n.format(strip_guid(
-                     Nokogiri::XML(doc)
-                     .at("//xmlns:sections").to_xml,
-                   )))
-        .to be_equivalent_to Xml::C14n.format(output)
+    output = <<~OUTPUT
+      <sections>
+        <clause id="_" obligation="normative">
+           <title id="_">Clause</title>
+           <p id="_">
+              <eref type="inline" bibitemid="a1" citeas="CGPM 1st Meeting (1889)"/>
+              <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="CIPM Decision 101-1 (2012)"/>
+           </p>
+        </clause>
+      </sections>
+    OUTPUT
+    doc = Asciidoctor.convert(input, *OPTIONS)
+    expect(Xml::C14n.format(strip_guid(
+                              Nokogiri::XML(doc)
+                              .at("//xmlns:sections").to_xml,
+                            )))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 
   it "references BIPM French citations" do
-    #allow(File).to receive(:exist?).with(/index\.yaml/).and_return false
-    #allow(File).to receive(:exist?).and_call_original
-      input = <<~INPUT
-        #{LOCAL_CACHED_ISOBIB_BLANK_HDR.sub(/:nodoc:/, ":nodoc:\n:language: fr")}
+    # allow(File).to receive(:exist?).with(/index\.yaml/).and_return false
+    # allow(File).to receive(:exist?).and_call_original
+    input = <<~INPUT
+      #{LOCAL_CACHED_ISOBIB_BLANK_HDR.sub(/:nodoc:/, ":nodoc:\n:language: fr")}
 
-        == Clause
+      == Clause
 
-        <<a1>>
-        <<a2>>
+      <<a1>>
+      <<a2>>
 
-        [bibliography]
-        == Bibliography
-        * [[[a2,BIPM DECN CIPM/101-1 (2012, FR)]]]
-        * [[[a1,CGPM -- Meeting 1 (1889)]]]
-      INPUT
+      [bibliography]
+      == Bibliography
+      * [[[a2,BIPM DECN CIPM/101-1 (2012, FR)]]]
+      * [[[a1,CGPM -- Meeting 1 (1889)]]]
+    INPUT
 
-      output = <<~OUTPUT
-        <sections>
-          <clause id="_" obligation="normative">
-             <title id="_">Clause</title>
-             <p id="_">
-                <eref type="inline" bibitemid="a1" citeas="CGPM 1&lt;sup&gt;e&lt;/sup&gt; réunion (1889)"/>
-                <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>
-             </p>
-          </clause>
-        </sections>
-      OUTPUT
-      expect(Xml::C14n.format(strip_guid(
-                     Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
-                     .at("//xmlns:sections").to_xml,
-                   )))
-        .to be_equivalent_to Xml::C14n.format(output)
+    output = <<~OUTPUT
+      <sections>
+        <clause id="_" obligation="normative">
+           <title id="_">Clause</title>
+           <p id="_">
+              <eref type="inline" bibitemid="a1" citeas="CGPM 1&lt;sup&gt;e&lt;/sup&gt; réunion (1889)"/>
+              <eref type="inline" style="BIPM-long" bibitemid="a2" citeas="Décision CIPM/101-1 (2012)"/>
+           </p>
+        </clause>
+      </sections>
+    OUTPUT
+    expect(Xml::C14n.format(strip_guid(
+                              Nokogiri::XML(Asciidoctor.convert(input,
+                                                                *OPTIONS))
+                              .at("//xmlns:sections").to_xml,
+                            )))
+      .to be_equivalent_to Xml::C14n.format(output)
   end
 end

@@ -1,5 +1,15 @@
-annex: Appendix
-appendix: Annex
+level2_ancillary: Annex
+level3_ancillary: Appendix
+level2_ancillary_2019: Appendix
+level3_ancillary_2019: Annex
+level2_ancillary_alt: Annexe
+level3_ancillary_alt: Appendice
+level2_ancillary_alt_2019: Annexe
+level3_ancillary_alt_2019: Annexe
+level4_ancillary: Part
+level4_ancillary_alt: Partie
+level5_ancillary: Sub-part
+level5_ancillary_alt: Partie de sub
 iso_annex: Annex
 see: see
 see_also: see also
