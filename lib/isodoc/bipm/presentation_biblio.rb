@@ -12,7 +12,7 @@ module IsoDoc
         id = bibdata.at(ns("./docidentifier[@type = 'BIPM-parent-document']")) or
           return
         parts = %w(appendix annexid part subpart).each_with_object([]) do |w, m|
-          dn = bibdata.at("./ext/structuredidentifier/#{w}")
+          dn = bibdata.at(ns("./ext/structuredidentifier/#{w}"))
           m << dn&.text
         end
         id.next = bibdata_id1(@lang, id.dup, parts, false)
@@ -25,10 +25,11 @@ module IsoDoc
         m = []
         parts.each_with_index do |p, i|
           p.nil? and next
-          lbl = @i18n.get["level#{i + 2}_ancillary#{alt ? '_alt' : ''}".to_sym]
+          lbl = @i18n.get["level#{i + 2}_ancillary#{alt ? '_alt' : ''}"]
           m << "#{lbl} #{p}"
         end
         id.children = "#{id.text} #{m.join(' ')}"
+        id
       end
 
       def bibdata_dates(bibdata)
@@ -51,8 +52,8 @@ module IsoDoc
         bibdata.xpath(ns("//bibdata/title[@type = 'title-part']")).each do |t|
           t.previous = t.dup
           t["type"] = "title-part-with-numbering"
-          l = t["language"] == @lang ? :level4_ancillary : :level4_ancillary_alt
-          t.children = l10n("#{@i18n.get[l]} #{num}: #{to_xml(t.children)}",
+          alt = t["language"] == @lang ? "" : "_alt"
+          t.children = l10n("#{@i18n.get["level4_ancillary#{alt}"]} #{num}: #{to_xml(t.children)}",
                             t["language"])
         end
       end
@@ -61,8 +62,8 @@ module IsoDoc
         bibdata.xpath(ns("//bibdata/title[@type = 'title-subpart']")).each do |t|
           t.previous = t.dup
           t["type"] = "title-subpart-with-numbering"
-          l = t["language"] == @lang ? :level5_ancillary : :level5_ancillary_alt
-          t.children = l10n("#{@i18n.get[l]} #{num}: #{to_xml(t.children)}",
+          alt = t["language"] == @lang ? "" : "_alt"
+          t.children = l10n("#{@i18n.get["level5_ancillary#{alt}"]} #{num}: #{to_xml(t.children)}",
                             t["language"])
         end
       end

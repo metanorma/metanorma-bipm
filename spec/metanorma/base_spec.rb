@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe Metanorma::Bipm do
-=begin
   it "processes default metadata" do
     input = <<~INPUT
       = Document title
@@ -454,7 +453,7 @@ RSpec.describe Metanorma::Bipm do
     expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
-=end
+  
   it "processes default metadata for JCTLM" do
     input = <<~INPUT
       = Document title
@@ -505,8 +504,8 @@ RSpec.describe Metanorma::Bipm do
            <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
            <title language="fr" format="text/plain" type="title-main">Chef Title</title>
            <title language="fr" format="text/plain" type="title-cover">Chef Title (SI)</title>
-          <docidentifier primary="true" type="BIPM">JCGM 1000 ABC 2.1</docidentifier>
-          <docidentifier type="BIPM-parent-document">JCGM 1000</docidentifier>
+          <docidentifier primary="true" type="BIPM">BIPM 1000 ABC 2.1</docidentifier>
+          <docidentifier type="BIPM-parent-document">BIPM 1000</docidentifier>
            <docnumber>1000</docnumber>
            <date type="implemented">
              <on>D</on>

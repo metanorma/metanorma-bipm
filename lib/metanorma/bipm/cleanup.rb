@@ -55,7 +55,6 @@ module Metanorma
       end
 
       def bibdata_docidentifier_i18n_prep(isoxml)
-        require "debug"; binding.b
         id = isoxml.at("//bibdata/docidentifier[@type = 'BIPM']")
         parts = %w(appendix annexid part subpart).each_with_object({}) do |w, m|
           dn = isoxml.at("//bibdata/ext/structuredidentifier/#{w}") and

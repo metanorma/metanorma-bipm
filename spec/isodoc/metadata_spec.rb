@@ -526,7 +526,7 @@ RSpec.describe IsoDoc::Bipm do
   end
 
   it "internationalises document identifier" do
-        input = <<~INPUT
+    input = <<~INPUT
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
       <bibdata>
       <docidentifier type="BIPM">BIPM 2 3 4 5 6</docidentifier>
@@ -545,21 +545,59 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     output = Xml::C14n.format(<<~OUTPUT)
-      <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
-        <bibdata>
-           <title type='title-main' language='en'>Maintitle</title>
-           <title type='title-part' language='en'>Parttitle</title>
-           <title type='title-part-with-numbering' language='en'>Part 3: Parttitle</title>
-           <title type='title-main' language='fr'>Titrechef</title>
-           <title type='title-part' language='fr'>Titrepartie</title>
-           <title type='title-part-with-numbering' language='fr'>Partie 3&#xA0;: Titrepartie</title>
-          <ext>
-            <structuredidentifier>
-              <part>3</part>
-            </structuredidentifier>
-          </ext>
-        </bibdata>
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
+         <bibdata>
+            <docidentifier type="BIPM">BIPM 2 3 4 5 6</docidentifier>
+            <docidentifier type="BIPM-parent-document">BIPM 2</docidentifier>
+            <docidentifier type="BIPM" language="fr">BIPM 2 Annexe 3 Appendice 4 Partie 5 Partie de sub 6</docidentifier>
+            <docidentifier type="BIPM" language="en">BIPM 2 Annex 3 Appendix 4 Part 5 Sub-part 6</docidentifier>
+            <title type="title-main" language="en">Maintitle</title>
+            <ext>
+               <structuredidentifier>
+                  <appendix>3</appendix>
+                  <annexid>4</annexid>
+                  <part>5</part>
+                  <subpart>6</subpart>
+               </structuredidentifier>
+            </ext>
+         </bibdata>
       </bipm-standard>
+    OUTPUT
+
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to be_equivalent_to output
+
+    input = input.sub("</bibdata>", <<~XML)
+      </bibdata><metanorma-extension><presentation-metadata><name>document-scheme</name><value>2019</value></presentation-metadata></metanorma-extension>
+    XML
+
+    output = Xml::C14n.format(<<~OUTPUT)
+          <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
+             <bibdata>
+                <docidentifier type="BIPM">BIPM 2 3 4 5 6</docidentifier>
+                <docidentifier type="BIPM-parent-document">BIPM 2</docidentifier>
+                <docidentifier type="BIPM" language="fr">BIPM 2 Annexe 3 Annexe 4 Partie 5 Partie de sub 6</docidentifier>
+                 <docidentifier type="BIPM" language="en">BIPM 2 Appendix 3 Annex 4 Part 5 Sub-part 6</docidentifier>
+                <title type="title-main" language="en">Maintitle</title>
+                <ext>
+                   <structuredidentifier>
+                      <appendix>3</appendix>
+                      <annexid>4</annexid>
+                      <part>5</part>
+                      <subpart>6</subpart>
+                   </structuredidentifier>
+                </ext>
+             </bibdata>
+                <metanorma-extension>
+         <presentation-metadata>
+            <name>document-scheme</name>
+            <value>2019</value>
+         </presentation-metadata>
+      </metanorma-extension>
+          </bipm-standard>
     OUTPUT
 
     expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
