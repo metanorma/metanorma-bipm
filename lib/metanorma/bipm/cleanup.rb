@@ -39,19 +39,6 @@ module Metanorma
         super
       end
 
-      ID_LABELS = {
-        "en" => {
-          "appendix" => "Appendix",
-          "annexid" => "Annex",
-          "part" => "Part",
-        },
-        "fr" => {
-          "appendix" => "Annexe",
-          "annexid" => "Appendice",
-          "part" => "Partie",
-        },
-      }.freeze
-
       def bibdata_docidentifier_cleanup(isoxml)
         bibdata_docidentifier_i18n(isoxml)
         super
@@ -62,24 +49,25 @@ module Metanorma
         parts.empty? and return
         id_alt = id.dup
         id.next = id_alt
-        bibdata_docidentifier_enhance(id, @lang, parts)
-        bibdata_docidentifier_enhance(id_alt, @lang == "en" ? "fr" : "en",
-                                      parts)
+        id_alt["type"] = "BIPM-parent-document"
+        id_alt.delete("primary")
+        bibdata_docidentifier_enhance(id, parts)
       end
 
       def bibdata_docidentifier_i18n_prep(isoxml)
+        require "debug"; binding.b
         id = isoxml.at("//bibdata/docidentifier[@type = 'BIPM']")
-        parts = %w(appendix annexid part).each_with_object({}) do |w, m|
+        parts = %w(appendix annexid part subpart).each_with_object({}) do |w, m|
           dn = isoxml.at("//bibdata/ext/structuredidentifier/#{w}") and
             m[w] = dn.text
         end
         [id, parts]
       end
 
-      def bibdata_docidentifier_enhance(id, lang, parts)
-        id["language"] = lang
-        ret = %w(appendix annexid part).each_with_object([]) do |w, m|
-          p = parts[w] and m << "#{ID_LABELS[lang][w]} #{p}"
+      # not language-specific, just space-delimited
+      def bibdata_docidentifier_enhance(id, parts)
+        ret = %w(appendix annexid part subpart).each_with_object([]) do |w, m|
+          p = parts[w] and m << p
         end
         id.children = "#{id.text} #{ret.join(' ')}"
       end

@@ -104,6 +104,11 @@ module Metanorma
           t1 << Metanorma::Utils::asciidoc_sub(title)
         end
       end
+
+      def metadata_id(node, xml)
+        require "debug"; binding.b
+        super
+      end
     end
   end
 end
