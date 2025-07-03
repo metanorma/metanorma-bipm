@@ -345,13 +345,13 @@ RSpec.describe IsoDoc::Bipm do
               <fmt-title id="_">
                  <span class="fmt-caption-label">
                     <strong>
-                       <span class="fmt-element-name">Appendix</span>
+                       <span class="fmt-element-name">Annex</span>
                        <semx element="autonum" source="annex1">1</semx>
                     </strong>
                  </span>
               </fmt-title>
               <fmt-xref-label>
-                 <span class="fmt-element-name">Appendix</span>
+                 <span class="fmt-element-name">Annex</span>
                  <semx element="autonum" source="annex1">1</semx>
               </fmt-xref-label>
               <clause id="annex1a">
@@ -364,7 +364,7 @@ RSpec.describe IsoDoc::Bipm do
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
-                    <span class="fmt-element-name">Appendix</span>
+                    <span class="fmt-element-name">Annex</span>
                     <semx element="autonum" source="annex1">A1</semx>
                     <span class="fmt-autonum-delim">.</span>
                     <semx element="autonum" source="annex1a">1</semx>
@@ -403,7 +403,7 @@ RSpec.describe IsoDoc::Bipm do
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
-                    <span class="fmt-element-name">Appendix</span>
+                    <span class="fmt-element-name">Annex</span>
                     <semx element="autonum" source="annex1">A1</semx>
                     <span class="fmt-autonum-delim">.</span>
                     <semx element="autonum" source="annex1b">2</semx>
@@ -642,6 +642,173 @@ RSpec.describe IsoDoc::Bipm do
               <xref target="P" id="_"/>
               <semx element="xref" source="_">
                  <fmt-xref target="P">
+                    <span class="fmt-element-name">Annex</span>
+                    <semx element="autonum" source="P">1</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="Q" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="Q">
+                    <span class="fmt-element-name">Annex</span>
+                    <semx element="autonum" source="P">A1</semx>
+                    <span class="fmt-autonum-delim">.</span>
+                    <semx element="autonum" source="Q">1</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="Q1" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="Q1">
+                    <span class="fmt-element-name">Annex</span>
+                    <semx element="autonum" source="P">A1</semx>
+                    <span class="fmt-autonum-delim">.</span>
+                    <semx element="autonum" source="Q">1</semx>
+                    <span class="fmt-autonum-delim">.</span>
+                    <semx element="autonum" source="Q1">1</semx>
+                 </fmt-xref>
+              </semx>
+             <xref target="Q2" id="_"/>
+             <semx element="xref" source="_">
+                <fmt-xref target="Q2">
+                   <span class="fmt-xref-container">
+                      <span class="fmt-element-name">Annex</span>
+                      <semx element="autonum" source="P">1</semx>
+                   </span>
+                   <span class="fmt-comma">,</span>
+                   <span class="fmt-element-name">Appendix</span>
+                   <semx element="autonum" source="Q2">1</semx>
+                </fmt-xref>
+             </semx>
+             <xref target="Q3" id="_"/>
+             <semx element="xref" source="_">
+                <fmt-xref target="Q3">
+                   <span class="fmt-xref-container">
+                      <span class="fmt-element-name">Annex</span>
+                      <semx element="autonum" source="P">1</semx>
+                   </span>
+                   <span class="fmt-comma">,</span>
+                   <span class="fmt-element-name">Appendix</span>
+                   <semx element="autonum" source="Q2">1</semx>
+                   <span class="fmt-autonum-delim">.</span>
+                   <semx element="autonum" source="Q3">1</semx>
+                </fmt-xref>
+             </semx>
+              <xref target="R" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="R">
+                    <span class="fmt-element-name">Chapter</span>
+                    <semx element="autonum" source="R">5</semx>
+                 </fmt-xref>
+              </semx>
+           </p>
+        </foreword>
+    OUTPUT
+    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input, true)
+      .sub(%r{^.*<foreword}m, "<foreword")
+      .sub(%r{</foreword>.*$}m, "</foreword>"))))
+      .to be_equivalent_to Xml::C14n.format(output)
+
+    output = <<~OUTPUT
+        <foreword obligation="informative" id="_" displayorder="2">
+           <title id="_">Foreword</title>
+           <fmt-title id="_" depth="1">
+              <semx element="title" source="_">Foreword</semx>
+           </fmt-title>
+           <p id="A">
+              This is a preamble
+              <xref target="C" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="C">
+                    <semx element="clause" source="C">Introduction Subsection</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="C1" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="C1">
+                    <semx element="introduction" source="B">Introduction</semx>
+                    <span class="fmt-comma">,</span>
+                    <semx element="autonum" source="C1">2</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="D" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="D">
+                    <span class="fmt-element-name">Chapter</span>
+                    <semx element="autonum" source="D">1</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="H" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="H">
+                    <span class="fmt-element-name">Chapter</span>
+                    <semx element="autonum" source="H">2</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="I" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="I">
+                    <span class="fmt-element-name">Section</span>
+                    <semx element="autonum" source="H">2</semx>
+                    <span class="fmt-autonum-delim">.</span>
+                    <semx element="autonum" source="I">1</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="J" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="J">
+                    <span class="fmt-element-name">Section</span>
+                    <semx element="autonum" source="H">2</semx>
+                    <span class="fmt-autonum-delim">.</span>
+                    <semx element="autonum" source="I">1</semx>
+                    <span class="fmt-autonum-delim">.</span>
+                    <semx element="autonum" source="J">1</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="K" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="K">
+                    <span class="fmt-element-name">Section</span>
+                    <semx element="autonum" source="H">2</semx>
+                    <span class="fmt-autonum-delim">.</span>
+                    <semx element="autonum" source="K">2</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="L" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="L">
+                    <span class="fmt-element-name">Chapter</span>
+                    <semx element="autonum" source="L">3</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="M" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="M">
+                    <span class="fmt-element-name">Chapter</span>
+                    <semx element="autonum" source="M">4</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="N" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="N">
+                    <span class="fmt-element-name">Section</span>
+                    <semx element="autonum" source="M">4</semx>
+                    <span class="fmt-autonum-delim">.</span>
+                    <semx element="autonum" source="N">1</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="O" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="O">
+                    <span class="fmt-element-name">Section</span>
+                    <semx element="autonum" source="M">4</semx>
+                    <span class="fmt-autonum-delim">.</span>
+                    <semx element="autonum" source="O">2</semx>
+                 </fmt-xref>
+              </semx>
+              <xref target="P" id="_"/>
+              <semx element="xref" source="_">
+                 <fmt-xref target="P">
                     <span class="fmt-element-name">Appendix</span>
                     <semx element="autonum" source="P">1</semx>
                  </fmt-xref>
@@ -667,13 +834,31 @@ RSpec.describe IsoDoc::Bipm do
                  </fmt-xref>
               </semx>
               <xref target="Q2" id="_"/>
-              <semx element="xref" source="_">
-                 <fmt-xref target="Q2">[Q2]</fmt-xref>
-              </semx>
-              <xref target="Q3" id="_"/>
-              <semx element="xref" source="_">
-                 <fmt-xref target="Q3">[Q3]</fmt-xref>
-              </semx>
+             <semx element="xref" source="_">
+                <fmt-xref target="Q2">
+                   <span class="fmt-xref-container">
+                      <span class="fmt-element-name">Appendix</span>
+                      <semx element="autonum" source="P">1</semx>
+                   </span>
+                   <span class="fmt-comma">,</span>
+                   <span class="fmt-element-name">Annex</span>
+                   <semx element="autonum" source="Q2">1</semx>
+                </fmt-xref>
+             </semx>
+             <xref target="Q3" id="_"/>
+             <semx element="xref" source="_">
+                <fmt-xref target="Q3">
+                   <span class="fmt-xref-container">
+                      <span class="fmt-element-name">Appendix</span>
+                      <semx element="autonum" source="P">1</semx>
+                   </span>
+                   <span class="fmt-comma">,</span>
+                   <span class="fmt-element-name">Annex</span>
+                   <semx element="autonum" source="Q2">1</semx>
+                   <span class="fmt-autonum-delim">.</span>
+                   <semx element="autonum" source="Q3">1</semx>
+                </fmt-xref>
+             </semx>
               <xref target="R" id="_"/>
               <semx element="xref" source="_">
                  <fmt-xref target="R">
@@ -683,10 +868,10 @@ RSpec.describe IsoDoc::Bipm do
               </semx>
            </p>
         </foreword>
-    OUTPUT
+        OUTPUT
     expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
-      .convert("test", input, true)
+      .convert("test", input.sub("<preface>", "#{DOC_SCHEME_2019}<preface>"), true)
       .sub(%r{^.*<foreword}m, "<foreword")
       .sub(%r{</foreword>.*$}m, "</foreword>"))))
       .to be_equivalent_to Xml::C14n.format(output)
@@ -810,14 +995,32 @@ RSpec.describe IsoDoc::Bipm do
                     <semx element="autonum" source="Q1">1</semx>
                  </fmt-xref>
               </semx>
-              <xref target="Q2" id="_"/>
-              <semx element="xref" source="_">
-                 <fmt-xref target="Q2">[Q2]</fmt-xref>
-              </semx>
-              <xref target="Q3" id="_"/>
-              <semx element="xref" source="_">
-                 <fmt-xref target="Q3">[Q3]</fmt-xref>
-              </semx>
+             <xref target="Q2" id="_"/>
+             <semx element="xref" source="_">
+                <fmt-xref target="Q2">
+                   <span class="fmt-xref-container">
+                      <span class="fmt-element-name">Annex</span>
+                      <semx element="autonum" source="P">A</semx>
+                   </span>
+                   <span class="fmt-comma">,</span>
+                   <span class="fmt-element-name">Appendix</span>
+                   <semx element="autonum" source="Q2">1</semx>
+                </fmt-xref>
+             </semx>
+             <xref target="Q3" id="_"/>
+             <semx element="xref" source="_">
+                <fmt-xref target="Q3">
+                   <span class="fmt-xref-container">
+                      <span class="fmt-element-name">Annex</span>
+                      <semx element="autonum" source="P">A</semx>
+                   </span>
+                   <span class="fmt-comma">,</span>
+                   <span class="fmt-element-name">Appendix</span>
+                   <semx element="autonum" source="Q2">1</semx>
+                   <span class="fmt-autonum-delim">.</span>
+                   <semx element="autonum" source="Q3">1</semx>
+                </fmt-xref>
+             </semx>
               <xref target="R" id="_"/>
               <semx element="xref" source="_">
                  <fmt-xref target="R">
@@ -1098,13 +1301,13 @@ RSpec.describe IsoDoc::Bipm do
               <fmt-title id="_">
                  <span class="fmt-caption-label">
                     <strong>
-                       <span class="fmt-element-name">Appendix</span>
+                       <span class="fmt-element-name">Annex</span>
                        <semx element="autonum" source="annex1">1</semx>
                     </strong>
                  </span>
               </fmt-title>
               <fmt-xref-label>
-                 <span class="fmt-element-name">Appendix</span>
+                 <span class="fmt-element-name">Annex</span>
                  <semx element="autonum" source="annex1">1</semx>
               </fmt-xref-label>
               <clause id="annex1a">
@@ -1117,7 +1320,7 @@ RSpec.describe IsoDoc::Bipm do
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
-                    <span class="fmt-element-name">Appendix</span>
+                    <span class="fmt-element-name">Annex</span>
                     <semx element="autonum" source="annex1">A1</semx>
                     <span class="fmt-autonum-delim">.</span>
                     <semx element="autonum" source="annex1a">1</semx>
@@ -1133,7 +1336,7 @@ RSpec.describe IsoDoc::Bipm do
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
-                    <span class="fmt-element-name">Appendix</span>
+                    <span class="fmt-element-name">Annex</span>
                     <semx element="autonum" source="annex1">A1</semx>
                     <span class="fmt-autonum-delim">.</span>
                     <semx element="autonum" source="annex1b">2</semx>

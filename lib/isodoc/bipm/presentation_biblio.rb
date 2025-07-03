@@ -3,8 +3,33 @@ module IsoDoc
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def bibdata_i18n(bibdata)
         super
+        bibdata_id(bibdata)
         bibdata_dates(bibdata)
         bibdata_titles(bibdata)
+      end
+
+      def bibdata_id(bibdata)
+        id = bibdata.at(ns("./docidentifier[@type = 'BIPM-parent-document']")) or
+          return
+        parts = %w(appendix annexid part subpart).each_with_object([]) do |w, m|
+          dn = bibdata.at(ns("./ext/structuredidentifier/#{w}"))
+          m << dn&.text
+        end
+        id.next = bibdata_id1(@lang, id.dup, parts, false)
+        id.next = bibdata_id1(@lang == "en" ? "fr" : "en", id.dup, parts, true)
+      end
+
+      def bibdata_id1(lang, id, parts, alt)
+        id["type"] = "BIPM"
+        id["language"] = lang
+        m = []
+        parts.each_with_index do |p, i|
+          p.nil? and next
+          lbl = @i18n.get["level#{i + 2}_ancillary#{alt ? '_alt' : ''}"]
+          m << "#{lbl} #{p}"
+        end
+        id.children = "#{id.text} #{m.join(' ')}"
+        id
       end
 
       def bibdata_dates(bibdata)
@@ -17,13 +42,28 @@ module IsoDoc
       end
 
       def bibdata_titles(bibdata)
-        app = bibdata.at(ns("//bibdata/ext/" \
-                            "structuredidentifier/part")) or return
+        app = bibdata.at(ns("//bibdata/ext/structuredidentifier/part")) or
+          return
+        bibdata_part_titles(bibdata, app.text.sub(/\.\d+/, ""))
+        bibdata_subpart_titles(bibdata, app.text.sub(/\d+\./, ""))
+      end
+
+      def bibdata_part_titles(bibdata, num)
         bibdata.xpath(ns("//bibdata/title[@type = 'title-part']")).each do |t|
           t.previous = t.dup
           t["type"] = "title-part-with-numbering"
-          part = t["language"] == "en" ? "Part" : "Partie" # not looking up in YAML
-          t.children = l10n("#{part} #{app.text}: #{to_xml(t.children)}",
+          alt = t["language"] == @lang ? "" : "_alt"
+          t.children = l10n("#{@i18n.get["level4_ancillary#{alt}"]} #{num}: #{to_xml(t.children)}",
+                            t["language"])
+        end
+      end
+
+      def bibdata_subpart_titles(bibdata, num)
+        bibdata.xpath(ns("//bibdata/title[@type = 'title-subpart']")).each do |t|
+          t.previous = t.dup
+          t["type"] = "title-subpart-with-numbering"
+          alt = t["language"] == @lang ? "" : "_alt"
+          t.children = l10n("#{@i18n.get["level5_ancillary#{alt}"]} #{num}: #{to_xml(t.children)}",
                             t["language"])
         end
       end

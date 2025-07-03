@@ -153,12 +153,12 @@ RSpec.describe IsoDoc::Bipm do
       { accesseddate: "XXX",
         adapteddate: "XXX",
         agency: "#{Metanorma::Bipm.configuration.organization_name_long['en']}",
-        annexid: "Annex DEF",
+        annexid: "Appendix DEF",
         annexid_alt: "Appendice DEF",
         annexsubtitle: "Chef Title Annex",
         annextitle: "Main Title Annex",
         announceddate: "XXX",
-        appendixid: "Appendix ABC",
+        appendixid: "Annex ABC",
         appendixid_alt: "Annexe ABC",
         appendixsubtitle: "Chef Title Appendix",
         appendixtitle: "Main Title Appendix",
@@ -215,6 +215,22 @@ RSpec.describe IsoDoc::Bipm do
     docxml, = csdc.convert_init(input, "test", true)
     expect(metadata(csdc.info(docxml, nil)))
       .to be_equivalent_to(output)
+
+    input2 = input.sub("</bibdata>", "</bibdata>#{DOC_SCHEME_2019}")
+    docxml, = csdc.convert_init(input2, "test", true)
+    m = metadata(csdc.info(docxml, nil))
+    output2 = output.merge(
+      annexid: "Appendix DEF",
+      annexid_alt: "Appendice DEF",
+      annexsubtitle: "Chef Title Annex",
+      annextitle: "Main Title Annex",
+      appendixid: "Annex ABC",
+      appendixid_alt: "Annexe ABC",
+      appendixsubtitle: "Chef Title Appendix",
+      appendixtitle: "Main Title Appendix",
+      "presentation_metadata_document-scheme": ["2019"],
+    )
+    expect(m).to match(output2)
   end
 
   it "processes default metadata in French" do
@@ -289,12 +305,12 @@ RSpec.describe IsoDoc::Bipm do
         adapteddate: "XXX",
         agency: "#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
         annexid: "Appendice DEF",
-        annexid_alt: "Annex DEF",
+        annexid_alt: "Appendix DEF",
         annexsubtitle: "Main Title Annex",
         annextitle: "Chef Title Annex",
         announceddate: "XXX",
         appendixid: "Annexe ABC",
-        appendixid_alt: "Appendix ABC",
+        appendixid_alt: "Annex ABC",
         appendixsubtitle: "Main Title Appendix",
         appendixtitle: "Chef Title Appendix",
         circulateddate: "XXX",
@@ -341,6 +357,22 @@ RSpec.describe IsoDoc::Bipm do
     docxml, = csdc.convert_init(input, "test", true)
     expect(metadata(csdc.info(docxml, nil)))
       .to be_equivalent_to(output)
+
+    input2 = input.sub("</bibdata>", "</bibdata>#{DOC_SCHEME_2019}")
+    docxml, = csdc.convert_init(input2, "test", true)
+    m = metadata(csdc.info(docxml, nil))
+    output2 = output.merge(
+      annexid: "Appendice DEF",
+      annexid_alt: "Appendix DEF",
+      annexsubtitle: "Main Title Annex",
+      annextitle: "Chef Title Annex",
+      appendixid: "Annexe ABC",
+      appendixid_alt: "Annex ABC",
+      appendixsubtitle: "Main Title Appendix",
+      appendixtitle: "Chef Title Appendix",
+      "presentation_metadata_document-scheme": ["2019"],
+    )
+    expect(m).to match(output2)
   end
 
   it "ignores unrecognised status" do
@@ -484,6 +516,88 @@ RSpec.describe IsoDoc::Bipm do
           <title type='title-part' language='fr'>Titrepartie</title>
         </bibdata>
       </bipm-standard>
+    OUTPUT
+
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to be_equivalent_to output
+  end
+
+  it "internationalises document identifier" do
+    input = <<~INPUT
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm">
+      <bibdata>
+      <docidentifier type="BIPM">BIPM 2 3 4 5 6</docidentifier>
+      <docidentifier type="BIPM-parent-document">BIPM 2</docidentifier>
+      <title type="title-main" language="en">Maintitle</title>
+      <ext>
+      <structuredidentifier>
+      <appendix>3</appendix>
+      <annexid>4</annexid>
+      <part>5</part>
+      <subpart>6</subpart>
+      </structuredidentifier>
+      </ext>
+      </bibdata>
+      </bipm-standard>
+    INPUT
+
+    output = Xml::C14n.format(<<~OUTPUT)
+      <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
+         <bibdata>
+            <docidentifier type="BIPM">BIPM 2 3 4 5 6</docidentifier>
+            <docidentifier type="BIPM-parent-document">BIPM 2</docidentifier>
+            <docidentifier type="BIPM" language="fr">BIPM 2 Annexe 3 Appendice 4 Partie 5 Partie de sub 6</docidentifier>
+            <docidentifier type="BIPM" language="en">BIPM 2 Annex 3 Appendix 4 Part 5 Sub-part 6</docidentifier>
+            <title type="title-main" language="en">Maintitle</title>
+            <ext>
+               <structuredidentifier>
+                  <appendix>3</appendix>
+                  <annexid>4</annexid>
+                  <part>5</part>
+                  <subpart>6</subpart>
+               </structuredidentifier>
+            </ext>
+         </bibdata>
+      </bipm-standard>
+    OUTPUT
+
+    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
+      .new(presxml_options)
+      .convert("test", input, true)
+      .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
+      .to be_equivalent_to output
+
+    input = input.sub("</bibdata>", <<~XML)
+      </bibdata><metanorma-extension><presentation-metadata><name>document-scheme</name><value>2019</value></presentation-metadata></metanorma-extension>
+    XML
+
+    output = Xml::C14n.format(<<~OUTPUT)
+          <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
+             <bibdata>
+                <docidentifier type="BIPM">BIPM 2 3 4 5 6</docidentifier>
+                <docidentifier type="BIPM-parent-document">BIPM 2</docidentifier>
+                <docidentifier type="BIPM" language="fr">BIPM 2 Annexe 3 Annexe 4 Partie 5 Partie de sub 6</docidentifier>
+                 <docidentifier type="BIPM" language="en">BIPM 2 Appendix 3 Annex 4 Part 5 Sub-part 6</docidentifier>
+                <title type="title-main" language="en">Maintitle</title>
+                <ext>
+                   <structuredidentifier>
+                      <appendix>3</appendix>
+                      <annexid>4</annexid>
+                      <part>5</part>
+                      <subpart>6</subpart>
+                   </structuredidentifier>
+                </ext>
+             </bibdata>
+                <metanorma-extension>
+         <presentation-metadata>
+            <name>document-scheme</name>
+            <value>2019</value>
+         </presentation-metadata>
+      </metanorma-extension>
+          </bipm-standard>
     OUTPUT
 
     expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert

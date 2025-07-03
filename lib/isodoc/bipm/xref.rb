@@ -148,6 +148,7 @@ module IsoDoc
       end
 
       def annex_names(clause, num)
+        appendix_names(clause, num)
         lbl = semx(clause, num)
         prefix = @jcgm ? "" : "A"
         lbl1 = semx(clause, "#{prefix}#{num}")
