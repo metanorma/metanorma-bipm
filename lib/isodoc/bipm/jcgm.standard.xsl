@@ -150,10 +150,10 @@
 	<xsl:template name="layout-master-set">
 		<fo:layout-master-set>
 			<!-- cover page -->
-			<fo:simple-page-master master-name="cover-page-jcgm" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
+			<fo:simple-page-master master-name="cover-page" page-width="{$pageWidth}mm" page-height="{$pageHeight}mm">
 				<fo:region-body margin-top="85mm" margin-bottom="30mm" margin-left="100mm" margin-right="19mm"/>
 				<fo:region-before extent="85mm"/>
-				<fo:region-after region-name="cover-page-jcgm-footer" extent="30mm"/>
+				<fo:region-after region-name="cover-page-footer" extent="30mm"/>
 				<fo:region-start extent="100mm"/>
 				<fo:region-end extent="19mm"/>
 			</fo:simple-page-master>
@@ -203,14 +203,14 @@
 				<fo:region-start region-name="left-region" extent="{$marginLeftRight2}mm"/>
 				<fo:region-end region-name="right-region" extent="{$marginLeftRight1}mm"/>
 			</fo:simple-page-master>
-			<fo:page-sequence-master master-name="document-jcgm">
+			<fo:page-sequence-master master-name="document">
 				<fo:repeatable-page-master-alternatives>
 					<fo:conditional-page-master-reference master-reference="blankpage" blank-or-not-blank="blank"/>
 					<fo:conditional-page-master-reference odd-or-even="even" master-reference="even-jcgm"/>
 					<fo:conditional-page-master-reference odd-or-even="odd" master-reference="odd-jcgm"/>
 				</fo:repeatable-page-master-alternatives>
 			</fo:page-sequence-master>
-			<fo:page-sequence-master master-name="document-jcgm-landscape">
+			<fo:page-sequence-master master-name="document-landscape">
 				<fo:repeatable-page-master-alternatives>
 					<fo:conditional-page-master-reference master-reference="blankpage" blank-or-not-blank="blank"/>
 					<fo:conditional-page-master-reference odd-or-even="even" master-reference="even-jcgm-landscape"/>
@@ -262,12 +262,9 @@
 
 					<xsl:for-each select=".//mn:page_sequence[parent::mn:boilerplate or parent::mn:preface][normalize-space() != '' or .//mn:image or .//*[local-name() = 'svg']]">
 
-						<fo:page-sequence master-reference="document-jcgm" format="i">
+						<xsl:variable name="page_orientation"><xsl:call-template name="getPageSequenceOrientation"/></xsl:variable>
 
-							<xsl:attribute name="master-reference">
-								<xsl:text>document-jcgm</xsl:text>
-								<xsl:call-template name="getPageSequenceOrientation"/>
-							</xsl:attribute>
+						<fo:page-sequence master-reference="document{$page_orientation}" format="i">
 
 							<xsl:if test="position() = 1">
 								<xsl:attribute name="initial-page-number">2</xsl:attribute>
@@ -294,13 +291,10 @@
 
 							<xsl:for-each select=".//mn:page_sequence[not(parent::mn:boilerplate or parent::mn:preface)][normalize-space() != '' or .//mn:image or .//*[local-name() = 'svg']]">
 
-								<!-- JCGM BODY -->
-								<fo:page-sequence master-reference="document-jcgm" force-page-count="no-force">
+								<xsl:variable name="page_orientation"><xsl:call-template name="getPageSequenceOrientation"/></xsl:variable>
 
-									<xsl:attribute name="master-reference">
-										<xsl:text>document-jcgm</xsl:text>
-										<xsl:call-template name="getPageSequenceOrientation"/>
-									</xsl:attribute>
+								<!-- JCGM BODY -->
+								<fo:page-sequence master-reference="document{$page_orientation}" force-page-count="no-force">
 
 									<xsl:if test="position() = 1">
 										<xsl:attribute name="initial-page-number">1</xsl:attribute>
@@ -323,7 +317,7 @@
 					</xsl:when> <!-- END: count(//mn:metanorma) = 1 -->
 
 					<xsl:otherwise> <!-- count(//mn:metanorma) != 1 -->
-						<fo:page-sequence master-reference="document-jcgm" initial-page-number="1" force-page-count="no-force">
+						<fo:page-sequence master-reference="document" initial-page-number="1" force-page-count="no-force">
 
 							<xsl:call-template name="insertHeaderFooter"/>
 
@@ -368,8 +362,8 @@
 	</xsl:template>
 
 	<xsl:template name="cover-page">
-		<fo:page-sequence master-reference="cover-page-jcgm" font-family="Arial" font-size="10.5pt" force-page-count="no-force">
-			<fo:static-content flow-name="cover-page-jcgm-footer" font-size="10pt">
+		<fo:page-sequence master-reference="cover-page" font-family="Arial" font-size="10.5pt" force-page-count="no-force">
+			<fo:static-content flow-name="cover-page-footer" font-size="10pt">
 				<fo:block font-size="10pt" border-bottom="0.5pt solid black" padding-bottom="2.5mm" margin-left="-1mm" space-after="4mm">
 					<!-- Example: First edition  July 2009 -->
 					<xsl:call-template name="printEdition"/>
@@ -571,32 +565,30 @@
 
 	<xsl:template name="insertListOf_Title">
 		<xsl:param name="title"/>
-		<fo:block font-weight="bold" margin-top="12pt" keep-with-next="always">
+		<fo:block xsl:use-attribute-sets="toc-listof-title-style">
 			<xsl:value-of select="$title"/>
 		</fo:block>
 	</xsl:template>
 
 	<xsl:template name="insertListOf_Item">
-		<fo:block margin-left="5mm" role="TOCI">
-			<fo:block text-align-last="justify" margin-left="12mm" text-indent="-12mm">
-				<fo:basic-link internal-destination="{@id}">
-					<xsl:call-template name="setAltText">
-						<xsl:with-param name="value" select="@alt-text"/>
-					</xsl:call-template>
-					<fo:inline>
-						<xsl:apply-templates select="." mode="contents"/>
-					</fo:inline>
-					<xsl:text> </xsl:text>
-					<fo:inline keep-together.within-line="always" font-weight="normal">
-						<fo:leader font-size="9pt" leader-pattern="dots"/>
-						<fo:inline><fo:page-number-citation ref-id="{@id}"/></fo:inline>
-					</fo:inline>
-				</fo:basic-link>
-			</fo:block>
+		<fo:block xsl:use-attribute-sets="toc-listof-item-style">
+			<fo:basic-link internal-destination="{@id}">
+				<xsl:call-template name="setAltText">
+					<xsl:with-param name="value" select="@alt-text"/>
+				</xsl:call-template>
+				<fo:inline>
+					<xsl:apply-templates select="." mode="contents"/>
+				</fo:inline>
+				<xsl:text> </xsl:text>
+				<fo:inline keep-together.within-line="always" font-weight="normal">
+					<fo:leader xsl:use-attribute-sets="toc-leader-style"/>
+					<fo:inline><fo:page-number-citation ref-id="{@id}"/></fo:inline>
+				</fo:inline>
+			</fo:basic-link>
 		</fo:block>
 	</xsl:template>
 
-	<xsl:template match="mn:preface//mn:clause[@type = 'toc']" priority="3">
+	<xsl:template match="mn:preface//mn:clause[@type = 'toc']" name="toc" priority="3">
 		<fo:block-container>
 			<fo:block role="TOC">
 
@@ -620,24 +612,25 @@
 					</xsl:for-each>
 
 					<!-- List of Tables -->
-					<xsl:if test="$contents//mnx:tables/mnx:table">
-						<xsl:call-template name="insertListOf_Title">
-							<xsl:with-param name="title" select="$title-list-tables"/>
-						</xsl:call-template>
-						<xsl:for-each select="$contents//mnx:tables/mnx:table">
-							<xsl:call-template name="insertListOf_Item"/>
-						</xsl:for-each>
-					</xsl:if>
+					<xsl:for-each select="$contents//mnx:tables/mnx:table">
+						<xsl:if test="position() = 1">
+							<xsl:call-template name="insertListOf_Title">
+								<xsl:with-param name="title" select="$title-list-tables"/>
+							</xsl:call-template>
+						</xsl:if>
+						<xsl:call-template name="insertListOf_Item"/>
+					</xsl:for-each>
 
 					<!-- List of Figures -->
-					<xsl:if test="$contents//mnx:figures/mnx:figure">
+					<xsl:for-each select="$contents//mnx:figures/mnx:figure">
+						<xsl:if test="position() = 1">
 						<xsl:call-template name="insertListOf_Title">
 							<xsl:with-param name="title" select="$title-list-figures"/>
 						</xsl:call-template>
-						<xsl:for-each select="$contents//mnx:figures/mnx:figure">
-							<xsl:call-template name="insertListOf_Item"/>
-						</xsl:for-each>
-					</xsl:if>
+						</xsl:if>
+						<xsl:call-template name="insertListOf_Item"/>
+					</xsl:for-each>
+
 				</xsl:if>
 			</fo:block>
 		</fo:block-container>
@@ -645,7 +638,7 @@
 
 	<xsl:template match="mn:preface//mn:clause[@type = 'toc']/mn:fmt-title" priority="3">
 		<fo:block text-align-last="justify">
-			<fo:inline font-size="15pt" font-weight="bold" role="H1">
+			<fo:inline xsl:use-attribute-sets="toc-title-style">
 				<xsl:call-template name="getLocalizedString">
 					<xsl:with-param name="key">table_of_contents</xsl:with-param>
 				</xsl:call-template>
@@ -1001,7 +994,7 @@
 								</fo:inline>
 								<xsl:text> </xsl:text>
 								<fo:inline keep-together.within-line="always" font-weight="normal">
-									<fo:leader font-size="9pt" leader-pattern="dots"/>
+									<fo:leader xsl:use-attribute-sets="toc-leader-style"/>
 									<fo:inline><fo:page-number-citation ref-id="{@id}"/></fo:inline>
 								</fo:inline>
 							</fo:basic-link>
@@ -1218,7 +1211,7 @@
 	<xsl:template match="mn:indexsect"/>
 	<xsl:template match="mn:indexsect" mode="index">
 
-		<fo:page-sequence master-reference="document-jcgm" force-page-count="no-force">
+		<fo:page-sequence master-reference="document" force-page-count="no-force">
 			<xsl:variable name="header-title">
 				<xsl:choose>
 					<xsl:when test="./mn:title[1]/mn:tab">
@@ -8963,6 +8956,10 @@
 	</xsl:attribute-set>
 
 	<xsl:template name="refine_note-style">
+		<xsl:if test="parent::mn:references">
+			<xsl:attribute name="margin-top">2pt</xsl:attribute>
+			<xsl:attribute name="margin-bottom">2pt</xsl:attribute>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:variable name="note-body-indent">10mm</xsl:variable>
@@ -9015,7 +9012,10 @@
 
 		<xsl:call-template name="setNamedDestination"/>
 
-		<fo:block-container id="{@id}" xsl:use-attribute-sets="note-style" role="SKIP">
+		<fo:block-container xsl:use-attribute-sets="note-style" role="SKIP">
+			<xsl:if test="not(parent::mn:references)">
+				<xsl:copy-of select="@id"/>
+			</xsl:if>
 
 			<xsl:call-template name="setBlockSpanAll"/>
 
@@ -11762,16 +11762,6 @@
 							<xsl:call-template name="processBibitem">
 								<xsl:with-param name="biblio_tag_part">last</xsl:with-param>
 							</xsl:call-template>
-							<xsl:if test="self::mn:note">
-								<xsl:variable name="note_node">
-									<xsl:copy> <!-- skip @id -->
-										<xsl:copy-of select="node()"/>
-									</xsl:copy>
-								</xsl:variable>
-								<xsl:for-each select="xalan:nodeset($note_node)/*">
-									<xsl:call-template name="note"/>
-								</xsl:for-each>
-							</xsl:if>
 						</fo:block>
 					</fo:list-item-body>
 				</fo:list-item>
@@ -11798,7 +11788,25 @@
 		</xsl:apply-templates>
 		<xsl:apply-templates select="mn:formattedref"/>
 		<!-- end bibitem processing -->
+
+		<xsl:call-template name="processBibliographyNote"/>
 	</xsl:template> <!-- processBibitem (bibitem) -->
+
+	<xsl:template name="processBibliographyNote">
+		<xsl:if test="self::mn:note">
+			<xsl:variable name="note_node">
+				<xsl:element name="{local-name(..)}" namespace="{$namespace_full}"> <!-- save parent context node for determining styles -->
+					<xsl:copy> <!-- skip @id -->
+						<xsl:copy-of select="node()"/>
+					</xsl:copy>
+				</xsl:element>
+			</xsl:variable>
+			<!-- <xsl:for-each select="xalan:nodeset($note_node)//mn:note">
+				<xsl:call-template name="note"/>
+			</xsl:for-each> -->
+			<xsl:call-template name="note"/>
+		</xsl:if>
+	</xsl:template>
 
 	<xsl:template match="mn:title" mode="title">
 		<fo:inline><xsl:apply-templates/></fo:inline>
@@ -12348,6 +12356,58 @@
 	<!-- =================== -->
 	<!-- End Form's elements processing -->
 	<!-- =================== -->
+
+	<xsl:attribute-set name="toc-style">
+	</xsl:attribute-set>
+
+	<xsl:template name="refine_toc-style">
+	</xsl:template>
+
+	<xsl:attribute-set name="toc-title-style">
+		<xsl:attribute name="font-size">15pt</xsl:attribute>
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+		<xsl:attribute name="role">H1</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="toc-title-page-style">
+	</xsl:attribute-set> <!-- toc-title-page-style -->
+
+	<xsl:attribute-set name="toc-item-block-style">
+	</xsl:attribute-set>
+
+	<xsl:template name="refine_toc-item-block-style">
+	</xsl:template>
+
+	<xsl:attribute-set name="toc-item-style">
+		<xsl:attribute name="role">TOCI</xsl:attribute>
+	</xsl:attribute-set> <!-- END: toc-item-style -->
+
+	<xsl:template name="refine_toc-item-style">
+	</xsl:template> <!-- END: refine_toc-item-style -->
+
+	<xsl:attribute-set name="toc-leader-style">
+		<xsl:attribute name="font-size">9pt</xsl:attribute>
+		<xsl:attribute name="leader-pattern">dots</xsl:attribute>
+	</xsl:attribute-set> <!-- END: toc-leader-style -->
+
+	<xsl:attribute-set name="toc-pagenumber-style">
+	</xsl:attribute-set>
+
+	<!-- List of Figures, Tables -->
+	<xsl:attribute-set name="toc-listof-title-style">
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+		<xsl:attribute name="margin-top">12pt</xsl:attribute>
+		<xsl:attribute name="keep-with-next">always</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="toc-listof-item-block-style">
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="toc-listof-item-style">
+		<xsl:attribute name="role">TOCI</xsl:attribute>
+		<xsl:attribute name="margin-left">17mm</xsl:attribute>
+		<xsl:attribute name="text-indent">-12mm</xsl:attribute>
+	</xsl:attribute-set>
 
 	<xsl:template name="processPrefaceSectionsDefault_Contents">
 		<xsl:variable name="nodes_preface_">
