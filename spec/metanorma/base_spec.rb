@@ -48,8 +48,8 @@ RSpec.describe Metanorma::Bipm do
       :appendix-id: ABC
       :annex-id: DEF
       :security: Client Confidential
-      :comment-period-from: X
-      :comment-period-to: Y
+      :comment-period-from: 2050-01-01
+      :comment-period-to: 2051-01-01
       :supersedes: A
       :superseded-by: B
       :obsoleted-date: C
@@ -267,8 +267,8 @@ RSpec.describe Metanorma::Bipm do
                 <workgroup acronym="WGA">WG</workgroup>
               </editorialgroup>
               <comment-period>
-                <from>X</from>
-                <to>Y</to>
+                <from>2050-01-01</from>
+                <to>2051-01-01</to>
               </comment-period>
               <si-aspect>A_e_deltanu</si-aspect>
               <meeting-note>Note</meeting-note>
@@ -340,8 +340,8 @@ RSpec.describe Metanorma::Bipm do
       :title-cover-en: Main Title (SI)
       :title-cover-fr: Chef Title (SI)
       :security: Client Confidential
-      :comment-period-from: X
-      :comment-period-to: Y
+      :comment-period-from: 2050-01-01
+      :comment-period-to: 2051-01-01
       :supersedes: A
       :superseded-by: B
       :obsoleted-date: C
@@ -419,8 +419,8 @@ RSpec.describe Metanorma::Bipm do
               <workgroup>WG</workgroup>
             </editorialgroup>
             <comment-period>
-              <from>X</from>
-              <to>Y</to>
+              <from>2050-01-01</from>
+              <to>2051-01-01</to>
             </comment-period>
             <structuredidentifier>
               <docnumber>1000</docnumber>
@@ -490,8 +490,8 @@ RSpec.describe Metanorma::Bipm do
       :partnumber: 2.1
       :security: Client Confidential
       :appendix-id: ABC
-      :comment-period-from: X
-      :comment-period-to: Y
+      :comment-period-from: 2050-01-01
+      :comment-period-to: 2051-01-01
       :supersedes: A
       :superseded-by: B
       :obsoleted-date: C
@@ -568,8 +568,8 @@ RSpec.describe Metanorma::Bipm do
                <workgroup>WG</workgroup>
              </editorialgroup>
              <comment-period>
-               <from>X</from>
-               <to>Y</to>
+               <from>2050-01-01</from>
+               <to>2051-01-01</to>
              </comment-period>
              <structuredidentifier>
                <docnumber>1000</docnumber>
@@ -658,8 +658,8 @@ RSpec.describe Metanorma::Bipm do
       :partnumber: 2.1
       :security: Client Confidential
       :appendix-id: ABC
-      :comment-period-from: X
-      :comment-period-to: Y
+      :comment-period-from: 2050-01-01
+      :comment-period-to: 2051-01-01
       :supersedes: A
       :superseded-by: B
       :obsoleted-date: C
@@ -738,8 +738,8 @@ RSpec.describe Metanorma::Bipm do
               <workgroup>WG</workgroup>
             </editorialgroup>
             <comment-period>
-              <from>X</from>
-              <to>Y</to>
+              <from>2050-01-01</from>
+              <to>2051-01-01</to>
             </comment-period>
             <structuredidentifier>
               <docnumber>1000</docnumber>
