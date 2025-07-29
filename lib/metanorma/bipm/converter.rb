@@ -77,10 +77,6 @@ module Metanorma
         super
       end
 
-      def ol_attrs(node)
-        super.merge(attr_code(start: node.attr("start")))
-      end
-
       def committee_validate(xml)
         committees = Array(configuration&.committees) || return
         committees.empty? and return

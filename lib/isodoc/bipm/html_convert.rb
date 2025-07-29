@@ -6,15 +6,6 @@ require_relative "base_convert"
 module IsoDoc
   module Bipm
     class HtmlConvert < IsoDoc::Generic::HtmlConvert
-      #def doccontrol(elem, out)
-        #out.div **attr_code(class: "doccontrol") do |div|
-          #clause_parse_title(elem, div, elem.at(ns("./fmt-title")), out)
-          #elem.children.reject { |c1| c1.name == "fmt-title" }.each do |c1|
-            #parse(c1, div)
-          #end
-        #end
-      #end
-
       def counter_reset(node)
         s = node["start"]
         return nil unless s && !s.empty? && !s.to_i.zero?
@@ -30,7 +21,7 @@ module IsoDoc
                          [node["type"], counter_reset(node)]
                        end
         super.merge(attr_code(type: ol_style((node["type"] || "arabic").to_sym),
-                              start: node["start"]), style: style, class: klass)
+                    style: style, class: klass))
       end
 
       include BaseConvert

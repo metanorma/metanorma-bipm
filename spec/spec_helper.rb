@@ -1,19 +1,3 @@
-require "vcr"
-
-VCR.configure do |config|
-  config.cassette_library_dir = "spec/vcr_cassettes"
-  config.hook_into :webmock
-  config.debug_logger = File.open("vcr.log", "w")
-  config.default_cassette_options = {
-    clean_outdated_http_interactions: true,
-    re_record_interval: 1512000,
-    record: :once,
-    allow_playback_repeats: true,
-    # unicode characters in URL
-    # serialize_with: :json,
-  }
-end
-
 require "simplecov"
 SimpleCov.start do
   add_filter "/spec/"
@@ -48,6 +32,10 @@ RSpec.configure do |config|
 end
 
 OPTIONS = [backend: :bipm, header_footer: true].freeze
+
+DOC_SCHEME_2019 = <<~XML.freeze
+  <metanorma-extension><presentation-metadata><name>document-scheme</name><value>2019</value></presentation-metadata></metanorma-extension>
+XML
 
 def presxml_options
   { semanticxmlinsert: "false" }
@@ -88,6 +76,16 @@ ASCIIDOC_BLANK_HDR = <<~HDR.freeze
   :docfile: test.adoc
   :nodoc:
   :novalid:
+
+HDR
+
+LOCAL_CACHED_ISOBIB_BLANK_HDR = <<~HDR.freeze
+  = Document title
+  Author
+  :docfile: test.adoc
+  :nodoc:
+  :novalid:
+  :local-cache-only: spec/relatondb
 
 HDR
 

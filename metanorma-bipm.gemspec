@@ -27,8 +27,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 3.1.0")
 
-  spec.add_dependency "metanorma-generic", "~> 3.0.0"
-  spec.add_dependency "metanorma-iso", "~> 3.0.0"
+  spec.add_dependency "metanorma-generic", "~> 3.1.0"
+  spec.add_dependency "metanorma-iso", "~> 3.1.0"
 
   spec.add_development_dependency "debug"
   spec.add_development_dependency "equivalent-xml", "~> 0.6"
@@ -41,7 +41,6 @@ spec.add_development_dependency "rubocop-performance"
   spec.add_development_dependency "sassc-embedded", "~> 1"
   spec.add_development_dependency "simplecov", "~> 0.15"
   spec.add_development_dependency "timecop", "~> 0.9"
-  spec.add_development_dependency "vcr", "~> 6.1.0"
   spec.add_development_dependency "webmock"
   spec.add_development_dependency "xml-c14n"
 end
