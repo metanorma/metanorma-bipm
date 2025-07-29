@@ -12379,8 +12379,14 @@
 		<xsl:attribute name="role">H1</xsl:attribute>
 	</xsl:attribute-set>
 
+	<xsl:template name="refine_toc-title-style">
+	</xsl:template>
+
 	<xsl:attribute-set name="toc-title-page-style">
 	</xsl:attribute-set> <!-- toc-title-page-style -->
+
+	<xsl:template name="refine_toc-title-page-style">
+	</xsl:template>
 
 	<xsl:attribute-set name="toc-item-block-style">
 	</xsl:attribute-set>
@@ -12409,6 +12415,9 @@
 		<xsl:attribute name="margin-top">12pt</xsl:attribute>
 		<xsl:attribute name="keep-with-next">always</xsl:attribute>
 	</xsl:attribute-set>
+
+	<xsl:template name="refine_toc-listof-title-style">
+	</xsl:template>
 
 	<xsl:attribute-set name="toc-listof-item-block-style">
 	</xsl:attribute-set>
