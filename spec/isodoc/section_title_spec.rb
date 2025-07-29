@@ -2478,7 +2478,10 @@ RSpec.describe IsoDoc::Bipm do
                       (CR, 85)
                    </title>
                    <fmt-title depth="2" id="_">
-                      <span class="fmt-caption-label">▀</span>
+                      <span class="fmt-caption-label">
+                         <span style="font-size:130%">■</span>
+                           
+                      </span>
                       <span class="fmt-caption-delim"/>
                       <semx element="title" source="_">
                          <strong>Definition of the metre</strong>
@@ -2509,10 +2512,11 @@ RSpec.describe IsoDoc::Bipm do
             <h1>1.&#160; Clause</h1>
             <div id='B'>
               <h2>
-                ▀
-                <b>Definition of the metre</b>
-                 (CR, 85)
-              </h2>
+                      <span style="font-size:130%">■</span>
+                        
+                      <b>Definition of the metre</b>
+                      (CR, 85)
+                   </h2>
             </div>
           </div>
         </div>
