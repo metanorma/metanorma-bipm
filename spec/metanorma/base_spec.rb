@@ -99,7 +99,7 @@ RSpec.describe Metanorma::Bipm do
             <title format="text/plain" language="fr" type="title-part">Partie</title>
             <title format="text/plain" language="fr" type="title-subpart">Subpartie</title>
             <title format="text/plain" language="fr" type="title-provenance">Provenance-fr</title>
-            <docidentifier primary="true" type="BIPM">BIPM 1000 ABC DEF 2</docidentifier>
+            <docidentifier primary="true" type="BIPM">BIPM 1000-2 AABC.DEF</docidentifier>
             <docidentifier type="BIPM-parent-document">BIPM 1000</docidentifier>
             <docnumber>1000</docnumber>
             <date type="implemented">
@@ -504,7 +504,7 @@ RSpec.describe Metanorma::Bipm do
            <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
            <title language="fr" format="text/plain" type="title-main">Chef Title</title>
            <title language="fr" format="text/plain" type="title-cover">Chef Title (SI)</title>
-          <docidentifier primary="true" type="BIPM">BIPM 1000 ABC 2.1</docidentifier>
+           <docidentifier primary="true" type="BIPM">BIPM 1000-2.1 AABC</docidentifier>
           <docidentifier type="BIPM-parent-document">BIPM 1000</docidentifier>
            <docnumber>1000</docnumber>
            <date type="implemented">
@@ -674,7 +674,7 @@ RSpec.describe Metanorma::Bipm do
           <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
           <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
           <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
-          <docidentifier primary="true" type="BIPM">JCGM 1000 ABC 2.1</docidentifier>
+          <docidentifier primary="true" type="BIPM">JCGM 1000-2.1 AABC</docidentifier>
           <docidentifier type="BIPM-parent-document">JCGM 1000</docidentifier>
           <docnumber>1000</docnumber>
           <date type='implemented'>

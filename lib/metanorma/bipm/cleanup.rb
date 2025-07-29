@@ -65,10 +65,12 @@ module Metanorma
 
       # not language-specific, just space-delimited
       def bibdata_docidentifier_enhance(id, parts)
-        ret = %w(appendix annexid part subpart).each_with_object([]) do |w, m|
-          p = parts[w] and m << p
-        end
-        id.children = "#{id.text} #{ret.join(' ')}"
+        ret = ""
+        p = parts["part"] and ret += "-#{p}"
+        p = parts["subpart"] and ret += "-#{p}"
+        p = parts["appendix"] and ret += " A#{p}"
+        p = parts["annexid"] and ret += ".#{p}"
+        id.children = "#{id.text}#{ret}"
       end
     end
   end
