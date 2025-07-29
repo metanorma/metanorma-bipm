@@ -384,10 +384,10 @@ RSpec.describe IsoDoc::Bipm do
           </preface>
        </iso-standard>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
 
     output = <<~OUTPUT
        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
@@ -641,10 +641,10 @@ RSpec.describe IsoDoc::Bipm do
           </preface>
        </iso-standard>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
       .convert("test", input.sub(">en<", ">fr<"), true))
       .sub(%r{<localized-strings>.*</localized-strings>}m, "")))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "duplicates MathML with AsciiMath" do
@@ -714,8 +714,8 @@ RSpec.describe IsoDoc::Bipm do
        </sections>
        </iso-standard>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 end

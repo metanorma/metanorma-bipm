@@ -10,13 +10,13 @@ RSpec.describe IsoDoc::Bipm do
       :no-pdf:
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections/>
       </bipm-standard>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor
+    expect(Canon.format_xml(strip_guid(Asciidoctor
       .convert(input, backend: :bipm, header_footer: true))))
       .to be_equivalent_to output
     html = File.read("test.html", encoding: "utf-8")
@@ -115,8 +115,8 @@ RSpec.describe IsoDoc::Bipm do
     xml = Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
     .convert("test", input, true))
-    expect(Xml::C14n.format(strip_guid(xml.to_xml)))
-      .to be_equivalent_to Xml::C14n.format(presxml)
+    expect(Canon.format_xml(strip_guid(xml.to_xml)))
+      .to be_equivalent_to Canon.format_xml(presxml)
   end
 
   it "processes ordered lists" do
@@ -233,8 +233,8 @@ RSpec.describe IsoDoc::Bipm do
     xml = Nokogiri::XML(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
     .convert("test", input, true))
-    expect(Xml::C14n.format(strip_guid(xml.to_xml)))
-      .to be_equivalent_to Xml::C14n.format(presxml)
+    expect(Canon.format_xml(strip_guid(xml.to_xml)))
+      .to be_equivalent_to Canon.format_xml(presxml)
   end
 
   it "processes ordered lists, #2" do
@@ -255,7 +255,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       #{HTML_HDR}
           <div id='A'>
             <h1>Clause</h1>
@@ -274,7 +274,7 @@ RSpec.describe IsoDoc::Bipm do
         </div>
       </body>
     OUTPUT
-    stripped_html = Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+    stripped_html = Canon.format_xml(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", input, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))
@@ -429,11 +429,11 @@ RSpec.describe IsoDoc::Bipm do
          </div>
        </body>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", input, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>"))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "processes notes" do
@@ -610,8 +610,8 @@ RSpec.describe IsoDoc::Bipm do
       .new(presxml_options)
     .convert("test", input, true))
     xml.at("//xmlns:localized-strings").remove
-    expect(Xml::C14n.format(strip_guid(xml.to_xml)))
-      .to be_equivalent_to Xml::C14n.format(presxml)
+    expect(Canon.format_xml(strip_guid(xml.to_xml)))
+      .to be_equivalent_to Canon.format_xml(presxml)
 
     presxml = <<~PRESXML
       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
@@ -760,7 +760,7 @@ RSpec.describe IsoDoc::Bipm do
       .convert("test", input.sub("<language>en</language>",
                                  "<language>fr</language>"), true))
     xml.at("//xmlns:localized-strings").remove
-    expect(Xml::C14n.format(strip_guid(xml.to_xml)))
-      .to be_equivalent_to Xml::C14n.format(presxml)
+    expect(Canon.format_xml(strip_guid(xml.to_xml)))
+      .to be_equivalent_to Canon.format_xml(presxml)
   end
 end

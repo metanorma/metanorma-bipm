@@ -449,10 +449,10 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     OUTPUT
     stripped_presxml =
-      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
+      Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))
-    expect(stripped_presxml).to(be_equivalent_to(Xml::C14n.format(output)))
+    expect(stripped_presxml).to(be_equivalent_to(Canon.format_xml(output)))
   end
 
   it "inserts part in appendix title" do
@@ -472,7 +472,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = Xml::C14n.format(<<~OUTPUT)
+    output = Canon.format_xml(<<~OUTPUT)
       <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
         <bibdata>
            <title type='title-main' language='en'>Maintitle</title>
@@ -490,7 +490,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     OUTPUT
 
-    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
+    expect(strip_guid(Canon.format_xml(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
@@ -507,7 +507,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = Xml::C14n.format(<<~OUTPUT)
+    output = Canon.format_xml(<<~OUTPUT)
       <bipm-standard xmlns='https://open.ribose.com/standards/bipm' type='presentation'>
         <bibdata>
           <title type='title-main' language='en'>Maintitle</title>
@@ -518,7 +518,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     OUTPUT
 
-    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
+    expect(strip_guid(Canon.format_xml(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
@@ -544,7 +544,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    output = Xml::C14n.format(<<~OUTPUT)
+    output = Canon.format_xml(<<~OUTPUT)
       <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
          <bibdata>
             <docidentifier type="BIPM">BIPM 2 3 4 5 6</docidentifier>
@@ -564,7 +564,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     OUTPUT
 
-    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
+    expect(strip_guid(Canon.format_xml(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
@@ -574,7 +574,7 @@ RSpec.describe IsoDoc::Bipm do
       </bibdata><metanorma-extension><presentation-metadata><name>document-scheme</name><value>2019</value></presentation-metadata></metanorma-extension>
     XML
 
-    output = Xml::C14n.format(<<~OUTPUT)
+    output = Canon.format_xml(<<~OUTPUT)
           <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
              <bibdata>
                 <docidentifier type="BIPM">BIPM 2 3 4 5 6</docidentifier>
@@ -600,7 +600,7 @@ RSpec.describe IsoDoc::Bipm do
           </bipm-standard>
     OUTPUT
 
-    expect(strip_guid(Xml::C14n.format(IsoDoc::Bipm::PresentationXMLConvert
+    expect(strip_guid(Canon.format_xml(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))

@@ -25,15 +25,15 @@ RSpec.describe Metanorma::Bipm::Processor do
       #{ASCIIDOC_BLANK_HDR}
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections/>
       </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(processor
+    expect(Canon.format_xml(strip_guid(processor
       .input_to_isodoc(input, nil))))
-      .to be_equivalent_to Xml::C14n.format(strip_guid(output))
+      .to be_equivalent_to Canon.format_xml(strip_guid(output))
   end
 
   it "generates HTML from IsoDoc XML" do
@@ -51,7 +51,7 @@ RSpec.describe Metanorma::Bipm::Processor do
       </metanorma>
     INPUT
 
-    output = Xml::C14n.format(<<~OUTPUT)
+    output = Canon.format_xml(<<~OUTPUT)
        <main class="main-section">
          <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
          <div id="H">
@@ -67,9 +67,9 @@ RSpec.describe Metanorma::Bipm::Processor do
     processor.output(input, "test.xml", "test.html", :html)
 
     expect(
-      Xml::C14n.format(strip_guid(File.read("test.html", encoding: "utf-8")
+      Canon.format_xml(strip_guid(File.read("test.html", encoding: "utf-8")
         .gsub(%r{^.*<main}m, "<main")
         .gsub(%r{</main>.*}m, "</main>"))),
-    ).to be_equivalent_to Xml::C14n.format(strip_guid(output))
+    ).to be_equivalent_to Canon.format_xml(strip_guid(output))
   end
 end

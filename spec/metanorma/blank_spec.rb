@@ -6,13 +6,13 @@ RSpec.describe Metanorma::Bipm do
       #{ASCIIDOC_BLANK_HDR}
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections/>
       </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -26,13 +26,13 @@ RSpec.describe Metanorma::Bipm do
       :novalid:
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections/>
       </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
     expect(File.exist?("test.pdf")).to be true
@@ -50,7 +50,7 @@ RSpec.describe Metanorma::Bipm do
       :committee-en: Joint Committee for Guides in Metrology#{' '}
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
          #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate('jcgm'))
          .sub(/<docidentifier primary="true" type="BIPM">BIPM/, %(<docidentifier primary="true" type="BIPM">JCGM))
          .sub(%r{</ext>}, "<editorialgroup>
@@ -60,7 +60,7 @@ RSpec.describe Metanorma::Bipm do
            </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
     expect(File.exist?("test.html")).to be true
     expect(File.exist?("test.pdf")).to be true

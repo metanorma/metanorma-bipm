@@ -10,7 +10,7 @@ require "rspec/matchers"
 require "equivalent-xml"
 require "htmlentities"
 require "relaton_iso"
-require "xml-c14n"
+require "canon"
 require_relative "support/uuid_mock"
 
 RSpec.configure do |config|

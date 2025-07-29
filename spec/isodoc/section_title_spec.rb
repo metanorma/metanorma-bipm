@@ -95,7 +95,7 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    presxml = Xml::C14n.format(<<~OUTPUT)
+    presxml = Canon.format_xml(<<~OUTPUT)
        <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <bibdata type="standard">
              <title language="en" format="text/plain" type="title-main">Main Title</title>
@@ -650,16 +650,16 @@ RSpec.describe IsoDoc::Bipm do
       IsoDoc::Bipm::PresentationXMLConvert
         .new(presxml_options)
         .convert("test", input, true)
-    expect(Xml::C14n.format(strip_guid(pres_output
+    expect(Canon.format_xml(strip_guid(pres_output
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to(be_equivalent_to(Xml::C14n.format(presxml)))
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .to(be_equivalent_to(Canon.format_xml(presxml)))
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>"))))
-      .to(be_equivalent_to(Xml::C14n.format(output)))
+      .to(be_equivalent_to(Canon.format_xml(output)))
 
-    presxml = Xml::C14n.format(<<~OUTPUT)
+    presxml = Canon.format_xml(<<~OUTPUT)
        <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <bibdata type="standard">
              <title language="en" format="text/plain" type="title-main">Main Title</title>
@@ -1100,11 +1100,11 @@ RSpec.describe IsoDoc::Bipm do
       IsoDoc::Bipm::PresentationXMLConvert
         .new(presxml_options)
         .convert("test", input.sub("</bibdata>", "</bibdata>#{DOC_SCHEME_2019}"), true)
-    expect(Xml::C14n.format(strip_guid(pres_output
+    expect(Canon.format_xml(strip_guid(pres_output
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to(be_equivalent_to(Xml::C14n.format(presxml)))
+      .to(be_equivalent_to(Canon.format_xml(presxml)))
 
-    presxml = Xml::C14n.format(<<~OUTPUT)
+    presxml = Canon.format_xml(<<~OUTPUT)
        <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <bibdata type="standard">
              <title language="en" format="text/plain" type="title-main">Main Title</title>
@@ -1675,14 +1675,14 @@ RSpec.describe IsoDoc::Bipm do
         .new(presxml_options)
         .convert("test", input.sub("</bibdata>",
                                    "#{jcgm_ext}</bibdata>"), true)
-    expect(Xml::C14n.format(strip_guid(pres_output
+    expect(Canon.format_xml(strip_guid(pres_output
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to(be_equivalent_to(Xml::C14n.format(presxml)))
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .to(be_equivalent_to(Canon.format_xml(presxml)))
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>"))))
-      .to(be_equivalent_to(Xml::C14n.format(output)))
+      .to(be_equivalent_to(Canon.format_xml(output)))
   end
 
   it "processes appendix names in appendix document" do
@@ -1845,10 +1845,10 @@ RSpec.describe IsoDoc::Bipm do
     OUTPUT
 
     pres_output =
-      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
+      Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    expect(pres_output).to(be_equivalent_to(Xml::C14n.format(output)))
+    expect(pres_output).to(be_equivalent_to(Canon.format_xml(output)))
 
     output = <<~OUTPUT
       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
@@ -1983,10 +1983,10 @@ RSpec.describe IsoDoc::Bipm do
         </bipm-standard>
         OUTPUT
          pres_output =
-      Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
+      Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
            .convert("test", input.sub("</bibdata>", "</bibdata>#{DOC_SCHEME_2019}"), true)
       .gsub(%r{<localized-strings>.*</localized-strings>}m, "")))
-    expect(pres_output).to(be_equivalent_to(Xml::C14n.format(output)))
+    expect(pres_output).to(be_equivalent_to(Canon.format_xml(output)))
   end
 
   it "processes unnumbered sections" do
@@ -2424,10 +2424,10 @@ RSpec.describe IsoDoc::Bipm do
          </annex>
       </bipm-standard>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
           .new(presxml_options)
       .convert("test", input, true))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "handles quoted variant titles" do
@@ -2526,10 +2526,10 @@ RSpec.describe IsoDoc::Bipm do
       IsoDoc::Bipm::PresentationXMLConvert
         .new(presxml_options)
         .convert("test", input, true)
-    expect(Xml::C14n.format(strip_guid(pres_output
+    expect(Canon.format_xml(strip_guid(pres_output
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to(be_equivalent_to(Xml::C14n.format(presxml)))
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .to(be_equivalent_to(Canon.format_xml(presxml)))
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))

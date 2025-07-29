@@ -621,7 +621,7 @@ RSpec.describe IsoDoc::Bipm do
        </bipm-standard>
            INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       #{HTML_HDR}
              <br/>
              <div id="_11" class="TOC">
@@ -799,10 +799,10 @@ RSpec.describe IsoDoc::Bipm do
       IsoDoc::Bipm::PresentationXMLConvert
         .new(presxml_options)
         .convert("test", input, true)
-    expect(Xml::C14n.format(strip_guid(pres_output
+    expect(Canon.format_xml(strip_guid(pres_output
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to(be_equivalent_to(Xml::C14n.format(presxml)))
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .to(be_equivalent_to(Canon.format_xml(presxml)))
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
@@ -1482,10 +1482,10 @@ RSpec.describe IsoDoc::Bipm do
         .new(presxml_options)
         .convert("test", input.sub("<sections>",
                                    "<bibdata>#{jcgm_ext}</bibdata><sections>"), true)
-    expect(Xml::C14n.format(strip_guid(pres_output
+    expect(Canon.format_xml(strip_guid(pres_output
       .gsub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to(be_equivalent_to(Xml::C14n.format(presxml)))
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
+      .to(be_equivalent_to(Canon.format_xml(presxml)))
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", pres_output, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))

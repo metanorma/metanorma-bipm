@@ -441,8 +441,8 @@ RSpec.describe IsoDoc::Bipm do
            </annex>
         </iso-standard>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true)))).to be_equivalent_to Xml::C14n.format(output)
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
+      .convert("test", input, true)))).to be_equivalent_to Canon.format_xml(output)
   end
 
   it "cross-references sections" do
@@ -702,12 +702,12 @@ RSpec.describe IsoDoc::Bipm do
            </p>
         </foreword>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .sub(%r{^.*<foreword}m, "<foreword")
       .sub(%r{</foreword>.*$}m, "</foreword>"))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
 
     output = <<~OUTPUT
         <foreword obligation="informative" id="_" displayorder="2">
@@ -869,12 +869,12 @@ RSpec.describe IsoDoc::Bipm do
            </p>
         </foreword>
         OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input.sub("<preface>", "#{DOC_SCHEME_2019}<preface>"), true)
       .sub(%r{^.*<foreword}m, "<foreword")
       .sub(%r{</foreword>.*$}m, "</foreword>"))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
 
     output = <<~OUTPUT
         <foreword obligation="informative" id="_" displayorder="2">
@@ -1031,12 +1031,12 @@ RSpec.describe IsoDoc::Bipm do
            </p>
         </foreword>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input.sub("<sections>", "<bibdata>#{jcgm_ext}</bibdata><sections>"), true)
       .sub(%r{^.*<foreword}m, "<foreword")
       .sub(%r{</foreword>.*$}m, "</foreword>"))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "cross-references subfigures" do
@@ -1395,11 +1395,11 @@ RSpec.describe IsoDoc::Bipm do
            </annex>
         </iso-standard>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input, true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
 
     output = <<~OUTPUT
       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
@@ -1715,11 +1715,11 @@ RSpec.describe IsoDoc::Bipm do
            </annex>
         </iso-standard>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
+    expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert
       .new(presxml_options)
       .convert("test", input.sub("</bibdata>",
                                  "#{jcgm_ext}</bibdata>"), true)
       .sub(%r{<localized-strings>.*</localized-strings>}m, ""))))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 end

@@ -81,7 +81,7 @@ RSpec.describe Metanorma::Bipm do
       :supersedes-draft_3: 3.0
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
         <metanorma type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/standoc" flavor="bipm">
           <bibdata type="standard">
@@ -303,7 +303,7 @@ RSpec.describe Metanorma::Bipm do
         </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -348,7 +348,7 @@ RSpec.describe Metanorma::Bipm do
       :implemented-date: D
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       <?xml version="1.0" encoding="UTF-8"?>
       <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
       <bibdata type="standard">
@@ -450,7 +450,7 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
   
@@ -497,7 +497,7 @@ RSpec.describe Metanorma::Bipm do
       :obsoleted-date: C
       :implemented-date: D
     INPUT
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
          <bibdata type="standard">
            <title language="en" format="text/plain" type="title-main">Main Title</title>
@@ -619,7 +619,7 @@ RSpec.describe Metanorma::Bipm do
        </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -666,7 +666,7 @@ RSpec.describe Metanorma::Bipm do
       :implemented-date: D
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
         <?xml version="1.0" encoding="UTF-8"?>
         <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
         <bibdata type='standard'>
@@ -771,7 +771,7 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -788,7 +788,7 @@ RSpec.describe Metanorma::Bipm do
       ....
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections>
           <figure id="_" anchor="id">
@@ -801,7 +801,7 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -813,7 +813,7 @@ RSpec.describe Metanorma::Bipm do
       == Section 1
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       #{BLANK_HDR}
         <preface>
           <foreword id="_" obligation="informative">
@@ -829,7 +829,7 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -845,7 +845,7 @@ RSpec.describe Metanorma::Bipm do
       <<a,nopage%>>
     INPUT
 
-    output = Xml::C14n.format(<<~"OUTPUT")
+    output = Canon.format_xml(<<~"OUTPUT")
       #{BLANK_HDR}
         <sections>
           <clause id="_" anchor="a" obligation='normative'>
@@ -861,7 +861,7 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
   end
 
@@ -925,8 +925,8 @@ RSpec.describe Metanorma::Bipm do
         </annex>
       </metanorma>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Xml::C14n.format(output)
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "processes the start attribute on ordered lists" do
@@ -952,8 +952,8 @@ RSpec.describe Metanorma::Bipm do
         </sections>
       </metanorma>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Xml::C14n.format(output)
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "processes sections" do
@@ -1159,8 +1159,8 @@ RSpec.describe Metanorma::Bipm do
           </bibliography>
        </metanorma>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Xml::C14n.format(output)
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "processes sections in JCGM" do
@@ -1375,9 +1375,9 @@ RSpec.describe Metanorma::Bipm do
           </bibliography>
        </metanorma>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
       .sub(%r{<boilerplate>.*</boilerplate>}m, ""))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "customises italicisation of MathML" do
@@ -1423,8 +1423,8 @@ RSpec.describe Metanorma::Bipm do
         </sections>
       </metanorma>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Xml::C14n.format(output)
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "deals with quoted alt titles" do
@@ -1455,8 +1455,8 @@ RSpec.describe Metanorma::Bipm do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Xml::C14n.format(output)
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "references BIPM English citations" do
@@ -1487,11 +1487,11 @@ RSpec.describe Metanorma::Bipm do
       </sections>
     OUTPUT
     doc = Asciidoctor.convert(input, *OPTIONS)
-    expect(Xml::C14n.format(strip_guid(
+    expect(Canon.format_xml(strip_guid(
                               Nokogiri::XML(doc)
                               .at("//xmlns:sections").to_xml,
                             )))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "references BIPM French citations" do
@@ -1522,11 +1522,11 @@ RSpec.describe Metanorma::Bipm do
         </clause>
       </sections>
     OUTPUT
-    expect(Xml::C14n.format(strip_guid(
+    expect(Canon.format_xml(strip_guid(
                               Nokogiri::XML(Asciidoctor.convert(input,
                                                                 *OPTIONS))
                               .at("//xmlns:sections").to_xml,
                             )))
-      .to be_equivalent_to Xml::C14n.format(output)
+      .to be_equivalent_to Canon.format_xml(output)
   end
 end
