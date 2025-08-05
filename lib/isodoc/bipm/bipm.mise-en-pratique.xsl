@@ -1206,7 +1206,10 @@
 				<!-- indexes=<xsl:copy-of select="$indexes"/> -->
 				<!-- Index -->
 				<xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//mn:indexsect" mode="index">
-					<xsl:with-param name="isDraft" select="normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft or       contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'draft') or       contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'projet'))"/>
+					<!-- <xsl:with-param name="isDraft" select="normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft or
+						contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'draft') or
+						contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'projet'))"/> -->
+					<xsl:with-param name="isDraft" select="normalize-space(normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft) != '' or       normalize-space(//mn:metanorma/mn:metanorma-extension/mn:semantic-metadata/mn:stage-published) = 'false')"/>
 					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:apply-templates>
 
@@ -1361,7 +1364,10 @@
 
 				<!-- Index -->
 				<xsl:apply-templates select="xalan:nodeset($indexes)/doc[@id = $docid]//mn:indexsect" mode="index">
-					<xsl:with-param name="isDraft" select="normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft or       contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'draft') or       contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'projet'))"/>
+					<!-- <xsl:with-param name="isDraft" select="normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft or
+						contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'draft') or
+						contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'projet'))"/> -->
+					<xsl:with-param name="isDraft" select="normalize-space(normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft) != '' or       normalize-space(//mn:metanorma/mn:metanorma-extension/mn:semantic-metadata/mn:stage-published) = 'false')"/>
 					<xsl:with-param name="lang" select="$curr_lang"/>
 				</xsl:apply-templates>
 
@@ -3560,7 +3566,10 @@
 	<xsl:template name="insertDraftWatermark">
 		<xsl:param name="isDraft"/>
 		<xsl:param name="lang"/>
-		<xsl:if test="$isDraft = 'true' or normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft or   contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'draft') or   contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'projet')) = 'true'">
+		<!-- <xsl:if test="$isDraft = 'true' or normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft or
+		contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'draft') or
+		contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'projet')) = 'true'"> -->
+		<xsl:if test="$isDraft = 'true' or normalize-space(normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft) != '' or       normalize-space(//mn:metanorma/mn:metanorma-extension/mn:semantic-metadata/mn:stage-published) = 'false') = 'true'">
 			<!-- DRAFT -->
 			<xsl:variable name="draft_label">
 				<xsl:choose>
@@ -3604,7 +3613,10 @@
 	</xsl:template>
 
 	<xsl:template name="insertHeaderDraftWatermark">
-		<xsl:variable name="isDraft" select="normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft or   contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'draft') or   contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'projet'))"/>
+		<!-- <xsl:variable name="isDraft" select="normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft or
+		contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'draft') or
+		contains(//mn:metanorma/mn:bibdata/mn:status/mn:stage, 'projet'))"/> -->
+		<xsl:variable name="isDraft" select="normalize-space(normalize-space(//mn:metanorma/mn:bibdata/mn:version/mn:draft) != '' or       normalize-space(//mn:metanorma/mn:metanorma-extension/mn:semantic-metadata/mn:stage-published) = 'false')"/>
 		<xsl:variable name="curr_lang" select="$doc_split_by_language"/>
 		<xsl:if test="$isDraft = 'true'">
 			<fo:static-content flow-name="header-blank" role="artifact">
