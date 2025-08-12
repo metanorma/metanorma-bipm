@@ -159,6 +159,11 @@ RSpec.describe IsoDoc::Bipm do
             </structuredidentifier>
           </ext>
         </bibdata>
+        <metanorma-extension>
+        <semantic-metadata>
+        <stage-published>false</stage-published>
+        </semantic-metadata>
+        </metanorma-extension>
         <sections/>
       </bipm-standard>
     INPUT
@@ -324,6 +329,11 @@ RSpec.describe IsoDoc::Bipm do
             </structuredidentifier>
           </ext>
         </bibdata>
+        <metanorma-extension>
+        <semantic-metadata>
+        <stage-published>false</stage-published>
+        </semantic-metadata>
+        </metanorma-extension>
         <sections/>
       </bipm-standard>
     INPUT
@@ -417,6 +427,11 @@ RSpec.describe IsoDoc::Bipm do
           <draft>3.4</draft>
         </version>
         </bibdata>
+        <metanorma-extension>
+        <semantic-metadata>
+        <stage-published>false</stage-published>
+        </semantic-metadata>
+        </metanorma-extension>
         <sections/>
       </bipm-standard>
     INPUT
