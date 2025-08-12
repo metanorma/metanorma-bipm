@@ -51,24 +51,26 @@ RSpec.describe Metanorma::Bipm do
     INPUT
 
     output = Canon.format_xml(<<~"OUTPUT")
-         #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate('jcgm'))
-         .sub(/<docidentifier primary="true" type="BIPM">BIPM/, %(<docidentifier primary="true" type="BIPM">JCGM))
-         .sub(%r{</ext>}, "<editorialgroup>
-        <committee acronym='JCGM' language='en' script='Latn'>Joint Committee for Guides in Metrology</committee>
-      </editorialgroup></ext>") 
-      .sub("</contributor>", "</contributor>      <contributor>
-         <role type='author'>
-            <description>committee</description>
-         </role>
-         <organization>
-            <name>Bureau International des Poids et Mesures</name>
-            <subdivision type='Committee'>
-               <name language='en'>Joint Committee for Guides in Metrology</name>
-            </subdivision>
-         </organization>
-     </contributor>") }
-             <sections/>
-           </metanorma>
+          #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate('jcgm'))
+          .sub(/<docidentifier primary="true" type="BIPM">BIPM/, %(<docidentifier primary="true" type="BIPM">JCGM))
+          .sub(%r{</ext>}, "<editorialgroup>
+         <committee acronym='JCGM' language='en' script='Latn'>Joint Committee for Guides in Metrology</committee>
+       </editorialgroup></ext>")
+       .sub('</contributor>', "</contributor>      <contributor>
+          <role type='author'>
+             <description>committee</description>
+          </role>
+          <organization>
+             <name>Bureau International des Poids et Mesures</name>
+             <subdivision type='Committee'>
+                <name language='en'>Joint Committee for Guides in Metrology</name>
+                <identifier>JCGM</identifier>
+                <identifier type='full'>JCGM</identifier>
+             </subdivision>
+          </organization>
+      </contributor>") }
+              <sections/>
+            </metanorma>
     OUTPUT
 
     expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))

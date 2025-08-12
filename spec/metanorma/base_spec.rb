@@ -202,8 +202,8 @@ RSpec.describe Metanorma::Bipm do
             <subdivision type="Committee" subtype="A">
                <name language="en">TC</name>
                <name language="fr">CT</name>
-               <identifier>A 1</identifier>
-               <identifier type="full">A 1</identifier>
+               <identifier>TCA</identifier>
+               <identifier type="full">TCA</identifier>
             </subdivision>
          </organization>
       </contributor>
@@ -340,7 +340,6 @@ RSpec.describe Metanorma::Bipm do
       :committee-fr: CT
       :committee-number: 1
       :committee-type: A
-      :committee-acronym: TCA
       :subcommittee: SC
       :subcommittee-number: 2
       :subcommittee-type: B
@@ -445,8 +444,8 @@ RSpec.describe Metanorma::Bipm do
             <doctype>brochure</doctype>
             <flavor>bipm</flavor>
             <editorialgroup>
-              <committee acronym="TCA" language="en" script="Latn">TC</committee>
-              <committee acronym="TCA" language="fr" script="Latn">CT</committee>
+              <committee language="en" script="Latn">TC</committee>
+              <committee language="fr" script="Latn">CT</committee>
               <workgroup>WG</workgroup>
             </editorialgroup>
             <comment-period>
@@ -563,8 +562,8 @@ RSpec.describe Metanorma::Bipm do
             <subdivision type="Committee" subtype="A">
                <name language="en">TC</name>
                <name language="fr">CT</name>
-               <identifier>A 1</identifier>
-               <identifier type="full">A 1</identifier>
+                <identifier>JCTLM</identifier>
+               <identifier type="full">JCTLM</identifier>
             </subdivision>
          </organization>
       </contributor>
@@ -750,8 +749,8 @@ RSpec.describe Metanorma::Bipm do
             <subdivision type="Committee" subtype="A">
                <name language="en">TC</name>
                <name language="fr">CT</name>
-               <identifier>A 1</identifier>
-               <identifier type="full">A 1</identifier>
+               <identifier>JCGM</identifier>
+               <identifier type="full">JCGM</identifier>
             </subdivision>
          </organization>
       </contributor>

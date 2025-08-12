@@ -83,13 +83,11 @@ module Metanorma
       end
 
       def extract_org_attrs_complex(node, opts, source, suffix)
-        super.merge(name_en: node.attr("#{source}-en#{suffix}"),
-                    name_fr: node.attr("#{source}-fr#{suffix}"))
-      end
-
-      def metadata_author(node, xml)
-        # require "debug"; binding.b
-        super
+        ident = node.attr("#{source}-acronym#{suffix}")
+        ret = super.merge(name_en: node.attr("#{source}-en#{suffix}"),
+                          name_fr: node.attr("#{source}-fr#{suffix}"))
+        ident and ret[:ident] = ident
+        ret
       end
 
       def metadata_relations(node, xml)
