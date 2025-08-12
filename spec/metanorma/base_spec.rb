@@ -203,8 +203,12 @@ RSpec.describe Metanorma::Bipm do
                <name language="en">TC</name>
                <name language="fr">CT</name>
                <identifier>TCA</identifier>
-               <identifier type="full">TCA</identifier>
+               <identifier type="full">TCA/WGA</identifier>
             </subdivision>
+           <subdivision type="Workgroup" subtype="C">
+              <name>WG</name>
+              <identifier>WGA</identifier>
+           </subdivision>
          </organization>
       </contributor>
             <contributor>
@@ -397,7 +401,11 @@ RSpec.describe Metanorma::Bipm do
                <name language="en">TC</name>
                <name language="fr">CT</name>
                <identifier>A 1</identifier>
-               <identifier type="full">A 1</identifier>
+               <identifier type="full">A 1/C 3</identifier>
+            </subdivision>
+            <subdivision type="Workgroup" subtype="C">
+               <name>WG</name>
+               <identifier>C 3</identifier>
             </subdivision>
          </organization>
       </contributor>
@@ -563,7 +571,11 @@ RSpec.describe Metanorma::Bipm do
                <name language="en">TC</name>
                <name language="fr">CT</name>
                 <identifier>JCTLM</identifier>
-               <identifier type="full">JCTLM</identifier>
+                <identifier type="full">JCTLM/C 3</identifier>
+            </subdivision>
+            <subdivision type="Workgroup" subtype="C">
+               <name>WG</name>
+               <identifier>C 3</identifier>
             </subdivision>
          </organization>
       </contributor>
@@ -750,8 +762,12 @@ RSpec.describe Metanorma::Bipm do
                <name language="en">TC</name>
                <name language="fr">CT</name>
                <identifier>JCGM</identifier>
-               <identifier type="full">JCGM</identifier>
+               <identifier type="full">JCGM/C 3</identifier>
             </subdivision>
+           <subdivision type="Workgroup" subtype="C">
+              <name>WG</name>
+              <identifier>C 3</identifier>
+           </subdivision>
          </organization>
       </contributor>
           <contributor>
