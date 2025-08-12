@@ -81,6 +81,7 @@ module IsoDoc
       def author(xml, _out)
         super
         authorizer(xml)
+        committee(xml)
       end
 
       def authorizer(xml)
@@ -92,6 +93,13 @@ module IsoDoc
           m << name.text
         end
         ret.empty? or set(:authorizer, ret)
+      end
+
+      def committee(xml)
+        tc = xml.at(ns("//bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']")) or return
+        n = tc.at(ns("./name[@language = '#{@lang}']")) || tc.at(ns("./name[not(@language)]"))
+        n and set(:tc, n.text)
+
       end
     end
   end

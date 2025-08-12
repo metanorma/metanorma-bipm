@@ -43,6 +43,55 @@ module Metanorma
         end
       end
 
+      def contrib_committee_subdiv(xml, committee)
+        contributors_committees_filter_empty?(committee) and return
+        xml.subdivision **attr_code(type: committee[:subdivtype],
+                                    subtype: committee[:type]) do |o|
+          # warn pp committee
+          committee[:name] and o.name committee[:name]
+          committee[:name_en] and o.name committee[:name_en],
+                                         language: "en"
+          committee[:name_fr] and o.name committee[:name_fr],
+                                         language: "fr"
+          committee[:abbr] and o.abbreviation committee[:abbr]
+          committee[:ident] and o.identifier committee[:ident]
+        end
+      end
+
+      def contributors_committees_filter_empty?(committee)
+        (committee[:name].nil? || committee[:name].empty?) &&
+          (committee[:name_en].nil? || committee[:name_en].empty?) &&
+          (committee[:name_fr].nil? || committee[:name_fr].empty?) &&
+          committee[:ident].nil?
+      end
+
+      def committee_number_or_name?(node, type, suffix)
+        node.attr("#{type}-number#{suffix}") || node.attr("#{type}#{suffix}") ||
+          node.attr("#{type}-en#{suffix}") || node.attr("#{type}-fr#{suffix}")
+      end
+
+      def committee_org_prep_agency(node, type, agency, agency_arr, agency_abbr)
+        i = 1
+        suffix = ""
+        while committee_number_or_name?(node, type, suffix)
+          agency_arr << (node.attr("#{type}-agency#{suffix}") || agency)
+          agency_abbr << node.attr("#{type}-agency-abbr#{suffix}")
+          i += 1
+          suffix = "_#{i}"
+        end
+        [agency_arr, agency_abbr]
+      end
+
+      def extract_org_attrs_complex(node, opts, source, suffix)
+        super.merge(name_en: node.attr("#{source}-en#{suffix}"),
+                    name_fr: node.attr("#{source}-fr#{suffix}"))
+      end
+
+      def metadata_author(node, xml)
+        # require "debug"; binding.b
+        super
+      end
+
       def metadata_relations(node, xml)
         super
         relation_supersedes_self(node, xml, "")

@@ -91,6 +91,20 @@ RSpec.describe IsoDoc::Bipm do
               <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
             </organization>
           </contributor>
+      <contributor>
+         <role type="author">
+            <description>committee</description>
+         </role>
+         <organization>
+            <name>Bureau International des Poids et Mesures</name>
+            <subdivision type="Committee" subtype="A">
+               <name language="en">TC</name>
+               <name language="fr">CT</name>
+               <identifier>A 1</identifier>
+               <identifier type="full">A 1</identifier>
+            </subdivision>
+         </organization>
+      </contributor>
           <contributor>
             <role type="publisher"/>
             <organization>
@@ -207,7 +221,7 @@ RSpec.describe IsoDoc::Bipm do
         tc: "TC",
         transmitteddate: "XXX",
         unchangeddate: "XXX",
-        unpublished: true,
+        unpublished: false,
         updateddate: "XXX",
         vote_endeddate: "XXX",
         vote_starteddate: "XXX" }
@@ -253,6 +267,20 @@ RSpec.describe IsoDoc::Bipm do
               <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
             </organization>
           </contributor>
+      <contributor>
+         <role type="author">
+            <description>committee</description>
+         </role>
+         <organization>
+            <name>Bureau International des Poids et Mesures</name>
+            <subdivision type="Committee" subtype="A">
+               <name language="en">TC</name>
+               <name language="fr">CT</name>
+               <identifier>A 1</identifier>
+               <identifier type="full">A 1</identifier>
+            </subdivision>
+         </organization>
+      </contributor>
           <contributor>
             <role type="publisher"/>
             <organization>
@@ -347,9 +375,10 @@ RSpec.describe IsoDoc::Bipm do
         stable_untildate: "XXX",
         stage: "Working Draft",
         stage_display: "Working Draft",
+        tc: "CT",
         transmitteddate: "XXX",
         unchangeddate: "XXX",
-        unpublished: true,
+        unpublished: false,
         updateddate: "XXX",
         vote_endeddate: "XXX",
         vote_starteddate: "XXX" }
@@ -421,7 +450,7 @@ RSpec.describe IsoDoc::Bipm do
         stage_display: "Standard",
         transmitteddate: "XXX",
         unchangeddate: "XXX",
-        unpublished: true,
+        unpublished: false,
         updateddate: "XXX",
         vote_endeddate: "XXX",
         vote_starteddate: "XXX" }

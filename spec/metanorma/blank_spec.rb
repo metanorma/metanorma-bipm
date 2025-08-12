@@ -47,7 +47,7 @@ RSpec.describe Metanorma::Bipm do
       :docfile: test.adoc
       :novalid:
       :committee-acronym: JCGM
-      :committee-en: Joint Committee for Guides in Metrology#{' '}
+      :committee-en: Joint Committee for Guides in Metrology
     INPUT
 
     output = Canon.format_xml(<<~"OUTPUT")
@@ -55,7 +55,18 @@ RSpec.describe Metanorma::Bipm do
          .sub(/<docidentifier primary="true" type="BIPM">BIPM/, %(<docidentifier primary="true" type="BIPM">JCGM))
          .sub(%r{</ext>}, "<editorialgroup>
         <committee acronym='JCGM' language='en' script='Latn'>Joint Committee for Guides in Metrology</committee>
-      </editorialgroup></ext>") }
+      </editorialgroup></ext>") 
+      .sub("</contributor>", "</contributor>      <contributor>
+         <role type='author'>
+            <description>committee</description>
+         </role>
+         <organization>
+            <name>Bureau International des Poids et Mesures</name>
+            <subdivision type='Committee'>
+               <name language='en'>Joint Committee for Guides in Metrology</name>
+            </subdivision>
+         </organization>
+     </contributor>") }
              <sections/>
            </metanorma>
     OUTPUT
