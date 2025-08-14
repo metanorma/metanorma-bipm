@@ -17,16 +17,6 @@
         <value>policy</value>
       </choice>
     </define>
-    <define name="editorialgroup">
-      <element name="editorialgroup">
-        <oneOrMore>
-          <ref name="committee"/>
-        </oneOrMore>
-        <zeroOrMore>
-          <ref name="workgroup"/>
-        </zeroOrMore>
-      </element>
-    </define>
     <define name="structuredidentifier">
       <element name="structuredidentifier">
         <element name="docnumber">
@@ -89,41 +79,6 @@
         <value>mol_NA</value>
         <value>s_deltanu</value>
       </choice>
-    </element>
-  </define>
-  <define name="committee">
-    <element name="committee">
-      <attribute name="acronym">
-        <choice>
-          <value>CGPM</value>
-          <value>CIPM</value>
-          <value>BIPM</value>
-          <value>CCAUV</value>
-          <value>CCEM</value>
-          <value>CCL</value>
-          <value>CCM</value>
-          <value>CCPR</value>
-          <value>CCQM</value>
-          <value>CCRI</value>
-          <value>CCT</value>
-          <value>CCTF</value>
-          <value>CCU</value>
-          <value>CCL-CCTF-WGFS</value>
-          <value>JCGM</value>
-          <value>JCRB</value>
-          <value>JCTLM</value>
-          <value>INetQI</value>
-        </choice>
-      </attribute>
-      <ref name="LocalizedString"/>
-    </element>
-  </define>
-  <define name="workgroup">
-    <element name="workgroup">
-      <optional>
-        <attribute name="acronym"/>
-      </optional>
-      <text/>
     </element>
   </define>
   <define name="meeting-note">
