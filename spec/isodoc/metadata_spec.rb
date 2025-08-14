@@ -226,7 +226,7 @@ RSpec.describe IsoDoc::Bipm do
         tc: "TC",
         transmitteddate: "XXX",
         unchangeddate: "XXX",
-        unpublished: false,
+        unpublished: true,
         updateddate: "XXX",
         vote_endeddate: "XXX",
         vote_starteddate: "XXX" }
@@ -388,7 +388,7 @@ RSpec.describe IsoDoc::Bipm do
         tc: "CT",
         transmitteddate: "XXX",
         unchangeddate: "XXX",
-        unpublished: false,
+        unpublished: true,
         updateddate: "XXX",
         vote_endeddate: "XXX",
         vote_starteddate: "XXX" }
@@ -465,7 +465,7 @@ RSpec.describe IsoDoc::Bipm do
         stage_display: "Standard",
         transmitteddate: "XXX",
         unchangeddate: "XXX",
-        unpublished: false,
+        unpublished: true,
         updateddate: "XXX",
         vote_endeddate: "XXX",
         vote_starteddate: "XXX" }
