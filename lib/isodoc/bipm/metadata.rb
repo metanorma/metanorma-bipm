@@ -46,18 +46,18 @@ module IsoDoc
         end.join(" ")
       end
 
-      def docid(isoxml, _out)
+      def docid(xml, _out)
         super
-        docid_part(isoxml, [@i18n.get["level2_ancillary"],
-                            @i18n.get["level2_ancillary_alt"]], "appendix", :appendixid)
-        docid_part(isoxml, [@i18n.get["level3_ancillary"],
-                            @i18n.get["level3_ancillary_alt"]],  "annexid", :annexid)
-        docid_part(isoxml, [@i18n.get["level4_ancillary"],
-                            @i18n.get["level4_ancillary_alt"]],  "part", :partid)
-        docid_part(isoxml, [@i18n.get["level5_ancillary"],
-                            @i18n.get["level5_ancillary_alt"]],  "subpart", :subpartid)
+        docid_part(xml, [@i18n.get["level2_ancillary"],
+                         @i18n.get["level2_ancillary_alt"]], "appendix", :appendixid)
+        docid_part(xml, [@i18n.get["level3_ancillary"],
+                         @i18n.get["level3_ancillary_alt"]],  "annexid", :annexid)
+        docid_part(xml, [@i18n.get["level4_ancillary"],
+                         @i18n.get["level4_ancillary_alt"]],  "part", :partid)
+        docid_part(xml, [@i18n.get["level5_ancillary"],
+                         @i18n.get["level5_ancillary_alt"]],  "subpart", :subpartid)
         set(:org_abbrev,
-            isoxml.at(ns("//bibdata/ext/editorialgroup/committee"\
+            xml.at(ns("//bibdata/ext/editorialgroup/committee"\
                          "[@acronym = 'JCGM']")) ? "JCGM" : "BIPM")
       end
 
@@ -81,6 +81,7 @@ module IsoDoc
       def author(xml, _out)
         super
         authorizer(xml)
+        committee(xml)
       end
 
       def authorizer(xml)
@@ -92,6 +93,14 @@ module IsoDoc
           m << name.text
         end
         ret.empty? or set(:authorizer, ret)
+      end
+
+      def committee(xml)
+        t = xml.at(ns("//bibdata/contributor[role/description = 'committee']/" \
+          "organization/subdivision[@type = 'Committee']")) or return
+        n = t.at(ns("./name[@language = '#{@lang}']")) ||
+          t.at(ns("./name[not(@language)]"))
+        n and set(:tc, n.text)
       end
     end
   end

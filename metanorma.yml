@@ -97,6 +97,9 @@ committees:
   - Comité commun pour la traçabilité en médecine de laboratoire
   - INetQI
   - International Network on Quality Infrastructure
+committee_types:
+  - committee
+  - workgroup
 metadata_extensions:
   structuredidentifier:
     docnumber:

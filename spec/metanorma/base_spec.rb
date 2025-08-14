@@ -193,6 +193,24 @@ RSpec.describe Metanorma::Bipm do
                 </affiliation>
               </person>
             </contributor>
+      <contributor>
+         <role type="author">
+            <description>committee</description>
+         </role>
+         <organization>
+            <name>Bureau International des Poids et Mesures</name>
+            <subdivision type="Committee" subtype="A">
+               <name language="en">TC</name>
+               <name language="fr">CT</name>
+               <identifier>TCA</identifier>
+               <identifier type="full">TCA/WGA</identifier>
+            </subdivision>
+           <subdivision type="Workgroup" subtype="C">
+              <name>WG</name>
+              <identifier>WGA</identifier>
+           </subdivision>
+         </organization>
+      </contributor>
             <contributor>
               <role type="publisher"/>
               <organization>
@@ -326,7 +344,6 @@ RSpec.describe Metanorma::Bipm do
       :committee-fr: CT
       :committee-number: 1
       :committee-type: A
-      :committee-acronym: TCA
       :subcommittee: SC
       :subcommittee-number: 2
       :subcommittee-type: B
@@ -374,6 +391,24 @@ RSpec.describe Metanorma::Bipm do
               <abbreviation>#{Metanorma::Bipm.configuration.organization_name_short}</abbreviation>
             </organization>
           </contributor>
+      <contributor>
+         <role type="author">
+            <description>committee</description>
+         </role>
+         <organization>
+            <name>Bureau international des poids et mesures</name>
+            <subdivision type="Committee" subtype="A">
+               <name language="en">TC</name>
+               <name language="fr">CT</name>
+               <identifier>A 1</identifier>
+               <identifier type="full">A 1/C 3</identifier>
+            </subdivision>
+            <subdivision type="Workgroup" subtype="C">
+               <name>WG</name>
+               <identifier>C 3</identifier>
+            </subdivision>
+         </organization>
+      </contributor>
           <contributor>
             <role type="publisher"/>
             <organization>
@@ -417,8 +452,8 @@ RSpec.describe Metanorma::Bipm do
             <doctype>brochure</doctype>
             <flavor>bipm</flavor>
             <editorialgroup>
-              <committee acronym="TCA" language="en" script="Latn">TC</committee>
-              <committee acronym="TCA" language="fr" script="Latn">CT</committee>
+              <committee language="en" script="Latn">TC</committee>
+              <committee language="fr" script="Latn">CT</committee>
               <workgroup>WG</workgroup>
             </editorialgroup>
             <comment-period>
@@ -526,6 +561,24 @@ RSpec.describe Metanorma::Bipm do
                <abbreviation>BIPM</abbreviation>
              </organization>
            </contributor>
+      <contributor>
+         <role type="author">
+            <description>committee</description>
+         </role>
+         <organization>
+            <name>Bureau international des poids et mesures</name>
+            <subdivision type="Committee" subtype="A">
+               <name language="en">TC</name>
+               <name language="fr">CT</name>
+                <identifier>JCTLM</identifier>
+                <identifier type="full">JCTLM/C 3</identifier>
+            </subdivision>
+            <subdivision type="Workgroup" subtype="C">
+               <name>WG</name>
+               <identifier>C 3</identifier>
+            </subdivision>
+         </organization>
+      </contributor>
            <contributor>
              <role type="publisher"/>
              <organization>
@@ -699,6 +752,24 @@ RSpec.describe Metanorma::Bipm do
               <abbreviation>BIPM</abbreviation>
             </organization>
           </contributor>
+                <contributor>
+         <role type="author">
+            <description>committee</description>
+         </role>
+         <organization>
+            <name>Bureau international des poids et mesures</name>
+            <subdivision type="Committee" subtype="A">
+               <name language="en">TC</name>
+               <name language="fr">CT</name>
+               <identifier>JCGM</identifier>
+               <identifier type="full">JCGM/C 3</identifier>
+            </subdivision>
+           <subdivision type="Workgroup" subtype="C">
+              <name>WG</name>
+              <identifier>C 3</identifier>
+           </subdivision>
+         </organization>
+      </contributor>
           <contributor>
             <role type='publisher'/>
             <organization>
