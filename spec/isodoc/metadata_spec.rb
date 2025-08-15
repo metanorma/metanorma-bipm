@@ -179,7 +179,7 @@ RSpec.describe IsoDoc::Bipm do
     output =
       { accesseddate: "XXX",
         adapteddate: "XXX",
-        agency: "#{Metanorma::Bipm.configuration.organization_name_long['en']}",
+        agency: Metanorma::Bipm.configuration.organization_name_long["en"],
         annexid: "Appendix DEF",
         annexid_alt: "Appendice DEF",
         annexsubtitle: "Chef Title Annex",
@@ -206,11 +206,8 @@ RSpec.describe IsoDoc::Bipm do
         implementeddate: "XXX",
         issueddate: "XXX",
         lang: "en",
-        logo: "#{File.join(logoloc, 'logo.png')}",
-        metadata_extensions: {
-          "editorialgroup" => { "committee_acronym" => ["JCGM", "JCGM"],
-                                "committee_language" => ["en", "fr"], "committee_script" => ["Latn", "Latn"], "committee" => ["TC", "CT"], "workgroup_acronym" => "B", "workgroup" => "WC" }, "comment-period" => { "from" => "N1", "to" => "N2" }, "si-aspect" => "A_e_deltanu", "meeting-note" => "ABC", "structuredidentifier" => { "docnumber" => "1000", "part" => "2.1", "appendix" => "ABC", "annexid" => "DEF" }
-        },
+        logo: File.join(logoloc, "logo.png"),
+        metadata_extensions: { "comment-period" => { "from" => "N1", "to" => "N2" }, "si-aspect" => "A_e_deltanu", "meeting-note" => "ABC", "structuredidentifier" => { "docnumber" => "1000", "part" => "2.1", "appendix" => "ABC", "annexid" => "DEF" } },
         obsoleteddate: "XXX",
         org_abbrev: "JCGM",
         partid: "Part 2.1",
@@ -221,7 +218,7 @@ RSpec.describe IsoDoc::Bipm do
         provenancetitle: "Main Title Provenance",
         pubdate_monthyear: "April 2021",
         publisheddate: "XXX",
-        publisher: "#{Metanorma::Bipm.configuration.organization_name_long['en']}",
+        publisher: Metanorma::Bipm.configuration.organization_name_long["en"],
         receiveddate: "XXX",
         revdate: "2000-01-01",
         revdate_monthyear: "January 2000",
