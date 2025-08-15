@@ -105,6 +105,19 @@ RSpec.describe IsoDoc::Bipm do
             </subdivision>
          </organization>
       </contributor>
+      <contributor>
+          <role type='author'>
+             <description>committee</description>
+          </role>
+          <organization>
+             <name>Bureau International des Poids et Mesures</name>
+             <subdivision type='Committee'>
+                <name language='en'>Joint Committee for Guides in Metrology</name>
+                <identifier>JCGM</identifier>
+                <identifier type='full'>JCGM</identifier>
+             </subdivision>
+          </organization>
+      </contributor>
           <contributor>
             <role type="publisher"/>
             <organization>
@@ -143,11 +156,6 @@ RSpec.describe IsoDoc::Bipm do
             </owner>
           </copyright>
           <ext>
-            <editorialgroup>
-                     <committee acronym="JCGM" language="en" script="Latn">TC</committee>
-                    <committee acronym="JCGM" language="fr" script="Latn">CT</committee>
-              <workgroup acronym="B">WC</committee>
-            </editorialgroup>
             <comment-period><from>N1</from><to>N2</to></comment-period>
             <si-aspect>A_e_deltanu</si-aspect>
             <meeting-note>ABC</meeting-note>

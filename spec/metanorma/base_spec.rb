@@ -279,11 +279,6 @@ RSpec.describe Metanorma::Bipm do
             <ext>
               <doctype>brochure</doctype>
               <flavor>bipm</flavor>
-              <editorialgroup>
-                <committee acronym="TCA" language="en" script="Latn">TC</committee>
-                <committee acronym="TCA" language="fr" script="Latn">CT</committee>
-                <workgroup acronym="WGA">WG</workgroup>
-              </editorialgroup>
               <comment-period>
                 <from>2050-01-01</from>
                 <to>2051-01-01</to>
@@ -451,11 +446,6 @@ RSpec.describe Metanorma::Bipm do
           <ext>
             <doctype>brochure</doctype>
             <flavor>bipm</flavor>
-            <editorialgroup>
-              <committee language="en" script="Latn">TC</committee>
-              <committee language="fr" script="Latn">CT</committee>
-              <workgroup>WG</workgroup>
-            </editorialgroup>
             <comment-period>
               <from>2050-01-01</from>
               <to>2051-01-01</to>
@@ -621,11 +611,6 @@ RSpec.describe Metanorma::Bipm do
            <ext>
              <doctype>brochure</doctype>
             <flavor>bipm</flavor>
-             <editorialgroup>
-               <committee acronym="JCTLM" language="en" script="Latn">TC</committee>
-               <committee acronym="JCTLM" language="fr" script="Latn">CT</committee>
-               <workgroup>WG</workgroup>
-             </editorialgroup>
              <comment-period>
                <from>2050-01-01</from>
                <to>2051-01-01</to>
@@ -812,11 +797,6 @@ RSpec.describe Metanorma::Bipm do
           <ext>
             <doctype>brochure</doctype>
             <flavor>bipm</flavor>
-            <editorialgroup>
-              <committee acronym='JCGM' language='en' script='Latn'>TC</committee>
-              <committee acronym='JCGM' language='fr' script='Latn'>CT</committee>
-              <workgroup>WG</workgroup>
-            </editorialgroup>
             <comment-period>
               <from>2050-01-01</from>
               <to>2051-01-01</to>

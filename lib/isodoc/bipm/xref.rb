@@ -12,8 +12,9 @@ module IsoDoc
       end
 
       def parse(docxml)
-        @jcgm = docxml.at(ns("//bibdata/ext/editorialgroup/committee/" \
-                             "@acronym"))&.value == "JCGM"
+        @jcgm = docxml.at(ns(<<~XPATH))&.text == "JCGM"
+          //bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']/identifier[not(@type = 'full')]
+        XPATH
         @annexlbl =
           if @jcgm then @labels["iso_annex"]
           elsif docxml.at(ns("//bibdata/ext/structuredidentifier/appendix"))

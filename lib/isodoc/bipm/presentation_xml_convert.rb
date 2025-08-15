@@ -12,8 +12,9 @@ module IsoDoc
   module Bipm
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def convert1(docxml, filename, dir)
-        @jcgm = docxml&.at(ns("//bibdata/ext/editorialgroup/committee/" \
-                              "@acronym"))&.value == "JCGM"
+        @jcgm = @jcgm = docxml.at(ns(<<~XPATH))&.text == "JCGM"
+          //bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']/identifier[not(@type = 'full')]
+        XPATH
         @xrefs.klass.jcgm = @jcgm
         @jcgm and @iso = iso_processor(docxml)
         super

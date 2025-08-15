@@ -810,23 +810,38 @@ RSpec.describe IsoDoc::Bipm do
     presxml = <<~OUTPUT
        <bipm-standard xmlns="https://open.ribose.com/standards/bipm" type="presentation">
           <bibdata>
-             <ext>
-                <editorialgroup>
-                   <committee acronym="JCGM">
-              Joint Committee for Guides in Metrology
-              Comité commun pour les guides en métrologie
-            </committee>
-                </editorialgroup>
-             </ext>
+             <contributor>
+                <role type="author">
+                   <description>committee</description>
+                </role>
+                <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <subdivision type="Committee">
+                      <name language="en">Joint Committee for Guides in Metrology</name>
+                      <identifier id="_66">JCGM</identifier>
+                      <fmt-identifier>
+                         <tt>
+                            <semx element="identifier" source="_">JCGM</semx>
+                         </tt>
+                      </fmt-identifier>
+                      <identifier type="full" id="_67">JCGM</identifier>
+                      <fmt-identifier>
+                         <tt>
+                            <semx element="identifier" source="_">JCGM</semx>
+                         </tt>
+                      </fmt-identifier>
+                   </subdivision>
+                </organization>
+             </contributor>
           </bibdata>
           <preface>
              <clause type="toc" id="_48" displayorder="1">
-                <fmt-title depth="1" id="_66">Contents</fmt-title>
+                <fmt-title depth="1" id="_68">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
              <clause id="A" displayorder="2">
-                <fmt-title depth="1" id="_67">
+                <fmt-title depth="1" id="_69">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="A">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -853,7 +868,7 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-fn-label>
                       </fn>
                    </name>
-                   <fmt-name id="_68">
+                   <fmt-name id="_70">
                       <span class="fmt-caption-label">
                          <span class="fmt-element-name">Table</span>
                          <semx element="autonum" source="tableD-1">1</semx>
@@ -970,7 +985,7 @@ RSpec.describe IsoDoc::Bipm do
                    </tfoot>
                    <dl key="true">
                       <name id="_61">Key</name>
-                      <fmt-name id="_69">
+                      <fmt-name id="_71">
                          <semx element="name" source="_">Key</semx>
                       </fmt-name>
                       <dt>Drago</dt>
@@ -1043,7 +1058,7 @@ RSpec.describe IsoDoc::Bipm do
                       </origin>
                    </source>
                    <note>
-                      <fmt-name id="_70">
+                      <fmt-name id="_72">
                          <span class="fmt-caption-label">Note</span>
                          <span class="fmt-label-delim">
                             :
@@ -1074,7 +1089,7 @@ RSpec.describe IsoDoc::Bipm do
                 </table>
                 <table id="C" unnumbered="true">
                    <name id="_55">Second Table</name>
-                   <fmt-name id="_71">
+                   <fmt-name id="_73">
                       <span class="fmt-caption-label">
                          <span class="fmt-element-name">Table</span>
                       </span>
@@ -1105,7 +1120,7 @@ RSpec.describe IsoDoc::Bipm do
                             </fmt-fn-label>
                          </fn>
                       </name>
-                      <fmt-name id="_72">
+                      <fmt-name id="_74">
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">Table</span>
                             <semx element="autonum" source="D">2</semx>
@@ -1185,7 +1200,7 @@ RSpec.describe IsoDoc::Bipm do
                             </fmt-fn-label>
                          </fn>
                       </name>
-                      <fmt-name id="_73">
+                      <fmt-name id="_75">
                          <span class="fmt-caption-label">
                             <span class="fmt-element-name">Table</span>
                             <semx element="autonum" source="D1">3</semx>
