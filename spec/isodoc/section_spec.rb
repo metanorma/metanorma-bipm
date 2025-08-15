@@ -1076,14 +1076,29 @@ RSpec.describe IsoDoc::Bipm do
     presxml = <<~INPUT
        <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <bibdata>
-             <ext>
-                <editorialgroup>
-                   <committee acronym="JCGM">
-              Joint Committee for Guides in Metrology
-              Comité commun pour les guides en métrologie
-            </committee>
-                </editorialgroup>
-             </ext>
+          <contributor>
+          <role type='author'>
+             <description>committee</description>
+          </role>
+          <organization>
+             <name>Bureau International des Poids et Mesures</name>
+             <subdivision type='Committee'>
+                <name language='en'>Joint Committee for Guides in Metrology</name>
+                               <identifier id="_">JCGM</identifier>
+               <fmt-identifier>
+                  <tt>
+                     <semx element="identifier" source="_">JCGM</semx>
+                  </tt>
+               </fmt-identifier>
+               <identifier type="full" id="_">JCGM</identifier>
+               <fmt-identifier>
+                  <tt>
+                     <semx element="identifier" source="_">JCGM</semx>
+                  </tt>
+               </fmt-identifier>
+             </subdivision>
+          </organization>
+      </contributor>
           </bibdata>
           <preface>
              <clause type="toc" id="_" displayorder="1">

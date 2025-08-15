@@ -53,9 +53,6 @@ RSpec.describe Metanorma::Bipm do
     output = Canon.format_xml(<<~"OUTPUT")
           #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate('jcgm'))
           .sub(/<docidentifier primary="true" type="BIPM">BIPM/, %(<docidentifier primary="true" type="BIPM">JCGM))
-          .sub(%r{</ext>}, "<editorialgroup>
-         <committee acronym='JCGM' language='en' script='Latn'>Joint Committee for Guides in Metrology</committee>
-       </editorialgroup></ext>")
        .sub('</contributor>', "</contributor>      <contributor>
           <role type='author'>
              <description>committee</description>

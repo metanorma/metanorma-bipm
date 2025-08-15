@@ -46,19 +46,22 @@ module IsoDoc
         end.join(" ")
       end
 
+      COMMITEE_XPATH = <<~XPATH.freeze
+        //bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']
+      XPATH
+
       def docid(xml, _out)
         super
-        docid_part(xml, [@i18n.get["level2_ancillary"],
-                         @i18n.get["level2_ancillary_alt"]], "appendix", :appendixid)
-        docid_part(xml, [@i18n.get["level3_ancillary"],
-                         @i18n.get["level3_ancillary_alt"]],  "annexid", :annexid)
-        docid_part(xml, [@i18n.get["level4_ancillary"],
-                         @i18n.get["level4_ancillary_alt"]],  "part", :partid)
-        docid_part(xml, [@i18n.get["level5_ancillary"],
-                         @i18n.get["level5_ancillary_alt"]],  "subpart", :subpartid)
-        set(:org_abbrev,
-            xml.at(ns("//bibdata/ext/editorialgroup/committee"\
-                         "[@acronym = 'JCGM']")) ? "JCGM" : "BIPM")
+        [{ label: "level2", elem: "appendix", key: :appendixid },
+         { label: "level3", elem: "annexid", key: :annexid },
+         { label: "level4", elem: "part", key: :partid },
+         { label: "level5", elem: "subpart", key: :subpartid }].each do |m|
+          docid_part(xml, [@i18n.get["#{m[:label]}_ancillary"],
+                           @i18n.get["#{m[:label]}_ancillary_alt"]], m[:elem],
+                     m[:key])
+        end
+        c = xml.at(ns("#{COMMITEE_XPATH}/identifier[not(@type = 'full')][text() = 'JCGM']"))
+        set(:org_abbrev, c ? "JCGM" : "BIPM")
       end
 
       def docid_part(isoxml, labels, elem, key)
@@ -96,8 +99,7 @@ module IsoDoc
       end
 
       def committee(xml)
-        t = xml.at(ns("//bibdata/contributor[role/description = 'committee']/" \
-          "organization/subdivision[@type = 'Committee']")) or return
+        t = xml.at(ns(COMMITEE_XPATH)) or return
         n = t.at(ns("./name[@language = '#{@lang}']")) ||
           t.at(ns("./name[not(@language)]"))
         n and set(:tc, n.text)

@@ -207,14 +207,19 @@ HDR
 
 def jcgm_ext
   <<~JCGM
-    <ext>
-       <editorialgroup>
-         <committee acronym="JCGM">
-           Joint Committee for Guides in Metrology
-           Comité commun pour les guides en métrologie
-         </committee>
-       </editorialgroup>
-     </ext>
+          <contributor>
+          <role type='author'>
+             <description>committee</description>
+          </role>
+          <organization>
+             <name>Bureau International des Poids et Mesures</name>
+             <subdivision type='Committee'>
+                <name language='en'>Joint Committee for Guides in Metrology</name>
+                <identifier>JCGM</identifier>
+                <identifier type='full'>JCGM</identifier>
+             </subdivision>
+          </organization>
+      </contributor>
   JCGM
 end
 

@@ -72,7 +72,7 @@ RSpec.describe IsoDoc::Bipm do
           </iso-standard>
     INPUT
     presxml = <<~INPUT
-        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <bibdata>
              <title>
                 <fn reference="1" id="_1" original-reference="43" target="_">
@@ -591,6 +591,7 @@ RSpec.describe IsoDoc::Bipm do
        </bibliography>
        </iso-standard>
           INPUT
+
     output = <<~OUTPUT
        <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
           <div class="title-section">
@@ -732,7 +733,7 @@ RSpec.describe IsoDoc::Bipm do
       .gsub(%r{</body>.*}m, "</body>")))).to(be_equivalent_to(output))
 
     presxml = <<~OUTPUT
-        <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+       <iso-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <bibdata>
              <title>
                 <fn reference="1" id="_40" original-reference="43" target="_">
@@ -764,7 +765,7 @@ RSpec.describe IsoDoc::Bipm do
                          </fmt-fn-label>
                       </fn>
                    </title>
-                   <fmt-title depth="1" id="_69">
+                   <fmt-title depth="1" id="_71">
                       <semx element="title" source="_">
                          <fn reference="2" id="_42" original-reference="44" target="_">
                             <p>D</p>
@@ -784,11 +785,11 @@ RSpec.describe IsoDoc::Bipm do
           </boilerplate>
           <preface>
              <clause type="toc" id="_52" displayorder="1">
-                <fmt-title depth="1" id="_70">Contents</fmt-title>
+                <fmt-title depth="1" id="_72">Contents</fmt-title>
              </clause>
              <foreword id="F" displayorder="2">
                 <title id="_55">Foreword</title>
-                <fmt-title depth="1" id="_71">
+                <fmt-title depth="1" id="_73">
                    <semx element="title" source="_">Foreword</semx>
                 </fmt-title>
                 <p>
@@ -836,14 +837,29 @@ RSpec.describe IsoDoc::Bipm do
              </foreword>
           </preface>
           <bibdata>
-             <ext>
-                <editorialgroup>
-                   <committee acronym="JCGM">
-              Joint Committee for Guides in Metrology
-              Comité commun pour les guides en métrologie
-            </committee>
-                </editorialgroup>
-             </ext>
+             <contributor>
+                <role type="author">
+                   <description>committee</description>
+                </role>
+                <organization>
+                   <name>Bureau International des Poids et Mesures</name>
+                   <subdivision type="Committee">
+                      <name language="en">Joint Committee for Guides in Metrology</name>
+                      <identifier id="_69">JCGM</identifier>
+                      <fmt-identifier>
+                         <tt>
+                            <semx element="identifier" source="_">JCGM</semx>
+                         </tt>
+                      </fmt-identifier>
+                      <identifier type="full" id="_70">JCGM</identifier>
+                      <fmt-identifier>
+                         <tt>
+                            <semx element="identifier" source="_">JCGM</semx>
+                         </tt>
+                      </fmt-identifier>
+                   </subdivision>
+                </organization>
+             </contributor>
           </bibdata>
           <sections>
              <clause id="A" displayorder="4">
@@ -861,7 +877,7 @@ RSpec.describe IsoDoc::Bipm do
                       </fmt-fn-label>
                    </fn>
                 </title>
-                <fmt-title depth="1" id="_72">
+                <fmt-title depth="1" id="_74">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="A">2</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -889,7 +905,7 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="A">2</semx>
                 </fmt-xref-label>
                 <clause id="AA">
-                   <fmt-title depth="2" id="_73">
+                   <fmt-title depth="2" id="_75">
                       <span class="fmt-caption-label">
                          <semx element="autonum" source="A">2</semx>
                          <span class="fmt-autonum-delim">.</span>
@@ -932,7 +948,7 @@ RSpec.describe IsoDoc::Bipm do
                    </p>
                 </clause>
                 <clause id="AB">
-                   <fmt-title depth="2" id="_74">
+                   <fmt-title depth="2" id="_76">
                       <span class="fmt-caption-label">
                          <semx element="autonum" source="A">2</semx>
                          <span class="fmt-autonum-delim">.</span>
@@ -977,7 +993,7 @@ RSpec.describe IsoDoc::Bipm do
              </clause>
              <references id="_normative_references" obligation="informative" normative="true" displayorder="3">
                 <title id="_59">Normative References</title>
-                <fmt-title depth="1" id="_75">
+                <fmt-title depth="1" id="_77">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="_">1</semx>
                       <span class="fmt-autonum-delim">.</span>

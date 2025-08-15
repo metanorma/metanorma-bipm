@@ -1,53 +1,10 @@
 module Metanorma
   module Bipm
     class Converter < Metanorma::Generic::Converter
-      def metadata_committee(node, xml)
-        node.attr("committee-en") || node.attr("committee-fr") or return
-        xml.editorialgroup do |a|
-          metadata_committee1(node, a)
-          i = 2
-          while node.attr("committee-en_#{i}") || node.attr("committee-fr_#{i}")
-            metadata_committee2(node, a, i)
-            i += 1
-          end
-          metadata_workgroup(node, a)
-        end
-      end
-
-      def metadata_committee1(node, xml)
-        %w(en fr).each do |lg|
-          e = node.attr("committee-#{lg}") or next
-          xml.committee e, **attr_code(acronym: node.attr("committee-acronym"),
-                                       language: lg, script: "Latn")
-        end
-      end
-
-      def metadata_committee2(node, xml, num)
-        %w(en fr).each do |lg|
-          e = node.attr("committee-#{lg}_#{num}") or next
-          xml.committee e, **attr_code(acronym: node.attr("committee-acronym"),
-                                       language: lg, script: "Latn")
-        end
-      end
-
-      def metadata_workgroup(node, xml)
-        xml.workgroup(node.attr("workgroup"),
-                      **attr_code(acronym: node.attr("workgroup-acronym")))
-        i = 2
-        while node.attr("workgroup_#{i}")
-          xml.workgroup(
-            node.attr("workgroup_#{i}"),
-            **attr_code(acronym: node.attr("workgroup-acronym_#{i}")),
-          )
-          i += 1
-        end
-      end
-
       def contrib_committee_subdiv(xml, committee)
         contributors_committees_filter_empty?(committee) and return
         xml.subdivision **attr_code(type: committee[:subdivtype],
                                     subtype: committee[:type]) do |o|
-          # warn pp committee
           committee[:name] and o.name committee[:name]
           committee[:name_en] and o.name committee[:name_en],
                                          language: "en"
