@@ -11315,6 +11315,8 @@
 			<xsl:attribute name="font-weight">normal</xsl:attribute>
 			<xsl:attribute name="baseline-shift">15%</xsl:attribute>
 		</xsl:if>
+		<!-- https://github.com/metanorma/metanorma-ieee/issues/595 -->
+		<xsl:if test="preceding-sibling::node()[normalize-space() != ''][1][self::mn:fn]">,</xsl:if>
 	</xsl:template> <!-- refine_fn-reference-style -->
 
 	<xsl:attribute-set name="fn-style">
@@ -11414,9 +11416,12 @@
 					<xsl:copy-of select="."/>
 				</xsl:for-each>
 
-				<xsl:if test="following-sibling::node()[normalize-space() != ''][1][self::mn:fn]">
+				<!-- https://github.com/metanorma/metanorma-ieee/issues/595 -->
+				<!-- <xsl:if test="following-sibling::node()[normalize-space() != ''][1][self::mn:fn]">
 					<xsl:attribute name="padding-right">0.5mm</xsl:attribute>
-				</xsl:if>
+				</xsl:if> -->
+
+				<xsl:if test="preceding-sibling::node()[normalize-space() != ''][1][self::mn:fn]">,</xsl:if>
 
 				<xsl:call-template name="insert_basic_link">
 					<xsl:with-param name="element">
