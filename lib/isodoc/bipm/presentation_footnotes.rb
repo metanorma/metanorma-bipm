@@ -59,7 +59,7 @@ module IsoDoc
         fnote["original-reference"] = fnote["reference"]
         key = renumber_document_footnote_key(fnote)
         if seen[key]
-          fnote["reference"] = seen[fnote["reference"]]
+          fnote["reference"] = seen[key]
         else
           seen[key] = idx
           fnote["reference"] = idx
@@ -101,10 +101,12 @@ module IsoDoc
 
       def non_document_footnotes(docxml)
         table_fns = docxml.xpath(ns("//table//fn")) -
-          docxml.xpath(ns("//table/name//fn"))
+          docxml.xpath(ns("//table/name//fn")) -
+          docxml.xpath(ns("//table/fmt-name//fn"))
         @jcgm or table_fns -= docxml.xpath(ns("//quote//table//fn"))
         fig_fns = docxml.xpath(ns("//figure//fn")) -
-          docxml.xpath(ns("//figure/name//fn"))
+          docxml.xpath(ns("//figure/name//fn")) -
+          docxml.xpath(ns("//figure/fmt-name//fn"))
         table_fns + fig_fns
       end
     end
