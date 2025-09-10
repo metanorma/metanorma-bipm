@@ -5961,6 +5961,12 @@
 	<xsl:template name="refine_sourcecode-style">
 	</xsl:template> <!-- refine_sourcecode-style -->
 
+	<xsl:attribute-set name="sourcecode-number-style">
+	</xsl:attribute-set>
+
+	<xsl:template name="refine_sourcecode-number-style">
+	</xsl:template>
+
 	<xsl:attribute-set name="sourcecode-name-style">
 		<xsl:attribute name="font-size">11pt</xsl:attribute>
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
@@ -7345,6 +7351,12 @@
 	<xsl:template name="refine_term-name-style">
 	</xsl:template>
 
+	<xsl:attribute-set name="preferred-style">
+	</xsl:attribute-set> <!-- preferred-style -->
+
+	<xsl:template name="refine_preferred-style">
+	</xsl:template>
+
 	<xsl:attribute-set name="preferred-block-style">
 	</xsl:attribute-set> <!-- preferred-block-style -->
 
@@ -7978,6 +7990,12 @@
 
 		<xsl:call-template name="setBordersTableArray"/>
 	</xsl:template> <!-- refine_table-style -->
+
+	<xsl:attribute-set name="table-number-style">
+	</xsl:attribute-set>
+
+	<xsl:template name="refine_table-number-style">
+	</xsl:template>
 
 	<xsl:attribute-set name="table-name-style">
 		<xsl:attribute name="role">Caption</xsl:attribute>
@@ -11642,6 +11660,12 @@
 	</xsl:attribute-set>
 
 	<xsl:template name="refine_figure-style">
+	</xsl:template>
+
+	<xsl:attribute-set name="figure-number-style">
+	</xsl:attribute-set>
+
+	<xsl:template name="refine_figure-number-style">
 	</xsl:template>
 
 	<xsl:attribute-set name="figure-name-style">
@@ -16564,6 +16588,13 @@
 					<xsl:apply-templates/>
 				</xsl:otherwise>
 			</xsl:choose>
+	</xsl:template>
+
+	<xsl:attribute-set name="clause-style">
+
+	</xsl:attribute-set>
+
+	<xsl:template name="refine_clause-style">
 	</xsl:template>
 
 	<!-- main sections -->
