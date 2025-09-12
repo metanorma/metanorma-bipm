@@ -91,10 +91,7 @@ module Metanorma
 
       def title(node, xml)
         ["en", "fr"].each do |lang|
-          at = { language: lang, format: "text/plain" }
-          xml.title **attr_code(at.merge(type: "title-main")) do |t1|
-            t1 << Metanorma::Utils::asciidoc_sub(node.attr("title-#{lang}"))
-          end
+          add_title_xml(xml, node.attr("title-#{lang}"), lang, "title-main")
           %w(cover appendix annex part subpart provenance).each do |w|
             typed_title(node, xml, lang, w)
           end
@@ -102,11 +99,8 @@ module Metanorma
       end
 
       def typed_title(node, xml, lang, type)
-        at = { language: lang, format: "text/plain" }
         title = node.attr("title-#{type}-#{lang}") or return
-        xml.title **attr_code(at.merge(type: "title-#{type}")) do |t1|
-          t1 << Metanorma::Utils::asciidoc_sub(title)
-        end
+        add_title_xml(xml, title, lang, "title-#{type}")
       end
     end
   end

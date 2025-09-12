@@ -85,20 +85,20 @@ RSpec.describe Metanorma::Bipm do
       <?xml version="1.0" encoding="UTF-8"?>
         <metanorma type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/standoc" flavor="bipm">
           <bibdata type="standard">
-            <title format="text/plain" language="en" type="title-main">Main Title</title>
-            <title format="text/plain" language="en" type="title-cover">Main Title (SI)</title>
-            <title format="text/plain" language="en" type="title-appendix">Main Title (SI)</title>
-            <title format="text/plain" language="en" type="title-annex">Main Title (SI) Annex</title>
-            <title format="text/plain" language="en" type="title-part">Part</title>
-            <title format="text/plain" language="en" type="title-subpart">Subpart</title>
-            <title format="text/plain" language="en" type="title-provenance">Provenance-en</title>
-            <title format="text/plain" language="fr" type="title-main">Chef Title</title>
-            <title format="text/plain" language="fr" type="title-cover">Chef Title (SI)</title>
-            <title format="text/plain" language="fr" type="title-appendix">Chef Title (SI)</title>
-            <title format="text/plain" language="fr" type="title-annex">Chef Title (SI) Annexe</title>
-            <title format="text/plain" language="fr" type="title-part">Partie</title>
-            <title format="text/plain" language="fr" type="title-subpart">Subpartie</title>
-            <title format="text/plain" language="fr" type="title-provenance">Provenance-fr</title>
+            <title language="en" type="title-main">Main Title</title>
+            <title language="en" type="title-cover">Main Title (SI)</title>
+            <title language="en" type="title-appendix">Main Title (SI)</title>
+            <title language="en" type="title-annex">Main Title (SI) Annex</title>
+            <title language="en" type="title-part">Part</title>
+            <title language="en" type="title-subpart">Subpart</title>
+            <title language="en" type="title-provenance">Provenance-en</title>
+            <title language="fr" type="title-main">Chef Title</title>
+            <title language="fr" type="title-cover">Chef Title (SI)</title>
+            <title language="fr" type="title-appendix">Chef Title (SI)</title>
+            <title language="fr" type="title-annex">Chef Title (SI) Annexe</title>
+            <title language="fr" type="title-part">Partie</title>
+            <title language="fr" type="title-subpart">Subpartie</title>
+            <title language="fr" type="title-provenance">Provenance-fr</title>
             <docidentifier primary="true" type="BIPM">BIPM 1000-2 AABC.DEF</docidentifier>
             <docidentifier type="BIPM-parent-document">BIPM 1000</docidentifier>
             <docnumber>1000</docnumber>
@@ -367,10 +367,10 @@ RSpec.describe Metanorma::Bipm do
       <?xml version="1.0" encoding="UTF-8"?>
       <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
       <bibdata type="standard">
-        <title language='en' format='text/plain' type='title-main'>Main Title</title>
-        <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
-        <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
-        <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
+        <title language='en' type='title-main'>Main Title</title>
+        <title language='en' type='title-cover'>Main Title (SI)</title>
+        <title language='fr' type='title-main'>Chef Title</title>
+        <title language='fr' type='title-cover'>Chef Title (SI)</title>
           <docidentifier primary="true" type="BIPM">BIPM 1000</docidentifier>
           <docnumber>1000</docnumber>
           <date type='implemented'>
@@ -531,10 +531,10 @@ RSpec.describe Metanorma::Bipm do
     output = Canon.format_xml(<<~"OUTPUT")
       <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
          <bibdata type="standard">
-           <title language="en" format="text/plain" type="title-main">Main Title</title>
-           <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
-           <title language="fr" format="text/plain" type="title-main">Chef Title</title>
-           <title language="fr" format="text/plain" type="title-cover">Chef Title (SI)</title>
+           <title language="en" type="title-main">Main Title</title>
+           <title language="en" type="title-cover">Main Title (SI)</title>
+           <title language="fr" type="title-main">Chef Title</title>
+           <title language="fr" type="title-cover">Chef Title (SI)</title>
            <docidentifier primary="true" type="BIPM">BIPM 1000-2.1 AABC</docidentifier>
           <docidentifier type="BIPM-parent-document">BIPM 1000</docidentifier>
            <docnumber>1000</docnumber>
@@ -717,10 +717,10 @@ RSpec.describe Metanorma::Bipm do
         <?xml version="1.0" encoding="UTF-8"?>
         <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
         <bibdata type='standard'>
-          <title language='en' format='text/plain' type='title-main'>Main Title</title>
-          <title language='en' format='text/plain' type='title-cover'>Main Title (SI)</title>
-          <title language='fr' format='text/plain' type='title-main'>Chef Title</title>
-          <title language='fr' format='text/plain' type='title-cover'>Chef Title (SI)</title>
+          <title language='en' type='title-main'>Main Title</title>
+          <title language='en' type='title-cover'>Main Title (SI)</title>
+          <title language='fr' type='title-main'>Chef Title</title>
+          <title language='fr' type='title-cover'>Chef Title (SI)</title>
           <docidentifier primary="true" type="BIPM">JCGM 1000-2.1 AABC</docidentifier>
           <docidentifier type="BIPM-parent-document">JCGM 1000</docidentifier>
           <docnumber>1000</docnumber>

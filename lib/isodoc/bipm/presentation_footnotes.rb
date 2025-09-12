@@ -99,15 +99,12 @@ module IsoDoc
         super
       end
 
-      def non_document_footnotes(docxml)
+      def table_footnotes(docxml)
         table_fns = docxml.xpath(ns("//table//fn")) -
           docxml.xpath(ns("//table/name//fn")) -
           docxml.xpath(ns("//table/fmt-name//fn"))
         @jcgm or table_fns -= docxml.xpath(ns("//quote//table//fn"))
-        fig_fns = docxml.xpath(ns("//figure//fn")) -
-          docxml.xpath(ns("//figure/name//fn")) -
-          docxml.xpath(ns("//figure/fmt-name//fn"))
-        table_fns + fig_fns
+        table_fns
       end
     end
   end
