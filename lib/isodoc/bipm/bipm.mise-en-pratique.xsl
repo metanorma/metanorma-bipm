@@ -2278,7 +2278,7 @@
 	</xsl:template>
 
 	<xsl:template match="mn:feedback-statement//mn:p" priority="2">
-		<fo:block margin-top="6pt">
+		<fo:block xsl:use-attribute-sets="feedback-statement-p-style">
 			<xsl:variable name="p_num"><xsl:number/></xsl:variable>
 			<xsl:if test="$p_num = 1">Édité par le </xsl:if>
 			<xsl:apply-templates/>
@@ -5706,10 +5706,10 @@
 	</xsl:attribute-set> <!-- feedback-statement-title-style -->
 
 	<xsl:template name="refine_feedback-statement-title-style">
-
 	</xsl:template>
 
 	<xsl:attribute-set name="feedback-statement-p-style">
+		<xsl:attribute name="margin-top">6pt</xsl:attribute>
 	</xsl:attribute-set> <!-- feedback-statement-p-style -->
 
 	<xsl:template name="refine_feedback-statement-p-style">
