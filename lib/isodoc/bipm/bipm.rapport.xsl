@@ -1384,6 +1384,9 @@
 
 	<xsl:template name="cover-page">
 		<xsl:choose>
+			<xsl:when test="/mn:metanorma/mn:metanorma-extension/mn:presentation-metadata[mn:name = 'coverpage-image']/mn:value/mn:image and         normalize-space(/mn:metanorma/mn:metanorma-extension/mn:presentation-metadata/mn:full-coverpage-replacement) = 'true'">
+				<xsl:call-template name="insertCoverPageFullImage"/>
+			</xsl:when>
 			<xsl:when test="$doctype = 'guide'">
 				<xsl:call-template name="insertCoverPageAppendix"/>
 			</xsl:when>
@@ -17677,6 +17680,16 @@
 				</xsl:for-each>
 			</fo:block>
 		</fo:block-container>
+	</xsl:template>
+
+	<!-- for https://github.com/metanorma/mn-native-pdf/issues/845 -->
+	<xsl:template name="insertCoverPageFullImage">
+		<fo:page-sequence master-reference="cover-page" force-page-count="no-force">
+			<xsl:attribute name="force-page-count">even</xsl:attribute>
+			<fo:flow flow-name="xsl-region-body">
+				<xsl:call-template name="insertBackgroundPageImage"/>
+			</fo:flow>
+		</fo:page-sequence>
 	</xsl:template>
 
 	<xsl:template name="insertPageImage">
