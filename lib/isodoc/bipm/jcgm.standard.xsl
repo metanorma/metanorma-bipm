@@ -800,18 +800,16 @@
 				<xsl:otherwise>fo:block</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+
+		<xsl:variable name="p_styles">
+			<styles xsl:use-attribute-sets="p-style">
+				<xsl:call-template name="refine_p-style"><xsl:with-param name="element-name" select="$element-name"/></xsl:call-template>
+			</styles>
+		</xsl:variable>
+
 		<xsl:element name="{$element-name}">
+			<xsl:copy-of select="xalan:nodeset($p_styles)/styles/@*"/>
 
-			<xsl:call-template name="setBlockAttributes">
-				<xsl:with-param name="text_align_default">justify</xsl:with-param>
-			</xsl:call-template>
-
-			<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
-			<xsl:if test="ancestor::*[@first or @slave]">
-				<!-- JCGM two column layout -->
-				<xsl:attribute name="widows">1</xsl:attribute>
-				<xsl:attribute name="orphans">1</xsl:attribute>
-			</xsl:if>
 			<xsl:apply-templates>
 				<xsl:with-param name="split_keep-within-line" select="$split_keep-within-line"/>
 			</xsl:apply-templates>
@@ -14102,10 +14100,23 @@
 	</xsl:template>
 
 	<xsl:attribute-set name="p-style">
+		<xsl:attribute name="margin-bottom">12pt</xsl:attribute>
 	</xsl:attribute-set> <!-- p-style -->
 
 	<xsl:template name="refine_p-style">
 		<xsl:param name="element-name"/>
+		<xsl:param name="margin"/>
+		<xsl:call-template name="setBlockAttributes">
+			<xsl:with-param name="text_align_default">justify</xsl:with-param>
+		</xsl:call-template>
+
+		<xsl:if test="ancestor::*[@first or @slave]">
+			<!-- JCGM two column layout -->
+			<xsl:attribute name="widows">1</xsl:attribute>
+			<xsl:attribute name="orphans">1</xsl:attribute>
+		</xsl:if>
+		<!-- $namespace = 'jcgm' -->
+
 	</xsl:template> <!-- refine_p-style -->
 
 	<xsl:template name="processPrefaceSectionsDefault">
