@@ -1145,21 +1145,6 @@
 
 	<xsl:template match="mn:fmt-title" name="title">
 
-		<xsl:variable name="level">
-			<xsl:call-template name="getLevel"/>
-		</xsl:variable>
-
-		<xsl:variable name="font-size">
-			<xsl:choose>
-				<xsl:when test="ancestor::mn:preface">15pt</xsl:when>
-				<xsl:when test="parent::mn:annex">15pt</xsl:when>
-				<xsl:when test="../@inline-header = 'true'  or @inline-header = 'true'">10.5pt</xsl:when>
-				<xsl:when test="$level = 2">11.5pt</xsl:when>
-				<xsl:when test="$level &gt;= 3">10.5pt</xsl:when>
-				<xsl:otherwise>13pt</xsl:otherwise><!-- level 1 -->
-			</xsl:choose>
-		</xsl:variable>
-
 		<xsl:variable name="element-name">
 			<xsl:choose>
 				<xsl:when test="../@inline-header = 'true' or @inline-header = 'true'">fo:inline</xsl:when>
@@ -1167,53 +1152,22 @@
 			</xsl:choose>
 		</xsl:variable>
 
-			<xsl:element name="{$element-name}">
-				<xsl:attribute name="font-size"><xsl:value-of select="$font-size"/></xsl:attribute>
-				<xsl:attribute name="font-weight">bold</xsl:attribute>
-				<xsl:attribute name="space-before"> <!-- margin-top -->
-					<xsl:choose>
+		<xsl:variable name="title_styles">
+			<styles xsl:use-attribute-sets="title-style"><xsl:call-template name="refine_title-style"><xsl:with-param name="element-name" select="$element-name"/></xsl:call-template></styles>
+		</xsl:variable>
 
-						<xsl:when test="$level = 1 and parent::mn:annex">0pt</xsl:when>
-						<xsl:when test="$level = 1">36pt</xsl:when>
-						<xsl:when test="$level = 2">18pt</xsl:when>
-						<xsl:when test="$level &gt;= 3">3pt</xsl:when>
-						<xsl:when test="$level = ''">6pt</xsl:when><!-- 13.5pt -->
-						<xsl:otherwise>12pt</xsl:otherwise>
-					</xsl:choose>
-				</xsl:attribute>
-				<xsl:attribute name="space-after">
-					<xsl:choose>
-						<xsl:when test="ancestor::mn:preface">12pt</xsl:when>
-						<xsl:when test="parent::mn:annex">30pt</xsl:when>
-						<xsl:when test="following-sibling::*[1][self::mn:fmt-admitted]">0pt</xsl:when>
-						<!-- <xsl:otherwise>12pt</xsl:otherwise> -->
-						<xsl:otherwise>12pt</xsl:otherwise>
-					</xsl:choose>
-				</xsl:attribute>
-				<xsl:attribute name="keep-with-next">always</xsl:attribute>
-				<xsl:if test="$element-name = 'fo:inline'">
-					<xsl:attribute name="padding-right">
-						<xsl:choose>
-							<xsl:when test="$level = 3">6.5mm</xsl:when>
-							<xsl:otherwise>4mm</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:if test="parent::mn:annex">
-					<xsl:attribute name="text-align">center</xsl:attribute>
-					<xsl:attribute name="line-height">130%</xsl:attribute>
-				</xsl:if>
-				<xsl:attribute name="role">H<xsl:value-of select="$level"/></xsl:attribute>
-				<xsl:apply-templates/>
-				<xsl:apply-templates select="following-sibling::*[1][self::mn:variant-title][@type = 'sub']" mode="subtitle"/>
-			</xsl:element>
+		<xsl:element name="{$element-name}">
+			<xsl:copy-of select="xalan:nodeset($title_styles)/styles/@*"/>
 
-			<xsl:if test="$element-name = 'fo:inline' and not(following-sibling::mn:p)">
-				<fo:block> <!-- margin-bottom="12pt" -->
-					<xsl:value-of select="$linebreak"/>
-				</fo:block>
-			</xsl:if>
+			<xsl:apply-templates/>
+			<xsl:apply-templates select="following-sibling::*[1][self::mn:variant-title][@type = 'sub']" mode="subtitle"/>
+		</xsl:element>
 
+		<xsl:if test="$element-name = 'fo:inline' and not(following-sibling::mn:p)">
+			<fo:block>
+				<xsl:value-of select="$linebreak"/>
+			</fo:block>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="mn:metanorma/mn:bibdata/mn:edition">
@@ -14118,6 +14072,65 @@
 		<!-- $namespace = 'jcgm' -->
 
 	</xsl:template> <!-- refine_p-style -->
+
+	<xsl:attribute-set name="title-style">
+		<!-- Note: font-size for level 1 title -->
+		<xsl:attribute name="font-size">13pt</xsl:attribute>
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+		<xsl:attribute name="space-before">36pt</xsl:attribute>
+		<xsl:attribute name="space-after">12pt</xsl:attribute>
+		<xsl:attribute name="keep-with-next">always</xsl:attribute>
+	</xsl:attribute-set> <!-- title-style -->
+
+	<xsl:template name="refine_title-style">
+		<xsl:param name="element-name"/>
+		<xsl:variable name="level">
+			<xsl:call-template name="getLevel"/>
+		</xsl:variable>
+
+		<xsl:if test="$level = 1">
+			<xsl:if test="parent::mn:annex">
+				<xsl:attribute name="space-before">0pt</xsl:attribute>
+			</xsl:if>
+		</xsl:if>
+		<xsl:if test="$level = 2">
+			<xsl:attribute name="font-size">11.5pt</xsl:attribute>
+			<xsl:attribute name="space-before">18pt</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="$level &gt;= 3">
+			<xsl:attribute name="font-size">10.5pt</xsl:attribute>
+			<xsl:attribute name="space-before">3pt</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="../@inline-header = 'true'  or @inline-header = 'true'">
+			<xsl:attribute name="font-size">10.5pt</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="following-sibling::*[1][self::mn:fmt-admitted]">
+			<xsl:attribute name="space-after">0pt</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="ancestor::mn:preface">
+			<xsl:attribute name="font-size">15pt</xsl:attribute>
+			<xsl:attribute name="space-after">12pt</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="parent::mn:annex">
+			<xsl:attribute name="font-size">15pt</xsl:attribute>
+			<xsl:attribute name="space-after">30pt</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="$element-name = 'fo:inline'">
+			<xsl:attribute name="padding-right">
+				<xsl:choose>
+					<xsl:when test="$level = 3">6.5mm</xsl:when>
+					<xsl:otherwise>4mm</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+		</xsl:if>
+		<xsl:if test="parent::mn:annex">
+			<xsl:attribute name="text-align">center</xsl:attribute>
+			<xsl:attribute name="line-height">130%</xsl:attribute>
+		</xsl:if>
+
+		<!-- $namespace = 'jcgm' -->
+		<xsl:attribute name="role">H<xsl:value-of select="$level"/></xsl:attribute>
+	</xsl:template> <!-- refine_title-style -->
 
 	<xsl:template name="processPrefaceSectionsDefault">
 		<xsl:for-each select="/*/mn:preface/*[not(self::mn:note or self::mn:admonition)]">
