@@ -1,5 +1,6 @@
 require "relaton-render"
 require_relative "parse"
+require_relative "citations"
 
 module Relaton
   module Render
