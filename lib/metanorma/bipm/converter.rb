@@ -82,13 +82,11 @@ module Metanorma
         committees.empty? and return
         xml.xpath("//bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']/name").each do |c|
           committees.include? c.text or
-            @log.add("Document Attributes", nil,
-                     "#{c.text} is not a recognised committee")
+            @log.add("BIPM_1", nil, params: [c.text])
         end
         xml.xpath("//bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']/identifier[not(@type = 'full')]").each do |c|
           committees.include? c.text or
-            @log.add("Document Attributes", nil,
-                     "#{c.text} is not a recognised committee")
+            @log.add("BIPM_1", nil, params: [c.text])
         end
       end
 
@@ -124,3 +122,5 @@ module Metanorma
     end
   end
 end
+
+require_relative "log"
