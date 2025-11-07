@@ -11975,10 +11975,10 @@
 	<!-- END Admonition -->
 	<!-- ================ -->
 
-	<xsl:attribute-set name="references-non-normative-title-style">
+	<xsl:attribute-set name="bibliography-title-style">
 	</xsl:attribute-set>
 
-	<xsl:template name="refine_references-non-normative-title-style">
+	<xsl:template name="refine_bibliography-title-style">
 	</xsl:template>
 
 	<!-- bibitem in Normative References (references/@normative="true") -->
@@ -14042,6 +14042,13 @@
 	<!-- ===================================== -->
 
 	<xsl:attribute-set name="annex-title-style">
+		<xsl:attribute name="keep-with-next">always</xsl:attribute>
+		<xsl:attribute name="font-size">15pt</xsl:attribute>
+		<xsl:attribute name="font-weight">bold</xsl:attribute>
+		<xsl:attribute name="text-align">center</xsl:attribute>
+		<xsl:attribute name="space-before">0pt</xsl:attribute>
+		<xsl:attribute name="space-after">30pt</xsl:attribute>
+		<xsl:attribute name="line-height">130%</xsl:attribute>
 	</xsl:attribute-set> <!-- annex-title-style -->
 
 	<xsl:template name="refine_annex-title-style">
@@ -14088,11 +14095,6 @@
 			<xsl:call-template name="getLevel"/>
 		</xsl:variable>
 
-		<xsl:if test="$level = 1">
-			<xsl:if test="parent::mn:annex">
-				<xsl:attribute name="space-before">0pt</xsl:attribute>
-			</xsl:if>
-		</xsl:if>
 		<xsl:if test="$level = 2">
 			<xsl:attribute name="font-size">11.5pt</xsl:attribute>
 			<xsl:attribute name="space-before">18pt</xsl:attribute>
@@ -14111,10 +14113,7 @@
 			<xsl:attribute name="font-size">15pt</xsl:attribute>
 			<xsl:attribute name="space-after">12pt</xsl:attribute>
 		</xsl:if>
-		<xsl:if test="parent::mn:annex">
-			<xsl:attribute name="font-size">15pt</xsl:attribute>
-			<xsl:attribute name="space-after">30pt</xsl:attribute>
-		</xsl:if>
+
 		<xsl:if test="$element-name = 'fo:inline'">
 			<xsl:attribute name="padding-right">
 				<xsl:choose>
@@ -14123,11 +14122,18 @@
 				</xsl:choose>
 			</xsl:attribute>
 		</xsl:if>
-		<xsl:if test="parent::mn:annex">
-			<xsl:attribute name="text-align">center</xsl:attribute>
-			<xsl:attribute name="line-height">130%</xsl:attribute>
+		<xsl:if test="parent::mn:annex"><!-- Annex title -->
+			<xsl:variable name="annex_title_styles">
+				<styles xsl:use-attribute-sets="annex-title-style"><xsl:call-template name="refine_annex-title-style"/></styles>
+			</xsl:variable>
+			<xsl:copy-of select="xalan:nodeset($annex_title_styles)/styles/@*"/>
 		</xsl:if>
-
+		<xsl:if test="parent::mn:references[not(@normative='true')]"><!-- Bibliography section title -->
+			<xsl:variable name="bibliography_title_styles">
+				<styles xsl:use-attribute-sets="bibliography-title-style"><xsl:call-template name="refine_bibliography-title-style"/></styles>
+			</xsl:variable>
+			<xsl:copy-of select="xalan:nodeset($bibliography_title_styles)/styles/@*"/>
+		</xsl:if>
 		<!-- $namespace = 'jcgm' -->
 		<xsl:attribute name="role">H<xsl:value-of select="$level"/></xsl:attribute>
 	</xsl:template> <!-- refine_title-style -->
