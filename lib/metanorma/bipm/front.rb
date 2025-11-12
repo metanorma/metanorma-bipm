@@ -1,17 +1,15 @@
 module Metanorma
   module Bipm
     class Converter < Metanorma::Generic::Converter
-      def contrib_committee_subdiv(xml, committee)
-        contributors_committees_filter_empty?(committee) and return
-        xml.subdivision **attr_code(type: committee[:subdivtype],
-                                    subtype: committee[:type]) do |o|
-          committee[:name] and o.name committee[:name]
-          committee[:name_en] and o.name committee[:name_en],
-                                         language: "en"
-          committee[:name_fr] and o.name committee[:name_fr],
-                                         language: "fr"
-          committee[:abbr] and o.abbreviation committee[:abbr]
-          committee[:ident] and o.identifier committee[:ident]
+      def contrib_committee_subdiv(xml, comm)
+        contributors_committees_filter_empty?(comm) and return
+        xml.subdivision **attr_code(type: comm[:subdivtype],
+                                    subtype: comm[:type]) do |o|
+          add_noko_elem(o, "name", comm[:name])
+          add_noko_elem(o, "name", comm[:name_en], language: "en")
+          add_noko_elem(o, "name", comm[:name_fr], language: "fr")
+          add_noko_elem(o, "abbreviation", comm[:abbr])
+          add_noko_elem(o, "identifier", comm[:ident])
         end
       end
 
@@ -68,11 +66,11 @@ module Metanorma
       def relation_supersedes_self1(xml, date, edition, draft)
         xml.relation type: "supersedes" do |r|
           r.bibitem do |b|
-            date and b.date(date,
-                            type: edition ? "published" : "circulated")
-            edition and b.edition edition
+            add_noko_elem(b, "date", date,
+                          type: edition ? "published" : "circulated")
+            add_noko_elem(b, "edition", edition)
             draft and b.version do |v|
-              v.draft draft
+              add_noko_elem(v, "draft", draft)
             end
           end
         end
@@ -85,7 +83,7 @@ module Metanorma
           role = "editor"
         end
         xml.role type: role.downcase do |d|
-          d << desc
+          d << desc # can be empty
         end
       end
 

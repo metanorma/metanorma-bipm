@@ -536,10 +536,7 @@ RSpec.describe IsoDoc do
                       .
                       <strong>8</strong>
                       ; (1); 32–36.
-                      <link target="https://doi.org/10.1088/0026-1394/8/1/006" id="_">https://doi.org/10.1088/0026-1394/8/1/006</link>
-                      <semx element="link" source="_">
-                         <fmt-link target="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</fmt-link>
-                      </semx>
+                      <fmt-link target="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</fmt-link>
                       .
                    </formattedref>
                    <fetched/>
@@ -1013,7 +1010,7 @@ RSpec.describe IsoDoc do
        <bibliography>
           <references id="_normative_references" obligation="informative" normative="false" hidden="true" displayorder="2">
              <title id="_">Bibliography</title>
-             <fmt-title id="_" depth="1">
+             <fmt-title depth="1" id="_">
                 <semx element="title" source="_">Bibliography</semx>
              </fmt-title>
              <bibitem id="a1" hidden="true">
@@ -1021,10 +1018,7 @@ RSpec.describe IsoDoc do
                    Bureau International des Poids et Mesures. (1889)
                    <em>1st meeting of the CGPM</em>
                    . CGPM Resolution 1.
-                   <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889" id="_">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>
-                   <semx element="link" source="_">
-                      <fmt-link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</fmt-link>
-                   </semx>
+                   <fmt-link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</fmt-link>
                    .
                 </formattedref>
                 <title format="text/plain" language="en" script="Latn">1st meeting of the CGPM</title>
@@ -1052,10 +1046,7 @@ RSpec.describe IsoDoc do
                    Bureau International des Poids et Mesures. (2016)
                    <em>105th meeting of the CIPM</em>
                    . CIPM Decision 105.
-                   <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016" id="_">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>
-                   <semx element="link" source="_">
-                      <fmt-link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</fmt-link>
-                   </semx>
+                   <fmt-link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</fmt-link>
                    .
                 </formattedref>
                 <title format="text/plain" language="en" script="Latn">105th meeting of the CIPM</title>
@@ -1144,18 +1135,20 @@ RSpec.describe IsoDoc do
        <bibliography>
           <references id="_normative_references" obligation="informative" normative="false" displayorder="2">
              <title id="_">Bibliography</title>
-             <fmt-title id="_" depth="1">
+             <fmt-title depth="1" id="_">
                 <semx element="title" source="_">Bibliography</semx>
              </fmt-title>
              <bibitem id="a1">
+                <biblio-tag>
+                   [1]
+                   <tab/>
+                   CGPM Resolution 1
+                </biblio-tag>
                 <formattedref>
                    Bureau International des Poids et Mesures. (1889)
                    <em>1st meeting of the CGPM</em>
                    . CGPM Resolution 1.
-                   <link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889" id="_">https://www.bipm.org/en/committees/cg/cgpm/1-1889</link>
-                   <semx element="link" source="_">
-                      <fmt-link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</fmt-link>
-                   </semx>
+                   <fmt-link target="https://www.bipm.org/en/committees/cg/cgpm/1-1889">https://www.bipm.org/en/committees/cg/cgpm/1-1889</fmt-link>
                    .
                 </formattedref>
                 <title format="text/plain" language="en" script="Latn">1st meeting of the CGPM</title>
@@ -1178,21 +1171,18 @@ RSpec.describe IsoDoc do
                 <language>en</language>
                 <language>fr</language>
                 <script>Latn</script>
-                <biblio-tag>
-                   [1]
-                   <tab/>
-                   CGPM Resolution 1
-                </biblio-tag>
              </bibitem>
              <bibitem id="a2">
+                <biblio-tag>
+                   [2]
+                   <tab/>
+                   CIPM Decision 105
+                </biblio-tag>
                 <formattedref>
                    Bureau International des Poids et Mesures. (2016)
                    <em>105th meeting of the CIPM</em>
                    . CIPM Decision 105.
-                   <link target="https://www.bipm.org/en/committees/ci/cipm/105-2016" id="_">https://www.bipm.org/en/committees/ci/cipm/105-2016</link>
-                   <semx element="link" source="_">
-                      <fmt-link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</fmt-link>
-                   </semx>
+                   <fmt-link target="https://www.bipm.org/en/committees/ci/cipm/105-2016">https://www.bipm.org/en/committees/ci/cipm/105-2016</fmt-link>
                    .
                 </formattedref>
                 <title format="text/plain" language="en" script="Latn">105th meeting of the CIPM</title>
@@ -1215,11 +1205,6 @@ RSpec.describe IsoDoc do
                 <language>en</language>
                 <language>fr</language>
                 <script>Latn</script>
-                <biblio-tag>
-                   [2]
-                   <tab/>
-                   CIPM Decision 105
-                </biblio-tag>
              </bibitem>
           </references>
        </bibliography>

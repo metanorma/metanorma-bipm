@@ -223,31 +223,31 @@ RSpec.describe Relaton::Render::Bipm do
   end
 
   it "renders software" do
-      input = <<~INPUT
-        <bibitem type="software">
-          <title>metanorma-standoc</title>
-          <uri>https://github.com/metanorma/metanorma-standoc</uri>
-          <date type="published"><on>2019-09-04</on></date>
-          <contributor>
-            <role type="author"/>
-            <organization>
-              <name>Ribose Inc.</name>
-            </organization>
-          </contributor>
-          <contributor>
-            <role type="distributor"/>
-            <organization>
-              <name>GitHub</name>
-            </organization>
-          </contributor>
-          <edition>1.3.1</edition>
-        </bibitem>
-      INPUT
-      output = <<~OUTPUT
-        <formattedref>Ribose Inc. (2019) <em>metanorma-standoc</em>. Version 1.3.1. <link target='https://github.com/metanorma/metanorma-standoc'>https://github.com/metanorma/metanorma-standoc</link>.</formattedref>
-      OUTPUT
-      expect(renderer.render(input))
-        .to be_equivalent_to output
+    input = <<~INPUT
+      <bibitem type="software">
+        <title>metanorma-standoc</title>
+        <uri>https://github.com/metanorma/metanorma-standoc</uri>
+        <date type="published"><on>2019-09-04</on></date>
+        <contributor>
+          <role type="author"/>
+          <organization>
+            <name>Ribose Inc.</name>
+          </organization>
+        </contributor>
+        <contributor>
+          <role type="distributor"/>
+          <organization>
+            <name>GitHub</name>
+          </organization>
+        </contributor>
+        <edition>1.3.1</edition>
+      </bibitem>
+    INPUT
+    output = <<~OUTPUT
+      <formattedref>Ribose Inc. (2019) <em>metanorma-standoc</em>. Version 1.3.1. <fmt-link target='https://github.com/metanorma/metanorma-standoc'>https://github.com/metanorma/metanorma-standoc</fmt-link>.</formattedref>
+    OUTPUT
+    expect(renderer.render(input))
+      .to be_equivalent_to output
   end
 
   it "renders standard" do
@@ -277,7 +277,7 @@ RSpec.describe Relaton::Render::Bipm do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Internet Engineering Task Force. (2005) <em>Intellectual Property Rights in IETF technology</em>. [Online]. RFC 3979. <link target='https://www.ietf.org/rfc/rfc3979.txt'>https://www.ietf.org/rfc/rfc3979.txt</link>. [viewed: June 18, 2012].</formattedref>
+      <formattedref>Internet Engineering Task Force. (2005) <em>Intellectual Property Rights in IETF technology</em>. [Online]. RFC 3979. <fmt-link target='https://www.ietf.org/rfc/rfc3979.txt'>https://www.ietf.org/rfc/rfc3979.txt</fmt-link>. [viewed: June 18, 2012].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
@@ -318,7 +318,7 @@ RSpec.describe Relaton::Render::Bipm do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Portes A and Rumbaut R G (2012) <em>Children of Immigrants. Longitudinal Sudy (CILS) 1991–2006 ICPSR20520</em>. Version 2 [dataset]. <link target='https://doi.org/10.3886/ICPSR20520.v2'>https://doi.org/10.3886/ICPSR20520.v2</link>. 501 GB. [viewed: May 6, 2018].</formattedref>
+      <formattedref>Portes A and Rumbaut R G (2012) <em>Children of Immigrants. Longitudinal Sudy (CILS) 1991–2006 ICPSR20520</em>. Version 2 [dataset]. <fmt-link target='https://doi.org/10.3886/ICPSR20520.v2'>https://doi.org/10.3886/ICPSR20520.v2</fmt-link>. 501 GB. [viewed: May 6, 2018].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
@@ -352,7 +352,7 @@ RSpec.describe Relaton::Render::Bipm do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Liberman M and Pullum G (2003–) <em>Language Log</em>. (n.p.: University of Pennsylvania). <link target='https://languagelog.ldc.upenn.edu/nll/'>https://languagelog.ldc.upenn.edu/nll/</link>. [viewed: September 3, 2019].</formattedref>
+      <formattedref>Liberman M and Pullum G (2003–) <em>Language Log</em>. (n.p.: University of Pennsylvania). <fmt-link target='https://languagelog.ldc.upenn.edu/nll/'>https://languagelog.ldc.upenn.edu/nll/</fmt-link>. [viewed: September 3, 2019].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
@@ -383,7 +383,7 @@ RSpec.describe Relaton::Render::Bipm do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. <link target='https://eprints.soton.ac.uk/338797/'>https://eprints.soton.ac.uk/338797/</link>.  [viewed: June 24, 2020].</formattedref>
+      <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. <fmt-link target='https://eprints.soton.ac.uk/338797/'>https://eprints.soton.ac.uk/338797/</fmt-link>. [viewed: June 24, 2020].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
@@ -414,7 +414,7 @@ RSpec.describe Relaton::Render::Bipm do
       </bibitem>
     INPUT
     output = <<~OUTPUT
-      <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. <link target='https://eprints.soton.ac.uk/338797/'>https://eprints.soton.ac.uk/338797/</link>.  [viewed: June 24, 2020].</formattedref>
+      <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. <fmt-link target='https://eprints.soton.ac.uk/338797/'>https://eprints.soton.ac.uk/338797/</fmt-link>. [viewed: June 24, 2020].</formattedref>
     OUTPUT
     expect(renderer.render(input))
       .to be_equivalent_to output
