@@ -1325,8 +1325,7 @@ RSpec.describe Metanorma::Bipm do
                 <clause id="_" obligation="informative">
                    <title id="_">Introduction Subsection</title>
                 </clause>
-                <clause id="_" obligation="informative" inline-header="true">
-       </clause>
+                <clause id="_" obligation="informative"/>
              </introduction>
              <clause id="_" obligation="informative">
                 <title id="_">Dedication</title>
@@ -1410,8 +1409,7 @@ RSpec.describe Metanorma::Bipm do
                 <clause id="_" obligation="normative">
                    <title id="_">Clause 4.2</title>
                 </clause>
-                <clause id="_" obligation="normative" inline-header="true">
-       </clause>
+                <clause id="_" obligation="normative"/>
              </clause>
              <terms id="_" obligation="normative">
                 <title id="_">Terms and Definitions</title>

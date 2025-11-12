@@ -72,6 +72,19 @@ module Metanorma
         p = parts["annexid"] and ret += ".#{p}"
         id.children = "#{id.text}#{ret}"
       end
+
+      def sections_variant_title_cleanup(xml)
+        path = section_containers.map { |x| "./ancestor::#{x}" }.join(" | ")
+        xml.xpath("//p[@variant_title]").each do |p|
+          p.name = "variant-title"
+          p.delete("variant_title")
+          p.xpath("(#{path})[last()]").each do |sect|
+            p.remove
+            (ins = sect.at("./title") and ins.next = p) or
+              sect.add_first_child(p)
+          end
+        end
+      end
     end
   end
 end
