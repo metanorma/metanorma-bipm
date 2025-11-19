@@ -2,6 +2,7 @@ require "metanorma/standoc/converter"
 require "metanorma/generic/converter"
 require_relative "front"
 require_relative "cleanup"
+require_relative "validate"
 
 module Metanorma
   module Bipm
@@ -75,19 +76,6 @@ module Metanorma
       def annex_attrs_preprocess(attrs, node)
         node.option?("unnumbered") and attrs[:unnumbered] = true
         super
-      end
-
-      def committee_validate(xml)
-        committees = Array(configuration&.committees) || return
-        committees.empty? and return
-        xml.xpath("//bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']/name").each do |c|
-          committees.include? c.text or
-            @log.add("BIPM_1", nil, params: [c.text])
-        end
-        xml.xpath("//bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']/identifier[not(@type = 'full')]").each do |c|
-          committees.include? c.text or
-            @log.add("BIPM_1", nil, params: [c.text])
-        end
       end
 
       def document(node)

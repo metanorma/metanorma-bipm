@@ -23,6 +23,7 @@ module IsoDoc
       def svg_load(directory, filename)
         dir = File.join(File.dirname(__FILE__), "html", directory)
         filename = File.join(dir, filename)
+        File.exist?(filename) or return
         file = File.read(filename) or return
         file.sub(
           '<?xml version="1.0" encoding="UTF-8"?>', ""
