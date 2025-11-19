@@ -155,6 +155,13 @@ RSpec.describe IsoDoc::Bipm do
               </organization>
             </owner>
           </copyright>
+          <depiction type="si-aspect">
+             <image src="" mimetype="image/svg+xml">
+                <svg xmlns="http://www.w3.org/2000/svg" id="uuid-9b612d48-83ef-48e4-af28-57e2d765c350" width="210mm" height="210mm" viewBox="0 0 595.28 595.28" preserveaspectratio="xMidYMin slice">
+                   <path d="M220.05,146.34l-49.23-102.23C97.33,80.93,42.09,148.75,22.22,230.43l110.58,25.24c12.12-47.7,44.41-87.33,87.25-109.34Z" style="fill:#bcbec0;"/>
+             </svg>
+             </image>
+          </depiction>
           <ext>
             <comment-period><from>N1</from><to>N2</to></comment-period>
             <si-aspect>A_e_deltanu</si-aspect>
@@ -223,8 +230,7 @@ RSpec.describe IsoDoc::Bipm do
         revdate: "2000-01-01",
         revdate_monthyear: "January 2000",
         script: "Latn",
-        si_aspect_index: si_aspect,
-        si_aspect_paths: si_aspect_paths,
+        si_aspect: "<image src=\"\" mimetype=\"image/svg+xml\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" id=\"uuid-9b612d48-83ef-48e4-af28-57e2d765c350\" width=\"210mm\" height=\"210mm\" viewBox=\"0 0 595.28 595.28\" preserveaspectratio=\"xMidYMin slice\">\n             <path d=\"M220.05,146.34l-49.23-102.23C97.33,80.93,42.09,148.75,22.22,230.43l110.58,25.24c12.12-47.7,44.41-87.33,87.25-109.34Z\" style=\"fill:#bcbec0;\"/>\n       </svg>\n       </image>",
         stable_untildate: "XXX",
         stage: "Mise en Pratique",
         stage_display: "En Vigeur",
@@ -385,8 +391,6 @@ RSpec.describe IsoDoc::Bipm do
         revdate: "2000-01-01",
         revdate_monthyear: "Janvier 2000",
         script: "Latn",
-        si_aspect_index: si_aspect,
-        si_aspect_paths: si_aspect_paths,
         stable_untildate: "XXX",
         stage: "Working Draft",
         stage_display: "Working Draft",
@@ -463,8 +467,6 @@ RSpec.describe IsoDoc::Bipm do
         revdate: "2000-01-01",
         revdate_monthyear: "January 2000",
         script: "Latn",
-        si_aspect_index: si_aspect,
-        si_aspect_paths: si_aspect_paths,
         stable_untildate: "XXX",
         stage: "Standard",
         stage_display: "Standard",

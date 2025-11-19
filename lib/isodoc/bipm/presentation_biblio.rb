@@ -6,6 +6,27 @@ module IsoDoc
         bibdata_id(bibdata)
         bibdata_dates(bibdata)
         bibdata_titles(bibdata)
+        bibdata_depictions(bibdata)
+      end
+
+      def bibdata_depictions(bibdata)
+        s = bibdata.at(ns("./ext/si-aspect"))&.text or return
+        ins = bibdata.at(ns("./ext"))
+        name = "si-circle-constants_#{s}.svg"
+        s.start_with?("units") and name = "si-circle-#{s}.svg"
+        file = svg_load("si-aspect", name) or return
+        ins.previous = <<~XML
+          <depiction type='si-aspect'><image src="" mimetype="image/svg+xml">#{file}</image></depiction>
+        XML
+      end
+
+      def svg_load(directory, filename)
+        dir = File.join(File.dirname(__FILE__), "html", directory)
+        filename = File.join(dir, filename)
+        file = File.read(filename) or return
+        file.sub(
+          '<?xml version="1.0" encoding="UTF-8"?>', ""
+        )
       end
 
       def bibdata_id(bibdata)

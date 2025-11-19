@@ -56,14 +56,10 @@
 
   <div class="coverpage-logo">
     <span>Bureau International de Poids et Mesures {{ docyear }}</span>
-    {% if metadata_extensions["si-aspect"] %}
+  {% if si_aspect  %}
     <br/>
-{% for item in si_aspect_index %}
-  {% if item == metadata_extensions["si-aspect"]  %}
-  <img src="{{ si_aspect_paths[forloop.index0] }}" width="310px" height="310px"/>
+    <div class="si-aspect">{{ si_aspect }}</div>
   {% endif %}
-{% endfor %}
-    {% endif %}
   </div>
 
   {% for item in metadata_extensions["editorialgroup"]["committee"]["variant_language"] %}
