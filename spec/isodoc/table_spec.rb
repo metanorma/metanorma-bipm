@@ -830,6 +830,7 @@ RSpec.describe IsoDoc::Bipm do
                             <semx element="identifier" source="_">JCGM</semx>
                          </tt>
                       </fmt-identifier>
+                      #{JCGM_LOGO}
                    </subdivision>
                 </organization>
              </contributor>

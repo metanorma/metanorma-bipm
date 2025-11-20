@@ -50,7 +50,7 @@ end
 def strip_guid(html)
   html
     .gsub(%r{ id="_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}+"}, ' id="_"')
-    .gsub(%r{ semx-id="[^"]*"}, '')
+    .gsub(%r{ semx-id="[^"]*"}, "")
     .gsub(%r{ original-id="_[^"]+"}, ' original-id="_"')
     .gsub(%r{ target="_[^"]+"}, ' target="_"')
     .gsub(%r{ source="_[^"]+"}, ' source="_"')
@@ -130,6 +130,61 @@ def boilerplate_filepath(lang)
   File.join(File.dirname(__FILE__), "..", "lib", "metanorma", "bipm", file)
 end
 
+BIPM_LOGO = <<~XML.freeze
+  <logo type="full">
+     <image src="" mimetype="image/svg+xml">
+     #{File.read('./lib/isodoc/bipm/html/logo/bipm-logo_full.svg').sub(
+       '<?xml version="1.0" encoding="UTF-8"?>', ''
+     ).sub('<svg ', '<svg preserveaspectratio="xMidYMin slice" ')}
+     </image>
+  </logo>
+  <logo type="small">
+     <image src="" mimetype="image/svg+xml">
+     #{File.read('./lib/isodoc/bipm/html/logo/bipm-logo_bipm.svg').sub(
+       '<?xml version="1.0" encoding="UTF-8"?>', ''
+     ).sub('<svg ', '<svg preserveaspectratio="xMidYMin slice" ')}
+     </image>
+  </logo>
+XML
+
+JCGM_LOGO = <<~XML.freeze
+     <logo>
+  <image src="" mimetype="image/svg+xml">
+  #{File.read('./lib/isodoc/bipm/html/logo/bipm-logo_jcgm.svg').sub(
+    '<?xml version="1.0" encoding="UTF-8"?>', ''
+  ).sub('<svg ', '<svg preserveaspectratio="xMidYMin slice" ')}
+  </image>
+  </logo>
+
+XML
+
+JCGM_XML = <<~XML.freeze
+  <contributor>
+    <role type='author'>
+      <description>committee</description>
+    </role>
+    <organization>
+       <name>Bureau International des Poids et Mesures</name>
+       <subdivision type='Committee'>
+          <name language='en'>Joint Committee for Guides in Metrology</name>
+         <identifier id="_">JCGM</identifier>
+         <fmt-identifier>
+            <tt>
+               <semx element="identifier" source="_">JCGM</semx>
+            </tt>
+         </fmt-identifier>
+         <identifier type="full" id="_">JCGM</identifier>
+         <fmt-identifier>
+            <tt>
+               <semx element="identifier" source="_">JCGM</semx>
+            </tt>
+         </fmt-identifier>
+         #{JCGM_LOGO}
+       </subdivision>
+    </organization>
+  </contributor>
+XML
+
 BLANK_HDR = <<~"HDR".freeze
     <?xml version="1.0" encoding="UTF-8"?>
     <metanorma xmlns="https://www.metanorma.org/ns/standoc" version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
@@ -207,19 +262,19 @@ HDR
 
 def jcgm_ext
   <<~JCGM
-          <contributor>
-          <role type='author'>
-             <description>committee</description>
-          </role>
-          <organization>
-             <name>Bureau International des Poids et Mesures</name>
-             <subdivision type='Committee'>
-                <name language='en'>Joint Committee for Guides in Metrology</name>
-                <identifier>JCGM</identifier>
-                <identifier type='full'>JCGM</identifier>
-             </subdivision>
-          </organization>
-      </contributor>
+        <contributor>
+        <role type='author'>
+           <description>committee</description>
+        </role>
+        <organization>
+           <name>Bureau International des Poids et Mesures</name>
+           <subdivision type='Committee'>
+              <name language='en'>Joint Committee for Guides in Metrology</name>
+              <identifier>JCGM</identifier>
+              <identifier type='full'>JCGM</identifier>
+           </subdivision>
+        </organization>
+    </contributor>
   JCGM
 end
 

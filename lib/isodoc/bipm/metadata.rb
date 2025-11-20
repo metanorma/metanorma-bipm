@@ -96,8 +96,12 @@ module IsoDoc
 
       def note(xml, out)
         super
-        i = xml.at(ns("//bibdata/depiction[@type = 'si-aspect']")) or return
-        set(:si_aspect, to_xml(i.children).strip)
+        { si_aspect: "//bibdata/depiction[@type = 'si-aspect']",
+          logo: "//bibdata/contributor[role/@type = 'publisher']/organization/logo[@type = 'full']",
+          logo_committee: "//bibdata/contributor[role/description = 'committee']/organization/subdivision/logo" }.each do |k, v|
+            i = xml.at(ns(v))
+            set(k, i ? to_xml(i.children).strip : nil)
+          end
       end
     end
   end

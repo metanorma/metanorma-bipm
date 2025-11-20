@@ -10,7 +10,6 @@ html_bodyfont: Times New Roman
 html_headerfont: Times New Roman
 html_normalfontsize: "15px"
 html_footnotefontsize: "0.9em"
-logo_path: lib/isodoc/bipm/html/logo.png
 i18nyaml: 
   en: lib/isodoc/bipm/i18n-en.yaml
   fr: lib/isodoc/bipm/i18n-fr.yaml

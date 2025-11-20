@@ -1,17 +1,27 @@
 module Metanorma
   module Bipm
     class Converter < Metanorma::Generic::Converter
+      COMMITTEE_XPATH =
+        "//bibdata/contributor[role/description = 'committee']/organization/" \
+        "subdivision[@type = 'Committee']".freeze
+
       def committee_validate(xml)
-        committees = Array(configuration&.committees) || return
+        committees = committees_list or return
+        xml.xpath("#{COMMITTEE_XPATH}/name").each do |c|
+          committees.include? c.text or
+            @log.add("BIPM_1", nil, params: [c.text])
+        end
+        xml.xpath("#{COMMITTEE_XPATH}/identifier[not(@type = 'full')]")
+          .each do |c|
+          committees.include? c.text or
+            @log.add("BIPM_1", nil, params: [c.text])
+        end
+      end
+
+      def committees_list
+        committees = Array(configuration&.committees) or return
         committees.empty? and return
-        xml.xpath("//bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']/name").each do |c|
-          committees.include? c.text or
-            @log.add("BIPM_1", nil, params: [c.text])
-        end
-        xml.xpath("//bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']/identifier[not(@type = 'full')]").each do |c|
-          committees.include? c.text or
-            @log.add("BIPM_1", nil, params: [c.text])
-        end
+        committees
       end
 
       def bibdata_validate(doc)
