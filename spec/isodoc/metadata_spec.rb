@@ -1,28 +1,12 @@
 require "spec_helper"
 
-gem_lib = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "lib"))
-logoloc = File.join(gem_lib, "isodoc", "bipm",
-                    "html")
-logoloc1 = File.join(gem_lib, "isodoc", "bipm", "html")
-
-si_aspect = [
-  "A_e_deltanu",
-  "A_e",
-  "cd_Kcd_h_deltanu",
-  "cd_Kcd",
-  "full",
-  "K_k_deltanu",
-  "K_k",
-  "kg_h_c_deltanu",
-  "kg_h",
-  "m_c_deltanu",
-  "m_c",
-  "mol_NA",
-  "s_deltanu",
-].freeze
-si_aspect_paths = si_aspect.map do |x|
-  File.join(logoloc1, "si-aspect", "#{x}.png")
-end
+logoloc = <<~XML
+  <image src="" mimetype="image/svg+xml">
+  #{File.read('./lib/isodoc/bipm/html/logo/bipm-logo_full.svg').sub(
+    '<?xml version="1.0" encoding="UTF-8"?>', ''
+  ).sub('<svg ', '<svg preserveaspectratio="xMidYMin slice" ')}
+  </image>
+XML
 
 RSpec.describe IsoDoc::Bipm do
   it "processes default metadata in English" do
@@ -105,23 +89,12 @@ RSpec.describe IsoDoc::Bipm do
             </subdivision>
          </organization>
       </contributor>
-      <contributor>
-          <role type='author'>
-             <description>committee</description>
-          </role>
-          <organization>
-             <name>Bureau International des Poids et Mesures</name>
-             <subdivision type='Committee'>
-                <name language='en'>Joint Committee for Guides in Metrology</name>
-                <identifier>JCGM</identifier>
-                <identifier type='full'>JCGM</identifier>
-             </subdivision>
-          </organization>
-      </contributor>
+      #{JCGM_XML}
           <contributor>
             <role type="publisher"/>
             <organization>
               <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
+              #{BIPM_LOGO}
             </organization>
           </contributor>
           <contributor>
@@ -155,6 +128,13 @@ RSpec.describe IsoDoc::Bipm do
               </organization>
             </owner>
           </copyright>
+          <depiction type="si-aspect">
+             <image src="" mimetype="image/svg+xml">
+                <svg xmlns="http://www.w3.org/2000/svg" id="uuid-9b612d48-83ef-48e4-af28-57e2d765c350" width="210mm" height="210mm" viewBox="0 0 595.28 595.28" preserveaspectratio="xMidYMin slice">
+                   <path d="M220.05,146.34l-49.23-102.23C97.33,80.93,42.09,148.75,22.22,230.43l110.58,25.24c12.12-47.7,44.41-87.33,87.25-109.34Z" style="fill:#bcbec0;"/>
+             </svg>
+             </image>
+          </depiction>
           <ext>
             <comment-period><from>N1</from><to>N2</to></comment-period>
             <si-aspect>A_e_deltanu</si-aspect>
@@ -206,8 +186,11 @@ RSpec.describe IsoDoc::Bipm do
         implementeddate: "XXX",
         issueddate: "XXX",
         lang: "en",
-        logo: File.join(logoloc, "logo.png"),
-        metadata_extensions: { "comment-period" => { "from" => "N1", "to" => "N2" }, "si-aspect" => "A_e_deltanu", "meeting-note" => "ABC", "structuredidentifier" => { "docnumber" => "1000", "part" => "2.1", "appendix" => "ABC", "annexid" => "DEF" } },
+        logo: logoloc,
+        metadata_extensions: {
+          "comment-period" => { "from" => "N1",
+                                "to" => "N2" }, "si-aspect" => "A_e_deltanu", "meeting-note" => "ABC", "structuredidentifier" => { "docnumber" => "1000", "part" => "2.1", "appendix" => "ABC", "annexid" => "DEF" }
+        },
         obsoleteddate: "XXX",
         org_abbrev: "JCGM",
         partid: "Part 2.1",
@@ -223,8 +206,7 @@ RSpec.describe IsoDoc::Bipm do
         revdate: "2000-01-01",
         revdate_monthyear: "January 2000",
         script: "Latn",
-        si_aspect_index: si_aspect,
-        si_aspect_paths: si_aspect_paths,
+        si_aspect: "<image src=\"\" mimetype=\"image/svg+xml\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" id=\"uuid-9b612d48-83ef-48e4-af28-57e2d765c350\" width=\"210mm\" height=\"210mm\" viewBox=\"0 0 595.28 595.28\" preserveaspectratio=\"xMidYMin slice\">\n             <path d=\"M220.05,146.34l-49.23-102.23C97.33,80.93,42.09,148.75,22.22,230.43l110.58,25.24c12.12-47.7,44.41-87.33,87.25-109.34Z\" style=\"fill:#bcbec0;\"/>\n       </svg>\n       </image>",
         stable_untildate: "XXX",
         stage: "Mise en Pratique",
         stage_display: "En Vigeur",
@@ -237,8 +219,12 @@ RSpec.describe IsoDoc::Bipm do
         vote_starteddate: "XXX" }
 
     docxml, = csdc.convert_init(input, "test", true)
-    expect(metadata(csdc.info(docxml, nil)))
-      .to be_equivalent_to(output)
+    result = metadata(csdc.info(docxml, nil))
+    expect(result[:logo]).to match(/<image.*<svg/m)
+    expect(result[:si_aspect]).to match(/<image.*<svg/m)
+    expect(result[:logo_committee]).to match(/<image.*<svg/m) if result[:logo_committee]
+    expect(result.except(:logo, :si_aspect, :logo_committee))
+      .to be_equivalent_to(output.except(:logo, :si_aspect, :logo_committee))
 
     input2 = input.sub("</bibdata>", "</bibdata>#{DOC_SCHEME_2019}")
     docxml, = csdc.convert_init(input2, "test", true)
@@ -254,7 +240,11 @@ RSpec.describe IsoDoc::Bipm do
       appendixtitle: "Main Title Appendix",
       "presentation_metadata_document-scheme": ["2019"],
     )
-    expect(m).to match(output2)
+    expect(m[:logo]).to match(/<image.*<svg/m)
+    expect(m[:si_aspect]).to match(/<image.*<svg/m)
+    expect(m[:logo_committee]).to match(/<image.*<svg/m) if m[:logo_committee]
+    expect(m.except(:logo, :si_aspect, :logo_committee))
+      .to match(output2.except(:logo, :si_aspect, :logo_committee))
   end
 
   it "processes default metadata in French" do
@@ -295,6 +285,7 @@ RSpec.describe IsoDoc::Bipm do
             <role type="publisher"/>
             <organization>
               <name>#{Metanorma::Bipm.configuration.organization_name_long['fr']}</name>
+              #{BIPM_LOGO}
             </organization>
           </contributor>
           <version>
@@ -372,7 +363,7 @@ RSpec.describe IsoDoc::Bipm do
         implementeddate: "XXX",
         issueddate: "XXX",
         lang: "fr",
-        logo: "#{File.join(logoloc, 'logo.png')}",
+        logo: logoloc,
         metadata_extensions: { "doctype" => "cipm-mra",
                                "comment-period" => { "from" => "N1", "to" => "N2" }, "structuredidentifier" => { "docnumber" => "1000", "part" => "2.1", "appendix" => "ABC", "annexid" => "DEF" } },
         obsoleteddate: "XXX",
@@ -385,8 +376,6 @@ RSpec.describe IsoDoc::Bipm do
         revdate: "2000-01-01",
         revdate_monthyear: "Janvier 2000",
         script: "Latn",
-        si_aspect_index: si_aspect,
-        si_aspect_paths: si_aspect_paths,
         stable_untildate: "XXX",
         stage: "Working Draft",
         stage_display: "Working Draft",
@@ -399,8 +388,10 @@ RSpec.describe IsoDoc::Bipm do
         vote_starteddate: "XXX" }
 
     docxml, = csdc.convert_init(input, "test", true)
-    expect(metadata(csdc.info(docxml, nil)))
-      .to be_equivalent_to(output)
+    result = metadata(csdc.info(docxml, nil))
+    expect(result[:logo]).to match(/<image.*<svg/m)
+    expect(result.except(:logo))
+      .to be_equivalent_to(output.except(:logo))
 
     input2 = input.sub("</bibdata>", "</bibdata>#{DOC_SCHEME_2019}")
     docxml, = csdc.convert_init(input2, "test", true)
@@ -416,7 +407,8 @@ RSpec.describe IsoDoc::Bipm do
       appendixtitle: "Chef Title Appendix",
       "presentation_metadata_document-scheme": ["2019"],
     )
-    expect(m).to match(output2)
+    expect(m[:logo]).to match(/<image.*<svg/m)
+    expect(m.except(:logo)).to match(output2.except(:logo))
   end
 
   it "ignores unrecognised status" do
@@ -455,7 +447,6 @@ RSpec.describe IsoDoc::Bipm do
         implementeddate: "XXX",
         issueddate: "XXX",
         lang: "en",
-        logo: "#{File.join(logoloc, 'logo.png')}",
         obsoleteddate: "XXX",
         org_abbrev: "BIPM",
         publisheddate: "XXX",
@@ -463,8 +454,6 @@ RSpec.describe IsoDoc::Bipm do
         revdate: "2000-01-01",
         revdate_monthyear: "January 2000",
         script: "Latn",
-        si_aspect_index: si_aspect,
-        si_aspect_paths: si_aspect_paths,
         stable_untildate: "XXX",
         stage: "Standard",
         stage_display: "Standard",

@@ -5,7 +5,11 @@ module Metanorma
         # rubocop:disable Naming/VariableNumber
         "BIPM_1": { category: "Document Attributes",
                     error: "%s is not a recognised committee",
-                    severity: 2 },
+                    severity: 1 },
+
+        "BIPM_2": { category: "Document Attributes",
+                    error: "%s is not a recognised si-aspect",
+                    severity: 1 },
       }.freeze
       # rubocop:enable Naming/VariableNumber
 

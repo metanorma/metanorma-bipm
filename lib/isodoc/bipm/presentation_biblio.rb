@@ -6,6 +6,59 @@ module IsoDoc
         bibdata_id(bibdata)
         bibdata_dates(bibdata)
         bibdata_titles(bibdata)
+        bibdata_depictions(bibdata)
+        bibdata_logos(bibdata)
+      end
+
+      def bibdata_logos(bibdata)
+        bibdata_logo_publisher(bibdata)
+        bibdata_logo_committee(bibdata)
+      end
+
+      def bibdata_logo_publisher(bibdata)
+        bipm = bibdata.at(ns("./contributor[role/@type = 'publisher']/" \
+          "organization[abbreviation = 'BIPM']")) or return
+        logo_full = svg_load("logo", "bipm-logo_full.svg")
+        logo_small = svg_load("logo", "bipm-logo_bipm.svg")
+        bipm << <<~XML
+          <logo type="full"><image src="" mimetype="image/svg+xml">#{logo_full}</image></logo>
+          <logo type="small"><image src="" mimetype="image/svg+xml">#{logo_small}</image></logo>
+        XML
+      end
+
+      def bibdata_logo_committee(bibdata)
+        bibdata.xpath(ns("./contributor[role/@type = 'author']" \
+          "[role/description = 'committee']/organization/" \
+          "subdivision[@type = 'Committee']")).each do |com|
+            com.xpath(ns("./identifier[not(@type = 'full')]")).each do |a|
+              filename = "bipm-logo_#{a.text.downcase}.svg"
+              file = svg_load("logo", filename) or next
+              com << <<~XML
+                <logo><image src="" mimetype="image/svg+xml">#{file}</image></logo>
+              XML
+            end
+          end
+      end
+
+      def bibdata_depictions(bibdata)
+        s = bibdata.at(ns("./ext/si-aspect"))&.text or return
+        ins = bibdata.at(ns("./ext"))
+        name = "si-circle-constants_#{s}.svg"
+        s.start_with?("units") and name = "si-circle-#{s}.svg"
+        file = svg_load("si-aspect", name) or return
+        ins.previous = <<~XML
+          <depiction type='si-aspect'><image src="" mimetype="image/svg+xml">#{file}</image></depiction>
+        XML
+      end
+
+      def svg_load(directory, filename)
+        dir = File.join(File.dirname(__FILE__), "html", directory)
+        filename = File.join(dir, filename)
+        File.exist?(filename) or return
+        file = File.read(filename) or return
+        file.sub(
+          '<?xml version="1.0" encoding="UTF-8"?>', ""
+        )
       end
 
       def bibdata_id(bibdata)

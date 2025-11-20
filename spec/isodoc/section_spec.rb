@@ -346,6 +346,7 @@ RSpec.describe IsoDoc::Bipm do
             <organization>
               <name>#{Metanorma::Bipm.configuration.organization_name_long['en']}</name>
               <abbreviation>BIPM</abbreviation>
+              #{BIPM_LOGO}
             </organization>
           </contributor>
           <edition language=''>2</edition><edition language='en'>second edition</edition>
@@ -619,6 +620,7 @@ RSpec.describe IsoDoc::Bipm do
                 <organization>
                    <name>Bureau International des Poids et Mesures</name>
                    <abbreviation>BIPM</abbreviation>
+                   #{BIPM_LOGO}
                 </organization>
              </contributor>
              <edition language="">2</edition>
@@ -1076,29 +1078,7 @@ RSpec.describe IsoDoc::Bipm do
     presxml = <<~INPUT
        <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <bibdata>
-          <contributor>
-          <role type='author'>
-             <description>committee</description>
-          </role>
-          <organization>
-             <name>Bureau International des Poids et Mesures</name>
-             <subdivision type='Committee'>
-                <name language='en'>Joint Committee for Guides in Metrology</name>
-                               <identifier id="_">JCGM</identifier>
-               <fmt-identifier>
-                  <tt>
-                     <semx element="identifier" source="_">JCGM</semx>
-                  </tt>
-               </fmt-identifier>
-               <identifier type="full" id="_">JCGM</identifier>
-               <fmt-identifier>
-                  <tt>
-                     <semx element="identifier" source="_">JCGM</semx>
-                  </tt>
-               </fmt-identifier>
-             </subdivision>
-          </organization>
-      </contributor>
+          #{JCGM_XML}
           </bibdata>
           <preface>
              <clause type="toc" id="_" displayorder="1">

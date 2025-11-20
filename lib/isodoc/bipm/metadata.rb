@@ -11,17 +11,6 @@ module IsoDoc
                      K_k kg_h_c_deltanu kg_h m_c_deltanu m_c mol_NA
                      s_deltanu).freeze
 
-      def initialize(lang, script, locale, labels)
-        super
-        here = File.join(File.dirname(__FILE__), "html", "si-aspect")
-        si_paths = []
-        SI_ASPECT.each do |s|
-          si_paths << File.expand_path(File.join(here, "#{s}.png"))
-        end
-        set(:si_aspect_index, SI_ASPECT)
-        set(:si_aspect_paths, si_paths)
-      end
-
       def title1(xml, type, lang)
         xml.at(ns("//bibdata/title[@type='title-#{type}']" \
           "[@language='#{lang}']"))
@@ -103,6 +92,16 @@ module IsoDoc
         n = t.at(ns("./name[@language = '#{@lang}']")) ||
           t.at(ns("./name[not(@language)]"))
         n and set(:tc, n.text)
+      end
+
+      def images(xml, out)
+        super
+        { si_aspect: "//bibdata/depiction[@type = 'si-aspect']",
+          logo: "//bibdata/contributor[role/@type = 'publisher']/organization/logo[@type = 'full']",
+          logo_committee: "//bibdata/contributor[role/description = 'committee']/organization/subdivision/logo" }.each do |k, v|
+            i = xml.at(ns(v))
+            set(k, i ? to_xml(i.children).strip : nil)
+          end
       end
     end
   end

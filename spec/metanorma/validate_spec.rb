@@ -54,6 +54,27 @@ RSpec.describe Metanorma::Bipm do
       .not_to include("Comité consultatif des unités is not a recognised committee")
   end
 
+  it "validates si-aspec" do
+    mock_pdf
+    input = <<~INPUT
+      = A
+      X
+      :docfile: test.adoc
+      :si-aspect: hahaha
+      :committee-acronym: TC
+
+    INPUT
+    Asciidoctor.convert(input, backend: :bipm, header_footer: true)
+    expect(File.exist?("test.err.html")).to be true
+    expect(File.read("test.err.html"))
+      .to include("hahaha is not a recognised si-aspect")
+
+    Asciidoctor.convert(input.sub("hahaha", "units_A"),
+                        backend: :bipm, header_footer: true)
+    expect(File.read("test.err.html"))
+      .not_to include("units_A is not a recognised si-aspect")
+  end
+
   it "validates document against Metanorma XML schema" do
     Asciidoctor.convert(<<~"INPUT", *OPTIONS)
       = A
