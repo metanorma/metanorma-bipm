@@ -94,7 +94,7 @@ module IsoDoc
         n and set(:tc, n.text)
       end
 
-      def note(xml, out)
+      def images(xml, out)
         super
         { si_aspect: "//bibdata/depiction[@type = 'si-aspect']",
           logo: "//bibdata/contributor[role/@type = 'publisher']/organization/logo[@type = 'full']",
