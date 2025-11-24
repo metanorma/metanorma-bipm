@@ -250,7 +250,7 @@ RSpec.describe IsoDoc do
                    </semx>
                    <eref bibitemid="ref12" id="_"/>
                    <semx element="eref" source="_">
-                      <fmt-xref target="ref12">Citn</fmt-xref>
+                      <fmt-xref target="ref12">[Citn]</fmt-xref>
                    </semx>
                    <eref bibitemid="zip_ffs" id="_"/>
                    <semx element="eref" source="_">
@@ -510,7 +510,7 @@ RSpec.describe IsoDoc do
                 </bibitem>
                 <bibitem id="ref12">
                    <biblio-tag>
-                      Citn
+                      [Citn]
                       <tab/>
                       IETF RFC 20
                    </biblio-tag>
@@ -650,7 +650,7 @@ RSpec.describe IsoDoc do
                    <a href="#ISO16634">ISO 16634:--</a>
                    <a href="#ref1">ICC/167</a>
                    <a href="#ref10">[9]</a>
-                   <a href="#ref12">Citn</a>
+                   <a href="#ref12">[Citn]</a>
                    <a href="#zip_ffs">[5]</a>
                    <a href="#metrologia">[11]</a>
                 </p>
@@ -732,7 +732,7 @@ RSpec.describe IsoDoc do
                    . IETF RFC 10.
                 </p>
                 <p id="ref12" class="Biblio">
-                   Citn  IETF RFC 20 CitationWorks. 2019.
+                   [Citn]  IETF RFC 20 CitationWorks. 2019.
                    <i>How to cite a reference</i>
                    .
                 </p>
