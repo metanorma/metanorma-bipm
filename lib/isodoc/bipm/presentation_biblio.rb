@@ -121,16 +121,15 @@ module IsoDoc
         end
       end
 
-      def norm_ref_entry_code(_ordinal, identifiers, _ids, _standard, datefn,
-_bib)
-        ret = identifiers[0] || identifiers[1]
-        ret += " #{identifiers[1]}" if identifiers[0] && identifiers[1]
+      def norm_ref_entry_code(_ordinal, identifiers, _standard, datefn, _bib)
+        ret = unbracket1(identifiers[:metanorma]) || identifiers[:sdo]
+        ret += " #{identifiers[:sdo]}" if identifiers[:metanorma] && identifiers[:sdo]
         "#{ret}#{datefn} "
       end
 
-      def biblio_ref_entry_code(ordinal, ids, _id, _standard, datefn, _bib)
+      def biblio_ref_entry_code(ordinal, ids, _standard, datefn, _bib)
         # standard and id = nil
-        ret = ids[:ordinal] || ids[:metanorma] || "[#{ordinal}]"
+        ret = ids[:ordinal] || ids[:content] || ids[:metanorma] || "[#{ordinal}]"
         if ids[:sdo]
           ret = prefix_bracketed_ref(ret)
           ret += "#{ids[:sdo]}#{datefn} "

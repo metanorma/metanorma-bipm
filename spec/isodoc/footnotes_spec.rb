@@ -561,7 +561,7 @@ RSpec.describe IsoDoc::Bipm do
                          <name>International Organization for Standardization</name>
                       </organization>
                    </contributor>
-                   <biblio-tag> </biblio-tag>
+                   <biblio-tag>ISO 712 </biblio-tag>
                 </bibitem>
                 <fmt-footnote-container>
                    <fmt-fn-body id="_32" target="_" reference="1">
@@ -706,6 +706,7 @@ RSpec.describe IsoDoc::Bipm do
                 <h1>2.  Normative References</h1>
                 <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                 <p id="ISO712" class="NormRef">
+                  ISO 712
                    <i>
                       Cereals and cereal products
                       <a class="FootnoteRef" href="#fn:_32">
@@ -1048,7 +1049,7 @@ RSpec.describe IsoDoc::Bipm do
                          <name>International Organization for Standardization</name>
                       </organization>
                    </contributor>
-                   <biblio-tag> </biblio-tag>
+                   <biblio-tag>ISO 712  </biblio-tag>
                 </bibitem>
              </references>
           </sections>
@@ -1230,6 +1231,7 @@ RSpec.describe IsoDoc::Bipm do
                 <h1>1.  Normative References</h1>
                 <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                 <p id="ISO712" class="NormRef">
+                ISO 712
                    <i>
                       Cereals and cereal products
                       <a class="FootnoteRef" href="#fn:_65">
