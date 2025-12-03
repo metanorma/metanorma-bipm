@@ -11,6 +11,11 @@ require_relative "presentation_footnotes"
 module IsoDoc
   module Bipm
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
+       def initialize(options)
+        super
+        @libdir = File.dirname(__FILE__)
+      end
+
       def convert1(docxml, filename, dir)
         @jcgm = docxml.at(ns(<<~XPATH))&.text == "JCGM"
           //bibdata/contributor[role/description = 'committee']/organization/subdivision[@type = 'Committee']/identifier[not(@type = 'full')]
