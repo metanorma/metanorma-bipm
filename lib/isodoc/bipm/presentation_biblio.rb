@@ -51,16 +51,6 @@ module IsoDoc
         XML
       end
 
-      def svg_load(directory, filename)
-        dir = File.join(File.dirname(__FILE__), "html", directory)
-        filename = File.join(dir, filename)
-        File.exist?(filename) or return
-        file = File.read(filename) or return
-        file.sub(
-          '<?xml version="1.0" encoding="UTF-8"?>', ""
-        )
-      end
-
       def bibdata_id(bibdata)
         id = bibdata.at(ns("./docidentifier[@type = 'BIPM-parent-document']")) or
           return

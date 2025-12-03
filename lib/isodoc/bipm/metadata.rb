@@ -72,19 +72,7 @@ module IsoDoc
 
       def author(xml, _out)
         super
-        authorizer(xml)
         committee(xml)
-      end
-
-      def authorizer(xml)
-        ret = xml.xpath(ns("//bibdata/contributor[xmlns:role/@type = " \
-                           "'authorizer']/organization"))
-          .each_with_object([]) do |org, m|
-          name = org.at(ns("./name[@language = '#{@lang}']")) ||
-            org.at(ns("./name"))
-          m << name.text
-        end
-        ret.empty? or set(:authorizer, ret)
       end
 
       def committee(xml)
