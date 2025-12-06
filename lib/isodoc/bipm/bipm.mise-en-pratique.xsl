@@ -3726,13 +3726,6 @@
 			</fo:block-container>
 	</xsl:template>
 
-	<xsl:variable name="svg_empty">
-		<!-- empty -->
-		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" viewBox="0 0 2 2">
-			<rect x="0" y="0" width="2" height="2" style="fill:#fff;fill-opacity:0;stroke:none"/>
-		</svg>
-	</xsl:variable>
-
 	<xsl:template name="splitTitle">
 		<xsl:param name="pText" select="."/>
 		<xsl:param name="sep" select="','"/>
@@ -18073,5 +18066,12 @@
 	<!-- ============================================= -->
 	<!-- END: mode="set_table_role_skip" -->
 	<!-- ============================================= -->
+
+	<xsl:variable name="svg_empty">
+		<!-- empty -->
+		<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" viewBox="0 0 2 2">
+			<rect x="0" y="0" width="2" height="2" style="fill:#fff;fill-opacity:0;stroke:none"/>
+		</svg>
+	</xsl:variable>
 
 </xsl:stylesheet>
