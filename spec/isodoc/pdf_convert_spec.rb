@@ -21,7 +21,7 @@ RSpec.describe IsoDoc::Bipm do
           </docref>
         </manifest>
         <doc-container id="doc000000000">
-          <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" type="presentation" version="0.0.5">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="presentation" version="0.0.5" flavor="bipm">
             <bibdata type="standard">
               <title language="en" format="text/plain" type="main">The International Temperature Scale of 1990 (ITS-90)</title>
               <title language="en" format="text/plain" type="cover">The International System of Units (SI)</title>
@@ -37,10 +37,10 @@ RSpec.describe IsoDoc::Bipm do
                 <title depth="1">Abstract</title>
               </clause>
             </preface>
-          </bipm-standard>
+          </metanorma>
         </doc-container>
         <doc-container id="doc000000001">
-          <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" type="presentation" version="0.0.5">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="presentation" version="0.0.5" flavor="bipm">
             <bibdata type="standard">
               <title language="en" format="text/plain" type="main">The International Temperature Scale of 1990 (ITS-90)</title>
               <title language="en" format="text/plain" type="cover">The International System of Units (SI)</title>
@@ -56,7 +56,7 @@ RSpec.describe IsoDoc::Bipm do
                 <title depth="1">Abstract</title>
               </clause>
             </preface>
-          </bipm-standard>
+          </metanorma>
         </doc-container>
       </metanorma-collection>
     INPUT
@@ -85,7 +85,7 @@ RSpec.describe IsoDoc::Bipm do
           </docref>
         </manifest>
         <doc-container id="doc000000000">
-          <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" type="presentation" version="0.0.5">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="presentation" version="0.0.5" flavor="bipm">
             <bibdata type="standard">
               <title language="en" format="text/plain" type="main">The International Temperature Scale of 1990 (ITS-90)</title>
               <title language="en" format="text/plain" type="cover">The International System of Units (SI)</title>
@@ -101,10 +101,10 @@ RSpec.describe IsoDoc::Bipm do
                 <title depth="1">Abstract</title>
               </clause>
             </preface>
-          </bipm-standard>
+          </metanorma>
         </doc-container>
         <doc-container id="doc000000001">
-          <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" type="presentation" version="0.0.5">
+          <metanorma xmlns="https://www.metanorma.org/ns/standoc" type="presentation" version="0.0.5" flavor="bipm">
             <bibdata type="standard">
               <title language="en" format="text/plain" type="main">The International Temperature Scale of 1990 (ITS-90)</title>
               <title language="en" format="text/plain" type="cover">The International System of Units (SI)</title>
@@ -120,7 +120,7 @@ RSpec.describe IsoDoc::Bipm do
                 <title depth="1">Abstract</title>
               </clause>
             </preface>
-          </bipm-standard>
+          </metanorma>
         </doc-container>
       </metanorma-collection>
     INPUT

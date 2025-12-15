@@ -23,7 +23,7 @@ module IsoDoc
 
       def pdf_options(docxml, filename)
         n = configuration.document_namespace
-        q = "//m:bipm-standard/m:bibdata/m:language[@current = 'true']"
+        q = "//m:metanorma/m:bibdata/m:language[@current = 'true']"
         if docxml.root.name == "metanorma-collection" &&
             docxml.at("#{q}[. = 'fr']", "m" => n) &&
             docxml.at("#{q}[. = 'en']", "m" => n)
