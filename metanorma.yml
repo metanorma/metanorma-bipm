@@ -3,7 +3,7 @@ organization_name_short: BIPM
 organization_name_long: 
   fr: Bureau international des poids et mesures
   en: Bureau International des Poids et Mesures
-document_namespace: https://www.metanorma.org/ns/bipm
+document_namespace: https://www.metanorma.org/ns/standoc
 xml_root_tag: 'bipm-standard'
 docid_template: "{{ org_abbrev }} {{ docnumeric }}"
 html_bodyfont: Times New Roman

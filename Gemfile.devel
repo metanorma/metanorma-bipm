@@ -5,6 +5,6 @@ gem "metanorma-standoc", git: "https://github.com/metanorma/metanorma-standoc", 
 gem "metanorma-iso", git: "https://github.com/metanorma/metanorma-iso", branch: "main"
 gem "metanorma-generic", git: "https://github.com/metanorma/metanorma-generic", branch: "main"
 gem "metanorma", git: "https://github.com/metanorma/metanorma", branch: "main"
-gem "mn2pdf", "= 2.32"
+gem "mn2pdf"
 
 
