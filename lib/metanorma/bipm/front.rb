@@ -93,6 +93,7 @@ module Metanorma
           %w(cover appendix annex part subpart provenance).each do |w|
             typed_title(node, xml, lang, w)
           end
+          title_nums(node, xml, lang)
         end
       end
 
@@ -100,6 +101,45 @@ module Metanorma
         title = node.attr("title-#{type}-#{lang}") or return
         add_title_xml(xml, title, lang, "title-#{type}")
       end
+
+      def title_nums(node, xml, lang)
+        @i18n_cache ||= {}
+        @i18n_cache[lang] ||= ::IsoDoc::Bipm::I18n.new(lang, ::Metanorma::Utils::default_script(lang))
+        ret = title_nums_prep(node)
+        ret.each do |k, v|
+          title_num_prefix(k, v, xml, lang)
+        end
+      end
+
+      def title_nums_prep(node)
+        part, subpart = node.attr("partnumber")&.split("-")
+        { part:, subpart:, appendix: node.attr("appendix-id"),
+          annex: node.attr("annex-id") }
+      end
+
+      def title_num_prefix(key, value, xml, lang)
+        lookup = if @document_scheme == "2019"
+                   { part: "level4_ancillary",
+                     subpart: "level5_ancillary",
+                     appendix: "level3_ancillary_2019",
+                     annex: "level2_ancillary_2019" }
+                 else
+                   { part: "level4_ancillary",
+                     subpart: "level5_ancillary",
+                     appendix: "level3_ancillary",
+                     annex: "level2_ancillary" }
+                 end
+        prefix = @i18n_cache[lang].get.dig(lookup[key]) or return
+        value && !value.empty? or return
+        title = "#{prefix}&#xa0;#{value}"
+        add_title_xml(xml, title, lang, "title-#{key}-prefix")
+      end
+
+
+
+
+
+
     end
   end
 end
