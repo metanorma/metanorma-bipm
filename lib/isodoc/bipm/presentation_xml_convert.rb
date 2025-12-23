@@ -11,7 +11,7 @@ require_relative "presentation_footnotes"
 module IsoDoc
   module Bipm
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
-       def initialize(options)
+      def initialize(options)
         super
         @libdir = File.dirname(__FILE__)
       end

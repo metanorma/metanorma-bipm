@@ -92,6 +92,9 @@ RSpec.describe Metanorma::Bipm do
             <title language="en" type="title-part">Part</title>
             <title language="en" type="title-subpart">Subpart</title>
             <title language="en" type="title-provenance">Provenance-en</title>
+            <title language="en" type="title-part-prefix">Part 2</title>
+            <title language="en" type="title-appendix-prefix">Appendix ABC</title>
+            <title language="en" type="title-annex-prefix">Annex DEF</title>
             <title language="fr" type="title-main">Chef Title</title>
             <title language="fr" type="title-cover">Chef Title (SI)</title>
             <title language="fr" type="title-appendix">Chef Title (SI)</title>
@@ -99,6 +102,9 @@ RSpec.describe Metanorma::Bipm do
             <title language="fr" type="title-part">Partie</title>
             <title language="fr" type="title-subpart">Subpartie</title>
             <title language="fr" type="title-provenance">Provenance-fr</title>
+            <title language="fr" type="title-part-prefix">Partie 2</title>
+            <title language="fr" type="title-appendix-prefix">Appendice ABC</title>
+            <title language="fr" type="title-annex-prefix">Annexe DEF</title>
             <docidentifier primary="true" type="BIPM">BIPM 1000-2 AABC.DEF</docidentifier>
             <docidentifier type="BIPM-parent-document">BIPM 1000</docidentifier>
             <docnumber>1000</docnumber>
@@ -321,6 +327,16 @@ RSpec.describe Metanorma::Bipm do
 
     expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
       .to be_equivalent_to output
+
+    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input
+      .sub(":language: en", ":language: en\n:document-scheme: 2019"),
+    *OPTIONS))))
+      .to be_equivalent_to output
+      .gsub("Appendix ABC", "Annex ABC")
+      .gsub("Appendice ABC", "Annexe ABC")
+      .gsub("Annex DEF", "Appendix DEF")
+      .sub("<presentation-metadata>",
+           "<presentation-metadata><name>document-scheme</name><value>2019</value></presentation-metadata><presentation-metadata>")
   end
 
   it "processes default metadata in French, no components to id" do
@@ -533,8 +549,12 @@ RSpec.describe Metanorma::Bipm do
          <bibdata type="standard">
            <title language="en" type="title-main">Main Title</title>
            <title language="en" type="title-cover">Main Title (SI)</title>
+           <title language="en" type="title-part-prefix">Part 2.1</title>
+           <title language="en" type="title-appendix-prefix">Appendix ABC</title>
            <title language="fr" type="title-main">Chef Title</title>
            <title language="fr" type="title-cover">Chef Title (SI)</title>
+           <title language="fr" type="title-part-prefix">Partie 2.1</title>
+           <title language="fr" type="title-appendix-prefix">Appendice ABC</title>
            <docidentifier primary="true" type="BIPM">BIPM 1000-2.1 AABC</docidentifier>
           <docidentifier type="BIPM-parent-document">BIPM 1000</docidentifier>
            <docnumber>1000</docnumber>
@@ -719,8 +739,12 @@ RSpec.describe Metanorma::Bipm do
         <bibdata type='standard'>
           <title language='en' type='title-main'>Main Title</title>
           <title language='en' type='title-cover'>Main Title (SI)</title>
+          <title language="en" type="title-part-prefix">Part 2.1</title>
+          <title language="en" type="title-appendix-prefix">Appendix ABC</title>
           <title language='fr' type='title-main'>Chef Title</title>
           <title language='fr' type='title-cover'>Chef Title (SI)</title>
+          <title language="fr" type="title-part-prefix">Partie 2.1</title>
+          <title language="fr" type="title-appendix-prefix">Appendice ABC</title>
           <docidentifier primary="true" type="BIPM">JCGM 1000-2.1 AABC</docidentifier>
           <docidentifier type="BIPM-parent-document">JCGM 1000</docidentifier>
           <docnumber>1000</docnumber>
