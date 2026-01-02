@@ -609,7 +609,7 @@ RSpec.describe IsoDoc::Bipm do
       .to be_equivalent_to output
 
     input = input.sub("</bibdata>", <<~XML)
-      </bibdata><metanorma-extension><presentation-metadata><name>document-scheme</name><value>2019</value></presentation-metadata></metanorma-extension>
+      </bibdata><metanorma-extension><presentation-metadata><document-scheme>2019</document-scheme></presentation-metadata></metanorma-extension>
     XML
 
     output = Canon.format_xml(<<~OUTPUT)
@@ -631,8 +631,7 @@ RSpec.describe IsoDoc::Bipm do
              </bibdata>
                 <metanorma-extension>
          <presentation-metadata>
-            <name>document-scheme</name>
-            <value>2019</value>
+            <document-scheme>2019</document-scheme>
          </presentation-metadata>
       </metanorma-extension>
           </bipm-standard>
