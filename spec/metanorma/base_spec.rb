@@ -304,20 +304,10 @@ RSpec.describe Metanorma::Bipm do
          <stage-published>false</stage-published>
       </semantic-metadata>
              <presentation-metadata>
-               <name>TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-             <presentation-metadata>
-               <name>HTML TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-             <presentation-metadata>
-               <name>DOC TOC Heading Levels</name>
-               <value>2</value>
-             </presentation-metadata>
-             <presentation-metadata>
-               <name>PDF TOC Heading Levels</name>
-               <value>2</value>
+         <toc-heading-levels>2</toc-heading-levels>
+         <html-toc-heading-levels>2</html-toc-heading-levels>
+         <doc-toc-heading-levels>2</doc-toc-heading-levels>
+         <pdf-toc-heading-levels>2</pdf-toc-heading-levels>
              </presentation-metadata>
            </metanorma-extension>
           #{boilerplate('en').gsub(/#{Time.now.year}/, '2001')}
@@ -336,7 +326,7 @@ RSpec.describe Metanorma::Bipm do
       .gsub("Appendice ABC", "Annexe ABC")
       .gsub("Annex DEF", "Appendix DEF")
       .sub("<presentation-metadata>",
-           "<presentation-metadata><name>document-scheme</name><value>2019</value></presentation-metadata><presentation-metadata>")
+           "<presentation-metadata><document-scheme>2019</document-scheme>")
   end
 
   it "processes default metadata in French, no components to id" do
@@ -476,20 +466,10 @@ RSpec.describe Metanorma::Bipm do
          <stage-published>false</stage-published>
       </semantic-metadata>
            <presentation-metadata>
-             <name>TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>HTML TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>DOC TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>PDF TOC Heading Levels</name>
-             <value>2</value>
+         <toc-heading-levels>2</toc-heading-levels>
+         <html-toc-heading-levels>2</html-toc-heading-levels>
+         <doc-toc-heading-levels>2</doc-toc-heading-levels>
+         <pdf-toc-heading-levels>2</pdf-toc-heading-levels>
            </presentation-metadata>
          </metanorma-extension>
         #{boilerplate('fr').gsub(/#{Time.now.year}/, '2001')}
@@ -647,20 +627,10 @@ RSpec.describe Metanorma::Bipm do
          <stage-published>false</stage-published>
       </semantic-metadata>
            <presentation-metadata>
-             <name>TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>HTML TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>DOC TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>PDF TOC Heading Levels</name>
-             <value>2</value>
+         <toc-heading-levels>2</toc-heading-levels>
+         <html-toc-heading-levels>2</html-toc-heading-levels>
+         <doc-toc-heading-levels>2</doc-toc-heading-levels>
+         <pdf-toc-heading-levels>2</pdf-toc-heading-levels>
            </presentation-metadata>
          </metanorma-extension>
          <boilerplate>
@@ -837,20 +807,10 @@ RSpec.describe Metanorma::Bipm do
          <stage-published>false</stage-published>
       </semantic-metadata>
            <presentation-metadata>
-             <name>TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>HTML TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>DOC TOC Heading Levels</name>
-             <value>2</value>
-           </presentation-metadata>
-           <presentation-metadata>
-             <name>PDF TOC Heading Levels</name>
-             <value>2</value>
+         <toc-heading-levels>2</toc-heading-levels>
+         <html-toc-heading-levels>2</html-toc-heading-levels>
+         <doc-toc-heading-levels>2</doc-toc-heading-levels>
+         <pdf-toc-heading-levels>2</pdf-toc-heading-levels>
            </presentation-metadata>
          </metanorma-extension>
         #{boilerplate('jcgm').gsub(/#{Time.now.year}/, '2001')}

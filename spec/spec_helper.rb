@@ -34,7 +34,7 @@ end
 OPTIONS = [backend: :bipm, header_footer: true].freeze
 
 DOC_SCHEME_2019 = <<~XML.freeze
-  <metanorma-extension><presentation-metadata><name>document-scheme</name><value>2019</value></presentation-metadata></metanorma-extension>
+  <metanorma-extension><presentation-metadata><document-scheme>2019</document-schem></presentation-metadata></metanorma-extension>
 XML
 
 def presxml_options
@@ -228,20 +228,10 @@ BLANK_HDR = <<~"HDR".freeze
          <stage-published>true</stage-published>
       </semantic-metadata>
      <presentation-metadata>
-              <name>TOC Heading Levels</name>
-              <value>2</value>
-            </presentation-metadata>
-            <presentation-metadata>
-              <name>HTML TOC Heading Levels</name>
-              <value>2</value>
-            </presentation-metadata>
-            <presentation-metadata>
-              <name>DOC TOC Heading Levels</name>
-              <value>2</value>
-            </presentation-metadata>
-            <presentation-metadata>
-              <name>PDF TOC Heading Levels</name>
-              <value>2</value>
+        <toc-heading-levels>2</toc-heading-levels>
+        <html-toc-heading-levels>2</html-toc-heading-levels>
+        <doc-toc-heading-levels>2</doc-toc-heading-levels>
+        <pdf-toc-heading-levels>2</pdf-toc-heading-levels>
             </presentation-metadata>
           </metanorma-extension>
   #{boilerplate('en')}
