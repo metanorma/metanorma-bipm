@@ -34,7 +34,7 @@ end
 OPTIONS = [backend: :bipm, header_footer: true].freeze
 
 DOC_SCHEME_2019 = <<~XML.freeze
-  <metanorma-extension><presentation-metadata><document-scheme>2019</document-schem></presentation-metadata></metanorma-extension>
+  <metanorma-extension><presentation-metadata><document-scheme>2019</document-scheme></presentation-metadata></metanorma-extension>
 XML
 
 def presxml_options

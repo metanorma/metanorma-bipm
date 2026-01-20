@@ -37,9 +37,7 @@ module IsoDoc
       end
 
       def convert_i18n_init(docxml)
-        @docscheme =
-          docxml.at(ns("//presentation-metadata[name" \
-                       "[text() = 'document-scheme']]/value"))&.text || "2021"
+        @docscheme ||= "2021"
         super
         update_i18n(@i18n)
       end
