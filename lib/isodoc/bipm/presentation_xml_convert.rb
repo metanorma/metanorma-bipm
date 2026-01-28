@@ -174,10 +174,6 @@ module IsoDoc
         node.next = "]"
       end
 
-      def enable_indexsect
-        true
-      end
-
       def index1(docxml, indexsect, index)
         index.keys.sort.each do |k|
           c = indexsect

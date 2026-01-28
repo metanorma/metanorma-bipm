@@ -341,7 +341,7 @@ ol[class="roman"] ol[class="roman"] > li::before {
     3.5 Bibliograhy
 */
 
-p.Biblio, p.NormRef {
+p.Biblio, p.NormRef, div.Biblio, div.NormRef {
     margin-top: 1em;
     margin-left: 2em;
 }
