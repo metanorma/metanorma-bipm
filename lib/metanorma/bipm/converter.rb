@@ -1,8 +1,6 @@
 require "metanorma/standoc/converter"
 require "metanorma/generic/converter"
 require_relative "front"
-require_relative "cleanup"
-require_relative "validate"
 
 module Metanorma
   module Bipm
