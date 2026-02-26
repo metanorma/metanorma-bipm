@@ -1,6 +1,6 @@
 module Metanorma
   module Bipm
-    class Converter < Metanorma::Generic::Converter
+    class Validate < Metanorma::Generic::Validate
       COMMITTEE_XPATH =
         "//bibdata/contributor[role/description = 'committee']/organization/" \
         "subdivision[@type = 'Committee']".freeze

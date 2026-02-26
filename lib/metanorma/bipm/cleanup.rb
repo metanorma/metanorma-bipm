@@ -1,6 +1,10 @@
 module Metanorma
   module Bipm
-    class Converter < Metanorma::Generic::Converter
+    class Cleanup < Metanorma::Generic::Cleanup
+      def copied_instance_variables
+        super + %i[jcgm]
+      end
+
       def boilerplate_file(_xmldoc)
         if @jcgm
           File.join(File.dirname(__FILE__), "boilerplate-jcgm-en.adoc")

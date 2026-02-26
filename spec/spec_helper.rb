@@ -98,8 +98,10 @@ VALIDATING_BLANK_HDR = <<~HDR.freeze
 HDR
 
 def boilerplate_read(file)
+  conv = Metanorma::Bipm::Converter.new(:bipm, {})
+  cl = Metanorma::Bipm::Cleanup.new(conv)
   HTMLEntities.new.decode(
-    Metanorma::Bipm::Converter.new(:bipm, {}).boilerplate_file_restructure(file)
+    cl.boilerplate_file_restructure(file)
     .to_xml.gsub(/<(\/)?sections>/, "<\\1boilerplate>")
       .gsub(/ id="_[^"]+"/, " id='_'"),
   )

@@ -2,20 +2,23 @@ require "metanorma"
 require "metanorma-generic"
 require "metanorma/bipm/processor"
 require "metanorma/bipm/converter"
+require "metanorma/bipm/cleanup"
+require "metanorma/bipm/validate"
 
 module Metanorma
   module Bipm
     def self.fonts_used
       {
         html: ["Times New Roman", "STIX", "Courier New"],
-        pdf: ["Arial", "Times New Roman", "Work Sans", "STIX"]
+        pdf: ["Arial", "Times New Roman", "Work Sans", "STIX"],
       }
     end
 
     class Configuration < Metanorma::Generic::Configuration
       def initialize(*args)
         super
-        html_configs ||= File.join(File.expand_path('config', __dir__), 'bipm_html.yml')
+        html_configs ||= File.join(File.expand_path("config", __dir__),
+                                   "bipm_html.yml")
       end
     end
 
