@@ -775,13 +775,13 @@ RSpec.describe IsoDoc::Bipm do
        <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title id="_" depth="1">Contents</fmt-title>
+                <fmt-title depth="1" id="_">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
              <terms id="H" obligation="normative" displayorder="2">
                 <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
-                <fmt-title id="_" depth="1">
+                <fmt-title depth="1" id="_">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="H">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -812,13 +812,15 @@ RSpec.describe IsoDoc::Bipm do
                    </fmt-xref-label>
                    <preferred id="_">
                       <expression>
-                         <name>Term2</name>
+                         <name id="_">Term2</name>
                       </expression>
                    </preferred>
                    <fmt-preferred>
                       <p>
                          <semx element="preferred" source="_">
-                            <strong>Term2</strong>
+                            <strong>
+                               <semx element="expression/name" source="_">Term2</semx>
+                            </strong>
                          </semx>
                       </p>
                    </fmt-preferred>
@@ -871,13 +873,15 @@ RSpec.describe IsoDoc::Bipm do
                    </fmt-xref-label>
                    <preferred id="_">
                       <expression>
-                         <name>Term3</name>
+                         <name id="_">Term3</name>
                       </expression>
                    </preferred>
                    <fmt-preferred>
                       <p>
                          <semx element="preferred" source="_">
-                            <strong>Term3</strong>
+                            <strong>
+                               <semx element="expression/name" source="_">Term3</semx>
+                            </strong>
                          </semx>
                       </p>
                    </fmt-preferred>
@@ -1020,7 +1024,7 @@ RSpec.describe IsoDoc::Bipm do
                <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
                <p class="TermNum" id="J">1.1.</p>
                <p class="Terms" style="text-align:left;">
-                  <b>Term2</b>
+                  <b><dfn>Term2</dfn></b>
                </p>
                <p>[Modified from:
         ISO 7301:2011, Clause 3.1
@@ -1028,7 +1032,7 @@ RSpec.describe IsoDoc::Bipm do
       ]</p>
                <p class="TermNum" id="K">1.2.</p>
                <p class="Terms" style="text-align:left;">
-                  <b>Term3</b>
+                  <b><dfn>Term3</dfn></b>
                </p>
                <div id="_" class="example">
                   <p class="example-title">EXAMPLE</p>
@@ -1082,13 +1086,13 @@ RSpec.describe IsoDoc::Bipm do
           </bibdata>
           <preface>
              <clause type="toc" id="_" displayorder="1">
-                <fmt-title id="_" depth="1">Contents</fmt-title>
+                <fmt-title depth="1" id="_">Contents</fmt-title>
              </clause>
           </preface>
           <sections>
              <terms id="H" obligation="normative" displayorder="2">
                 <title id="_">Terms, Definitions, Symbols and Abbreviated Terms</title>
-                <fmt-title id="_" depth="1">
+                <fmt-title depth="1" id="_">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="H">1</semx>
                       <span class="fmt-autonum-delim">.</span>
@@ -1118,13 +1122,15 @@ RSpec.describe IsoDoc::Bipm do
                    </fmt-xref-label>
                    <preferred id="_">
                       <expression>
-                         <name>Term2</name>
+                         <name id="_">Term2</name>
                       </expression>
                    </preferred>
                    <fmt-preferred>
                       <p>
                          <semx element="preferred" source="_">
-                            <strong>Term2</strong>
+                            <strong>
+                               <semx element="expression/name" source="_">Term2</semx>
+                            </strong>
                          </semx>
                       </p>
                    </fmt-preferred>
@@ -1177,13 +1183,15 @@ RSpec.describe IsoDoc::Bipm do
                    </fmt-xref-label>
                    <preferred id="_">
                       <expression>
-                         <name>Term3</name>
+                         <name id="_">Term3</name>
                       </expression>
                    </preferred>
                    <fmt-preferred>
                       <p>
                          <semx element="preferred" source="_">
-                            <strong>Term3</strong>
+                            <strong>
+                               <semx element="expression/name" source="_">Term3</semx>
+                            </strong>
                          </semx>
                       </p>
                    </fmt-preferred>
@@ -1324,7 +1332,7 @@ RSpec.describe IsoDoc::Bipm do
                <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
                <p class="TermNum" id="J">1.1.</p>
                <p class="Terms" style="text-align:left;">
-                  <b>Term2</b>
+                  <b><dfn>Term2</dfn></b>
                </p>
                <p>
                   [Modified from: ISO 7301:2011,
@@ -1333,7 +1341,7 @@ RSpec.describe IsoDoc::Bipm do
                </p>
                <p class="TermNum" id="K">1.2.</p>
                <p class="Terms" style="text-align:left;">
-                  <b>Term3</b>
+                  <b><dfn>Term3</dfn></b>
                </p>
                <div id="_" class="example">
                   <p class="example-title">EXAMPLE</p>
