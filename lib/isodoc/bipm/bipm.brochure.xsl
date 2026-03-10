@@ -14941,6 +14941,7 @@
 	</xsl:attribute-set>
 
 	<xsl:template name="refine_toc-style">
+		<xsl:copy-of select="@id"/>
 	</xsl:template>
 
 	<xsl:attribute-set name="toc-title-style">
@@ -15050,13 +15051,13 @@
 
 	<xsl:template name="processPrefaceSectionsDefault_Contents">
 		<xsl:variable name="nodes_preface_">
-			<xsl:for-each select="/*/mn:preface/*[not(self::mn:note or self::mn:admonition or @type = 'toc')]">
+			<xsl:for-each select="/*/mn:preface/*[not(self::mn:note or self::mn:admonition)]"> <!--  or @type = 'toc' -->
 				<node id="{@id}"/>
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="nodes_preface" select="xalan:nodeset($nodes_preface_)"/>
 
-		<xsl:for-each select="/*/mn:preface/*[not(self::mn:note or self::mn:admonition or @type = 'toc')]">
+		<xsl:for-each select="/*/mn:preface/*[not(self::mn:note or self::mn:admonition)]"> <!--  or @type = 'toc' -->
 			<xsl:sort select="@displayorder" data-type="number"/>
 
 			<!-- process Section's title -->
@@ -15067,6 +15068,23 @@
 
 			<xsl:apply-templates select="." mode="contents"/>
 		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="*[@type = 'toc'][mn:title or mn:fmt-title]" mode="contents" priority="2">
+		<xsl:variable name="title">
+			<xsl:call-template name="getName"/>
+		</xsl:variable>
+		<xsl:variable name="root">
+			<xsl:if test="ancestor-or-self::mn:preface">preface</xsl:if>
+			<xsl:if test="ancestor-or-self::mn:annex">annex</xsl:if>
+		</xsl:variable>
+		<mnx:item id="{@id}" level="1" section="" type="toc" root="{$root}" display="false">
+			<mnx:title>
+				<xsl:apply-templates select="xalan:nodeset($title)" mode="contents_item">
+					<xsl:with-param name="element" select="$root"/>
+				</xsl:apply-templates>
+			</mnx:title>
+		</mnx:item>
 	</xsl:template>
 
 	<xsl:template name="processMainSectionsDefault_Contents">
