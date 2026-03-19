@@ -96,7 +96,7 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     presxml = Canon.format_xml(<<~OUTPUT)
-      <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
           <bibdata type="standard">
              <title language="en" format="text/plain" type="title-main">Main Title</title>
              <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
@@ -362,9 +362,7 @@ RSpec.describe IsoDoc::Bipm do
              </references>
           </sections>
           <annex id="P" inline-header="false" obligation="normative" autonum="1" displayorder="9">
-             <title id="_">
-                <strong>Annex</strong>
-             </title>
+             <title id="_">Annex</title>
              <fmt-title id="_">
                 <span class="fmt-caption-label">
                    <strong>
@@ -384,6 +382,16 @@ RSpec.describe IsoDoc::Bipm do
                 <span class="fmt-element-name">Annex</span>
                 <semx element="autonum" source="P">1</semx>
              </fmt-xref-label>
+             <variant-title type="toc">
+                <span class="fmt-caption-label">
+                   <span class="fmt-element-name">Annex</span>
+                   <semx element="autonum" source="P">1</semx>
+                </span>
+                <span class="fmt-caption-delim">
+                   <tab/>
+                </span>
+                <semx element="title" source="_">Annex</semx>
+             </variant-title>
              <clause id="Q" inline-header="false" obligation="normative">
                 <title id="_">Annex A.1</title>
                 <fmt-title depth="2" id="_">
@@ -459,9 +467,7 @@ RSpec.describe IsoDoc::Bipm do
              </appendix>
           </annex>
           <annex id="QQ" obligation="normative" autonum="2" displayorder="10">
-             <title id="_">
-                <strong>Glossary</strong>
-             </title>
+             <title id="_">Glossary</title>
              <fmt-title id="_">
                 <span class="fmt-caption-label">
                    <strong>
@@ -481,6 +487,16 @@ RSpec.describe IsoDoc::Bipm do
                 <span class="fmt-element-name">Annex</span>
                 <semx element="autonum" source="QQ">2</semx>
              </fmt-xref-label>
+             <variant-title type="toc">
+                <span class="fmt-caption-label">
+                   <span class="fmt-element-name">Annex</span>
+                   <semx element="autonum" source="QQ">2</semx>
+                </span>
+                <span class="fmt-caption-delim">
+                   <tab/>
+                </span>
+                <semx element="title" source="_">Glossary</semx>
+             </variant-title>
              <terms id="QQ1" obligation="normative">
                 <term id="term-term-1">
                    <fmt-name id="_">
@@ -616,6 +632,7 @@ RSpec.describe IsoDoc::Bipm do
                    . 
                    <b>Annex</b>
                 </h1>
+                <p style="display:none;" class="variant-title-toc">Annex 1  Annex</p>
                 <div id="Q">
                    <h2>A1.1.  Annex A.1</h2>
                    <div id="Q1">
@@ -633,6 +650,7 @@ RSpec.describe IsoDoc::Bipm do
                    . 
                    <b>Glossary</b>
                 </h1>
+                <p style="display:none;" class="variant-title-toc">Annex 2  Glossary</p>
                 <div id="QQ1">
                    <p class="TermNum" id="term-term-1">A2.1.</p>
                    <p class="Terms" style="text-align:left;">
@@ -935,9 +953,7 @@ RSpec.describe IsoDoc::Bipm do
              </references>
           </sections>
           <annex id="P" inline-header="false" obligation="normative" autonum="1" displayorder="9">
-             <title id="_">
-                <strong>Annex</strong>
-             </title>
+             <title id="_">Annex</title>
              <fmt-title id="_">
                 <span class="fmt-caption-label">
                    <strong>
@@ -957,6 +973,16 @@ RSpec.describe IsoDoc::Bipm do
                 <span class="fmt-element-name">Appendix</span>
                 <semx element="autonum" source="P">1</semx>
              </fmt-xref-label>
+             <variant-title type="toc">
+                <span class="fmt-caption-label">
+                   <span class="fmt-element-name">Appendix</span>
+                   <semx element="autonum" source="P">1</semx>
+                </span>
+                <span class="fmt-caption-delim">
+                   <tab/>
+                </span>
+                <semx element="title" source="_">Annex</semx>
+             </variant-title>
              <clause id="Q" inline-header="false" obligation="normative">
                 <title id="_">Annex A.1</title>
                 <fmt-title depth="2" id="_">
@@ -1032,9 +1058,7 @@ RSpec.describe IsoDoc::Bipm do
              </appendix>
           </annex>
           <annex id="QQ" obligation="normative" autonum="2" displayorder="10">
-             <title id="_">
-                <strong>Glossary</strong>
-             </title>
+             <title id="_">Glossary</title>
              <fmt-title id="_">
                 <span class="fmt-caption-label">
                    <strong>
@@ -1054,6 +1078,16 @@ RSpec.describe IsoDoc::Bipm do
                 <span class="fmt-element-name">Appendix</span>
                 <semx element="autonum" source="QQ">2</semx>
              </fmt-xref-label>
+             <variant-title type="toc">
+                <span class="fmt-caption-label">
+                   <span class="fmt-element-name">Appendix</span>
+                   <semx element="autonum" source="QQ">2</semx>
+                </span>
+                <span class="fmt-caption-delim">
+                   <tab/>
+                </span>
+                <semx element="title" source="_">Glossary</semx>
+             </variant-title>
              <terms id="QQ1" obligation="normative">
                 <term id="term-term-1">
                    <fmt-name id="_">
@@ -1391,9 +1425,7 @@ RSpec.describe IsoDoc::Bipm do
              </references>
           </sections>
           <annex id="P" inline-header="false" obligation="normative" autonum="A" displayorder="10">
-             <title id="_">
-                <strong>Annex</strong>
-             </title>
+             <title id="_">Annex</title>
              <fmt-title id="_">
                 <span class="fmt-caption-label">
                    <strong>
@@ -1412,6 +1444,16 @@ RSpec.describe IsoDoc::Bipm do
                 <span class="fmt-element-name">Annex</span>
                 <semx element="autonum" source="P">A</semx>
              </fmt-xref-label>
+             <variant-title type="toc">
+                <span class="fmt-caption-label">
+                   <span class="fmt-element-name">Annex</span>
+                   <semx element="autonum" source="P">A</semx>
+                </span>
+                <span class="fmt-caption-delim">
+                   <tab/>
+                </span>
+                <semx element="title" source="_">Annex</semx>
+             </variant-title>
              <clause id="Q" inline-header="false" obligation="normative">
                 <title id="_">Annex A.1</title>
                 <fmt-title depth="2" id="_">
@@ -1485,9 +1527,7 @@ RSpec.describe IsoDoc::Bipm do
              </appendix>
           </annex>
           <annex id="QQ" obligation="normative" autonum="B" displayorder="11">
-             <title id="_">
-                <strong>Glossary</strong>
-             </title>
+             <title id="_">Glossary</title>
              <fmt-title id="_">
                 <span class="fmt-caption-label">
                    <strong>
@@ -1506,6 +1546,16 @@ RSpec.describe IsoDoc::Bipm do
                 <span class="fmt-element-name">Annex</span>
                 <semx element="autonum" source="QQ">B</semx>
              </fmt-xref-label>
+             <variant-title type="toc">
+                <span class="fmt-caption-label">
+                   <span class="fmt-element-name">Annex</span>
+                   <semx element="autonum" source="QQ">B</semx>
+                </span>
+                <span class="fmt-caption-delim">
+                   <tab/>
+                </span>
+                <semx element="title" source="_">Glossary</semx>
+             </variant-title>
              <terms id="QQ1" obligation="normative">
                 <term id="term-term-1">
                    <fmt-name id="_">
@@ -1641,6 +1691,7 @@ RSpec.describe IsoDoc::Bipm do
                   <br/>
                   <b>Annex</b>
                </h1>
+               <p style="display:none;" class="variant-title-toc">Annex A  Annex</p>
                <div id="Q">
                   <h2>A.1.  Annex A.1</h2>
                   <div id="Q1">
@@ -1658,6 +1709,7 @@ RSpec.describe IsoDoc::Bipm do
             <br/>
             <b>Glossary</b>
          </h1>
+         <p style="display:none;" class="variant-title-toc">Annex B  Glossary</p>
          <div id="QQ1">
             <p class="TermNum" id="term-term-1">B.1.</p>
             <p class="Terms" style="text-align:left;">
@@ -1723,130 +1775,140 @@ RSpec.describe IsoDoc::Bipm do
     INPUT
 
     output = <<~OUTPUT
-      <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-           <bibdata>
-              <ext>
-                 <structuredidentifier>
-                    <appendix>1</appendix>
-                 </structuredidentifier>
-              </ext>
-           </bibdata>
-           <preface>
-              <clause type="toc" id="_" displayorder="1">
-                 <fmt-title id="_" depth="1">Contents</fmt-title>
-              </clause>
-           </preface>
-           <sections>
-              <clause obligation="informative" id="A0" displayorder="2">
-                 <title id="_">Foreword</title>
-                 <fmt-title id="_" depth="1">
-                    <span class="fmt-caption-label">
-                       <semx element="autonum" source="A0">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                    </span>
-                    <span class="fmt-caption-delim">
-                       <tab/>
-                    </span>
-                    <semx element="title" source="_">Foreword</semx>
-                 </fmt-title>
-                 <fmt-xref-label>
-                    <span class="fmt-element-name">Chapter</span>
-                    <semx element="autonum" source="A0">1</semx>
-                 </fmt-xref-label>
-                 <p id="A">
-            <xref target="P" id="_"/>
-            <semx element="xref" source="_">
-               <fmt-xref target="P">
-                  <span class="fmt-element-name">Appendix</span>
-                  <semx element="autonum" source="P">1</semx>
-               </fmt-xref>
-            </semx>
-                 </p>
-              </clause>
-           </sections>
-           <annex id="P" inline-header="false" obligation="normative" autonum="1" displayorder="3">
-              <title id="_">
-                 <strong>
-                    <strong>Annex</strong>
-                 </strong>
-              </title>
-              <fmt-title id="_">
-                 <span class="fmt-caption-label">
-                    <strong>
-                       <span class="fmt-element-name">Appendix</span>
-                       <semx element="autonum" source="P">1</semx>
-                    </strong>
-                 </span>
-                 <span class="fmt-caption-delim">
-                    .
-                    <tab/>
-                 </span>
-                 <semx element="title" source="_">
-                    <strong>
-                       <strong>Annex</strong>
-                    </strong>
-                 </semx>
-              </fmt-title>
-              <fmt-xref-label>
-                 <span class="fmt-element-name">Appendix</span>
-                 <semx element="autonum" source="P">1</semx>
-              </fmt-xref-label>
-              <clause id="Q" inline-header="false" obligation="normative">
-                 <title depth="2" id="_">
-                Annex A.1
-              </title>
-                 <fmt-title id="_" depth="2">
-                    <span class="fmt-caption-label">
-                       <semx element="autonum" source="P">A1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                       <semx element="autonum" source="Q">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                    </span>
-                    <span class="fmt-caption-delim">
-                       <tab/>
-                    </span>
-                    <semx element="title" source="_">
-                Annex A.1
-              </semx>
-                 </fmt-title>
-                 <fmt-xref-label>
-                    <span class="fmt-element-name">Appendix</span>
-                    <semx element="autonum" source="P">A1</semx>
-                    <span class="fmt-autonum-delim">.</span>
-                    <semx element="autonum" source="Q">1</semx>
-                 </fmt-xref-label>
-                 <clause id="Q1" inline-header="false" obligation="normative">
-                    <title depth="3" id="_">
-                  Annex A.1a
-                </title>
-                    <fmt-title id="_" depth="3">
-                       <span class="fmt-caption-label">
-                          <semx element="autonum" source="P">A1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                          <semx element="autonum" source="Q">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                          <semx element="autonum" source="Q1">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                       </span>
-                       <span class="fmt-caption-delim">
-                          <tab/>
-                       </span>
-                       <semx element="title" source="_">
-                  Annex A.1a
+       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+          <bibdata>
+             <ext>
+                <structuredidentifier>
+                   <appendix>1</appendix>
+                </structuredidentifier>
+             </ext>
+          </bibdata>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1" id="_">Contents</fmt-title>
+             </clause>
+          </preface>
+          <sections>
+             <clause obligation="informative" id="A0" displayorder="2">
+                <title id="_">Foreword</title>
+                <fmt-title depth="1" id="_">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A0">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">Foreword</semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="A0">1</semx>
+                </fmt-xref-label>
+                <p id="A">
+                   <xref target="P" id="_"/>
+                   <semx element="xref" source="_">
+                      <fmt-xref target="P">
+                         <span class="fmt-element-name">Appendix</span>
+                         <semx element="autonum" source="P">1</semx>
+                      </fmt-xref>
+                   </semx>
+                </p>
+             </clause>
+          </sections>
+          <annex id="P" inline-header="false" obligation="normative" autonum="1" displayorder="3">
+             <title id="_">
+                <strong>Annex</strong>
+             </title>
+             <fmt-title id="_">
+                <span class="fmt-caption-label">
+                   <strong>
+                      <span class="fmt-element-name">Appendix</span>
+                      <semx element="autonum" source="P">1</semx>
+                   </strong>
+                </span>
+                <span class="fmt-caption-delim">
+                   .
+                   <tab/>
+                </span>
+                <semx element="title" source="_">
+                   <strong>
+                      <strong>Annex</strong>
+                   </strong>
                 </semx>
-                    </fmt-title>
-                    <fmt-xref-label>
-                       <span class="fmt-element-name">Appendix</span>
-                       <semx element="autonum" source="P">A1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                       <semx element="autonum" source="Q">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                       <semx element="autonum" source="Q1">1</semx>
-                    </fmt-xref-label>
-                 </clause>
-              </clause>
-           </annex>
-        </bipm-standard>
+             </fmt-title>
+             <fmt-xref-label>
+                <span class="fmt-element-name">Appendix</span>
+                <semx element="autonum" source="P">1</semx>
+             </fmt-xref-label>
+             <variant-title type="toc">
+                <span class="fmt-caption-label">
+                   <span class="fmt-element-name">Appendix</span>
+                   <semx element="autonum" source="P">1</semx>
+                </span>
+                <span class="fmt-caption-delim">
+                   <tab/>
+                </span>
+                <semx element="title" source="_">
+                   <strong>Annex</strong>
+                </semx>
+             </variant-title>
+             <clause id="Q" inline-header="false" obligation="normative">
+                <title depth="2" id="_">
+               Annex A.1
+             </title>
+                <fmt-title depth="2" id="_">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="P">A1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="Q">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">
+               Annex A.1
+             </semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Appendix</span>
+                   <semx element="autonum" source="P">A1</semx>
+                   <span class="fmt-autonum-delim">.</span>
+                   <semx element="autonum" source="Q">1</semx>
+                </fmt-xref-label>
+                <clause id="Q1" inline-header="false" obligation="normative">
+                   <title depth="3" id="_">
+                 Annex A.1a
+               </title>
+                   <fmt-title depth="3" id="_">
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="P">A1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="Q">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="Q1">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                      <span class="fmt-caption-delim">
+                         <tab/>
+                      </span>
+                      <semx element="title" source="_">
+                 Annex A.1a
+               </semx>
+                   </fmt-title>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">Appendix</span>
+                      <semx element="autonum" source="P">A1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="Q">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="Q1">1</semx>
+                   </fmt-xref-label>
+                </clause>
+             </clause>
+          </annex>
+       </bipm-standard>
     OUTPUT
 
     pres_output =
@@ -1856,135 +1918,145 @@ RSpec.describe IsoDoc::Bipm do
     expect(pres_output).to(be_equivalent_to(Canon.format_xml(output)))
 
     output = <<~OUTPUT
-      <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
-           <bibdata>
-              <ext>
-                 <structuredidentifier>
-                    <appendix>1</appendix>
-                 </structuredidentifier>
-              </ext>
-           </bibdata>
+       <bipm-standard xmlns="http://riboseinc.com/isoxml" type="presentation">
+          <bibdata>
+             <ext>
+                <structuredidentifier>
+                   <appendix>1</appendix>
+                </structuredidentifier>
+             </ext>
+          </bibdata>
           <metanorma-extension>
-          <presentation-metadata>
-          <document-scheme>2019</document-scheme>
-          </presentation-metadata>
-        </metanorma-extension>
-           <preface>
-              <clause type="toc" id="_" displayorder="1">
-                 <fmt-title id="_" depth="1">Contents</fmt-title>
-              </clause>
-           </preface>
-           <sections>
-              <clause obligation="informative" id="A0" displayorder="2">
-                 <title id="_">Foreword</title>
-                 <fmt-title id="_" depth="1">
-                    <span class="fmt-caption-label">
-                       <semx element="autonum" source="A0">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                    </span>
-                    <span class="fmt-caption-delim">
-                       <tab/>
-                    </span>
-                    <semx element="title" source="_">Foreword</semx>
-                 </fmt-title>
-                 <fmt-xref-label>
-                    <span class="fmt-element-name">Chapter</span>
-                    <semx element="autonum" source="A0">1</semx>
-                 </fmt-xref-label>
-                 <p id="A">
-            <xref target="P" id="_"/>
-            <semx element="xref" source="_">
-               <fmt-xref target="P">
-                  <span class="fmt-element-name">Annex</span>
-                  <semx element="autonum" source="P">1</semx>
-               </fmt-xref>
-            </semx>
-                 </p>
-              </clause>
-           </sections>
-           <annex id="P" inline-header="false" obligation="normative" autonum="1" displayorder="3">
-              <title id="_">
-                 <strong>
-                    <strong>Annex</strong>
-                 </strong>
-              </title>
-              <fmt-title id="_">
-                 <span class="fmt-caption-label">
-                    <strong>
-                       <span class="fmt-element-name">Annex</span>
-                       <semx element="autonum" source="P">1</semx>
-                    </strong>
-                 </span>
-                 <span class="fmt-caption-delim">
-                    .
-                    <tab/>
-                 </span>
-                 <semx element="title" source="_">
-                    <strong>
-                       <strong>Annex</strong>
-                    </strong>
-                 </semx>
-              </fmt-title>
-              <fmt-xref-label>
-                 <span class="fmt-element-name">Annex</span>
-                 <semx element="autonum" source="P">1</semx>
-              </fmt-xref-label>
-              <clause id="Q" inline-header="false" obligation="normative">
-                 <title depth="2" id="_">
-                Annex A.1
-              </title>
-                 <fmt-title id="_" depth="2">
-                    <span class="fmt-caption-label">
-                       <semx element="autonum" source="P">A1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                       <semx element="autonum" source="Q">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                    </span>
-                    <span class="fmt-caption-delim">
-                       <tab/>
-                    </span>
-                    <semx element="title" source="_">
-                Annex A.1
-              </semx>
-                 </fmt-title>
-                 <fmt-xref-label>
-                    <span class="fmt-element-name">Annex</span>
-                    <semx element="autonum" source="P">A1</semx>
-                    <span class="fmt-autonum-delim">.</span>
-                    <semx element="autonum" source="Q">1</semx>
-                 </fmt-xref-label>
-                 <clause id="Q1" inline-header="false" obligation="normative">
-                    <title depth="3" id="_">
-                  Annex A.1a
-                </title>
-                    <fmt-title id="_" depth="3">
-                       <span class="fmt-caption-label">
-                          <semx element="autonum" source="P">A1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                          <semx element="autonum" source="Q">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                          <semx element="autonum" source="Q1">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
-                       </span>
-                       <span class="fmt-caption-delim">
-                          <tab/>
-                       </span>
-                       <semx element="title" source="_">
-                  Annex A.1a
+             <presentation-metadata>
+                <document-scheme>2019</document-scheme>
+             </presentation-metadata>
+          </metanorma-extension>
+          <preface>
+             <clause type="toc" id="_" displayorder="1">
+                <fmt-title depth="1" id="_">Contents</fmt-title>
+             </clause>
+          </preface>
+          <sections>
+             <clause obligation="informative" id="A0" displayorder="2">
+                <title id="_">Foreword</title>
+                <fmt-title depth="1" id="_">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="A0">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">Foreword</semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Chapter</span>
+                   <semx element="autonum" source="A0">1</semx>
+                </fmt-xref-label>
+                <p id="A">
+                   <xref target="P" id="_"/>
+                   <semx element="xref" source="_">
+                      <fmt-xref target="P">
+                         <span class="fmt-element-name">Annex</span>
+                         <semx element="autonum" source="P">1</semx>
+                      </fmt-xref>
+                   </semx>
+                </p>
+             </clause>
+          </sections>
+          <annex id="P" inline-header="false" obligation="normative" autonum="1" displayorder="3">
+             <title id="_">
+                <strong>Annex</strong>
+             </title>
+             <fmt-title id="_">
+                <span class="fmt-caption-label">
+                   <strong>
+                      <span class="fmt-element-name">Annex</span>
+                      <semx element="autonum" source="P">1</semx>
+                   </strong>
+                </span>
+                <span class="fmt-caption-delim">
+                   .
+                   <tab/>
+                </span>
+                <semx element="title" source="_">
+                   <strong>
+                      <strong>Annex</strong>
+                   </strong>
                 </semx>
-                    </fmt-title>
-                    <fmt-xref-label>
-                       <span class="fmt-element-name">Annex</span>
-                       <semx element="autonum" source="P">A1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                       <semx element="autonum" source="Q">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
-                       <semx element="autonum" source="Q1">1</semx>
-                    </fmt-xref-label>
-                 </clause>
-              </clause>
-           </annex>
-        </bipm-standard>
+             </fmt-title>
+             <fmt-xref-label>
+                <span class="fmt-element-name">Annex</span>
+                <semx element="autonum" source="P">1</semx>
+             </fmt-xref-label>
+             <variant-title type="toc">
+                <span class="fmt-caption-label">
+                   <span class="fmt-element-name">Annex</span>
+                   <semx element="autonum" source="P">1</semx>
+                </span>
+                <span class="fmt-caption-delim">
+                   <tab/>
+                </span>
+                <semx element="title" source="_">
+                   <strong>Annex</strong>
+                </semx>
+             </variant-title>
+             <clause id="Q" inline-header="false" obligation="normative">
+                <title depth="2" id="_">
+               Annex A.1
+             </title>
+                <fmt-title depth="2" id="_">
+                   <span class="fmt-caption-label">
+                      <semx element="autonum" source="P">A1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="Q">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                   </span>
+                   <span class="fmt-caption-delim">
+                      <tab/>
+                   </span>
+                   <semx element="title" source="_">
+               Annex A.1
+             </semx>
+                </fmt-title>
+                <fmt-xref-label>
+                   <span class="fmt-element-name">Annex</span>
+                   <semx element="autonum" source="P">A1</semx>
+                   <span class="fmt-autonum-delim">.</span>
+                   <semx element="autonum" source="Q">1</semx>
+                </fmt-xref-label>
+                <clause id="Q1" inline-header="false" obligation="normative">
+                   <title depth="3" id="_">
+                 Annex A.1a
+               </title>
+                   <fmt-title depth="3" id="_">
+                      <span class="fmt-caption-label">
+                         <semx element="autonum" source="P">A1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="Q">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                         <semx element="autonum" source="Q1">1</semx>
+                         <span class="fmt-autonum-delim">.</span>
+                      </span>
+                      <span class="fmt-caption-delim">
+                         <tab/>
+                      </span>
+                      <semx element="title" source="_">
+                 Annex A.1a
+               </semx>
+                   </fmt-title>
+                   <fmt-xref-label>
+                      <span class="fmt-element-name">Annex</span>
+                      <semx element="autonum" source="P">A1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="Q">1</semx>
+                      <span class="fmt-autonum-delim">.</span>
+                      <semx element="autonum" source="Q1">1</semx>
+                   </fmt-xref-label>
+                </clause>
+             </clause>
+          </annex>
+       </bipm-standard>
         OUTPUT
          pres_output =
       Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
@@ -2292,14 +2364,15 @@ RSpec.describe IsoDoc::Bipm do
              </clause>
           </sections>
           <annex id="A1" obligation="normative" unnumbered="true" displayorder="6">
-             <title id="_">
-                <strong>Alpha</strong>
-             </title>
+             <title id="_">Alpha</title>
              <fmt-title id="_">
                 <semx element="title" source="_">
                    <strong>Alpha</strong>
                 </semx>
              </fmt-title>
+             <variant-title type="toc">
+                <semx element="title" source="_">Alpha</semx>
+             </variant-title>
              <clause id="B1" unnumbered="true">
                 <title id="_">Beta</title>
                 <fmt-title depth="2" id="_">
@@ -2308,9 +2381,7 @@ RSpec.describe IsoDoc::Bipm do
              </clause>
           </annex>
           <annex id="A2" obligation="normative" autonum="1" displayorder="5">
-             <title id="_">
-                <strong>Gamma</strong>
-             </title>
+             <title id="_">Gamma</title>
              <fmt-title id="_">
                 <span class="fmt-caption-label">
                    <strong>
@@ -2330,6 +2401,16 @@ RSpec.describe IsoDoc::Bipm do
                 <span class="fmt-element-name">Annex</span>
                 <semx element="autonum" source="A2">1</semx>
              </fmt-xref-label>
+             <variant-title type="toc">
+                <span class="fmt-caption-label">
+                   <span class="fmt-element-name">Annex</span>
+                   <semx element="autonum" source="A2">1</semx>
+                </span>
+                <span class="fmt-caption-delim">
+                   <tab/>
+                </span>
+                <semx element="title" source="_">Gamma</semx>
+             </variant-title>
              <clause id="B2" unnumbered="true">
                 <title id="_">Delta</title>
                 <fmt-title depth="2" id="_">
@@ -2390,14 +2471,15 @@ RSpec.describe IsoDoc::Bipm do
              </clause>
           </annex>
           <annex id="QQ" obligation="normative" unnumbered="true" displayorder="7">
-             <title id="_">
-                <strong>Glossary</strong>
-             </title>
+             <title id="_">Glossary</title>
              <fmt-title id="_">
                 <semx element="title" source="_">
                    <strong>Glossary</strong>
                 </semx>
              </fmt-title>
+             <variant-title type="toc">
+                <semx element="title" source="_">Glossary</semx>
+             </variant-title>
              <terms id="QQ1" obligation="normative">
                 <term id="term-term-1">
                    <fmt-name id="_">
