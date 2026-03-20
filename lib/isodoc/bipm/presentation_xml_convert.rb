@@ -81,7 +81,7 @@ module IsoDoc
         super
       end
 
-      def prefix_name(node, delims, number, elem)
+      def prefix_name(node, delims, number, elem, fmt_xref_label: true)
         if elem == "title" &&
             n = node.at(ns("./variant-#{elem}[@type = 'quoted']"))
           quoted_title_render(node, elem, n)

@@ -342,6 +342,12 @@ RSpec.describe IsoDoc::Bipm do
               </clause>
            </sections>
            <annex id="annex1" autonum="1" displayorder="7">
+      <variant-title type="toc">
+         <span class="fmt-caption-label">
+            <span class="fmt-element-name">Annex</span>
+            <semx element="autonum" source="annex1">1</semx>
+         </span>
+      </variant-title>
               <fmt-title id="_">
                  <span class="fmt-caption-label">
                     <strong>
@@ -442,7 +448,8 @@ RSpec.describe IsoDoc::Bipm do
         </iso-standard>
     OUTPUT
     expect(Canon.format_xml(strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
-      .convert("test", input, true)))).to be_equivalent_to Canon.format_xml(output)
+      .convert("test", input, true))))
+      .to be_equivalent_to Canon.format_xml(output)
   end
 
   it "cross-references sections" do
@@ -1300,6 +1307,12 @@ RSpec.describe IsoDoc::Bipm do
               </clause>
            </sections>
            <annex id="annex1" autonum="1" displayorder="6">
+      <variant-title type="toc">
+         <span class="fmt-caption-label">
+            <span class="fmt-element-name">Annex</span>
+            <semx element="autonum" source="annex1">1</semx>
+         </span>
+      </variant-title>
               <fmt-title id="_">
                  <span class="fmt-caption-label">
                     <strong>
@@ -1609,6 +1622,12 @@ RSpec.describe IsoDoc::Bipm do
               </clause>
            </sections>
            <annex id="annex1" autonum="A" displayorder="6">
+      <variant-title type="toc">
+         <span class="fmt-caption-label">
+            <span class="fmt-element-name">Annex</span>
+            <semx element="autonum" source="annex1">A</semx>
+         </span>
+      </variant-title>
               <fmt-title id="_">
                  <span class="fmt-caption-label">
                     <strong>
