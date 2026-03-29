@@ -51,7 +51,7 @@ RSpec.describe Relaton::Render::Bipm do
                 <name>Cambridge University Press</name>
               </organization>
             </contributor>
-            <place>Cambridge, UK</place>
+            <place><formattedPlace>Cambridge, UK</formattedPlace></place>
           <size><value type="volume">1</value></size>
       </bibitem>
     INPUT
@@ -120,7 +120,7 @@ RSpec.describe Relaton::Render::Bipm do
               <form>electronic resource</form>
               <size>8vo</size>
             </medium>
-            <place>New York, NY</place>
+            <place><formattedPlace>New York, NY</formattedPlace></place>
           </bibitem>
         </relation>
         <extent>
@@ -202,7 +202,7 @@ RSpec.describe Relaton::Render::Bipm do
                 <name>Cambridge University Press</name>
               </organization>
             </contributor>
-            <place>Cambridge, UK</place>
+            <place><formattedPlace>Cambridge, UK</formattedPlace></place>
             <extent>
                 <localityStack>
                   <locality type="volume"><referenceFrom>1</referenceFrom></locality>
