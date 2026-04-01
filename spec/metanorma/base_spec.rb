@@ -81,7 +81,7 @@ RSpec.describe Metanorma::Bipm do
       :supersedes-draft_3: 3.0
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
       <?xml version="1.0" encoding="UTF-8"?>
         <metanorma type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/standoc" flavor="bipm">
           <bibdata type="standard">
@@ -315,18 +315,18 @@ RSpec.describe Metanorma::Bipm do
         </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input
+    expect(strip_guid(Asciidoctor.convert(input
       .sub(":language: en", ":language: en\n:document-scheme: 2019"),
-    *OPTIONS))))
-      .to be_equivalent_to output
-      .gsub("Appendix ABC", "Annex ABC")
-      .gsub("Appendice ABC", "Annexe ABC")
-      .gsub("Annex DEF", "Appendix DEF")
-      .sub("<presentation-metadata>",
-           "<presentation-metadata><document-scheme>2019</document-scheme>")
+                                          *OPTIONS)))
+      .to be_xml_equivalent_to output
+        .gsub("Appendix ABC", "Annex ABC")
+        .gsub("Appendice ABC", "Annexe ABC")
+        .gsub("Annex DEF", "Appendix DEF")
+        .sub("<presentation-metadata>",
+             "<presentation-metadata><document-scheme>2019</document-scheme>")
   end
 
   it "processes default metadata in French, no components to id" do
@@ -369,7 +369,7 @@ RSpec.describe Metanorma::Bipm do
       :implemented-date: D
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
       <?xml version="1.0" encoding="UTF-8"?>
       <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
       <bibdata type="standard">
@@ -477,10 +477,10 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
-  
+
   it "processes default metadata for JCTLM" do
     input = <<~INPUT
       = Document title
@@ -524,7 +524,7 @@ RSpec.describe Metanorma::Bipm do
       :obsoleted-date: C
       :implemented-date: D
     INPUT
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
       <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
          <bibdata type="standard">
            <title language="en" type="title-main">Main Title</title>
@@ -656,8 +656,8 @@ RSpec.describe Metanorma::Bipm do
        </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes default metadata for JCGM" do
@@ -703,7 +703,7 @@ RSpec.describe Metanorma::Bipm do
       :implemented-date: D
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
         <?xml version="1.0" encoding="UTF-8"?>
         <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
         <bibdata type='standard'>
@@ -818,8 +818,8 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes figures" do
@@ -835,7 +835,7 @@ RSpec.describe Metanorma::Bipm do
       ....
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
       #{BLANK_HDR}
         <sections>
           <figure id="_" anchor="id">
@@ -848,8 +848,8 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "strips inline header" do
@@ -860,7 +860,7 @@ RSpec.describe Metanorma::Bipm do
       == Section 1
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
       #{BLANK_HDR}
         <preface>
           <foreword id="_" obligation="informative">
@@ -876,8 +876,8 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "uses xref flags" do
@@ -892,7 +892,7 @@ RSpec.describe Metanorma::Bipm do
       <<a,nopage%>>
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
       #{BLANK_HDR}
         <sections>
           <clause id="_" anchor="a" obligation='normative'>
@@ -908,8 +908,8 @@ RSpec.describe Metanorma::Bipm do
       </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "uses default fonts" do
@@ -972,8 +972,8 @@ RSpec.describe Metanorma::Bipm do
         </annex>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes the start attribute on ordered lists" do
@@ -999,8 +999,8 @@ RSpec.describe Metanorma::Bipm do
         </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes sections" do
@@ -1206,8 +1206,8 @@ RSpec.describe Metanorma::Bipm do
           </bibliography>
        </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "processes sections in JCGM" do
@@ -1420,9 +1420,9 @@ RSpec.describe Metanorma::Bipm do
           </bibliography>
        </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS))
       .sub(%r{<boilerplate>.*</boilerplate>}m, ""))
-      .to be_equivalent_to Canon.format_xml(output)
+      .to be_xml_equivalent_to output
   end
 
   it "customises italicisation of MathML" do
@@ -1468,8 +1468,8 @@ RSpec.describe Metanorma::Bipm do
         </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "deals with quoted alt titles" do
@@ -1500,8 +1500,8 @@ RSpec.describe Metanorma::Bipm do
       </sections>
       </metanorma>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "references BIPM English citations" do
@@ -1532,18 +1532,15 @@ RSpec.describe Metanorma::Bipm do
       </sections>
     OUTPUT
     doc = Asciidoctor.convert(input, *OPTIONS)
-    expect(Canon.format_xml(strip_guid(
-                              Nokogiri::XML(doc)
-                              .at("//xmlns:sections").to_xml,
-                            )))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Nokogiri::XML(doc).at("//xmlns:sections").to_xml))
+      .to be_xml_equivalent_to output
   end
 
   it "references BIPM French citations" do
     # allow(File).to receive(:exist?).with(/index\.yaml/).and_return false
     # allow(File).to receive(:exist?).and_call_original
     input = <<~INPUT
-      #{LOCAL_CACHED_ISOBIB_BLANK_HDR.sub(/:nodoc:/, ":nodoc:\n:language: fr")}
+      #{LOCAL_CACHED_ISOBIB_BLANK_HDR.sub(':nodoc:', ":nodoc:\n:language: fr")}
 
       == Clause
 
@@ -1567,11 +1564,8 @@ RSpec.describe Metanorma::Bipm do
         </clause>
       </sections>
     OUTPUT
-    expect(Canon.format_xml(strip_guid(
-                              Nokogiri::XML(Asciidoctor.convert(input,
-                                                                *OPTIONS))
-                              .at("//xmlns:sections").to_xml,
-                            )))
-      .to be_equivalent_to Canon.format_xml(output)
+    expect(strip_guid(Nokogiri::XML(Asciidoctor.convert(input, *OPTIONS))
+      .at("//xmlns:sections").to_xml))
+      .to be_xml_equivalent_to output
   end
 end

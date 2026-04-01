@@ -6,34 +6,34 @@ RSpec.describe Metanorma::Bipm do
       #{ASCIIDOC_BLANK_HDR}
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
       #{BLANK_HDR}
         <sections/>
       </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
   end
 
   it "converts a blank document" do
     FileUtils.rm_rf("test.html")
     FileUtils.rm_rf("test.pdf")
-    input = <<~"INPUT"
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
       :novalid:
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
       #{BLANK_HDR}
         <sections/>
       </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
     expect(File.exist?("test.html")).to be true
     expect(File.exist?("test.pdf")).to be true
   end
@@ -41,7 +41,7 @@ RSpec.describe Metanorma::Bipm do
   it "converts a blank JCGM document" do
     FileUtils.rm_rf("test.html")
     FileUtils.rm_rf("test.pdf")
-    input = <<~"INPUT"
+    input = <<~INPUT
       = Document title
       Author
       :docfile: test.adoc
@@ -50,9 +50,9 @@ RSpec.describe Metanorma::Bipm do
       :committee-en: Joint Committee for Guides in Metrology
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
           #{BLANK_HDR.sub(%r{<boilerplate>.*</boilerplate>}m, boilerplate('jcgm'))
-          .sub(/<docidentifier primary="true" type="BIPM">BIPM/, %(<docidentifier primary="true" type="BIPM">JCGM))
+          .sub('<docidentifier primary="true" type="BIPM">BIPM', %(<docidentifier primary="true" type="BIPM">JCGM))
        .sub('</contributor>', "</contributor>      <contributor>
           <role type='author'>
              <description>committee</description>
@@ -70,8 +70,8 @@ RSpec.describe Metanorma::Bipm do
             </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(Asciidoctor.convert(input, *OPTIONS))))
-      .to be_equivalent_to output
+    expect(strip_guid(Asciidoctor.convert(input, *OPTIONS)))
+      .to be_xml_equivalent_to output
     expect(File.exist?("test.html")).to be true
     expect(File.exist?("test.pdf")).to be true
   end

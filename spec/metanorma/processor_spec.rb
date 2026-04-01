@@ -11,9 +11,10 @@ RSpec.describe Metanorma::Bipm::Processor do
   end
 
   it "registers output formats against metanorma" do
-    expect(processor.output_formats.sort.to_s).to be_equivalent_to <<~OUTPUT
+    output = <<~OUTPUT
       [[:html, "html"], [:pdf, "pdf"], [:presentation, "presentation.xml"], [:rxl, "rxl"], [:xml, "xml"]]
     OUTPUT
+    expect(processor.output_formats.sort.to_s).to be_equivalent_to output.strip
   end
 
   it "registers version against metanorma" do
@@ -25,15 +26,15 @@ RSpec.describe Metanorma::Bipm::Processor do
       #{ASCIIDOC_BLANK_HDR}
     INPUT
 
-    output = Canon.format_xml(<<~"OUTPUT")
+    output = <<~"OUTPUT"
       #{BLANK_HDR}
         <sections/>
       </metanorma>
     OUTPUT
 
-    expect(Canon.format_xml(strip_guid(processor
-      .input_to_isodoc(input, nil))))
-      .to be_equivalent_to Canon.format_xml(strip_guid(output))
+    expect(strip_guid(processor
+      .input_to_isodoc(input, nil)))
+      .to be_xml_equivalent_to strip_guid(output)
   end
 
   it "generates HTML from IsoDoc XML" do
@@ -51,25 +52,25 @@ RSpec.describe Metanorma::Bipm::Processor do
       </metanorma>
     INPUT
 
-    output = Canon.format_xml(<<~OUTPUT)
-       <main class="main-section">
-         <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
-         <div id="H">
-           <h1 id="_">
-             <a class="anchor" href="#H"/>
-             <a class="header" href="#H">1.  Terms, Definitions, Symbols and Abbreviated Terms</a>
-           </h1>
-           <p class="Terms" style="text-align:left;" id="J"><strong>1.1.</strong> Term2</p>
-         </div>
-       </main>
+    output = <<~OUTPUT
+      <main class="main-section">
+        <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+        <div id="H">
+          <h1 id="_">
+            <a class="anchor" href="#H"/>
+            <a class="header" href="#H">1.  Terms, Definitions, Symbols and Abbreviated Terms</a>
+          </h1>
+          <p class="Terms" style="text-align:left;" id="J"><strong>1.1.</strong> Term2</p>
+        </div>
+      </main>
     OUTPUT
 
     processor.output(input, "test.xml", "test.html", :html)
 
     expect(
-      Canon.format_xml(strip_guid(File.read("test.html", encoding: "utf-8")
+      strip_guid(File.read("test.html", encoding: "utf-8"
         .gsub(%r{^.*<main}m, "<main")
         .gsub(%r{</main>.*}m, "</main>"))),
-    ).to be_equivalent_to Canon.format_xml(strip_guid(output))
+    ).to be_html5_equivalent_to strip_guid(output)
   end
 end
