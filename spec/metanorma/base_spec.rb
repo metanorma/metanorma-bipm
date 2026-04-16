@@ -82,7 +82,6 @@ RSpec.describe Metanorma::Bipm do
     INPUT
 
     output = <<~"OUTPUT"
-      <?xml version="1.0" encoding="UTF-8"?>
         <metanorma type="semantic" version="#{Metanorma::Bipm::VERSION}" xmlns="https://www.metanorma.org/ns/standoc" flavor="bipm">
           <bibdata type="standard">
             <title language="en" type="title-main">Main Title</title>
@@ -370,7 +369,6 @@ RSpec.describe Metanorma::Bipm do
     INPUT
 
     output = <<~"OUTPUT"
-      <?xml version="1.0" encoding="UTF-8"?>
       <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
       <bibdata type="standard">
         <title language='en' type='title-main'>Main Title</title>
@@ -704,7 +702,6 @@ RSpec.describe Metanorma::Bipm do
     INPUT
 
     output = <<~"OUTPUT"
-        <?xml version="1.0" encoding="UTF-8"?>
         <metanorma xmlns="https://www.metanorma.org/ns/standoc"  version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
         <bibdata type='standard'>
           <title language='en' type='title-main'>Main Title</title>

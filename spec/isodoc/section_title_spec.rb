@@ -627,11 +627,7 @@ RSpec.describe IsoDoc::Bipm do
             </div>
             <br/>
             <div id="P" class="Section3">
-               <h1 class="Annex">
-                  <b>Annex 1</b>
-                  .#{' '}
-                  <b>Annex</b>
-               </h1>
+               <h1 class="Annex"><b>Annex 1</b>.  <b>Annex</b></h1>
                <p style="display:none;" class="variant-title-toc">Annex 1  Annex</p>
                <div id="Q">
                   <h2>A1.1.  Annex A.1</h2>
@@ -645,11 +641,7 @@ RSpec.describe IsoDoc::Bipm do
             </div>
             <br/>
             <div id="QQ" class="Section3">
-               <h1 class="Annex">
-                  <b>Annex 2</b>
-                  .#{' '}
-                  <b>Glossary</b>
-               </h1>
+               <h1 class="Annex"><b>Annex 2</b>.  <b>Glossary</b></h1>
                <p style="display:none;" class="variant-title-toc">Annex 2  Glossary</p>
                <div id="QQ1">
                   <p class="TermNum" id="term-term-1">A2.1.</p>
