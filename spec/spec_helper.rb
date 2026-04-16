@@ -13,6 +13,8 @@ require "relaton/iso"
 require "canon"
 require_relative "support/uuid_mock"
 
+Canon::Config.instance.profile = :metanorma
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
@@ -188,7 +190,6 @@ JCGM_XML = <<~XML.freeze
 XML
 
 BLANK_HDR = <<~"HDR".freeze
-    <?xml version="1.0" encoding="UTF-8"?>
     <metanorma xmlns="https://www.metanorma.org/ns/standoc" version="#{Metanorma::Bipm::VERSION}" type="semantic" flavor="bipm">
     <bibdata type="standard">
       <docidentifier primary="true" type="BIPM">BIPM </docidentifier>
