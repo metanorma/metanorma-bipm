@@ -9,7 +9,7 @@ require "metanorma/bipm"
 require "rspec/matchers"
 require "equivalent-xml"
 require "htmlentities"
-require "relaton_iso"
+require "relaton/iso"
 require "canon"
 require_relative "support/uuid_mock"
 
@@ -45,7 +45,7 @@ RSpec.configure do |config|
   end
 end
 
-OPTIONS = [backend: :bipm, header_footer: true].freeze
+OPTIONS = [{ backend: :bipm, header_footer: true }].freeze
 
 DOC_SCHEME_2019 = <<~XML.freeze
   <metanorma-extension><presentation-metadata><document-scheme>2019</document-scheme></presentation-metadata></metanorma-extension>
@@ -75,12 +75,12 @@ end
 
 def htmlencode(html)
   HTMLEntities.new.encode(html, :hexadecimal)
-    .gsub(/&#x3e;/, ">")
-    .gsub(/&#xa;/, "\n")
-    .gsub(/&#x22;/, '"')
-    .gsub(/&#x3c;/, "<")
-    .gsub(/&#x26;/, "&")
-    .gsub(/&#x27;/, "'")
+    .gsub("&#x3e;", ">")
+    .gsub("&#xa;", "\n")
+    .gsub("&#x22;", '"')
+    .gsub("&#x3c;", "<")
+    .gsub("&#x26;", "&")
+    .gsub("&#x27;", "'")
     .gsub(/\\u(....)/) { "&#x#{$1.downcase};" }
 end
 
@@ -124,14 +124,14 @@ end
 def boilerplate(lang)
   boilerplate_read(
     File.read(boilerplate_filepath(lang), encoding: "utf-8")
-    .gsub(/\{\{ agency \}\}/, "BIPM")
-    .gsub(/\{\{ docyear \}\}/, Date.today.year.to_s)
+    .gsub("{{ agency }}", "BIPM")
+    .gsub("{{ docyear }}", Date.today.year.to_s)
     .gsub(/\{% if unpublished %\}.*\{% endif %\}/m, "")
     .gsub(/(?<=\p{Alnum})'(?=\p{Alpha})/, "’")
-    .gsub(/<p /, "<p id='_' ")
-    .gsub(/<p>/, "<p id='_'>")
-    .gsub(/<quote /, "<quote id='_' ")
-    .gsub(/<quote>/, "<quote id='_'>"),
+    .gsub("<p ", "<p id='_' ")
+    .gsub("<p>", "<p id='_'>")
+    .gsub("<quote ", "<quote id='_' ")
+    .gsub("<quote>", "<quote id='_'>"),
   ).gsub(/’/, "&#8217;").gsub(/©/, "&#169;")
 end
 
