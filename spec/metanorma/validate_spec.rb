@@ -1,30 +1,6 @@
 require "spec_helper"
 
 RSpec.describe Metanorma::Bipm do
-  context "when xref_error.adoc compilation" do
-    it "generates error file" do
-      FileUtils.rm_rf("xref_error.err.html")
-      File.write("xref_error.adoc", <<~CONTENT)
-        = X
-        A
-
-        == Clause
-
-        <<a,b>>
-      CONTENT
-      mock_pdf
-      expect do
-        Metanorma::Compile
-          .new
-          .compile("xref_error.adoc", type: "bipm", install_fonts: false)
-      end.to(
-        change { File.exist?("xref_error.err.html") }
-          .from(false)
-          .to(true),
-      )
-    end
-  end
-
   it "validates committees" do
     mock_pdf
     Asciidoctor.convert(<<~INPUT, backend: :bipm, header_footer: true)

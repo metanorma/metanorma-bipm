@@ -1,4 +1,4 @@
-require "metanorma"
+require "metanorma-core"
 require "metanorma/bipm"
 require "metanorma/bipm/version"
 require "isodoc/bipm"

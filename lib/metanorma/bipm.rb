@@ -1,4 +1,4 @@
-require "metanorma"
+require "metanorma-core"
 require "metanorma-generic"
 require "metanorma/bipm/processor"
 require "metanorma/bipm/converter"
