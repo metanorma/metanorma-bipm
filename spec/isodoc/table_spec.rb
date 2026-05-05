@@ -484,128 +484,107 @@ RSpec.describe IsoDoc::Bipm do
       #{HTML_HDR}
              <br/>
              <div id="_11" class="TOC">
-                <h1 class="IntroTitle">Contents</h1>
+               <h1 class="IntroTitle">Contents</h1>
              </div>
              <div id="A">
-                <h1>1.</h1>
-                <table id="tableD-1" class="MsoISOTable" style="border-width:1px;border-spacing:0;width:70%;page-break-after: avoid;page-break-inside: avoid;table-layout:fixed;" title="tool tip">
-                   <caption>
-                   Table 1.  Repeatability and reproducibility of
-                   <i>husked</i>
-                   rice yield
-                   <a class="FootnoteRef" href="#fn:_20">
-                      <sup>(1)</sup>
-                   </a>
-                      <span style="display:none">long desc</span>
-                   </caption>
-                   <colgroup>
-                      <col style="width: 30%;"/>
-                      <col style="width: 20%;"/>
-                      <col style="width: 20%;"/>
-                      <col style="width: 20%;"/>
-                      <col style="width: 10%;"/>
-                   </colgroup>
-                   <thead>
-                      <tr>
-                         <td rowspan="2" style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;" scope="col">Description</td>
-                         <td colspan="4" style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="colgroup">Rice sample</td>
-                      </tr>
-                      <tr>
-                         <td style="text-align:left;vertical-align:top;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Arborio</td>
-                         <td style="text-align:center;vertical-align:middle;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">
-                            Drago
-                            <a href="#tableD-1a" class="TableFootnoteRef">(a)</a>
-                         </td>
-                         <td style="text-align:center;vertical-align:bottom;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">
-                            Balilla
-                            <a href="#tableD-1a" class="TableFootnoteRef">(a)</a>
-                         </td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Thaibonnet</td>
-                      </tr>
-                   </thead>
-                   <tbody>
-                      <tr>
-                         <th style="font-weight:bold;text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Number of laboratories retained after eliminating outliers</th>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">11</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
-                      </tr>
-                      <tr>
-                         <td style="text-align:left;border-top:none;border-bottom:solid windowtext 1.5pt;">Mean value, g/100 g</td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,2</td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">82,0</td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,8</td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">77,7</td>
-                      </tr>
-                   </tbody>
-                   <tfoot>
-                      <tr>
-                         <td style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
-                            Reproducibility limit,
-                            <span class="stem">(#(R)#)</span>
-                            (= 2,83
-                            <span class="stem">(#(s_R)#)</span>
-                            )
-                         </td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">2,89</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">0,57</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">2,26</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
-                            <div class="key">
-                               <div class="figdl">
-                                  <dl>
-                                     <dt>
-                                        <p>6,06</p>
-                                     </dt>
-                                     <dd>Definition</dd>
-                                  </dl>
-                               </div>
-                            </div>
-                         </td>
-                      </tr>
-                   </tfoot>
-                   <div class="key">
-                      <p style="page-break-after: avoid;">
-                         <b>Key</b>
-                      </p>
-                      <para>
-                         <b role="strong">&lt;dt&gt;Drago&lt;/dt&gt;</b>
-                      </para>
-                      <para>
-                         <b role="strong">&lt;dd&gt;A type of rice&lt;/dd&gt;</b>
-                      </para>
-                   </div>
-                   <aside id="fn:tableD-1a" class="footnote">
-                      <p id="_">
-                         <span class="TableFootnoteRef">(a)</span>
-                           Parboiled rice.
-                      </p>
-                   </aside>
-                </table>
-                <div class="BlockSource">
-                   <p>
+               <h1>1.</h1>
+               <table id="tableD-1" class="MsoISOTable" style="border-width:1px;border-spacing:0;width:70%;page-break-after: avoid;page-break-inside: avoid;table-layout:fixed;" title="tool tip">
+                 <caption>Table 1.&#xA0; Repeatability and reproducibility of <i>husked</i> rice yield<a class="FootnoteRef" href="#fn:_20"><sup>(1)</sup></a><span style="display:none">long desc</span></caption>
+                 <colgroup>
+                   <col style="width: 30%;" />
+                   <col style="width: 20%;" />
+                   <col style="width: 20%;" />
+                   <col style="width: 20%;" />
+                   <col style="width: 10%;" />
+                 </colgroup>
+                 <thead>
+                   <tr>
+                     <td rowspan="2" style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;" scope="col">Description</td>
+                     <td colspan="4" style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="colgroup">Rice sample</td>
+                   </tr>
+                   <tr>
+                     <td style="text-align:left;vertical-align:top;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Arborio</td>
+                     <td style="text-align:center;vertical-align:middle;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Drago<a href="#tableD-1a" class="TableFootnoteRef">(a)</a></td>
+                     <td style="text-align:center;vertical-align:bottom;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Balilla<a href="#tableD-1a" class="TableFootnoteRef">(a)</a></td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Thaibonnet</td>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr>
+                     <th style="font-weight:bold;text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Number of laboratories retained after eliminating outliers</th>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">11</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
+                   </tr>
+                   <tr>
+                     <td style="text-align:left;border-top:none;border-bottom:solid windowtext 1.5pt;">Mean value, g/100 g</td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,2</td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">82,0</td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,8</td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">77,7</td>
+                   </tr>
+                 </tbody>
+                 <tfoot>
+                   <tr>
+                     <td style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:0pt;">Reproducibility limit, <span class="stem">(#(R)#)</span> (= 2,83 <span class="stem">(#(s_R)#)</span>)</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:0pt;">2,89</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:0pt;">0,57</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:0pt;">2,26</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:0pt;">
+                       <div class="key">
+                         <div class="figdl">
+                           <dl>
+                             <dt>
+                               <p>6,06</p>
+                             </dt>
+                             <dd>Definition</dd>
+                           </dl>
+                         </div>
+                       </div>
+                     </td>
+                   </tr>
+                   <tr>
+                     <td colspan="5" style="border-top:0pt;border-bottom:solid windowtext 1.5pt;">
+                       <div class="key">
+                         <p style="page-break-after: avoid;">
+                           <b>Key</b>
+                         </p>
+                         <para>
+                           <b role="strong">&lt;dt&gt;Drago&lt;/dt&gt;</b>
+                         </para>
+                         <para>
+                           <b role="strong">&lt;dd&gt;A type of rice&lt;/dd&gt;</b>
+                         </para>
+                       </div>
+                       <aside id="fn:tableD-1a" class="footnote">
+                         <p id="_"><span class="TableFootnoteRef">(a)</span>&#xA0; Parboiled rice.</p>
+                       </aside>
+                     </td>
+                   </tr>
+                 </tfoot>
+               </table>
+               <div class="BlockSource">
+                 <p>
            ,  Section 1
-            — with adjustments
+            &#x2014; with adjustments
          </p>
-                </div>
-                <div class="BlockSource">
-                   <p>
+               </div>
+               <div class="BlockSource">
+                 <p>
            ,  Section 2
          </p>
-                </div>
-                <div class="Note">
-                   <p>
-                      <span class="note_label">Note:  </span>
-                      This is a table about rice
-                   </p>
-                </div>
-                <aside id="fn:_20" class="footnote">
-                   <p>X</p>
-                </aside>
+               </div>
+               <div class="Note">
+                 <p><span class="note_label">Note:&#xA0; </span>This is a table about rice</p>
+               </div>
+               <aside id="fn:_20" class="footnote">
+                 <p>X</p>
+               </aside>
              </div>
-          </div>
-       </body>
+           </div>
+         </body>
+       </html>
     OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert
@@ -1055,140 +1034,118 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     OUTPUT
     output = <<~OUTPUT
-      <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container">
-          <div class="title-section">
-             <p> </p>
-          </div>
-          <br/>
-          <div class="prefatory-section">
-             <p> </p>
-          </div>
-          <br/>
-          <div class="main-section">
-             <br/>
+         <body lang="EN-US" link="blue" vlink="#954F72" xml:lang="EN-US" class="container" xml:lang="EN-US">
+           <div class="title-section">
+             <p>&#xA0;</p>
+           </div>
+           <br />
+           <div class="prefatory-section">
+             <p>&#xA0;</p>
+           </div>
+           <br />
+           <div class="main-section">
+             <br />
              <div id="_43" class="TOC">
-                <h1 class="IntroTitle">Contents</h1>
+               <h1 class="IntroTitle">Contents</h1>
              </div>
              <div id="A">
-                <h1>1.</h1>
-                <table id="tableD-1" class="MsoISOTable" style="border-width:1px;border-spacing:0;width:70%;page-break-after: avoid;page-break-inside: avoid;table-layout:fixed;" title="tool tip">
-                   <caption>
-                   Table 1.  Repeatability and reproducibility of
-                   <i>husked</i>
-                   rice yield
-                   <a class="FootnoteRef" href="#fn:_54">
-                      <sup>1)</sup>
-                   </a>
-                      <span style="display:none">long desc</span>
-                   </caption>
-                   <colgroup>
-                      <col style="width: 30%;"/>
-                      <col style="width: 20%;"/>
-                      <col style="width: 20%;"/>
-                      <col style="width: 20%;"/>
-                      <col style="width: 10%;"/>
-                   </colgroup>
-                   <thead>
-                      <tr>
-                         <td rowspan="2" style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;" scope="col">Description</td>
-                         <td colspan="4" style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="colgroup">Rice sample</td>
-                      </tr>
-                      <tr>
-                         <td style="text-align:left;vertical-align:top;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Arborio</td>
-                         <td style="text-align:center;vertical-align:middle;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">
-                            Drago
-                            <a href="#tableD-1a" class="TableFootnoteRef">a</a>
-                         </td>
-                         <td style="text-align:center;vertical-align:bottom;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">
-                            Balilla
-                            <a href="#tableD-1a" class="TableFootnoteRef">a</a>
-                         </td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Thaibonnet</td>
-                      </tr>
-                   </thead>
-                   <tbody>
-                      <tr>
-                         <th style="font-weight:bold;text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Number of laboratories retained after eliminating outliers</th>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">11</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
-                      </tr>
-                      <tr>
-                         <td style="text-align:left;border-top:none;border-bottom:solid windowtext 1.5pt;">Mean value, g/100 g</td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,2</td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">82,0</td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,8</td>
-                         <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">77,7</td>
-                      </tr>
-                   </tbody>
-                   <tfoot>
-                      <tr>
-                         <td style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
-                            Reproducibility limit,
-                            <span class="stem">(#(R)#)</span>
-                            (= 2,83
-                            <span class="stem">(#(s_R)#)</span>
-                            )
-                         </td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">2,89</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">0,57</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">2,26</td>
-                         <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;">
-                            <div class="key">
-                               <div class="figdl">
-                                  <dl>
-                                     <dt>
-                                        <p>6,06</p>
-                                     </dt>
-                                     <dd>Definition</dd>
-                                  </dl>
-                               </div>
-                            </div>
-                         </td>
-                      </tr>
-                   </tfoot>
-                   <div class="key">
-                      <p style="page-break-after: avoid;">
-                         <b>Key</b>
-                      </p>
-                      <para>
-                         <b role="strong">&lt;dt&gt;Drago&lt;/dt&gt;</b>
-                      </para>
-                      <para>
-                         <b role="strong">&lt;dd&gt;A type of rice&lt;/dd&gt;</b>
-                      </para>
-                   </div>
-                   <aside id="fn:tableD-1a" class="footnote">
-                      <p id="_">
-                         <span class="TableFootnoteRef">a</span>
-                           Parboiled rice.
-                      </p>
-                   </aside>
-                </table>
-                <div class="BlockSource">
-                   <p>
+               <h1>1.</h1>
+               <table id="tableD-1" class="MsoISOTable" style="border-width:1px;border-spacing:0;width:70%;page-break-after: avoid;page-break-inside: avoid;table-layout:fixed;" title="tool tip">
+                 <caption>Table 1.&#xA0; Repeatability and reproducibility of <i>husked</i> rice yield<a class="FootnoteRef" href="#fn:_54"><sup>1)</sup></a><span style="display:none">long desc</span></caption>
+                 <colgroup>
+                   <col style="width: 30%;" />
+                   <col style="width: 20%;" />
+                   <col style="width: 20%;" />
+                   <col style="width: 20%;" />
+                   <col style="width: 10%;" />
+                 </colgroup>
+                 <thead>
+                   <tr>
+                     <td rowspan="2" style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.5pt;" scope="col">Description</td>
+                     <td colspan="4" style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="colgroup">Rice sample</td>
+                   </tr>
+                   <tr>
+                     <td style="text-align:left;vertical-align:top;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Arborio</td>
+                     <td style="text-align:center;vertical-align:middle;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Drago<a href="#tableD-1a" class="TableFootnoteRef">a</a></td>
+                     <td style="text-align:center;vertical-align:bottom;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Balilla<a href="#tableD-1a" class="TableFootnoteRef">a</a></td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;" scope="col">Thaibonnet</td>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr>
+                     <th style="font-weight:bold;text-align:left;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Number of laboratories retained after eliminating outliers</th>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">11</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">13</td>
+                   </tr>
+                   <tr>
+                     <td style="text-align:left;border-top:none;border-bottom:solid windowtext 1.5pt;">Mean value, g/100 g</td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,2</td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">82,0</td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">81,8</td>
+                     <td style="text-align:center;border-top:none;border-bottom:solid windowtext 1.5pt;">77,7</td>
+                   </tr>
+                 </tbody>
+                 <tfoot>
+                   <tr>
+                     <td style="text-align:left;border-top:solid windowtext 1.5pt;border-bottom:0pt;">Reproducibility limit, <span class="stem">(#(R)#)</span> (= 2,83 <span class="stem">(#(s_R)#)</span>)</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:0pt;">2,89</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:0pt;">0,57</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:0pt;">2,26</td>
+                     <td style="text-align:center;border-top:solid windowtext 1.5pt;border-bottom:0pt;">
+                       <div class="key">
+                         <div class="figdl">
+                           <dl>
+                             <dt>
+                               <p>6,06</p>
+                             </dt>
+                             <dd>Definition</dd>
+                           </dl>
+                         </div>
+                       </div>
+                     </td>
+                   </tr>
+                   <tr>
+                     <td colspan="5" style="border-top:0pt;border-bottom:solid windowtext 1.5pt;">
+                       <div class="key">
+                         <p style="page-break-after: avoid;">
+                           <b>Key</b>
+                         </p>
+                         <para>
+                           <b role="strong">&lt;dt&gt;Drago&lt;/dt&gt;</b>
+                         </para>
+                         <para>
+                           <b role="strong">&lt;dd&gt;A type of rice&lt;/dd&gt;</b>
+                         </para>
+                       </div>
+                       <aside id="fn:tableD-1a" class="footnote">
+                         <p id="_"><span class="TableFootnoteRef">a</span>&#xA0; Parboiled rice.</p>
+                       </aside>
+                     </td>
+                   </tr>
+                 </tfoot>
+               </table>
+               <div class="BlockSource">
+                 <p>
            ,  Section 1
-            — with adjustments
+            &#x2014; with adjustments
          </p>
-                </div>
-                <div class="BlockSource">
-                   <p>
+               </div>
+               <div class="BlockSource">
+                 <p>
            ,  Section 2
          </p>
-                </div>
-                <div class="Note">
-                   <p>
-                      <span class="note_label">Note:  </span>
-                      This is a table about rice
-                   </p>
-                </div>
+               </div>
+               <div class="Note">
+                 <p><span class="note_label">Note:&#xA0; </span>This is a table about rice</p>
+               </div>
              </div>
              <aside id="fn:_54" class="footnote">
-                <p>X</p>
+               <p>X</p>
              </aside>
-          </div>
-       </body>
+           </div>
+         </body>
     OUTPUT
     pres_output =
       IsoDoc::Bipm::PresentationXMLConvert
@@ -1200,7 +1157,7 @@ RSpec.describe IsoDoc::Bipm do
       .to(be_xml_equivalent_to(presxml))
     expect(strip_guid(IsoDoc::Bipm::HtmlConvert.new({})
       .convert("test", pres_output, true)
-      .gsub(%r{^.*<body}m, "<body")
-      .gsub(%r{</body>.*}m, "</body>"))).to(be_html5_equivalent_to(output))
+      .gsub(%r{\A.*<body}m, "<body")
+      .gsub(%r{</body>.*\Z}m, "</body>"))).to(be_html5_equivalent_to(output))
   end
 end

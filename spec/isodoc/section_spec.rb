@@ -465,7 +465,7 @@ RSpec.describe IsoDoc::Bipm do
                    <tbody>
                       <tr>
                          <th style="font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Authors:</th>
-                         <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;"/>
+                         <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;"></td>
                          <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">Andrew Yacoot (NPL), Ulrich Kuetgens (PTB), and Enrico Massa (INRIM)</td>
                       </tr>
                       <tr>
@@ -481,7 +481,7 @@ RSpec.describe IsoDoc::Bipm do
                       <tr>
                          <td style="border-top:none;border-bottom:solid windowtext 1.5pt;">Draft 3.0 </td>
                          <td style="border-top:none;border-bottom:solid windowtext 1.5pt;">2019-06-11</td>
-                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;"/>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;"></td>
                       </tr>
                    </tbody>
                 </table>
@@ -706,13 +706,13 @@ RSpec.describe IsoDoc::Bipm do
                    <tbody>
                       <tr>
                          <th style="font-weight:bold;border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;" scope="row">Authors:</th>
-                         <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;"/>
+                         <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;"></td>
                          <td style="border-top:solid windowtext 1.5pt;border-bottom:solid windowtext 1.0pt;">Andrew Yacoot (NPL) and Ulrich Kuetgens (PTB)</td>
                       </tr>
                       <tr>
                          <td style="border-top:none;border-bottom:solid windowtext 1.5pt;">Draft 1.0 Version 1.0</td>
                          <td style="border-top:none;border-bottom:solid windowtext 1.5pt;">2018-06-11</td>
-                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;"/>
+                         <td style="border-top:none;border-bottom:solid windowtext 1.5pt;"></td>
                       </tr>
                    </tbody>
                 </table>
