@@ -372,7 +372,7 @@ RSpec.describe IsoDoc::Bipm do
         publisher: "#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
         receiveddate: "XXX",
         revdate: "2000-01-01",
-        revdate_monthyear: "Janvier 2000",
+        revdate_monthyear: "janvier 2000",
         script: "Latn",
         stable_untildate: "XXX",
         stage: "Working Draft",
