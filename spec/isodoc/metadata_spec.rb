@@ -29,7 +29,8 @@ RSpec.describe IsoDoc::Bipm do
           <title type="title-provenance" language="en" format="plain">Main Title Provenance</title>
           <title type="title-provenance" language="fr" format="plain">Chef Title Provenance</title>
           <docidentifier>1000</docidentifier>
-          <date type="published">2021-04</date>
+          <date type="published"><on>2021-04</on></date>
+          <date type="updated"><on>2000-01-01</on></date>
           <contributor>
             <role type="author"/>
             <person>
@@ -109,11 +110,8 @@ RSpec.describe IsoDoc::Bipm do
               <name>ORG2</name>
             </organization>
           </contributor>
-          <version>
             <edition>2</edition>
-            <revision-date>2000-01-01</revision-date>
-            <draft>3.4</draft>
-          </version>
+          <version>3.4</version>
           <language>en</language>
           <script>Latn</script>
           <status>
@@ -183,6 +181,7 @@ RSpec.describe IsoDoc::Bipm do
         docyear: "2001",
         draft: "3.4",
         draftinfo: " (draft 3.4, 2000-01-01)",
+        edition: "2",
         implementeddate: "XXX",
         issueddate: "XXX",
         lang: "en",
@@ -261,6 +260,7 @@ RSpec.describe IsoDoc::Bipm do
           <title format="plain" language="en" type="title-annex">Main Title Annex</title>
           <title format="plain" language="fr" type="title-annex">Chef Title Annex</title>
           <docidentifier>1000</docidentifier>
+          <date type="updated"><on>2000-01-01</on></date>
           <contributor>
             <role type="author"/>
             <organization>
@@ -288,11 +288,8 @@ RSpec.describe IsoDoc::Bipm do
               #{BIPM_LOGO}
             </organization>
           </contributor>
-          <version>
             <edition>2</edition>
-            <revision-date>2000-01-01</revision-date>
-            <draft>3.4</draft>
-          </version>
+          <version>3.4</version>
           <language>fr</language>
           <script>Latn</script>
           <status>
@@ -360,6 +357,7 @@ RSpec.describe IsoDoc::Bipm do
         docyear: "2001",
         draft: "3.4",
         draftinfo: " (brouillon 3.4, 2000-01-01)",
+        edition: "2",
         implementeddate: "XXX",
         issueddate: "XXX",
         lang: "fr",
@@ -374,7 +372,7 @@ RSpec.describe IsoDoc::Bipm do
         publisher: "#{Metanorma::Bipm.configuration.organization_name_long['fr']}",
         receiveddate: "XXX",
         revdate: "2000-01-01",
-        revdate_monthyear: "Janvier 2000",
+        revdate_monthyear: "janvier 2000",
         script: "Latn",
         stable_untildate: "XXX",
         stage: "Working Draft",
@@ -418,11 +416,8 @@ RSpec.describe IsoDoc::Bipm do
           <status>
             <stage>standard</stage>
           </status>
-        <version>
           <edition>2</edition>
-          <revision-date>2000-01-01</revision-date>
-          <draft>3.4</draft>
-        </version>
+        <version>3.4</version>
         </bibdata>
         <metanorma-extension>
         <semantic-metadata>
@@ -443,7 +438,8 @@ RSpec.describe IsoDoc::Bipm do
         correcteddate: "XXX",
         createddate: "XXX",
         draft: "3.4",
-        draftinfo: " (draft 3.4, 2000-01-01)",
+        draftinfo: " (draft 3.4)",
+        edition: "2",
         implementeddate: "XXX",
         issueddate: "XXX",
         lang: "en",
@@ -451,8 +447,6 @@ RSpec.describe IsoDoc::Bipm do
         org_abbrev: "BIPM",
         publisheddate: "XXX",
         receiveddate: "XXX",
-        revdate: "2000-01-01",
-        revdate_monthyear: "January 2000",
         script: "Latn",
         stable_untildate: "XXX",
         stage: "Standard",

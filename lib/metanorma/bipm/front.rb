@@ -69,9 +69,7 @@ module Metanorma
             add_noko_elem(b, "date", date,
                           type: edition ? "published" : "circulated")
             add_noko_elem(b, "edition", edition)
-            draft and b.version do |v|
-              add_noko_elem(v, "draft", draft)
-            end
+            draft and add_noko_elem(b, "version", draft)
           end
         end
       end

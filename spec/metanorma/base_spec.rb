@@ -113,6 +113,7 @@ RSpec.describe Metanorma::Bipm do
             <date type="obsoleted">
               <on>C</on>
             </date>
+            <date type="updated"><on>2000-01-01</on></date>
             <contributor>
               <role type="author"/>
               <organization>
@@ -224,10 +225,7 @@ RSpec.describe Metanorma::Bipm do
               </organization>
             </contributor>
             <edition>2</edition>
-            <version>
-              <revision-date>2000-01-01</revision-date>
-              <draft>3.4</draft>
-            </version>
+            <version>3.4</version>
             <language>en</language>
             <script>Latn</script>
             <status>
@@ -259,26 +257,20 @@ RSpec.describe Metanorma::Bipm do
               <bibitem>
                 <date type="published">2018-06-11</date>
                 <edition>1.0</edition>
-                <version>
-                  <draft>1.0</draft>
-                </version>
+                <version>1.0</version>
               </bibitem>
             </relation>
             <relation type="supersedes">
               <bibitem>
                 <date type="published">2019-06-11</date>
                 <edition>2.0</edition>
-                <version>
-                  <draft>2.0</draft>
-                </version>
+                <version>2.0</version>
               </bibitem>
             </relation>
             <relation type="supersedes">
               <bibitem>
                 <date type="circulated">2019-06-11</date>
-                <version>
-                  <draft>3.0</draft>
-                </version>
+                <version>3.0</version>
               </bibitem>
             </relation>
             <ext>
@@ -383,6 +375,7 @@ RSpec.describe Metanorma::Bipm do
         <date type='obsoleted'>
           <on>C</on>
         </date>
+            <date type="updated"><on>2000-01-01</on></date>
           <contributor>
             <role type="author"/>
             <organization>
@@ -416,10 +409,7 @@ RSpec.describe Metanorma::Bipm do
             </organization>
           </contributor>
           <edition>2</edition>
-          <version>
-            <revision-date>2000-01-01</revision-date>
-            <draft>3.4</draft>
-          </version>
+          <version>3.4</version>
           <language>fr</language>
           <script>Latn</script>
           <status>
@@ -542,6 +532,7 @@ RSpec.describe Metanorma::Bipm do
            <date type="obsoleted">
              <on>C</on>
            </date>
+            <date type="updated"><on>2000-01-01</on></date>
            <contributor>
              <role type="author"/>
              <organization>
@@ -575,10 +566,7 @@ RSpec.describe Metanorma::Bipm do
              </organization>
            </contributor>
            <edition>2</edition>
-           <version>
-             <revision-date>2000-01-01</revision-date>
-             <draft>3.4</draft>
-           </version>
+           <version>3.4</version>
            <language>fr</language>
            <script>Latn</script>
            <status>
@@ -721,6 +709,7 @@ RSpec.describe Metanorma::Bipm do
           <date type='obsoleted'>
             <on>C</on>
           </date>
+            <date type="updated"><on>2000-01-01</on></date>
           <contributor>
             <role type='author'/>
             <organization>
@@ -754,10 +743,7 @@ RSpec.describe Metanorma::Bipm do
             </organization>
           </contributor>
           <edition>2</edition>
-          <version>
-            <revision-date>2000-01-01</revision-date>
-            <draft>3.4</draft>
-          </version>
+          <version>3.4</version>
           <language>fr</language>
           <script>Latn</script>
           <status>
