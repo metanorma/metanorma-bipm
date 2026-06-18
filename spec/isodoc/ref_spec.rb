@@ -745,7 +745,7 @@ RSpec.describe IsoDoc do
                   <a href="http://www.icc.or.at">http://www.icc.or.at</a>
                   )
                </p>
-               <div id="_" class="Note Biblio">
+               <div id="_" class="display Note Biblio">
                   <p>
                      <span class="note_label">Note:  </span>
                      This is an annotation of ISO 20483:2013-2014
@@ -762,13 +762,13 @@ RSpec.describe IsoDoc do
                   <i>Instruments for analytical laboratory use</i>
                   . (n.d.).
                </p>
-               <div id="_" class="Note Biblio">
+               <div id="_" class="display Note Biblio">
                   <p>
                      <span class="note_label">Note:  </span>
                      This is an annotation of document ISSN.
                   </p>
                </div>
-               <div id="_" class="Note Biblio">
+               <div id="_" class="display Note Biblio">
                   <p>
                      <span class="note_label">Note:  </span>
                      This is another annotation of document ISSN.
