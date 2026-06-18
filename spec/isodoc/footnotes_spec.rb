@@ -270,10 +270,24 @@ RSpec.describe IsoDoc::Bipm do
              <bibitem id="ISO712" type="standard">
                <biblio-tag>ISO 712 </biblio-tag>
                <formattedref>
-                 <em>Cereals and cereal products ISO is a standards organisation.</em>
+                          <em>
+             Cereals and cereal products
+             <fn id="_12" original-reference="7" reference="1" target="_">
+               <p original-id="_">ISO is a standards organisation.</p>
+               <fmt-fn-label>
+                 <span class="fmt-caption-label">
+                   <sup>
+                     <span class="fmt-label-delim">(</span>
+                     <semx element="autonum" source="_">1</semx>
+                     <span class="fmt-label-delim">)</span>
+                   </sup>
+                 </span>
+               </fmt-fn-label>
+             </fn>
+           </em>
                </formattedref>
                <title format="text/plain">Cereals or cereal products</title>
-               <title type="main" format="text/plain">Cereals and cereal products<fn reference="1" id="_12" original-reference="7" target="_"><p original-id="_">ISO is a standards organisation.</p><fmt-fn-label><span class="fmt-caption-label"><sup><span class="fmt-label-delim">(</span><semx element="autonum" source="_">1</semx><span class="fmt-label-delim">)</span></sup></span></fmt-fn-label></fn></title>
+               <title type="main" format="text/plain">Cereals and cereal products<fn reference="1" id="_12" original-reference="7" target="_"><p id="_">ISO is a standards organisation.</p><fmt-fn-label><span class="fmt-caption-label"><sup><span class="fmt-label-delim">(</span><semx element="autonum" source="_">1</semx><span class="fmt-label-delim">)</span></sup></span></fmt-fn-label></fn></title>
                <docidentifier type="ISO">ISO 712</docidentifier>
                <docidentifier scope="biblio-tag">ISO 712</docidentifier>
                <contributor>
@@ -413,7 +427,12 @@ RSpec.describe IsoDoc::Bipm do
                <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                <p id="ISO712" class="NormRef">
                  ISO 712
-                  <i>Cereals and cereal products ISO is a standards organisation.</i>
+                           <i>
+            Cereals and cereal products
+            <a class="FootnoteRef" href="#fn:_32">
+              <sup>(1)</sup>
+            </a>
+          </i>
                </p>
                <aside id="fn:_32" class="footnote">
                   <p id="_">ISO is a standards organisation.</p>
@@ -596,10 +615,23 @@ RSpec.describe IsoDoc::Bipm do
              <bibitem id="ISO712" type="standard">
                <biblio-tag>ISO 712 </biblio-tag>
                <formattedref>
-                 <em>Cereals and cereal products ISO is a standards organisation.</em>
+                          <em>
+             Cereals and cereal products
+             <fn id="_51" original-reference="7" reference="5" target="_">
+               <p original-id="_">ISO is a standards organisation.</p>
+               <fmt-fn-label>
+                 <span class="fmt-caption-label">
+                   <sup>
+                     <semx element="autonum" source="_">5</semx>
+                     <span class="fmt-label-delim">)</span>
+                   </sup>
+                 </span>
+               </fmt-fn-label>
+             </fn>
+           </em>
                </formattedref>
                <title format="text/plain">Cereals or cereal products</title>
-               <title type="main" format="text/plain">Cereals and cereal products<fn reference="5" id="_51" original-reference="7" target="_"><p original-id="_">ISO is a standards organisation.</p><fmt-fn-label><span class="fmt-caption-label"><sup><semx element="autonum" source="_">5</semx><span class="fmt-label-delim">)</span></sup></span></fmt-fn-label></fn></title>
+               <title type="main" format="text/plain">Cereals and cereal products<fn reference="5" id="_51" original-reference="7" target="_"><p id="_">ISO is a standards organisation.</p><fmt-fn-label><span class="fmt-caption-label"><sup><semx element="autonum" source="_">5</semx><span class="fmt-label-delim">)</span></sup></span></fmt-fn-label></fn></title>
                <docidentifier type="ISO">ISO 712</docidentifier>
                <docidentifier scope="biblio-tag">ISO 712</docidentifier>
                <contributor>
@@ -706,7 +738,12 @@ RSpec.describe IsoDoc::Bipm do
                 <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                 <p id="ISO712" class="NormRef">
                 ISO 712
-                   <i>Cereals and cereal products ISO is a standards organisation.</i>
+                           <i>
+             Cereals and cereal products
+             <a class="FootnoteRef" href="#fn:_65">
+               <sup>5)</sup>
+             </a>
+           </i>
                 </p>
              </div>
              <div id="A">
