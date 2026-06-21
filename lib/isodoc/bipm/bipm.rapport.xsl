@@ -1904,6 +1904,7 @@
 		<!-- <fo:block-container margin-left="-14mm"  margin-right="0mm">
 			<fo:block-container margin-left="0mm" margin-right="0mm"> -->
 				<fo:block xsl:use-attribute-sets="toc-title-style">
+					<xsl:call-template name="refine_toc-title-style"/>
 					<fo:inline><xsl:value-of select="//mn:metanorma/mn:bibdata/mn:title[@language = $curr_lang and @type='title-main']"/></fo:inline>
 					<fo:inline keep-together.within-line="always">
 						<fo:leader leader-pattern="space"/>
@@ -15150,7 +15151,6 @@
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
 		<xsl:attribute name="text-align-last">justify</xsl:attribute>
 		<xsl:attribute name="margin-bottom">82pt</xsl:attribute>
-		<xsl:attribute name="role">H1</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:template name="refine_toc-title-style">
