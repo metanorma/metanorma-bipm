@@ -44,8 +44,8 @@ def presxml_options
 end
 
 def metadata(hash)
-  hash.sort.to_h.delete_if do |_, v|
-    v.nil? || (v.respond_to?(:empty?) && v.empty?)
+  hash.sort.to_h.delete_if do |k, v|
+    k.to_s == "bibdata" || v.nil? || (v.respond_to?(:empty?) && v.empty?)
   end
 end
 
