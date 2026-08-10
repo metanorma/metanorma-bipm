@@ -178,11 +178,11 @@ module IsoDoc
         index.keys.sort.each do |k|
           c = indexsect
             .add_child "<clause #{add_id_text}><title #{add_id_text}>#{k}</title><ul></ul></clause>"
-          words = index[k].keys.each_with_object({}) do |w, v|
-            v[sortable(w).downcase] = w
-          end
+          words = index_sort_buckets(index[k].keys)
           words.keys.localize(@lang.to_sym).sort.to_a.each do |w|
-            c.first.at(ns("./ul")).add_child index_entries(words, index[k], w)
+            words[w].each do |w1|
+              c.first.at(ns("./ul")).add_child index_entries(w1, index[k])
+            end
           end
         end
         docxml.xpath(ns("//indexsect//xref")).each { |x| x.children.remove }
