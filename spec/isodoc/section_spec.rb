@@ -217,7 +217,7 @@ RSpec.describe IsoDoc::Bipm do
               <stage>working-draft</stage>
               <iteration>3</iteration>
             </status>
-          <relation type='supersedes'>
+          <relation type='successorOf'>
             <bibitem>
               <date type='published'>2018-06-11</date>
               <edition>1.0</edition>
@@ -226,7 +226,7 @@ RSpec.describe IsoDoc::Bipm do
               </version>
             </bibitem>
           </relation>
-          <relation type='supersedes'>
+          <relation type='successorOf'>
             <bibitem>
               <date type='published'>2019-06-11</date>
               <edition>2.0</edition>
@@ -235,7 +235,7 @@ RSpec.describe IsoDoc::Bipm do
               </version>
             </bibitem>
           </relation>
-          <relation type='supersedes'>
+          <relation type='successorOf'>
             <bibitem>
               <date type='circulated'>2019-06-11</date>
               <version>
@@ -360,7 +360,7 @@ RSpec.describe IsoDoc::Bipm do
             <stage>working-draft</stage>
             <iteration>3</iteration>
           </status>
-        <relation type="supersedes">
+        <relation type="successorOf">
           <bibitem>
             <date type="published">2018-06-11</date>
             <edition>1.0</edition>
@@ -369,7 +369,7 @@ RSpec.describe IsoDoc::Bipm do
             </version>
           </bibitem>
         </relation>
-        <relation type="supersedes">
+        <relation type="successorOf">
           <bibitem>
             <date type="published">2019-06-11</date>
             <edition>2.0</edition>
@@ -378,7 +378,7 @@ RSpec.describe IsoDoc::Bipm do
             </version>
           </bibitem>
         </relation>
-        <relation type="supersedes">
+        <relation type="successorOf">
           <bibitem>
             <date type="circulated">2019-06-11</date>
             <version>
@@ -560,7 +560,7 @@ RSpec.describe IsoDoc::Bipm do
               <stage>working-draft</stage>
               <iteration>3</iteration>
             </status>
-          <relation type='supersedes'>
+          <relation type='successorOf'>
             <bibitem>
               <date type='published'>2018-06-11</date>
               <edition>1.0</edition>
@@ -635,7 +635,7 @@ RSpec.describe IsoDoc::Bipm do
                 <stage>working-draft</stage>
                 <iteration>3</iteration>
              </status>
-             <relation type="supersedes">
+             <relation type="successorOf">
                 <bibitem>
                    <date type="published">2018-06-11</date>
                    <edition>1.0</edition>
