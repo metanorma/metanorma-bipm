@@ -2,7 +2,7 @@ module IsoDoc
   module Bipm
     class PresentationXMLConvert < IsoDoc::Generic::PresentationXMLConvert
       def doccontrol(doc)
-        doc.at(ns("//bibdata/relation[@type = 'supersedes']")) or return
+        doc.at(ns("//bibdata/relation[@type = 'successorOf']")) or return
         clause = <<~DOCCONTROL
           <clause class="doccontrol" #{add_id_text}>
           <fmt-title #{add_id_text}>Document Control</fmt-title>
@@ -50,7 +50,7 @@ module IsoDoc
       end
 
       def list_draft(xml, idx)
-        d = xml.at(ns("//bibdata/relation[@type = 'supersedes'][#{idx}]" \
+        d = xml.at(ns("//bibdata/relation[@type = 'successorOf'][#{idx}]" \
                       "/bibitem")) or return ["", ""]
         draft = d.at(ns("./version/draft"))&.text and draft = "Draft #{draft}"
         edn = d.at(ns("./edition"))&.text and edn = "Version #{edn}"
