@@ -30,7 +30,7 @@ RSpec.describe IsoDoc::Bipm do
                <fmt-title depth="1" id="_">
                   <span class="fmt-caption-label">
                      <semx element="autonum" source="A1">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
+                     <span class="fmt-clause-delim">.</span>
                   </span>
                   <span class="fmt-caption-delim">
                      <tab/>
@@ -397,7 +397,7 @@ RSpec.describe IsoDoc::Bipm do
                 <fmt-title depth="1" id="_">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="_">1</semx>
-                      <span class="fmt-autonum-delim">.</span>
+                      <span class="fmt-clause-delim">.</span>
                    </span>
                 </fmt-title>
                 <fmt-xref-label>
@@ -456,7 +456,7 @@ RSpec.describe IsoDoc::Bipm do
                 <h1 class="IntroTitle">Contents</h1>
              </div>
              <div id="_">
-                <h1>1.</h1>
+                <h1>1<span class="fmt-clause-delim">.</span></h1>
              </div>
              <br/>
               <div class="Section3" id="_">
@@ -655,7 +655,7 @@ RSpec.describe IsoDoc::Bipm do
                 <fmt-title depth="1" id="_">
                    <span class="fmt-caption-label">
                       <semx element="autonum" source="_">1</semx>
-                      <span class="fmt-autonum-delim">.</span>
+                      <span class="fmt-clause-delim">.</span>
                    </span>
                 </fmt-title>
                 <fmt-xref-label>
@@ -697,7 +697,7 @@ RSpec.describe IsoDoc::Bipm do
                 <h1 class="IntroTitle">Contents</h1>
              </div>
               <div id="_">
-                <h1>1.</h1>
+                <h1>1<span class="fmt-clause-delim">.</span></h1>
              </div>
              <br/>
              <div class="Section3" id="_">
@@ -784,7 +784,7 @@ RSpec.describe IsoDoc::Bipm do
                <fmt-title depth="1" id="_">
                   <span class="fmt-caption-label">
                      <semx element="autonum" source="H">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
+                     <span class="fmt-clause-delim">.</span>
                   </span>
                   <span class="fmt-caption-delim">
                      <tab/>
@@ -801,7 +801,7 @@ RSpec.describe IsoDoc::Bipm do
                         <semx element="autonum" source="H">1</semx>
                         <span class="fmt-autonum-delim">.</span>
                         <semx element="autonum" source="J">1</semx>
-                        <span class="fmt-autonum-delim">.</span>
+                        <span class="fmt-clause-delim">.</span>
                      </span>
                   </fmt-name>
                   <fmt-xref-label>
@@ -862,7 +862,7 @@ RSpec.describe IsoDoc::Bipm do
                         <semx element="autonum" source="H">1</semx>
                         <span class="fmt-autonum-delim">.</span>
                         <semx element="autonum" source="K">2</semx>
-                        <span class="fmt-autonum-delim">.</span>
+                        <span class="fmt-clause-delim">.</span>
                      </span>
                   </fmt-name>
                   <fmt-xref-label>
@@ -1021,8 +1021,8 @@ RSpec.describe IsoDoc::Bipm do
                <h1 class="IntroTitle">Contents</h1>
             </div>
             <div id="H">
-               <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
-               <p class="TermNum" id="J">1.1.</p>
+               <h1>1<span class="fmt-clause-delim">.</span>  Terms, Definitions, Symbols and Abbreviated Terms</h1>
+               <p class="TermNum" id="J">1.1<span class="fmt-clause-delim">.</span></p>
                <p class="Terms" style="text-align:left;">
                   <b><dfn>Term2</dfn></b>
                </p>
@@ -1030,7 +1030,7 @@ RSpec.describe IsoDoc::Bipm do
         ISO 7301:2011, Clause 3.1
            — The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here
       ]</p>
-               <p class="TermNum" id="K">1.2.</p>
+               <p class="TermNum" id="K">1.2<span class="fmt-clause-delim">.</span></p>
                <p class="Terms" style="text-align:left;">
                   <b><dfn>Term3</dfn></b>
                </p>
@@ -1095,7 +1095,7 @@ RSpec.describe IsoDoc::Bipm do
                <fmt-title depth="1" id="_">
                   <span class="fmt-caption-label">
                      <semx element="autonum" source="H">1</semx>
-                     <span class="fmt-autonum-delim">.</span>
+                     <span class="fmt-clause-delim">.</span>
                   </span>
                   <span class="fmt-caption-delim">
                      <tab/>
@@ -1112,7 +1112,7 @@ RSpec.describe IsoDoc::Bipm do
                         <semx element="autonum" source="H">1</semx>
                         <span class="fmt-autonum-delim">.</span>
                         <semx element="autonum" source="J">1</semx>
-                        <span class="fmt-autonum-delim">.</span>
+                        <span class="fmt-clause-delim">.</span>
                      </span>
                   </fmt-name>
                   <fmt-xref-label>
@@ -1173,7 +1173,7 @@ RSpec.describe IsoDoc::Bipm do
                         <semx element="autonum" source="H">1</semx>
                         <span class="fmt-autonum-delim">.</span>
                         <semx element="autonum" source="K">2</semx>
-                        <span class="fmt-autonum-delim">.</span>
+                        <span class="fmt-clause-delim">.</span>
                      </span>
                   </fmt-name>
                   <fmt-xref-label>
@@ -1329,8 +1329,8 @@ RSpec.describe IsoDoc::Bipm do
                <h1 class="IntroTitle">Contents</h1>
             </div>
             <div id="H">
-               <h1>1.  Terms, Definitions, Symbols and Abbreviated Terms</h1>
-               <p class="TermNum" id="J">1.1.</p>
+               <h1>1<span class="fmt-clause-delim">.</span>  Terms, Definitions, Symbols and Abbreviated Terms</h1>
+               <p class="TermNum" id="J">1.1<span class="fmt-clause-delim">.</span></p>
                <p class="Terms" style="text-align:left;">
                   <b><dfn>Term2</dfn></b>
                </p>
@@ -1339,7 +1339,7 @@ RSpec.describe IsoDoc::Bipm do
                   <span class="citesec">3.1</span>
                   — The term "cargo rice" is shown as deprecated, and Note 1 to entry is not included here ]
                </p>
-               <p class="TermNum" id="K">1.2.</p>
+               <p class="TermNum" id="K">1.2<span class="fmt-clause-delim">.</span></p>
                <p class="Terms" style="text-align:left;">
                   <b><dfn>Term3</dfn></b>
                </p>
@@ -1440,7 +1440,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="A">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -1458,7 +1458,7 @@ RSpec.describe IsoDoc::Bipm do
                           <semx element="autonum" source="A">1</semx>
                           <span class="fmt-autonum-delim">.</span>
                           <semx element="autonum" source="B">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
+                          <span class="fmt-clause-delim">.</span>
                        </span>
                     </fmt-title>
                     <fmt-xref-label>
@@ -1703,7 +1703,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="A">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -1727,7 +1727,7 @@ RSpec.describe IsoDoc::Bipm do
                           <semx element="autonum" source="A">1</semx>
                           <span class="fmt-autonum-delim">.</span>
                           <semx element="autonum" source="B">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
+                          <span class="fmt-clause-delim">.</span>
                        </span>
                     </fmt-title>
                     <fmt-xref-label>
