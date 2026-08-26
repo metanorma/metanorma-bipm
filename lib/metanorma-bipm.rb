@@ -9,4 +9,3 @@ if defined? Metanorma::Registry
   require_relative "metanorma/bipm"
   Metanorma::Registry.instance.register(Metanorma::Bipm::Processor)
 end
-require "metanorma/bipm/document"

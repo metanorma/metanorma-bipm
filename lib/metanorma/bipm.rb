@@ -38,6 +38,7 @@ module Metanorma
     end
 
     configure {}
+    autoload :Document, "metanorma/bipm/document"
   end
 end
 Metanorma::Registry.instance.register(Metanorma::Bipm::Processor)
