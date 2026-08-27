@@ -124,7 +124,7 @@ RSpec.describe IsoDoc::Bipm do
                <fmt-title depth="1" id="_27">
                   <span class="fmt-caption-label">
                      <semx element="autonum" source="A">1</semx>
-                     <span class="fmt-clause-delim">.</span>
+                     <span class="fmt-autonum-delim">.</span>
                   </span>
                </fmt-title>
                <fmt-xref-label>
@@ -487,7 +487,7 @@ RSpec.describe IsoDoc::Bipm do
                <h1 class="IntroTitle">Contents</h1>
              </div>
              <div id="A">
-               <h1>1<span class="fmt-clause-delim">.</span></h1>
+               <h1>1.</h1>
                <table id="tableD-1" class="MsoISOTable" style="border-width:1px;border-spacing:0;width:70%;page-break-after: avoid;page-break-inside: avoid;table-layout:fixed;" title="tool tip">
                  <caption>Table 1.&#xA0; Repeatability and reproducibility of <i>husked</i> rice yield<a class="FootnoteRef" href="#fn:_20"><sup>(1)</sup></a><span style="display:none">long desc</span></caption>
                  <colgroup>
@@ -636,7 +636,7 @@ RSpec.describe IsoDoc::Bipm do
                <fmt-title depth="1" id="_63">
                   <span class="fmt-caption-label">
                      <semx element="autonum" source="A">1</semx>
-                     <span class="fmt-clause-delim">.</span>
+                     <span class="fmt-autonum-delim">.</span>
                   </span>
                </fmt-title>
                <fmt-xref-label>
@@ -1049,7 +1049,7 @@ RSpec.describe IsoDoc::Bipm do
                <h1 class="IntroTitle">Contents</h1>
              </div>
              <div id="A">
-               <h1>1<span class="fmt-clause-delim">.</span></h1>
+               <h1>1.</h1>
                <table id="tableD-1" class="MsoISOTable" style="border-width:1px;border-spacing:0;width:70%;page-break-after: avoid;page-break-inside: avoid;table-layout:fixed;" title="tool tip">
                  <caption>Table 1.&#xA0; Repeatability and reproducibility of <i>husked</i> rice yield<a class="FootnoteRef" href="#fn:_54"><sup>1)</sup></a><span style="display:none">long desc</span></caption>
                  <colgroup>
