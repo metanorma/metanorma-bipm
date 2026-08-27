@@ -178,10 +178,17 @@ module IsoDoc
         index.keys.sort.each do |k|
           c = indexsect
             .add_child "<clause #{add_id_text}><title #{add_id_text}>#{k}</title><ul></ul></clause>"
-          words = index_sort_buckets(index[k].keys)
+          # isodoc inlined index_sort_buckets into index1; rebuild the
+          # sortable-key buckets here, grouping words per bucket so each
+          # word still renders its own index entry under the letter clause.
+          words = index[k].keys.each_with_object({}) do |w, v|
+            (v[sortable(w).downcase] ||= []) << w
+          end
           words.keys.localize(@lang.to_sym).sort.to_a.each do |w|
             words[w].each do |w1|
-              c.first.at(ns("./ul")).add_child index_entries(w1, index[k])
+              c.first.at(ns("./ul")).add_child(
+                index_entries({ w => w1 }, index[k], w)
+              )
             end
           end
         end

@@ -171,7 +171,7 @@ RSpec.describe IsoDoc::Bipm do
              <fmt-title depth="1" id="_36">
                <span class="fmt-caption-label">
                  <semx element="autonum" source="A">1</semx>
-                 <span class="fmt-clause-delim">.</span>
+                 <span class="fmt-autonum-delim">.</span>
                </span>
                <span class="fmt-caption-delim">
                  <tab/>
@@ -188,7 +188,7 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="A">1</semx>
                    <span class="fmt-autonum-delim">.</span>
                    <semx element="autonum" source="AA">1</semx>
-                   <span class="fmt-clause-delim">.</span>
+                   <span class="fmt-autonum-delim">.</span>
                  </span>
                </fmt-title>
                <fmt-xref-label>
@@ -218,7 +218,7 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="A">1</semx>
                    <span class="fmt-autonum-delim">.</span>
                    <semx element="autonum" source="AB">2</semx>
-                   <span class="fmt-clause-delim">.</span>
+                   <span class="fmt-autonum-delim">.</span>
                  </span>
                </fmt-title>
                <fmt-xref-label>
@@ -255,7 +255,7 @@ RSpec.describe IsoDoc::Bipm do
              <fmt-title depth="1" id="_39">
                <span class="fmt-caption-label">
                  <semx element="autonum" source="_">2</semx>
-                 <span class="fmt-clause-delim">.</span>
+                 <span class="fmt-autonum-delim">.</span>
                </span>
                <span class="fmt-caption-delim">
                  <tab/>
@@ -371,13 +371,13 @@ RSpec.describe IsoDoc::Bipm do
             </div>
             <div id="A">
                <h1>
-                  1<span class="fmt-clause-delim">.</span>  BB
+                  1.  BB
                   <a class="FootnoteRef" href="#fn:_26">
                      <sup>(1)</sup>
                   </a>
                </h1>
                <div id="AA">
-                  <h2>1.1<span class="fmt-clause-delim">.</span></h2>
+                  <h2>1.1.</h2>
                   <p>
                      A.
                      <a class="FootnoteRef" href="#fn:_28">
@@ -398,7 +398,7 @@ RSpec.describe IsoDoc::Bipm do
                   </aside>
                </div>
                <div id="AB">
-                  <h2>1.2<span class="fmt-clause-delim">.</span></h2>
+                  <h2>1.2.</h2>
                   <p>
                      A.
                      <a class="FootnoteRef" href="#fn:_30">
@@ -423,7 +423,7 @@ RSpec.describe IsoDoc::Bipm do
                </aside>
             </div>
             <div>
-               <h1>2<span class="fmt-clause-delim">.</span>  Normative References</h1>
+               <h1>2.  Normative References</h1>
                <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                <p id="ISO712" class="NormRef">
                  ISO 712
@@ -549,7 +549,7 @@ RSpec.describe IsoDoc::Bipm do
              <fmt-title depth="1" id="_74">
                <span class="fmt-caption-label">
                  <semx element="autonum" source="A">2</semx>
-                 <span class="fmt-clause-delim">.</span>
+                 <span class="fmt-autonum-delim">.</span>
                </span>
                <span class="fmt-caption-delim">
                  <tab/>
@@ -566,7 +566,7 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="A">2</semx>
                    <span class="fmt-autonum-delim">.</span>
                    <semx element="autonum" source="AA">1</semx>
-                   <span class="fmt-clause-delim">.</span>
+                   <span class="fmt-autonum-delim">.</span>
                  </span>
                </fmt-title>
                <fmt-xref-label>
@@ -583,7 +583,7 @@ RSpec.describe IsoDoc::Bipm do
                    <semx element="autonum" source="A">2</semx>
                    <span class="fmt-autonum-delim">.</span>
                    <semx element="autonum" source="AB">2</semx>
-                   <span class="fmt-clause-delim">.</span>
+                   <span class="fmt-autonum-delim">.</span>
                  </span>
                </fmt-title>
                <fmt-xref-label>
@@ -600,7 +600,7 @@ RSpec.describe IsoDoc::Bipm do
              <fmt-title depth="1" id="_77">
                <span class="fmt-caption-label">
                  <semx element="autonum" source="_">1</semx>
-                 <span class="fmt-clause-delim">.</span>
+                 <span class="fmt-autonum-delim">.</span>
                </span>
                <span class="fmt-caption-delim">
                  <tab/>
@@ -734,7 +734,7 @@ RSpec.describe IsoDoc::Bipm do
                 </p>
              </div>
              <div>
-                <h1>1<span class="fmt-clause-delim">.</span>  Normative References</h1>
+                <h1>1.  Normative References</h1>
                 <p>The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.</p>
                 <p id="ISO712" class="NormRef">
                 ISO 712
@@ -748,13 +748,13 @@ RSpec.describe IsoDoc::Bipm do
              </div>
              <div id="A">
                 <h1>
-                   2<span class="fmt-clause-delim">.</span>  BB
+                   2.  BB
                    <a class="FootnoteRef" href="#fn:_66">
                       <sup>6)</sup>
                    </a>
                 </h1>
                 <div id="AA">
-                   <h2>2.1<span class="fmt-clause-delim">.</span></h2>
+                   <h2>2.1.</h2>
                    <p>
                       A.
                       <a class="FootnoteRef" href="#fn:_68">
@@ -769,7 +769,7 @@ RSpec.describe IsoDoc::Bipm do
                    </p>
                 </div>
                 <div id="AB">
-                   <h2>2.2<span class="fmt-clause-delim">.</span></h2>
+                   <h2>2.2.</h2>
                    <p>
                       A.
                       <a class="FootnoteRef" href="#fn:_68">
