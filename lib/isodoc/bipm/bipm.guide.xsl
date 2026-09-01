@@ -15365,6 +15365,7 @@
 
 	<xsl:attribute-set name="toc-style">
 		<xsl:attribute name="line-height">135%</xsl:attribute>
+		<xsl:attribute name="role">SKIP</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:template name="refine_toc-style">
