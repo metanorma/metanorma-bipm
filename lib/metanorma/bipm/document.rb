@@ -18,6 +18,7 @@ end
 
 require "metanorma-core"
 require "metanorma/document"
+require "metanorma/bipm/html"
 
 Metanorma::Core::Flavors.register(
   Metanorma::Core::Flavor.new(
@@ -26,7 +27,7 @@ Metanorma::Core::Flavors.register(
     model_root: Metanorma::Bipm::Document::Root,
     processor: defined?(Metanorma::Bipm::Processor) ? Metanorma::Bipm::Processor : nil,
     pubid_module: :"Pubid::Bipm",
-    renderers: { html: Metanorma::Html::StandardRenderer },
+    renderers: { html: Metanorma::Bipm::Html::Renderer },
   ),
 )
 
