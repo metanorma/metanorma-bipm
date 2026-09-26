@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+require "metanorma/iso/document"
+
 module Metanorma
   module Bipm::Document
     module Metadata
-      class BipmBibliographicItem < Metanorma::IsoDocument::Metadata::IsoBibliographicItem
+      class BipmBibliographicItem < Metanorma::Iso::Document::Metadata::IsoBibliographicItem
         attribute :ext, BipmBibDataExtensionType
         attribute :depiction, DepictionElement
 

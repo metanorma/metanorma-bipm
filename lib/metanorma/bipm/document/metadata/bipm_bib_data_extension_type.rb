@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
+require "metanorma/iso/document"
+
 module Metanorma
   module Bipm::Document
     module Metadata
       # Extension point for bibliographical definitions of BIPM documents.
       # Inherits all ISO extension fields; overrides structuredidentifier for BIPM format.
-      class BipmBibDataExtensionType < Metanorma::IsoDocument::Metadata::IsoBibDataExtensionType
+      class BipmBibDataExtensionType < Metanorma::Iso::Document::Metadata::IsoBibDataExtensionType
         attribute :structuredidentifier, BipmStructuredIdentifier
         attribute :si_aspect, :string
 
