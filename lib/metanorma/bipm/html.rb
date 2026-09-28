@@ -172,7 +172,7 @@ module Metanorma
         end
 
         def bipm_docyear(bibdata)
-          copyright = safe_attr(bibdata, :copyright)
+          copyright = Array(safe_attr(bibdata, :copyright)).first
           from = safe_attr(copyright, :from)
           from.to_s[/\d{4}/]
         end
