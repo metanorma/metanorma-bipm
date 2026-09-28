@@ -234,7 +234,13 @@ module Metanorma
         def bipm_stage_display(bibdata)
           stage = Array(safe_attr(safe_attr(bibdata, :status), :stage)).first
           value = Array(safe_attr(stage, :value)).join.strip
-          value.empty? ? nil : bipm_status_print(value)
+          return nil if value.empty?
+
+          # isodoc prints the stage through the flavor stage_dict
+          # ("in-force" becomes "En Vigeur" on French covers), not the
+          # raw bibdata value.
+          localized = bipm_gem_labels.dig("stage_dict", value) || value
+          bipm_status_print(localized)
         end
 
         def bipm_doctype_display(bibdata)
