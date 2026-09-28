@@ -7,6 +7,8 @@ module Metanorma
                "#{__dir__}/metadata/bipm_bib_data_extension_type"
       autoload :BipmBibliographicItem,
                "#{__dir__}/metadata/bipm_bibliographic_item"
+      autoload :BipmEditorialGroup,
+               "#{__dir__}/metadata/bipm_editorial_group"
       autoload :BipmStructuredIdentifier,
                "#{__dir__}/metadata/bipm_structured_identifier"
       autoload :DepictionElement, "#{__dir__}/metadata/depiction_element"
