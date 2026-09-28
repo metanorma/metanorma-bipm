@@ -625,42 +625,9 @@
 						<xsl:apply-templates select="$contents/mnx:doc[@id=$docid]/mnx:contents/mnx:item[@display = 'true']"/>
 					</fo:block>
 
-					<!-- List of Tables -->
-					<xsl:for-each select="$contents/mnx:doc[@id=$docid]//mnx:tables/mnx:table">
-						<xsl:if test="position() = 1">
-							<xsl:call-template name="insertListOf_Title">
-								<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@id=$docid]/mnx:title-list-tables"/>
-							</xsl:call-template>
-						</xsl:if>
-						<fo:block role="TOC">
-							<xsl:call-template name="insertListOf_Item"/>
-						</fo:block>
-					</xsl:for-each>
-
-					<!-- List of Figures -->
-					<xsl:for-each select="$contents/mnx:doc[@id=$docid]//mnx:figures/mnx:figure">
-						<xsl:if test="position() = 1">
-						<xsl:call-template name="insertListOf_Title">
-							<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@id=$docid]/mnx:title-list-figures"/>
-						</xsl:call-template>
-						</xsl:if>
-						<fo:block role="TOC">
-							<xsl:call-template name="insertListOf_Item"/>
-						</fo:block>
-					</xsl:for-each>
-
-					<!-- List of Examples -->
-					<xsl:for-each select="$contents/mnx:doc[@id=$docid]//mnx:examples/mnx:example">
-						<xsl:if test="position() = 1">
-						<xsl:call-template name="insertListOf_Title">
-							<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@id=$docid]/mnx:title-list-examples"/>
-						</xsl:call-template>
-						</xsl:if>
-						<fo:block role="TOC">
-							<xsl:call-template name="insertListOf_Item"/>
-						</fo:block>
-					</xsl:for-each>
-
+					<xsl:call-template name="insertListsOf">
+						<xsl:with-param name="docid" select="$docid"/>
+					</xsl:call-template>
 				</xsl:if>
 			</fo:block>
 		</fo:block-container>
@@ -694,6 +661,69 @@
 			</fo:block>
 		</xsl:if>
 		<xsl:call-template name="print_JCGN_toc_item"/>
+	</xsl:template>
+
+	<xsl:template name="insertListsOf">
+		<xsl:param name="docid"/>
+		<!-- List of Tables -->
+		<xsl:call-template name="insertListOfTables">
+			<xsl:with-param name="docid" select="$docid"/>
+		</xsl:call-template>
+
+		<!-- List of Figures -->
+		<xsl:call-template name="insertListOfFigures">
+			<xsl:with-param name="docid" select="$docid"/>
+		</xsl:call-template>
+
+		<!-- List of Examples -->
+		<xsl:call-template name="insertListOfExamples">
+			<xsl:with-param name="docid" select="$docid"/>
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template name="insertListOfTables">
+		<xsl:param name="docid"/>
+		<!-- List of Tables -->
+		<xsl:if test="$contents/mnx:doc[@id=$docid]//mnx:tables/mnx:table">
+			<xsl:call-template name="insertListOf_Title">
+				<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@id=$docid]/mnx:title-list-tables"/>
+			</xsl:call-template>
+			<fo:block role="TOC">
+				<xsl:for-each select="$contents/mnx:doc[@id=$docid]//mnx:tables/mnx:table">
+					<xsl:call-template name="insertListOf_Item"/>
+				</xsl:for-each>
+			</fo:block>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="insertListOfFigures">
+		<xsl:param name="docid"/>
+		<!-- List of Figures -->
+		<xsl:if test="$contents/mnx:doc[@id=$docid]//mnx:figures/mnx:figure">
+			<xsl:call-template name="insertListOf_Title">
+				<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@id=$docid]/mnx:title-list-figures"/>
+			</xsl:call-template>
+			<fo:block role="TOC">
+				<xsl:for-each select="$contents/mnx:doc[@id=$docid]//mnx:figures/mnx:figure">
+					<xsl:call-template name="insertListOf_Item"/>
+				</xsl:for-each>
+			</fo:block>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="insertListOfExamples">
+		<xsl:param name="docid"/>
+		<!-- List of Examples -->
+		<xsl:if test="$contents/mnx:doc[@id=$docid]//mnx:examples/mnx:example">
+			<xsl:call-template name="insertListOf_Title">
+				<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@id=$docid]/mnx:title-list-examples"/>
+			</xsl:call-template>
+			<fo:block role="TOC">
+				<xsl:for-each select="$contents/mnx:doc[@id=$docid]//mnx:examples/mnx:example">
+					<xsl:call-template name="insertListOf_Item"/>
+				</xsl:for-each>
+			</fo:block>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="mn:sections//mn:p[@class = 'zzSTDTitle1']" priority="4">
@@ -13657,6 +13687,7 @@
 
 	<xsl:attribute-set name="toc-listof-item-style">
 		<xsl:attribute name="role">TOCI</xsl:attribute>
+		<xsl:attribute name="text-align-last">justify</xsl:attribute>
 		<xsl:attribute name="margin-left">17mm</xsl:attribute>
 		<xsl:attribute name="text-indent">-12mm</xsl:attribute>
 	</xsl:attribute-set>
