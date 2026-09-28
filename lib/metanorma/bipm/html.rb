@@ -231,7 +231,11 @@ module Metanorma
         def bipm_docyear(bibdata)
           copyright = Array(safe_attr(bibdata, :copyright)).first
           from = safe_attr(copyright, :from)
-          from.to_s[/\d{4}/]
+          # The Relaton DateTime wrapper keeps the element text as
+          # content (with an optional @text mirror).
+          year = safe_attr(from, :content).to_s
+          year = safe_attr(from, :text).to_s if year.empty?
+          year[/\d{4}/]
         end
 
         def bipm_org_abbrev(bibdata)
