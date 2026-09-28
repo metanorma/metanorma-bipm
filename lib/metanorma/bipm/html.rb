@@ -61,6 +61,7 @@ module Metanorma
 
           parts = []
           parts << bipm_cover_title_html(title_runs, "cover-title")
+          parts << bipm_ancillary_title_stack(bibdata)
           parts << bipm_band_html("document-stage-band", "document-stage", stage)
           parts << bipm_band_html("document-type-band", "document-type", type_line)
           parts << bipm_doc_number_html(bibdata, year)
@@ -135,6 +136,62 @@ module Metanorma
         # Cover title runs in native order: main title in the document
         # language, main title in the other language, then the
         # provenance title ("GUM 1995 with minor corrections").
+        # The bilingual ancillary-title stack of the isodoc BIPM titlepage
+        # (title-first / title-second spans): "Part 1: ...", "Annex 2: ...",
+        # "Appendix 1: ..." lines, labelled from the flavor i18n level
+        # ancillary labels with the structured-identifier numbers.
+        def bipm_ancillary_title_stack(bibdata)
+          ext = safe_attr(bibdata, :ext)
+          sid = safe_attr(ext, :structuredidentifier)
+          return "" unless sid
+
+          labels = bipm_gem_labels
+          lang = bipm_primary_lang(bibdata)
+          other = lang == "fr" ? "en" : "fr"
+          runs = []
+          { part: ["level4_ancillary", "part"],
+            appendix: ["level2_ancillary", "appendix"],
+            annexid: ["level3_ancillary", "annex"] }.each do |id_key, (label_key, type_suffix)|
+            number = safe_attr(sid, id_key).to_s.strip
+            next if number.empty?
+
+            [[lang, label_key, "title-first"],
+             [other, "#{label_key}_alt", "title-second"]].each do |l, key, css|
+              label = labels[key]
+              next unless label
+
+              line = "#{label} #{number}: #{bipm_typed_title(bibdata, l, type_suffix)}".rstrip
+              runs << [css, line]
+            end
+          end
+          return "" if runs.empty?
+
+          spans = runs.map do |css, line|
+            render_liquid("_element.html.liquid", {
+                            "tag" => "span",
+                            "extra_attrs" => %( class="#{css}"),
+                            "content" => escape_html(line),
+                          })
+          end
+          render_liquid("_element.html.liquid", {
+                          "tag" => "div",
+                          "extra_attrs" => "",
+                          "content" => spans.join("<br/>"),
+                        })
+        end
+
+        # The bibdata title text for a language and one of the ancillary
+        # title types (title-part / title-appendix / title-annex).
+        def bipm_typed_title(bibdata, lang, type_suffix)
+          titles = safe_attr(bibdata, :titles)
+          return "" unless titles.respond_to?(:items)
+
+          item = titles.items.find do |t|
+            t.language == lang && t._type.to_s == "title-#{type_suffix}"
+          end
+          item ? extract_text_value(item.value).to_s.strip : ""
+        end
+
         def bipm_cover_title_items(bibdata, lang)
           titles = safe_attr(bibdata, :titles)
           return [] unless titles.respond_to?(:items)
