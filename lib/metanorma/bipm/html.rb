@@ -284,11 +284,21 @@ module Metanorma
           end
         end
 
+        # isodoc's extract_person_affiliations: the organization name
+        # followed by its formatted address, comma-joined.
         def bipm_person_affiliation(person)
           Array(safe_attr(person, :affiliation)).filter_map do |aff|
             org = safe_attr(aff, :organization)
+            parts = []
             name = org ? extract_text_value(safe_attr(org, :name)).to_s.strip : ""
-            name.empty? ? nil : name
+            parts << name unless name.empty?
+            address = Array(safe_attr(org, :address)).first
+            location = extract_text_value(
+              safe_attr(address, :formatted_address),
+            ).to_s.strip
+            location = safe_attr(address, :formatted_address_attr).to_s.strip if location.empty?
+            parts << location unless location.empty?
+            parts.empty? ? nil : parts.join(", ")
           end.first.to_s
         end
 
