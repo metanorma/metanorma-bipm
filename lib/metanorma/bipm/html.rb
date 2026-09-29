@@ -160,7 +160,9 @@ module Metanorma
               label = labels[key]
               next unless label
 
-              line = "#{label} #{number}: #{bipm_typed_title(bibdata, l, type_suffix)}".rstrip
+              content = bipm_typed_title_html(bibdata, l, type_suffix)
+              prefix = "#{escape_html(label)} #{escape_html(number)}:"
+              line = content.empty? ? prefix : "#{prefix} #{content}"
               runs << [css, line]
             end
           end
@@ -170,7 +172,7 @@ module Metanorma
             render_liquid("_element.html.liquid", {
                             "tag" => "span",
                             "extra_attrs" => %( class="#{css}"),
-                            "content" => escape_html(line),
+                            "content" => line,
                           })
           end
           render_liquid("_element.html.liquid", {
@@ -181,15 +183,53 @@ module Metanorma
         end
 
         # The bibdata title text for a language and one of the ancillary
-        # title types (title-part / title-appendix / title-annex).
-        def bipm_typed_title(bibdata, lang, type_suffix)
+        # title types (title-part / title-appendix / title-annex), as
+        # renderable HTML: text runs in source order with inline stems
+        # rendered as both their MathML and their AsciiMath source.
+        def bipm_typed_title_html(bibdata, lang, type_suffix)
           titles = safe_attr(bibdata, :titles)
           return "" unless titles.respond_to?(:items)
 
           item = titles.items.find do |t|
             t.language == lang && t._type.to_s == "title-#{type_suffix}"
           end
-          item ? extract_text_value(item.value).to_s.strip : ""
+          item ? bipm_title_content_html(item) : ""
+        end
+
+        # The isodoc BIPM titlepage embeds the bibdata title XML
+        # verbatim, so a title stem prints both linearizations: the
+        # MathML text and the literal AsciiMath source ("f ~~ 1121
+        # "unitsml(THz)""). Walk element_order to keep the stem between
+        # its surrounding text runs.
+        def bipm_title_content_html(item)
+          order = item.element_order if item.respond_to?(:element_order)
+          return escape_html(extract_text_value(item.value).to_s.strip) unless order.is_a?(Array)
+
+          stems = Array(item.stem)
+          idx = 0
+          parts = order.filter_map do |el|
+            next unless el.is_a?(Lutaml::Xml::Element)
+
+            if el.text?
+              el.text_content.to_s
+            elsif el.name == "stem"
+              stem = stems[idx]
+              idx += 1
+              stem ? bipm_title_stem_html(stem) : nil
+            end
+          end
+          parts.join.strip
+        end
+
+        def bipm_title_stem_html(stem)
+          parts = Array(stem.math).filter_map do |m|
+            m.to_xml if m.respond_to?(:to_xml)
+          end
+          source = Array(stem.asciimath).filter_map do |a|
+            a.is_a?(String) ? a : a.text
+          end.join
+          parts << escape_html(source) unless source.empty?
+          parts.join
         end
 
         def bipm_cover_title_items(bibdata, lang)
