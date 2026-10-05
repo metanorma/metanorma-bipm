@@ -23,7 +23,7 @@ module IsoDoc
       end
 
       def bibrenderer(options = {})
-        require_relative "../../../metanorma/bipm/relaton_render/general"
+        require_relative "../../metanorma/bipm/relaton_render/general"
 
         ::Relaton::Render::Bipm::General.new(options
           .merge(language: @lang, script: @script, i18nhash: @i18n.get,
