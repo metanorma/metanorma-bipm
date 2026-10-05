@@ -2,6 +2,8 @@
 
 require "spec_helper"
 
+require_relative "../../lib/metanorma/bipm/relaton_render/general"
+
 RSpec.describe Relaton::Render::Bipm do
   it "renders book, five editors" do
     input = <<~INPUT
