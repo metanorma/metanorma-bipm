@@ -7,6 +7,9 @@ require "metanorma/bipm/validate"
 
 module Metanorma
   module Bipm
+    autoload :CitationStyle, "metanorma/bipm/citation_style"
+    autoload :BipmElements, "metanorma/bipm/bipm_elements"
+
     def self.fonts_used
       {
         html: ["Times New Roman", "STIX", "Courier New"],
