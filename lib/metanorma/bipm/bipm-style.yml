@@ -1,0 +1,73 @@
+# The metanorma-bipm CitationStyle instance (relaton-render 3.0.0.pre
+# Iso690 engine). Direct-order periodless-initial creators with the
+# creator-date group, parenthesized production and series, and the
+# bold-volume numeration of the BIPM guide.
+name: "ISO 690 (metanorma-bipm flavour)"
+scheme:
+  system: name-date
+  defaultKind: online
+  homeDocidType: []
+  nameForm:
+    initials: true
+    initialsSeparator: " "
+    initialsPeriod: false
+    invertedAll: true
+    surnameUpcase: false
+    completenameUpcase: false
+    orgUpcase: false
+    creatorFallback: publisher_name
+  locale:
+    labels:
+      no_place: "n.p."
+      oxford_comma: ""
+      available_from: ""
+      edition: "edition"
+      edition_1: "First edition"
+      edition_2: "Second edition"
+      edition_3: "Third edition"
+      edition_4: "Fourth edition"
+      edition_5: "Fifth edition"
+      edition_6: "Sixth edition"
+      edition_7: "Seventh edition"
+      edition_8: "Eighth edition"
+      edition_9: "Ninth edition"
+      edition_10: "Tenth edition"
+      ed: "Ed."
+      eds: "Eds."
+templates:
+  titleOpen: "<em>"
+  titleClose: "</em>"
+  citation: "{{surname}}, {{date}}{{disambiguator}}"
+  reference: "{{creator}} {{dategroup}} {{title}}. {{medium}}. {{edition}}. {{series}}. ({{production}}) {{date}}. {{size}}. {{identifier}}. {{location}}."
+  name: "{{surname}} {{givenNames}}"
+  series: "({{series_title}} {{series_number}})"
+  uri: "<fmt-link target='{{uri}}'>{{uri}}</fmt-link>"
+perType:
+  - type: monograph
+    template: "{{creator}} {{dategroup}} {{title}}{{edition}}. ({{production}}) {{series}} {{size}}."
+    noPlace: true
+    fallbacks:
+      creator: "(n.d.)"
+  - type: component_part
+    template: "{{creator}} {{dategroup}} {{title}}. {{componentpart}}. {{extent}}. {{access}}."
+    title: "{{title}}"
+  - type: continuing
+    template: "{{title}}. {{dategroup}}. {{extent}}."
+    fallbacks:
+      dategroup: "(n.d.)"
+  - type: serial_part
+    template: "{{creator}} {{dategroup}} {{title}}. {{series}}. {{volsize}} {{extent}}. {{location}}."
+    title: "{{title}}"
+    series: "<em><em>{{series_title}}</em> ({{series_run}})</em>"
+  # ISO/IEC home standards cite the title alone; the bibliography
+  # entry code carries the identifier
+  - type: report
+    home: true
+    template: "{{title}}"
+  - type: report
+    template: "{{creator}}. {{dategroup}} {{title}}. {{medium}}. {{identifier}}. {{location}}. {{access}}."
+  - type: online
+    template: "{{creator}} {{dategroup}} {{title}}{{edition}}{{medium}}. {{identifier}}. {{location}}. {{size}}. {{access}}."
+  - type: webdoc
+    template: "{{creator}} {{dategroup}} {{title}}. ({{production}}). {{location}}. {{access}}."
+    noPlace: true
