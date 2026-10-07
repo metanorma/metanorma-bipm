@@ -17,3 +17,4 @@ git_source(:github) { |repo| "https://github.com/#{repo}" }
 gemspec
 
 eval_gemfile("Gemfile.devel") rescue nil
+gem "leptris", "1.9.314" # platform + canon-HTML fixes (leptris#1559, #1564)
