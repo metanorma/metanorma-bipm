@@ -4,6 +4,12 @@ SimpleCov.start do
 end
 
 require "bundler/setup"
+# The html/pdf comparison specs route canon's pretty-printer through
+# moxml; leptris rejects HTML-ish content there (leptris#1564) while
+# production never runs canon. The tolerant adapter is for the spec
+# environment only.
+require "moxml"
+Moxml.configure { |c| c.adapter = :nokogiri }
 require "metanorma-bipm"
 require "metanorma/bipm"
 require "rspec/matchers"
