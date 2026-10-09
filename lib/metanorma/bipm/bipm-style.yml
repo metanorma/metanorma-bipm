@@ -21,6 +21,7 @@ scheme:
       no_place: "n.p."
       oxford_comma: ""
       available_from: ""
+      size_volume: "% vol."
       edition: "edition"
       edition_1: "First edition"
       edition_2: "Second edition"
@@ -34,6 +35,14 @@ scheme:
       edition_10: "Tenth edition"
       ed: "Ed."
       eds: "Eds."
+rules:
+  creator: bipm_creator
+  component_part: bipm_component_part
+  production: bipm_production
+  extent: bipm_extent
+  medium: bipm_medium
+  edition: bipm_edition
+  volsize: bipm_volume
 templates:
   titleOpen: "<em>"
   titleClose: "</em>"

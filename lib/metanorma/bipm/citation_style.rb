@@ -13,26 +13,40 @@ module Metanorma
     class CitationStyle < ::Relaton::Render::General
       STYLE_PATH = File.join(__dir__, "bipm-style.yml")
 
-      # The BIPM data elements, scoped to this renderer alone: the
-      # component-part order (host editors before the host title, the
-      # host medium and the parenthesized production) and the
-      # bold-volume journal numeration
-      ELEMENTS = {
-        creator: BipmElements::BipmCreator,
-        component_part: BipmElements::BipmComponentPart,
-        production: BipmElements::BipmProduction,
-        extent: BipmElements::BipmExtent,
-        medium: BipmElements::BipmMedium,
-        edition: BipmElements::BipmEdition,
-        volsize: BipmElements::BipmVolume,
-      }.freeze
+      # The BIPM presentation-of-models rules are engine-registered
+      # (bipm_*) and selected as pack data in bipm-style.yml. The home
+      # resolution stays here: it is the flavor's own
+      HOME_PUBLISHERS =
+        ["International Organization for Standardization",
+         "International Electrotechnical Commission"].freeze
+
+      # 1.x home_standard: ISO/IEC documents by publisher NAME (an
+      # abbreviation-only publisher is not home)
+      def self.home_publisher?(model)
+        Array(model.contributor).any? do |c|
+          next false unless Array(c.role).any? do |r|
+            r.is_a?(String) ? r == "publisher" : r.type == "publisher"
+          end
+
+          Array(c.organization&.name)
+            .any? { |n| HOME_PUBLISHERS.include?(n.content) }
+        end
+      end
+
+      # The BIPM renderer: the engine's with the home-docid test by
+      # publisher name
+      class Renderer < ::Relaton::Render::Iso690::Renderer
+        def home_docid?(model)
+          CitationStyle.home_publisher?(model)
+        end
+      end
 
       private
 
       # 1.x use_terminator?: home standards carry no bibliography
       # terminator (the entry code ends the cite)
       def terminate_reference(ref, item = nil)
-        return ref if item && BipmElements.home_publisher?(item)
+        return ref if item && CitationStyle.home_publisher?(item)
 
         super
       end
@@ -48,12 +62,11 @@ module Metanorma
       def initialize(options = {})
         super
         options = deep_symbolize(options)
-        @renderer = BipmElements::BipmRenderer.new(
+        @renderer = Renderer.new(
           lang: @lang,
           script: options[:script] || "Latn",
           labels: options[:i18nhash] || {},
           style: options[:style] || STYLE_PATH,
-          elements: ELEMENTS,
         )
       end
     end
