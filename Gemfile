@@ -2,7 +2,7 @@ Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
 source "https://rubygems.org"
-gem "relaton-render", "3.0.0.pre.alpha.36" # bipm_* named rules
+gem "relaton-render", "3.0.0.pre.alpha.38" # bipm_* named rules; size and page %-templates
 gem "pubid", "~> 2.0.0.pre.alpha" # relaton 3 monogem pairs with pubid 2
 gem "relaton-bipm" # BIPM identifier canonicalisation (CGPM meeting citeas)
 gem "relaton-bib", "~> 2.2.0.pre.alpha.1"
