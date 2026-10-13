@@ -12,6 +12,7 @@ gem "metanorma-plugin-lutaml", github: "metanorma/metanorma-plugin-lutaml", bran
 gem "metanorma-iso", github: "metanorma/metanorma-iso", branch: "main" # CitationStyle port, unreleased
 gem "metanorma-document", github: "metanorma/metanorma-document", branch: "main" # TEMPORARY audit chain
 gem "isodoc", github: "metanorma/isodoc", branch: "main" # relaton-render range #846
+gem "metanorma-core", github: "metanorma/metanorma-core", branch: "feat/flavor-table" # TEMPORARY audit chain (flavor root naming)
 git_source(:github) { |repo| "https://github.com/#{repo}" }
 
 gemspec

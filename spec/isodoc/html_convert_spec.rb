@@ -13,7 +13,7 @@ RSpec.describe IsoDoc::Bipm do
     output = <<~"OUTPUT"
       #{BLANK_HDR}
         <sections/>
-      </bipm-standard>
+      </metanorma>
     OUTPUT
 
     expect(strip_guid(Asciidoctor

@@ -593,12 +593,12 @@ RSpec.describe IsoDoc do
                      J Terrien (1972) News from the Bureau International des Poids et Mesures.
                      <em>
                         <em>Metrologia</em>
+                        .
+                        <strong>8</strong>
+                        ; (1); 32–36.
+                        <fmt-link target="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</fmt-link>
+                        .
                      </em>
-                     .
-                     <strong>8</strong>
-                     ; (1); 32–36.
-                     <fmt-link target="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</fmt-link>
-                     .
                   </formattedref>
                   <fetched/>
                   <title format="text/plain" language="en" script="Latn">News from the Bureau International des Poids et Mesures</title>
@@ -802,12 +802,12 @@ RSpec.describe IsoDoc do
                   [11]  J Terrien (1972) News from the Bureau International des Poids et Mesures.
                   <i>
                      <i>Metrologia</i>
+                     .
+                     <b>8</b>
+                     ; (1); 32–36.
+                     <a href="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</a>
+                     .
                   </i>
-                  .
-                  <b>8</b>
-                  ; (1); 32–36.
-                  <a href="https://doi.org/10.1088/0026-1394/8/1/006">https://doi.org/10.1088/0026-1394/8/1/006</a>
-                  .
                </p>
                <aside id="fn:1" class="footnote">
                   <p>Under preparation. (Stage at the time of publication ISO/DIS 16634)</p>
