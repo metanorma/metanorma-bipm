@@ -1,0 +1,404 @@
+# frozen_string_literal: true
+
+require "metanorma/html"
+require "yaml"
+
+module Metanorma
+  module Bipm
+    # HTML format adapter slice for the BIPM flavor: binds the flavor's
+    # document root to the standard document rendering.
+    module Html
+      class Renderer < Metanorma::Html::StandardRenderer
+        register_render "Metanorma::Bipm::Document::Root", :render_standard_document
+
+        I18N_DIR = File.expand_path("../../isodoc/bipm", __dir__)
+
+        # isodoc's BIPM i18n labels layered over the isodoc defaults.
+        BIPM_LABELS = {
+          "en" => { "date" => "Date", "draft_label" => "draft" },
+          "fr" => { "date" => "Date", "draft_label" => "brouillon" },
+        }.freeze
+
+        # The BIPM/JCGM native titlepage (isodoc bipm) carries the full
+        # cover identity: the stage/type bands, the docnumber line with
+        # its draft date, the bilingual cover title, the publisher line,
+        # the committee line and the author roster. Render the same text
+        # in the same order from the parsed bibdata.
+        def render_coverpage(doc)
+          bibdata = doc.bibdata
+          return super unless bibdata
+
+          render_liquid("_element.html.liquid", {
+                          "tag" => "div",
+                          "extra_attrs" => %( class="title-section"),
+                          "content" => bipm_cover_furniture(bibdata),
+                        }) + render_liquid("_element.html.liquid", {
+                          "tag" => "hr",
+                          "extra_attrs" => %( class="cover-separator"),
+                          "content" => "",
+                        })
+        end
+
+        # The BIPM bibdata carries its titles in the ISO TitleCollection
+        # vocabulary; the base extraction only reads a bare +title+.
+        def extract_display_title(bibdata)
+          title = bipm_cover_title_items(bibdata, bipm_primary_lang(bibdata)).first
+          return title if title && !title.empty?
+
+          super
+        end
+
+        private
+
+        def bipm_cover_furniture(bibdata)
+          lang = bipm_primary_lang(bibdata)
+          year = bipm_docyear(bibdata)
+          title_runs = bipm_cover_title_items(bibdata, lang)
+          org = bipm_org_abbrev(bibdata)
+          doctype = bipm_doctype_display(bibdata)
+          stage = bipm_stage_display(bibdata)
+          type_line = "#{org} #{doctype}".strip
+
+          parts = []
+          parts << bipm_cover_title_html(title_runs, "cover-title")
+          parts << bipm_ancillary_title_stack(bibdata)
+          parts << bipm_band_html("document-stage-band", "document-stage", stage)
+          parts << bipm_band_html("document-type-band", "document-type", type_line)
+          parts << bipm_doc_number_html(bibdata, year)
+          parts << bipm_cover_title_html(title_runs, "cover-title cover-title-sub")
+          parts << bipm_text_html("coverpage-logo",
+                                  "Bureau International de Poids et Mesures #{year}".strip)
+          committee = bipm_committee_line(bibdata, lang)
+          parts << bipm_text_html("coverpage-tc-name", committee) if committee
+          authors = bipm_cover_authors(bibdata)
+          unless authors.empty?
+            parts << bipm_text_html("coverpage-tc-name", "#{authors.join(', ')}.")
+          end
+          parts << bipm_text_html("coverpage-stage", type_line)
+          parts << bipm_text_html("coverpage-maturity", stage) if stage
+          parts.join
+        end
+
+        def bipm_cover_title_html(runs, css_class)
+          return "" if runs.empty?
+
+          spans = runs.map do |run|
+            render_liquid("_element.html.liquid", {
+                            "tag" => "span",
+                            "extra_attrs" => "",
+                            "content" => escape_html(run),
+                          })
+          end
+          render_liquid("_element.html.liquid", {
+                          "tag" => "div",
+                          "extra_attrs" => %( class="#{css_class}"),
+                          "content" => spans.join(" "),
+                        })
+        end
+
+        def bipm_band_html(css_class, text_class, text)
+          return "" unless text
+
+          inner = render_liquid("_element.html.liquid", {
+                                  "tag" => "p",
+                                  "extra_attrs" => %( class="#{text_class}"),
+                                  "content" => escape_html(text),
+                                })
+          render_liquid("_element.html.liquid", {
+                          "tag" => "div",
+                          "extra_attrs" => %( class="#{css_class}"),
+                          "content" => inner,
+                        })
+        end
+
+        def bipm_text_html(css_class, text)
+          render_liquid("_element.html.liquid", {
+                          "tag" => "div",
+                          "extra_attrs" => %( class="#{css_class}"),
+                          "content" => escape_html(text),
+                        })
+        end
+
+        # docnumber ":" docyear "(draft revdate)" and the "Date:" line.
+        def bipm_doc_number_html(bibdata, year)
+          docnumber = bipm_primary_docnumber(bibdata)
+          revdate = bipm_revdate(bibdata)
+          draftinfo = revdate ? " (#{bipm_label('draft_label')} #{revdate})" : ""
+          line = "#{docnumber} : #{year}#{draftinfo}".strip
+          parts = [bipm_text_html("doc-number", line)]
+          if revdate
+            parts << bipm_text_html("doc-revdate",
+                                    "#{bipm_label('date')}: #{revdate}")
+          end
+          parts.join
+        end
+
+        # Cover title runs in native order: main title in the document
+        # language, main title in the other language, then the
+        # provenance title ("GUM 1995 with minor corrections").
+        # The bilingual ancillary-title stack of the isodoc BIPM titlepage
+        # (title-first / title-second spans): "Part 1: ...", "Annex 2: ...",
+        # "Appendix 1: ..." lines, labelled from the flavor i18n level
+        # ancillary labels with the structured-identifier numbers.
+        def bipm_ancillary_title_stack(bibdata)
+          ext = safe_attr(bibdata, :ext)
+          sid = safe_attr(ext, :structuredidentifier)
+          return "" unless sid
+
+          labels = bipm_gem_labels
+          lang = bipm_primary_lang(bibdata)
+          other = lang == "fr" ? "en" : "fr"
+          runs = []
+          { part: ["level4_ancillary", "part"],
+            appendix: ["level2_ancillary", "appendix"],
+            annexid: ["level3_ancillary", "annex"] }.each do |id_key, (label_key, type_suffix)|
+            number = safe_attr(sid, id_key).to_s.strip
+            next if number.empty?
+
+            [[lang, label_key, "title-first"],
+             [other, "#{label_key}_alt", "title-second"]].each do |l, key, css|
+              label = labels[key]
+              next unless label
+
+              content = bipm_typed_title_html(bibdata, l, type_suffix)
+              prefix = "#{escape_html(label)} #{escape_html(number)}:"
+              line = content.empty? ? prefix : "#{prefix} #{content}"
+              runs << [css, line]
+            end
+          end
+          return "" if runs.empty?
+
+          spans = runs.map do |css, line|
+            render_liquid("_element.html.liquid", {
+                            "tag" => "span",
+                            "extra_attrs" => %( class="#{css}"),
+                            "content" => line,
+                          })
+          end
+          render_liquid("_element.html.liquid", {
+                          "tag" => "div",
+                          "extra_attrs" => "",
+                          "content" => spans.join("<br/>"),
+                        })
+        end
+
+        # The bibdata title text for a language and one of the ancillary
+        # title types (title-part / title-appendix / title-annex), as
+        # renderable HTML: text runs in source order with inline stems
+        # rendered as both their MathML and their AsciiMath source.
+        def bipm_typed_title_html(bibdata, lang, type_suffix)
+          titles = safe_attr(bibdata, :titles)
+          return "" unless titles.respond_to?(:items)
+
+          item = titles.items.find do |t|
+            t.language == lang && t._type.to_s == "title-#{type_suffix}"
+          end
+          item ? bipm_title_content_html(item) : ""
+        end
+
+        # The isodoc BIPM titlepage embeds the bibdata title XML
+        # verbatim, so a title stem prints both linearizations: the
+        # MathML text and the literal AsciiMath source ("f ~~ 1121
+        # "unitsml(THz)""). Walk element_order to keep the stem between
+        # its surrounding text runs.
+        def bipm_title_content_html(item)
+          order = item.element_order if item.respond_to?(:element_order)
+          return escape_html(extract_text_value(item.value).to_s.strip) unless order.is_a?(Array)
+
+          stems = Array(item.stem)
+          idx = 0
+          parts = order.filter_map do |el|
+            next unless el.is_a?(Lutaml::Xml::Element)
+
+            if el.text?
+              el.text_content.to_s
+            elsif el.name == "stem"
+              stem = stems[idx]
+              idx += 1
+              stem ? bipm_title_stem_html(stem) : nil
+            end
+          end
+          parts.join.strip
+        end
+
+        def bipm_title_stem_html(stem)
+          parts = Array(stem.math).filter_map do |m|
+            m.to_xml if m.respond_to?(:to_xml)
+          end
+          source = Array(stem.asciimath).filter_map do |a|
+            a.is_a?(String) ? a : a.text
+          end.join
+          parts << escape_html(source) unless source.empty?
+          parts.join
+        end
+
+        def bipm_cover_title_items(bibdata, lang)
+          titles = safe_attr(bibdata, :titles)
+          return [] unless titles.respond_to?(:items)
+
+          items = titles.items
+          other = lang == "fr" ? "en" : "fr"
+          main = lambda { |l|
+            item = items.find do |t|
+              t.language == l && %w[title-main main].include?(t._type.to_s)
+            end || items.find { |t| t.language == l && t._type.to_s.empty? }
+            item && extract_text_value(item.value).to_s.strip
+          }
+          provenance = items.find do |t|
+            t.language == lang && t._type.to_s == "title-provenance"
+          end
+          runs = [main.call(lang), main.call(other)].reject { |run| run.nil? || run.empty? }
+          prov = provenance && extract_text_value(provenance.value).to_s.strip
+          runs << prov if prov && !prov.empty?
+          runs
+        end
+
+        def bipm_primary_docnumber(bibdata)
+          ids = Array(safe_attr(bibdata, :doc_identifier))
+          primary = ids.find { |di| safe_attr(di, :primary).to_s == "true" } ||
+                    ids.first
+          Array(safe_attr(primary, :value)).join.strip
+        end
+
+        # The BIPM draft date is the bare <version> text; it doubles as
+        # the revdate of the "Date:" line.
+        def bipm_revdate(bibdata)
+          version = safe_attr(bibdata, :version)
+          content = safe_attr(version, :content).to_s.strip
+          content.empty? ? nil : content
+        end
+
+        def bipm_docyear(bibdata)
+          copyright = Array(safe_attr(bibdata, :copyright)).first
+          from = safe_attr(copyright, :from)
+          # The Relaton DateTime wrapper keeps the element text as
+          # content (with an optional @text mirror).
+          year = safe_attr(from, :content).to_s
+          year = safe_attr(from, :text).to_s if year.empty?
+          year[/\d{4}/]
+        end
+
+        def bipm_org_abbrev(bibdata)
+          committee = bipm_committee(bibdata)
+          acronym = safe_attr(committee, :acronym).to_s.strip
+          acronym.empty? ? "BIPM" : acronym
+        end
+
+        def bipm_committee(bibdata)
+          ext = safe_attr(bibdata, :ext)
+          group = safe_attr(ext, :editorial_group)
+          Array(safe_attr(group, :committee)).first
+        end
+
+        def bipm_committee_line(bibdata, lang)
+          committee = bipm_committee(bibdata)
+          return nil unless committee
+
+          acronym = safe_attr(committee, :acronym).to_s.strip
+          variant = Array(safe_attr(committee, :variant)).find do |v|
+            safe_attr(v, :language) == lang
+          end
+          name = variant ? extract_text_value(variant).to_s.strip : ""
+          line = [acronym, name].reject(&:empty?).join(": ")
+          line.empty? ? nil : line
+        end
+
+        # The author roster of the native coverpage-tc-name block:
+        # "Name (Affiliation), Name (Affiliation), ..." — authors and
+        # editors carrying a person name.
+        def bipm_cover_authors(bibdata)
+          Array(safe_attr(bibdata, :contributor)).filter_map do |contributor|
+            roles = Array(safe_attr(contributor, :role))
+            next unless roles.any? { |role| %w(author editor).include?(safe_attr(role, :type).to_s) }
+
+            person = safe_attr(contributor, :person)
+            next unless person
+
+            name = extract_text_value(
+              safe_attr(safe_attr(person, :name), :completename),
+            ).to_s.strip
+            next if name.empty?
+
+            affiliation = bipm_person_affiliation(person)
+            affiliation.empty? ? name : "#{name} (#{affiliation})"
+          end
+        end
+
+        # isodoc's extract_person_affiliations: the organization name
+        # followed by its formatted address, comma-joined.
+        def bipm_person_affiliation(person)
+          Array(safe_attr(person, :affiliation)).filter_map do |aff|
+            org = safe_attr(aff, :organization)
+            parts = []
+            name = org ? extract_text_value(safe_attr(org, :name)).to_s.strip : ""
+            parts << name unless name.empty?
+            address = Array(safe_attr(org, :address)).first
+            location = extract_text_value(
+              safe_attr(address, :formatted_address),
+            ).to_s.strip
+            location = safe_attr(address, :formatted_address_attr).to_s.strip if location.empty?
+            parts << location unless location.empty?
+            parts.empty? ? nil : parts.join(", ")
+          end.first.to_s
+        end
+
+        def bipm_stage_display(bibdata)
+          stage = Array(safe_attr(safe_attr(bibdata, :status), :stage)).first
+          value = Array(safe_attr(stage, :value)).join.strip
+          return nil if value.empty?
+
+          # isodoc prints the stage through the flavor stage_dict
+          # ("in-force" becomes "En Vigeur" on French covers), not the
+          # raw bibdata value.
+          localized = bipm_gem_labels.dig("stage_dict", value) || value
+          bipm_status_print(localized)
+        end
+
+        def bipm_doctype_display(bibdata)
+          ext = safe_attr(bibdata, :ext)
+          doctypes = safe_attr(ext, :doctype_element)
+          return nil if Array(doctypes).empty?
+
+          value = Array(safe_attr(Array(doctypes).first, :value)).join.strip
+          value.empty? ? nil : bipm_status_print(value)
+        end
+
+        # isodoc BIPM status_print: capitalize words but keep en/de
+        # particles lowercase after the first ("Mise en Pratique");
+        # "cipm-mra" and "procès-verbal" stay as printed.
+        def bipm_status_print(status)
+          return "Procès-Verbal" if status == "procès-verbal"
+          return "CIPM-MRA" if status == "cipm-mra"
+
+          status.split(/[- ]/).map.with_index do |word, i|
+            if %w(en de).include?(word) && i.positive?
+              word
+            else
+              word.capitalize
+            end
+          end.join(" ")
+        end
+
+        def bipm_primary_lang(bibdata)
+          %w[en fr].include?(language) ? language : "en"
+        end
+
+        def bipm_label(key)
+          labels = BIPM_LABELS[language] || BIPM_LABELS["en"]
+          gem_labels = bipm_gem_labels[language] || {}
+          gem_labels[key.to_s] || labels[key.to_s]
+        end
+
+        def bipm_gem_labels
+          @bipm_gem_labels ||= begin
+            path = File.join(I18N_DIR, "i18n-#{language}.yaml")
+            path = File.join(I18N_DIR, "i18n-en.yaml") unless File.exist?(path)
+            YAML.safe_load(File.read(path)) || {}
+          rescue StandardError
+            {}
+          end
+        end
+      end
+    end
+  end
+end
