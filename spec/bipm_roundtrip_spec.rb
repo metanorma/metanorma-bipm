@@ -7,5 +7,5 @@ require_relative "support/roundtrip_helper"
 require_relative "support/shared_roundtrip_examples"
 
 RSpec.describe "BIPM document XML round-trip" do
-  it_behaves_like "xml round-trip", flavor_dir: "bipm"
+  it_behaves_like "xml round-trip", flavor_dir: "bipm", doc_class: Metanorma::Bipm::Document::Root
 end
