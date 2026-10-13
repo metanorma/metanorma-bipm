@@ -63,8 +63,11 @@ module Metanorma
         relation_supersedes_self1(xml, d, edition, draft)
       end
 
+      # The stub records this document's own earlier edition or draft:
+      # successorOf, not supersedes, which relates distinct documents
+      # (metanorma-bipm#666)
       def relation_supersedes_self1(xml, date, edition, draft)
-        xml.relation type: "supersedes" do |r|
+        xml.relation type: "successorOf" do |r|
           r.bibitem do |b|
             add_noko_elem(b, "date", date,
                           type: edition ? "published" : "circulated")

@@ -2,7 +2,9 @@
 
 require "spec_helper"
 
-RSpec.describe Relaton::Render::Bipm do
+require_relative "../../lib/metanorma/bipm/citation_style"
+
+RSpec.describe Metanorma::Bipm::CitationStyle do
   it "renders book, five editors" do
     input = <<~INPUT
       <bibitem type="book">
@@ -425,6 +427,6 @@ RSpec.describe Relaton::Render::Bipm do
   def renderer
     i = IsoDoc::Bipm::PresentationXMLConvert.new({})
     i.i18n_init("en", "Latn", nil)
-    Relaton::Render::Bipm::General.new(i18nhash: i.i18n.get)
+    Metanorma::Bipm::CitationStyle.new(i18nhash: i.i18n.get)
   end
 end

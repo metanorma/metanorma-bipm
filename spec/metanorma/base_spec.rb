@@ -253,21 +253,21 @@ RSpec.describe Metanorma::Bipm do
                 <docidentifier>B</docidentifier>
               </bibitem>
             </relation>
-            <relation type="supersedes">
+            <relation type="successorOf">
               <bibitem>
                 <date type="published">2018-06-11</date>
                 <edition>1.0</edition>
                 <version>1.0</version>
               </bibitem>
             </relation>
-            <relation type="supersedes">
+            <relation type="successorOf">
               <bibitem>
                 <date type="published">2019-06-11</date>
                 <edition>2.0</edition>
                 <version>2.0</version>
               </bibitem>
             </relation>
-            <relation type="supersedes">
+            <relation type="successorOf">
               <bibitem>
                 <date type="circulated">2019-06-11</date>
                 <version>3.0</version>

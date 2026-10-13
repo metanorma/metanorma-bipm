@@ -195,7 +195,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="scope">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                     <span class="fmt-caption-delim">
                        <tab/>
@@ -241,7 +241,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="terms">2</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -254,7 +254,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="widgets">3</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                     <span class="fmt-caption-delim">
                        <tab/>
@@ -271,7 +271,7 @@ RSpec.describe IsoDoc::Bipm do
                           <semx element="autonum" source="widgets">3</semx>
                           <span class="fmt-autonum-delim">.</span>
                           <semx element="autonum" source="widgets1">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
+                          <span class="fmt-clause-delim">.</span>
                        </span>
                     </fmt-title>
                     <fmt-xref-label>
@@ -366,7 +366,7 @@ RSpec.describe IsoDoc::Bipm do
                        <semx element="autonum" source="annex1">A1</semx>
                        <span class="fmt-autonum-delim">.</span>
                        <semx element="autonum" source="annex1a">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -405,7 +405,7 @@ RSpec.describe IsoDoc::Bipm do
                        <semx element="autonum" source="annex1">A1</semx>
                        <span class="fmt-autonum-delim">.</span>
                        <semx element="autonum" source="annex1b">2</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -1188,7 +1188,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="scope">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                     <span class="fmt-caption-delim">
                        <tab/>
@@ -1204,7 +1204,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="terms">2</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -1217,7 +1217,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="widgets">3</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                     <span class="fmt-caption-delim">
                        <tab/>
@@ -1234,7 +1234,7 @@ RSpec.describe IsoDoc::Bipm do
                           <semx element="autonum" source="widgets">3</semx>
                           <span class="fmt-autonum-delim">.</span>
                           <semx element="autonum" source="widgets1">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
+                          <span class="fmt-clause-delim">.</span>
                        </span>
                     </fmt-title>
                     <fmt-xref-label>
@@ -1333,7 +1333,7 @@ RSpec.describe IsoDoc::Bipm do
                        <semx element="autonum" source="annex1">A1</semx>
                        <span class="fmt-autonum-delim">.</span>
                        <semx element="autonum" source="annex1a">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -1349,7 +1349,7 @@ RSpec.describe IsoDoc::Bipm do
                        <semx element="autonum" source="annex1">A1</semx>
                        <span class="fmt-autonum-delim">.</span>
                        <semx element="autonum" source="annex1b">2</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -1498,7 +1498,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="scope">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                     <span class="fmt-caption-delim">
                        <tab/>
@@ -1514,7 +1514,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="terms">2</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -1527,7 +1527,7 @@ RSpec.describe IsoDoc::Bipm do
                  <fmt-title id="_" depth="1">
                     <span class="fmt-caption-label">
                        <semx element="autonum" source="widgets">3</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                     <span class="fmt-caption-delim">
                        <tab/>
@@ -1544,7 +1544,7 @@ RSpec.describe IsoDoc::Bipm do
                           <semx element="autonum" source="widgets">3</semx>
                           <span class="fmt-autonum-delim">.</span>
                           <semx element="autonum" source="widgets1">1</semx>
-                          <span class="fmt-autonum-delim">.</span>
+                          <span class="fmt-clause-delim">.</span>
                        </span>
                     </fmt-title>
                     <fmt-xref-label>
@@ -1648,7 +1648,7 @@ RSpec.describe IsoDoc::Bipm do
                        <semx element="autonum" source="annex1">A</semx>
                        <span class="fmt-autonum-delim">.</span>
                        <semx element="autonum" source="annex1a">1</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>
@@ -1663,7 +1663,7 @@ RSpec.describe IsoDoc::Bipm do
                        <semx element="autonum" source="annex1">A</semx>
                        <span class="fmt-autonum-delim">.</span>
                        <semx element="autonum" source="annex1b">2</semx>
-                       <span class="fmt-autonum-delim">.</span>
+                       <span class="fmt-clause-delim">.</span>
                     </span>
                  </fmt-title>
                  <fmt-xref-label>

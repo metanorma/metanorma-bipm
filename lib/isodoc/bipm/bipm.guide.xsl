@@ -1906,10 +1906,10 @@
 			<fo:block-container margin-left="0mm" margin-right="0mm"> -->
 				<fo:block xsl:use-attribute-sets="toc-title-style">
 					<xsl:call-template name="refine_toc-title-style"/>
-					<fo:inline><xsl:value-of select="//mn:metanorma/mn:bibdata/mn:title[@language = $curr_lang and @type='title-main']"/></fo:inline>
+					<fo:inline role="SKIP"><xsl:value-of select="//mn:metanorma/mn:bibdata/mn:title[@language = $curr_lang and @type='title-main']"/></fo:inline>
 					<fo:inline keep-together.within-line="always">
 						<fo:leader leader-pattern="space"/>
-						<fo:inline>
+						<fo:inline role="SKIP">
 							<xsl:value-of select="$title-toc"/>
 						</fo:inline>
 					</fo:inline>
@@ -1922,13 +1922,13 @@
 				<!-- <xsl:copy-of select="$contents"/> -->
 
 				<xsl:if test="$contents/mnx:doc[@id = $docid]//mnx:item[@display='true']">
-					<fo:table table-layout="fixed" width="100%" id="__internal_layout__toc_{generate-id()}" role="SKIP">
-						<fo:table-column column-width="127mm"/>
-						<fo:table-column column-width="12mm"/>
-						<fo:table-body role="SKIP">
-							<xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:item[@display='true' and not(@type = 'annex') and not(@type = 'index') and not(@parent = 'annex')]">
-								<xsl:call-template name="insertContentItem"/>
-							</xsl:for-each>
+
+							<!-- <xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:item[@display='true' and not(@type = 'annex') and not(@type = 'index') and not(@parent = 'annex')]">
+								<xsl:call-template name="insertContentItem"/>								
+							</xsl:for-each> -->
+
+							<xsl:apply-templates select="$contents/mnx:doc[@id = $docid]/mnx:contents/mnx:item[@display = 'true' and not(@type = 'annex') and not(@type = 'index') and not(@parent = 'annex')]"/>
+
 							<!-- insert page break between main sections and appendixes in ToC -->
 							<!-- <xsl:if test="$doctype ='brochure'">
 								<fo:table-row>
@@ -1937,198 +1937,319 @@
 									</fo:table-cell>
 								</fo:table-row>
 							</xsl:if> -->
-							<xsl:variable name="num" select="$contents/mnx:doc[@id = $docid]/@num"/>
-							<xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:item[@display='true' and (@type = 'annex')]"> <!--  or (@level = 2 and @parent = 'annex') -->
+
+							<!--  or (@level = 2 and @parent = 'annex') -->
+							<!-- <xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:item[@display='true' and (@type = 'annex')]">
 								<xsl:call-template name="insertContentItem">
 									<xsl:with-param name="keep-with-next">true</xsl:with-param>
 								</xsl:call-template>
-							</xsl:for-each>
-							<xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:item[@display='true' and (@type = 'index')]">
-								<xsl:call-template name="insertContentItem"/>
-							</xsl:for-each>
+							</xsl:for-each> -->
+							<xsl:apply-templates select="$contents/mnx:doc[@id = $docid]/mnx:contents/mnx:item[@display = 'true' and @type = 'annex']">
+								<xsl:with-param name="keep-with-next">true</xsl:with-param>
+								<xsl:with-param name="part">annex</xsl:with-param>
+							</xsl:apply-templates>
 
-							<!-- List of Tables -->
-							<xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:tables/mnx:table">
-								<xsl:if test="position() = 1">
-									<xsl:call-template name="insertListOf_Title">
-										<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@num = $num]/mnx:title-list-tables"/>
-									</xsl:call-template>
-								</xsl:if>
-								<xsl:call-template name="insertListOf_Item"/>
-							</xsl:for-each>
+							<!-- <xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:item[@display='true' and (@type = 'index')]">
+								<xsl:call-template name="insertContentItem"/>								
+							</xsl:for-each> -->
+							<xsl:apply-templates select="$contents/mnx:doc[@id = $docid]/mnx:contents/mnx:item[@display = 'true' and @type = 'index']">
+								<xsl:with-param name="part">index</xsl:with-param>
+							</xsl:apply-templates>
 
-							<!-- List of Figures -->
-							<xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:figures/mnx:figure">
-								<xsl:if test="position() = 1">
-									<xsl:call-template name="insertListOf_Title">
-										<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@num = $num]/mnx:title-list-figures"/>
-									</xsl:call-template>
-								</xsl:if>
-								<xsl:call-template name="insertListOf_Item"/>
-							</xsl:for-each>
-
-							<!-- List of Examples -->
-							<xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:examples/mnx:example">
-								<xsl:if test="position() = 1">
-									<xsl:call-template name="insertListOf_Title">
-										<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@num = $num]/mnx:title-list-examples"/>
-									</xsl:call-template>
-								</xsl:if>
-								<xsl:call-template name="insertListOf_Item"/>
-							</xsl:for-each>
-
-						</fo:table-body>
-					</fo:table>
 				</xsl:if>
 			</fo:block>
+			<xsl:variable name="num" select="$contents/mnx:doc[@id = $docid]/@num"/>
+			<xsl:call-template name="insertListsOf">
+				<xsl:with-param name="num" select="$num"/>
+				<xsl:with-param name="docid" select="$docid"/>
+			</xsl:call-template>
 		</fo:block-container>
+	</xsl:template>
+
+	<xsl:template match="mnx:contents//mnx:item[@display = 'true']">
+		<xsl:param name="keep-with-next"/>
+		<xsl:call-template name="insertContentItem">
+			<xsl:with-param name="keep-with-next" select="$keep-with-next"/>
+		</xsl:call-template>
 	</xsl:template>
 
 	<xsl:template name="insertContentItem">
 		<xsl:param name="keep-with-next"/>
-		<fo:table-row xsl:use-attribute-sets="toc-item-style">
+
+		<fo:block role="TOCI">
 			<xsl:if test="$keep-with-next = 'true'">
 				<xsl:attribute name="keep-with-next">always</xsl:attribute>
 			</xsl:if>
-			<xsl:variable name="space-before">
-				<xsl:if test="@level = 1">
-					<xsl:if test="@type = 'annex'">14pt</xsl:if>
-				</xsl:if>
-			</xsl:variable>
-			<xsl:variable name="space-after">
-				<xsl:choose>
-					<xsl:when test="@level = 1 and @type = 'annex'">0pt</xsl:when>
-					<xsl:when test="@level = 1">6pt</xsl:when>
-					<xsl:when test="@level = 2 and not(following-sibling::mnx:item[@display='true']) and not(mnx:item[@display='true']) and not(position() = last())">12pt</xsl:when>
-					<xsl:when test="@level = 3 and not(following-sibling::mnx:item[@display='true']) and not(../following-sibling::mnx:item[@display='true']) and not(position() = last())">12pt</xsl:when>
-				</xsl:choose>
-			</xsl:variable>
 
-			<fo:table-cell role="SKIP">
+			<fo:table table-layout="fixed" width="100%" id="__internal_layout__toc_{generate-id()}" role="SKIP">
+				<xsl:variable name="space-before">
+					<xsl:if test="@level = 1">
+						<xsl:if test="@type = 'annex'">14pt</xsl:if>
+					</xsl:if>
+				</xsl:variable>
+				<xsl:variable name="space-after">
+					<xsl:choose>
+						<xsl:when test="@level = 1 and @type = 'annex'">0pt</xsl:when>
+						<xsl:when test="@level = 1">6pt</xsl:when>
+						<!-- last 2nd level item -->
+						<xsl:when test="@level = 2 and not(following-sibling::mnx:item[@display='true']) and not(mnx:item[@display='true']) and following::mnx:item[@display='true']">12pt</xsl:when> <!-- not(position() = last()) -->
+						<!-- last 3rd level item -->
+						<xsl:when test="@level = 3 and not(following-sibling::mnx:item[@display='true']) and not(../following-sibling::mnx:item[@display='true']) and following::mnx:item[@display='true']">12pt</xsl:when><!-- not(position() = last()) -->
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:if test="normalize-space($space-before) != ''">
-					<xsl:attribute name="padding-top"><xsl:value-of select="normalize-space($space-before)"/></xsl:attribute>
+					<xsl:attribute name="margin-top"><xsl:value-of select="normalize-space($space-before)"/></xsl:attribute>
 				</xsl:if>
 				<xsl:if test="normalize-space($space-after) != ''">
-					<xsl:attribute name="padding-bottom"><xsl:value-of select="normalize-space($space-after)"/></xsl:attribute>
+					<xsl:attribute name="margin-bottom"><xsl:value-of select="normalize-space($space-after)"/></xsl:attribute>
 				</xsl:if>
-				<fo:block role="SKIP">
 
-					<xsl:call-template name="refine_toc-item-style"/>
+				<xsl:call-template name="insertTOCwidths"/>
 
-					<fo:list-block role="SKIP">
-						<xsl:attribute name="provisional-distance-between-starts">
-							<xsl:choose>
-								<xsl:when test="@section = '' or @level &gt; 3">0mm</xsl:when>
-								<xsl:when test="@level = 2 and @parent = 'annex'">0mm</xsl:when>
-								<xsl:when test="@level = 2">8mm</xsl:when>
-								<xsl:when test="@type = 'annex' and @level = 1">25mm</xsl:when>
-								<xsl:otherwise>7mm</xsl:otherwise>
-							</xsl:choose>
-						</xsl:attribute>
+				<fo:table-body role="SKIP">
 
-						<fo:list-item role="SKIP">
+					<fo:table-row xsl:use-attribute-sets="toc-item-style">
+						<xsl:variable name="alt_text"><xsl:apply-templates select="mnx:title" mode="bookmarks"/></xsl:variable>
+						<fo:table-cell role="SKIP">
+							<!-- <xsl:if test="normalize-space($space-before) != ''">
+								<xsl:attribute name="padding-top"><xsl:value-of select="normalize-space($space-before)"/></xsl:attribute>
+							</xsl:if>
+							<xsl:if test="normalize-space($space-after) != ''">
+								<xsl:attribute name="padding-bottom"><xsl:value-of select="normalize-space($space-after)"/></xsl:attribute>
+							</xsl:if> -->
+							<fo:block role="SKIP">
 
-							<fo:list-item-label end-indent="label-end()" role="SKIP">
-								<fo:block role="SKIP">
-									<xsl:if test="@level = 1 or (@level = 2 and not(@parent = 'annex'))">
-										<xsl:value-of select="@section"/>
-										<xsl:if test="normalize-space(@section) != '' and @type = 'annex'">.</xsl:if>
-									</xsl:if>
-								</fo:block>
-							</fo:list-item-label>
+								<xsl:call-template name="refine_toc-item-style"/>
 
-							<fo:list-item-body start-indent="body-start()" role="SKIP">
-								<fo:block role="SKIP">
-									<xsl:if test="@level &gt;= 3">
-										<xsl:attribute name="margin-left">11mm</xsl:attribute>
-										<xsl:attribute name="text-indent">-11mm</xsl:attribute>
-									</xsl:if>
-									<fo:basic-link internal-destination="{@id}" fox:alt-text="{mnx:title}" role="SKIP">
-										<xsl:if test="@level &gt;= 3">
-											<fo:inline padding-right="2mm" role="SKIP"><xsl:value-of select="@section"/></fo:inline>
-										</xsl:if>
+								<fo:list-block role="SKIP">
+									<xsl:attribute name="provisional-distance-between-starts">
+										<xsl:choose>
+											<xsl:when test="@section = '' or @level &gt; 3">0mm</xsl:when>
+											<xsl:when test="@level = 2 and @parent = 'annex'">0mm</xsl:when>
+											<xsl:when test="@level = 2">8mm</xsl:when>
+											<xsl:when test="@type = 'annex' and @level = 1">25mm</xsl:when>
+											<xsl:otherwise>7mm</xsl:otherwise>
+										</xsl:choose>
+									</xsl:attribute>
 
-										<fo:inline role="SKIP">
-											<xsl:apply-templates select="mnx:title"/>
-										</fo:inline>
+									<fo:list-item role="SKIP">
 
-									</fo:basic-link>
-								</fo:block>
-							</fo:list-item-body>
-						</fo:list-item>
-					</fo:list-block>
-				</fo:block>
-			</fo:table-cell>
-			<fo:table-cell text-align="right" role="SKIP">
-				<xsl:if test="normalize-space($space-before) != ''">
-					<xsl:attribute name="padding-top"><xsl:value-of select="normalize-space($space-before)"/></xsl:attribute>
-				</xsl:if>
-				<xsl:if test="normalize-space($space-after) != ''">
-					<xsl:attribute name="padding-bottom"><xsl:value-of select="normalize-space($space-after)"/></xsl:attribute>
-				</xsl:if>
-				<fo:block role="SKIP">
-					<fo:basic-link internal-destination="{@id}" fox:alt-text="{mnx:title}" role="SKIP">
-						<fo:inline xsl:use-attribute-sets="toc-pagenumber-style" role="SKIP"><fo:wrapper role="artifact"><fo:page-number-citation ref-id="{@id}"/></fo:wrapper></fo:inline>
-					</fo:basic-link>
-				</fo:block>
-			</fo:table-cell>
-		</fo:table-row>
+										<fo:list-item-label end-indent="label-end()" role="SKIP">
+											<fo:block role="Lbl">
+												<xsl:if test="@level = 1 or (@level = 2 and not(@parent = 'annex'))">
+													<xsl:value-of select="@section"/>
+													<xsl:if test="normalize-space(@section) != '' and @type = 'annex'">.</xsl:if>
+												</xsl:if>
+											</fo:block>
+										</fo:list-item-label>
+
+										<fo:list-item-body start-indent="body-start()" role="SKIP">
+											<fo:block role="Reference">
+												<xsl:if test="@level &gt;= 3">
+													<xsl:attribute name="margin-left">11mm</xsl:attribute>
+													<xsl:attribute name="text-indent">-11mm</xsl:attribute>
+												</xsl:if>
+												<fo:basic-link internal-destination="{@id}" fox:alt-text="{$alt_text}">
+													<xsl:if test="@level &gt;= 3">
+														<fo:inline padding-right="2mm" role="SKIP"><xsl:value-of select="@section"/></fo:inline>
+													</xsl:if>
+
+													<fo:inline role="SKIP">
+														<xsl:apply-templates select="mnx:title"/>
+													</fo:inline>
+
+												</fo:basic-link>
+											</fo:block>
+										</fo:list-item-body>
+									</fo:list-item>
+								</fo:list-block>
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell text-align="right" role="SKIP">
+							<!-- <xsl:if test="normalize-space($space-before) != ''">
+								<xsl:attribute name="padding-top"><xsl:value-of select="normalize-space($space-before)"/></xsl:attribute>
+							</xsl:if>
+							<xsl:if test="normalize-space($space-after) != ''">
+								<xsl:attribute name="padding-bottom"><xsl:value-of select="normalize-space($space-after)"/></xsl:attribute>
+							</xsl:if> -->
+							<fo:block role="Reference">
+								<fo:basic-link internal-destination="{@id}" fox:alt-text="{$alt_text}">
+									<fo:inline xsl:use-attribute-sets="toc-pagenumber-style" role="SKIP"><fo:page-number-citation ref-id="{@id}" role="SKIP"/></fo:inline>
+								</fo:basic-link>
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+
+				</fo:table-body>
+			</fo:table>
+
+			<xsl:choose>
+				<xsl:when test="@type = 'annex'">
+					<xsl:if test="mnx:item[@display = 'true' and @type = 'annex']">
+						<fo:block role="TOC">
+							<xsl:apply-templates select="mnx:item[@display = 'true' and @type = 'annex']"/>
+						</fo:block>
+					</xsl:if>
+				</xsl:when>
+				<xsl:when test="@type = 'index'">
+					<xsl:if test="mnx:item[@display = 'true' and @type = 'index']">
+						<fo:block role="TOC">
+							<xsl:apply-templates select="mnx:item[@display = 'true' and @type = 'index']"/>
+						</fo:block>
+					</xsl:if>
+				</xsl:when>
+				<xsl:when test="mnx:item[@display = 'true']">
+					<fo:block role="TOC">
+						<xsl:apply-templates select="mnx:item[@display = 'true']"/>
+					</fo:block>
+				</xsl:when>
+			</xsl:choose>
+		</fo:block>
+	</xsl:template><!-- insertContentItem -->
+
+	<xsl:template name="insertTOCwidths">
+		<fo:table-column column-width="127mm"/>
+		<fo:table-column column-width="12mm"/>
+	</xsl:template>
+
+	<xsl:template name="insertListsOf">
+		<xsl:param name="num"/>
+		<xsl:param name="docid"/>
+		<!-- List of Tables -->
+		<xsl:call-template name="insertListOfTables">
+			<xsl:with-param name="num" select="$num"/>
+			<xsl:with-param name="docid" select="$docid"/>
+		</xsl:call-template>
+
+		<!-- List of Figures -->
+		<xsl:call-template name="insertListOfFigures">
+			<xsl:with-param name="num" select="$num"/>
+			<xsl:with-param name="docid" select="$docid"/>
+		</xsl:call-template>
+
+		<!-- List of Examples -->
+		<xsl:call-template name="insertListOfExamples">
+			<xsl:with-param name="num" select="$num"/>
+			<xsl:with-param name="docid" select="$docid"/>
+		</xsl:call-template>
+	</xsl:template>
+
+	<xsl:template name="insertListOfTables">
+		<xsl:param name="num"/>
+		<xsl:param name="docid"/>
+		<!-- List of Tables -->
+		<xsl:if test="$contents/mnx:doc[@id = $docid]//mnx:tables/mnx:table">
+			<xsl:call-template name="insertListOf_Title">
+				<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@num = $num]/mnx:title-list-tables"/>
+			</xsl:call-template>
+			<fo:block role="TOC">
+				<xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:tables/mnx:table">
+					<xsl:call-template name="insertListOf_Item"/>
+				</xsl:for-each>
+			</fo:block>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="insertListOfFigures">
+		<xsl:param name="num"/>
+		<xsl:param name="docid"/>
+		<!-- List of Figures -->
+		<xsl:if test="$contents/mnx:doc[@id = $docid]//mnx:figures/mnx:figure">
+			<xsl:call-template name="insertListOf_Title">
+				<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@num = $num]/mnx:title-list-figures"/>
+			</xsl:call-template>
+			<fo:block role="TOC">
+				<xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:figures/mnx:figure">
+					<xsl:call-template name="insertListOf_Item"/>
+				</xsl:for-each>
+			</fo:block>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="insertListOfExamples">
+		<xsl:param name="num"/>
+		<xsl:param name="docid"/>
+		<!-- List of Examples -->
+		<xsl:if test="$contents/mnx:doc[@id = $docid]//mnx:examples/mnx:example">
+			<xsl:call-template name="insertListOf_Title">
+				<xsl:with-param name="title" select="$toc_title_lists/mnx:doc[@num = $num]/mnx:title-list-examples"/>
+			</xsl:call-template>
+			<fo:block role="TOC">
+				<xsl:for-each select="$contents/mnx:doc[@id = $docid]//mnx:examples/mnx:example">
+					<xsl:call-template name="insertListOf_Item"/>
+				</xsl:for-each>
+			</fo:block>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="insertListOf_Title">
 		<xsl:param name="title"/>
-		<fo:table-row keep-with-next="always">
-			<fo:table-cell xsl:use-attribute-sets="toc-listof-title-style">
-				<fo:block role="TOCI">
-					<xsl:value-of select="$title"/>
-				</fo:block>
-			</fo:table-cell>
-			<fo:table-cell>
-				<fo:block/>
-			</fo:table-cell>
-		</fo:table-row>
+		<fo:table table-layout="fixed" width="100%" role="SKIP" id="__internal_layout__toc_{translate($title, ' ', '_')}_{generate-id()}">
+			<xsl:call-template name="insertTOCwidths"/>
+			<fo:table-body role="SKIP">
+				<fo:table-row keep-with-next="always" role="SKIP">
+					<fo:table-cell xsl:use-attribute-sets="toc-listof-title-style" role="SKIP">
+						<fo:block role="H2">
+							<xsl:value-of select="$title"/>
+						</fo:block>
+					</fo:table-cell>
+					<fo:table-cell role="SKIP">
+						<fo:block role="SKIP"/>
+					</fo:table-cell>
+				</fo:table-row>
+			</fo:table-body>
+		</fo:table>
 	</xsl:template>
 
 	<xsl:template name="insertListOf_Item">
-		<fo:table-row>
-			<fo:table-cell>
-				<fo:block xsl:use-attribute-sets="toc-listof-item-style">
-					<fo:list-block provisional-distance-between-starts="8mm">
-						<fo:list-item>
-							<fo:list-item-label end-indent="label-end()">
-								<fo:block/>
-							</fo:list-item-label>
-							<fo:list-item-body start-indent="body-start()">
-								<fo:block>
-									<fo:basic-link internal-destination="{@id}">
-										<xsl:call-template name="setAltText">
-											<xsl:with-param name="value" select="@alt-text"/>
-										</xsl:call-template>
-										<fo:inline>
-											<xsl:variable name="item">
-												<!-- mnx:table/mn:fmt-name, mnx:figure/mn:fmt-name, mnx:example/mn:fmt-name -->
-												<xsl:apply-templates select="mn:fmt-name" mode="contents_item"/>
-											</xsl:variable>
-											<xsl:apply-templates select="xalan:nodeset($item)/node()"/>
-										</fo:inline>
-									</fo:basic-link>
-								</fo:block>
-							</fo:list-item-body>
-						</fo:list-item>
-					</fo:list-block>
-				</fo:block>
-			</fo:table-cell>
-			<fo:table-cell xsl:use-attribute-sets="toc-pagenumber-style" text-align="right">
-				<fo:block>
-					<fo:basic-link internal-destination="{@id}">
-						<xsl:call-template name="setAltText">
-							<xsl:with-param name="value" select="@alt-text"/>
-						</xsl:call-template>
-						<fo:inline><fo:page-number-citation ref-id="{@id}"/></fo:inline>
-					</fo:basic-link>
-				</fo:block>
-			</fo:table-cell>
-		</fo:table-row>
+		<fo:table table-layout="fixed" width="100%" role="TOCI" id="__internal_layout__toc_{generate-id()}">
+			<xsl:call-template name="insertTOCwidths"/>
+			<fo:table-body role="SKIP">
+				<fo:table-row role="SKIP">
+					<fo:table-cell role="SKIP">
+						<fo:block xsl:use-attribute-sets="toc-listof-item-style">
+							<fo:list-block provisional-distance-between-starts="8mm" role="SKIP">
+								<fo:list-item role="SKIP">
+									<fo:list-item-label end-indent="label-end()" role="SKIP">
+										<fo:block role="SKIP"/>
+									</fo:list-item-label>
+									<fo:list-item-body start-indent="body-start()" role="SKIP">
+										<fo:block role="SKIP">
+											<fo:wrapper role="Reference">
+												<fo:basic-link internal-destination="{@id}">
+													<xsl:call-template name="setAltText">
+														<xsl:with-param name="value" select="@alt-text"/>
+													</xsl:call-template>
+													<fo:inline role="SKIP">
+														<xsl:variable name="item">
+															<!-- mnx:table/mn:fmt-name, mnx:figure/mn:fmt-name, mnx:example/mn:fmt-name -->
+															<xsl:apply-templates select="mn:fmt-name" mode="contents_item"/>
+														</xsl:variable>
+														<xsl:apply-templates select="xalan:nodeset($item)/node()"/>
+													</fo:inline>
+												</fo:basic-link>
+											</fo:wrapper>
+										</fo:block>
+									</fo:list-item-body>
+								</fo:list-item>
+							</fo:list-block>
+						</fo:block>
+					</fo:table-cell>
+					<fo:table-cell xsl:use-attribute-sets="toc-pagenumber-style" text-align="right" role="SKIP">
+						<fo:block role="SKIP">
+							<fo:wrapper role="Reference">
+								<fo:basic-link internal-destination="{@id}">
+									<xsl:call-template name="setAltText">
+										<xsl:with-param name="value" select="@alt-text"/>
+									</xsl:call-template>
+									<fo:inline role="SKIP"><fo:page-number-citation ref-id="{@id}" role="SKIP"/></fo:inline>
+								</fo:basic-link>
+							</fo:wrapper>
+						</fo:block>
+					</fo:table-cell>
+				</fo:table-row>
+			</fo:table-body>
+		</fo:table>
 	</xsl:template>
 
 	<xsl:template match="node()">
@@ -4014,6 +4135,7 @@
 	</xsl:variable>
 
 	<!-- Characters -->
+	<xsl:variable name="nbsp"> </xsl:variable>
 	<xsl:variable name="linebreak">&#8232;</xsl:variable>
 	<xsl:variable name="em_space"> </xsl:variable>
 	<xsl:variable name="tab_zh">　</xsl:variable>
@@ -4928,7 +5050,11 @@
 			<xsl:text disable-output-escaping="yes">&lt;/page_sequence&gt;</xsl:text>
 
 			<!-- create a new page_sequence (opening elements) -->
-			<xsl:text disable-output-escaping="yes">&lt;page_sequence xmlns="</xsl:text><xsl:value-of select="$namespace_full"/>"<xsl:if test="$orientation != ''"> orientation="<xsl:value-of select="$orientation"/>"</xsl:if><xsl:text disable-output-escaping="yes">&gt;</xsl:text>
+			<xsl:text disable-output-escaping="yes">&lt;page_sequence xmlns="</xsl:text><xsl:value-of select="$namespace_full"/>"<xsl:if test="$orientation != ''"> orientation="<xsl:value-of select="$orientation"/>"</xsl:if>
+			<xsl:text> xmlns:fox="http://xmlgraphics.apache.org/fop/extensions"</xsl:text>
+			<!-- prevent for role="Part_continue" for last pagebreak in preface, sections, annex -->
+			<xsl:if test="(ancestor::mn:preface and following::*[ancestor::mn:preface])     or (ancestor::mn:sections and following::*[ancestor::mn:sections])     or (ancestor::mn:annex and following::*[ancestor::mn:annex])"><xsl:text> role="NonStruct"</xsl:text></xsl:if>
+			<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 
 			<xsl:call-template name="insertOpeningElements">
 				<xsl:with-param name="tree" select="$tree"/>
@@ -4988,6 +5114,7 @@
 					<xsl:text>"</xsl:text>
 				</xsl:for-each>
 				<xsl:if test="position() = 1 and $add_continue = 'true'"> continue="true"</xsl:if>
+				<xsl:if test="$add_continue = 'true'"> role="NonStruct"</xsl:if><!-- the condition 'xsl:if' to prevent the attribute role for math -->
 				<xsl:if test="position() = 1 and $xmlns != ''"> xmlns="<xsl:value-of select="$xmlns"/>"</xsl:if>
 			<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 			<xsl:if test="$debug = 'true'">
@@ -5500,6 +5627,7 @@
 	</xsl:template>
 
 	<xsl:attribute-set name="license-statement-style">
+		<xsl:attribute name="role">SKIP</xsl:attribute>
 		<xsl:attribute name="font-family">Times New Roman</xsl:attribute>
 		<xsl:attribute name="font-size">10.5pt</xsl:attribute>
 	</xsl:attribute-set> <!-- license-statement-style -->
@@ -5739,10 +5867,10 @@
 				<xsl:attribute name="keep-together.within-line">always</xsl:attribute>
 			</xsl:if>
 
-			<xsl:if test="$isLinkToEmbeddedFile = 'true'">
+			<!-- <xsl:if test="$isLinkToEmbeddedFile = 'true'">
 				<xsl:attribute name="color">inherit</xsl:attribute>
 				<xsl:attribute name="text-decoration">none</xsl:attribute>
-			</xsl:if>
+			</xsl:if> -->
 
 			<xsl:call-template name="refine_link-style"/>
 
@@ -5780,17 +5908,76 @@
 										</xsl:choose>
 									</xsl:otherwise>
 								</xsl:choose>
+								<xsl:if test="$isLinkToEmbeddedFile = 'true'">
+									<!-- paper clip icon rendering moved here from
+									org/apache/pdfbox/pdmodel/interactive/annotation/handlers/PDFileAttachmentAppearanceHandler.java drawPaperclip
+									for https://github.com/metanorma/metanorma-pdfa/issues/71 -->
+									<xsl:call-template name="drawPaperClip"/>
+								</xsl:if>
 							</fo:basic-link>
-							<xsl:if test="$isLinkToEmbeddedFile = 'true'">
-								<!-- reserve space at right for PaperClip icon -->
-								<fo:inline keep-with-previous.within-line="always">        </fo:inline>
-							</xsl:if>
+							<!-- <xsl:if test="$isLinkToEmbeddedFile = 'true'">
+								<!- - reserve space at right for PaperClip icon - ->
+								<fo:inline keep-with-previous.within-line="always">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;</fo:inline>
+							</xsl:if> -->
 						</xsl:with-param>
 					</xsl:call-template>
 				</xsl:otherwise>
 			</xsl:choose>
 		</fo:inline>
 	</xsl:template> <!-- link -->
+
+	<xsl:template name="drawPaperClip">
+		<fo:wrapper role="artifact">
+			<fo:inline-container width="6mm" height="1mm" keep-with-previous.within-line="always" id="__internal_layout__attachment_{@target}_{generate-id()}">
+				<!-- underline for paperclip icon -->
+				<fo:block line-height="0.5">        </fo:block>
+				<fo:block line-height="1" margin-top="-4mm" font-size="1pt" text-align="center">
+					<xsl:if test="ancestor::mn:tr">
+						<xsl:attribute name="margin-top">-3mm</xsl:attribute>
+					</xsl:if>
+					<fo:instream-foreign-object content-height="3.8mm" scaling="uniform" fox:alt-text="PaperClip" fox:placement="Inline">
+						<xsl:copy-of select="$paperClipImage"/>
+					</fo:instream-foreign-object>
+				</fo:block>
+			</fo:inline-container>
+		</fo:wrapper>
+	</xsl:template>
+
+	<xsl:variable name="paperClipImage">
+		<!-- <svg width="17" height="17" xmlns="http://www.w3.org/2000/svg">
+			<path style="transform-origin: center; transform: scale(1, -1);"
+			d="M 13.574 9.301
+			L 8.926 13.949
+			C 7.648 15.227 5.625 15.227 4.426 13.949
+			C 3.148 12.676 3.148 10.648 4.426 9.449
+			L 10.426 3.449
+			C 11.176 2.773 12.301 2.773 13.051 3.449
+			C 13.801 4.199 13.801 5.398 13.051 6.074
+			L 7.875 11.25
+			C 7.648 11.477 7.273 11.477 7.051 11.25
+			C 6.824 11.023 6.824 10.648 7.051 10.426
+			L 10.875 6.602
+			C 11.176 6.301 11.176 5.852 10.875 5.551
+			C 10.574 5.25 10.125 5.25 9.824 5.551
+			L 6 9.449
+			C 5.176 10.273 5.176 11.551 6 12.375
+			C 6.824 13.125 8.102 13.125 8.926 12.375
+			L 14.102 7.199
+			C 15.449 5.852 15.449 3.75 14.102 2.398
+			C 12.75 1.051 10.648 1.051 9.301 2.398
+			L 3.301 8.398
+			C 2.398 9.301 1.949 10.5 1.949 11.699
+			C 1.949 14.324 4.051 16.352 6.676 16.352
+			C 7.949 16.352 9.074 15.824 9.977 15
+			L 14.625 10.352
+			C 14.926 10.051 14.926 9.602 14.625 9.301
+			C 14.324 9 13.875 9 13.574 9.301"
+			stroke="none" fill="black" />
+			</svg> -->
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.16 14.96">
+			<path d="m11.63,7.05c.3.3.75.3,1.05,0,.3-.3.3-.75,0-1.05L8.03,1.35c-.9-.82-2.03-1.35-3.3-1.35C2.1,0,0,2.03,0,4.65c0,1.2.45,2.4,1.35,3.3l6,6c1.35,1.35,3.45,1.35,4.8,0,1.35-1.35,1.35-3.45,0-4.8L6.98,3.98c-.82-.75-2.1-.75-2.93,0-.82.82-.82,2.1,0,2.93l3.82,3.9c.3.3.75.3,1.05,0s.3-.75,0-1.05l-3.82-3.82c-.23-.22-.23-.6,0-.82.22-.23.6-.23.82,0l5.18,5.18c.75.68.75,1.88,0,2.62-.75.68-1.88.68-2.62,0L2.48,6.9c-1.28-1.2-1.28-3.23,0-4.5,1.2-1.28,3.22-1.28,4.5,0l4.65,4.65" style="stroke-width: 0px;"/>
+		</svg>
+	</xsl:variable>
 
 	<xsl:attribute-set name="sourcecode-container-style">
 	</xsl:attribute-set>
@@ -5824,6 +6011,9 @@
 
 	<xsl:template name="refine_sourcecode-style">
 		<xsl:call-template name="setKeepAttributes"/>
+		<xsl:if test="ancestor::mn:sourcecode and parent::mn:td">
+			<xsl:attribute name="role">SKIP</xsl:attribute>
+		</xsl:if>
 	</xsl:template> <!-- refine_sourcecode-style -->
 
 	<xsl:attribute-set name="sourcecode-number-style">
@@ -6151,12 +6341,12 @@
 
 	<!-- outer table with line numbers for sourcecode -->
 	<xsl:template match="mn:sourcecode[@linenums = 'true']/mn:table" priority="3"> <!-- *[local-name()='table'][@type = 'sourcecode'] |  -->
-		<fo:block>
-			<fo:table width="100%" table-layout="fixed">
+		<fo:block role="SKIP">
+			<fo:table width="100%" table-layout="fixed" role="SKIP">
 				<xsl:copy-of select="@id"/>
 					<fo:table-column column-width="8%"/>
 					<fo:table-column column-width="92%"/>
-					<fo:table-body>
+					<fo:table-body role="SKIP">
 						<xsl:apply-templates/>
 					</fo:table-body>
 			</fo:table>
@@ -6166,14 +6356,14 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 	<xsl:template match="mn:sourcecode[@linenums = 'true']/mn:table//mn:tr" priority="3"> <!-- *[local-name()='table'][@type = 'sourcecode']//*[local-name()='tr'] |  -->
-		<fo:table-row>
+		<fo:table-row role="SKIP">
 			<xsl:apply-templates/>
 		</fo:table-row>
 	</xsl:template>
 	<!-- first td with line numbers -->
 	<xsl:template match="mn:sourcecode[@linenums = 'true']/mn:table//mn:tr/*[local-name() = 'td'][not(preceding-sibling::*)]" priority="3"> <!-- *[local-name()='table'][@type = 'sourcecode'] -->
-		<fo:table-cell>
-			<fo:block>
+		<fo:table-cell role="SKIP">
+			<fo:block role="SKIP">
 
 				<!-- set attibutes for line numbers - same as sourcecode -->
 				<xsl:variable name="sourcecode_attributes">
@@ -6181,7 +6371,7 @@
 						<xsl:call-template name="get_sourcecode_attributes"/>
 					</xsl:for-each>
 				</xsl:variable>
-				<xsl:for-each select="xalan:nodeset($sourcecode_attributes)/sourcecode_attributes/@*[not(starts-with(local-name(), 'margin-') or starts-with(local-name(), 'space-'))]">
+				<xsl:for-each select="xalan:nodeset($sourcecode_attributes)/sourcecode_attributes/@*[not(starts-with(local-name(), 'margin-') or starts-with(local-name(), 'space-') or starts-with(local-name(), 'role'))]">
 					<xsl:attribute name="{name()}">
 						<xsl:value-of select="."/>
 					</xsl:attribute>
@@ -6194,7 +6384,7 @@
 
 	<!-- second td with sourcecode -->
 	<xsl:template match="mn:sourcecode[@linenums = 'true']/mn:table//mn:tr/*[local-name() = 'td'][preceding-sibling::*]" priority="3"> <!-- *[local-name()='table'][@type = 'sourcecode'] -->
-		<fo:table-cell>
+		<fo:table-cell role="SKIP">
 			<fo:block role="SKIP">
 				<xsl:apply-templates/>
 			</fo:block>
@@ -6990,11 +7180,12 @@
 			<xsl:choose>
 
 				<xsl:when test="ancestor::mn:sourcecode[@linenums = 'true'] and ancestor::*[local-name() = 'td'][1][not(preceding-sibling::*)]"> <!-- pre in the first td in the table with @linenums = 'true' -->
+					<xsl:attribute name="role">SKIP</xsl:attribute>
 					<xsl:if test="ancestor::mn:tr[1]/following-sibling::mn:tr"> <!-- is current tr isn't last -->
 						<xsl:attribute name="margin-top">0pt</xsl:attribute>
 						<xsl:attribute name="margin-bottom">0pt</xsl:attribute>
 					</xsl:if>
-					<fo:instream-foreign-object fox:alt-text="{.}" content-width="95%" fox:placement="Inline">
+					<fo:instream-foreign-object fox:alt-text="{.}" content-width="95%" fox:placement="Inline" role="artifact">
 						<math xmlns="http://www.w3.org/1998/Math/MathML">
 							<mtext><xsl:value-of select="."/></mtext>
 						</math>
@@ -7487,7 +7678,15 @@
 			<xsl:call-template name="refine_term-style"/>
 			<xsl:call-template name="addTagElementT"/>
 
-			<xsl:apply-templates select="node()[not(self::mn:fmt-name)]"/>
+			<fo:block role="SKIP">
+
+				<!-- element before fmt-defition -->
+				<xsl:apply-templates select="node()[not(self::mn:fmt-name) and not(self::mn:fmt-definition) and not(preceding-sibling::mn:fmt-definition)]"/>
+			</fo:block>
+
+			<!-- elements after fmt-definition (include fmt-definition) -->
+			<xsl:apply-templates select="node()[self::mn:fmt-definition or preceding-sibling::mn:fmt-definition]"/>
+
 		</fo:block>
 	</xsl:template>
 
@@ -8247,6 +8446,13 @@
 	</xsl:attribute-set>
 
 	<xsl:template name="refine_table-fn-body-style">
+	</xsl:template>
+
+	<xsl:attribute-set name="table-fn-p-style">
+		<xsl:attribute name="role">P</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:template name="refine_table-fn-p-style">
 	</xsl:template>
 
 	<xsl:template name="setNoBordersForTableList">
@@ -9057,7 +9263,7 @@
 
 			<xsl:variable name="tableWithNotesAndFootnotes">
 
-				<fo:table keep-with-previous="always" role="SKIP">
+				<fo:table keep-with-previous="always" role="TFoot">
 					<xsl:for-each select="xalan:nodeset($table_attributes)/table_attributes/@*">
 						<xsl:variable name="name" select="local-name()"/>
 						<xsl:choose>
@@ -9095,14 +9301,14 @@
 					</xsl:choose>
 
 					<fo:table-body role="SKIP">
-						<fo:table-row role="SKIP">
+						<fo:table-row>
 							<xsl:for-each select="ancestor::mn:table[1]">
 								<xsl:call-template name="setTableStyles">
 									<xsl:with-param name="scope">ancestor_table</xsl:with-param>
 								</xsl:call-template>
 							</xsl:for-each>
 
-							<fo:table-cell xsl:use-attribute-sets="table-footer-cell-style" number-columns-spanned="{$cols-count}" role="SKIP">
+							<fo:table-cell xsl:use-attribute-sets="table-footer-cell-style" number-columns-spanned="{$cols-count}">
 
 								<xsl:call-template name="refine_table-footer-cell-style"/>
 
@@ -9535,8 +9741,16 @@
 		</fo:block>
 	</xsl:template> <!-- table/note -->
 
-	<xsl:template match="mn:table/*[self::mn:note or self::mn:example]/mn:p |  mn:table/mn:tfoot//*[self::mn:note or self::mn:example]/mn:p" priority="2">
-		<fo:inline role="P"><xsl:apply-templates/></fo:inline>
+	<xsl:template match="mn:table/*[self::mn:note or self::mn:example]/mn:p |  mn:table/mn:tfoot//*[self::mn:note or self::mn:example][not(ancestor::mn:fn)]/mn:p" priority="2">
+		<xsl:param name="fo_element">inline</xsl:param>
+		<xsl:choose>
+			<xsl:when test="contains($fo_element, 'block')">
+				<fo:block role="P"><xsl:apply-templates/></fo:block>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:inline role="P"><xsl:apply-templates/></fo:inline>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- ============================ -->
@@ -9575,11 +9789,19 @@
 						<xsl:with-param name="process">true</xsl:with-param>
 					</xsl:apply-templates>
 
+					<!-- 1st element in fn ('p' usually) -->
 					<fo:inline xsl:use-attribute-sets="table-fn-body-style">
 						<xsl:call-template name="refine_table-fn-body-style"/>
 						<!-- <xsl:copy-of select="./node()"/> -->
-						<xsl:apply-templates/>
+						<xsl:apply-templates select="node()[normalize-space() != '' or self::*][1]"/>
 					</fo:inline>
+					<!-- 2th, 3rd ... -->
+					<xsl:if test="node()[position() &gt; 1][normalize-space() != '' or self::*]">
+						<fo:block xsl:use-attribute-sets="table-fn-body-style">
+							<xsl:call-template name="refine_table-fn-body-style"/>
+							<xsl:apply-templates select="node()[position() &gt; 1]"/>
+						</fo:block>
+					</xsl:if>
 
 				</fo:block>
 
@@ -9736,6 +9958,23 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template> <!-- fn -->
+
+	<xsl:template match="mn:table//mn:fn//mn:p | mn:table//mn:fmt-fn-body//mn:p" priority="4">
+		<xsl:choose>
+			<xsl:when test="preceding-sibling::*">
+				<fo:block xsl:use-attribute-sets="table-fn-p-style">
+					<xsl:call-template name="refine_table-fn-p-style"/>
+					<xsl:apply-templates/>
+				</fo:block>
+			</xsl:when>
+			<xsl:otherwise>
+				<fo:inline xsl:use-attribute-sets="table-fn-p-style">
+					<xsl:call-template name="refine_table-fn-p-style"/>
+					<xsl:apply-templates/>
+				</fo:inline>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
 	<!-- split string 'text' by 'separator' -->
 	<xsl:template name="tokenize">
@@ -12586,6 +12825,7 @@
 	<xsl:template match="mn:figure[not(mn:image) and *[local-name() = 'svg']]/mn:fmt-name/mn:bookmark" priority="2"/>
 	<xsl:template match="mn:figure[not(mn:image)]/*[local-name() = 'svg']" priority="2" name="image_svg">
 		<xsl:param name="name"/>
+		<xsl:param name="inline_image">false</xsl:param>
 
 		<xsl:variable name="svg_content">
 			<xsl:apply-templates select="." mode="svg_update"/>
@@ -12697,7 +12937,7 @@
 						<xsl:when test="ancestor::*[local-name() = 'tr'] and $isGenerateTableIF = 'true'">
 							<fo:inline xsl:use-attribute-sets="image-style" text-align="left"/>
 						</xsl:when>
-						<xsl:when test="not(ancestor::mn:figure)">
+						<xsl:when test="not(ancestor::mn:figure) or ancestor::mn:fmt-name">
 							<fo:inline xsl:use-attribute-sets="image-style" text-align="left"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -12726,7 +12966,7 @@
 									<xsl:attribute name="height">3.5mm</xsl:attribute>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:if test="$isGenerateTableIF = 'false'">
+									<xsl:if test="$isGenerateTableIF = 'false' and normalize-space($inline_image) = 'false'">
 										<xsl:attribute name="width">100%</xsl:attribute>
 									</xsl:if>
 									<xsl:attribute name="content-height">100%</xsl:attribute>
@@ -12922,9 +13162,12 @@
 	</xsl:template>
 
 	<!-- For the structures like: <dt><image src="" mimetype="image/svg+xml" height="" width=""><svg xmlns="http://www.w3.org/2000/svg" ... -->
-	<xsl:template match="*[not(self::mn:figure)]/mn:image[*[local-name() = 'svg']]" priority="3">
+	<!-- Note: count(ancestor::*) = 0 for image in mnx:figures/mnx:figure/fmt-name, when fmt-name is context/root node in template insertListOf_Item -->
+	<xsl:template match="*[not(self::mn:figure)]/mn:image[*[local-name() = 'svg']] | mn:image[count(ancestor::*) = 0][*[local-name() = 'svg']]" priority="3">
 		<xsl:for-each select="*[local-name() = 'svg']">
-			<xsl:call-template name="image_svg"/>
+			<xsl:call-template name="image_svg">
+				<xsl:with-param name="inline_image" select="not(ancestor::mn:bibdata)"/>
+			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
 
@@ -13613,6 +13856,10 @@
 
 		</fo:inline>
 	</xsl:template>
+
+	<!-- remove whitespace from PDF structure tree (https://github.com/metanorma/mn-native-pdf/issues/1071) -->
+	<xsl:template match="mn:fmt-stem/mn:semx/text()[normalize-space() = ''] |    mn:fmt-stem/text()[normalize-space() = ''] |    text()[preceding-sibling::*[1][self::mn:fmt-stem]][following-sibling::*[1][self::mn:bookmark]][normalize-space() = '']" priority="3"/>
+
 	<!-- ======================================= -->
 	<!-- END: math -->
 	<!-- ======================================= -->
@@ -14440,7 +14687,7 @@
 	<xsl:template name="refine_references-non-normative-style">
 	</xsl:template>
 
-		<!-- ======================= -->
+	<!-- ======================= -->
 	<!-- Bibliography rendering -->
 	<!-- ======================= -->
 
@@ -14458,7 +14705,7 @@
 	<xsl:template match="mn:references[@normative='true']" priority="2">
 
 		<xsl:call-template name="setNamedDestination"/>
-		<fo:block id="{@id}">
+		<fo:block id="{@id}" role="Sect">
 			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template>
@@ -14482,6 +14729,9 @@
 
 		<fo:block xsl:use-attribute-sets="references-non-normative-style">
 			<xsl:call-template name="refine_references-non-normative-style"/>
+			<xsl:copy-of select="@role"/>
+			<xsl:call-template name="addTagElementT"/>
+
 			<xsl:apply-templates select="node()[not(self::mn:fmt-title and @columns = 1)]"/>
 		</fo:block>
 	</xsl:template> <!-- references -->
@@ -15296,6 +15546,7 @@
 
 	<xsl:attribute-set name="toc-style">
 		<xsl:attribute name="line-height">135%</xsl:attribute>
+		<xsl:attribute name="role">SKIP</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:template name="refine_toc-style">
@@ -15309,6 +15560,7 @@
 		<xsl:attribute name="font-weight">bold</xsl:attribute>
 		<xsl:attribute name="text-align-last">justify</xsl:attribute>
 		<xsl:attribute name="margin-bottom">82pt</xsl:attribute>
+		<xsl:attribute name="role">H1</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:template name="refine_toc-title-style">
@@ -15332,6 +15584,7 @@
 
 	<xsl:attribute-set name="toc-item-style">
 		<xsl:attribute name="role">TOCI</xsl:attribute>
+		<xsl:attribute name="role">SKIP</xsl:attribute>
 	</xsl:attribute-set> <!-- END: toc-item-style -->
 
 	<xsl:template name="refine_toc-item-style">
@@ -15401,6 +15654,7 @@
 		<xsl:attribute name="role">TOCI</xsl:attribute>
 		<xsl:attribute name="font-size">10.5pt</xsl:attribute>
 		<xsl:attribute name="margin-left">8mm</xsl:attribute>
+		<xsl:attribute name="role">SKIP</xsl:attribute>
 	</xsl:attribute-set>
 
 	<xsl:template name="refine_toc-listof-item-style">
@@ -15492,17 +15746,26 @@
 	<xsl:template name="processTables_Contents">
 		<mnx:tables>
 			<xsl:for-each select="//mn:table[not(ancestor::mn:metanorma-extension)][@id and mn:fmt-name and normalize-space(@id) != '']">
+				<xsl:variable name="root">
+					<xsl:if test="ancestor-or-self::mn:preface">preface</xsl:if>
+					<xsl:if test="ancestor-or-self::mn:annex">annex</xsl:if>
+				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="mn:fmt-name">
 						<xsl:variable name="fmt_name">
 							<xsl:apply-templates select="mn:fmt-name" mode="update_xml_step1"/>
 						</xsl:variable>
-						<mnx:table id="{@id}" alt-text="{normalize-space($fmt_name)}">
+						<xsl:variable name="alt_text_">
+							<xsl:apply-templates select="xalan:nodeset($fmt_name)/node()" mode="bookmarks"/>
+						</xsl:variable>
+						<xsl:variable name="alt_text" select="normalize-space(translate(normalize-space($alt_text_), concat($nbsp,$zero_width_space,$hair_space), ' '))"/>
+
+						<mnx:table id="{@id}" alt-text="{$alt_text}" root="{$root}">
 							<xsl:copy-of select="$fmt_name"/>
 						</mnx:table>
 					</xsl:when>
 					<xsl:otherwise>
-						<mnx:table id="{@id}" alt-text="{mn:name}">
+						<mnx:table id="{@id}" alt-text="{mn:name}" root="{$root}">
 							<xsl:copy-of select="mn:name"/>
 						</mnx:table>
 					</xsl:otherwise>
@@ -15514,17 +15777,26 @@
 	<xsl:template name="processFigures_Contents">
 		<mnx:figures>
 			<xsl:for-each select="//mn:figure[@id and mn:fmt-name and not(@unnumbered = 'true') and normalize-space(@id) != ''] | //*[@id and starts-with(mn:name, 'Figure ') and normalize-space(@id) != '']">
+				<xsl:variable name="root">
+					<xsl:if test="ancestor-or-self::mn:preface">preface</xsl:if>
+					<xsl:if test="ancestor-or-self::mn:annex">annex</xsl:if>
+				</xsl:variable>
 				<xsl:choose>
 					<xsl:when test="mn:fmt-name">
 						<xsl:variable name="fmt_name">
 							<xsl:apply-templates select="mn:fmt-name" mode="update_xml_step1"/>
 						</xsl:variable>
-						<mnx:figure id="{@id}" alt-text="{normalize-space($fmt_name)}">
+						<xsl:variable name="alt_text_">
+							<xsl:apply-templates select="xalan:nodeset($fmt_name)/node()" mode="bookmarks"/>
+						</xsl:variable>
+						<xsl:variable name="alt_text" select="normalize-space(translate(normalize-space($alt_text_), concat($nbsp,$zero_width_space,$hair_space), ' '))"/>
+
+						<mnx:figure id="{@id}" alt-text="{$alt_text}" root="{$root}">
 							<xsl:copy-of select="$fmt_name"/>
 						</mnx:figure>
 					</xsl:when>
 					<xsl:otherwise>
-						<mnx:figure id="{@id}" alt-text="{mn:name}">
+						<mnx:figure id="{@id}" alt-text="{mn:name}" root="{$root}">
 							<xsl:copy-of select="mn:name"/>
 						</mnx:figure>
 					</xsl:otherwise>
@@ -15536,23 +15808,40 @@
 	<xsl:template name="processExamples_Contents">
 		<mnx:examples>
 			<xsl:for-each select="//mn:example[@id and mn:fmt-name and normalize-space(@id) != '']">
-				<!-- https://github.com/metanorma/metanorma-pdfa/issues/32#issuecomment-4929133938:
-				//example/fmt-xref-label[@container] + //example/fmt-name/span[@class = 'fmt-caption-delim'] + //example/name, 
-				with the last two elements dropped if //example/name does not exist. -->
-				<xsl:variable name="example_name">
-					<xsl:apply-templates select="mn:name/node()" mode="update_xml_step1"/>
-				</xsl:variable>
-				<mnx:example id="{@id}" alt-text="{normalize-space($example_name)}">
-					<xsl:element name="fmt-name" namespace="{$namespace_full}">
-						<xsl:call-template name="capitalize"><!-- https://github.com/metanorma/metanorma-pdfa/issues/72 -->
-							<xsl:with-param name="str" select="mn:fmt-xref-label[@container]"/>
-						</xsl:call-template>
-						<xsl:if test="normalize-space($example_name) != ''">
-							<xsl:value-of select="mn:fmt-name/mn:span[@class = 'fmt-caption-delim']"/>
-							<xsl:copy-of select="$example_name"/>
-						</xsl:if>
-					</xsl:element>
-				</mnx:example>
+				<xsl:choose>
+					<!-- https://github.com/metanorma/mn-native-pdf/issues/1116 -->
+					<!-- example's will be processed from fmt-footnote-container -->
+					<xsl:when test="ancestor::mn:fn and ancestor::mn:tr"><!--skip--></xsl:when>
+					<xsl:otherwise>
+						<!-- https://github.com/metanorma/metanorma-pdfa/issues/32#issuecomment-4929133938:
+						//example/fmt-xref-label[@container] + //example/fmt-name/span[@class = 'fmt-caption-delim'] + //example/name, 
+						with the last two elements dropped if //example/name does not exist. -->
+						<xsl:variable name="example_name">
+							<!-- <xsl:apply-templates select="mn:name/node()" mode="update_xml_step1"/> -->
+							<xsl:apply-templates select="mn:fmt-name/mn:semx[@element = 'name']/node()" mode="update_xml_step1"/>
+						</xsl:variable>
+						<xsl:variable name="alt_text_">
+							<xsl:apply-templates select="xalan:nodeset($example_name)/node()" mode="bookmarks"/>
+						</xsl:variable>
+						<xsl:variable name="alt_text" select="normalize-space(translate(normalize-space($alt_text_), concat($nbsp,$zero_width_space,$hair_space), ' '))"/>
+						<xsl:variable name="root">
+							<xsl:if test="ancestor-or-self::mn:preface">preface</xsl:if>
+							<xsl:if test="ancestor-or-self::mn:annex">annex</xsl:if>
+						</xsl:variable>
+
+						<mnx:example id="{@id}" alt-text="{$alt_text_}" root="{$root}">
+							<xsl:element name="fmt-name" namespace="{$namespace_full}">
+								<xsl:call-template name="capitalize"><!-- https://github.com/metanorma/metanorma-pdfa/issues/72 -->
+									<xsl:with-param name="str" select="mn:fmt-xref-label[@container]"/>
+								</xsl:call-template>
+								<xsl:if test="normalize-space($example_name) != ''">
+									<xsl:value-of select="mn:fmt-name/mn:span[@class = 'fmt-caption-delim']"/>
+									<xsl:copy-of select="$example_name"/>
+								</xsl:if>
+							</xsl:element>
+						</mnx:example>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:for-each>
 		</mnx:examples>
 	</xsl:template>
@@ -15750,6 +16039,11 @@
 		<xsl:apply-templates mode="bookmarks"/>
 	</xsl:template>
 
+	<xsl:template match="*[local-name() = 'math']" mode="bookmarks">
+		<xsl:value-of select="normalize-space(.)"/>
+	</xsl:template>
+	<xsl:template match="mn:asciimath" mode="bookmarks"/>
+
 	<!-- Note: to enable the addition of character span markup with semantic styling for DIS Word output -->
 	<xsl:template match="mn:span" mode="bookmarks">
 		<xsl:apply-templates mode="bookmarks"/>
@@ -15767,6 +16061,54 @@
 	<xsl:template match="mn:erefstack" mode="bookmarks"/>
 
 	<xsl:template match="mn:requirement |             mn:recommendation |              mn:permission" mode="bookmarks" priority="3"/>
+
+	<xsl:template match="mn:fmt-link" mode="bookmarks">
+		<!-- apply template from common.link.xsl -->
+		<xsl:variable name="link"><xsl:apply-templates select="."/></xsl:variable>
+		<xsl:value-of select="normalize-space($link)"/>
+	</xsl:template>
+
+	<xsl:template match="mn:image" mode="bookmarks"/>
+
+	<xsl:template match="mn:image[normalize-space(@alt) != '']" mode="bookmarks">
+		<xsl:value-of select="concat('[', normalize-space(@alt), ']')"/>
+	</xsl:template>
+
+	<xsl:template match="mnx:item" mode="bookmarks">
+		<xsl:apply-templates mode="bookmarks"/>
+	</xsl:template>
+
+	<xsl:template match="mnx:item[@id != '']" mode="bookmarks">
+		<fo:bookmark internal-destination="{@id}" starting-state="hide">
+			<fo:bookmark-title>
+				<xsl:if test="@section != ''">
+					<xsl:value-of select="@section"/>
+					<xsl:text> </xsl:text>
+				</xsl:if>
+				<xsl:variable name="title">
+					<xsl:if test="1 = 2">
+					<xsl:for-each select="mnx:title/node()">
+						<xsl:choose>
+							<xsl:when test="local-name() = 'add' and starts-with(., $ace_tag)"><!-- skip --></xsl:when>
+							<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+						</xsl:choose>
+					</xsl:for-each>
+					</xsl:if>
+					<xsl:apply-templates select="mnx:title/node()" mode="bookmarks"/>
+				</xsl:variable>
+				<xsl:value-of select="normalize-space($title)"/>
+			</fo:bookmark-title>
+			<xsl:apply-templates select="mnx:item" mode="bookmarks"/>
+		</fo:bookmark>
+	</xsl:template>
+
+	<xsl:template match="text()" mode="bookmarks">
+		<xsl:value-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="mnx:item/text()" mode="bookmarks"/>
+
+	<xsl:template match="*[local-name() = 'add'][starts-with(., $ace_tag)]" mode="bookmarks"/>
 
 	<!-- Bookmarks -->
 	<xsl:template name="addBookmarks">
@@ -15821,7 +16163,7 @@
 											</xsl:choose>
 										</fo:bookmark-title>
 
-										<xsl:apply-templates select="mnx:contents/mnx:item" mode="bookmark"/>
+										<xsl:apply-templates select="mnx:contents/mnx:item" mode="bookmarks"/>
 
 										<xsl:call-template name="insertFigureBookmarks">
 											<xsl:with-param name="contents" select="mnx:contents"/>
@@ -15847,7 +16189,7 @@
 							<xsl:otherwise>
 								<xsl:for-each select="$contents_nodes/mnx:doc">
 
-									<xsl:apply-templates select="mnx:contents/mnx:item" mode="bookmark"/>
+									<xsl:apply-templates select="mnx:contents/mnx:item" mode="bookmarks"/>
 
 									<xsl:call-template name="insertFigureBookmarks">
 										<xsl:with-param name="contents" select="mnx:contents"/>
@@ -15871,7 +16213,7 @@
 						</xsl:choose>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:apply-templates select="$contents_nodes/mnx:contents/mnx:item" mode="bookmark"/>
+						<xsl:apply-templates select="$contents_nodes/mnx:contents/mnx:item" mode="bookmarks"/>
 
 						<xsl:call-template name="insertFigureBookmarks">
 							<xsl:with-param name="contents" select="$contents_nodes/mnx:contents"/>
@@ -15925,7 +16267,9 @@
 				<fo:bookmark-title><xsl:value-of select="normalize-space($bookmark-title)"/></fo:bookmark-title>
 				<xsl:for-each select="$contents_nodes//mnx:figures/mnx:figure">
 					<fo:bookmark internal-destination="{@id}">
-						<fo:bookmark-title><xsl:value-of select="normalize-space(.)"/></fo:bookmark-title>
+						<!-- <fo:bookmark-title><xsl:value-of select="normalize-space(.)"/></fo:bookmark-title> -->
+						<xsl:variable name="title"><xsl:apply-templates mode="bookmarks"/></xsl:variable>
+						<fo:bookmark-title><xsl:value-of select="normalize-space($title)"/></fo:bookmark-title>
 					</fo:bookmark>
 				</xsl:for-each>
 			</fo:bookmark>
@@ -15966,7 +16310,9 @@
 				<xsl:for-each select="$contents_nodes//mnx:tables/mnx:table">
 					<fo:bookmark internal-destination="{@id}">
 						<!-- <fo:bookmark-title><xsl:value-of select="normalize-space(.)"/></fo:bookmark-title> -->
-						<fo:bookmark-title><xsl:apply-templates mode="bookmark_clean"/></fo:bookmark-title>
+						<!-- <fo:bookmark-title><xsl:apply-templates mode="bookmark_clean"/></fo:bookmark-title> -->
+						<xsl:variable name="title"><xsl:apply-templates mode="bookmarks"/></xsl:variable>
+						<fo:bookmark-title><xsl:value-of select="normalize-space($title)"/></fo:bookmark-title>
 					</fo:bookmark>
 				</xsl:for-each>
 			</fo:bookmark>
@@ -16007,33 +16353,15 @@
 				<xsl:for-each select="$contents_nodes//mnx:examples/mnx:example">
 					<fo:bookmark internal-destination="{@id}">
 						<!-- <fo:bookmark-title><xsl:value-of select="normalize-space(.)"/></fo:bookmark-title> -->
-						<fo:bookmark-title><xsl:apply-templates mode="bookmark_clean"/></fo:bookmark-title>
+						<!-- <fo:bookmark-title><xsl:apply-templates mode="bookmark_clean"/></fo:bookmark-title> -->
+						<xsl:variable name="title"><xsl:apply-templates mode="bookmarks"/></xsl:variable>
+						<fo:bookmark-title><xsl:value-of select="normalize-space($title)"/></fo:bookmark-title>
 					</fo:bookmark>
 				</xsl:for-each>
 			</fo:bookmark>
 		</xsl:if>
 	</xsl:template> <!-- insertExampleBookmarks -->
 	<!-- End Bookmarks -->
-
-	<!-- ============================ -->
-	<!-- mode="bookmark_clean" -->
-	<!-- ============================ -->
-	<xsl:template match="node()" mode="bookmark_clean">
-		<xsl:apply-templates select="node()" mode="bookmark_clean"/>
-	</xsl:template>
-
-	<xsl:template match="text()" mode="bookmark_clean">
-		<xsl:value-of select="."/>
-	</xsl:template>
-
-	<xsl:template match="*[local-name() = 'math']" mode="bookmark_clean">
-		<xsl:value-of select="normalize-space(.)"/>
-	</xsl:template>
-
-	<xsl:template match="mn:asciimath" mode="bookmark_clean"/>
-	<!-- ============================ -->
-	<!-- END: mode="bookmark_clean" -->
-	<!-- ============================ -->
 
 	<xsl:template name="getLangVersion">
 		<xsl:param name="lang"/>
@@ -16060,37 +16388,6 @@
 			<xsl:otherwise><xsl:value-of select="$lang"/> version</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-
-	<xsl:template match="mnx:item" mode="bookmark">
-		<xsl:choose>
-			<xsl:when test="@id != ''">
-				<fo:bookmark internal-destination="{@id}" starting-state="hide">
-					<fo:bookmark-title>
-						<xsl:if test="@section != ''">
-							<xsl:value-of select="@section"/>
-							<xsl:text> </xsl:text>
-						</xsl:if>
-						<xsl:variable name="title">
-							<xsl:for-each select="mnx:title/node()">
-								<xsl:choose>
-									<xsl:when test="local-name() = 'add' and starts-with(., $ace_tag)"><!-- skip --></xsl:when>
-									<xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
-								</xsl:choose>
-							</xsl:for-each>
-						</xsl:variable>
-						<xsl:value-of select="normalize-space($title)"/>
-					</fo:bookmark-title>
-					<xsl:apply-templates mode="bookmark"/>
-				</fo:bookmark>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:apply-templates mode="bookmark"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="mnx:title" mode="bookmark"/>
-	<xsl:template match="text()" mode="bookmark"/>
 
 	<!-- ====== -->
 	<!-- ====== -->
@@ -16145,6 +16442,10 @@
 		<xsl:text> </xsl:text>
 	</xsl:template>
 
+	<xsl:template match="mn:br | mn:tab" mode="bookmarks">
+		<xsl:text> </xsl:text>
+	</xsl:template>
+
 	<xsl:template match="mn:strong" mode="contents_item">
 		<xsl:param name="element"/>
 		<xsl:copy>
@@ -16154,26 +16455,9 @@
 		</xsl:copy>
 	</xsl:template>
 
-	<xsl:template match="mn:em" mode="contents_item">
+	<xsl:template match="mn:em | mn:sub | mn:sup | mn:tt | mn:underline | mn:hi | mn:strike | mn:span[@class] | mn:smallcap" mode="contents_item">
 		<xsl:copy>
-			<xsl:apply-templates mode="contents_item"/>
-		</xsl:copy>
-	</xsl:template>
-
-	<xsl:template match="mn:sub" mode="contents_item">
-		<xsl:copy>
-			<xsl:apply-templates mode="contents_item"/>
-		</xsl:copy>
-	</xsl:template>
-
-	<xsl:template match="mn:sup" mode="contents_item">
-		<xsl:copy>
-			<xsl:apply-templates mode="contents_item"/>
-		</xsl:copy>
-	</xsl:template>
-
-	<xsl:template match="mn:tt" mode="contents_item">
-		<xsl:copy>
+			<xsl:copy-of select="@*"/>
 			<xsl:apply-templates mode="contents_item"/>
 		</xsl:copy>
 	</xsl:template>
@@ -16243,6 +16527,24 @@
 		<xsl:apply-templates mode="contents_item">
 			<xsl:with-param name="element" select="$element"/>
 		</xsl:apply-templates>
+	</xsl:template>
+
+	<xsl:template match="mn:fmt-link" mode="contents_item">
+		<!-- apply template from common.link.xsl -->
+		<xsl:variable name="link"><xsl:apply-templates select="."/></xsl:variable>
+		<xsl:value-of select="normalize-space($link)"/>
+	</xsl:template>
+
+	<xsl:template match="mn:image" mode="contents_item">
+		<xsl:copy-of select="."/>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'padding']" mode="contents_item">
+		<xsl:text> </xsl:text>
+	</xsl:template>
+
+	<xsl:template match="*[local-name() = 'padding']" mode="bookmarks">
+		<xsl:text> </xsl:text>
 	</xsl:template>
 
 	<!-- =================== -->
@@ -17313,6 +17615,7 @@
 			<xsl:call-template name="setId"/>
 
 			<xsl:call-template name="sections_element_style"/>
+			<xsl:copy-of select="@role"/>
 
 			<!-- <xsl:if test="$namespace = 'rsd'"> -->
 			<xsl:call-template name="addTagElementT"/>
@@ -17352,6 +17655,7 @@
 		<fo:block break-after="page"/>
 		<xsl:call-template name="setNamedDestination"/>
 		<fo:block role="Sect">
+			<xsl:copy-of select="@role"/>
 			<xsl:call-template name="addTagElementT"/>
 			<xsl:call-template name="setId"/>
 			<xsl:call-template name="addReviewHelper"/>
@@ -17390,6 +17694,7 @@
 			<xsl:call-template name="setBlockSpanAll"/>
 
 			<xsl:call-template name="refine_clause-style"/>
+			<xsl:copy-of select="@role"/>
 
 			<xsl:call-template name="addReviewHelper"/>
 
@@ -17511,24 +17816,16 @@
 
 	<xsl:template name="addTagElementT">
 		<xsl:variable name="title_">
-			<xsl:apply-templates select="mn:fmt-title"/>
+			<xsl:apply-templates select="mn:fmt-title" mode="bookmarks"/>
 			<xsl:if test="not(mn:fmt-title) and self::mn:term">
 				<name>
-					<xsl:apply-templates select="mn:fmt-name"/>
+					<xsl:apply-templates select="mn:fmt-name" mode="bookmarks"/>
 					<xsl:text> </xsl:text>
 					<xsl:apply-templates select="mn:fmt-preferred/node()[1]"/>
 				</name>
 			</xsl:if>
 		</xsl:variable>
-		<xsl:variable name="title__">
-			<xsl:for-each select="xalan:nodeset($title_)/*/node()">
-				<xsl:choose>
-					<xsl:when test="self::text()"><xsl:text> </xsl:text><xsl:value-of select="."/><xsl:text> </xsl:text></xsl:when>
-					<xsl:otherwise><xsl:text> </xsl:text><xsl:copy-of select="."/><xsl:text> </xsl:text></xsl:otherwise>
-				</xsl:choose>
-			</xsl:for-each>
-		</xsl:variable>
-		<xsl:variable name="title" select="normalize-space(translate($title__, concat($em_space,' &#8232;'), '   '))"/>
+		<xsl:variable name="title" select="normalize-space(translate($title_, concat($em_space,' &#8232;'), '   '))"/>
 		<xsl:if test="$title != ''">
 			<xsl:attribute name="fox:title">
 				<xsl:if test="ancestor::mn:sections">
@@ -18064,6 +18361,27 @@
 	<!-- Get or calculate depth of term's name -->
 	<xsl:template name="getLevelTermName">
 		<xsl:choose>
+			<xsl:when test="self::mn:term">
+				<xsl:choose>
+					<xsl:when test="normalize-space(@depth) != ''">
+						<xsl:value-of select="@depth"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:variable name="title_level_">
+							<xsl:for-each select="preceding-sibling::mn:fmt-title[1]">
+								<xsl:call-template name="getLevel"/>
+							</xsl:for-each>
+						</xsl:variable>
+						<xsl:variable name="title_level" select="normalize-space($title_level_)"/>
+						<xsl:choose>
+							<xsl:when test="$title_level != ''"><xsl:value-of select="$title_level + 1"/></xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="getLevel"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when><!-- end: self::mn:term -->
 			<xsl:when test="normalize-space(../@depth) != ''">
 				<xsl:value-of select="../@depth"/>
 			</xsl:when>

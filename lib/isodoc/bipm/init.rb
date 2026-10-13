@@ -23,9 +23,10 @@ module IsoDoc
       end
 
       def bibrenderer(options = {})
-        ::Relaton::Render::Bipm::General.new(options
-          .merge(language: @lang, script: @script, i18nhash: @i18n.get,
-                 config: @relatonrenderconfig))
+        require_relative "../../metanorma/bipm/citation_style"
+
+        Metanorma::Bipm::CitationStyle.new(options
+          .merge(language: @lang, script: @script, i18nhash: @i18n.get))
       end
 
       def amd?(_text)
