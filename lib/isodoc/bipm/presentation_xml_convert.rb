@@ -186,7 +186,7 @@ module IsoDoc
           words.keys.localize(@lang.to_sym).sort.to_a.each do |w|
             words[w].each do |w1|
               c.first.at(ns("./ul")).add_child(
-                index_entries({ w => w1 }, index[k], w)
+                index_entries(w1, index[k])
               )
             end
           end
