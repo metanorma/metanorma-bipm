@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = Gem::Requirement.new(">= 3.3.0")
 
   spec.add_dependency "metanorma-generic", "~> 3.5.0"
-  spec.add_dependency "metanorma-iso", "~> 3.5.0"
+  spec.add_dependency "metanorma-iso", ">= 3.4.2"
 
   spec.add_development_dependency "canon"
   spec.add_development_dependency "debug"
