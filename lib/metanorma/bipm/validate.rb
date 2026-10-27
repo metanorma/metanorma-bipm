@@ -8,13 +8,23 @@ module Metanorma
       def committee_validate(xml)
         committees = committees_list or return
         xml.xpath("#{COMMITTEE_XPATH}/name").each do |c|
-          committees.include? c.text or
+          committee_known?(committees, c.text) or
             @log.add("BIPM_1", nil, params: [c.text])
         end
         xml.xpath("#{COMMITTEE_XPATH}/identifier[not(@type = 'full')]")
           .each do |c|
-          committees.include? c.text or
+          committee_known?(committees, c.text) or
             @log.add("BIPM_1", nil, params: [c.text])
+        end
+      end
+
+      # configuration.committees now carries Committee models (plain
+      # metanorma.yml strings are normalized by
+      # Metanorma::Generic::Configuration#committees=); match against the
+      # model's code and full name rather than the raw objects
+      def committee_known?(committees, text)
+        committees.any? do |c|
+          [c.code, c.full_name].compact.map(&:to_s).include?(text)
         end
       end
 

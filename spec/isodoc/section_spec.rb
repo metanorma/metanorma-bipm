@@ -177,9 +177,9 @@ RSpec.describe IsoDoc::Bipm do
       </bipm-standard>
     INPUT
 
-    presxml = <<~"OUTPUT"
+    presxml = <<~OUTPUT
       <?xml version="1.0"?>
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="2.9.0" type="presentation">
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::Bipm::VERSION}" type="presentation">
         <bibdata type="standard">
           <title language="en" format="text/plain" type="title-main">Main Title</title>
           <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
@@ -425,7 +425,7 @@ RSpec.describe IsoDoc::Bipm do
 
     presxml = <<~PRESXML
       <?xml version="1.0"?>
-      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="2.9.0" type="presentation">
+      <bipm-standard xmlns="https://www.metanorma.org/ns/bipm" version="#{Metanorma::Bipm::VERSION}" type="presentation">
         <bibdata type="standard">
           <title language="en" format="text/plain" type="title-main">Main Title</title>
           <title language="en" format="text/plain" type="title-cover">Main Title (SI)</title>
