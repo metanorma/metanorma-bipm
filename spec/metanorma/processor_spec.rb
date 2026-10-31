@@ -14,7 +14,7 @@ RSpec.describe Metanorma::Bipm::Processor do
     output = <<~OUTPUT
       [[:html, "html"], [:pdf, "pdf"], [:presentation, "presentation.xml"], [:rxl, "rxl"], [:xml, "xml"]]
     OUTPUT
-    expect(processor.output_formats.sort.to_s).to be_equivalent_to output.strip
+    expect(processor.output_formats.sort.to_s).to be_xml_equivalent_to output.strip
   end
 
   it "registers version against metanorma" do
