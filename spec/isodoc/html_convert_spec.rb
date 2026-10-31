@@ -426,7 +426,7 @@ RSpec.describe IsoDoc::Bipm do
       .convert("test", input, true)
       .gsub(%r{^.*<body}m, "<body")
       .gsub(%r{</body>.*}m, "</body>"))
-    expect(stripped_html).to be_equivalent_to output
+    expect(stripped_html).to be_xml_equivalent_to output
   end
 
   it "processes nested roman and alphabetic lists" do

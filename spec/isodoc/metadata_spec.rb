@@ -223,7 +223,7 @@ RSpec.describe IsoDoc::Bipm do
     expect(result[:si_aspect]).to match(/<image.*<svg/m)
     expect(result[:logo_committee]).to match(/<image.*<svg/m) if result[:logo_committee]
     expect(result.except(:logo, :si_aspect, :logo_committee))
-      .to be_equivalent_to(output.except(:logo, :si_aspect, :logo_committee))
+      .to eq(output.except(:logo, :si_aspect, :logo_committee))
 
     input2 = input.sub("</bibdata>", "</bibdata>#{DOC_SCHEME_2019}")
     docxml, = csdc.convert_init(input2, "test", true)
@@ -389,7 +389,7 @@ RSpec.describe IsoDoc::Bipm do
     result = metadata(csdc.info(docxml, nil))
     expect(result[:logo]).to match(/<image.*<svg/m)
     expect(result.except(:logo))
-      .to be_equivalent_to(output.except(:logo))
+      .to eq(output.except(:logo))
 
     input2 = input.sub("</bibdata>", "</bibdata>#{DOC_SCHEME_2019}")
     docxml, = csdc.convert_init(input2, "test", true)
@@ -461,7 +461,7 @@ RSpec.describe IsoDoc::Bipm do
     csdc = IsoDoc::Bipm::HtmlConvert.new({})
     docxml, = csdc.convert_init(input, "test", true)
     expect(metadata(csdc.info(docxml, nil)))
-      .to be_equivalent_to(output)
+      .to eq(output)
   end
 
   it "processes dates in Presentation XML" do
@@ -484,7 +484,7 @@ RSpec.describe IsoDoc::Bipm do
       strip_guid(IsoDoc::Bipm::PresentationXMLConvert.new(presxml_options)
       .convert("test", input, true))
         .gsub(%r{<localized-strings>.*</localized-strings>}m, "")
-    expect(stripped_presxml).to be_equivalent_to output
+    expect(stripped_presxml).to be_xml_equivalent_to output
   end
 
   it "inserts part in appendix title" do
