@@ -58,6 +58,8 @@ end
 def strip_guid(html)
   html
     .gsub(%r{ id="_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}+"}, ' id="_"')
+    .gsub(%r{ id="fn:_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}+"}, ' id="fn:_"')
+    .gsub(%r{ href="#fn:_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}+"}, ' href="#fn:_"')
     .gsub(%r{ semx-id="[^"]*"}, "")
     .gsub(%r{ original-id="_[^"]+"}, ' original-id="_"')
     .gsub(%r{ target="_[^"]+"}, ' target="_"')
