@@ -61,7 +61,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref>Aluffi P, Anderson D, Hering M, Mustaţă M and Payne S (Eds.) (2022) <em>Facets of Algebraic Geometry: A Collection in Honor of William Fulton's 80th Birthday</em>, First edition. (Cambridge, UK: Cambridge University Press) (London Mathematical Society Lecture Note Series 472) 1 vol.</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   it "renders incollection, two authors" do
@@ -137,7 +137,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref>Ramsey J K and McGrew W C (2005) Object play in great apes: Studies in nature and captivity. In: Pellegrini A D and Smith P K (Eds.) <em>The nature of play: Great apes and humans</em> [electronic resource, 8vo] (New York, NY: Guilford Press). pp. 89–112. [viewed: September 3, 2019].</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   it "renders journal" do
@@ -151,7 +151,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref><em>Nature</em>. (2005&#x2013;2009).</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   it "renders article" do
@@ -221,7 +221,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref>Aluffi P, Anderson D, Hering M, Mustaţă M and Payne S (Eds.) (2022) Facets of Algebraic Geometry: A Collection in Honor of William Fulton's 80th Birthday. <em><em>London Mathematical Society Lecture Note Series</em> (N.S.)</em>. <strong>1</strong> (7) 89–112.</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   it "renders software" do
@@ -249,7 +249,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref>Ribose Inc. (2019) <em>metanorma-standoc</em>. Version 1.3.1. <fmt-link target='https://github.com/metanorma/metanorma-standoc'>https://github.com/metanorma/metanorma-standoc</fmt-link>.</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   it "renders standard" do
@@ -282,7 +282,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref>Internet Engineering Task Force. (2005) <em>Intellectual Property Rights in IETF technology</em>. [Online]. RFC 3979. <fmt-link target='https://www.ietf.org/rfc/rfc3979.txt'>https://www.ietf.org/rfc/rfc3979.txt</fmt-link>. [viewed: June 18, 2012].</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   it "renders dataset" do
@@ -323,7 +323,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref>Portes A and Rumbaut R G (2012) <em>Children of Immigrants. Longitudinal Sudy (CILS) 1991–2006 ICPSR20520</em>. Version 2 [dataset]. <fmt-link target='https://doi.org/10.3886/ICPSR20520.v2'>https://doi.org/10.3886/ICPSR20520.v2</fmt-link>. 501 GB. [viewed: May 6, 2018].</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   it "renders website" do
@@ -357,7 +357,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref>Liberman M and Pullum G (2003–) <em>Language Log</em>. (n.p.: University of Pennsylvania). <fmt-link target='https://languagelog.ldc.upenn.edu/nll/'>https://languagelog.ldc.upenn.edu/nll/</fmt-link>. [viewed: September 3, 2019].</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   it "renders unpublished" do
@@ -388,7 +388,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. <fmt-link target='https://eprints.soton.ac.uk/338797/'>https://eprints.soton.ac.uk/338797/</fmt-link>. [viewed: June 24, 2020].</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   it "renders untyped" do
@@ -419,7 +419,7 @@ RSpec.describe Metanorma::Bipm::CitationStyle do
       <formattedref>Jenkins S and Ruostekoski J (2012) <em>Controlled manipulation of light by cooperativeresponse of atoms in an optical lattice</em> [preprint]. <fmt-link target='https://eprints.soton.ac.uk/338797/'>https://eprints.soton.ac.uk/338797/</fmt-link>. [viewed: June 24, 2020].</formattedref>
     OUTPUT
     expect(renderer.render(input))
-      .to be_equivalent_to output
+      .to be_xml_equivalent_to output
   end
 
   private

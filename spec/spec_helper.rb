@@ -13,7 +13,7 @@ Moxml.configure { |c| c.adapter = :nokogiri }
 require "metanorma-bipm"
 require "metanorma/bipm"
 require "rspec/matchers"
-require "equivalent-xml"
+require "canon/rspec_matchers"
 require "htmlentities"
 require "relaton/iso"
 require "canon"
