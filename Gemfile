@@ -2,7 +2,6 @@ Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
 source "https://rubygems.org"
-gem "relaton-render", "~> 3.0" # bipm_* named rules; size and page %-templates
 gem "pubid", "~> 2.0" # relaton 3 pairs with pubid 2
 gem "metanorma-standoc", "~> 3.5.7" # Standoc::Document split + relaton 3 allowance
 gem "metanorma-utils", "~> 2.0" # Metanorma::Utils::GcBudget API
@@ -16,3 +15,5 @@ git_source(:github) { |repo| "https://github.com/#{repo}" }
 gemspec
 
 eval_gemfile("Gemfile.devel") rescue nil
+
+gem "relaton", "~> 3.1.1"
